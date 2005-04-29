@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This script was automatically generated using Zero G's InstallAnywhere 6.1 Enterprise, Build 2325
      STATUS: Fully Functional LICENSED Edition
-     DATE:   Wed Apr 27 15:48:27 PDT 2005 -->
-<InstallAnywhere_Deployment_Project increments="9928">
+     DATE:   Fri Apr 29 15:43:04 PDT 2005 -->
+<InstallAnywhere_Deployment_Project increments="10793">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
 		<versionID major="6" minor="1" revision="-1"/>
@@ -10,9 +10,9 @@
 		<scriptID>12,42,11,90,81,50,48,52,54,57,82,74,55,66,67,81</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,88,80,44,32,53,46,49,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,56,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,85,83,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,0,-125,-37,-57,-112,80,112,116,103,88,98,113,97,113,65,65,88,74,65,72,71,70,69,64,69,66,69,48,79,87,5,2,4,10,-8,101,3,1,0,0</authorizationID>
+		<authorizationID>1,0,0,0,-109,36,-105,16,80,112,116,103,88,98,113,97,113,65,65,88,74,65,72,71,70,69,64,69,66,69,48,79,87,5,2,15,6,-16,96,3,1,0,0</authorizationID>
 	</essentialScriptInfo>
-	<installationObjects uniqueObjects="477">
+	<installationObjects uniqueObjects="521">
 		<object class="com.zerog.ia.installer.Installer" objectID="a3d1e30197df">
 			<property name="wizardME">
 				<object class="com.zerog.ia.installer.actions.MakeExecutable" objectID="a3e408bf981b">
@@ -562,7 +562,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[ptsupport.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>2454040</long>
+								<long>2454256</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -624,7 +624,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[codeDoc.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>11326034</long>
+								<long>11323920</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -935,7 +935,7 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<string><![CDATA[Choose Java Virtual Machine]]></string>
 							</property>
 							<property name="header">
-								<string><![CDATA[Please Choose a Java VM for Use by the Installed Application.  Java 1.4 or later is required, Java 1.4.2_04 is preferred. If you select "Choose Another", use the file browser to find java.exe]]></string>
+								<string><![CDATA[Please Choose a Java VM for Use by the Installed Application.  Java 1.4 or later is required, Java 1.4.2_08 is preferred. If you select "Choose Another", use the file browser to find java.exe]]></string>
 							</property>
 							<property name="canUseJRE">
 								<boolean>true</boolean>
@@ -1161,7 +1161,7 @@ The Copernicus code generator does not work well if there are spaces in the path
 							<property name="prompt">
 								<string><![CDATA[Installation is almost complete.
 Click the checkbox if you would like to
-start Ptolemy II]]></string>
+start Ptolemy II.]]></string>
 							</property>
 							<property name="inputMethod">
 								<string><![CDATA[Checkboxes]]></string>
@@ -1258,6 +1258,328 @@ start Ptolemy II]]></string>
 									</property>
 									<property name="operandTwo">
 										<string><![CDATA[1]]></string>
+									</property>
+								</object>
+								<object class="com.zerog.ia.installer.rules.CompareRegExpression" objectID="9accab3f88b7">
+									<property name="positive">
+										<boolean>true</boolean>
+									</property>
+									<property name="operation">
+										<string><![CDATA[=]]></string>
+									</property>
+									<property name="operandOne">
+										<string><![CDATA[$CHOSEN_INSTALL_BUNDLE_LIST$]]></string>
+									</property>
+									<property name="operandTwo">
+										<string><![CDATA[.*Full.*]]></string>
+									</property>
+								</object>
+							</rules>
+						</object>
+					</method>
+					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.ExecFile" objectID="9acd707288b8">
+							<property name="targetAction">
+								<object class="com.zerog.ia.installer.actions.MakeExecutable" objectID="a2c121daa1a3">
+									<property name="unixPermissions">
+										<string><![CDATA[777]]></string>
+									</property>
+									<property name="overrideUnixPermissions">
+										<boolean>false</boolean>
+									</property>
+									<property name="guiLauncher">
+										<boolean>true</boolean>
+									</property>
+									<property name="propertyList">
+										<object class="java.util.Vector">
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="956c58f6a9f3">
+													<property name="propertyValue">
+														<string><![CDATA[]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.stderr.redirect]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[leave blank for no input, "console" to read from the console window,
+and any path to a file to read from that file]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121dba1a7">
+													<property name="propertyValue">
+														<string><![CDATA[2750]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.nl.win32.microsoftvm.min.version]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[The minimum version of Microsoft's VM this application will run against]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121dba1a6">
+													<property name="propertyValue">
+														<string><![CDATA[]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.stdin.redirect]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[leave blank for no input, "console" to read from the console window,
+and any path to a file to read from that file]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121daa1a7">
+													<property name="propertyValue">
+														<string><![CDATA[.]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.user.dir]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[left blank, this property will cause the native launcher to not
+alter the platform default behavior for setting the user dir.
+To override this you may set this property to a relative or absolute path.
+Relative paths are relative to the launcher.]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121dba1a3">
+													<property name="propertyValue">
+														<string><![CDATA[main]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.main.method]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[the method in the main class that will be invoked]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121dba1a5">
+													<property name="propertyValue">
+														<string><![CDATA[$USER_INSTALL_DIR$]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.root.install.dir]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[path to the installdir magic folder]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="cc5d2a37a1ef">
+													<property name="propertyValue">
+														<string><![CDATA[-ptiny $CMD_LINE_ARGUMENTS$]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.command.line.args]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[what will be passed to the main method -- be sure to quote arguments with spaces in them]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="9493443caa8c">
+													<property name="propertyValue">
+														<string><![CDATA[.;$IA_CLASSPATH$]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.class.path]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[the Java classpath necessary to run this application
+Can be separated by colons (Mac OS/Unix) or semicolons (Windows)]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="956c28d0a9ed">
+													<property name="propertyValue">
+														<string><![CDATA[]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.stderr.redirectbb]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[leave blank for no input, "console" to read from the console window,
+and any path to a file to read from that file]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="8031322f96d5">
+													<property name="propertyValue">
+														<string><![CDATA[524288000]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.nl.java.option.java.heap.size.max]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121daa1a8">
+													<property name="propertyValue">
+														<string><![CDATA[J2 J1 MSJ MRJ]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.nl.valid.vm.list]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[a string containing one or more of [ ALL JDK JRE J1 J2 JRE_J1 JDK_J1 JRE_J2 JDK_J2 MSJ MRJ ]
+ delimited by spaces or commas.  If the native launcher cannot find the current vm,
+it will search for ones in this list]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121daa1a6">
+													<property name="propertyValue">
+														<string><![CDATA[5.0]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.version]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[version of LaunchAnywhere that created this properties file]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="99558aa383de">
+													<property name="propertyValue">
+														<string><![CDATA[ptolemy.actor.gui.jnlp.PtinyApplication]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.main.class]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[the class that contains the main method for the application]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121daa1a9">
+													<property name="propertyValue">
+														<string><![CDATA[]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.stdout.redirect]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[leave blank for no input, "console" to read from the console window,
+and any path to a file to read from that file]]></string>
+													</property>
+												</object>
+											</method>
+											<method name="addElement">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="94cd246aac38">
+													<property name="propertyValue">
+														<string><![CDATA[-Dsun.java2d.noddraw=true]]></string>
+													</property>
+													<property name="propertyName">
+														<string><![CDATA[lax.nl.java.option.additional]]></string>
+													</property>
+													<property name="propertyComment">
+														<string><![CDATA[Needed for matlab]]></string>
+													</property>
+												</object>
+											</method>
+										</object>
+									</property>
+									<property name="shouldUninstall">
+										<boolean>true</boolean>
+									</property>
+									<property name="destinationName">
+										<string><![CDATA[vergil-ptiny]]></string>
+									</property>
+									<property name="executableIcon">
+										<object class="com.zerog.ia.installer.util.BindingWin32" objectID="a2c121dba1a9">
+											<property name="smallIconName">
+												<string><![CDATA[PtolemyIISmallIcon.gif]]></string>
+											</property>
+											<property name="largeIconName">
+												<string><![CDATA[PtolemyIISmallIcon.gif]]></string>
+											</property>
+											<property name="smallIconPath">
+												<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
+											</property>
+											<property name="largeIconPath">
+												<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
+											</property>
+										</object>
+									</property>
+									<property name="mainClass">
+										<string><![CDATA[ptolemy.actor.gui.jnlp.PtinyApplication]]></string>
+									</property>
+								</object>
+							</property>
+							<property name="commandLineArgs">
+								<string><![CDATA[$EXECUTE_FILE_TARGET$]]></string>
+							</property>
+							<property name="waitForProcess">
+								<boolean>false</boolean>
+							</property>
+							<property name="suppressConsoleWindow">
+								<boolean>false</boolean>
+							</property>
+							<property name="showPleaseWaitPanel">
+								<boolean>true</boolean>
+							</property>
+							<property name="showIndeterminateDialog">
+								<boolean>false</boolean>
+							</property>
+							<property name="dialogLabel">
+								<string><![CDATA[Executing...]]></string>
+							</property>
+							<property name="userLabel">
+								<string><![CDATA[vergil-ptiny]]></string>
+							</property>
+							<property name="stdoutVar">
+								<string><![CDATA[$EXECUTE_STDOUT$]]></string>
+							</property>
+							<property name="stderrVar">
+								<string><![CDATA[$EXECUTE_STDERR$]]></string>
+							</property>
+							<property name="exitCodeVar">
+								<string><![CDATA[$EXECUTE_EXITCODE$]]></string>
+							</property>
+							<rules logicalOperation="AND">
+								<object class="com.zerog.ia.installer.rules.CompareRegExpression" objectID="9acd707388b8">
+									<property name="positive">
+										<boolean>true</boolean>
+									</property>
+									<property name="operation">
+										<string><![CDATA[=]]></string>
+									</property>
+									<property name="operandOne">
+										<string><![CDATA[$START_PTOLEMY_II_BOOLEAN_1$]]></string>
+									</property>
+									<property name="operandTwo">
+										<string><![CDATA[1]]></string>
+									</property>
+								</object>
+								<object class="com.zerog.ia.installer.rules.CompareRegExpression" objectID="9acd707288b9">
+									<property name="positive">
+										<boolean>false</boolean>
+									</property>
+									<property name="operation">
+										<string><![CDATA[=]]></string>
+									</property>
+									<property name="operandOne">
+										<string><![CDATA[$CHOSEN_INSTALL_BUNDLE_LIST$]]></string>
+									</property>
+									<property name="operandTwo">
+										<string><![CDATA[.*Full.*]]></string>
 									</property>
 								</object>
 							</rules>
@@ -1394,7 +1716,7 @@ Press ""Done"" to quit the installer.]]></string>
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[April 27, 2005 3:48:26 PM PDT]]></string>
+						<string><![CDATA[April 29, 2005 3:43:04 PM PDT]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -1442,7 +1764,7 @@ Press ""Done"" to quit the installer.]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
-						<string><![CDATA[April 27, 2005 1:32:20 PM PDT]]></string>
+						<string><![CDATA[April 29, 2005 3:28:49 PM PDT]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>
@@ -1474,7 +1796,7 @@ Press ""Done"" to quit the installer.]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.windows.novm]]></string>
-						<string><![CDATA[false]]></string>
+						<string><![CDATA[true]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.vmpack.windows.path]]></string>
@@ -1510,7 +1832,7 @@ Press ""Done"" to quit the installer.]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.windows.vm]]></string>
-						<string><![CDATA[true]]></string>
+						<string><![CDATA[false]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stdout.redirect]]></string>
@@ -2474,7 +2796,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[ptII5.0.releaseVergil.htm]]></string>
 													</property>
 													<property name="fileSize">
-														<long>24378</long>
+														<long>24593</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -4052,248 +4374,7 @@ The Minimal/Ptiny feature is automatically included.
 										<int>0</int>
 									</property>
 									<property name="keyFile">
-										<object class="com.zerog.ia.installer.actions.MakeExecutable" objectID="a2c121daa1a3">
-											<property name="unixPermissions">
-												<string><![CDATA[777]]></string>
-											</property>
-											<property name="overrideUnixPermissions">
-												<boolean>false</boolean>
-											</property>
-											<property name="guiLauncher">
-												<boolean>true</boolean>
-											</property>
-											<property name="propertyList">
-												<object class="java.util.Vector">
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="956c58f6a9f3">
-															<property name="propertyValue">
-																<string><![CDATA[]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.stderr.redirect]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[leave blank for no input, "console" to read from the console window,
-and any path to a file to read from that file]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121dba1a7">
-															<property name="propertyValue">
-																<string><![CDATA[2750]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.nl.win32.microsoftvm.min.version]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[The minimum version of Microsoft's VM this application will run against]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121dba1a6">
-															<property name="propertyValue">
-																<string><![CDATA[]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.stdin.redirect]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[leave blank for no input, "console" to read from the console window,
-and any path to a file to read from that file]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121daa1a7">
-															<property name="propertyValue">
-																<string><![CDATA[.]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.user.dir]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[left blank, this property will cause the native launcher to not
-alter the platform default behavior for setting the user dir.
-To override this you may set this property to a relative or absolute path.
-Relative paths are relative to the launcher.]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121dba1a3">
-															<property name="propertyValue">
-																<string><![CDATA[main]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.main.method]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[the method in the main class that will be invoked]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121dba1a5">
-															<property name="propertyValue">
-																<string><![CDATA[$USER_INSTALL_DIR$]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.root.install.dir]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[path to the installdir magic folder]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="cc5d2a37a1ef">
-															<property name="propertyValue">
-																<string><![CDATA[-ptiny $CMD_LINE_ARGUMENTS$]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.command.line.args]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[what will be passed to the main method -- be sure to quote arguments with spaces in them]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="9493443caa8c">
-															<property name="propertyValue">
-																<string><![CDATA[.;$IA_CLASSPATH$]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.class.path]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[the Java classpath necessary to run this application
-Can be separated by colons (Mac OS/Unix) or semicolons (Windows)]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="956c28d0a9ed">
-															<property name="propertyValue">
-																<string><![CDATA[]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.stderr.redirectbb]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[leave blank for no input, "console" to read from the console window,
-and any path to a file to read from that file]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="8031322f96d5">
-															<property name="propertyValue">
-																<string><![CDATA[524288000]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.nl.java.option.java.heap.size.max]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121daa1a8">
-															<property name="propertyValue">
-																<string><![CDATA[J2 J1 MSJ MRJ]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.nl.valid.vm.list]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[a string containing one or more of [ ALL JDK JRE J1 J2 JRE_J1 JDK_J1 JRE_J2 JDK_J2 MSJ MRJ ]
- delimited by spaces or commas.  If the native launcher cannot find the current vm,
-it will search for ones in this list]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121daa1a6">
-															<property name="propertyValue">
-																<string><![CDATA[5.0]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.version]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[version of LaunchAnywhere that created this properties file]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="99558aa383de">
-															<property name="propertyValue">
-																<string><![CDATA[ptolemy.actor.gui.jnlp.PtinyApplication]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.main.class]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[the class that contains the main method for the application]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="a2c121daa1a9">
-															<property name="propertyValue">
-																<string><![CDATA[]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.stdout.redirect]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[leave blank for no input, "console" to read from the console window,
-and any path to a file to read from that file]]></string>
-															</property>
-														</object>
-													</method>
-													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="94cd246aac38">
-															<property name="propertyValue">
-																<string><![CDATA[-Dsun.java2d.noddraw=true]]></string>
-															</property>
-															<property name="propertyName">
-																<string><![CDATA[lax.nl.java.option.additional]]></string>
-															</property>
-															<property name="propertyComment">
-																<string><![CDATA[Needed for matlab]]></string>
-															</property>
-														</object>
-													</method>
-												</object>
-											</property>
-											<property name="shouldUninstall">
-												<boolean>true</boolean>
-											</property>
-											<property name="destinationName">
-												<string><![CDATA[vergil-ptiny]]></string>
-											</property>
-											<property name="executableIcon">
-												<object class="com.zerog.ia.installer.util.BindingWin32" objectID="a2c121dba1a9">
-													<property name="smallIconName">
-														<string><![CDATA[PtolemyIISmallIcon.gif]]></string>
-													</property>
-													<property name="largeIconName">
-														<string><![CDATA[PtolemyIISmallIcon.gif]]></string>
-													</property>
-													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
-													</property>
-													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
-													</property>
-												</object>
-											</property>
-											<property name="mainClass">
-												<string><![CDATA[ptolemy.actor.gui.jnlp.PtinyApplication]]></string>
-											</property>
-										</object>
+										<object refID="a2c121daa1a3"/>
 									</property>
 									<installChildren>
 										<object refID="a2c121daa1a3"/>
@@ -5165,7 +5246,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[VergilApplication$2.class]]></string>
 											</property>
 											<property name="fileSize">
-												<long>1443</long>
+												<long>1690</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5194,7 +5275,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[VergilApplication.class]]></string>
 											</property>
 											<property name="fileSize">
-												<long>10830</long>
+												<long>10826</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5231,47 +5312,6 @@ and any path to a file to read from that file]]></string>
 											<property name="targetCheckKind">
 												<int>0</int>
 											</property>
-										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="a488f5c693de">
-											<property name="unixPermissions">
-												<string><![CDATA[775]]></string>
-											</property>
-											<property name="sourceName">
-												<string><![CDATA[]]></string>
-											</property>
-											<property name="overrideUnixPermissions">
-												<boolean>false</boolean>
-											</property>
-											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\lib]]></string>
-											</property>
-											<property name="shouldUninstall">
-												<boolean>true</boolean>
-											</property>
-											<property name="destinationName">
-												<string><![CDATA[lib]]></string>
-											</property>
-											<property name="removeRecursively">
-												<boolean>true</boolean>
-											</property>
-											<property name="totalSize">
-												<long>1</long>
-											</property>
-											<property name="macBinary">
-												<boolean>false</boolean>
-											</property>
-											<visualChildren>
-												<object refID="a488f5c593df"/>
-												<object refID="a488f5c693df"/>
-												<object refID="a488f5c593e0"/>
-												<object refID="a488f5c593e1"/>
-												<object refID="08baeeb1a1f4"/>
-												<object refID="08baeeb2a1f4"/>
-												<object refID="08baeeb1a1f5"/>
-												<object refID="752ce142947a"/>
-												<object refID="6cd7fc8f9186"/>
-												<object refID="4d9bff5ab5de"/>
-											</visualChildren>
 										</object>
 										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="907708c5bf20">
 											<property name="unixPermissions">
@@ -5383,7 +5423,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[sdf.jar]]></string>
 											</property>
 											<property name="fileSize">
-												<long>129009</long>
+												<long>129131</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5870,7 +5910,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b38661f91f1">
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="99559efb868b">
 											<property name="unixPermissions">
 												<string><![CDATA[775]]></string>
 											</property>
@@ -5881,13 +5921,13 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\matlab]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\matlab\demo]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
 											</property>
 											<property name="destinationName">
-												<string><![CDATA[matlab]]></string>
+												<string><![CDATA[demo]]></string>
 											</property>
 											<property name="removeRecursively">
 												<boolean>false</boolean>
@@ -6681,7 +6721,36 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3864299090">
+										<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="9955a29486f8">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[de.jar]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[de.jar]]></string>
+											</property>
+											<property name="fileSize">
+												<long>56164</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="9955a29386f9">
 											<property name="unixPermissions">
 												<string><![CDATA[775]]></string>
 											</property>
@@ -6692,13 +6761,13 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\demo]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
 											</property>
 											<property name="destinationName">
-												<string><![CDATA[de]]></string>
+												<string><![CDATA[demo]]></string>
 											</property>
 											<property name="removeRecursively">
 												<boolean>false</boolean>
@@ -6708,6 +6777,876 @@ and any path to a file to read from that file]]></string>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="9955a2b28704">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\doc]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[doc]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="9955a2cf8708">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\kernel]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[kernel]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a301870c">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[deentities.xml]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[deentities.xml]]></string>
+											</property>
+											<property name="fileSize">
+												<long>1702</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a302870c">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[DETransformer.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[DETransformer.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>829</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a301870d">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[EventButton$1.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[EventButton$1.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>1129</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30b870d">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[EventButton$ButtonListener.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[EventButton$ButtonListener.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>1370</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30c870d">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[EventButton.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[EventButton.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>4229</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30b870e">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[EventFilter.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[EventFilter.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>1451</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30c870e">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[Inhibit.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[Inhibit.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>1880</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30b870f">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[Merge.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[Merge.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>2217</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30c870f">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[NonInterruptibleTimer.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[NonInterruptibleTimer.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>3344</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30b8710">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[NonInterruptibleTimerIcon.xml]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[NonInterruptibleTimerIcon.xml]]></string>
+											</property>
+											<property name="fileSize">
+												<long>5777</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30b8711">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[Previous.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[Previous.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>2383</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30c8711">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[Queue.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[Queue.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>2346</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30b8712">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[QueueIcon.xml]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[QueueIcon.xml]]></string>
+											</property>
+											<property name="fileSize">
+												<long>3930</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30b8713">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[Register.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[Register.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>1962</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30c8713">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[Sampler.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[Sampler.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>3746</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30b8714">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[Server.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[Server.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>3655</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30c8714">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[ServerIcon.xml]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[ServerIcon.xml]]></string>
+											</property>
+											<property name="fileSize">
+												<long>4590</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30b8715">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[SingleEvent.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[SingleEvent.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>3044</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30c8715">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[SingleEventIcon.xml]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[SingleEventIcon.xml]]></string>
+											</property>
+											<property name="fileSize">
+												<long>2860</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30b8716">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[TimedDelay.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[TimedDelay.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>4540</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30c8716">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[TimedDelayIcon.xml]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[TimedDelayIcon.xml]]></string>
+											</property>
+											<property name="fileSize">
+												<long>2277</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30b8717">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[TimeGap.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[TimeGap.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>1976</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a30c8717">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[TimeGapIcon.xml]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[TimeGapIcon.xml]]></string>
+											</property>
+											<property name="fileSize">
+												<long>7235</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a3158717">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[Timer.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[Timer.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>4004</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a3168717">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[TimerIcon.xml]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[TimerIcon.xml]]></string>
+											</property>
+											<property name="fileSize">
+												<long>4240</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a3158718">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[VariableDelay.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[VariableDelay.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>2120</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a3168718">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[VariableDelayIcon.xml]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[VariableDelayIcon.xml]]></string>
+											</property>
+											<property name="fileSize">
+												<long>11231</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a3158719">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[WaitingTime.class]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[WaitingTime.class]]></string>
+											</property>
+											<property name="fileSize">
+												<long>2660</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
 											</property>
 										</object>
 										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="907709e9bf7d">
@@ -7087,33 +8026,120 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="9077095cbf52">
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a474873e">
 											<property name="unixPermissions">
-												<string><![CDATA[775]]></string>
+												<string><![CDATA[664]]></string>
 											</property>
 											<property name="sourceName">
-												<string><![CDATA[]]></string>
+												<string><![CDATA[NewtonsCradle.xml]]></string>
 											</property>
 											<property name="overrideUnixPermissions">
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ct\demo\NewtonsCradle]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ct\demo\NewtonsCradle\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
 											</property>
 											<property name="destinationName">
-												<string><![CDATA[NewtonsCradle]]></string>
+												<string><![CDATA[NewtonsCradle.xml]]></string>
 											</property>
-											<property name="removeRecursively">
-												<boolean>false</boolean>
-											</property>
-											<property name="totalSize">
-												<long>1</long>
+											<property name="fileSize">
+												<long>64985</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a475873e">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[NewtonsCradleComplicated.xml]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ct\demo\NewtonsCradle\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[NewtonsCradleComplicated.xml]]></string>
+											</property>
+											<property name="fileSize">
+												<long>98795</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a47e873e">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[NewtonsCradleNondeterministic.xml]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ct\demo\NewtonsCradle\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[NewtonsCradleNondeterministic.xml]]></string>
+											</property>
+											<property name="fileSize">
+												<long>100569</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9955a47f873e">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[pendulum.gif]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ct\demo\NewtonsCradle\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[pendulum.gif]]></string>
+											</property>
+											<property name="fileSize">
+												<long>2671</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
 											</property>
 										</object>
 										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="9077095bbf50">
@@ -7406,6 +8432,437 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3863949018">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\data]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[data]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b38631c8fa3">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\parameters]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[parameters]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862c08f4f">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\comm\demo]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[demo]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862c08f4e">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\comm]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[comm]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<visualChildren>
+												<object refID="2b3862c08f4f"/>
+											</visualChildren>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862ca8f57">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc\demo\DFTSubSet]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[DFTSubSet]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862d58f57">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc\demo\HocDE]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[HocDE]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4fc5690db442">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc\demo\IterateOverArray]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[IterateOverArray]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862ca8f56">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc\demo]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[demo]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<visualChildren>
+												<object refID="2b3862ca8f57"/>
+												<object refID="2b3862d58f57"/>
+												<object refID="4fc5690db442"/>
+												<object refID="2cd2a56098e5"/>
+												<object refID="639cf21391f4"/>
+												<object refID="908d8b4b8234"/>
+											</visualChildren>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862ca8f55">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[hoc]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>true</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<visualChildren>
+												<object refID="2b3862ca8f56"/>
+											</visualChildren>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3863078f8d">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\python]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[python]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9ab8faa88860">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[ptmatlab.dll]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\ptolemy\matlab\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[ptmatlab.dll]]></string>
+											</property>
+											<property name="fileSize">
+												<long>53248</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b38661f91f1">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\matlab]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[matlab]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<visualChildren>
+												<object refID="99559efb868b"/>
+												<object refID="9ab8faa88860"/>
+											</visualChildren>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallFile" objectID="a1f8da558cad">
+											<property name="unixPermissions">
+												<string><![CDATA[664]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[NewtonsCradleAnimated.xml]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ct\demo\NewtonsCradle\]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[NewtonsCradleAnimated.xml]]></string>
+											</property>
+											<property name="fileSize">
+												<long>99067</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<property name="targetCheckKind">
+												<int>0</int>
+											</property>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="9077095cbf52">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ct\demo\NewtonsCradle]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[NewtonsCradle]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<visualChildren>
+												<object refID="9955a474873e"/>
+												<object refID="9955a475873e"/>
+												<object refID="9955a47e873e"/>
+												<object refID="a1f8da558cad"/>
+												<object refID="9955a47f873e"/>
+											</visualChildren>
+										</object>
 										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="90770915bf3a">
 											<property name="unixPermissions">
 												<string><![CDATA[775]]></string>
@@ -7436,6 +8893,7 @@ and any path to a file to read from that file]]></string>
 											</property>
 											<visualChildren>
 												<object refID="90770929bf3a"/>
+												<object refID="9088f20e81d0"/>
 												<object refID="90770929bf3c"/>
 												<object refID="9077092abf3d"/>
 												<object refID="90770929bf3f"/>
@@ -7456,7 +8914,6 @@ and any path to a file to read from that file]]></string>
 												<object refID="9077097abf61"/>
 												<object refID="90770984bf63"/>
 												<object refID="90770984bf65"/>
-												<object refID="9088f20e81d0"/>
 											</visualChildren>
 										</object>
 										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3863c6903c">
@@ -7493,6 +8950,101 @@ and any path to a file to read from that file]]></string>
 												<object refID="90770983bf67"/>
 												<object refID="9077098ebf6b"/>
 												<object refID="907709e9bf7d"/>
+											</visualChildren>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="9955a2e4870b">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de\lib]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[lib]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<visualChildren>
+												<object refID="9955a301870c"/>
+												<object refID="9955a302870c"/>
+												<object refID="9955a301870d"/>
+												<object refID="9955a30b870d"/>
+												<object refID="9955a30c870d"/>
+												<object refID="9955a30b870e"/>
+												<object refID="9955a30c870e"/>
+												<object refID="9955a30b870f"/>
+												<object refID="9955a30c870f"/>
+												<object refID="9955a30b8710"/>
+												<object refID="9955a30b8711"/>
+												<object refID="9955a30c8711"/>
+												<object refID="9955a30b8712"/>
+												<object refID="9955a30b8713"/>
+												<object refID="9955a30c8713"/>
+												<object refID="9955a30b8714"/>
+												<object refID="9955a30c8714"/>
+												<object refID="9955a30b8715"/>
+												<object refID="9955a30c8715"/>
+												<object refID="9955a30b8716"/>
+												<object refID="9955a30c8716"/>
+												<object refID="9955a30b8717"/>
+												<object refID="9955a30c8717"/>
+												<object refID="9955a3158717"/>
+												<object refID="9955a3168717"/>
+												<object refID="9955a3158718"/>
+												<object refID="9955a3168718"/>
+												<object refID="9955a3158719"/>
+											</visualChildren>
+										</object>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3864299090">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[de]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>false</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<visualChildren>
+												<object refID="9955a29486f8"/>
+												<object refID="9955a29386f9"/>
+												<object refID="9955a2b28704"/>
+												<object refID="9955a2cf8708"/>
+												<object refID="9955a2e4870b"/>
 											</visualChildren>
 										</object>
 										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3863a79026">
@@ -7752,7 +9304,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[gr.jar]]></string>
 															</property>
 															<property name="fileSize">
-																<long>108916</long>
+																<long>108917</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -8047,7 +9599,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[psdf.jar]]></string>
 															</property>
 															<property name="fileSize">
-																<long>14567</long>
+																<long>14570</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -8613,35 +10165,6 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																</object>
-																<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4fd5f697b553">
-																	<property name="unixPermissions">
-																		<string><![CDATA[775]]></string>
-																	</property>
-																	<property name="sourceName">
-																		<string><![CDATA[]]></string>
-																	</property>
-																	<property name="overrideUnixPermissions">
-																		<boolean>false</boolean>
-																	</property>
-																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\PersonalAreaNetwork]]></string>
-																	</property>
-																	<property name="shouldUninstall">
-																		<boolean>true</boolean>
-																	</property>
-																	<property name="destinationName">
-																		<string><![CDATA[PersonalAreaNetwork]]></string>
-																	</property>
-																	<property name="removeRecursively">
-																		<boolean>false</boolean>
-																	</property>
-																	<property name="totalSize">
-																		<long>1</long>
-																	</property>
-																	<property name="macBinary">
-																		<boolean>false</boolean>
-																	</property>
-																</object>
 																<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="98da67a583a7">
 																	<property name="unixPermissions">
 																		<string><![CDATA[775]]></string>
@@ -9068,7 +10591,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[ddf.jar]]></string>
 															</property>
 															<property name="fileSize">
-																<long>26435</long>
+																<long>26440</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -9186,7 +10709,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[hdf.jar]]></string>
 															</property>
 															<property name="fileSize">
-																<long>8603</long>
+																<long>8651</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -9199,7 +10722,7 @@ and any path to a file to read from that file]]></string>
 												</object>
 											</visualChildren>
 										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3863949018">
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4d9cd338b638">
 											<property name="unixPermissions">
 												<string><![CDATA[775]]></string>
 											</property>
@@ -9210,288 +10733,13 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\data]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\colt]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
 											</property>
 											<property name="destinationName">
-												<string><![CDATA[data]]></string>
-											</property>
-											<property name="removeRecursively">
-												<boolean>false</boolean>
-											</property>
-											<property name="totalSize">
-												<long>1</long>
-											</property>
-											<property name="macBinary">
-												<boolean>false</boolean>
-											</property>
-										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b38631c8fa3">
-											<property name="unixPermissions">
-												<string><![CDATA[775]]></string>
-											</property>
-											<property name="sourceName">
-												<string><![CDATA[]]></string>
-											</property>
-											<property name="overrideUnixPermissions">
-												<boolean>false</boolean>
-											</property>
-											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\parameters]]></string>
-											</property>
-											<property name="shouldUninstall">
-												<boolean>true</boolean>
-											</property>
-											<property name="destinationName">
-												<string><![CDATA[parameters]]></string>
-											</property>
-											<property name="removeRecursively">
-												<boolean>false</boolean>
-											</property>
-											<property name="totalSize">
-												<long>1</long>
-											</property>
-											<property name="macBinary">
-												<boolean>false</boolean>
-											</property>
-										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862c08f4f">
-											<property name="unixPermissions">
-												<string><![CDATA[775]]></string>
-											</property>
-											<property name="sourceName">
-												<string><![CDATA[]]></string>
-											</property>
-											<property name="overrideUnixPermissions">
-												<boolean>false</boolean>
-											</property>
-											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\comm\demo]]></string>
-											</property>
-											<property name="shouldUninstall">
-												<boolean>true</boolean>
-											</property>
-											<property name="destinationName">
-												<string><![CDATA[demo]]></string>
-											</property>
-											<property name="removeRecursively">
-												<boolean>false</boolean>
-											</property>
-											<property name="totalSize">
-												<long>1</long>
-											</property>
-											<property name="macBinary">
-												<boolean>false</boolean>
-											</property>
-										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862c08f4e">
-											<property name="unixPermissions">
-												<string><![CDATA[775]]></string>
-											</property>
-											<property name="sourceName">
-												<string><![CDATA[]]></string>
-											</property>
-											<property name="overrideUnixPermissions">
-												<boolean>false</boolean>
-											</property>
-											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\comm]]></string>
-											</property>
-											<property name="shouldUninstall">
-												<boolean>true</boolean>
-											</property>
-											<property name="destinationName">
-												<string><![CDATA[comm]]></string>
-											</property>
-											<property name="removeRecursively">
-												<boolean>false</boolean>
-											</property>
-											<property name="totalSize">
-												<long>1</long>
-											</property>
-											<property name="macBinary">
-												<boolean>false</boolean>
-											</property>
-											<visualChildren>
-												<object refID="2b3862c08f4f"/>
-											</visualChildren>
-										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862ca8f57">
-											<property name="unixPermissions">
-												<string><![CDATA[775]]></string>
-											</property>
-											<property name="sourceName">
-												<string><![CDATA[]]></string>
-											</property>
-											<property name="overrideUnixPermissions">
-												<boolean>false</boolean>
-											</property>
-											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc\demo\DFTSubSet]]></string>
-											</property>
-											<property name="shouldUninstall">
-												<boolean>true</boolean>
-											</property>
-											<property name="destinationName">
-												<string><![CDATA[DFTSubSet]]></string>
-											</property>
-											<property name="removeRecursively">
-												<boolean>false</boolean>
-											</property>
-											<property name="totalSize">
-												<long>1</long>
-											</property>
-											<property name="macBinary">
-												<boolean>false</boolean>
-											</property>
-										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862d58f57">
-											<property name="unixPermissions">
-												<string><![CDATA[775]]></string>
-											</property>
-											<property name="sourceName">
-												<string><![CDATA[]]></string>
-											</property>
-											<property name="overrideUnixPermissions">
-												<boolean>false</boolean>
-											</property>
-											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc\demo\HocDE]]></string>
-											</property>
-											<property name="shouldUninstall">
-												<boolean>true</boolean>
-											</property>
-											<property name="destinationName">
-												<string><![CDATA[HocDE]]></string>
-											</property>
-											<property name="removeRecursively">
-												<boolean>false</boolean>
-											</property>
-											<property name="totalSize">
-												<long>1</long>
-											</property>
-											<property name="macBinary">
-												<boolean>false</boolean>
-											</property>
-										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4fc5690db442">
-											<property name="unixPermissions">
-												<string><![CDATA[775]]></string>
-											</property>
-											<property name="sourceName">
-												<string><![CDATA[]]></string>
-											</property>
-											<property name="overrideUnixPermissions">
-												<boolean>false</boolean>
-											</property>
-											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc\demo\IterateOverArray]]></string>
-											</property>
-											<property name="shouldUninstall">
-												<boolean>true</boolean>
-											</property>
-											<property name="destinationName">
-												<string><![CDATA[IterateOverArray]]></string>
-											</property>
-											<property name="removeRecursively">
-												<boolean>false</boolean>
-											</property>
-											<property name="totalSize">
-												<long>1</long>
-											</property>
-											<property name="macBinary">
-												<boolean>false</boolean>
-											</property>
-										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862ca8f56">
-											<property name="unixPermissions">
-												<string><![CDATA[775]]></string>
-											</property>
-											<property name="sourceName">
-												<string><![CDATA[]]></string>
-											</property>
-											<property name="overrideUnixPermissions">
-												<boolean>false</boolean>
-											</property>
-											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc\demo]]></string>
-											</property>
-											<property name="shouldUninstall">
-												<boolean>true</boolean>
-											</property>
-											<property name="destinationName">
-												<string><![CDATA[demo]]></string>
-											</property>
-											<property name="removeRecursively">
-												<boolean>false</boolean>
-											</property>
-											<property name="totalSize">
-												<long>1</long>
-											</property>
-											<property name="macBinary">
-												<boolean>false</boolean>
-											</property>
-											<visualChildren>
-												<object refID="2b3862ca8f57"/>
-												<object refID="2b3862d58f57"/>
-												<object refID="4fc5690db442"/>
-												<object refID="2cd2a56098e5"/>
-												<object refID="639cf21391f4"/>
-												<object refID="908d8b4b8234"/>
-											</visualChildren>
-										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862ca8f55">
-											<property name="unixPermissions">
-												<string><![CDATA[775]]></string>
-											</property>
-											<property name="sourceName">
-												<string><![CDATA[]]></string>
-											</property>
-											<property name="overrideUnixPermissions">
-												<boolean>false</boolean>
-											</property>
-											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc]]></string>
-											</property>
-											<property name="shouldUninstall">
-												<boolean>true</boolean>
-											</property>
-											<property name="destinationName">
-												<string><![CDATA[hoc]]></string>
-											</property>
-											<property name="removeRecursively">
-												<boolean>true</boolean>
-											</property>
-											<property name="totalSize">
-												<long>1</long>
-											</property>
-											<property name="macBinary">
-												<boolean>false</boolean>
-											</property>
-											<visualChildren>
-												<object refID="2b3862ca8f56"/>
-											</visualChildren>
-										</object>
-										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3863078f8d">
-											<property name="unixPermissions">
-												<string><![CDATA[775]]></string>
-											</property>
-											<property name="sourceName">
-												<string><![CDATA[]]></string>
-											</property>
-											<property name="overrideUnixPermissions">
-												<boolean>false</boolean>
-											</property>
-											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\python]]></string>
-											</property>
-											<property name="shouldUninstall">
-												<boolean>true</boolean>
-											</property>
-											<property name="destinationName">
-												<string><![CDATA[python]]></string>
+												<string><![CDATA[colt]]></string>
 											</property>
 											<property name="removeRecursively">
 												<boolean>false</boolean>
@@ -9532,6 +10780,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<visualChildren>
+												<object refID="4d9cd338b638"/>
 												<object refID="2b3862c08f4e"/>
 												<object refID="2b3862ca8f55"/>
 												<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862d48f59">
@@ -9920,35 +11169,6 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 												</object>
-												<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4d9cd338b638">
-													<property name="unixPermissions">
-														<string><![CDATA[775]]></string>
-													</property>
-													<property name="sourceName">
-														<string><![CDATA[]]></string>
-													</property>
-													<property name="overrideUnixPermissions">
-														<boolean>false</boolean>
-													</property>
-													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\colt]]></string>
-													</property>
-													<property name="shouldUninstall">
-														<boolean>true</boolean>
-													</property>
-													<property name="destinationName">
-														<string><![CDATA[colt]]></string>
-													</property>
-													<property name="removeRecursively">
-														<boolean>false</boolean>
-													</property>
-													<property name="totalSize">
-														<long>1</long>
-													</property>
-													<property name="macBinary">
-														<boolean>false</boolean>
-													</property>
-												</object>
 											</visualChildren>
 										</object>
 										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3862ac8f47">
@@ -10106,6 +11326,49 @@ and any path to a file to read from that file]]></string>
 												<object refID="2b38661f91f1"/>
 												<object refID="2b38662891f6"/>
 												<object refID="2b38663c91f9"/>
+											</visualChildren>
+										</object>
+										<object refID="4d9bff5ab5de"/>
+										<object refID="08baeeb1a1f5"/>
+										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="a488f5c693de">
+											<property name="unixPermissions">
+												<string><![CDATA[775]]></string>
+											</property>
+											<property name="sourceName">
+												<string><![CDATA[]]></string>
+											</property>
+											<property name="overrideUnixPermissions">
+												<boolean>false</boolean>
+											</property>
+											<property name="sourcePath">
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\lib]]></string>
+											</property>
+											<property name="shouldUninstall">
+												<boolean>true</boolean>
+											</property>
+											<property name="destinationName">
+												<string><![CDATA[lib]]></string>
+											</property>
+											<property name="removeRecursively">
+												<boolean>true</boolean>
+											</property>
+											<property name="totalSize">
+												<long>1</long>
+											</property>
+											<property name="macBinary">
+												<boolean>false</boolean>
+											</property>
+											<visualChildren>
+												<object refID="a488f5c593df"/>
+												<object refID="a488f5c693df"/>
+												<object refID="a488f5c593e0"/>
+												<object refID="a488f5c593e1"/>
+												<object refID="08baeeb1a1f4"/>
+												<object refID="08baeeb2a1f4"/>
+												<object refID="08baeeb1a1f5"/>
+												<object refID="752ce142947a"/>
+												<object refID="6cd7fc8f9186"/>
+												<object refID="4d9bff5ab5de"/>
 											</visualChildren>
 										</object>
 									</installChildren>
@@ -11028,7 +12291,6 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[]]></string>
 											</property>
 										</object>
-										<object refID="08baeeb1a1f5"/>
 										<object refID="70953b8e8e3d"/>
 										<object refID="70953b8d8e3e"/>
 										<object refID="70953f4e903e"/>
@@ -11048,8 +12310,6 @@ and any path to a file to read from that file]]></string>
 										<object refID="20896ce39477"/>
 										<object refID="4d9b32c2b5d4"/>
 										<object refID="4d9b8fabb5d9"/>
-										<object refID="4d9bff5ab5de"/>
-										<object refID="a488f5c693de"/>
 										<object refID="90770631be87"/>
 										<object refID="9077064ebe87"/>
 										<object refID="98da67a583a7"/>
@@ -11070,7 +12330,6 @@ and any path to a file to read from that file]]></string>
 										<object refID="4d9a1d36b5b0"/>
 										<object refID="20896dab9489"/>
 										<object refID="20896d8d9486"/>
-										<object refID="4fd5f697b553"/>
 										<object refID="20896d799485"/>
 										<object refID="20896d7a9483"/>
 										<object refID="20896d669480"/>
@@ -11079,8 +12338,6 @@ and any path to a file to read from that file]]></string>
 										<object refID="20896d48947b"/>
 										<object refID="20896d489479"/>
 										<object refID="20896d2a9478"/>
-										<object refID="20896c949476"/>
-										<object refID="2b3865c391bd"/>
 										<object refID="2b38659b91a6"/>
 										<object refID="2b38657e918e"/>
 										<object refID="70953b8e8e39"/>
@@ -11098,17 +12355,19 @@ and any path to a file to read from that file]]></string>
 										<object refID="2b38645190b1"/>
 										<object refID="2b3864159086"/>
 										<object refID="2b3863a79027"/>
-										<object refID="4d9cd338b638"/>
 										<object refID="2b38631b8f97"/>
 										<object refID="2b3862fd8f86"/>
 										<object refID="2b3862fc8f79"/>
 										<object refID="2b3862de8f5e"/>
 										<object refID="2b3862d48f5a"/>
 										<object refID="2b3862d48f59"/>
+										<object refID="20896c949476"/>
+										<object refID="2b3865c391bd"/>
 										<object refID="2b3863a79026"/>
 										<object refID="2b3862c08f4d"/>
 										<object refID="2b3862ac8f47"/>
 										<object refID="2b3862ac8f46"/>
+										<object refID="a488f5c693de"/>
 									</installChildren>
 								</object>
 							</installChildren>
@@ -11183,6 +12442,19 @@ but no sources]]></string>
 					<property name="preferredLocalizationVariant">
 						<string><![CDATA[minimal]]></string>
 					</property>
+					<rules logicalOperation="AND">
+						<object class="com.zerog.ia.installer.rules.CompareVariable" objectID="9ac0b8fd88b7">
+							<property name="operation">
+								<string><![CDATA[ends with]]></string>
+							</property>
+							<property name="operandOne">
+								<string><![CDATA[]]></string>
+							</property>
+							<property name="operandTwo">
+								<string><![CDATA[]]></string>
+							</property>
+						</object>
+					</rules>
 					<installChildren>
 						<object refID="a3d1e35b97e3"/>
 					</installChildren>
@@ -11346,7 +12618,7 @@ but no sources]]></string>
 		<object refID="6c5423399009"/>
 		<object refID="6c54231b8fea"/>
 		<object refID="2b38662891f6"/>
-		<object refID="2b38661f91f1"/>
+		<object refID="99559efb868b"/>
 		<object refID="90770caf8005"/>
 		<object refID="90770ca58001"/>
 		<object refID="90770c87bffe"/>
@@ -11371,7 +12643,9 @@ but no sources]]></string>
 		<object refID="90770c4abfe0"/>
 		<object refID="2b3864d3911d"/>
 		<object refID="2b38645b90bb"/>
-		<object refID="2b3864299090"/>
+		<object refID="9955a29386f9"/>
+		<object refID="9955a2b28704"/>
+		<object refID="9955a2cf8708"/>
 		<object refID="907709e9bf7d"/>
 		<object refID="9077098ebf6b"/>
 		<object refID="90770983bf67"/>
@@ -11385,7 +12659,6 @@ but no sources]]></string>
 		<object refID="9077096fbf58"/>
 		<object refID="90770970bf56"/>
 		<object refID="9077096fbf55"/>
-		<object refID="9077095cbf52"/>
 		<object refID="9077095bbf50"/>
 		<object refID="9077095cbf4e"/>
 		<object refID="9077095cbf4c"/>
@@ -11396,6 +12669,13 @@ but no sources]]></string>
 		<object refID="9077092abf3d"/>
 		<object refID="90770929bf3c"/>
 		<object refID="90770929bf3a"/>
+		<object refID="2b3863949018"/>
+		<object refID="2b38631c8fa3"/>
+		<object refID="2b3862c08f4f"/>
+		<object refID="2b3862ca8f57"/>
+		<object refID="2b3862d58f57"/>
+		<object refID="4fc5690db442"/>
+		<object refID="2b3863078f8d"/>
 		<object refID="2b3863a79027"/>
 		<object refID="2b3864159086"/>
 		<object refID="2b38645190b1"/>
@@ -11418,7 +12698,6 @@ but no sources]]></string>
 		<object refID="20896d669480"/>
 		<object refID="20896d7a9483"/>
 		<object refID="20896d799485"/>
-		<object refID="4fd5f697b553"/>
 		<object refID="20896d8d9486"/>
 		<object refID="20896dab9489"/>
 		<object refID="4d9a1d36b5b1"/>
@@ -11426,13 +12705,7 @@ but no sources]]></string>
 		<object refID="4d9a1d4ab5c0"/>
 		<object refID="4d9a1d4ab5c6"/>
 		<object refID="4d9a1d4ab5cd"/>
-		<object refID="2b3863949018"/>
-		<object refID="2b38631c8fa3"/>
-		<object refID="2b3862c08f4f"/>
-		<object refID="2b3862ca8f57"/>
-		<object refID="2b3862d58f57"/>
-		<object refID="4fc5690db442"/>
-		<object refID="2b3863078f8d"/>
+		<object refID="4d9cd338b638"/>
 		<object refID="2b3862d48f5a"/>
 		<object refID="2b3862de8f5e"/>
 		<object refID="2b3862f38f76"/>
@@ -11440,7 +12713,6 @@ but no sources]]></string>
 		<object refID="2b3862fd8f86"/>
 		<object refID="2b3863068f88"/>
 		<object refID="2b38631b8f97"/>
-		<object refID="4d9cd338b638"/>
 		<object refID="2b3863308fa8"/>
 		<object refID="2b38634e8fce"/>
 		<object refID="2b38661491e7"/>
