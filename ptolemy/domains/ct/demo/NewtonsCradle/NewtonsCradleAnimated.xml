@@ -111,13 +111,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 908, 606}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 841, 606}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[693, 488]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[626, 488]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{346.5, 244.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{313.0, 244.0}">
     </property>
     <property name="initialTheta_2" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -568,7 +568,7 @@ other initial states are set to 0.0.
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 335.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 335.0]">
         </property>
         <port name="x_1" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -1192,7 +1192,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
         </configure>
     </entity>
     <entity name="Graphic Animation" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 420.0]">
         </property>
         <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -1670,7 +1670,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <link port="InstanceOfBall3.theta" relation="relation4"/>
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 405.0]">
         </property>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -1686,15 +1686,15 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{300.0, 345.0}">
+        <vertex name="vertex1" value="[290.0, 345.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{300.0, 325.0}">
+        <vertex name="vertex1" value="[290.0, 325.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[300.0, 335.0]">
+        <vertex name="vertex1" value="[290.0, 335.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
