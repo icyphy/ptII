@@ -220,21 +220,24 @@ public class VergilApplication extends MoMLApplication {
                     .workspace());
             finalLibraryEffigy.setSystemEffigy(true);
 
-            final ComponentEntity userLibrary = (ComponentEntity) parser
+            final ComponentEntity library = (ComponentEntity) parser
                 .getToplevel();
 
-            // Correct old library name.
-            if (userLibrary.getName().equals("user library")) {
-                userLibrary.setName(BasicGraphFrame.VERGIL_USER_LIBRARY_NAME);
+            // Correct old library name, if the loaded library happens
+            // to the user library.
+            if (library.getName().equals("user library")) {
+                library.setName(BasicGraphFrame.VERGIL_USER_LIBRARY_NAME);
             }
 
             finalLibraryEffigy.setName(directory.uniqueName(
-                                               userLibrary.getName()));
+                                               library.getName()));
 
             ChangeRequest request = new ChangeRequest(configuration,
                     file.toURL().toString()) {
                     protected void _execute() throws Exception {
-                        userLibrary.setContainer(libraryContainer);
+                        // The library is a class!
+                        library.setClassDefinition(true);
+                        library.instantiate(libraryContainer, library.getName());
                         finalLibraryEffigy.setContainer(directory);
                     }
                 };
@@ -242,12 +245,12 @@ public class VergilApplication extends MoMLApplication {
             libraryContainer.requestChange(request);
             request.waitForCompletion();
 
-            finalLibraryEffigy.setModel(userLibrary);
+            finalLibraryEffigy.setModel(library);
 
             // Identify the URL from which the model was read
             // by inserting an attribute into both the model
             // and the effigy.
-            URIAttribute uri = new URIAttribute(userLibrary, "_uri");
+            URIAttribute uri = new URIAttribute(library, "_uri");
             uri.setURL(fileURL);
 
             // This is used by TableauFrame in its

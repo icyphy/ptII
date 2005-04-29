@@ -64,6 +64,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.VergilApplication;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.graph.GraphController;
@@ -446,39 +447,12 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 try {
                     File file = chooser.getSelectedFile();
 
-                    // FIXME it would be nice if MoMLChangeRequest had the
-                    // ability to read from a URL
-                    StringBuffer buffer = new StringBuffer();
-                    FileReader reader = null;
-
-                    try {
-                        reader = new FileReader(file);
-
-                        char[] chars = new char[50];
-
-                        while (reader.ready()) {
-                            int count = reader.read(chars, 0, 50);
-                            buffer.append(chars, 0, count);
-                        }
-                    } finally {
-                        if (reader != null) {
-                            reader.close();
-                        }
-                    }
-
                     PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
                         .getContainer();
                     Configuration configuration = (Configuration) effigy
                         .toplevel();
-                    NamedObj library = configuration.getEntity("actor library");
-
-                    if (library == null) {
-                        return;
-                    }
-
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            library, buffer.toString(), file.toURL());
-                    library.requestChange(request);
+                    VergilApplication.openLibrary(configuration, file);
+                    
                     _setDirectory(chooser.getCurrentDirectory());
                 } catch (Throwable throwable) {
                     MessageHandler.error("Library import failed.", throwable);
