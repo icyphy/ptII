@@ -1,6 +1,7 @@
 package ptolemy.backtrack.plugin.editor;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -129,7 +130,7 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
     protected void _update() {
         if (!_needRefactoring)
             return;
-            
+
         IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
         IFile previewFile =
             ((IFileEditorInput)_preview.getEditorInput()).getFile();
@@ -150,6 +151,7 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
         PipedOutputStream outputStream = new PipedOutputStream();
         OutputStreamWriter writer =
             new OutputStreamWriter(outputStream);
+
         try {
             PipedInputStream inputStream = new PipedInputStream(outputStream);
             CompilationUnit compilationUnit = _getCompilationUnit();
@@ -176,6 +178,7 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
         } finally {
             try {
                 writer.close();
+                _preview.setInput(new FileEditorInput(previewFile));
             } catch (Exception e) {
                 OutputConsole.outputError(e.getMessage());
             }
@@ -187,10 +190,6 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
             IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
             Class c = file.getClass();
             _editor = new CompilationUnitEditor() {
-                protected void handleEditorInputChanged() {
-                    int i = 0;
-                }
-                
                 public void createPartControl(Composite parent) {
                     super.createPartControl(parent);
                     ISourceViewer sourceViewer= getSourceViewer();
@@ -235,14 +234,13 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
                 Environment.getContainer(refactoredFile).getFile(null);
             IContainer parent = previewFile.getParent();
             Environment.createFolders(parent);
-            if (!previewFile.exists())
+            if (!previewFile.exists()) {
+                ByteArrayInputStream inputStream =
+                    new ByteArrayInputStream(new byte[0]);
                 previewFile.create(null, true, null);
+            }
             
-            _preview = new CompilationUnitEditor() {
-                public boolean isEditable() {
-                    return false;
-                }
-            };
+            _preview = new CompilationUnitEditor();
             int index = addPage(_preview, new FileEditorInput(previewFile));
             setPageText(index, "Preview");
         } catch (Exception e) {
