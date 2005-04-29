@@ -107,7 +107,7 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
 				public void run(){
 					IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
 					for (int i = 0; i<pages.length; i++){
-						if(((FileEditorInput)_editor.getEditorInput()).getFile().getProject().equals(event.getResource())){
+						if(((IFileEditorInput)_editor.getEditorInput()).getFile().getProject().equals(event.getResource())){
 							IEditorPart editorPart = pages[i].findEditor(_editor.getEditorInput());
 							pages[i].closeEditor(editorPart,true);
 						}
@@ -120,7 +120,7 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
     protected void _update() {
         IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
         IFile previewFile =
-            ((FileEditorInput)_preview.getEditorInput()).getFile();
+            ((IFileEditorInput)_preview.getEditorInput()).getFile();
         IPreferenceStore store = EclipsePlugin.getDefault()
                 .getPreferenceStore();
 

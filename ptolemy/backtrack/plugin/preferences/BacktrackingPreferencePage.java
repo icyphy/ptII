@@ -41,9 +41,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
@@ -63,8 +60,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.dialogs.FileSelectionDialog;
-import org.eclipse.ui.dialogs.FileSystemElement;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -190,26 +185,6 @@ public class BacktrackingPreferencePage
                 return false;
             }
             
-            protected String changePressed() {
-                /*ContainerSelectionDialog dialog =
-                new ContainerSelectionDialog(
-                        getShell(), null, false,
-                        IDEWorkbenchMessages.CopyResourceAction_selectDestination);*/
-                IProject ptIIProject =
-                    ResourcesPlugin.getWorkspace().getRoot().getProject("ptII");
-                FileSelectionDialog   dialog =
-                    new FileSelectionDialog  (getShell(),
-                            new FileSystemElement("ptII", null, true), 
-                         "Select the resources to save.");
-                if (dialog.open() == FileSelectionDialog.OK) {
-                    Object[] result = dialog.getResult();
-                    Path p = (Path)result[0];
-                    return p.toOSString();
-                }
-                else
-                    return null;
-            }
-            
             private String _lastString = null;
         };
         GridData gridData = new GridData();
@@ -237,8 +212,12 @@ public class BacktrackingPreferencePage
             }
             
             protected String getNewInputObject() {
+                String sourceList = _sourceList.getStringValue();
+                String sourceListPath = new File(sourceList).getParent();
                 FileDialog dialog = new FileDialog(getShell());
                 dialog.setText("Please choose a file to be added to the source list");
+                dialog.setFilterPath(sourceListPath);
+                dialog.setFilterExtensions(new String[]{"*.java"});
                 String file = dialog.open();
                 if (file != null) {
                     file = file.trim();
