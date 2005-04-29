@@ -183,6 +183,8 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 # Jar files that will appear in a smaller (Ptiny) JNLP Ptolemy II Runtime.
 PTINY_ONLY_JNLP_JARS = \
 	lib/jython.jar \
+	lib/ptcolt.jar \
+	ptolemy/actor/lib/colt/colt.jar \
 	ptolemy/actor/lib/comm/demo/demo.jar \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
         ptolemy/actor/lib/python/python.jar \
@@ -250,9 +252,6 @@ FULL_ONLY_JNLP_JARS = \
 	doc/design/design.jar \
 	doc/img/img.jar \
 	$(PTJACL_JARS) \
-	lib/ptcolt.jar \
-	ptolemy/actor/lib/colt/colt.jar \
-	ptolemy/actor/lib/colt/demo/demo.jar \
 	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
