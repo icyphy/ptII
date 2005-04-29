@@ -15,9 +15,9 @@ HyVisual 5.0-beta
 <i>Block-diagram editor and simulator for hybrid systems</i>.
 <ul>
 <!-- FIXME: Need a customized version of the docs here. -->
-<li><a href="docs.htm" target="_blank">Documentation</a></li>
-<li><a href="authors.htm" target="_blank">Authors</a></li>
-<li><a href="about:copyright" target="_blank">Copyright</a></li>
+<li><a href="docs.htm" target="_blank">Documentation</a>
+<li><a href="authors.htm" target="_blank">Authors</a>
+<li><a href="about:copyright" target="_blank">Copyright</a>
 </ul>
 To start immediately by creating a hybrid system, select File -&gt; New -&gt;
 Graph Editor from the menu bar.  Select Help from the Help menu for
@@ -39,12 +39,23 @@ Proceedings of Hybrid Systems: Computation and Control (HSCC) LNCS 3414, Zurich,
 <p>
 Below are simple demonstrations of this modeler:
 <ul>
-<li><a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">
-Sticky masses</a>.
+<li><i>Mode transitions in models of physical systems</i>:
+<a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">
+StickyMasses</a>.
 <br> This example models a physical system consisting of two point masses
 on springs that stick together when they collide.  It illustrates how
 to model systems when different modes of operation require different
 ODE models.
+
+<li><i>Simultaneous events</i>:
+<a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradle.xml">NewtonsCradle</a>
+Newton's cradle</a>.
+<br>
+This example illustrates a challenging hybrid systems modeling problem
+that requires correctly handling simultaneous events. The example is
+a classic mechanical toy called Newton's cradle, where suspended
+pendulums collide with one another. Multiple simultaneous collisions
+must be correctly handled.
 
 <li>
 <i>Stochastic hybrid systems</i>:
@@ -53,70 +64,93 @@ HysteresisWithRandomDelay</a>.
 <br>This example illustrates how to model random delays associated with
 state transitions of a hybrid systems.
 
-<li><a href="../../domains/ct/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">
-Level crossing detector</a>.
+<li>
+<i>Event detection</i>:
+<a href="../../domains/ct/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">
+LevelCrossingDetectorDetectsGlitches</a>.
 <br> This example illustrates that HyVisual correctly handles
 both continuous-time signals and discrete events, including
 multiple discrete events that occur at the same time.
 It also shows that a piecewise continuous signal has
 multiple values at the time of the discontinuity, and
 that these values are ordered.
-</li>
-<li><a href="../../domains/ct/demo/Thermostat/Thermostat.xml">
+
+<li>
+<i>Discretely changing parameters</i>:
+<a href="../../domains/ct/demo/Thermostat/Thermostat.xml">
 Thermostat</a>.
 <br> This example models a thermostat in a simple physical
 environment. It illustrates how to model systems when a single
 ODE model has parameters whose values change discretely.
-</li>
-<li><a href="../../domains/ct/demo/BouncingBall/BouncingBallWithoutGR.xml">
-Bouncing Ball</a>.
+
+<li>
+<i>Zeno systems</i>:
+<a href="../../domains/ct/demo/BouncingBall/BouncingBallWithoutGR.xml">
+BouncingBall</a>.
 <br> This example shows a bouncing ball model. Like the previous
 example, it has a single ODE model with parameters whose values change
 discretely. Unlike the previous example, however, it exhibits a
 so-called "Zeno condition," where the time between events gets
-arbitrarily small.</li>
-<li> <a href="../../domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.xml">
-Stochastic Hybrid System</a>.
+arbitrarily small.
+
+<li>
+<i>Stochastic hybrid systems</i>:
+<a href="../../domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.xml">
+HysteresisWithRandomDelay</a>.
 <br>This example illustrates how to model random delays associated with
 state transitions of a hybrid systems.
-<li><a href="../../domains/ct/demo/Switch/Switch.xml">
+
+<li>
+<i>Switching continuous-time signals</i>:
+<a href="../../domains/ct/demo/Switch/Switch.xml">
 Switch</a>.
 <br> This example shows a switch that selects from one of two
 continuous-time inputs.  It illustrates how to model systems
 where continuous-time signals are mixed with discrete-event signals.
-Such systems are called "mixed-signal" systems.</li>
+Such systems are called "mixed-signal" systems.
 
 <li>
-<a href="../../domains/ct/demo/CarTracking/CarTracking.xml">Car Tracking</a>.
+<i>Modal control laws</i>:
+<a href="../../domains/ct/demo/CarTracking/CarTracking.xml">CarTracking</a>.
 <br>
 This example shows a control system with two control laws, one for normal
 operation and one for degraded operation in the presence of faults. A modal
 model controls the switching between them.
 
-<li><a href="../../domains/ct/demo/SquareWave/SquareWave.xml">
-Square Wave Response</a>.
+<li>
+<i>Linear time-invariant systems</i>:
+<a href="../../domains/ct/demo/SquareWave/SquareWave.xml">
+SquareWave</a>.
 <br> This example shows a linear transfer function given as a
 rational Laplace transform, and its response to a square wave
 input. This model is not a hybrid system, but a classical continuous-time
-dynamical system.</li>
-<li><a href="../../domains/ct/demo/Lorenz/Lorenz.xml">
-Lorenz Attractor</a>.
+dynamical system.
+
+<li>
+<i>Chaotic systems</i>:
+<a href="../../domains/ct/demo/Lorenz/Lorenz.xml">
+Lorenz</a>.
 <br> This example shows a nonlinear system constructed using
 integrators and expression actors in a feedback loop. Because of
 the nonlinearity, the system exhibits a form of chaotic behavior
 known as a strange attractor.
 This model is not a hybrid system, but a classical nonlinear continuous-time
-dynamical system.</li>
-<li><a href="../../domains/ct/demo/SampledClocks/SampledClocks.xml">
-Sampling piecewise continuous and discrete signals</a>.
+dynamical system.
+
+<li>
+<i>Sampling piecewise continuous and discrete signals</i>:
+<a href="../../domains/ct/demo/SampledClocks/SampledClocks.xml">
+SampledClocks</a>.
 <br> This example illustrates that piecewise continuous signals
 in HyVisual can be sampled at their discontinuities, and that the
 behavior is consistent and predictable. Discrete signals can also
-be sampled with consistent and predictable behavior.</li>
+be sampled with consistent and predictable behavior.
 
-<li><a href="../../matlab/demo/MatlabCT/MatlabCT.xml">Matlab in CT</a>
+<li>
+<i>Integrating with MATLAB</i>:
+<a href="../../matlab/demo/MatlabCT/MatlabCT.xml">MatlabCT</a>
 <br>
-This example uses the Matlab interface created by
+This example uses the MATLAB interface created by
 Zoltan Kemenczy and Sean Simmons, of Research in Motion Ltd.,
 to plot a 3-D surface. This works only under Windows and 
 only if Matlab is installed locally.
@@ -124,36 +158,28 @@ In the 5.0-beta release, we ship with a shared library compiled against
 Matlab 6.5.  If you have another version of Matlab, you may need to
 recompile from source.  The Matlab interface requires that Cygwin
 is installed, and works with gcc-3.2, not gcc-3.3.
-</br>
-</li>
 
-<li><a href="../../domains/ct/demo/Transmission/Transmission.xml">Transmission</a>
+<li>
+<i>Using function closures</i>:
+<a href="../../domains/ct/demo/Transmission/Transmission.xml">Transmission</a>
 <br>
 This model shows a model of a car with a transmission.  A transmission
 is generally used when an engine has a relatively narrow band over
 which the maximum power of the engine is available.  In order to
 obtain high torque over a wider range of speeds, the engine is
 connected to a set of gears with different size ratios (the
-transmission).  The efficiency function used for this model can be
-seen <a href="../../domains/ct/demo/Transmission/EfficiencyCurve.xml">in this model</a>.
-</br>
-</li>
+transmission). This model uses function closures to
+significantly simplify the model.
+The efficiency function used for this model can be
+seen in <a href="../../domains/ct/demo/Transmission/EfficiencyCurve.xml">EfficiencyCurve</a>.
 
-<li><a href="../../hsif/demo/Thermostat/Thermostat.xml">HSIF Thermostat</a>.
+<li>
+<i>HSIF importing</i>:
+<a href="../../hsif/demo/Thermostat/Thermostat.xml">Thermostat</a>.
 <br> This example shows a simple thermostat modeled as a hybrid system.
 The purpose of the example is to demonstrate the ability that HyVisual has
 to import models defined in HSIF, the <i>Hybrid System Interchange Format</i>.
 See the <a href="../../hsif/demo/index.htm">HSIF/MoML documentation</a> for details.
-</li>
-
-<!--
-<li><a href="../../hsif/demo/SwimmingPool/SwimmingPool.xml">HSIF Swimming Pool</a>.
-<br> This example shows a simple hybrid system model of a pool.
-The purpose of the example is to demonstrate the ability that HyVisual has
-to import models defined in HSIF, the <i>Hybrid System Interchange Format</i>.
-See the <a href="../../hsif/demo/index.htm">HSIF/MoML documentation</a> for details.
-</li>
--->
 
 </ul>
 <p>
