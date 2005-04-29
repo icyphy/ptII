@@ -80,15 +80,10 @@ public class Transformer {
      *  @exception Exception If any exception occues.
      */
     public static void main(String[] args) throws Exception {
-        boolean outputResult = true;
-
         if (args.length == 0)
             _printUsage();
         else {
             String[] paths = PathFinder.getPtClassPaths();
-
-            Writer standardWriter =
-                outputResult ? new OutputStreamWriter(System.out) : null;
 
             // Parse command-line options.
             int start = 0;
@@ -172,6 +167,11 @@ public class Transformer {
             for (int i = 0; crossAnalysisIter.hasNext(); i++)
                 crossAnalyzedTypes[i] = (String)crossAnalysisIter.next();
 
+            Writer standardWriter =
+                _defaultToStandardOutput ?
+                        new OutputStreamWriter(System.out) :
+                        null;
+
             // Handle files.
             Iterator filesIter = fileList.iterator();
             while (filesIter.hasNext()) {
@@ -182,11 +182,11 @@ public class Transformer {
                 transform(file.getPath(), standardWriter, paths,
                         crossAnalyzedTypes);
 
-                if (outputResult)
+                if (_defaultToStandardOutput)
                     standardWriter.flush();
             }
             _outputConfig();
-            if (outputResult)
+            if (_defaultToStandardOutput)
                 standardWriter.close();
         }
     }
@@ -323,7 +323,7 @@ public class Transformer {
 
         transform._startTransform();
 
-        if (_rootPath != null) {
+        if (writer == null) {
             String packageName =
                 transform._ast.getPackage().getName().toString();
             File file = new File(fileName);
@@ -462,6 +462,7 @@ public class Transformer {
                     break;
                 }
             position++;
+            _defaultToStandardOutput = false;
         } else if (arg.equals("-output") || arg.equals("-o")) {
             position++;
             _rootPath = args[position];
@@ -620,5 +621,14 @@ public class Transformer {
      */
     private static List _classes = new LinkedList();
 
+    /** Extra classpaths to resolve classes.
+     */
     private static String[] _extraClassPaths;
+    
+    /** Whether the default output is the standard output. If it is
+     *  <tt>true</tt> and no "-prefix" parameter is given, the result of
+     *  refactoring is printed to the console; otherwise, files are created
+     *  for the output.
+     */
+    private static boolean _defaultToStandardOutput = true;
 }

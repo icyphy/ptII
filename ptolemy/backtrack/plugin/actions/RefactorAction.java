@@ -2,6 +2,8 @@ package ptolemy.backtrack.plugin.actions;
 
 import java.io.PrintStream;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -123,6 +125,15 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
             } finally {
                 if (oldErr != null)
                     System.setErr(oldErr);
+                IPreferenceStore store = EclipsePlugin.getDefault()
+                        .getPreferenceStore();
+                try {
+                    IContainer container = Environment.getAffectedFolder();
+                    container.refreshLocal(
+                            IResource.DEPTH_INFINITE, null);
+                } catch (Exception e) {
+                    OutputConsole.outputError(e.getMessage());
+                }
             }
         }
         

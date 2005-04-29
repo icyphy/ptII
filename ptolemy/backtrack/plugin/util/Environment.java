@@ -89,8 +89,6 @@ public class Environment {
     public static String[] getClassPaths(Shell shell) {
         IPreferenceStore store = EclipsePlugin.getDefault()
             .getPreferenceStore();
-        // FIXME: not implemented.
-
         String PTII = getPtolemyHome(shell);
         if (PTII != null)
             return new String[]{PTII};
@@ -138,6 +136,21 @@ public class Environment {
             store.getString(PreferenceConstants.BACKTRACK_ROOT);
         IPath rootPath = Path.fromOSString(root);
         return rootPath.append(fileName);
+    }
+    
+    public static IContainer getAffectedFolder() {
+        IPreferenceStore store = EclipsePlugin.getDefault()
+                .getPreferenceStore();
+        String prefix =
+            store.getString(PreferenceConstants.BACKTRACK_PREFIX);
+        IPath path = Path.fromOSString(
+                store.getString(PreferenceConstants.BACKTRACK_ROOT));
+        IContainer container = getContainer(path);
+        if (prefix != null && !prefix.equals(""))
+            container =
+                container.getFolder(Path.fromOSString(
+                        prefix.replace('.', File.separatorChar)));
+        return container;
     }
     
     public static IContainer getContainer(IPath path) {
@@ -206,6 +219,7 @@ public class Environment {
         }
         
         PathFinder.setPtolemyPath(PTII);
+        
         int start = 0;
         while (start < args.length) {
             int newPosition = Transformer.parseArguments(args, start);

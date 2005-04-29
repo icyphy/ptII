@@ -129,7 +129,7 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
         if (!overwrite && previewFile.exists() && previewFile.isLocal(0)) {
             OutputConsole.outputError("Preview file \"" +
                     previewFile.getLocation().toOSString() +
-                    "\" already exists. To overwrite it, please " +
+                    "\" already exists.\nTo overwrite it, please " +
                     "modify the overwrite option in the preference "+
                     "page.");
             return;
@@ -255,6 +255,10 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
         private IFile _file;
     }
 
+    public boolean isDirty() {
+        return _editor.isDirty();
+    }
+    
     private CompilationUnitEditor _editor;
     
     private CompilationUnitEditor _preview;
