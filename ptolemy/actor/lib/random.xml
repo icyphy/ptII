@@ -26,6 +26,8 @@
 	  <doc>Create a sequence of uniformly distributed random numbers</doc>
 	</entity>
 
+        <!-- Colt actors generate random numbers -->
+        <input source="ptolemy/actor/lib/colt/colt.xml"/>
 
       </group>
     ?>
