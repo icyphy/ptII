@@ -79,8 +79,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Gang Zhou
    @version $Id$
    @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (zgang)
-   @Pt.AcceptedRating Red (cxh)
+   @Pt.ProposedRating Yellow (zgang)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class ActorRecursion extends TypedCompositeActor {
     /** Create an ActorRecursion with a name and a container.

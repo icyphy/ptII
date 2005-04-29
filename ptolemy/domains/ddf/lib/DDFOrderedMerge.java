@@ -63,8 +63,8 @@ import ptolemy.kernel.util.Settable;
    @author Gang Zhou
    @version $Id$
    @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (zgang)
-   @Pt.AcceptedRating Red (cxh)
+   @Pt.ProposedRating Yellow (zgang)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class DDFOrderedMerge extends OrderedMerge {
     /** Construct an actor with the given container and name.

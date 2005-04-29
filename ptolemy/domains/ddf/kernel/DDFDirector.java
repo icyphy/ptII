@@ -150,8 +150,8 @@ import ptolemy.kernel.util.Workspace;
    @author Gang Zhou
    @version $Id$
    @since Ptolemy II 4.1
-   @Pt.ProposedRating yellow (zgang)
-   @Pt.AcceptedRating Red (cxh)
+   @Pt.ProposedRating Yellow (zgang)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class DDFDirector extends Director {
     /** Construct a director in the default workspace with an empty string
