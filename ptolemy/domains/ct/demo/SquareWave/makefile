@@ -42,10 +42,9 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	SquareWave
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
 
-JSRCS = \
-	SquareWave.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \

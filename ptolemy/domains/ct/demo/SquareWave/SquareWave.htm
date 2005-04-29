@@ -1,19 +1,31 @@
-<!-- $Id$ -->
-<html>
-<head>
+<!-- $Id$
+  @author: 
+-->
+<HTML>
+<HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>CT domain demo - Square Wave Response</title>
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
-</head>
-<body>
+<title>CT domain demo - Square Wave Response</title>
+</HEAD>
+<BODY>
+
 <H1>CT domain demo - Square Wave Response </H1>
+
+
 <P>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
-<center>
-
+<CENTER>
 <!-- The HTML below is for the Java Plugin.  The first
-     section is for IE, the second is for Netscape
+     section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
+     For information about applets and Ptolemy, see
+	http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/applets.htm
+     For information about java versions and applet tags, see:
+	http://java.sun.com/products/plugin/versions.html
+     We are currently using 1.4.2 because:
+        There is a bug under JDK1.4.1 XP with Radeon display cards
+        that causes XP to hang when exiting.  For details, see
+        http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
  -->
 <!-- HTML CONVERTER -->
 <SCRIPT LANGUAGE="JavaScript"><!--
@@ -33,22 +45,22 @@ applet is displayed on a XGA screen-->
     if (_ie == true) document.writeln('\
         <OBJECT \
             classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "800" \
-            height = "400"  \
+            width = "709" \
+            height = "668"  \
             codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
             <PARAM NAME = "code" \
-                   VALUE = "ptolemy.actor.gui.PtolemyApplet" > \
+                   VALUE = "ptolemy.actor.gui.MoMLApplet" > \
 	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
 	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar,ptolemy/domains/ct/ct.jar,ptolemy/domains/ct/demo/SquareWave/SquareWave.jar" > \
+                   VALUE = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;version=1.4.2" > \
             <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "background" VALUE = "#faf0e6" > \
-	    <PARAM NAME = "modelClass" VALUE = "ptolemy.domains.ct.demo.SquareWave.SquareWave"> \
-	    <PARAM NAME = "controls" VALUE = "buttons,topparameters" > \
-	    <PARAM NAME = "orientation" VALUE = "horizontal" > \
-	    <PARAM NAME = "name" VALUE = "SquareWAve" > \
+            <PARAM NAME = "NAME" VALUE = "SquareWave" > \
+	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters" > \
+	    <PARAM NAME = "orientation" VALUE = "vertical" > \
+	    <PARAM NAME = "modelURL" VALUE = "SquareWave.xml" > \
             <a href="SquareWave.xml">MoML specification for this model.</a> \
         </OBJECT> \
         ');
@@ -57,12 +69,12 @@ applet is displayed on a XGA screen-->
         <COMMENT> \
           <EMBED \
             type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.actor.gui.PtolemyApplet" \
+            code = "ptolemy.actor.gui.MoMLApplet" \
             codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,ptolemy/domains/ct/ct.jar,ptolemy/domains/ct/demo/SquareWave/SquareWave.jar" \
-            width = "800" \
-            height = "400" \
-            background = "#faf0e6" modelClass = "ptolemy.domains.ct.demo.SquareWave.SquareWave" controls = "buttons,topparameters" orientation = "horizontal" name = "SquareWAve"  \
+            archive = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar" \
+            width = "709" \
+            height = "668" \
+            NAME = "SquareWave" background = "#faf0e6" controls = "buttons, directorParameters" orientation = "vertical" modelURL = "SquareWave.xml"  \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
               <NOEMBED> \
@@ -73,24 +85,23 @@ applet is displayed on a XGA screen-->
         ');
     else document.writeln('\
         <APPLET \
-            code = "ptolemy.actor.gui.PtolemyApplet" \
+            code = "ptolemy.actor.gui.MoMLApplet" \
             codebase = "../../../../.." \
-            archive = "ptolemy/ptsupport.jar,ptolemy/domains/ct/ct.jar,ptolemy/domains/ct/demo/SquareWave/SquareWave.jar" \
-            width = "800" \
-            height = "400" \
+            archive = "ptolemy/domains/ct/ct.jar,ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar" \
+            width = "709" \
+            height = "668" \
             > \
-            <PARAM NAME = "background" VALUE = "#faf0e6" > \
-	    <PARAM NAME = "modelClass" VALUE = "ptolemy.domains.ct.demo.SquareWave.SquareWave"> \
-	    <PARAM NAME = "controls" VALUE = "buttons,topparameters" > \
-	    <PARAM NAME = "orientation" VALUE = "horizontal" > \
-	    <PARAM NAME = "name" VALUE = "SquareWAve" > \
+            <PARAM NAME = "NAME" VALUE = "SquareWave" > \
+	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters" > \
+	    <PARAM NAME = "orientation" VALUE = "vertical" > \
+	    <PARAM NAME = "modelURL" VALUE = "SquareWave.xml" > \
             <a href="SquareWave.xml">MoML specification for this model.</a> \
         </APPLET> \
         ');
 //--></SCRIPT>
 <!-- /HTML CONVERTER -->
-</center>
-
+</CENTER>
 <H2>Introduction</H2>
 This applet demonstrates the zero-state square wave response of causal
 linear continuous-time system (or, transfer functions).
@@ -112,6 +123,6 @@ i.e. a's and b's in:
 <p>
 You may choose different coefficients.
 
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</p>
 </BODY>
 </HTML>
