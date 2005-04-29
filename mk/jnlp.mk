@@ -186,6 +186,7 @@ PTINY_ONLY_JNLP_JARS = \
 	lib/ptcolt.jar \
 	ptolemy/actor/lib/colt/colt.jar \
 	ptolemy/actor/lib/colt/demo/demo.jar \
+	ptolemy/actor/lib/comm/demo/demo.jar \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
         ptolemy/actor/lib/python/python.jar \
         ptolemy/actor/lib/python/demo/demo.jar \
