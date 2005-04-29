@@ -57,11 +57,11 @@ SIGNED_DIR =		signed
 lib/joystickWindows.jar: 
 	if [ -d vendors/misc/joystick/lib/ ]; then \
 		(cd vendors/misc/joystick/lib/; \
-	 	"$(JAR)" -cvf $(PTII)/lib/joystickWindows.jar jjstick.dll) \
+	 	"$(JAR)" -cvf $(PTII)/lib/joystickWindows.jar jjstick.dll); \
 	else \
 		echo "vendors/misc/joystick not found, creating dummy jar"; \
 		echo "vendors/misc/joystick/lib not found" \
-			> README_joystick.txt;
+			> README_joystick.txt; \
 		"$(JAR)" -cvf $(PTII)/lib/joystickWindows.jar \
 			README_joystick.txt; \
 		rm -f README_joystick.txt; \
