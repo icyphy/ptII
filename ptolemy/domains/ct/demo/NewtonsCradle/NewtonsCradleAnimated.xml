@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="NewtonsCradle_withGR" class="ptolemy.actor.TypedCompositeActor">
+<entity name="NewtonsCradleAnimated" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
@@ -10,6 +10,8 @@
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-8">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
@@ -71,7 +73,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 170.0]">
         </property>
     </property>
-    <property name="length" class="ptolemy.data.expr.Parameter" value="10.0">
+    <property name="length" class="ptolemy.data.expr.Parameter" value="8.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -90,7 +92,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 105.0]">
         </property>
     </property>
-    <property name="diameter" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="diameter" class="ptolemy.data.expr.Parameter" value="2.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -198,7 +200,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 375.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 445.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -566,7 +568,7 @@ other initial states are set to 0.0.
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 335.0}">
         </property>
         <port name="x_1" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -758,6 +760,8 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
@@ -804,6 +808,8 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
             </relation>
             <link port="state.incomingPort" relation="relation"/>
             <link port="state.incomingPort" relation="relation2"/>
@@ -825,7 +831,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{321.0, 175.0}">
             </property>
-            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-3.286524609739E-9">
+            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.4318508652971">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -844,7 +850,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 245.0]">
                 </property>
             </property>
-            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="-2.3650204734523E-9">
+            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="5.6909938942828E-9">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -863,7 +869,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 270.0]">
                 </property>
             </property>
-            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="0.3862591443415">
+            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="6.351470249319E-9">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1154,7 +1160,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
 <xLabel>time</xLabel>
 <yLabel>displacements</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-3.8268343236508975" max="5.826801590223984"/>
+<yRange min="-3.0614674589207183" max="7.061461701373169"/>
 </plot>?>
         </configure>
     </entity>
@@ -1165,7 +1171,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[525, 242]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 335.0}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1181,7 +1187,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
 <xLabel>time</xLabel>
 <yLabel>velocities</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-0.38625914277654355" max="0.3862591443414872"/>
+<yRange min="-0.43185086529707406" max="0.43185086231124886"/>
 </plot>?>
         </configure>
     </entity>
@@ -1197,7 +1203,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
             </property>
             <property name="Scheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 60.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
             </property>
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -1216,16 +1222,35 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 35.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 25.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1261, 249, 815, 518}, maximized=false}">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[694, 482]">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 909, 600}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 241.0}">
+        </property>
+        <property name="scaleFactor" class="ptolemy.data.expr.Parameter" value="0.1">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 85.0]">
+            </property>
         </property>
         <port name="theta_1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1242,6 +1267,219 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 275.0}">
             </property>
         </port>
+        <class name="Ball" extends="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 55.0]">
+            </property>
+            <property name="radius" class="ptolemy.data.expr.Parameter" value="0.05">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 60.0]">
+                </property>
+            </property>
+            <property name="length" class="ptolemy.data.expr.Parameter" value="0.35">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 80.0]">
+                </property>
+            </property>
+            <property name="position" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 40.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={33, 183, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model of a ball on a string.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 35.0]">
+                </property>
+            </property>
+            <port name="ball" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 265.0]">
+                </property>
+            </port>
+            <port name="theta" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 335.0]">
+                </property>
+            </port>
+            <entity name="Sphere" class="ptolemy.domains.gr.lib.Sphere3D">
+                <property name="radius" class="ptolemy.data.expr.Parameter" value="radius">
+                </property>
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5, 0.5, 0.0}">
+                </property>
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="20.0">
+                </property>
+                <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 215.0]">
+                </property>
+            </entity>
+            <entity name="Translate" class="ptolemy.domains.gr.lib.Translate3D">
+                <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="-length">
+                </property>
+                <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="xAngle" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="yAngle" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="zAngle" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 235.0]">
+                </property>
+            </entity>
+            <entity name="Cylinder" class="ptolemy.domains.gr.lib.Cylinder3D">
+                <property name="radius" class="ptolemy.data.expr.Parameter" value="0.005">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="length">
+                </property>
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3, 0.3, 0.3}">
+                </property>
+                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
+                </property>
+                <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 150.0]">
+                </property>
+            </entity>
+            <entity name="Rotate" class="ptolemy.domains.gr.lib.Rotate3D">
+                <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="initialAngle" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="axisDirection" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 1.0]">
+                </property>
+                <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 245.0]">
+                </property>
+            </entity>
+            <entity name="Translate2" class="ptolemy.domains.gr.lib.Translate3D">
+                <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="position * radius * 2">
+                </property>
+                <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="xAngle" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="yAngle" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="zAngle" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 265.0]">
+                </property>
+            </entity>
+            <entity name="Translate3" class="ptolemy.domains.gr.lib.Translate3D">
+                <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="-length / 2.0">
+                </property>
+                <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="xAngle" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="yAngle" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="zAngle" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 170.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="ball" relation="relation4"/>
+            <link port="theta" relation="relation5"/>
+            <link port="Sphere.sceneGraphOut" relation="relation"/>
+            <link port="Translate.sceneGraphIn" relation="relation"/>
+            <link port="Translate.sceneGraphOut" relation="relation3"/>
+            <link port="Cylinder.sceneGraphOut" relation="relation7"/>
+            <link port="Rotate.sceneGraphIn" relation="relation3"/>
+            <link port="Rotate.sceneGraphIn" relation="relation2"/>
+            <link port="Rotate.sceneGraphOut" relation="relation6"/>
+            <link port="Rotate.angle" relation="relation5"/>
+            <link port="Translate2.sceneGraphIn" relation="relation6"/>
+            <link port="Translate2.sceneGraphOut" relation="relation4"/>
+            <link port="Translate3.sceneGraphIn" relation="relation7"/>
+            <link port="Translate3.sceneGraphOut" relation="relation2"/>
+        </class>
         <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
             <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
             </property>
@@ -1259,7 +1497,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
             <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={308, 167, 408, 434}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={606, -6, 408, 434}, maximized=false}">
             </property>
             <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -1271,55 +1509,31 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
         </entity>
         <entity name="Text" class="ptolemy.domains.gr.lib.TextString3D">
-            <property name="text" class="ptolemy.actor.parameters.PortParameter" value="&quot;Pendulum Model&quot;">
+            <property name="text" class="ptolemy.actor.parameters.PortParameter" value="Newton's Cradle">
+            </property>
+            <property name="fontSize" class="ptolemy.data.expr.Parameter" value="0.15">
             </property>
             <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0}">
             </property>
             <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="20.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 355.0}">
-            </property>
-        </entity>
-        <entity name="Scale3D" class="ptolemy.domains.gr.lib.Scale3D">
-            <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="scaleFactor" class="ptolemy.data.expr.Parameter" value="0.15">
-            </property>
-            <property name="xScale" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="yScale" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="BaseX" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="BaseY" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="BaseZ" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 364.9453}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 365.0]">
             </property>
         </entity>
         <entity name="Translate2" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.3">
+            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.55">
+            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.2">
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 385.0}">
             </property>
         </entity>
-        <entity name="Stage" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="Bar" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 310.0}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
-            </property>
-            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1159, 215, 815, 568}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -1336,19 +1550,19 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
                 </property>
                 <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="10.0">
+                <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{249.70312, 192.88281}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 190.0]">
                 </property>
             </entity>
             <entity name="0:Box13" class="ptolemy.domains.gr.lib.Box3D">
-                <property name="xLength" class="ptolemy.data.expr.Parameter" value="40">
+                <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.5">
                 </property>
-                <property name="yHeight" class="ptolemy.data.expr.Parameter" value="2">
+                <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
-                <property name="zWidth" class="ptolemy.data.expr.Parameter" value="10">
+                <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
                 <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.4}">
                 </property>
@@ -1360,7 +1574,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 195.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 170.0]">
                 </property>
             </entity>
             <entity name="Scale3D0" class="ptolemy.domains.gr.lib.Scale3D">
@@ -1390,454 +1604,70 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             <link port="Scale3D0.sceneGraphIn" relation="relation4"/>
             <link port="Scale3D0.sceneGraphOut" relation="relation5"/>
         </entity>
-        <entity name="GraphOfBall1" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 145.0}">
+        <entity name="InstanceOfBall2" class="Ball">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 210.0]">
             </property>
-            <property name="radius" class="ptolemy.data.expr.Parameter" value="diameter/2">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 65.0}">
-                </property>
+            <property name="radius" class="ptolemy.data.expr.Parameter" value="diameter * scaleFactor / 2.0">
             </property>
-            <property name="length" class="ptolemy.data.expr.Parameter" value="length">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 90.0}">
-                </property>
+            <property name="length" class="ptolemy.data.expr.Parameter" value="length * scaleFactor">
             </property>
-            <port name="port" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 225.0}">
-                </property>
-            </port>
-            <port name="theta" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 305.0}">
-                </property>
-            </port>
-            <entity name="Sphere" class="ptolemy.domains.gr.lib.Sphere3D">
-                <property name="radius" class="ptolemy.data.expr.Parameter" value="radius">
-                </property>
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5, 0.5, 0.0}">
-                </property>
-                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="20.0">
-                </property>
-                <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 195.0}">
-                </property>
-            </entity>
-            <entity name="Translate" class="ptolemy.domains.gr.lib.Translate3D">
-                <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="-0.35">
-                </property>
-                <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="xAngle" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="yAngle" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="zAngle" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 215.0}">
-                </property>
-            </entity>
-            <entity name="Cylinder" class="ptolemy.domains.gr.lib.Cylinder3D">
-                <property name="radius" class="ptolemy.data.expr.Parameter" value="0.005">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="length">
-                </property>
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3, 0.3, 0.3}">
-                </property>
-                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
-                </property>
-                <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{256.5, 146.13281}">
-                </property>
-            </entity>
-            <entity name="Rotate" class="ptolemy.domains.gr.lib.Rotate3D">
-                <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="initialAngle" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="axisDirection" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 1.0]">
-                </property>
-                <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.35, 0.0]">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 224.86719}">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <link port="port" relation="relation4"/>
-            <link port="theta" relation="relation5"/>
-            <link port="Sphere.sceneGraphOut" relation="relation"/>
-            <link port="Translate.sceneGraphIn" relation="relation"/>
-            <link port="Translate.sceneGraphOut" relation="relation3"/>
-            <link port="Cylinder.sceneGraphOut" relation="relation2"/>
-            <link port="Rotate.sceneGraphIn" relation="relation2"/>
-            <link port="Rotate.sceneGraphIn" relation="relation3"/>
-            <link port="Rotate.sceneGraphOut" relation="relation4"/>
-            <link port="Rotate.angle" relation="relation5"/>
         </entity>
-        <entity name="GraphOfBall2" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 210.0}">
+        <entity name="InstanceOfBall1" class="Ball">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 145.0]">
             </property>
-            <property name="radius" class="ptolemy.data.expr.Parameter" value="diameter/2">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 75.0}">
-                </property>
+            <property name="radius" class="ptolemy.data.expr.Parameter" value="diameter * scaleFactor / 2.0">
             </property>
-            <property name="length" class="ptolemy.data.expr.Parameter" value="length">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 100.0}">
-                </property>
+            <property name="length" class="ptolemy.data.expr.Parameter" value="length * scaleFactor">
             </property>
-            <port name="port" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 235.0}">
-                </property>
-            </port>
-            <port name="theta" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 315.0}">
-                </property>
-            </port>
-            <entity name="Sphere" class="ptolemy.domains.gr.lib.Sphere3D">
-                <property name="radius" class="ptolemy.data.expr.Parameter" value="radius">
-                </property>
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5, 0.5, 0.0}">
-                </property>
-                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="20.0">
-                </property>
-                <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 205.0}">
-                </property>
-            </entity>
-            <entity name="Translate" class="ptolemy.domains.gr.lib.Translate3D">
-                <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="-0.35">
-                </property>
-                <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="xAngle" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="yAngle" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="zAngle" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 225.0}">
-                </property>
-            </entity>
-            <entity name="Cylinder" class="ptolemy.domains.gr.lib.Cylinder3D">
-                <property name="radius" class="ptolemy.data.expr.Parameter" value="0.005">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="length">
-                </property>
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3, 0.3, 0.3}">
-                </property>
-                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
-                </property>
-                <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{266.5, 156.13281}">
-                </property>
-            </entity>
-            <entity name="Rotate" class="ptolemy.domains.gr.lib.Rotate3D">
-                <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="initialAngle" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="axisDirection" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 1.0]">
-                </property>
-                <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.35, 0.0]">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 234.86719}">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <link port="port" relation="relation4"/>
-            <link port="theta" relation="relation5"/>
-            <link port="Sphere.sceneGraphOut" relation="relation"/>
-            <link port="Translate.sceneGraphIn" relation="relation"/>
-            <link port="Translate.sceneGraphOut" relation="relation3"/>
-            <link port="Cylinder.sceneGraphOut" relation="relation2"/>
-            <link port="Rotate.sceneGraphIn" relation="relation2"/>
-            <link port="Rotate.sceneGraphIn" relation="relation3"/>
-            <link port="Rotate.sceneGraphOut" relation="relation4"/>
-            <link port="Rotate.angle" relation="relation5"/>
+            <property name="position" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
         </entity>
-        <entity name="GraphOfBall3" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 275.0}">
+        <entity name="InstanceOfBall3" class="Ball">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 275.0]">
             </property>
-            <property name="radius" class="ptolemy.data.expr.Parameter" value="diameter/2">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 75.0}">
-                </property>
+            <property name="radius" class="ptolemy.data.expr.Parameter" value="diameter * scaleFactor / 2.0">
             </property>
-            <property name="length" class="ptolemy.data.expr.Parameter" value="length">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 100.0}">
-                </property>
+            <property name="length" class="ptolemy.data.expr.Parameter" value="length * scaleFactor">
             </property>
-            <port name="port" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 235.0}">
-                </property>
-            </port>
-            <port name="theta" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 315.0}">
-                </property>
-            </port>
-            <entity name="Sphere" class="ptolemy.domains.gr.lib.Sphere3D">
-                <property name="radius" class="ptolemy.data.expr.Parameter" value="radius">
-                </property>
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5, 0.5, 0.0}">
-                </property>
-                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="20.0">
-                </property>
-                <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 205.0}">
-                </property>
-            </entity>
-            <entity name="Translate" class="ptolemy.domains.gr.lib.Translate3D">
-                <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="-0.35">
-                </property>
-                <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="xAngle" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="yAngle" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="zAngle" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 225.0}">
-                </property>
-            </entity>
-            <entity name="Cylinder" class="ptolemy.domains.gr.lib.Cylinder3D">
-                <property name="radius" class="ptolemy.data.expr.Parameter" value="0.005">
-                </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="length">
-                </property>
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3, 0.3, 0.3}">
-                </property>
-                <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
-                </property>
-                <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{266.5, 156.13281}">
-                </property>
-            </entity>
-            <entity name="Rotate" class="ptolemy.domains.gr.lib.Rotate3D">
-                <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="initialAngle" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="axisDirection" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 1.0]">
-                </property>
-                <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.35, 0.0]">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 234.86719}">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <link port="port" relation="relation4"/>
-            <link port="theta" relation="relation5"/>
-            <link port="Sphere.sceneGraphOut" relation="relation"/>
-            <link port="Translate.sceneGraphIn" relation="relation"/>
-            <link port="Translate.sceneGraphOut" relation="relation3"/>
-            <link port="Cylinder.sceneGraphOut" relation="relation2"/>
-            <link port="Rotate.sceneGraphIn" relation="relation2"/>
-            <link port="Rotate.sceneGraphIn" relation="relation3"/>
-            <link port="Rotate.sceneGraphOut" relation="relation4"/>
-            <link port="Rotate.angle" relation="relation5"/>
+            <property name="position" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="theta_1" relation="relation"/>
-        <link port="theta2" relation="relation5"/>
-        <link port="theta3" relation="relation9"/>
+        <link port="theta_1" relation="relation7"/>
+        <link port="theta2" relation="relation11"/>
+        <link port="theta3" relation="relation4"/>
         <link port="ViewScreen.sceneGraphIn" relation="relation6"/>
         <link port="ViewScreen.sceneGraphIn" relation="relation8"/>
-        <link port="ViewScreen.sceneGraphIn" relation="relation4"/>
-        <link port="ViewScreen.sceneGraphIn" relation="relation7"/>
-        <link port="ViewScreen.sceneGraphIn" relation="relation10"/>
+        <link port="ViewScreen.sceneGraphIn" relation="relation5"/>
+        <link port="ViewScreen.sceneGraphIn" relation="relation"/>
+        <link port="ViewScreen.sceneGraphIn" relation="relation9"/>
         <link port="Text.sceneGraphOut" relation="relation2"/>
-        <link port="Scale3D.sceneGraphIn" relation="relation2"/>
-        <link port="Scale3D.sceneGraphOut" relation="relation3"/>
-        <link port="Translate2.sceneGraphIn" relation="relation3"/>
+        <link port="Translate2.sceneGraphIn" relation="relation2"/>
         <link port="Translate2.sceneGraphOut" relation="relation6"/>
-        <link port="Stage.output" relation="relation8"/>
-        <link port="GraphOfBall1.port" relation="relation4"/>
-        <link port="GraphOfBall1.theta" relation="relation"/>
-        <link port="GraphOfBall2.port" relation="relation7"/>
-        <link port="GraphOfBall2.theta" relation="relation5"/>
-        <link port="GraphOfBall3.port" relation="relation10"/>
-        <link port="GraphOfBall3.theta" relation="relation9"/>
+        <link port="Bar.output" relation="relation8"/>
+        <link port="InstanceOfBall2.ball" relation="relation5"/>
+        <link port="InstanceOfBall2.theta" relation="relation11"/>
+        <link port="InstanceOfBall1.ball" relation="relation"/>
+        <link port="InstanceOfBall1.theta" relation="relation7"/>
+        <link port="InstanceOfBall3.ball" relation="relation9"/>
+        <link port="InstanceOfBall3.theta" relation="relation4"/>
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 410.0]">
@@ -1856,15 +1686,15 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[300.4551239013672, 344.3782043457031]">
+        <vertex name="vertex1" value="{300.0, 345.0}">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[300.4551239013672, 324.3782043457031]">
+        <vertex name="vertex1" value="{300.0, 325.0}">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[300.4551239013672, 334.3782043457031]">
+        <vertex name="vertex1" value="[300.0, 335.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
