@@ -170,7 +170,7 @@ public class Environment {
         if (!container.exists()) {
             if (container instanceof IFolder) {
                 createFolders(container.getParent());
-                ((IFolder)container).create(true, false, null);
+                ((IFolder)container).create(true, true, null);
             }
         }
     }
