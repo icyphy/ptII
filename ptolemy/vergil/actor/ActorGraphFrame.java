@@ -167,8 +167,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
             new JMenuItem("Listen to Director", KeyEvent.VK_L),
-            new JMenuItem("Normal Information", KeyEvent.VK_N),
-            new JMenuItem("Verbose Information", KeyEvent.VK_V),
             new JMenuItem("Animate Execution", KeyEvent.VK_A),
             new JMenuItem("Stop Animating", KeyEvent.VK_S),
         };
@@ -366,14 +364,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                         _listeningTo.removeDebugListener(_controller);
                         _controller.clearAnimation();
                         _listeningTo = null;
-                    }
-                } else if (actionCommand.equals("Verbose Information")) {
-                    if (_listeningTo != null) {
-                        _listeningTo.setVerboseDebugging();
-                    }
-                } else if (actionCommand.equals("Normal Information")) {
-                    if (_listeningTo != null) {
-                        _listeningTo.setNormalDebugging();
                     }
                 }
             } catch (KernelException ex) {
