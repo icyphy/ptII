@@ -87,6 +87,11 @@ import java.util.regex.PatternSyntaxException;
    20 characters of the two appearances of the filename are compared,
    since some servers truncate the file names.
 
+   <p>Note that DirectoryListing returns the contents of the directory
+   in a different order depending on whether one is using the Sun JVM
+   or the IBM JVM.  Thus, you may want to connect the output to an
+   ArraySort actor.
+
    @author  Christopher Hylands, Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
