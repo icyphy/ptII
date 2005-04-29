@@ -27,8 +27,19 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.ptinyos.kernel;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Iterator;
+import java.util.List;
 
-// Ptolemy imports.
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -50,21 +61,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Iterator;
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -125,6 +124,7 @@ public class PtinyOSDirector extends Director {
         new Parameter(tosDir, "allowDirectories", BooleanToken.TRUE);
         tosDir.setExpression("$PTII/vendors/ptinyos/tinyos-1.x/tos");
 
+        // Set additional make flags.
         pflags = new StringParameter(this, "pflags");
         pflags.setExpression("-I%T/lib/Counters");
 
@@ -153,6 +153,10 @@ public class PtinyOSDirector extends Director {
         commandPort.setTypeEquals(BaseType.INT);
         eventPort = new Parameter(this, "eventPort", new IntToken(10585));
         eventPort.setTypeEquals(BaseType.INT);
+        
+        // Make timeResolution SharedParameter (from base class) visible.
+        timeResolution.setVisibility(Settable.FULL);
+        timeResolution.moveToLast();
     }
 
     ///////////////////////////////////////////////////////////////////
