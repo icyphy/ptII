@@ -50,7 +50,7 @@ OTHER_FILES_TO_BE_JARED = \
 	NewtonsCradle.xml \
 	NewtonsCradleComplicated.xml \
 	NewtonsCradleNondeterministic.xml \
-	NewtonsCradle_withGR.xml \
+	NewtonsCradleAnimated.xml \
 	pendulum.gif
 
 EXTRA_SRCS = \
@@ -58,6 +58,8 @@ EXTRA_SRCS = \
 	NewtonsCradle.htm \
 	NewtonsCradleComplicated.htm \
 	NewtonsCradleNondeterministic.htm \
+	NewtonsCradleAnimated.htm \
+	NewtonsCradleAnimatedVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
