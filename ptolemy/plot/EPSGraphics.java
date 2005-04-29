@@ -26,8 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot;
 
-import ptolemy.util.StringUtilities;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -44,6 +42,8 @@ import java.io.BufferedOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Hashtable;
+
+import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

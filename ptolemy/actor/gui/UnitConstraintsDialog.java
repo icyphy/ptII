@@ -26,13 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import ptolemy.data.unit.UnitAttribute;
-import ptolemy.data.unit.UnitEquation;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.moml.MoMLChangeRequest;
-
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.net.URL;
@@ -48,6 +41,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
+
+import ptolemy.data.unit.UnitAttribute;
+import ptolemy.data.unit.UnitEquation;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.moml.MoMLChangeRequest;
 
 
 //////////////////////////////////////////////////////////////////////////

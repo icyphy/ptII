@@ -31,6 +31,9 @@
 */
 package ptolemy.actor.lib.hoc;
 
+import java.util.Iterator;
+import java.util.List;
+
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
@@ -46,9 +49,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
-
-import java.util.Iterator;
-import java.util.List;
 
 
 // Note: the (at least) single-space is needed in the javadoc below to

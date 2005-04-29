@@ -25,15 +25,15 @@
 */
 package ptolemy.copernicus.c;
 
-import soot.ArrayType;
-import soot.Modifier;
-import soot.SootClass;
-import soot.SootField;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+
+import soot.ArrayType;
+import soot.Modifier;
+import soot.SootClass;
+import soot.SootField;
 
 
 //////////////////////////////////////////////////////////////////////////

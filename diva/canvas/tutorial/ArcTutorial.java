@@ -31,6 +31,10 @@
  */
 package diva.canvas.tutorial;
 
+import java.awt.Color;
+
+import javax.swing.SwingUtilities;
+
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.GraphicsPane;
@@ -54,10 +58,6 @@ import diva.canvas.toolbox.BasicEllipse;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.TypedDecorator;
 import diva.gui.BasicFrame;
-
-import java.awt.Color;
-
-import javax.swing.SwingUtilities;
 
 
 /** This tutorial shows how to use "arc" connectors.

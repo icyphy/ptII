@@ -26,15 +26,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.sdf.demo.HTVQ;
 
-import ptolemy.actor.gui.MoMLApplet;
-import ptolemy.actor.lib.gui.Display;
-import ptolemy.domains.sdf.lib.vq.ImageDisplay;
-import ptolemy.kernel.CompositeEntity;
-
 import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import ptolemy.actor.gui.MoMLApplet;
+import ptolemy.actor.lib.gui.Display;
+import ptolemy.domains.sdf.lib.vq.ImageDisplay;
+import ptolemy.kernel.CompositeEntity;
 
 
 //////////////////////////////////////////////////////////////////////////

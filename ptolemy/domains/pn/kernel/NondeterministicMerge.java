@@ -27,6 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.pn.kernel;
 
+import java.io.Writer;
+import java.util.List;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
@@ -43,9 +46,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-
-import java.io.Writer;
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

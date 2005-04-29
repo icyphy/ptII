@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.wireless.lib.network;
 
+import java.util.Iterator;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
@@ -42,8 +44,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.Iterator;
 
 
 ////////////////////////////////////////////////////////////////////////=

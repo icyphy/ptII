@@ -27,6 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.toolbox;
 
+import java.awt.Component;
+import java.awt.Frame;
+
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.gui.ComponentDialog;
@@ -36,12 +42,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
-
-import java.awt.Component;
-import java.awt.Frame;
-
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

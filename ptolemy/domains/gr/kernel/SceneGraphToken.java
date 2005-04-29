@@ -28,14 +28,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.kernel;
 
+import java.io.Serializable;
+
+import javax.media.j3d.Node;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.io.Serializable;
-
-import javax.media.j3d.Node;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,13 +27,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 
 
 //////////////////////////////////////////////////////////////////////////

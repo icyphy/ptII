@@ -25,6 +25,10 @@
 */
 package diva.graph.basic;
 
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
+
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.GraphicsPane;
@@ -36,10 +40,6 @@ import diva.graph.layout.LayoutTarget;
 import diva.util.Filter;
 import diva.util.FilteredIterator;
 import diva.util.ProxyIterator;
-
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
 
 
 /**

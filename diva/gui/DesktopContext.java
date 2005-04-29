@@ -25,10 +25,6 @@
 */
 package diva.gui;
 
-import diva.gui.toolbox.JPseudoFrame;
-import diva.gui.toolbox.JShadePane;
-import diva.gui.toolbox.JStatusBar;
-
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -51,6 +47,10 @@ import javax.swing.JToolBar;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+
+import diva.gui.toolbox.JPseudoFrame;
+import diva.gui.toolbox.JShadePane;
+import diva.gui.toolbox.JStatusBar;
 
 
 /**

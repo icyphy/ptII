@@ -27,13 +27,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.kernel.test;
 
+import java.util.Enumeration;
+import java.util.LinkedList;
+
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.Enumeration;
-import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

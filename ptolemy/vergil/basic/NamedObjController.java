@@ -27,15 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.basic;
 
+import java.awt.event.ActionEvent;
+import java.net.URL;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
-
 import diva.graph.GraphController;
-
-import java.awt.event.ActionEvent;
-import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////

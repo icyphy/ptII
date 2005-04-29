@@ -26,12 +26,12 @@
   */
 package diva.canvas.toolbox;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import diva.canvas.CanvasLayer;
 import diva.canvas.CanvasPane;
 import diva.canvas.FigureLayer;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 
 /** A basic implementation of a canvas pane, provided for simple

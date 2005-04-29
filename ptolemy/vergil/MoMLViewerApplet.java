@@ -27,6 +27,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.net.URL;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.MoMLApplet;
 import ptolemy.actor.gui.MoMLApplication;
@@ -39,14 +43,9 @@ import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.actor.ActorViewerGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.FSMGraphModel;
-
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////

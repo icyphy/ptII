@@ -26,9 +26,6 @@
   */
 package diva.canvas;
 
-import diva.canvas.event.LayerEvent;
-import diva.util.java2d.ShapeUtilities;
-
 import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -49,6 +46,9 @@ import java.util.Iterator;
 import javax.swing.BoundedRangeModel;
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JComponent;
+
+import diva.canvas.event.LayerEvent;
+import diva.util.java2d.ShapeUtilities;
 
 
 /** The JCanvas class is the center-piece of this package.  The canvas

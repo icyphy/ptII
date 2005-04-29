@@ -25,12 +25,12 @@
 */
 package diva.graph.basic;
 
+import java.awt.GridLayout;
+
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
-
-import java.awt.GridLayout;
 
 
 /**

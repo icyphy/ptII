@@ -31,10 +31,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.c;
 
+import java.util.Iterator;
+
 import soot.SootClass;
 import soot.SootMethod;
-
-import java.util.Iterator;
 
 
 /** A C code generator for generating "header files" (.h files) that implement

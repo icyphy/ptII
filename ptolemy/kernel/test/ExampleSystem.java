@@ -26,16 +26,16 @@ COPYRIGHTENDKEY
 */
 package ptolemy.kernel.test;
 
+import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.Iterator;
+
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.io.Serializable;
-import java.util.Enumeration;
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

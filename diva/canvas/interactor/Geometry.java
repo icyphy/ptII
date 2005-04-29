@@ -26,9 +26,9 @@
   */
 package diva.canvas.interactor;
 
-import diva.canvas.Figure;
-
 import java.awt.Shape;
+
+import diva.canvas.Figure;
 
 
 /** Geometry is an interface that captures the concept of an

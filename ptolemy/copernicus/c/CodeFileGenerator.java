@@ -31,12 +31,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.c;
 
+import java.util.Iterator;
+import java.util.List;
+
 import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
-
-import java.util.Iterator;
-import java.util.List;
 
 
 /** A C code generator for generating "code files" (.c files) that implement

@@ -31,6 +31,10 @@
  */
 package diva.canvas.tutorial;
 
+import java.awt.Color;
+
+import javax.swing.SwingUtilities;
+
 import diva.canvas.FigureLayer;
 import diva.canvas.GraphicsPane;
 import diva.canvas.JCanvas;
@@ -43,10 +47,6 @@ import diva.canvas.interactor.Interactor;
 import diva.canvas.toolbox.BasicController;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;
-
-import java.awt.Color;
-
-import javax.swing.SwingUtilities;
 
 
 /**

@@ -26,13 +26,13 @@
   */
 package diva.util.java2d;
 
-import diva.canvas.CanvasUtilities;
-
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ImageObserver;
+
+import diva.canvas.CanvasUtilities;
 
 
 /**

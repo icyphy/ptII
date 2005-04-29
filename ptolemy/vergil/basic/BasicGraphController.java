@@ -27,6 +27,18 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.basic;
 
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.geom.Point2D;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.AbstractAction;
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.UnitSolverDialog;
@@ -46,7 +58,6 @@ import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
-
 import diva.canvas.Figure;
 import diva.canvas.connector.Connector;
 import diva.canvas.interactor.SelectionRenderer;
@@ -57,18 +68,6 @@ import diva.graph.GraphPane;
 import diva.graph.GraphUtilities;
 import diva.graph.NodeController;
 import diva.gui.toolbox.MenuCreator;
-
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.geom.Point2D;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.AbstractAction;
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

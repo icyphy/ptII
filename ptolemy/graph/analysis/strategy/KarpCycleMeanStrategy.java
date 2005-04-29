@@ -25,6 +25,12 @@
 */
 package ptolemy.graph.analysis.strategy;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Graph;
@@ -32,12 +38,6 @@ import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
 import ptolemy.graph.analysis.analyzer.CycleMeanAnalyzer;
 import ptolemy.graph.mapping.ToDoubleMapping;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

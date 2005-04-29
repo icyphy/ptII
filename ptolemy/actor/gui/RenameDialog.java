@@ -26,10 +26,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
+import java.awt.Frame;
+
 import ptolemy.gui.ComponentDialog;
 import ptolemy.kernel.util.NamedObj;
-
-import java.awt.Frame;
 
 
 //////////////////////////////////////////////////////////////////////////

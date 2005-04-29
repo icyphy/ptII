@@ -26,6 +26,12 @@
 */
 package ptolemy.domains.sdf.lib.vq;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.IntToken;
@@ -36,12 +42,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.IntegerMatrixMath;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////

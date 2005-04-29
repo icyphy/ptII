@@ -25,16 +25,16 @@
 */
 package diva.graph.basic;
 
-import diva.graph.JGraph;
-import diva.graph.toolbox.DeletionListener;
-import diva.gui.AppContext;
-import diva.gui.BasicFrame;
-
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
+
+import diva.graph.JGraph;
+import diva.graph.toolbox.DeletionListener;
+import diva.gui.AppContext;
+import diva.gui.BasicFrame;
 
 
 /**

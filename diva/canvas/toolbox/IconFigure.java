@@ -26,13 +26,6 @@
   */
 package diva.canvas.toolbox;
 
-import diva.canvas.AbstractFigure;
-import diva.canvas.Figure;
-import diva.canvas.connector.BoundsSite;
-import diva.canvas.connector.Terminal;
-import diva.util.java2d.PaintedObject;
-import diva.util.java2d.ShapeUtilities;
-
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -40,6 +33,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import diva.canvas.AbstractFigure;
+import diva.canvas.Figure;
+import diva.canvas.connector.BoundsSite;
+import diva.canvas.connector.Terminal;
+import diva.util.java2d.PaintedObject;
+import diva.util.java2d.ShapeUtilities;
 
 
 /** An IconFigure is a figure that contains a main background figure,

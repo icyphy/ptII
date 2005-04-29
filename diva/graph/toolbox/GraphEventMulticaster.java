@@ -25,12 +25,12 @@
 */
 package diva.graph.toolbox;
 
-import diva.graph.GraphEvent;
-import diva.graph.GraphListener;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import diva.graph.GraphEvent;
+import diva.graph.GraphListener;
 
 
 /**

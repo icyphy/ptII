@@ -26,8 +26,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui.python;
 
-import org.python.core.PyObject;
+import java.awt.BorderLayout;
+import java.net.URL;
 
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+
+import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
 
 import ptolemy.actor.gui.Effigy;
@@ -39,12 +44,6 @@ import ptolemy.gui.ShellTextArea;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
-import java.awt.BorderLayout;
-import java.net.URL;
-
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,9 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import ptolemy.util.MessageHandler;
-
 import java.net.URL;
+
+import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////

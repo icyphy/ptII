@@ -26,12 +26,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.hoc;
 
+import java.util.Iterator;
+
 import ptolemy.actor.Actor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

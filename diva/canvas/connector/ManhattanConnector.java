@@ -26,11 +26,11 @@
   */
 package diva.canvas.connector;
 
-import diva.canvas.Site;
-import diva.util.java2d.Polyline2D;
-
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
+
+import diva.canvas.Site;
+import diva.util.java2d.Polyline2D;
 
 
 /** A Connector that draws itself with perpendicular lines.

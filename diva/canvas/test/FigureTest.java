@@ -25,6 +25,13 @@
 */
 package diva.canvas.test;
 
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+
 import diva.canvas.Figure;
 import diva.canvas.interactor.DragInteractor;
 import diva.canvas.interactor.Interactor;
@@ -34,13 +41,6 @@ import diva.util.jester.TestFailedException;
 import diva.util.jester.TestHarness;
 import diva.util.jester.TestSuite;
 import diva.util.jester.TestUtilities;
-
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 
 
 /**

@@ -26,16 +26,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.kernel;
 
-import soot.HasPhaseOptions;
-import soot.PhaseOptions;
-import soot.SceneTransformer;
-
-import ptolemy.actor.Manager;
-
 import java.util.Date;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import ptolemy.actor.Manager;
+import soot.HasPhaseOptions;
+import soot.PhaseOptions;
+import soot.SceneTransformer;
 
 
 /**

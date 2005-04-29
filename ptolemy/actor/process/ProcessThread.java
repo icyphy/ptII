@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.process;
 
+import java.io.InterruptedIOException;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.Entity;
@@ -34,8 +36,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
-
-import java.io.InterruptedIOException;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -25,15 +25,15 @@
 */
 package diva.gui;
 
-import diva.util.ModelParser;
-
-import com.microstar.xml.HandlerBase;
-import com.microstar.xml.XmlParser;
-
 import java.io.CharArrayReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
+
+import com.microstar.xml.HandlerBase;
+import com.microstar.xml.XmlParser;
+
+import diva.util.ModelParser;
 
 
 /**

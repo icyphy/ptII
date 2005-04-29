@@ -27,21 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.sdf.lib.vq;
 
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.lib.Sink;
-import ptolemy.data.IntMatrixToken;
-import ptolemy.data.AWTImageToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.media.Picture;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Image;
 import java.awt.image.ColorModel;
@@ -50,7 +35,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.IntMatrixToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.media.Picture;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay

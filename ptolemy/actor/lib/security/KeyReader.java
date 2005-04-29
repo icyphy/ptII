@@ -27,6 +27,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.security;
 
+import java.security.KeyStoreException;
+import java.security.PublicKey;
+import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -37,11 +42,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-
-import java.security.KeyStoreException;
-import java.security.PublicKey;
-import java.security.cert.Certificate;
-import java.security.cert.X509Certificate;
 
 
 //////////////////////////////////////////////////////////////////////////

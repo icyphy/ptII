@@ -26,6 +26,21 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.NamedObj;
 import soot.HasPhaseOptions;
 import soot.Local;
 import soot.Modifier;
@@ -40,7 +55,6 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
-
 import soot.jimple.CastExpr;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.FieldRef;
@@ -52,29 +66,10 @@ import soot.jimple.JimpleBody;
 import soot.jimple.NullConstant;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
-
 import soot.jimple.toolkits.scalar.Evaluator;
-
 import soot.toolkits.graph.CompleteUnitGraph;
-
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.SimpleLocalDefs;
-
-import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NamedObj;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

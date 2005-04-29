@@ -26,6 +26,16 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.kernel.attributes.URIAttribute;
 import soot.FastHierarchy;
 import soot.HasPhaseOptions;
 import soot.Hierarchy;
@@ -39,7 +49,6 @@ import soot.SootMethod;
 import soot.Type;
 import soot.Value;
 import soot.ValueBox;
-
 import soot.jimple.AssignStmt;
 import soot.jimple.IdentityStmt;
 import soot.jimple.InstanceFieldRef;
@@ -52,21 +61,8 @@ import soot.jimple.ParameterRef;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
-
 import soot.jimple.toolkits.typing.TypeAssigner;
-
 import soot.toolkits.scalar.LocalSplitter;
-
-import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.kernel.attributes.URIAttribute;
-
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

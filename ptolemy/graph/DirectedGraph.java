@@ -28,11 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.graph;
 
-import ptolemy.graph.analysis.CycleExistenceAnalysis;
-import ptolemy.graph.analysis.SinkNodeAnalysis;
-import ptolemy.graph.analysis.SourceNodeAnalysis;
-import ptolemy.graph.analysis.TransitiveClosureAnalysis;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,6 +36,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import ptolemy.graph.analysis.CycleExistenceAnalysis;
+import ptolemy.graph.analysis.SinkNodeAnalysis;
+import ptolemy.graph.analysis.SourceNodeAnalysis;
+import ptolemy.graph.analysis.TransitiveClosureAnalysis;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -25,12 +25,6 @@
 */
 package diva.gui.toolbox;
 
-import diva.canvas.CanvasLayer;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.JCanvas;
-import diva.canvas.demo.SimplePane;
-import diva.util.java2d.ShapeUtilities;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -49,6 +43,12 @@ import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import diva.canvas.CanvasLayer;
+import diva.canvas.CanvasUtilities;
+import diva.canvas.JCanvas;
+import diva.canvas.demo.SimplePane;
+import diva.util.java2d.ShapeUtilities;
 
 
 /**

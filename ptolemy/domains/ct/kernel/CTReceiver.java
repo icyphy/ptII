@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.ct.kernel;
 
+import java.io.Serializable;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
@@ -34,8 +36,6 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
-
-import java.io.Serializable;
 
 
 //////////////////////////////////////////////////////////////////////////

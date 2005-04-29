@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
+import javax.media.j3d.Node;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -35,8 +37,6 @@ import ptolemy.domains.gr.kernel.SceneGraphToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import javax.media.j3d.Node;
 
 
 //////////////////////////////////////////////////////////////////////////

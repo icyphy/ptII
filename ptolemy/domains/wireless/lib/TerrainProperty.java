@@ -27,6 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.wireless.lib;
 
+import java.awt.Polygon;
+import java.awt.Shape;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -46,9 +49,6 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
-
-import java.awt.Polygon;
-import java.awt.Shape;
 
 
 //////////////////////////////////////////////////////////////////////////

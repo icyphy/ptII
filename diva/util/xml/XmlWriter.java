@@ -29,16 +29,16 @@
 // $Id$
 package diva.util.xml;
 
-import diva.util.LoggableOp;
-
-import com.microstar.xml.XmlParser;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Enumeration;
+
+import com.microstar.xml.XmlParser;
+
+import diva.util.LoggableOp;
 
 
 /**

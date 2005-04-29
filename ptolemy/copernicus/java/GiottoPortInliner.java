@@ -26,6 +26,24 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.util.StringUtilities;
 import soot.ArrayType;
 import soot.Body;
 import soot.IntType;
@@ -41,7 +59,6 @@ import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
-
 import soot.jimple.DefinitionStmt;
 import soot.jimple.Expr;
 import soot.jimple.IntConstant;
@@ -49,29 +66,8 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
-
 import soot.jimple.toolkits.scalar.Evaluator;
-
 import soot.util.Chain;
-
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedIORelation;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.util.StringUtilities;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

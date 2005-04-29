@@ -27,11 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.tree;
 
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.toolbox.MenuItemFactory;
-
-import diva.gui.toolbox.JContextMenu;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
@@ -40,6 +35,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.tree.TreePath;
+
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.toolbox.MenuItemFactory;
+import diva.gui.toolbox.JContextMenu;
 
 
 //////////////////////////////////////////////////////////////////////////

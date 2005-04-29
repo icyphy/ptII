@@ -26,6 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jmf;
 
+import java.net.URL;
+
+import javax.media.Manager;
+import javax.media.protocol.DataSource;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Source;
 import ptolemy.actor.util.Time;
@@ -35,11 +40,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.net.URL;
-
-import javax.media.Manager;
-import javax.media.protocol.DataSource;
 
 
 //////////////////////////////////////////////////////////////////////////

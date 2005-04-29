@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.gui;
 
-import ptolemy.util.MessageHandler;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -47,6 +45,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+
+import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////

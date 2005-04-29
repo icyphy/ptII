@@ -27,12 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.moml.filter;
 
+import java.util.HashSet;
+
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
-
-import java.util.HashSet;
 
 
 //////////////////////////////////////////////////////////////////////////

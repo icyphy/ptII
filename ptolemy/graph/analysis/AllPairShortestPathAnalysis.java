@@ -24,14 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.graph.analysis;
 
+import java.util.List;
+
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.AllPairShortestPathAnalyzer;
 import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.strategy.FloydWarshallAllPairShortestPathStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
-
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

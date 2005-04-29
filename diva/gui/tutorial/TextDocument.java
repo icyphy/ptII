@@ -30,11 +30,6 @@
 */
 package diva.gui.tutorial;
 
-import diva.gui.AbstractDocument;
-import diva.gui.Application;
-import diva.gui.Document;
-import diva.gui.DocumentFactory;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -42,6 +37,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.net.URL;
+
+import diva.gui.AbstractDocument;
+import diva.gui.Application;
+import diva.gui.Document;
+import diva.gui.DocumentFactory;
 
 
 /**

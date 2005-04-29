@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.gui;
 
+import java.awt.Frame;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.TableauFrame;
@@ -39,8 +41,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-
-import java.awt.Frame;
 
 
 //////////////////////////////////////////////////////////////////////////

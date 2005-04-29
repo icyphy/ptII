@@ -28,16 +28,16 @@ COPYRIGHTENDKEY
 */
 package ptolemy.graph;
 
-import ptolemy.graph.analysis.Analysis;
-import ptolemy.graph.analysis.SelfLoopAnalysis;
-import ptolemy.graph.analysis.strategy.CachedStrategy;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+
+import ptolemy.graph.analysis.Analysis;
+import ptolemy.graph.analysis.SelfLoopAnalysis;
+import ptolemy.graph.analysis.strategy.CachedStrategy;
 
 
 //////////////////////////////////////////////////////////////////////////

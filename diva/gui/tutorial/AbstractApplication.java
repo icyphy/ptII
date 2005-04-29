@@ -30,17 +30,6 @@
 */
 package diva.gui.tutorial;
 
-import diva.gui.AppContext;
-import diva.gui.Application;
-import diva.gui.Document;
-import diva.gui.DocumentFactory;
-import diva.gui.GUIUtilities;
-import diva.gui.StoragePolicy;
-import diva.gui.View;
-import diva.gui.toolbox.ListDataModel;
-import diva.resource.DefaultBundle;
-import diva.resource.RelativeBundle;
-
 import java.awt.datatransfer.Clipboard;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -56,6 +45,17 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.event.ListDataListener;
+
+import diva.gui.AppContext;
+import diva.gui.Application;
+import diva.gui.Document;
+import diva.gui.DocumentFactory;
+import diva.gui.GUIUtilities;
+import diva.gui.StoragePolicy;
+import diva.gui.View;
+import diva.gui.toolbox.ListDataModel;
+import diva.resource.DefaultBundle;
+import diva.resource.RelativeBundle;
 
 
 /**

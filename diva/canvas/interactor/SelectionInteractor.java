@@ -26,12 +26,12 @@
   */
 package diva.canvas.interactor;
 
+import java.util.Iterator;
+
 import diva.canvas.Figure;
 import diva.canvas.FigureDecorator;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
-
-import java.util.Iterator;
 
 
 /**

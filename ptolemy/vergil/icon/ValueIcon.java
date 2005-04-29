@@ -27,23 +27,22 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.icon;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.util.List;
+
+import javax.swing.SwingConstants;
+
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicEllipse;
 import diva.canvas.toolbox.LabelFigure;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.util.List;
-
-import javax.swing.SwingConstants;
 
 
 //////////////////////////////////////////////////////////////////////////

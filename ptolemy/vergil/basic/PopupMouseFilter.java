@@ -27,11 +27,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.basic;
 
-import ptolemy.vergil.kernel.VergilUtilities;
-
-import diva.canvas.event.ExtendedMouseFilter;
-
 import java.awt.event.MouseEvent;
+
+import ptolemy.vergil.kernel.VergilUtilities;
+import diva.canvas.event.ExtendedMouseFilter;
 
 
 //////////////////////////////////////////////////////////////////////////

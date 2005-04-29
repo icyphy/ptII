@@ -29,24 +29,13 @@
 */
 package ptolemy.caltrop.actors;
 
-import caltrop.interpreter.Context;
-import caltrop.interpreter.ExprEvaluator;
-
-import caltrop.interpreter.ast.Actor;
-import caltrop.interpreter.ast.Decl;
-import caltrop.interpreter.ast.Expression;
-import caltrop.interpreter.ast.Import;
-import caltrop.interpreter.ast.PortDecl;
-import caltrop.interpreter.ast.TypeExpr;
-
-import caltrop.interpreter.environment.CacheEnvironment;
-import caltrop.interpreter.environment.Environment;
-import caltrop.interpreter.environment.HashEnvironment;
-
-import caltrop.interpreter.util.CalScriptImportHandler;
-import caltrop.interpreter.util.ClassLoadingImportHandler;
-import caltrop.interpreter.util.EnvironmentFactoryImportHandler;
-import caltrop.interpreter.util.ImportUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
@@ -61,14 +50,21 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import caltrop.interpreter.Context;
+import caltrop.interpreter.ExprEvaluator;
+import caltrop.interpreter.ast.Actor;
+import caltrop.interpreter.ast.Decl;
+import caltrop.interpreter.ast.Expression;
+import caltrop.interpreter.ast.Import;
+import caltrop.interpreter.ast.PortDecl;
+import caltrop.interpreter.ast.TypeExpr;
+import caltrop.interpreter.environment.CacheEnvironment;
+import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.environment.HashEnvironment;
+import caltrop.interpreter.util.CalScriptImportHandler;
+import caltrop.interpreter.util.ClassLoadingImportHandler;
+import caltrop.interpreter.util.EnvironmentFactoryImportHandler;
+import caltrop.interpreter.util.ImportUtil;
 
 
 //////////////////////////////////////////////////////////////////////////

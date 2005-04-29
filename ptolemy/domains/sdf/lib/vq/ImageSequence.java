@@ -27,6 +27,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.sdf.lib.vq;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 import ptolemy.actor.lib.Source;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.IntToken;
@@ -36,11 +41,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////

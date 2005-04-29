@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.javasound;
 
+import java.io.IOException;
+
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -39,8 +41,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.media.javasound.SoundWriter;
-
-import java.io.IOException;
 
 
 ///////////////////////////////////////////////////////////

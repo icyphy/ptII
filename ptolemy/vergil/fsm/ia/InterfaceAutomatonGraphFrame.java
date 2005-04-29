@@ -32,7 +32,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.fsm.FSMGraphFrame;
 import ptolemy.vergil.fsm.FSMGraphModel;
-
 import diva.graph.GraphPane;
 
 

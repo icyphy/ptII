@@ -26,6 +26,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -43,8 +45,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.ArrayList;
 
 
 //////////////////////////////////////////////////////////////////////////

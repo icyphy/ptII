@@ -25,6 +25,8 @@
 */
 package diva.canvas.test;
 
+import javax.swing.JFrame;
+
 import diva.canvas.CanvasPane;
 import diva.canvas.JCanvas;
 import diva.canvas.toolbox.BasicCanvasPane;
@@ -32,8 +34,6 @@ import diva.util.jester.TestCase;
 import diva.util.jester.TestFailedException;
 import diva.util.jester.TestHarness;
 import diva.util.jester.TestSuite;
-
-import javax.swing.JFrame;
 
 
 /**

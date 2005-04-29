@@ -26,13 +26,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.debugger;
 
+import java.awt.Frame;
+
 import ptolemy.actor.gui.QueryUtilities;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphController;
-
-import java.awt.Frame;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -39,7 +39,6 @@ import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
-
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.Connector;

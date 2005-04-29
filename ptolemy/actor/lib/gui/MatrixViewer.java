@@ -28,6 +28,17 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.gui;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.SwingUtilities;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MatrixPane;
@@ -51,17 +62,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

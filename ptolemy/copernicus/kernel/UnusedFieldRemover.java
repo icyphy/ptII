@@ -26,6 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.kernel;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -35,15 +40,9 @@ import soot.SootMethod;
 import soot.Type;
 import soot.Value;
 import soot.ValueBox;
-
 import soot.jimple.FieldRef;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

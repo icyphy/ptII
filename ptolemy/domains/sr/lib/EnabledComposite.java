@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.sr.lib;
 
+import java.util.Iterator;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -39,8 +41,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -31,6 +31,13 @@
  */
 package diva.canvas.tutorial;
 
+import java.awt.Color;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+
+import javax.swing.SwingUtilities;
+
 import diva.canvas.FigureLayer;
 import diva.canvas.GraphicsPane;
 import diva.canvas.JCanvas;
@@ -39,13 +46,6 @@ import diva.canvas.interactor.SelectionInteractor;
 import diva.canvas.toolbox.BasicController;
 import diva.canvas.toolbox.VectorFigure;
 import diva.gui.BasicFrame;
-
-import java.awt.Color;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
-
-import javax.swing.SwingUtilities;
 
 
 /** An example showing how to use VectorFigure.

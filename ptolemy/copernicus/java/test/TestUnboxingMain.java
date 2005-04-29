@@ -26,11 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java.test;
 
-import soot.Pack;
-import soot.PackManager;
-import soot.Scene;
-import soot.SootClass;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.java.TokenToNativeTransformer;
 import ptolemy.copernicus.kernel.ClassWriter;
@@ -40,6 +35,10 @@ import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.UnusedFieldRemover;
 import ptolemy.copernicus.kernel.WatchDogTimer;
+import soot.Pack;
+import soot.PackManager;
+import soot.Scene;
+import soot.SootClass;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -24,12 +24,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.graph.analysis;
 
+import java.util.List;
+
 import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.SinkNodeAnalyzer;
 import ptolemy.graph.analysis.strategy.SinkNodeStrategy;
-
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

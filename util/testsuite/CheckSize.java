@@ -26,6 +26,8 @@ COPYRIGHTENDKEY
 */
 package util.testsuite;
 
+import java.io.File;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.data.ArrayToken;
@@ -39,8 +41,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
-
-import java.io.File;
 
 
 //////////////////////////////////////////////////////////////////////////

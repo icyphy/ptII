@@ -28,14 +28,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.util;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Nameable;
-
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
 
 
 //////////////////////////////////////////////////////////////////////////

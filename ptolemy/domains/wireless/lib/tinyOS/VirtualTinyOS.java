@@ -30,6 +30,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.wireless.lib.tinyOS;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.util.Time;
@@ -39,9 +42,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
-
-import java.util.LinkedList;
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -25,11 +25,11 @@
 */
 package diva.graph.modular;
 
+import java.util.Iterator;
+
 import diva.graph.GraphEvent;
 import diva.graph.GraphUtilities;
 import diva.graph.MutableGraphModel;
-
-import java.util.Iterator;
 
 
 /**

@@ -29,14 +29,14 @@
 */
 package ptolemy.actor.process;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

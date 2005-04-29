@@ -27,24 +27,10 @@
 */
 package ptolemy.copernicus.kernel;
 
-import soot.HasPhaseOptions;
-import soot.Pack;
-import soot.PackManager;
-import soot.Scene;
-import soot.SceneTransformer;
-import soot.SootClass;
-import soot.Transform;
-import soot.Transformer;
-
-import soot.jimple.toolkits.scalar.CommonSubexpressionEliminator;
-import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
-import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.jimple.toolkits.scalar.UnconditionalBranchFolder;
-import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
-
-import soot.toolkits.scalar.UnusedLocalEliminator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -56,11 +42,22 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.StringUtilities;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import soot.HasPhaseOptions;
+import soot.Pack;
+import soot.PackManager;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.Transform;
+import soot.Transformer;
+import soot.jimple.toolkits.scalar.CommonSubexpressionEliminator;
+import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
+import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
+import soot.jimple.toolkits.scalar.CopyPropagator;
+import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
+import soot.jimple.toolkits.scalar.UnconditionalBranchFolder;
+import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
+import soot.toolkits.scalar.UnusedLocalEliminator;
 
 
 //////////////////////////////////////////////////////////////////////////

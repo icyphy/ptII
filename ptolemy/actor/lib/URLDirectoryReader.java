@@ -28,16 +28,6 @@
 */
 package ptolemy.actor.lib;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NameDuplicationException;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +38,16 @@ import java.net.URLConnection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 
 //////////////////////////////////////////////////////////////////////////

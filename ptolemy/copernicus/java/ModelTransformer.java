@@ -26,39 +26,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import soot.BooleanType;
-import soot.FastHierarchy;
-import soot.HasPhaseOptions;
-import soot.Hierarchy;
-import soot.Local;
-import soot.Modifier;
-import soot.PhaseOptions;
-import soot.RefType;
-import soot.Scene;
-import soot.SceneTransformer;
-import soot.SootClass;
-import soot.SootField;
-import soot.SootMethod;
-import soot.Type;
-import soot.Value;
-import soot.ValueBox;
-import soot.VoidType;
-
-import soot.jimple.AssignStmt;
-import soot.jimple.IntConstant;
-import soot.jimple.InvokeExpr;
-import soot.jimple.Jimple;
-import soot.jimple.JimpleBody;
-import soot.jimple.SpecialInvokeExpr;
-import soot.jimple.Stmt;
-import soot.jimple.StringConstant;
-
-import soot.jimple.toolkits.invoke.SiteInliner;
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-
-import soot.toolkits.scalar.LocalSplitter;
-
-import soot.util.Chain;
+import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
@@ -102,16 +78,35 @@ import ptolemy.moml.Documentation;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
-
-import java.lang.reflect.Constructor;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import soot.BooleanType;
+import soot.FastHierarchy;
+import soot.HasPhaseOptions;
+import soot.Hierarchy;
+import soot.Local;
+import soot.Modifier;
+import soot.PhaseOptions;
+import soot.RefType;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Type;
+import soot.Value;
+import soot.ValueBox;
+import soot.VoidType;
+import soot.jimple.AssignStmt;
+import soot.jimple.IntConstant;
+import soot.jimple.InvokeExpr;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.SpecialInvokeExpr;
+import soot.jimple.Stmt;
+import soot.jimple.StringConstant;
+import soot.jimple.toolkits.invoke.SiteInliner;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.toolkits.scalar.LocalSplitter;
+import soot.util.Chain;
 
 
 //////////////////////////////////////////////////////////////////////////

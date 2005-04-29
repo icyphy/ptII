@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.hoc;
 
+import java.net.URL;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.data.RecordToken;
@@ -38,8 +40,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLParser;
-
-import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////

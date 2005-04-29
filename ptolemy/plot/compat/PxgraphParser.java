@@ -31,10 +31,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot.compat;
 
-import ptolemy.plot.CmdLineArgException;
-import ptolemy.plot.Plot;
-import ptolemy.plot.PlotBox;
-
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
@@ -47,6 +43,10 @@ import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Vector;
+
+import ptolemy.plot.CmdLineArgException;
+import ptolemy.plot.Plot;
+import ptolemy.plot.PlotBox;
 
 
 //////////////////////////////////////////////////////////////////////////

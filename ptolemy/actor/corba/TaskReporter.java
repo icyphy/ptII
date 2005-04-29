@@ -29,9 +29,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.corba;
 
+import java.util.StringTokenizer;
+
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.UserException;
-
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
@@ -45,8 +46,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.StringTokenizer;
 
 
 //////////////////////////////////////////////////////////////////////////

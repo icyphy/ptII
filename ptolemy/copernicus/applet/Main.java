@@ -26,12 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.applet;
 
-import soot.Pack;
-import soot.PackManager;
-
 import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.MakefileWriter;
+import soot.Pack;
+import soot.PackManager;
 
 
 //////////////////////////////////////////////////////////////////////////

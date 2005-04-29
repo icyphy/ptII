@@ -27,6 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.tree;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
@@ -37,14 +45,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 
 
 //////////////////////////////////////////////////////////////////////////

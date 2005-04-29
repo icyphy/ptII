@@ -29,17 +29,6 @@ package ptolemy.codegen.gui;
 
 
 // Ptolemy imports.
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Configurer;
-import ptolemy.actor.gui.PtolemyFrame;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.codegen.kernel.CodeGenerator;
-import ptolemy.gui.JTextAreaExec;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.util.MessageHandler;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -54,6 +43,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Configurer;
+import ptolemy.actor.gui.PtolemyFrame;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.codegen.kernel.CodeGenerator;
+import ptolemy.gui.JTextAreaExec;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////

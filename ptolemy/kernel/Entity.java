@@ -27,6 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.kernel;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -37,15 +46,6 @@ import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

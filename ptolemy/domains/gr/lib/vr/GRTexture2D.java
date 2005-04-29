@@ -27,29 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib.vr;
 
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.parameters.DoubleRangeParameter;
-import ptolemy.actor.parameters.FilePortParameter;
-import ptolemy.actor.parameters.IntRangeParameter;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.gr.kernel.GRActor;
-import ptolemy.domains.gr.kernel.GRActor3D;
-import ptolemy.domains.gr.kernel.SceneGraphToken;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
-
-import com.sun.j3d.utils.image.TextureLoader;
-
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -81,6 +58,29 @@ import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.TransparencyAttributes;
 import javax.media.j3d.View;
 import javax.vecmath.Color3f;
+
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.actor.parameters.DoubleRangeParameter;
+import ptolemy.actor.parameters.FilePortParameter;
+import ptolemy.actor.parameters.IntRangeParameter;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.gr.kernel.GRActor;
+import ptolemy.domains.gr.kernel.GRActor3D;
+import ptolemy.domains.gr.kernel.SceneGraphToken;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+
+import com.sun.j3d.utils.image.TextureLoader;
 
 
 //////////////////////////////////////////////////////////////////////////

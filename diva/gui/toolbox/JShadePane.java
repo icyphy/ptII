@@ -25,8 +25,6 @@
 */
 package diva.gui.toolbox;
 
-import diva.gui.BasicFrame;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -57,6 +55,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import diva.gui.BasicFrame;
 
 
 /**

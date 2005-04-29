@@ -27,6 +27,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel.attributes;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -41,10 +45,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.TextIcon;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.Entity;
-import ptolemy.util.MessageHandler;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -49,6 +46,9 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import ptolemy.kernel.Entity;
+import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////

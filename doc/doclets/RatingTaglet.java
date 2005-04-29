@@ -27,11 +27,11 @@ COPYRIGHTENDKEY
 */
 package doc.doclets;
 
-import com.sun.javadoc.Tag;
-import com.sun.tools.doclets.Taglet;
-
 import java.lang.reflect.Constructor;
 import java.util.Map;
+
+import com.sun.javadoc.Tag;
+import com.sun.tools.doclets.Taglet;
 
 
 //////////////////////////////////////////////////////////////////////////

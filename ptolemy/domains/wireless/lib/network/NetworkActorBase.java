@@ -28,14 +28,14 @@
 */
 package ptolemy.domains.wireless.lib.network;
 
+import java.util.HashSet;
+import java.util.Iterator;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.HashSet;
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

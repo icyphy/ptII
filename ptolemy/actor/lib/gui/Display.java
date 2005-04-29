@@ -27,6 +27,19 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.gui;
 
+import java.awt.Color;
+import java.awt.Container;
+import java.io.IOException;
+import java.io.Writer;
+
+import javax.swing.BorderFactory;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.text.BadLocationException;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Placeable;
@@ -47,19 +60,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-
-import java.awt.Color;
-import java.awt.Container;
-import java.io.IOException;
-import java.io.Writer;
-
-import javax.swing.BorderFactory;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.text.BadLocationException;
 
 
 //////////////////////////////////////////////////////////////////////////

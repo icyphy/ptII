@@ -28,21 +28,20 @@
 */
 package ptolemy.actor.lib.x10;
 
-import x10.CM11ASerialController;
-import x10.CM17ASerialController;
-import x10.Controller;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+
+import javax.comm.CommPortIdentifier;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-
-import javax.comm.CommPortIdentifier;
+import x10.CM11ASerialController;
+import x10.CM17ASerialController;
+import x10.Controller;
 
 
 //////////////////////////////////////////////////////////////////////////

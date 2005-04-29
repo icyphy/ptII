@@ -25,12 +25,12 @@
 */
 package diva.canvas.interactor;
 
+import java.util.Iterator;
+
 import diva.canvas.Figure;
 import diva.canvas.FigureDecorator;
 import diva.canvas.Site;
 import diva.canvas.event.LayerEvent;
-
-import java.util.Iterator;
 
 
 /**

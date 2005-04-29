@@ -29,18 +29,18 @@
 */
 package ptolemy.caltrop;
 
-import caltrop.interpreter.Context;
-import caltrop.interpreter.Function;
-import caltrop.interpreter.InterpreterException;
-import caltrop.interpreter.Procedure;
-
-import caltrop.interpreter.environment.Environment;
-import caltrop.interpreter.environment.HashEnvironment;
-
-import caltrop.interpreter.java.ClassObject;
-import caltrop.interpreter.java.MethodObject;
-
-import caltrop.interpreter.util.Platform;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import ptolemy.caltrop.util.IntegerList;
 import ptolemy.caltrop.util.PtArrayList;
@@ -58,19 +58,15 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import caltrop.interpreter.Context;
+import caltrop.interpreter.Function;
+import caltrop.interpreter.InterpreterException;
+import caltrop.interpreter.Procedure;
+import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.environment.HashEnvironment;
+import caltrop.interpreter.java.ClassObject;
+import caltrop.interpreter.java.MethodObject;
+import caltrop.interpreter.util.Platform;
 
 
 //////////////////////////////////////////////////////////////////////////

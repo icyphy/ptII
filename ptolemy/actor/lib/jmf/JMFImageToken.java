@@ -26,15 +26,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jmf;
 
-import ptolemy.data.ImageToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-
 import java.awt.Image;
 
 import javax.media.Buffer;
 import javax.media.format.VideoFormat;
 import javax.media.util.BufferToImage;
+
+import ptolemy.data.ImageToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -30,7 +30,6 @@ package ptolemy.vergil.kernel;
 import ptolemy.vergil.basic.IconController;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MoveAction;
-
 import diva.graph.GraphController;
 
 

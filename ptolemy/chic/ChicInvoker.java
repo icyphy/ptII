@@ -27,7 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.chic;
 
-import chic.ChicForPtolemy;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -41,10 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import chic.ChicForPtolemy;
 
 
 //////////////////////////////////////////////////////////////////////////

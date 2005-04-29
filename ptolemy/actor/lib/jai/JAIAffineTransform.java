@@ -28,6 +28,16 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jai;
 
+import java.awt.geom.AffineTransform;
+
+import javax.media.jai.Interpolation;
+import javax.media.jai.InterpolationBicubic;
+import javax.media.jai.InterpolationBicubic2;
+import javax.media.jai.InterpolationBilinear;
+import javax.media.jai.InterpolationNearest;
+import javax.media.jai.JAI;
+import javax.media.jai.RenderedOp;
+
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.IntToken;
@@ -38,16 +48,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-
-import java.awt.geom.AffineTransform;
-
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationBicubic;
-import javax.media.jai.InterpolationBicubic2;
-import javax.media.jai.InterpolationBilinear;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
-import javax.media.jai.RenderedOp;
 
 
 //////////////////////////////////////////////////////////////////////////

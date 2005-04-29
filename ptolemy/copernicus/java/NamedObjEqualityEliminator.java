@@ -26,6 +26,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.NamedObj;
 import soot.HasPhaseOptions;
 import soot.Local;
 import soot.NullType;
@@ -39,7 +48,6 @@ import soot.SootMethod;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
-
 import soot.jimple.BinopExpr;
 import soot.jimple.CastExpr;
 import soot.jimple.DefinitionStmt;
@@ -49,24 +57,12 @@ import soot.jimple.JimpleBody;
 import soot.jimple.NewExpr;
 import soot.jimple.NullConstant;
 import soot.jimple.Stmt;
-
 import soot.toolkits.graph.CompleteUnitGraph;
-
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.LocalUses;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
-
-import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.NamedObj;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -30,6 +30,9 @@
 */
 package ptolemy.domains.wireless.lib.network.mac;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
@@ -38,9 +41,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

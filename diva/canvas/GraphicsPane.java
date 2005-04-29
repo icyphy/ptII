@@ -26,9 +26,9 @@
   */
 package diva.canvas;
 
-import diva.canvas.event.EventLayer;
-
 import java.util.Iterator;
+
+import diva.canvas.event.EventLayer;
 
 
 /**

@@ -32,6 +32,8 @@
 */
 package diva.graph.tutorial;
 
+import javax.swing.SwingUtilities;
+
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.MutableGraphModel;
@@ -44,8 +46,6 @@ import diva.graph.modular.Edge;
 import diva.graph.modular.Node;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
-
-import javax.swing.SwingUtilities;
 
 
 /**

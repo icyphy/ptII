@@ -29,6 +29,8 @@ COPYRIGHTENDKEY
 */
 package jni;
 
+import java.awt.Color;
+
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
@@ -39,8 +41,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.actor.ActorGraphTableau;
-
-import java.awt.Color;
 
 
 //////////////////////////////////////////////////////////////////////////

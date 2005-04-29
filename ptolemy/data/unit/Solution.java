@@ -26,6 +26,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.unit;
 
+import java.text.DecimalFormat;
+import java.util.Iterator;
+import java.util.Vector;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedCompositeActor;
@@ -35,10 +39,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
-
-import java.text.DecimalFormat;
-import java.util.Iterator;
-import java.util.Vector;
 
 
 //////////////////////////////////////////////////////////////////////////

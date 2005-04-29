@@ -26,6 +26,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.ct.kernel;
 
+import java.util.Iterator;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.util.Time;
@@ -34,8 +36,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

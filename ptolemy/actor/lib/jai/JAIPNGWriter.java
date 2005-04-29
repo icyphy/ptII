@@ -28,6 +28,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jai;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -41,9 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.media.jai.codec.PNGEncodeParam;
-
-import java.io.File;
-import java.io.FileOutputStream;
 
 
 //////////////////////////////////////////////////////////////////////////

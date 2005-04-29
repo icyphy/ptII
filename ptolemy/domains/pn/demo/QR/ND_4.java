@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.pn.demo.QR;
 
+import java.util.Vector;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
@@ -36,8 +38,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.Vector;
 
 
 //////////////////////////////////////////////////////////////////////////

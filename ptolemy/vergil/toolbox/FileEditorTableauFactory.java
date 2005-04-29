@@ -29,6 +29,8 @@
 */
 package ptolemy.vergil.toolbox;
 
+import java.net.URL;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -40,8 +42,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
-
-import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////

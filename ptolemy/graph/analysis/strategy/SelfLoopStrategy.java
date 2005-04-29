@@ -24,14 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.graph.analysis.strategy;
 
-import ptolemy.graph.Edge;
-import ptolemy.graph.Graph;
-import ptolemy.graph.analysis.analyzer.SelfLoopAnalyzer;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import ptolemy.graph.Edge;
+import ptolemy.graph.Graph;
+import ptolemy.graph.analysis.analyzer.SelfLoopAnalyzer;
 
 
 //////////////////////////////////////////////////////////////////////////

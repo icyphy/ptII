@@ -27,13 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel;
 
+import java.awt.Color;
+
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.ParameterizedNodeController;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
@@ -41,8 +42,6 @@ import diva.canvas.toolbox.SVGUtilities;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
-
-import java.awt.Color;
 
 
 //////////////////////////////////////////////////////////////////////////

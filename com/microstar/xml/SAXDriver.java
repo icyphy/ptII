@@ -3,6 +3,12 @@
 // $Id$
 package com.microstar.xml;
 
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Stack;
+import java.util.Vector;
+
 import org.xml.sax.AttributeList;
 import org.xml.sax.DTDHandler;
 import org.xml.sax.DocumentHandler;
@@ -14,12 +20,6 @@ import org.xml.sax.Locator;
 import org.xml.sax.Parser;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.Stack;
-import java.util.Vector;
 
 
 /**

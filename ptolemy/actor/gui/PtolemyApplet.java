@@ -27,6 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.reflect.Constructor;
+import java.util.StringTokenizer;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
@@ -36,14 +44,6 @@ import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.lang.reflect.Constructor;
-import java.util.StringTokenizer;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
 
 //////////////////////////////////////////////////////////////////////////

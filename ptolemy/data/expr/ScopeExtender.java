@@ -30,9 +30,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.expr;
 
-import ptolemy.kernel.util.Attribute;
-
 import java.util.List;
+
+import ptolemy.kernel.util.Attribute;
 
 
 //////////////////////////////////////////////////////////////////////////

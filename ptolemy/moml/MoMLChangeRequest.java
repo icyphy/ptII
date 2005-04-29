@@ -26,13 +26,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.moml;
 
+import java.net.URL;
+import java.util.List;
+
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
-
-import java.net.URL;
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

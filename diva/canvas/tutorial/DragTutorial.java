@@ -31,6 +31,11 @@
  */
 package diva.canvas.tutorial;
 
+import java.awt.Color;
+import java.awt.geom.Rectangle2D;
+
+import javax.swing.SwingUtilities;
+
 import diva.canvas.FigureLayer;
 import diva.canvas.GraphicsPane;
 import diva.canvas.JCanvas;
@@ -42,11 +47,6 @@ import diva.canvas.toolbox.BasicEllipse;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;
-
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
-
-import javax.swing.SwingUtilities;
 
 
 /** An example showing how to make figures draggable with interactors.

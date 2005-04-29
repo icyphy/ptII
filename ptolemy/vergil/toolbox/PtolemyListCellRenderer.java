@@ -27,12 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.toolbox;
 
-import ptolemy.kernel.util.NamedObj;
-
 import java.awt.Component;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
+
+import ptolemy.kernel.util.NamedObj;
 
 
 /**

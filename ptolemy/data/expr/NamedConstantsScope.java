@@ -29,12 +29,12 @@
 */
 package ptolemy.data.expr;
 
-import ptolemy.data.type.TypeConstant;
-import ptolemy.kernel.util.IllegalActionException;
-
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import ptolemy.data.type.TypeConstant;
+import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -28,6 +28,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jai;
 
+import java.awt.image.renderable.ParameterBlock;
+
+import javax.media.jai.JAI;
+import javax.media.jai.RenderedOp;
+import javax.media.jai.operator.MedianFilterDescriptor;
+import javax.media.jai.operator.MedianFilterShape;
+
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -36,13 +43,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-
-import java.awt.image.renderable.ParameterBlock;
-
-import javax.media.jai.JAI;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.MedianFilterDescriptor;
-import javax.media.jai.operator.MedianFilterShape;
 
 
 //////////////////////////////////////////////////////////////////////////

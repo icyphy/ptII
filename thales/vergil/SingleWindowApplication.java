@@ -24,16 +24,15 @@
 */
 package thales.vergil;
 
-import thales.actor.gui.SingleWindowHTMLViewer;
+import java.net.URL;
+
+import javax.swing.UIManager;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.VergilApplication;
-
-import java.net.URL;
-
-import javax.swing.UIManager;
+import thales.actor.gui.SingleWindowHTMLViewer;
 
 
 //////////////////////////////////////////////////////////////////////////

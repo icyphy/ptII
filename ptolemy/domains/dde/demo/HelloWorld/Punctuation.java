@@ -28,11 +28,11 @@
 */
 package ptolemy.domains.dde.demo.HelloWorld;
 
+import java.util.LinkedList;
+
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -26,16 +26,16 @@
   */
 package diva.canvas.interactor;
 
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import diva.canvas.Figure;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.event.LayerEventMulticaster;
 import diva.canvas.event.LayerListener;
 import diva.util.ArrayIterator;
-
-import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 
 /**

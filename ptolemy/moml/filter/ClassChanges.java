@@ -26,13 +26,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.moml.filter;
 
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLFilter;
-import ptolemy.moml.MoMLParser;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLFilter;
+import ptolemy.moml.MoMLParser;
 
 
 //////////////////////////////////////////////////////////////////////////

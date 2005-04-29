@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.toolbox;
 
+import java.awt.geom.Rectangle2D;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
@@ -34,7 +36,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.FigureDecorator;
@@ -43,8 +44,6 @@ import diva.canvas.interactor.BoundsGeometry;
 import diva.canvas.interactor.BoundsManipulator;
 import diva.canvas.interactor.DragInteractor;
 import diva.canvas.interactor.GrabHandle;
-
-import java.awt.geom.Rectangle2D;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,6 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.sdf.lib;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Lattice;
 import ptolemy.actor.util.ExplicitChangeContext;
@@ -40,9 +43,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.LinkedList;
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,6 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.icon;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Iterator;
+
+import javax.swing.SwingConstants;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -39,7 +48,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
-
 import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
@@ -47,15 +55,6 @@ import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
 import diva.gui.toolbox.FigureIcon;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.geom.Rectangle2D;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Iterator;
-
-import javax.swing.SwingConstants;
 
 
 //////////////////////////////////////////////////////////////////////////

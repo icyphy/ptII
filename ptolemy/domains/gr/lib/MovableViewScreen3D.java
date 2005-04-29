@@ -27,6 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.vecmath.AxisAngle4d;
+import javax.vecmath.Quat4d;
+import javax.vecmath.Vector3d;
+
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -36,12 +42,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
-import javax.vecmath.AxisAngle4d;
-import javax.vecmath.Quat4d;
-import javax.vecmath.Vector3d;
 
 
 //////////////////////////////////////////////////////////////////////////

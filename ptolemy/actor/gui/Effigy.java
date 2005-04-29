@@ -26,6 +26,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -37,14 +45,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

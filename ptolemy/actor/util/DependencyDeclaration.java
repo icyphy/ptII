@@ -28,12 +28,12 @@
 */
 package ptolemy.actor.util;
 
+import java.util.List;
+
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -29,10 +29,10 @@
 */
 package ptolemy.caltrop.util;
 
-import ptolemy.data.ArrayToken;
-
 import java.util.AbstractList;
 import java.util.List;
+
+import ptolemy.data.ArrayToken;
 
 
 //////////////////////////////////////////////////////////////////////////

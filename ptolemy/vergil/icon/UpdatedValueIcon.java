@@ -27,6 +27,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.icon;
 
+import java.awt.Color;
+import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
+
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import ptolemy.data.IntToken;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -35,17 +42,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
-
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
-
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

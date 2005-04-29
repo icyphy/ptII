@@ -27,11 +27,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.tree;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.NamedObj;
-
 import java.util.Collections;
 import java.util.List;
+
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.NamedObj;
 
 
 //////////////////////////////////////////////////////////////////////////

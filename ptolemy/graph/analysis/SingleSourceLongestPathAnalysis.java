@@ -25,14 +25,14 @@
 */
 package ptolemy.graph.analysis;
 
+import java.util.List;
+
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.SingleSourceLongestPathAnalyzer;
 import ptolemy.graph.analysis.strategy.AllEdgeSingleSourceLongestPathStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
-
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

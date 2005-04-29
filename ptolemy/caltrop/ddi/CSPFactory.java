@@ -29,13 +29,10 @@
 */
 package ptolemy.caltrop.ddi;
 
-import caltrop.interpreter.Context;
-
-import caltrop.interpreter.ast.Actor;
-
-import caltrop.interpreter.environment.Environment;
-
 import ptolemy.actor.TypedAtomicActor;
+import caltrop.interpreter.Context;
+import caltrop.interpreter.ast.Actor;
+import caltrop.interpreter.environment.Environment;
 
 
 //////////////////////////////////////////////////////////////////////////

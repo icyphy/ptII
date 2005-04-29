@@ -25,14 +25,14 @@
 */
 package diva.gui.toolbox;
 
+import java.awt.event.InputEvent;
+
+import javax.swing.JPopupMenu;
+
 import diva.canvas.Figure;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.AbstractInteractor;
-
-import java.awt.event.InputEvent;
-
-import javax.swing.JPopupMenu;
 
 
 /**

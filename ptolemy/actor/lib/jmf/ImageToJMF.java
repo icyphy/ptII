@@ -28,6 +28,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jmf;
 
+import java.awt.Image;
+
+import javax.media.Buffer;
+import javax.media.util.ImageToBuffer;
+
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ImageToken;
 import ptolemy.data.IntToken;
@@ -37,11 +42,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.Image;
-
-import javax.media.Buffer;
-import javax.media.util.ImageToBuffer;
 
 
 //////////////////////////////////////////////////////////////////////////

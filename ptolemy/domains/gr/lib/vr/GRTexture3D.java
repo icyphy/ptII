@@ -27,11 +27,20 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib.vr;
 
-import vendors.vr.Axis2DRenderer;
-import vendors.vr.Context;
-import vendors.vr.Texture2DVolume;
-import vendors.vr.VolFile;
-import vendors.vr.Volume;
+import java.net.URL;
+
+import javax.media.j3d.Appearance;
+import javax.media.j3d.ColoringAttributes;
+import javax.media.j3d.ImageComponent3D;
+import javax.media.j3d.LineAttributes;
+import javax.media.j3d.Material;
+import javax.media.j3d.Node;
+import javax.media.j3d.PolygonAttributes;
+import javax.media.j3d.QuadArray;
+import javax.media.j3d.Texture3D;
+import javax.media.j3d.TransparencyAttributes;
+import javax.media.j3d.View;
+import javax.vecmath.Color3f;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
@@ -49,21 +58,11 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.net.URL;
-
-import javax.media.j3d.Appearance;
-import javax.media.j3d.ColoringAttributes;
-import javax.media.j3d.ImageComponent3D;
-import javax.media.j3d.LineAttributes;
-import javax.media.j3d.Material;
-import javax.media.j3d.Node;
-import javax.media.j3d.PolygonAttributes;
-import javax.media.j3d.QuadArray;
-import javax.media.j3d.Texture3D;
-import javax.media.j3d.TransparencyAttributes;
-import javax.media.j3d.View;
-import javax.vecmath.Color3f;
+import vendors.vr.Axis2DRenderer;
+import vendors.vr.Context;
+import vendors.vr.Texture2DVolume;
+import vendors.vr.VolFile;
+import vendors.vr.Volume;
 
 
 //////////////////////////////////////////////////////////////////////////

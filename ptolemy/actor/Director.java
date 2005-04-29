@@ -32,6 +32,8 @@ Also, review stop() method.
 */
 package ptolemy.actor;
 
+import java.util.Iterator;
+
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -46,8 +48,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.ExtendedMath;
 import ptolemy.moml.SharedParameter;
-
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

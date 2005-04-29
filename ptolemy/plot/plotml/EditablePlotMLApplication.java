@@ -31,11 +31,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot.plotml;
 
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.Query;
-import ptolemy.plot.EditablePlot;
-import ptolemy.plot.PlotBox;
-
 import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,6 +41,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
+import ptolemy.plot.EditablePlot;
+import ptolemy.plot.PlotBox;
 
 
 //////////////////////////////////////////////////////////////////////////

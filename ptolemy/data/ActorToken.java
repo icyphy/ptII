@@ -26,11 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data;
 
+import java.io.Serializable;
+
 import ptolemy.data.type.Type;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.io.Serializable;
 
 
 //////////////////////////////////////////////////////////////////////////

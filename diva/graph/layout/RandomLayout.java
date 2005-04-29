@@ -25,10 +25,10 @@
 */
 package diva.graph.layout;
 
-import diva.graph.GraphModel;
-
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+
+import diva.graph.GraphModel;
 
 
 /**

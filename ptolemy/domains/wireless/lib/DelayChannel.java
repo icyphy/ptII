@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.wireless.lib;
 
+import java.util.HashMap;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
@@ -40,8 +42,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.HashMap;
 
 
 //////////////////////////////////////////////////////////////////////////

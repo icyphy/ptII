@@ -29,32 +29,28 @@
 */
 package ptolemy.caltrop.ddi;
 
-import caltrop.interpreter.Context;
-import caltrop.interpreter.InputPort;
-import caltrop.interpreter.SingleInputPort;
-import caltrop.interpreter.SingleOutputPort;
-
-import caltrop.interpreter.ast.Action;
-import caltrop.interpreter.ast.Actor;
-import caltrop.interpreter.ast.PortDecl;
-import caltrop.interpreter.ast.QID;
-import caltrop.interpreter.ast.Transition;
-
-import caltrop.interpreter.environment.Environment;
-
-import caltrop.interpreter.util.PriorityUtil;
-
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
-import ptolemy.kernel.util.IllegalActionException;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
+import ptolemy.kernel.util.IllegalActionException;
+import caltrop.interpreter.Context;
+import caltrop.interpreter.InputPort;
+import caltrop.interpreter.SingleInputPort;
+import caltrop.interpreter.SingleOutputPort;
+import caltrop.interpreter.ast.Action;
+import caltrop.interpreter.ast.Actor;
+import caltrop.interpreter.ast.PortDecl;
+import caltrop.interpreter.ast.QID;
+import caltrop.interpreter.ast.Transition;
+import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.util.PriorityUtil;
 
 
 //////////////////////////////////////////////////////////////////////////

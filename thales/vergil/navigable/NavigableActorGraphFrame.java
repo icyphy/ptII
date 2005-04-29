@@ -24,21 +24,6 @@
 */
 package thales.vergil.navigable;
 
-import thales.actor.gui.NavigableEffigy;
-
-import thales.vergil.SingleWindowApplication;
-
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.LibraryAttribute;
-import ptolemy.vergil.actor.ActorEditorGraphController;
-import ptolemy.vergil.actor.ActorGraphFrame;
-
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -50,6 +35,19 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
+
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.LibraryAttribute;
+import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.actor.ActorGraphFrame;
+import thales.actor.gui.NavigableEffigy;
+import thales.vergil.SingleWindowApplication;
 
 
 //////////////////////////////////////////////////////////////////////////

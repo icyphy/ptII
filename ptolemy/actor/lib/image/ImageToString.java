@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.image;
 
+import java.awt.Image;
+
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ImageToken;
 import ptolemy.data.StringToken;
@@ -35,8 +37,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.Image;
 
 
 //////////////////////////////////////////////////////////////////////////

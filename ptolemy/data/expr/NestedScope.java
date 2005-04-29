@@ -28,13 +28,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.expr;
 
-import ptolemy.graph.InequalityTerm;
-import ptolemy.kernel.util.IllegalActionException;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -29,11 +29,11 @@ Don't use to represent pure events.
 */
 package ptolemy.data;
 
+import java.io.Serializable;
+
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.io.Serializable;
 
 
 //////////////////////////////////////////////////////////////////////////

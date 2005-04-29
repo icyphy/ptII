@@ -28,6 +28,9 @@
 */
 package ptolemy.actor.lib;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
@@ -37,9 +40,6 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.LinkedList;
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

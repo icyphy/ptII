@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
+import java.net.URL;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.ComponentEntity;
@@ -39,8 +41,6 @@ import ptolemy.moml.Documentation;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
-
-import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////

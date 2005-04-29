@@ -27,14 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.kernel.util;
 
-import ptolemy.util.StringUtilities;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

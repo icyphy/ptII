@@ -27,12 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel.attributes;
 
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
 
 
 //////////////////////////////////////////////////////////////////////////

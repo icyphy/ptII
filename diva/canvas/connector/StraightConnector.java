@@ -25,12 +25,12 @@
 */
 package diva.canvas.connector;
 
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;
 import diva.canvas.TransformContext;
-
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 
 
 /** A Connector that draws itself in a straight line.

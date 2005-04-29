@@ -28,8 +28,6 @@
 */
 package ptolemy.actor.lib.x10;
 
-import x10.Command;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
@@ -37,6 +35,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import x10.Command;
 
 
 //////////////////////////////////////////////////////////////////////////

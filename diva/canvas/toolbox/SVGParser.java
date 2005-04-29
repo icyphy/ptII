@@ -26,16 +26,6 @@
   */
 package diva.canvas.toolbox;
 
-import diva.util.java2d.PaintedImage;
-import diva.util.java2d.PaintedList;
-import diva.util.java2d.PaintedObject;
-import diva.util.java2d.PaintedPath;
-import diva.util.java2d.PaintedShape;
-import diva.util.java2d.PaintedString;
-import diva.util.java2d.Polygon2D;
-import diva.util.java2d.Polyline2D;
-import diva.util.xml.XmlElement;
-
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -50,6 +40,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
+
+import diva.util.java2d.PaintedImage;
+import diva.util.java2d.PaintedList;
+import diva.util.java2d.PaintedObject;
+import diva.util.java2d.PaintedPath;
+import diva.util.java2d.PaintedShape;
+import diva.util.java2d.PaintedString;
+import diva.util.java2d.Polygon2D;
+import diva.util.java2d.Polyline2D;
+import diva.util.xml.XmlElement;
 
 
 /** A collection of utilities to help parse graphics out of SVG files.

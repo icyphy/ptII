@@ -26,11 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import ptolemy.util.CancelException;
-import ptolemy.util.MessageHandler;
-
 import java.awt.Frame;
 import java.net.URL;
+
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -24,13 +24,19 @@
 /* Reference Version: $SootVersion: 1.2.3.dev.4 $ */
 package ptolemy.copernicus.kernel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import soot.Local;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.ValueBox;
-
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
@@ -38,19 +44,11 @@ import soot.jimple.JimpleBody;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
-
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Filter;
 import soot.jimple.toolkits.callgraph.InstanceInvokeEdgesPred;
 import soot.jimple.toolkits.callgraph.Targets;
 import soot.jimple.toolkits.invoke.AccessManager;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 
 /** Uses the Scene's currently-active InvokeGraph to statically bind monomorphic call sites. */

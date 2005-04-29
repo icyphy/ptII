@@ -26,16 +26,16 @@
   */
 package diva.canvas;
 
-import diva.canvas.event.EventAcceptor;
-import diva.canvas.event.LayerEvent;
-import diva.canvas.interactor.Interactor;
-import diva.util.Filter;
-
 import java.awt.AWTEvent;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+
+import diva.canvas.event.EventAcceptor;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.interactor.Interactor;
+import diva.util.Filter;
 
 
 /** A figure layer is a layer on which Figures can be drawn.  It

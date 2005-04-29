@@ -25,13 +25,13 @@
 */
 package diva.graph.basic;
 
+import java.awt.Color;
+import java.awt.Paint;
+
 import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelWrapper;
 import diva.graph.NodeRenderer;
 import diva.graph.toolbox.StateBubble;
-
-import java.awt.Color;
-import java.awt.Paint;
 
 
 /**

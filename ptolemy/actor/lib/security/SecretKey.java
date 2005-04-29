@@ -27,6 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.security;
 
+import java.security.Provider;
+import java.security.SecureRandom;
+import java.security.Security;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.crypto.KeyGenerator;
+
 import ptolemy.actor.lib.Source;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
@@ -37,14 +45,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.security.Provider;
-import java.security.SecureRandom;
-import java.security.Security;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.crypto.KeyGenerator;
 
 
 //import javax.crypto.SecretKey;

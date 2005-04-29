@@ -26,9 +26,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.unit;
 
-import ptolemy.kernel.util.IllegalActionException;
-
 import java.util.Vector;
+
+import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////

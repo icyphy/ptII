@@ -26,6 +26,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
+import java.io.FileNotFoundException;
+
+import javax.media.j3d.Node;
+
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -36,10 +40,6 @@ import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.Scene;
 import com.sun.j3d.loaders.objectfile.ObjectFile;
-
-import java.io.FileNotFoundException;
-
-import javax.media.j3d.Node;
 
 
 /**

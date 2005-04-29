@@ -25,14 +25,14 @@
 */
 package diva.graph.basic;
 
+import java.awt.Font;
+
 import diva.canvas.Site;
 import diva.canvas.connector.ArcConnector;
 import diva.canvas.connector.Arrowhead;
 import diva.canvas.connector.Connector;
 import diva.canvas.toolbox.LabelFigure;
 import diva.graph.EdgeRenderer;
-
-import java.awt.Font;
 
 
 /**

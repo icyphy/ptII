@@ -26,6 +26,17 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.Entity;
 import soot.Body;
 import soot.FastHierarchy;
 import soot.HasPhaseOptions;
@@ -42,28 +53,13 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
-
 import soot.jimple.AssignStmt;
 import soot.jimple.FieldRef;
 import soot.jimple.Jimple;
 import soot.jimple.NewArrayExpr;
-
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.typing.TypeAssigner;
-
 import soot.toolkits.scalar.LocalSplitter;
-
-import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.Entity;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

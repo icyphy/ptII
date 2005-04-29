@@ -27,15 +27,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.data.expr;
 
-import ptolemy.data.Function;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.util.IllegalActionException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import ptolemy.data.Function;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////

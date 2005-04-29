@@ -29,23 +29,12 @@
 */
 package ptolemy.caltrop.ddi;
 
-import caltrop.interpreter.ChannelID;
-import caltrop.interpreter.Context;
-import caltrop.interpreter.ExprEvaluator;
-import caltrop.interpreter.StmtEvaluator;
-
-import caltrop.interpreter.ast.Action;
-import caltrop.interpreter.ast.Actor;
-import caltrop.interpreter.ast.Decl;
-import caltrop.interpreter.ast.Expression;
-import caltrop.interpreter.ast.InputPattern;
-import caltrop.interpreter.ast.OutputExpression;
-import caltrop.interpreter.ast.PortDecl;
-import caltrop.interpreter.ast.Statement;
-
-import caltrop.interpreter.environment.Environment;
-
-import caltrop.interpreter.util.PriorityUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
@@ -58,13 +47,20 @@ import ptolemy.domains.csp.kernel.ConditionalBranchController;
 import ptolemy.domains.csp.kernel.ConditionalReceive;
 import ptolemy.domains.csp.kernel.ConditionalSend;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import caltrop.interpreter.ChannelID;
+import caltrop.interpreter.Context;
+import caltrop.interpreter.ExprEvaluator;
+import caltrop.interpreter.StmtEvaluator;
+import caltrop.interpreter.ast.Action;
+import caltrop.interpreter.ast.Actor;
+import caltrop.interpreter.ast.Decl;
+import caltrop.interpreter.ast.Expression;
+import caltrop.interpreter.ast.InputPattern;
+import caltrop.interpreter.ast.OutputExpression;
+import caltrop.interpreter.ast.PortDecl;
+import caltrop.interpreter.ast.Statement;
+import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.util.PriorityUtil;
 
 
 //////////////////////////////////////////////////////////////////////////

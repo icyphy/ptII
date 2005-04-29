@@ -27,6 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib.vr;
 
+import java.net.URL;
+
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Node;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.vecmath.Vector3d;
+
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.DoubleToken;
@@ -41,14 +49,6 @@ import ptolemy.kernel.util.Settable;
 
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.Primitive;
-
-import java.net.URL;
-
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.Node;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
-import javax.vecmath.Vector3d;
 
 
 //////////////////////////////////////////////////////////////////////////

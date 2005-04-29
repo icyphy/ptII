@@ -1,34 +1,34 @@
 package ptolemy.actor.lib.jxta;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.StringTokenizer;
+
 import net.jxta.credential.AuthenticationCredential;
 import net.jxta.credential.Credential;
-
 import net.jxta.document.AdvertisementFactory;
 import net.jxta.document.MimeMediaType;
 import net.jxta.document.StructuredDocument;
-
 import net.jxta.exception.DiscardQueryException;
 import net.jxta.exception.NoResponseException;
 import net.jxta.exception.PeerGroupException;
 import net.jxta.exception.ResendQueryException;
-
 import net.jxta.impl.protocol.ResolverQuery;
-
 import net.jxta.membership.Authenticator;
 import net.jxta.membership.MembershipService;
-
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.peergroup.PeerGroupFactory;
-
 import net.jxta.protocol.PeerGroupAdvertisement;
 import net.jxta.protocol.ResolverQueryMsg;
 import net.jxta.protocol.ResolverResponseMsg;
-
 import net.jxta.resolver.QueryHandler;
 import net.jxta.resolver.ResolverService;
 
 import org.apache.log4j.PropertyConfigurator;
-
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.UserException;
@@ -51,14 +51,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.StringTokenizer;
 
 
 /**

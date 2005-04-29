@@ -25,13 +25,6 @@
 */
 package diva.util.xml;
 
-import diva.resource.DefaultBundle;
-import diva.util.LoggableOp;
-
-import com.microstar.xml.XmlException;
-import com.microstar.xml.XmlHandler;
-import com.microstar.xml.XmlParser;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
@@ -40,6 +33,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+
+import com.microstar.xml.XmlException;
+import com.microstar.xml.XmlHandler;
+import com.microstar.xml.XmlParser;
+
+import diva.resource.DefaultBundle;
+import diva.util.LoggableOp;
 
 
 /**

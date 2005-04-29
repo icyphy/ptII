@@ -27,6 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jai;
 
+import java.awt.image.DataBuffer;
+import java.awt.image.renderable.ParameterBlock;
+
+import javax.media.jai.JAI;
+import javax.media.jai.RenderedOp;
+
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -35,12 +41,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-
-import java.awt.image.DataBuffer;
-import java.awt.image.renderable.ParameterBlock;
-
-import javax.media.jai.JAI;
-import javax.media.jai.RenderedOp;
 
 
 // NOTE: If you update the list of types, then you will want

@@ -28,13 +28,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import ptolemy.data.MatrixToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+
+import ptolemy.data.MatrixToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 
 
 //////////////////////////////////////////////////////////////////////////

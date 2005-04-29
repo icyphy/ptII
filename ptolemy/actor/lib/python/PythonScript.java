@@ -26,6 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.python;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Properties;
+
 import org.python.core.PyClass;
 import org.python.core.PyException;
 import org.python.core.PyJavaInstance;
@@ -33,7 +38,6 @@ import org.python.core.PyMethod;
 import org.python.core.PyObject;
 import org.python.core.PyString;
 import org.python.core.PySystemState;
-
 import org.python.util.PythonInterpreter;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -46,11 +50,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Properties;
 
 
 //////////////////////////////////////////////////////////////////////////

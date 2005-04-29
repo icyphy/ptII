@@ -26,6 +26,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.kernel;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import soot.Hierarchy;
 import soot.RefType;
 import soot.Scene;
@@ -37,19 +43,11 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
-
 import soot.jimple.FieldRef;
 import soot.jimple.InvokeExpr;
 import soot.jimple.JimpleBody;
 import soot.jimple.NewExpr;
-
 import soot.util.queue.ChunkedQueue;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 
 /** Collect all the classes that a set of classes depends on.  This includes:

@@ -27,6 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.icon;
 
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.InternalErrorException;
@@ -34,14 +37,10 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.kernel.AttributeController;
-
 import diva.canvas.interactor.SelectionDragger;
 import diva.graph.EdgeController;
 import diva.graph.GraphPane;
 import diva.graph.NodeController;
-
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
 
 
 //////////////////////////////////////////////////////////////////////////

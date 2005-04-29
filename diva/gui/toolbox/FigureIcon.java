@@ -25,10 +25,6 @@
 */
 package diva.gui.toolbox;
 
-import diva.canvas.CanvasUtilities;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.ImageFigure;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -38,6 +34,10 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
+
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.ImageFigure;
 
 
 /**

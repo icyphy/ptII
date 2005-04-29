@@ -26,16 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import soot.Pack;
-import soot.PackManager;
-
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-import soot.jimple.toolkits.typing.TypeAssigner;
-
-import soot.toolkits.scalar.LocalSplitter;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.ClassWriter;
@@ -50,6 +40,13 @@ import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.copernicus.kernel.UnusedFieldRemover;
 import ptolemy.copernicus.kernel.WatchDogTimer;
+import soot.Pack;
+import soot.PackManager;
+import soot.jimple.toolkits.scalar.CopyPropagator;
+import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.jimple.toolkits.typing.TypeAssigner;
+import soot.toolkits.scalar.LocalSplitter;
 
 
 //////////////////////////////////////////////////////////////////////////

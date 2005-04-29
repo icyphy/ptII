@@ -26,14 +26,14 @@
   */
 package diva.canvas;
 
-import diva.util.NullIterator;
-import diva.util.UnitIterator;
-
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+
+import diva.util.NullIterator;
+import diva.util.UnitIterator;
 
 
 /** A FigureDecorator is a figure container that contains a single

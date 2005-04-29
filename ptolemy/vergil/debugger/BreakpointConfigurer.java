@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.debugger;
 
+import javax.swing.BoxLayout;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
@@ -38,8 +40,6 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.BasicGraphController;
-
-import javax.swing.BoxLayout;
 
 
 //////////////////////////////////////////////////////////////////////////

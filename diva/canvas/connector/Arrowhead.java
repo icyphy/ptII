@@ -26,12 +26,12 @@
   */
 package diva.canvas.connector;
 
-import diva.util.java2d.Polygon2D;
-
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
+import diva.util.java2d.Polygon2D;
 
 
 /** An arrowhead that is drawn on the end of a connector.

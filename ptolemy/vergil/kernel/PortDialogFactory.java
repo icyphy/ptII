@@ -27,6 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel;
 
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JMenuItem;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.PortConfigurerDialog;
@@ -35,16 +43,7 @@ import ptolemy.actor.gui.UnitConstraintsDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.MenuItemFactory;
-
 import diva.gui.toolbox.JContextMenu;
-
-import java.awt.Component;
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JMenuItem;
 
 
 //////////////////////////////////////////////////////////////////////////

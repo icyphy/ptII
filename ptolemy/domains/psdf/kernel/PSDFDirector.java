@@ -26,6 +26,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.psdf.kernel;
 
+import java.util.Iterator;
+
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
@@ -33,8 +35,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -25,6 +25,10 @@
 */
 package ptolemy.copernicus.c;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+
 import soot.ArrayType;
 import soot.Local;
 import soot.RefType;
@@ -33,16 +37,11 @@ import soot.SootMethod;
 import soot.Trap;
 import soot.Type;
 import soot.Unit;
-
 import soot.jimple.GotoStmt;
 import soot.jimple.IfStmt;
 import soot.jimple.JimpleBody;
 import soot.jimple.LookupSwitchStmt;
 import soot.jimple.TableSwitchStmt;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

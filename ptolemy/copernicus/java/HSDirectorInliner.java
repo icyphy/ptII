@@ -28,28 +28,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import soot.BooleanType;
-import soot.IntType;
-import soot.Local;
-import soot.RefType;
-import soot.Scene;
-import soot.SootClass;
-import soot.SootField;
-import soot.SootMethod;
-import soot.Type;
-
-import soot.jimple.Expr;
-import soot.jimple.IntConstant;
-import soot.jimple.Jimple;
-import soot.jimple.JimpleBody;
-import soot.jimple.Stmt;
-
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-import soot.jimple.toolkits.typing.TypeResolver;
-
-import soot.toolkits.scalar.LocalSplitter;
-
-import soot.util.Chain;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -60,11 +42,24 @@ import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import soot.BooleanType;
+import soot.IntType;
+import soot.Local;
+import soot.RefType;
+import soot.Scene;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Type;
+import soot.jimple.Expr;
+import soot.jimple.IntConstant;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.Stmt;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.jimple.toolkits.typing.TypeResolver;
+import soot.toolkits.scalar.LocalSplitter;
+import soot.util.Chain;
 
 
 //////////////////////////////////////////////////////////////////////////

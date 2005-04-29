@@ -30,16 +30,6 @@
 */
 package diva.gui.tutorial;
 
-import diva.gui.AppContext;
-import diva.gui.ApplicationContext;
-import diva.gui.DefaultActions;
-import diva.gui.DefaultStoragePolicy;
-import diva.gui.DesktopContext;
-import diva.gui.Document;
-import diva.gui.GUIUtilities;
-import diva.gui.View;
-import diva.resource.RelativeBundle;
-
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.io.File;
@@ -53,6 +43,16 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.filechooser.FileFilter;
+
+import diva.gui.AppContext;
+import diva.gui.ApplicationContext;
+import diva.gui.DefaultActions;
+import diva.gui.DefaultStoragePolicy;
+import diva.gui.DesktopContext;
+import diva.gui.Document;
+import diva.gui.GUIUtilities;
+import diva.gui.View;
+import diva.resource.RelativeBundle;
 
 
 /**

@@ -25,11 +25,11 @@
 */
 package diva.gui;
 
-import diva.util.ModelWriter;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
+
+import diva.util.ModelWriter;
 
 
 /**

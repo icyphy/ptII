@@ -31,6 +31,13 @@
  */
 package diva.canvas.tutorial;
 
+import java.awt.Color;
+import java.awt.geom.Line2D;
+import java.util.HashMap;
+
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import diva.canvas.FigureLayer;
 import diva.canvas.GraphicsPane;
 import diva.canvas.JCanvas;
@@ -50,13 +57,6 @@ import diva.util.java2d.PaintedList;
 import diva.util.java2d.PaintedPath;
 import diva.util.java2d.PaintedShape;
 import diva.util.java2d.Polygon2D;
-
-import java.awt.Color;
-import java.awt.geom.Line2D;
-import java.util.HashMap;
-
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 
 /**

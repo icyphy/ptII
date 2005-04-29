@@ -26,10 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Manager;
-import ptolemy.kernel.util.StringAttribute;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -42,6 +38,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.event.HyperlinkEvent;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
+import ptolemy.kernel.util.StringAttribute;
 
 
 //////////////////////////////////////////////////////////////////////////

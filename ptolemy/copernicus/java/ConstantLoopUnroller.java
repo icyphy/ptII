@@ -26,6 +26,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import soot.Body;
 import soot.BodyTransformer;
 import soot.Local;
@@ -33,7 +37,6 @@ import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.Value;
-
 import soot.jimple.AddExpr;
 import soot.jimple.BinopExpr;
 import soot.jimple.DefinitionStmt;
@@ -41,22 +44,14 @@ import soot.jimple.IfStmt;
 import soot.jimple.IntConstant;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
-
 import soot.jimple.toolkits.scalar.Evaluator;
-
 import soot.toolkits.graph.Block;
 import soot.toolkits.graph.BlockGraph;
 import soot.toolkits.graph.CompleteBlockGraph;
 import soot.toolkits.graph.CompleteUnitGraph;
-
 import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
-
 import soot.util.Chain;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

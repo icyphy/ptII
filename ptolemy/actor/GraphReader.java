@@ -26,13 +26,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 // set up a two way dependency between ptolemy.actor and ptolemy.graph.
 package ptolemy.actor;
 
+import java.util.HashMap;
+import java.util.Iterator;
+
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
-
-import java.util.HashMap;
-import java.util.Iterator;
 
 
 ///////////////////////////////////////////////////////////////////////

@@ -29,10 +29,9 @@
 */
 package ptolemy.caltrop.util;
 
-import caltrop.interpreter.Function;
-
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import caltrop.interpreter.Function;
 
 
 //////////////////////////////////////////////////////////////////////////

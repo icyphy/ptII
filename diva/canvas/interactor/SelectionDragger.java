@@ -26,6 +26,12 @@
   */
 package diva.canvas.interactor;
 
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 import diva.canvas.Figure;
 import diva.canvas.FigureDecorator;
 import diva.canvas.FigureLayer;
@@ -36,12 +42,6 @@ import diva.canvas.event.EventLayer;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.util.CompoundIterator;
-
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
 
 /** A class that implements rubber-banding on a canvas. It contains

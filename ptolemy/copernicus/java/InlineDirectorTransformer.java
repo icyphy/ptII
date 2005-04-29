@@ -26,18 +26,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import soot.FastHierarchy;
-import soot.HasPhaseOptions;
-import soot.Hierarchy;
-import soot.Scene;
-import soot.SceneTransformer;
-import soot.SootClass;
-import soot.SootMethod;
-import soot.ValueBox;
-
-import soot.jimple.InvokeExpr;
-import soot.jimple.JimpleBody;
-import soot.jimple.Stmt;
+import java.util.Iterator;
+import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.MakefileWriter;
@@ -47,9 +37,17 @@ import ptolemy.domains.fsm.kernel.HSDirector;
 import ptolemy.domains.giotto.kernel.GiottoDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.Entity;
-
-import java.util.Iterator;
-import java.util.Map;
+import soot.FastHierarchy;
+import soot.HasPhaseOptions;
+import soot.Hierarchy;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.ValueBox;
+import soot.jimple.InvokeExpr;
+import soot.jimple.JimpleBody;
+import soot.jimple.Stmt;
 
 
 //////////////////////////////////////////////////////////////////////////

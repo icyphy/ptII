@@ -4,11 +4,11 @@
 // Modified 11/8/98 to add package statement.
 package com.microstar.xml.demo;
 
-import com.microstar.xml.XmlHandler;
-import com.microstar.xml.XmlParser;
-
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import com.microstar.xml.XmlHandler;
+import com.microstar.xml.XmlParser;
 
 
 /**

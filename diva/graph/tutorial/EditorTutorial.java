@@ -32,6 +32,15 @@
 */
 package diva.graph.tutorial;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.util.HashMap;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.basic.BasicGraphController;
@@ -43,15 +52,6 @@ import diva.graph.layout.LevelLayout;
 import diva.graph.layout.RandomLayout;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
-
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.util.HashMap;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 
 /**

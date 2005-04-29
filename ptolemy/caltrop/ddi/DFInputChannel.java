@@ -29,14 +29,13 @@
 */
 package ptolemy.caltrop.ddi;
 
-import caltrop.interpreter.InputChannel;
+import java.util.ArrayList;
+import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.caltrop.CalIOException;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.ArrayList;
-import java.util.List;
+import caltrop.interpreter.InputChannel;
 
 
 //////////////////////////////////////////////////////////////////////////

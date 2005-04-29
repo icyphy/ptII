@@ -34,7 +34,6 @@ COPYRIGHTENDKEY
  */
 package ptolemy.codegen.c.actor.lib;
 
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 

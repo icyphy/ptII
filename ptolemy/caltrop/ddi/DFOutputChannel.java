@@ -29,13 +29,12 @@
 */
 package ptolemy.caltrop.ddi;
 
-import caltrop.interpreter.OutputChannel;
-
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.caltrop.CalIOException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import caltrop.interpreter.OutputChannel;
 
 
 //////////////////////////////////////////////////////////////////////////

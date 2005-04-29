@@ -4,10 +4,10 @@
 // Modified 11/8/98 to add package statement.
 package com.microstar.xml.demo;
 
-import com.microstar.xml.XmlParser;
-
 import java.io.FileInputStream;
 import java.io.InputStream;
+
+import com.microstar.xml.XmlParser;
 
 
 /**

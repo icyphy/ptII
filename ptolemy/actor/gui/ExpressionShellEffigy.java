@@ -26,6 +26,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
+import java.net.URL;
+
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -33,8 +35,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-
-import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////

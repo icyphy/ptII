@@ -25,13 +25,13 @@
 */
 package diva.graph.layout;
 
-import diva.graph.GraphModel;
-
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+
+import diva.graph.GraphModel;
 
 
 /**

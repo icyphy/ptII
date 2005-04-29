@@ -26,6 +26,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.hoc;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.util.Iterator;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IORelation;
@@ -48,12 +54,6 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
-
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.lang.reflect.Constructor;
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

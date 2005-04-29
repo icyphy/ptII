@@ -3,6 +3,13 @@
 // $Id$
 package com.microstar.xml.driver;
 
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Locale;
+import java.util.Stack;
+import java.util.Vector;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
@@ -15,19 +22,8 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-// Ptolemy Note:  We moved SAXDriver.java into the driver subdirectory
-// because 'make fast' runs javac *.java, which was causing problems
-// because SAXDriver uses SAX, which we do not ship.
-//import org.xml.sax.Parser;
 import com.microstar.xml.XmlHandler;
 import com.microstar.xml.XmlParser;
-
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Locale;
-import java.util.Stack;
-import java.util.Vector;
 
 
 /**

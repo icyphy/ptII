@@ -26,16 +26,16 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot;
 
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.Query;
-import ptolemy.gui.QueryListener;
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Frame;
 import java.util.Vector;
 
 import javax.swing.JPanel;
+
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
 
 
 //////////////////////////////////////////////////////////////////////////

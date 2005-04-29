@@ -27,14 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.graph.sched;
 
-import ptolemy.kernel.util.InvalidStateException;
-
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import ptolemy.kernel.util.InvalidStateException;
 
 
 //////////////////////////////////////////////////////////////////////////

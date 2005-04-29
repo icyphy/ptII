@@ -26,10 +26,10 @@
   */
 package diva.canvas.interactor;
 
-import diva.canvas.event.LayerEvent;
-
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import diva.canvas.event.LayerEvent;
 
 
 /**

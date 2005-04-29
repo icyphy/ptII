@@ -26,25 +26,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import soot.FastHierarchy;
-import soot.Hierarchy;
-import soot.Local;
-import soot.Modifier;
-import soot.Scene;
-import soot.SootClass;
-import soot.SootMethod;
-
-import soot.jimple.InstanceInvokeExpr;
-import soot.jimple.InvokeExpr;
-import soot.jimple.Jimple;
-import soot.jimple.JimpleBody;
-import soot.jimple.Stmt;
-
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-
-import soot.toolkits.scalar.LocalSplitter;
-
-import soot.util.Chain;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
@@ -52,10 +36,21 @@ import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.Entity;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import soot.FastHierarchy;
+import soot.Hierarchy;
+import soot.Local;
+import soot.Modifier;
+import soot.Scene;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.jimple.InstanceInvokeExpr;
+import soot.jimple.InvokeExpr;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.Stmt;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.toolkits.scalar.LocalSplitter;
+import soot.util.Chain;
 
 
 //////////////////////////////////////////////////////////////////////////

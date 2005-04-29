@@ -25,12 +25,12 @@
 */
 package diva.canvas.interactor;
 
-import diva.canvas.Figure;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.event.EventListenerList;
+
+import diva.canvas.Figure;
 
 
 /**

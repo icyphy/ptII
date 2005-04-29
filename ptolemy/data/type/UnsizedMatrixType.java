@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.type;
 
+import java.io.Serializable;
+
 import ptolemy.data.BooleanMatrixToken;
 import ptolemy.data.ComplexMatrixToken;
 import ptolemy.data.DoubleMatrixToken;
@@ -38,8 +40,6 @@ import ptolemy.data.Token;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-
-import java.io.Serializable;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,9 +27,7 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.x10;
 
-import x10.Command;
-import x10.UnitEvent;
-import x10.UnitListener;
+import java.util.LinkedList;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -39,8 +37,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.LinkedList;
+import x10.Command;
+import x10.UnitEvent;
+import x10.UnitListener;
 
 
 //////////////////////////////////////////////////////////////////////////

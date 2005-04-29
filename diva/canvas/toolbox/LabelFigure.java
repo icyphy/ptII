@@ -25,11 +25,6 @@
 */
 package diva.canvas.toolbox;
 
-import diva.canvas.AbstractFigure;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.TransformContext;
-import diva.util.java2d.ShapeUtilities;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -44,6 +39,11 @@ import java.awt.geom.Rectangle2D;
 import java.util.StringTokenizer;
 
 import javax.swing.SwingConstants;
+
+import diva.canvas.AbstractFigure;
+import diva.canvas.CanvasUtilities;
+import diva.canvas.TransformContext;
+import diva.util.java2d.ShapeUtilities;
 
 
 /**

@@ -26,33 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.shallow;
 
-import soot.Body;
-import soot.HasPhaseOptions;
-import soot.Hierarchy;
-import soot.Local;
-import soot.Modifier;
-import soot.PhaseOptions;
-import soot.RefType;
-import soot.Scene;
-import soot.SceneTransformer;
-import soot.SootClass;
-import soot.SootMethod;
-import soot.Type;
-import soot.Unit;
-import soot.Value;
-import soot.ValueBox;
-
-import soot.jimple.IntConstant;
-import soot.jimple.Jimple;
-import soot.jimple.JimpleBody;
-import soot.jimple.SpecialInvokeExpr;
-import soot.jimple.StringConstant;
-
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-
-import soot.toolkits.scalar.LocalSplitter;
-
-import soot.util.Chain;
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -76,12 +54,29 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
-
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
+import soot.Body;
+import soot.HasPhaseOptions;
+import soot.Hierarchy;
+import soot.Local;
+import soot.Modifier;
+import soot.PhaseOptions;
+import soot.RefType;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.jimple.IntConstant;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.SpecialInvokeExpr;
+import soot.jimple.StringConstant;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.toolkits.scalar.LocalSplitter;
+import soot.util.Chain;
 
 
 //////////////////////////////////////////////////////////////////////////

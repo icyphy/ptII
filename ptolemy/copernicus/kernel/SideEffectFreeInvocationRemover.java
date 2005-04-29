@@ -26,6 +26,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.kernel;
 
+import java.util.Iterator;
+import java.util.Map;
+
 import soot.Body;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -33,24 +36,17 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.Unit;
 import soot.Value;
-
 import soot.jimple.DefinitionStmt;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.VirtualInvokeExpr;
-
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Targets;
-
 import soot.toolkits.graph.CompleteUnitGraph;
-
 import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
-
-import java.util.Iterator;
-import java.util.Map;
 
 
 /**

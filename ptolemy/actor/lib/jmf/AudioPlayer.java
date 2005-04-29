@@ -28,13 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jmf;
 
-import ptolemy.actor.lib.Sink;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
 import java.awt.Component;
 import java.awt.Container;
 import java.io.IOException;
@@ -47,6 +40,13 @@ import javax.media.Player;
 import javax.media.Time;
 import javax.media.protocol.DataSource;
 import javax.swing.JFrame;
+
+import ptolemy.actor.lib.Sink;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 
 //////////////////////////////////////////////////////////////////////////

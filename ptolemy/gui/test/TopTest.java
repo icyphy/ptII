@@ -26,11 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.gui.test;
 
-import ptolemy.gui.Top;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+
+import ptolemy.gui.Top;
 
 
 //////////////////////////////////////////////////////////////////////////

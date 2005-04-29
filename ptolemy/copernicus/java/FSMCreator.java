@@ -26,31 +26,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import soot.BooleanType;
-import soot.FastHierarchy;
-import soot.Hierarchy;
-import soot.IntType;
-import soot.Local;
-import soot.Modifier;
-import soot.RefType;
-import soot.Scene;
-import soot.SootClass;
-import soot.SootField;
-import soot.SootMethod;
-import soot.Type;
-import soot.VoidType;
-
-import soot.jimple.IntConstant;
-import soot.jimple.Jimple;
-import soot.jimple.JimpleBody;
-import soot.jimple.Stmt;
-import soot.jimple.StringConstant;
-
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-
-import soot.toolkits.scalar.LocalSplitter;
-
-import soot.util.Chain;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedActor;
@@ -70,13 +51,27 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import soot.BooleanType;
+import soot.FastHierarchy;
+import soot.Hierarchy;
+import soot.IntType;
+import soot.Local;
+import soot.Modifier;
+import soot.RefType;
+import soot.Scene;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Type;
+import soot.VoidType;
+import soot.jimple.IntConstant;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.Stmt;
+import soot.jimple.StringConstant;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.toolkits.scalar.LocalSplitter;
+import soot.util.Chain;
 
 
 //////////////////////////////////////////////////////////////////////////

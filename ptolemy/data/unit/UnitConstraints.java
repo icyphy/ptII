@@ -28,15 +28,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.unit;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
 
 
 ///////////////////////////////////////////////////////////////////////////

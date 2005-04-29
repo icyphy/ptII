@@ -27,9 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.kernel;
 
-import ptolemy.data.DoubleMatrixToken;
-
 import java.awt.Color;
+
+import ptolemy.data.DoubleMatrixToken;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -28,10 +28,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.kernel.util.test;
 
-import ptolemy.kernel.util.Workspace;
-
 import java.util.LinkedList;
 import java.util.List;
+
+import ptolemy.kernel.util.Workspace;
 
 
 //////////////////////////////////////////////////////////////////////////

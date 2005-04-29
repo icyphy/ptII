@@ -27,6 +27,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel.attributes;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.FileParameter;
@@ -40,10 +44,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ImageIcon;
-
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////

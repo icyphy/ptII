@@ -28,12 +28,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import soot.SootClass;
+import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.Map;
+import soot.SootClass;
 
 
 //////////////////////////////////////////////////////////////////////////

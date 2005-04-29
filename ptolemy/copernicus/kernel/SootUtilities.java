@@ -26,6 +26,20 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.kernel;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
+import ptolemy.data.StringToken;
+import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.util.StringUtilities;
 import soot.ArrayType;
 import soot.Body;
 import soot.BooleanType;
@@ -51,7 +65,6 @@ import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
-
 import soot.jimple.ArrayRef;
 import soot.jimple.CastExpr;
 import soot.jimple.Constant;
@@ -80,36 +93,17 @@ import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
 import soot.jimple.ThisRef;
 import soot.jimple.VirtualInvokeExpr;
-
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.invoke.SynchronizerManager;
 import soot.jimple.toolkits.scalar.Evaluator;
-
 import soot.toolkits.graph.Block;
 import soot.toolkits.graph.BlockGraph;
 import soot.toolkits.graph.CompleteBlockGraph;
 import soot.toolkits.graph.CompleteUnitGraph;
-
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
-
 import soot.util.Chain;
-
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.LongToken;
-import ptolemy.data.StringToken;
-import ptolemy.kernel.util.KernelRuntimeException;
-import ptolemy.util.StringUtilities;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

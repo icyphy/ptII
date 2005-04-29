@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.util;
 
+import java.util.Comparator;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.data.BooleanToken;
@@ -40,8 +42,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-
-import java.util.Comparator;
 
 
 ///////////////////////////////////////////////////////////

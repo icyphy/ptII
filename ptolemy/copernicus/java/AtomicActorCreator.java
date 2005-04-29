@@ -26,12 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import soot.SootClass;
+import java.util.Map;
 
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.kernel.Entity;
-
-import java.util.Map;
+import soot.SootClass;
 
 
 //////////////////////////////////////////////////////////////////////////

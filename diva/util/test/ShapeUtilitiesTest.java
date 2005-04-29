@@ -25,6 +25,13 @@
 */
 package diva.util.test;
 
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
+
 import diva.util.java2d.Polygon2D;
 import diva.util.java2d.Polyline2D;
 import diva.util.java2d.ShapeUtilities;
@@ -33,13 +40,6 @@ import diva.util.jester.TestFailedException;
 import diva.util.jester.TestHarness;
 import diva.util.jester.TestSuite;
 import diva.util.jester.TestUtilities;
-
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
 
 
 /**

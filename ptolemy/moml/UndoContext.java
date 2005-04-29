@@ -26,10 +26,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.moml;
 
+import java.util.Stack;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-
-import java.util.Stack;
 
 
 //////////////////////////////////////////////////////////////////////////

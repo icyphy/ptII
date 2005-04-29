@@ -25,11 +25,11 @@
 */
 package diva.canvas.toolbox;
 
+import java.util.Hashtable;
+
 import diva.canvas.CanvasComponent;
 import diva.canvas.Figure;
 import diva.canvas.FigureDecorator;
-
-import java.util.Hashtable;
 
 
 /**

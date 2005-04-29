@@ -28,6 +28,9 @@ Semantics of initialize(Actor) have changed.
 */
 package ptolemy.actor.process;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -41,9 +44,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

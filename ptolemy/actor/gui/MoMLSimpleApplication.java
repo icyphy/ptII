@@ -28,6 +28,8 @@
 */
 package ptolemy.actor.gui;
 
+import java.io.File;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
@@ -36,8 +38,6 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
-
-import java.io.File;
 
 
 //////////////////////////////////////////////////////////////////////////

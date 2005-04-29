@@ -27,6 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.fsm;
 
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.KeyStroke;
+
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.State;
@@ -41,21 +50,11 @@ import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-
 import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.NodeRenderer;
 import diva.gui.GUIUtilities;
-
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.KeyStroke;
 
 
 //////////////////////////////////////////////////////////////////////////

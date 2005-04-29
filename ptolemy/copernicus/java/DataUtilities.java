@@ -26,18 +26,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import soot.Local;
-import soot.RefType;
-import soot.SootClass;
-import soot.SootField;
-import soot.Unit;
-
-import soot.jimple.Jimple;
-import soot.jimple.JimpleBody;
-import soot.jimple.Stmt;
-import soot.jimple.StringConstant;
-
-import soot.util.Chain;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
 
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -49,10 +40,16 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import soot.Local;
+import soot.RefType;
+import soot.SootClass;
+import soot.SootField;
+import soot.Unit;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.Stmt;
+import soot.jimple.StringConstant;
+import soot.util.Chain;
 
 
 //////////////////////////////////////////////////////////////////////////

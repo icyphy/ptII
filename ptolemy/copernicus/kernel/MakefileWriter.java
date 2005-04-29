@@ -26,9 +26,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.kernel;
 
-import soot.HasPhaseOptions;
-import soot.PhaseOptions;
-import soot.SceneTransformer;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.JNLPUtilities;
@@ -36,13 +39,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import soot.HasPhaseOptions;
+import soot.PhaseOptions;
+import soot.SceneTransformer;
 
 
 /**

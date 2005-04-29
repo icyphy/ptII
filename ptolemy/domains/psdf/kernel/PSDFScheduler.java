@@ -27,13 +27,17 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.psdf.kernel;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import mapss.dif.psdf.PSDFAPGANStrategy;
 import mapss.dif.psdf.PSDFEdgeWeight;
 import mapss.dif.psdf.PSDFGraph;
 import mapss.dif.psdf.PSDFGraphReader;
 import mapss.dif.psdf.PSDFGraphs;
 import mapss.dif.psdf.PSDFNodeWeight;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -64,11 +68,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 
 ///////////////////////////////////////////////////////////

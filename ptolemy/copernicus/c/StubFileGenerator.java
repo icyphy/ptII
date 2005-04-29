@@ -30,9 +30,9 @@
 */
 package ptolemy.copernicus.c;
 
-import soot.SootClass;
-
 import java.util.Iterator;
+
+import soot.SootClass;
 
 
 /** A C code generator for generating "stub header files"

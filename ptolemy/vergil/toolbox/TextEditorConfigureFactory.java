@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.toolbox;
 
+import java.awt.Frame;
+
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -36,8 +38,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
-
-import java.awt.Frame;
 
 
 //////////////////////////////////////////////////////////////////////////

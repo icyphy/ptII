@@ -28,6 +28,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.actor.lib;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.gui.Configuration;
@@ -47,9 +50,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

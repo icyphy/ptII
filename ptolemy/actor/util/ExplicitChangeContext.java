@@ -27,11 +27,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.util;
 
+import java.util.List;
+
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
-
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

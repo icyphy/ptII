@@ -27,11 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.util;
 
-import org.w3c.dom.Document;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -52,6 +47,10 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 
 //////////////////////////////////////////////////////////////////////////

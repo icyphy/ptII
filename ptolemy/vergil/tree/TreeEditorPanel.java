@@ -29,16 +29,16 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.tree;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLParser;
-
 import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.TreeCellRenderer;
+
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLParser;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -24,15 +24,15 @@
   COPYRIGHTENDKEY
 */
 package diva.graph.layout;
-import diva.graph.GraphModel;
-import diva.graph.GraphUtilities;
-import diva.graph.basic.BasicGraphModel;
-import diva.util.ArrayIterator;
-
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import diva.graph.GraphModel;
+import diva.graph.GraphUtilities;
+import diva.graph.basic.BasicGraphModel;
+import diva.util.ArrayIterator;
 
 /**
  * A level-based  layout algorithm originally implemented

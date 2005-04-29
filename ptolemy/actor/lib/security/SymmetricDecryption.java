@@ -27,15 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.security;
 
+import java.io.ByteArrayOutputStream;
+
+import javax.crypto.Cipher;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-
-import java.io.ByteArrayOutputStream;
-
-import javax.crypto.Cipher;
 
 
 //////////////////////////////////////////////////////////////////////////

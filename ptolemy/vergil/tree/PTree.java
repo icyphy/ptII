@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.tree;
 
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.toolbox.PtolemyTransferable;
-
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.dnd.DnDConstants;
@@ -45,6 +42,9 @@ import java.awt.dnd.DragSourceListener;
 import javax.swing.JTree;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
+
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.toolbox.PtolemyTransferable;
 
 
 /**

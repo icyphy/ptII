@@ -28,13 +28,13 @@
 */
 package ptolemy.actor.gui;
 
+import java.awt.Component;
+import java.util.Iterator;
+
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
-import java.awt.Component;
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

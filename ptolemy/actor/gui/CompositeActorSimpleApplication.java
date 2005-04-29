@@ -28,6 +28,10 @@
 */
 package ptolemy.actor.gui;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
@@ -37,10 +41,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.moml.MoMLParser;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 
 /////////////////////////////////////////////////////////////////

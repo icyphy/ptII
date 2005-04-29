@@ -29,6 +29,11 @@
 */
 package ptolemy.actor.util;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.graph.DirectedGraph;
@@ -40,11 +45,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

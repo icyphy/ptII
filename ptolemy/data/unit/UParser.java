@@ -28,9 +28,9 @@
 
 package ptolemy.data.unit;
 
-import ptolemy.kernel.util.*;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.Vector;
-import java.io.*;
 
 //////////////////////////////////////////////////////////////////////
 //// UParser.jj

@@ -26,6 +26,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.csp.demo.DiningPhilosophers.checkDeadlock;
 
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton;
@@ -33,10 +37,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLParser;
-
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

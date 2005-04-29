@@ -28,6 +28,11 @@
 */
 package ptolemy.actor.lib.image;
 
+import java.awt.Image;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
+
 import ptolemy.actor.lib.Source;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.expr.FileParameter;
@@ -36,11 +41,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.Image;
-import java.net.URL;
-
-import javax.swing.ImageIcon;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -31,11 +31,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot.compat;
 
-import ptolemy.plot.CmdLineArgException;
-import ptolemy.plot.Plot;
-import ptolemy.plot.PlotApplication;
-import ptolemy.plot.PlotBox;
-
 import java.awt.Point;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,6 +40,11 @@ import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+
+import ptolemy.plot.CmdLineArgException;
+import ptolemy.plot.Plot;
+import ptolemy.plot.PlotApplication;
+import ptolemy.plot.PlotBox;
 
 
 //////////////////////////////////////////////////////////////////////////

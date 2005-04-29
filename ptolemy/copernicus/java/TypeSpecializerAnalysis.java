@@ -26,6 +26,26 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import ptolemy.actor.TypedIOPort;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MonotonicFunction;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.data.type.UnsizedMatrixType;
+import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalitySolver;
+import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import soot.Body;
 import soot.Local;
 import soot.RefType;
@@ -37,7 +57,6 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
-
 import soot.jimple.ArrayRef;
 import soot.jimple.AssignStmt;
 import soot.jimple.BinopExpr;
@@ -56,34 +75,11 @@ import soot.jimple.NewMultiArrayExpr;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.UnopExpr;
-
 import soot.toolkits.graph.CompleteUnitGraph;
-
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.LocalUses;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
-
-import ptolemy.actor.TypedIOPort;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.MonotonicFunction;
-import ptolemy.data.type.TypeLattice;
-import ptolemy.data.type.UnsizedMatrixType;
-import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalitySolver;
-import ptolemy.graph.InequalityTerm;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -26,6 +26,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.data.type.BaseType;
 import soot.Body;
 import soot.BodyTransformer;
 import soot.HasPhaseOptions;
@@ -37,21 +45,10 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
-
 import soot.jimple.CastExpr;
 import soot.jimple.InstanceOfExpr;
 import soot.jimple.JimpleBody;
-
 import soot.toolkits.graph.CompleteUnitGraph;
-
-import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.data.type.BaseType;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

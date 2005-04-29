@@ -26,8 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot.demo;
 
-import ptolemy.plot.Plot;
-
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
@@ -37,6 +35,8 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import ptolemy.plot.Plot;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,6 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.tree;
 
+import java.awt.Component;
+import java.util.List;
+
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -36,12 +42,6 @@ import ptolemy.moml.Documentation;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
-
-import java.awt.Component;
-import java.util.List;
-
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
 
 
 /**

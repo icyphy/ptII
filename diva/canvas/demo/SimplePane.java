@@ -26,6 +26,11 @@
   */
 package diva.canvas.demo;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+
 import diva.canvas.FigureLayer;
 import diva.canvas.GraphicsPane;
 import diva.canvas.interactor.SelectionInteractor;
@@ -35,11 +40,6 @@ import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.util.java2d.Polygon2D;
 import diva.util.java2d.ShapeUtilities;
-
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 
 
 /** A pane containing instances of some basic figures. The

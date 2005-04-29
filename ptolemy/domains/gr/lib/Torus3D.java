@@ -27,6 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
+import javax.media.j3d.Node;
+import javax.media.j3d.Shape3D;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -38,9 +41,6 @@ import com.sun.j3d.utils.geometry.GeometryInfo;
 import com.sun.j3d.utils.geometry.NormalGenerator;
 import com.sun.j3d.utils.geometry.Stripifier;
 import com.sun.j3d.utils.geometry.Triangulator;
-
-import javax.media.j3d.Node;
-import javax.media.j3d.Shape3D;
 
 
 //////////////////////////////////////////////////////////////////////////

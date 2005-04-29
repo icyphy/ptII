@@ -30,6 +30,10 @@
 */
 package diva.canvas.tutorial;
 
+import java.awt.Color;
+
+import javax.swing.SwingUtilities;
+
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
@@ -40,10 +44,6 @@ import diva.canvas.toolbox.BasicController;
 import diva.canvas.toolbox.BasicEllipse;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;
-
-import java.awt.Color;
-
-import javax.swing.SwingUtilities;
 
 
 /**

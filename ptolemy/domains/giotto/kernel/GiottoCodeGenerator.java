@@ -29,6 +29,8 @@ package ptolemy.domains.giotto.kernel;
 
 
 // Ptolemy imports.
+import java.awt.Frame;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
@@ -44,8 +46,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-
-import java.awt.Frame;
 
 
 //////////////////////////////////////////////////////////////////////////

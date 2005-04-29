@@ -28,13 +28,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.expr;
 
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NamedObj;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.NamedObj;
 
 
 //////////////////////////////////////////////////////////////////////////

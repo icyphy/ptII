@@ -31,9 +31,9 @@ package ptolemy.apps.cacheAwareScheduler.kernel;
 
 
 // Ptolemy imports
-import ptolemy.kernel.util.IllegalActionException;
-
 import java.util.ArrayList;
+
+import ptolemy.kernel.util.IllegalActionException;
 
 
 ///////////////////////////////////////////////////////////////////////////

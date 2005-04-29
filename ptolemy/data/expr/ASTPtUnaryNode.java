@@ -27,9 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.expr;
 
-import ptolemy.kernel.util.IllegalActionException;
-
 import java.util.Map;
+
+import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,6 +27,15 @@ COPYRIGHTENDKEY
 */
 package jni;
 
+import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -50,15 +59,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
-
-import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,13 +27,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.moml.MoMLParser;
-import ptolemy.util.MessageHandler;
-
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.moml.MoMLParser;
+import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////

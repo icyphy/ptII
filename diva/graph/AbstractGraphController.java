@@ -28,16 +28,16 @@
 */
 package diva.graph;
 
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.canvas.interactor.BasicSelectionModel;
-import diva.canvas.interactor.SelectionModel;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.interactor.BasicSelectionModel;
+import diva.canvas.interactor.SelectionModel;
 
 
 /**

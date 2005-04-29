@@ -26,11 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.actor;
 
-import soot.Pack;
-import soot.PackManager;
-
-import soot.jimple.toolkits.typing.TypeAssigner;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.java.InlineDirectorTransformer;
 import ptolemy.copernicus.java.ModelTransformer;
@@ -43,6 +38,9 @@ import ptolemy.copernicus.kernel.LibraryUsageReporter;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.copernicus.kernel.WatchDogTimer;
 import ptolemy.kernel.util.IllegalActionException;
+import soot.Pack;
+import soot.PackManager;
+import soot.jimple.toolkits.typing.TypeAssigner;
 
 
 //////////////////////////////////////////////////////////////////////////

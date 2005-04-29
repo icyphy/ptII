@@ -26,6 +26,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.hoc;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Iterator;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
@@ -35,10 +39,6 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

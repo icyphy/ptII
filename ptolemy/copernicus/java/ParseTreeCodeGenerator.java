@@ -27,31 +27,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.copernicus.java;
 
-import soot.ArrayType;
-import soot.BooleanType;
-import soot.ByteType;
-import soot.DoubleType;
-import soot.IntType;
-import soot.Local;
-import soot.LongType;
-import soot.Modifier;
-import soot.RefType;
-import soot.Scene;
-import soot.SootClass;
-import soot.SootField;
-import soot.SootMethod;
-import soot.Type;
-import soot.Unit;
-import soot.VoidType;
-
-import soot.jimple.Constant;
-import soot.jimple.IntConstant;
-import soot.jimple.Jimple;
-import soot.jimple.JimpleBody;
-import soot.jimple.Stmt;
-import soot.jimple.StringConstant;
-
-import soot.util.Chain;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
@@ -85,15 +68,29 @@ import ptolemy.data.type.RecordType;
 import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import soot.ArrayType;
+import soot.BooleanType;
+import soot.ByteType;
+import soot.DoubleType;
+import soot.IntType;
+import soot.Local;
+import soot.LongType;
+import soot.Modifier;
+import soot.RefType;
+import soot.Scene;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Type;
+import soot.Unit;
+import soot.VoidType;
+import soot.jimple.Constant;
+import soot.jimple.IntConstant;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.Stmt;
+import soot.jimple.StringConstant;
+import soot.util.Chain;
 
 
 //////////////////////////////////////////////////////////////////////////

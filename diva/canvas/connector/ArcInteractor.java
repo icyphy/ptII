@@ -26,10 +26,10 @@
   */
 package diva.canvas.connector;
 
+import java.awt.geom.Point2D;
+
 import diva.canvas.Site;
 import diva.canvas.event.LayerEvent;
-
-import java.awt.geom.Point2D;
 
 
 /** An interactor for dragging either end of an arc connector and for

@@ -28,13 +28,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.graph;
 
-import ptolemy.graph.analysis.TransitiveClosureAnalysis;
-import ptolemy.graph.analysis.strategy.CachedStrategy;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
+
+import ptolemy.graph.analysis.TransitiveClosureAnalysis;
+import ptolemy.graph.analysis.strategy.CachedStrategy;
 
 
 //////////////////////////////////////////////////////////////////////////

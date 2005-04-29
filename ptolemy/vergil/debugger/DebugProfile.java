@@ -27,10 +27,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.debugger;
 
+import java.util.HashSet;
+
 import ptolemy.actor.FiringEvent.FiringEventType;
 import ptolemy.vergil.basic.BasicGraphController;
-
-import java.util.HashSet;
 
 
 //////////////////////////////////////////////////////////////////////////

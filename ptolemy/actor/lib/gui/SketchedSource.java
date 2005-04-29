@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.gui;
 
+import java.awt.Container;
+
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
@@ -48,8 +50,6 @@ import ptolemy.plot.EditListener;
 import ptolemy.plot.EditablePlot;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
-
-import java.awt.Container;
 
 
 //////////////////////////////////////////////////////////////////////////

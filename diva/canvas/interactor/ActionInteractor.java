@@ -26,12 +26,12 @@
   */
 package diva.canvas.interactor;
 
-import diva.canvas.event.LayerEvent;
-import diva.canvas.event.MouseFilter;
-
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
+
+import diva.canvas.event.LayerEvent;
+import diva.canvas.event.MouseFilter;
 
 
 /**

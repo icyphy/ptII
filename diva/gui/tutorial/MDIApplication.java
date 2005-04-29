@@ -30,15 +30,15 @@
 */
 package diva.gui.tutorial;
 
+import java.util.HashMap;
+
+import javax.swing.JComponent;
+
 import diva.gui.Document;
 import diva.gui.MDIContext;
 import diva.gui.View;
 import diva.gui.ViewAdapter;
 import diva.gui.ViewEvent;
-
-import java.util.HashMap;
-
-import javax.swing.JComponent;
 
 
 /**

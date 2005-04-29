@@ -26,11 +26,6 @@
   */
 package diva.canvas;
 
-import diva.canvas.event.EventAcceptor;
-import diva.canvas.event.LayerEvent;
-import diva.canvas.interactor.Interactor;
-import diva.canvas.interactor.SelectionInteractor;
-
 import java.awt.AWTEvent;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -38,6 +33,11 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
+import diva.canvas.event.EventAcceptor;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.interactor.Interactor;
+import diva.canvas.interactor.SelectionInteractor;
 
 
 /** A figure that wraps a whole canvas pane.  This class is thus one
