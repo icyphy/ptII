@@ -63,7 +63,7 @@ public class ASTBuilder {
      */
     public static CompilationUnit parse(char[] source)
             throws ASTMalformedException {
-        ASTParser parser = ASTParser.newParser(AST.JLS2);   // Java 1.4
+        ASTParser parser = ASTParser.newParser(LEVEL);   // Java 1.4
         parser.setSource(source);
         CompilationUnit ast = (CompilationUnit)parser.createAST(null);
         if ((ast.getFlags() & CompilationUnit.MALFORMED) != 0)
@@ -94,4 +94,6 @@ public class ASTBuilder {
             throw new ASTMalformedException(fileName);
         }
     }
+    
+    public static int LEVEL = AST.JLS2;
 }
