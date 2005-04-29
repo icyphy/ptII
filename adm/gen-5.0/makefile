@@ -181,7 +181,11 @@ $(PTIIDIST):
 	#@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
 	#(cd $(PTIIHOME)/ptolemy/actor/lib/javasound; make jars)
 	(cd $(PTIIHOME); \
-		$(TAR) -c --no-anchored -X $(GENDIR)/src.ex -X $(GENDIR)/src1.ex \
+		$(TAR) -c --no-anchored \
+			--exclude="CVS" \
+			--exclude="*codeDoc*" \
+			-X $(GENDIR)/src.ex \
+			-X $(GENDIR)/src1.ex \
 		$ -f - $(PTII_TOPDIR) )| \
 		(cd $@; $(TAR) -xpf -)
 	@echo "Removing codeDoc directories and other documentation"
