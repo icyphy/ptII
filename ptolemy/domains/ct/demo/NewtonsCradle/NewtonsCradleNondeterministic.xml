@@ -111,13 +111,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 921, 702}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 866, 702}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[706, 584]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[651, 584]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{353.0, 292.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.5, 292.0}">
     </property>
     <property name="initialTheta_2" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -580,7 +580,7 @@ inside the modal model to see more detailed explanation.
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 455.0]">
         </property>
         <port name="x_1" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -1198,7 +1198,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[525, 242]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 455.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1219,7 +1219,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
         </configure>
     </entity>
     <entity name="Graphic Animation" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 540.0]">
         </property>
         <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -1697,7 +1697,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <link port="InstanceOfBall3.theta" relation="relation4"/>
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 530.0]">
         </property>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">

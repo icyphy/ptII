@@ -111,13 +111,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, -1, 917, 668}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, -1, 900, 668}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[702, 550]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[685, 550]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{351.0, 275.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.5, 275.0}">
     </property>
     <property name="initialTheta_2" class="ptolemy.data.expr.Parameter" value="-PI/16">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -208,7 +208,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the ModalModel to&#10;see how this is implemented.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 465.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -238,14 +238,15 @@ different velocities. Therefore, the collisions between ball
 time. This indicates that the momentum transfer process takes 
 a non-zero time, which makes the balls' dynaimcs complicated.
 
-In particular, because ball #2 has a smaller initial angle than that
-of ball #1, its period is smaller. Therefore, ball #2 is always the 
-one that starts the momentum transfer process. Suppose ball #3 is 
-stationary at the beginning of the process, ball #2 first exchanges 
-velocities with ball #3, then with ball #1, then with ball #3 again. 
+In particular, because ball #2 has a smaller initial angle than
+that of ball #1, its period is smaller. Therefore, ball #2 is
+always the one that starts the momentum transfer process. Suppose
+ball #3 is stationary at the beginning of the process, ball #2 
+first exchanges velocities with ball #3, then with ball #1, then
+with ball #3 again. 
 Zoom in the velocities plot to see what actually happens.</text></svg></configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 0.0]">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
@@ -253,7 +254,7 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
         </property>
     </property>
     <class name="ballClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 430.0]">
         </property>
         <property name="acceleration" class="ptolemy.data.expr.Parameter" value="acceleration">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -581,7 +582,7 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 435.0]">
         </property>
         <port name="x_1" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -1146,7 +1147,7 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 215]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 435.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1167,7 +1168,7 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[525, 216]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 435.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1188,7 +1189,7 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
         </configure>
     </entity>
     <entity name="Graphic Animation" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 500.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 510.0]">
         </property>
         <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -1666,31 +1667,31 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <link port="InstanceOfBall3.theta" relation="relation4"/>
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 500.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 510.0]">
         </property>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[505.0, 415.0]">
-        </vertex>
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[505.0, 425.0]">
         </vertex>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[505.0, 435.0]">
         </vertex>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[505.0, 445.0]">
+        </vertex>
+    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[310.0, 435.0]">
+        <vertex name="vertex1" value="[310.0, 445.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[310.0, 415.0]">
+        <vertex name="vertex1" value="[310.0, 425.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[310.0, 425.0]">
+        <vertex name="vertex1" value="[310.0, 435.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
