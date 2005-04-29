@@ -93,7 +93,7 @@ public class Transformer {
             // Parse command-line options.
             int start = 0;
             while (start < args.length) {
-                int newPosition = _parseArguments(args, start);
+                int newPosition = parseArguments(args, start);
                 if (newPosition != start)
                     start = newPosition;
                 else
@@ -284,10 +284,40 @@ public class Transformer {
     public static void transform(String fileName, Writer writer,
             String[] classPaths, String[] crossAnalyzedTypes)
             throws IOException, ASTMalformedException {
+        transform(fileName, null, writer, classPaths, crossAnalyzedTypes);
+    }
+    
+    /** Transform the AST with given class paths, and output the result to
+     *  the writer.
+     *  <p>
+     *  If a output directory is set with the <tt>-output</tt>
+     *  command-line argument, the output is written to a Java source
+     *  file with that directory as the root directory. The given
+     *  writer is not used in that case.
+     *
+     *  @param fileName The Java file name.
+     *  @param ast The AST to be refactored.
+     *  @param writer The writer where output is written.
+     *  @param classPaths The class paths.
+     *  @param crossAnalyzedTypes The array of names of types to be added to
+     *   the visitor's cross-analyzed types list.
+     *  @exception IOException If IO exception occurs when reading from
+     *   the Java file or riting to the output.
+     *  @exception ASTMalformedException If the Java source is illegal.
+     *  @see #transform(String, Writer)
+     */
+    public static void transform(String fileName, CompilationUnit ast,
+            Writer writer, String[] classPaths, String[] crossAnalyzedTypes)
+            throws IOException, ASTMalformedException {
         boolean needClose = false;
 
         Transformer transform = new Transformer(fileName, classPaths);
 
+        if (ast == null)
+            transform._parse();
+        else
+            transform._ast = ast;
+        
         if (crossAnalyzedTypes != null)
             transform._visitor.addCrossAnalyzedTypes(crossAnalyzedTypes);
 
@@ -416,7 +446,7 @@ public class Transformer {
      *  @param position The starting position.
      *  @return The new position.
      */
-    protected static int _parseArguments(String[] args, int position) {
+    public static int parseArguments(String[] args, int position) {
         String arg = args[position];
         if (arg.equals("-classpath") || arg.equals("-cp")) {
             position++;
@@ -466,7 +496,6 @@ public class Transformer {
      */
     protected void _startTransform()
             throws IOException, ASTMalformedException {
-        _parse();
         _beforeTraverse();
         _ast.accept(_visitor);
         _afterTraverse();
