@@ -2,10 +2,6 @@ package ptolemy.backtrack.plugin.preferences;
 
 import java.io.File;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -17,6 +13,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import ptolemy.backtrack.plugin.EclipsePlugin;
+import ptolemy.backtrack.plugin.widgets.DirectoryFieldEditor;
 
 /**
  * This class represents a preference page that
@@ -49,12 +46,11 @@ public class PtolemyPreferencePage
 	 * restore itself.
 	 */
 	public void createFieldEditors() {
-        _setDefault();
-        
         Composite parent = getFieldEditorParent();
         
-		addField(new DirectoryFieldEditor(PreferenceConstants.PTII, 
-				"&Ptolemy home:", getFieldEditorParent()) {
+        DirectoryFieldEditor directoryFieldEditor =
+            new DirectoryFieldEditor(PreferenceConstants.PTII, 
+                "&Ptolemy home:", getFieldEditorParent()) {
             protected void fireValueChanged(String property, Object oldValue,
                     Object newValue) {
                 if (property == VALUE && isValid()) {
@@ -70,7 +66,9 @@ public class PtolemyPreferencePage
                 }
                 super.fireValueChanged(property, oldValue, newValue);
             }
-        });
+        };
+        
+		addField(directoryFieldEditor);
         
         Label space = new Label(parent, 0);
         GridData gridData = new GridData();
@@ -91,29 +89,4 @@ public class PtolemyPreferencePage
 
 	public void init(IWorkbench workbench) {
 	}
-    
-    private void _setDefault() {
-        IPreferenceStore store = EclipsePlugin.getDefault()
-        .getPreferenceStore();
-
-        IProject ptIIProject =
-            ResourcesPlugin.getWorkspace().getRoot().getProject("ptII");
-        if (ptIIProject.exists()) {
-            store.setDefault(PreferenceConstants.PTII,
-                    ptIIProject.getLocation().toOSString());
-            
-            IFile sourceList = ptIIProject.getFile(
-                    "ptolemy/backtrack/automatic/source.lst");
-            if (sourceList.exists())
-                store.setDefault(PreferenceConstants.BACKTRACK_SOURCE_LIST,
-                        sourceList.getLocation().toOSString());
-            
-            store.setDefault(PreferenceConstants.BACKTRACK_ROOT,
-                    ptIIProject.getLocation().toOSString());
-            
-            store.setDefault(PreferenceConstants.BACKTRACK_PREFIX,
-                    "ptolemy.backtrack.automatic");
-        }
-    }
-	
 }

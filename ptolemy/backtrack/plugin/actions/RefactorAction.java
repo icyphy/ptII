@@ -17,7 +17,6 @@ import ptolemy.backtrack.plugin.EclipsePlugin;
 import ptolemy.backtrack.plugin.console.OutputConsole;
 import ptolemy.backtrack.plugin.preferences.PreferenceConstants;
 import ptolemy.backtrack.plugin.util.Environment;
-import ptolemy.backtrack.util.PathFinder;
 
 /**
  * Our sample action implements workbench action delegate.
@@ -42,60 +41,33 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
      * @see IWorkbenchWindowActionDelegate#run
      */
     public void run(IAction action) {
-        String PTII = Environment.getPtolemyHome(window.getShell());
-        if (PTII != null) {
-            IPreferenceStore store = EclipsePlugin.getDefault()
-                    .getPreferenceStore();
-            String prefix =
-                store.getString(PreferenceConstants.BACKTRACK_PREFIX);
-            String root =
-                store.getString(PreferenceConstants.BACKTRACK_ROOT);
-            String sourceList =
-                store.getString(PreferenceConstants.BACKTRACK_SOURCE_LIST);
-            boolean overwrite =
-                store.getBoolean(PreferenceConstants.BACKTRACK_OVERWRITE);
-            
-            boolean generateConfiguration =
-                store.getBoolean(PreferenceConstants.BACKTRACK_GENERATE_CONFIGURATION);
-            String configuration =
-                store.getString(PreferenceConstants.BACKTRACK_CONFIGURATION);
-            
-            PathFinder.setPtolemyPath(PTII);
-            
-            PrintStream oldSystemErr = System.err;
-            OutputConsole console = EclipsePlugin.getDefault().getConsole();
-            console.clearConsole();
-            console.show();
-            MessageConsoleStream outputStream =
-                console.newMessageStream();
-            outputStream.setColor(new Color(null, 0, 0, 255));
-            MessageConsoleStream errorStream =
-                console.newMessageStream();
-            errorStream.setColor(new Color(null, 255, 0, 0));
-            
-            String[] args = new String[]{
-                    "-prefix", prefix,
-                    "-output", root,
-                    overwrite ? "-overwrite" : "-nooverwrite",
-                    "@" + sourceList
-            };
-            if (generateConfiguration &&
-                    configuration != null &&
-                    !configuration.equals("")) {
-                String[] extraArgs = new String[] {
-                        "-config", configuration
-                };
-                String[] oldArgs = args;
-                args = new String[oldArgs.length + extraArgs.length];
-                System.arraycopy(extraArgs, 0, args, 0, extraArgs.length);
-                System.arraycopy(oldArgs, 0, args, extraArgs.length,
-                        oldArgs.length);
-            }
-            new TransformThread(args,
-                    new AsyncPrintStream(outputStream),
-                    new AsyncPrintStream(errorStream)
-                    ).start();
+        if (!Environment.setupTransformerArguments(window.getShell(),
+                true, false)) {
+            OutputConsole.outputError("Cannot setup Transformer environment.");
+            return;
         }
+        
+        IPreferenceStore store = EclipsePlugin.getDefault()
+                .getPreferenceStore();
+        String sourceList =
+            store.getString(PreferenceConstants.BACKTRACK_SOURCE_LIST);
+
+        PrintStream oldSystemErr = System.err;
+        OutputConsole console = EclipsePlugin.getDefault().getConsole();
+        console.clearConsole();
+        console.show();
+        MessageConsoleStream outputStream =
+            console.newMessageStream();
+        outputStream.setColor(new Color(null, 0, 0, 255));
+        MessageConsoleStream errorStream =
+            console.newMessageStream();
+        errorStream.setColor(new Color(null, 255, 0, 0));
+        
+        new TransformThread(
+                new String[]{"@" + sourceList},
+                new AsyncPrintStream(outputStream),
+                new AsyncPrintStream(errorStream)
+        ).start();
     }
 
     /**

@@ -28,11 +28,15 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.plugin.console;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleListener;
 import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
+
+import ptolemy.backtrack.plugin.EclipsePlugin;
 
 //////////////////////////////////////////////////////////////////////////
 //// OutputConsole
@@ -62,6 +66,43 @@ public class OutputConsole extends MessageConsole implements IConsoleListener {
     public void show() {
         ConsoleFactory.showConsole();
         _consoleManager.showConsoleView(this);
+    }
+    
+    public static void outputError(String message) {
+        outputMessage(message, new Color(null, 255, 0, 0));
+    }
+    
+    public static void outputMessage(String message) {
+        outputMessage(message, new Color(null, 0, 0, 255));
+    }
+    
+    public static void outputMessage(String message, Color color) {
+        EclipsePlugin.getStandardDisplay().syncExec(
+                new OutputMessageThread(message, color));
+    }
+    
+    private static class OutputMessageThread implements Runnable {
+        OutputMessageThread(String message, Color color) {
+            _message = message;
+            _color = color;
+        }
+        
+        public void run() {
+            OutputConsole console = EclipsePlugin.getDefault().getConsole();
+            MessageConsoleStream outputStream =
+                console.newMessageStream();
+            outputStream.setColor(_color);
+            try {
+                console.show();
+                outputStream.write(_message + "\n");
+                outputStream.close();
+            } catch (Exception e) {
+            }
+        }
+        
+        private String _message;
+        
+        private Color _color;
     }
     
     private IConsoleManager _consoleManager =

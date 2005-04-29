@@ -42,9 +42,7 @@ public class ConsoleFactory implements IConsoleFactory {
     public static void closeConsole() {
         IConsoleManager manager = ConsolePlugin.getDefault().getConsoleManager();
         OutputConsole console = EclipsePlugin.getDefault().getConsole();
-        if (console != null) {
+        if (console != null)
             manager.removeConsoles(new IConsole[] {console});
-            //ConsolePlugin.getDefault().getConsoleManager().addConsoleListener(console.new MyLifecycle());
-        }
     }
 }

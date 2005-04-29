@@ -41,9 +41,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.BooleanFieldEditor;
-import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.FileFieldEditor;
@@ -61,6 +63,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.dialogs.FileSelectionDialog;
+import org.eclipse.ui.dialogs.FileSystemElement;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -72,6 +76,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import ptolemy.backtrack.plugin.EclipsePlugin;
 import ptolemy.backtrack.plugin.util.Environment;
 import ptolemy.backtrack.plugin.util.SaveFileFieldEditor;
+import ptolemy.backtrack.plugin.widgets.DirectoryFieldEditor;
 
 //////////////////////////////////////////////////////////////////////////
 //// BacktrackingPreferencePage
@@ -99,7 +104,7 @@ public class BacktrackingPreferencePage
         
         _form = _toolkit.createScrolledForm(parent);
         _form.setLayoutData(new GridData(GridData.FILL_BOTH));
-        _form.setBackground(null);
+        _form.setBackground(parent.getBackground());
         
         _form.getBody().setLayout(new TableWrapLayout());
         
@@ -183,6 +188,26 @@ public class BacktrackingPreferencePage
                 List list = _sources.getListControl(_getParent(_sources));
                 list.removeAll();
                 return false;
+            }
+            
+            protected String changePressed() {
+                /*ContainerSelectionDialog dialog =
+                new ContainerSelectionDialog(
+                        getShell(), null, false,
+                        IDEWorkbenchMessages.CopyResourceAction_selectDestination);*/
+                IProject ptIIProject =
+                    ResourcesPlugin.getWorkspace().getRoot().getProject("ptII");
+                FileSelectionDialog   dialog =
+                    new FileSelectionDialog  (getShell(),
+                            new FileSystemElement("ptII", null, true), 
+                         "Select the resources to save.");
+                if (dialog.open() == FileSelectionDialog.OK) {
+                    Object[] result = dialog.getResult();
+                    Path p = (Path)result[0];
+                    return p.toOSString();
+                }
+                else
+                    return null;
             }
             
             private String _lastString = null;
