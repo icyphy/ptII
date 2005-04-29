@@ -24,6 +24,11 @@ import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jdt.ui.IWorkingCopyManager;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.DocumentEvent;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IDocumentListener;
+import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -58,8 +63,8 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
 	}
 	
     protected void createPages() {
-		_createPage0();
-		_createPage1();
+		_createRawPage();
+		_createPreviewPage();
 	}
 	
     public void dispose() {
@@ -69,6 +74,7 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
 	
     public void doSave(IProgressMonitor monitor) {
 		getEditor(0).doSave(monitor);
+        _needRefactoring = true;
 	}
 	
     public void doSaveAs() {
@@ -91,7 +97,10 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
 	}
 	
     public boolean isSaveAsAllowed() {
-		return true;
+        if (_editor != null)
+            return _editor.isSaveAsAllowed();
+        else
+            return false;
 	}
 	
     protected void pageChange(int newPageIndex) {
@@ -118,6 +127,9 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
 	}
     
     protected void _update() {
+        if (!_needRefactoring)
+            return;
+            
         IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
         IFile previewFile =
             ((IFileEditorInput)_preview.getEditorInput()).getFile();
@@ -158,6 +170,7 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
             Transformer.transform(file.getName(), compilationUnit, writer,
                     Environment.combineArrays(PTClassPaths, extraClassPaths),
                     new String[]{});
+            _needRefactoring = false;
         } catch (Exception e) {
             OutputConsole.outputError(e.getMessage());
         } finally {
@@ -169,11 +182,33 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
         }
     }
     
-    private void _createPage0() {
+    private void _createRawPage() {
         try {
             IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
             Class c = file.getClass();
-            _editor = new CompilationUnitEditor();
+            _editor = new CompilationUnitEditor() {
+                protected void handleEditorInputChanged() {
+                    int i = 0;
+                }
+                
+                public void createPartControl(Composite parent) {
+                    super.createPartControl(parent);
+                    ISourceViewer sourceViewer= getSourceViewer();
+                    if (sourceViewer == null)
+                        return;
+                    IDocument document= sourceViewer.getDocument();
+                    if (document != null)
+                        document.addDocumentListener(new IDocumentListener() {
+                            public void documentAboutToBeChanged(
+                                    DocumentEvent event) {
+                            }
+
+                            public void documentChanged(DocumentEvent event) {
+                                _needRefactoring = true;
+                            }
+                        }); 
+                }
+            };
             int index = addPage(_editor, getEditorInput());
             setPageText(index, "Raw");
         } catch (PartInitException e) {
@@ -185,7 +220,7 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
         }
     }
     
-    private void _createPage1() {
+    private void _createPreviewPage() {
         IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
         try {
             CompilationUnit compilationUnit = _getCompilationUnit();
@@ -203,7 +238,11 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
             if (!previewFile.exists())
                 previewFile.create(null, true, null);
             
-            _preview = new CompilationUnitEditor();
+            _preview = new CompilationUnitEditor() {
+                public boolean isEditable() {
+                    return false;
+                }
+            };
             int index = addPage(_preview, new FileEditorInput(previewFile));
             setPageText(index, "Preview");
         } catch (Exception e) {
@@ -219,13 +258,11 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
         return AST.parseCompilationUnit(unit, false);
     }
     
-    
     private class RefactoredFile extends File {
         RefactoredFile(IPath path, Workspace container) {
             super(path, container);
         }
     }
-    
     
     private class RefactoredOutputThread extends Thread {
         RefactoredOutputThread(IFile file, PipedInputStream inputStream) {
@@ -256,10 +293,42 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
     }
 
     public boolean isDirty() {
-        return _editor.isDirty();
+        if (_editor != null)
+            return _editor.isDirty();
+        else
+            return false;
     }
     
+    public String getTitleToolTip() {
+        if (_editor != null)
+            return _editor.getTitleToolTip();
+        else
+            return super.getTitleToolTip();
+    }
+
+    public boolean isSaveOnCloseNeeded() {
+        if (_editor != null)
+            return _editor.isSaveOnCloseNeeded();
+        else
+            return super.isSaveOnCloseNeeded();
+    }
+
+    protected void setInput(IEditorInput input) {
+        super.setInput(input);
+        if (_editor != null)
+            _editor.setInput(input);
+    }
+
+    public String getTitle() {
+        if (_editor != null)
+            return _editor.getTitle();
+        else
+            return super.getTitle();
+    }
+
     private CompilationUnitEditor _editor;
     
     private CompilationUnitEditor _preview;
+    
+    private boolean _needRefactoring = true;
 }
