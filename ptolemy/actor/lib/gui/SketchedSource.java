@@ -250,10 +250,13 @@ public class SketchedSource extends SequencePlotter implements EditListener {
 
                     if ((manager != null)
                             && (manager.getState() == Manager.IDLE)) {
-                        manager.startRun();
+                        // Instead of calling manager.startRun(),
+                        // call manager.execute().
+                        // Otherwise applets have problems.
+                        manager.execute();
                     }
                 }
-            } catch (IllegalActionException ex) {
+            } catch (ptolemy.kernel.util.KernelException ex) {
                 // Should be thrown only if the manager is not idle, or
                 // if the parameter is not boolean valued.
                 throw new InternalErrorException(ex);
