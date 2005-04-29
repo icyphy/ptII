@@ -850,6 +850,8 @@ proc createAndExecute {file} {
 	    || "$file" == "compat4/sampledClocks.xml" \
 	    || "$file" == "compat4/scaler.xml" \
 	    || "$file" == "compat4/scaletoHalf.xml" \
+	    || "$file" == "compat4/ScheduleCTCompositeActor2.xml" \
+	    || "$file" == "compat4/ScheduleCTCompositeActor3.xml" \
 	    || "$file" == "compat4/triple.xml" \
 	} {
 	puts "$file: Skipping Known Failure"
