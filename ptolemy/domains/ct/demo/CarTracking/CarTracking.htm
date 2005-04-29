@@ -37,7 +37,7 @@ applet is displayed on a XGA screen-->
         <OBJECT \
             classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
             width = "500" \
-            height = "700"  \
+            height = "800"  \
             codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
             <PARAM NAME = "code" \
                    VALUE = "ptolemy.actor.gui.MoMLApplet" > \
@@ -91,19 +91,22 @@ applet is displayed on a XGA screen-->
 //--></SCRIPT>
 <!-- /HTML CONVERTER -->
 </CENTER>
-In normal operation, the leading car informs
+This model shows a following car tracking a leading car in an unreliable 
+communication environment. In normal operation, the leading car informs
 the following car about its position, speed, acceleration, and a time 
 stamp for this information. The following car does a sanity check to make
 sure that the data are coherent. If so, the following car will apply the
 same acceleration, and thus (in this simple model) tracks the leading 
-car perfectly. A user can control the correctness of the leading car 
-information by setting the parameter "fault" to 0 or 1, (0 indicating 
-the correct information). If the following car receives uncorrect 
-information, it abandons the received acceleration, and relies on 
-distance measurements for the tacking. In this mode, the following car 
-will apply zero acceleration, if it is too close to the leading car, and 
-maximum acceleration if it is too far from the leading car. This (simple-
-minded) control law results in a rather jerky ride.
+car perfectly. 
+<br>A user can determine when the communication channel fault
+will occur and when it well end by setting the faultStartTime and 
+faultStopTime parameters. 
+<br>If the following car receives incorrect information, it abandons the 
+received acceleration, and relies on distance measurements for tracking. 
+In this mode, the following car will apply zero acceleration, if it is too
+close to the leading car, and maximum acceleration if it is too far from 
+the leading car. This (simple-minded) control law results in a rather
+jerky ride.
 
 <p>The <a href="CarTrackingVergil.htm">block diagram</a>
 for the model was constructed using the Ptolemy II schematic editor
