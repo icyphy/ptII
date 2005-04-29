@@ -111,13 +111,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 917, 606}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 921, 702}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[702, 488]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[706, 584]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{351.0, 244.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{353.0, 292.0}">
     </property>
     <property name="initialTheta_2" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -200,7 +200,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 445.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 535.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -208,34 +208,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the ModalModel to&#10;see how this is implemented.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 395.0]">
-        </property>
-    </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This is a hybrid system modeling an apparatus called 
-Newton's cradle. The apparatus consits of 3 identical 
-balls suspended by strings. Each ball can swing as a 
-pendulum and its dynamic behavior is modeled in the
-ballClass class definition. The balls are initially
-placed side by side.
-
-The list of parameters on the left side specify the 
-geometric sizes of the balls and their initial states. 
-The initial states include the initial angle 
-away from the equilibrium position (initialTheta) and
-initial velocity (initialTheta_dot). In this demo the
-initial angle of the first ball is set to PI/8, and the 
-other initial states are set to 0.0.
-</text></svg></configure>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 0.0]">
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 485.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -243,11 +216,42 @@ other initial states are set to 0.0.
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This variant relies on the tolerance of this model for&#10;nondeterministic state machines in the modal model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 360.0]">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This is a modified version of the Newton's cradle demo,
+which needs to handle a nondeterministic state machine 
+to get the correct model's behavior.
+
+The key difference between this model and the normal 
+Newton's cradle demo is the initial states of the balls. 
+In this demo, all balls reside at their equilibrium points 
+initially. Ball #1 and ball #2 have non-zero initial 
+velocities, 0.3 and 0.2. Ball #3 has its initial velocity 
+as 0.0.
+
+With these initial settings, the state machine becomes 
+nondeterministic because there are multiple transitions 
+enabled at the start of the simulation (at time 0.0). The 
+interesting thing about this demo is that the behaviors 
+of the balls do not change even with a nondeterministic 
+order of executions of the enabled transitions. Look 
+inside the modal model to see more detailed explanation.
+</text></svg></configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 15.0]">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
     </property>
     <class name="ballClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 420.0]">
         </property>
         <property name="acceleration" class="ptolemy.data.expr.Parameter" value="acceleration">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -576,7 +580,7 @@ other initial states are set to 0.0.
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 455.0]">
         </property>
         <port name="x_1" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -637,7 +641,7 @@ other initial states are set to 0.0.
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 20, 920, 727}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 6, 920, 727}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[705, 609]">
             </property>
@@ -649,18 +653,25 @@ other initial states are set to 0.0.
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">When any two adjacent balls have contact and the difference of their velocities 
-is bigger than 0.0, there exists a collision. The collision is perfectly elastic. 
-Because the two balls have the same mass, they simply exchange their velocities.
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">At time 0.0, both outgoing transitions of the "state" state are enabled with the 
+initial settings. In particular,  theta_1_dot (0.3) > theta_2_dot (0.2) > theta_3_dot (0.0),  
+   x_1 + diameter) == x_2, and x_2 + diameter) == x_3.
+This makes this state machine nondeterministic. However, the order of the executions 
+of these enabled transitiosn do not change the model's behavior. In fact, there is one 
+and only one behavior. 
 
-With the initial settings of states, the first collision happens when the ball #1
-reaches its equilibrium point. Although ball #2 and #3 have contact initially, 
-because the collision happens instantaneously, only ball #1 and #2 will be involved 
-in this collision, where they exchange their velocities. After this collision, ball 
-#2 and #3 has a collision and they exchange their velocities. So, there needs a 
-sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg></configure>
+Suppose we execute Transition 1 first, the result is theta_1_dot = 0.2 and theta_2_dot = 0.3. 
+After this, Transition 1 is disabled but Transition 2 is still enabled. After Transition 2
+is taken, theta_2_dot = 0.0 and theta_3_dot = 0.3. This makes Transition 1 enabled again, 
+which eventually makes theta_1_dot = 0.0 and theta_2_dot = 0.2. Then, no more transitions 
+are enabled and we achieved a behavior. If we choose to execute Transition 2 first, we will 
+still get the same results. We leave readers an exercise to prove this. 
+
+To achieve the unique behavior described above, the outgoing transitions of "state" have 
+to be configured to be nondeterministic (by checking the nondeterministic choice box). 
+The operational semantics of HyVisual will find the unique behavior.</text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -70.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -75.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
@@ -668,65 +679,73 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                 </property>
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
                 </property>
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The event detection mechanism introduces an overlap of two balls to ensure these &#10;balls collide. This overlap causes energy loss, meaning not all potential energy &#10;gets transformed into kinetic energy. This overlap is neglectable with a small &#10;error tolerance (e.g. 1e-8), the corresponding energy loss is also neglectable in&#10;a reasonably long simulation (e.g. 1000 time units).&#10;">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Transition 1">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 385.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 405.0]">
+                </property>
+            </property>
+            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Transition 2">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 265.0]">
                 </property>
             </property>
             <port name="x_1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 285.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 390.0000228881836]">
                 </property>
             </port>
             <port name="x_2" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 285.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 390.0000228881836]">
                 </property>
             </port>
             <port name="theta_1_dot" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 330.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 435.0000228881836]">
                 </property>
             </port>
             <port name="theta_2_dot" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 330.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 435.0000228881836]">
                 </property>
             </port>
             <port name="x_3" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 285.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 390.0000228881836]">
                 </property>
             </port>
             <port name="theta_3_dot" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 330.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 435.0000228881836]">
                 </property>
             </port>
             <port name="theta_1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 370.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 475.0000228881836]">
                 </property>
             </port>
             <port name="theta_2" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 370.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 475.0000228881836]">
                 </property>
             </port>
             <port name="theta_3" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 370.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 475.0000228881836]">
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.fsm.kernel.State">
@@ -734,13 +753,13 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[272.7311234474182, 229.44648361206055]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[277.7311248779297, 339.4464912414551]">
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[237.73112344741827, 154.44648361206055]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[242.73112487792983, 264.4464912414551]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -1158,7 +1177,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 241]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 455.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1179,7 +1198,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[525, 242]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 455.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1200,7 +1219,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
         </configure>
     </entity>
     <entity name="Graphic Animation" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 530.0]">
         </property>
         <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -1678,31 +1697,31 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <link port="InstanceOfBall3.theta" relation="relation4"/>
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 530.0]">
         </property>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[505.0, 355.0]">
+        <vertex name="vertex1" value="[505.0, 445.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[505.0, 365.0]">
+        <vertex name="vertex1" value="[505.0, 455.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[505.0, 375.0]">
+        <vertex name="vertex1" value="[505.0, 465.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[310.0, 375.0]">
+        <vertex name="vertex1" value="[310.0, 465.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[310.0, 355.0]">
+        <vertex name="vertex1" value="[310.0, 445.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[310.0, 365.0]">
+        <vertex name="vertex1" value="[310.0, 455.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
