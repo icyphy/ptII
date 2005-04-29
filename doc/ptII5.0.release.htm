@@ -111,7 +111,10 @@ java.lang.URI class, which is present only in Java 1.4 and later.
 under IBM JDK 1.4.2_01-b06.  There are the following limitations
 under IBM JDK 1.4.2:
 <menu>
-<li> The Copernicus code generator does not work
+<li> There might be problems browsing the tree of actors on the left
+side of Vergil.  Opening the folders by clicking on them does
+not appear to work 
+<li> The Copernicus code generator does not work.
 <li> Caltrop does not work.
 <li> The IBM JDK seems to return directory contents in a different
 order than the Sun JDK.  Thus actor.lib.io.DirectoryListing
@@ -1177,6 +1180,12 @@ lax.nl.java.option.additional=-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,susp
 	<li> The Python Ptolemizer demo does not work under Web Start,
 	probably because Jython cannot handle loading classes
 	from the Ptolemy II classes. 
+
+
+        <li> The JAI Adaptive Median model does not work under
+	Web Start - the repaired image might be corrupt.
+	The reason is that it uses the JAI acceleration libraries,
+	which Web Start does not load.  
 
 	<li> Viewing a pdf file may bring up a blank window along with
 	the pdf file.  Running the code generator may bring up
