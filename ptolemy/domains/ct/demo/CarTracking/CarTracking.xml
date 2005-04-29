@@ -1120,7 +1120,7 @@ jerky ride.</text></svg></configure>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Throttle, Fault">
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Throttle      , Fault">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 412, 508, 355}, maximized=false}">
             </property>
@@ -1136,8 +1136,8 @@ jerky ride.</text></svg></configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title></title>
-<xLabel></xLabel>
+<title>Throttle and Fault</title>
+<xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
 <yRange min="0.0" max="2.0"/>
@@ -1511,6 +1511,8 @@ jerky ride.</text></svg></configure>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Leader, Follower">
+            </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 57, 508, 355}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
@@ -1523,9 +1525,9 @@ jerky ride.</text></svg></configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title></title>
-<xLabel></xLabel>
-<yLabel></yLabel>
+<title>Position of Cars</title>
+<xLabel>time</xLabel>
+<yLabel>distance</yLabel>
 <xRange min="0.0" max="100.0"/>
 <yRange min="0.0" max="203.07694291892682"/>
 </plot>?>
@@ -1729,8 +1731,8 @@ jerky ride.</text></svg></configure>
         <link port="leadingCar" relation="relation"/>
         <link port="tooFar" relation="relation14"/>
         <link port="tooClose" relation="relation15"/>
-        <link port="TimedPlotter.input" relation="relation11"/>
         <link port="TimedPlotter.input" relation="relation"/>
+        <link port="TimedPlotter.input" relation="relation11"/>
         <link port="testing.leading" relation="relation13"/>
         <link port="testing.following" relation="relation12"/>
         <link port="testing.tooFar" relation="relation14"/>
