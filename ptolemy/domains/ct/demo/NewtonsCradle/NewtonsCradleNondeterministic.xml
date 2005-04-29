@@ -858,7 +858,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{321.0, 175.0}">
             </property>
-            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.2996437254124">
+            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-1.115401640346E-9">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -877,7 +877,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 245.0]">
                 </property>
             </property>
-            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.1994651853265">
+            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="0.1941998529833">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -896,7 +896,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 270.0]">
                 </property>
             </property>
-            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="7.6680254729116E-11">
+            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="0.2961648003553">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1524,9 +1524,9 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
             <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={606, -6, 408, 434}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={609, 6, 408, 434}, maximized=false}">
             </property>
-            <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute">
+            <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute" value="[400, 400]">
             </property>
             <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -1536,9 +1536,9 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
         </entity>
         <entity name="Text" class="ptolemy.domains.gr.lib.TextString3D">
-            <property name="text" class="ptolemy.actor.parameters.PortParameter" value="Newton's Cradle">
+            <property name="text" class="ptolemy.actor.parameters.PortParameter" value="Newton's Cradle Nondeterministic">
             </property>
-            <property name="fontSize" class="ptolemy.data.expr.Parameter" value="0.15">
+            <property name="fontSize" class="ptolemy.data.expr.Parameter" value="0.10">
             </property>
             <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0}">
             </property>

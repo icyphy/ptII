@@ -1142,9 +1142,9 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
     <entity name="positions" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x_1, x_2, x_3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 444, 483, 296}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 470, 483, 270}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 241]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 215]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 425.0]">
         </property>
@@ -1163,9 +1163,9 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
     <entity name="velocities" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="theta_1_dot, theta_2_dot, theta_3_dot">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 444, 533, 297}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 470, 533, 271}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[525, 242]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[525, 216]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 425.0]">
         </property>
@@ -1493,7 +1493,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
             <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={606, -6, 408, 434}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={616, 36, 408, 434}, maximized=false}">
             </property>
             <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -1505,9 +1505,9 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
         </entity>
         <entity name="Text" class="ptolemy.domains.gr.lib.TextString3D">
-            <property name="text" class="ptolemy.actor.parameters.PortParameter" value="Newton's Cradle">
+            <property name="text" class="ptolemy.actor.parameters.PortParameter" value="Newton's Cradle Complicated">
             </property>
-            <property name="fontSize" class="ptolemy.data.expr.Parameter" value="0.15">
+            <property name="fontSize" class="ptolemy.data.expr.Parameter" value="0.12">
             </property>
             <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0}">
             </property>

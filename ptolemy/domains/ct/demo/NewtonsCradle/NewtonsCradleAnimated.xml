@@ -111,13 +111,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 917, 606}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 908, 606}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[702, 488]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[693, 488]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{351.0, 244.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{346.5, 244.0}">
     </property>
     <property name="initialTheta_2" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -216,7 +216,7 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This is a hybrid system modeling an apparatus called 
-Newton's cradle. The apparatus consits of 3 identical 
+Newton's cradle. The apparatus consists of 3 identical 
 balls suspended by strings. Each ball can swing as a 
 pendulum and its dynamic behavior is modeled in the
 ballClass class definition. The balls are initially
@@ -1146,9 +1146,9 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
     <entity name="positions" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x_1, x_2, x_3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 444, 483, 296}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 462, 502, 278}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 241]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[494, 223]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 335.0]">
         </property>
@@ -1167,9 +1167,9 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
     <entity name="velocities" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="theta_1_dot, theta_2_dot, theta_3_dot">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 444, 533, 297}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 461, 515, 280}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[525, 242]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[507, 225]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 335.0}">
         </property>
@@ -1192,7 +1192,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
         </configure>
     </entity>
     <entity name="Graphic Animation" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 410.0]">
         </property>
         <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -1227,7 +1227,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[694, 482]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 909, 600}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 25, 909, 600}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -1495,9 +1495,9 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
             <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0}">
+            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={606, -6, 408, 434}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={608, 28, 408, 434}, maximized=false}">
             </property>
             <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
