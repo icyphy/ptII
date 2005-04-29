@@ -4,7 +4,7 @@
 <entity name="filePortParameter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 220, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 220, 820, 516}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -125,12 +125,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 125.0]">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 270, 290, 227}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 50}">
-        </property>
-    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -145,5 +139,4 @@
     <link port="ArrayToSequence.output" relation="relation2"/>
     <link port="ArraySort.input" relation="relation3"/>
     <link port="ArraySort.output" relation="relation"/>
-    <link port="Display.input" relation="relation2"/>
 </entity>
