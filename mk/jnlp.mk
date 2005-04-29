@@ -70,6 +70,7 @@ lib/joystickWindows.jar:
 # NATIVE_SIGNED_LIB_JARS is a separate vaiable so that we can
 # include it in ALL_JNLP_JARS
 NATIVE_SIGNED_LIB_JARS = \
+	lib/jaiWindows.jar \
 	lib/joystickWindows.jar \
 	lib/matlabWindows.jar \
 	lib/matlabSunOS.jar
@@ -78,7 +79,6 @@ SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
 			lib/jasminclasses.jar \
 			lib/jython.jar \
-			lib/matlab.jar \
 			lib/ptCal.jar \
 			lib/sootclasses.jar
 
@@ -104,8 +104,11 @@ CORE_JNLP_JARS = \
 	ptolemy/actor/parameters/demo/demo.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar \
-	ptolemy/matlab/demo/demo.jar
-
+	ptolemy/matlab/matlab.jar \
+	ptolemy/matlab/demo/demo.jar \
+	lib/matlab.jar \
+	ptolemy/ptsupport.jar \
+	ptolemy/vergil/vergil.jar
 
 #######
 # DSP - The smallest runtime
@@ -761,8 +764,8 @@ jnlp_dist_1:
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		(cd $(DIST_DIR); tar -xpf -)
-	cp doc/webStartHelp.htm $(DIST_DIR)
+		ssh messier "cd $(DIST_DIR); tar -xpf -"
+	scp doc/webStartHelp.htm messier:$(DIST_DIR)
 
 #make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
 
