@@ -55,10 +55,13 @@
 <entity name="ViewScreen2D" class="ptolemy.domains.gr.lib.ViewScreen2D">
 </entity>
 
-<entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen">
+<entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen3D">
 </entity>
 
 <entity name="IconViewScreen3D" class="ptolemy.domains.gr.lib.IconViewScreen3D">
+</entity>
+
+<entity name="MovableViewScreen3D" class="ptolemy.domains.gr.lib.MovableViewScreen3D">
 </entity>
 
       </group>
