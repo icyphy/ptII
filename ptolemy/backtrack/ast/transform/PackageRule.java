@@ -73,11 +73,19 @@ public class PackageRule extends TransformRule {
      *  @param root
      */
     public void afterTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
-        PackageDeclaration declaration = root.getPackage();
-        AST ast = root.getAST();
-        if (_prefix != null && _prefix.length() > 0)
+        if (_prefix != null && _prefix.length() > 0) {
             // Add a prefix to each name node, if necessary.
             root.accept(new Renamer(analyzer.getState()));
+            
+            PackageDeclaration packageDeclaration = root.getPackage();
+            AST ast = root.getAST();
+            if (packageDeclaration == null) {
+                packageDeclaration = ast.newPackageDeclaration();
+                packageDeclaration.setName(
+                        AbstractTransformer.createName(ast, _prefix));
+                root.setPackage(packageDeclaration);
+            }
+        }
     }
 
     /**

@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.io.Writer;
 
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.internal.resources.Workspace;
@@ -29,6 +30,7 @@ import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
@@ -169,9 +171,11 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
             }
             Environment.createFolders(previewFile.getParent());
             // FIXME: classpaths
-            Transformer.transform(file.getName(), compilationUnit, writer,
-                    Environment.combineArrays(PTClassPaths, extraClassPaths),
-                    new String[]{});
+            BusyIndicator.showWhile(Display.getCurrent(),
+                    new TransformerRunnable(file.getName(), compilationUnit,
+                            writer,
+                            Environment.combineArrays(PTClassPaths, extraClassPaths),
+                            new String[]{}));
             _needRefactoring = false;
         } catch (Exception e) {
             OutputConsole.outputError(e.getMessage());
@@ -290,6 +294,37 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
         private IFile _file;
     }
 
+    private class TransformerRunnable implements Runnable {
+        TransformerRunnable(String fileName, CompilationUnit compilationUnit,
+                Writer writer, String[] classPaths, String[] crossAnalyzedTypes) {
+            _fileName = fileName;
+            _compilationUnit = compilationUnit;
+            _writer = writer;
+            _classPaths = classPaths;
+            _crossAnalyzedTypes = crossAnalyzedTypes;
+        }
+        
+        public void run() {
+            try {
+                Transformer.transform(_fileName, _compilationUnit, _writer,
+                        _classPaths, _crossAnalyzedTypes);
+            } catch (Exception e) {
+                e.printStackTrace();
+                OutputConsole.outputError(e.getMessage());
+            }
+        }
+        
+        private String _fileName;
+        
+        private CompilationUnit _compilationUnit;
+        
+        private Writer _writer;
+        
+        private String[] _classPaths;
+        
+        private String[] _crossAnalyzedTypes;
+    }
+    
     public boolean isDirty() {
         if (_editor != null)
             return _editor.isDirty();

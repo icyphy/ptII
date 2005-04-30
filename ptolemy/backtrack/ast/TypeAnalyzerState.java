@@ -217,7 +217,11 @@ public class TypeAnalyzerState {
      *  @see #enterClass(Class)
      */
     public void leaveClass() {
-        _currentClass = (Class)_previousClasses.pop();
+        int i = _previousClasses.size() - 1;
+        while (i >= 0 && !(_previousClasses.get(i) instanceof Class))
+            i--;
+        _currentClass = i >= 0 ? (Class)_previousClasses.get(i) : null;
+        _previousClasses.pop();
         _anonymousCounts.pop();
         _loader.setCurrentClass(_currentClass, false);
     }
