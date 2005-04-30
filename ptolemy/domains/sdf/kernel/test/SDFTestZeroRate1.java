@@ -111,7 +111,7 @@ public class SDFTestZeroRate1 extends Transformer {
         return newObject;
     }
 
-    /** Discard tokens recieved. Send the token in the value parameter.
+    /** Discard tokens received. Send the token in the value parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {

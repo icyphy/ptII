@@ -9,7 +9,7 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 540]">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates that HDF allows dynamic port rate changes and&#10;correctly shedules the two modal models.&#10;&#10;In this example, the model has two modes of Hamming Codec, a (7, 4) Hamming Code &#10;and a (3, 1) Hamming code. Each set of Codec has different consumption rates and &#10;production rates. The Switch actor produces booleans to control the switching&#10;between the two coding/decoding schemes. Such switching signal might come from &#10;a sensor, a performance detector, or a command issued by a person. &#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates that HDF allows dynamic port rate changes and&#10;correctly schedules the two modal models.&#10;&#10;In this example, the model has two modes of Hamming Codec, a (7, 4) Hamming Code &#10;and a (3, 1) Hamming code. Each set of Codec has different consumption rates and &#10;production rates. The Switch actor produces booleans to control the switching&#10;between the two coding/decoding schemes. Such switching signal might come from &#10;a sensor, a performance detector, or a command issued by a person. &#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 340.0]">
         </property>

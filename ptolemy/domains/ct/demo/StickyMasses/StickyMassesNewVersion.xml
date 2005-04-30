@@ -144,7 +144,7 @@ One key feature of this model is that each state refinement can only have
 the same set of port names and these names are the same as the names of the 
 modal model ports.
 
-Another feature is that the state transitions has a "triggering" semanitcs.
+Another feature is that the state transitions has a "triggering" semantics.
 Once the transition is enabled, it must be taken immediately. This process 
 takes zero time. With this triggering semantics, piecewise continuous-time 
 signals are generated as shown in the plots of velocities and accelarations.
