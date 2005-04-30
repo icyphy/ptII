@@ -1,7 +1,6 @@
 package ptolemy.backtrack.plugin.editor;
 
 
-import java.io.ByteArrayInputStream;
 import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -9,14 +8,8 @@ import java.io.Writer;
 
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.internal.resources.Workspace;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
@@ -24,24 +17,25 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jdt.ui.IWorkingCopyManager;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.part.MultiPageEditorPart;
+import org.eclipse.ui.part.IWorkbenchPartOrientation;
 
 import ptolemy.backtrack.ast.Transformer;
 import ptolemy.backtrack.plugin.EclipsePlugin;
@@ -58,77 +52,57 @@ import ptolemy.backtrack.plugin.util.Environment;
  * <li>page 2 shows the words in page 0 in sorted order
  * </ul>
  */
-public class MultiPageEditor extends MultiPageEditorPart implements IResourceChangeListener{
+public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
 	
-    public MultiPageEditor() {
-		super();
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
-	}
-	
-    protected void createPages() {
+    protected void _createPages() {
 		_createRawPage();
 		_createPreviewPage();
 	}
-	
-    public void dispose() {
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
-		super.dispose();
-	}
-	
-    public void doSave(IProgressMonitor monitor) {
-		getEditor(0).doSave(monitor);
-        _needRefactoring = true;
-	}
-	
-    public void doSaveAs() {
-		IEditorPart editor = getEditor(0);
-		editor.doSaveAs();
-		setPageText(0, editor.getTitle());
-		setInput(editor.getEditorInput());
-	}
-	
-    public void gotoMarker(IMarker marker) {
-		setActivePage(0);
-		IDE.gotoMarker(getEditor(0), marker);
-	}
-	
-    public void init(IEditorSite site, IEditorInput editorInput)
-		throws PartInitException {
-		if (!(editorInput instanceof IFileEditorInput))
-			throw new PartInitException("Invalid Input: Must be IFileEditorInput");
-		super.init(site, editorInput);
-	}
-	
-    public boolean isSaveAsAllowed() {
-        if (_editor != null)
-            return _editor.isSaveAsAllowed();
-        else
-            return false;
-	}
+    
+    public void createPartControl(Composite parent) {
+        _container = _createContainer(parent);
+        
+        _createPages();
+        
+        ISourceViewer sourceViewer= getSourceViewer();
+        if (sourceViewer == null)
+            return;
+        IDocument document= sourceViewer.getDocument();
+        if (document != null)
+            document.addDocumentListener(new IDocumentListener() {
+                public void documentAboutToBeChanged(
+                        DocumentEvent event) {
+                }
+
+                public void documentChanged(DocumentEvent event) {
+                    _needRefactoring = true;
+                }
+            });
+
+        _setActivePage(0);
+    }
+    
+    private CTabFolder _createContainer(Composite parent) {
+        final CTabFolder newContainer = new CTabFolder(parent, SWT.BOTTOM
+                | SWT.FLAT);
+        newContainer.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                int newPageIndex = newContainer.indexOf((CTabItem) e.item);
+                pageChange(newPageIndex);
+            }
+        });
+        return newContainer;
+    }
 	
     protected void pageChange(int newPageIndex) {
-		super.pageChange(newPageIndex);
+        // FIXME
 		if (newPageIndex == 1) {
+            if (_preview == null)
+                _setupPreviewPage();
 			_update();
 		}
 	}
 	
-    public void resourceChanged(final IResourceChangeEvent event){
-		if(event.getType() == IResourceChangeEvent.PRE_CLOSE){
-			Display.getDefault().asyncExec(new Runnable(){
-				public void run(){
-					IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
-					for (int i = 0; i<pages.length; i++){
-						if(((IFileEditorInput)_editor.getEditorInput()).getFile().getProject().equals(event.getResource())){
-							IEditorPart editorPart = pages[i].findEditor(_editor.getEditorInput());
-							pages[i].closeEditor(editorPart,true);
-						}
-					}
-				}            
-			});
-		}
-	}
-    
     protected void _update() {
         if (!_needRefactoring)
             return;
@@ -136,25 +110,27 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
         IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
         IFile previewFile =
             ((IFileEditorInput)_preview.getEditorInput()).getFile();
-        IPreferenceStore store = EclipsePlugin.getDefault()
-                .getPreferenceStore();
 
-        boolean overwrite =
-            store.getBoolean(PreferenceConstants.BACKTRACK_OVERWRITE);
-        if (!overwrite && previewFile.exists() && previewFile.isLocal(0)) {
-            OutputConsole.outputError("Preview file \"" +
-                    previewFile.getLocation().toOSString() +
-                    "\" already exists.\nTo overwrite it, please " +
-                    "modify the overwrite option in the preference "+
-                    "page.");
-            return;
-        }
-        
         PipedOutputStream outputStream = new PipedOutputStream();
         OutputStreamWriter writer =
             new OutputStreamWriter(outputStream);
 
         try {
+            Environment.createFolders(previewFile.getParent());
+            IPreferenceStore store = EclipsePlugin.getDefault()
+                    .getPreferenceStore();
+    
+            boolean overwrite =
+                store.getBoolean(PreferenceConstants.BACKTRACK_OVERWRITE);
+            if (!overwrite && previewFile.exists() && previewFile.isLocal(0)) {
+                OutputConsole.outputError("Preview file \"" +
+                        previewFile.getLocation().toOSString() +
+                        "\" already exists.\nTo overwrite it, please " +
+                        "modify the overwrite option in the preference "+
+                        "page.");
+                return;
+            }
+            
             PipedInputStream inputStream = new PipedInputStream(outputStream);
             CompilationUnit compilationUnit = _getCompilationUnit();
             new RefactoredOutputThread(previewFile, inputStream).start();
@@ -164,12 +140,12 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
             String[] extraClassPaths = new String[0];
             if (file.getProject() != null)
                 extraClassPaths = new String[]{file.getProject().getLocation().toOSString()};
-            if (!Environment.setupTransformerArguments(getContainer().getShell(),
+            if (!Environment.setupTransformerArguments(_container.getShell(),
                     false, true)) {
                 OutputConsole.outputError("Cannot setup Transformer environment.");
                 return;
             }
-            Environment.createFolders(previewFile.getParent());
+
             // FIXME: classpaths
             BusyIndicator.showWhile(Display.getCurrent(),
                     new TransformerRunnable(file.getName(), compilationUnit,
@@ -189,41 +165,37 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
         }
     }
     
+    protected void _setActivePage(int pageIndex) {
+        _container.setSelection(pageIndex);
+    }
+    
     private void _createRawPage() {
-        try {
-            IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
-            Class c = file.getClass();
-            _editor = new CompilationUnitEditor() {
-                public void createPartControl(Composite parent) {
-                    super.createPartControl(parent);
-                    ISourceViewer sourceViewer= getSourceViewer();
-                    if (sourceViewer == null)
-                        return;
-                    IDocument document= sourceViewer.getDocument();
-                    if (document != null)
-                        document.addDocumentListener(new IDocumentListener() {
-                            public void documentAboutToBeChanged(
-                                    DocumentEvent event) {
-                            }
-
-                            public void documentChanged(DocumentEvent event) {
-                                _needRefactoring = true;
-                            }
-                        }); 
-                }
-            };
-            int index = addPage(_editor, getEditorInput());
-            setPageText(index, "Raw");
-        } catch (PartInitException e) {
-            ErrorDialog.openError(
-                getSite().getShell(),
-                "Error creating nested text editor",
-                null,
-                e.getStatus());
-        }
+        int pageIndex = 0;
+        
+        Composite composite = new Composite(_container, _getOrientation(this));
+        composite.setLayout(new FillLayout());
+        super.createPartControl(composite);
+        
+        _editor = this;
+        
+        _createItem(pageIndex, composite).setText("Raw");
     }
     
     private void _createPreviewPage() {
+        int pageIndex = 1;
+        
+        Composite composite = new Composite(_container, _getOrientation(this));
+        composite.setLayout(new FillLayout());
+        
+        _createItem(pageIndex, composite);
+        _setupPreviewPage();
+        
+        _container.getItem(pageIndex).setText("Preview");
+    }
+    
+    private void _setupPreviewPage() {
+        int pageIndex = 1;
+        
         IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
         try {
             CompilationUnit compilationUnit = _getCompilationUnit();
@@ -236,17 +208,24 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
                         packageName);
             IFile previewFile =
                 Environment.getContainer(refactoredFile).getFile(null);
-            IContainer parent = previewFile.getParent();
-            Environment.createFolders(parent);
+            
+            // Initialize the file (seems not needed).
+            /*Environment.createFolders(previewFile.getParent());
             if (!previewFile.exists()) {
                 ByteArrayInputStream inputStream =
                     new ByteArrayInputStream(new byte[0]);
                 previewFile.create(null, true, null);
-            }
+            }*/
             
             _preview = new CompilationUnitEditor();
-            int index = addPage(_preview, new FileEditorInput(previewFile));
-            setPageText(index, "Preview");
+            _preview.init(_editor.getEditorSite(),
+                    new FileEditorInput(previewFile) {
+                        public boolean exists() {
+                            return true;
+                        }
+            });
+            _preview.createPartControl(
+                    (Composite)_container.getItem(pageIndex).getControl());
         } catch (Exception e) {
             OutputConsole.outputError(e.getMessage());
         }
@@ -258,6 +237,18 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
         ICompilationUnit unit =
             manager.getWorkingCopy(getEditorInput());
         return AST.parseCompilationUnit(unit, false);
+    }
+    
+    private int _getOrientation(IEditorPart editor) {
+        if(editor instanceof IWorkbenchPartOrientation)
+            return ((IWorkbenchPartOrientation) editor).getOrientation();
+        return getOrientation();
+    }
+    
+    private CTabItem _createItem(int index, Control control) {
+        CTabItem item = new CTabItem(_container, SWT.NONE, index);
+        item.setControl(control);
+        return item;
     }
     
     private class RefactoredFile extends File {
@@ -309,7 +300,6 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
                 Transformer.transform(_fileName, _compilationUnit, _writer,
                         _classPaths, _crossAnalyzedTypes);
             } catch (Exception e) {
-                e.printStackTrace();
                 OutputConsole.outputError(e.getMessage());
             }
         }
@@ -325,43 +315,11 @@ public class MultiPageEditor extends MultiPageEditorPart implements IResourceCha
         private String[] _crossAnalyzedTypes;
     }
     
-    public boolean isDirty() {
-        if (_editor != null)
-            return _editor.isDirty();
-        else
-            return false;
-    }
-    
-    public String getTitleToolTip() {
-        if (_editor != null)
-            return _editor.getTitleToolTip();
-        else
-            return super.getTitleToolTip();
-    }
-
-    public boolean isSaveOnCloseNeeded() {
-        if (_editor != null)
-            return _editor.isSaveOnCloseNeeded();
-        else
-            return super.isSaveOnCloseNeeded();
-    }
-
-    protected void setInput(IEditorInput input) {
-        super.setInput(input);
-        if (_editor != null)
-            _editor.setInput(input);
-    }
-
-    public String getTitle() {
-        if (_editor != null)
-            return _editor.getTitle();
-        else
-            return super.getTitle();
-    }
-
     private CompilationUnitEditor _editor;
     
     private CompilationUnitEditor _preview;
     
     private boolean _needRefactoring = true;
+    
+    private CTabFolder _container;
 }
