@@ -51,7 +51,6 @@ import diva.gui.BasicFrame;
 /** An example showing how to use VectorFigure.
  *
  * <p>
- * <img src="doc-files/VectorFigureTutorial.gif" align="right">
  *
  * The VectorFigure class provides a simple way to make figures that
  * are fairly complex graphically. It has no inherent shape, but draws
