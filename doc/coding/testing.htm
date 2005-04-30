@@ -523,6 +523,31 @@ includes a call that will flush the database:
 
 The Ptolemy II documentation is written in HTML.  There are several tools
 that can be used.
+<h3>wget</h3>
+The <CODE>wget</CODE> program can be used to craw the html pages
+of the release when it is on a website.  
+
+ <br>On the website, create a temporary top level <CODE>$PTII/index.htm</CODE>
+that includes a link to <CODE>doc/index.htm</CODE>
+
+
+ <br>run <CODE>wget</CODE>
+<pre>
+wget -np -m http://ptolemy.eecs.berkeley.edu/ptolemyII/<I>release</I> &gt;&amp; wget.out
+</pre>
+This will generate lots of files in a <CODE>ptolemy.eecs.berkeley.edu</CODE>
+directory.  This directory can be removed:
+<pre>
+rm -rf ptolemy.eecs.berkeley.edu
+</pre>
+
+Look for "<CODE>Not Found</CODE>"
+<pre>
+egrep 'http:|Not Found' wget.out
+</pre>
+
+
+
 <H3>weblint</H3>
 
 Weblint tells the user about html errors.  Weblint was once obtained from
