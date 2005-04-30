@@ -249,7 +249,47 @@ As of version 5.0, we have extended this model of computation with a
 nondeterministic merge actor, illustrated in
 <a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>.
 
+<!--/vergilDocs-->
+<!--Ptiny does not include ddf-->
+<br>
+<li> <i>Dynamic Dataflow</i>:
+<a href="../../domains/ddf/demo/HanoiTower/HanoiTower.xml">HanoiTower</a>
+(see also
+<a href="../../domains/ddf/demo/Eratosthenes/Eratosthenes.xml">Eratosthenes</a>,
+<a href="../../domains/ddf/demo/IfThenElse/IfThenElse.xml">IfThenElse</a>,
+<a href="../../domains/ddf/demo/Loop/Loop.xml">Loop</a>,
+<a href="../../domains/ddf/demo/OrderedMerge/OrderedMerge.xml">OrderedMerge</a>,
+<a href="../../domains/ddf/demo/RandomWalk/RandomWalk.xml">RandomWalk</a>)
+<br>
+In dynamic dataflow (DDF) models, actors are fired in response to available
+input data. The schedule is dynamic and data dependent, and actors can
+change their production and consumption rates in each firing.
+Unlike synchronous dataflow, the DDF model of computation is Turing
+complete, and questions of deadlock and boundedness are undecidable.
+The <a href="../../domains/ddf/demo/HanoiTower/HanoiTower.xml">HanoiTower</a>
+example exploits this to give an algorithmic solution to the well-known
+towers of Hanoi problem.
 
+<br>
+<li> <i>Heterochronous Dataflow</i>:
+<a href="../../domains/hdf/demo/Fibonacci/Fibonacci.xml">Fibonacci</a>
+(see also
+<a href="../../domains/hdf/demo/Merge/Merge.xml">Merge</a>).
+<br>
+Heterochronous dataflow (HDF) is an extension of synchronous dataflow
+(SDF) that permits dynamically changing production and consumption
+patterns without sacrificing static scheduling. In SDF, the production
+and consumption patterns of an actor are constant.
+In HDF they are allowed to change between iterations of the HDF schedule.
+Modal models can be used to change these patterns.
+Although HDF can express many data-dependent computations that cannot
+be represented by SDF, it is not Turing complete.  Consequently, deadlock
+and boundedness remain decidable.
+The <a href="../../domains/hdf/demo/Fibonacci/Fibonacci.xml">Fibonacci</a>
+example uses this mechanism in a clever way to extract a Fibonacci sequence
+from a counting sequence.
+
+<!--vergilDocs-->
 <br>
 
 <!--/vergilDocs-->
