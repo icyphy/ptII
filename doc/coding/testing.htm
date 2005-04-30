@@ -649,6 +649,14 @@ cd $PTII
 ptspell `find . -name "*.html" -print`
 </PRE>
 
+ <p>Spell check the comments in the demos
+<pre>
+cd $PTII
+adm/bin/ptIItxtfiles &gt; /tmp/f
+grep demo /tmp/f | grep .xml &gt; /tmp/m
+ptspell `cat /tmp/m
+</pre>
+
 <H3>Check the distribution for bogus files</H3>
 Run the following makefile rules and commands:
 <DL>
