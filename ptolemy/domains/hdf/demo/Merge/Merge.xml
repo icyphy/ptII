@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Merge" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[547, 610]">
     </property>
@@ -22,7 +22,7 @@
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, -10, 762, 728}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 762, 728}, maximized=false}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates that HDF allows consumption and production rates&#10;to vary dynamically. The port rates of the modal model is determined by&#10;the model inside the state refinement.&#10;&#10;In this example, two increasing sequences of numbers is merged into one &#10;increasing sequence.The model uses a feedback loop to remember the&#10;previous largest number, which is from either input1 or input2. This number &#10;is fed back to input3 and used to compare with the new input from input2 or &#10;input1. Whether the consumption of token from input2 or input1 is described &#10;in the state machine. The smaller of the two is sent to the output and the &#10;larger one is updated to be the current largest number and fedback in the &#10;next iteraton.">
@@ -46,10 +46,20 @@
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[287.5, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 240.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
     </entity>
     <entity name="Increasing sequence: 1, 2, 3, 5, 100, 109" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="6">
@@ -565,7 +575,7 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={684, 99, 252, 331}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={737, -1, 290, 312}, maximized=false}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>

@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="GuardedCount" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 4, 933, 627}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 4, 933, 629}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 511]">
     </property>
@@ -39,7 +39,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The three displays show (left to right):&#10;&#10;- Requested numbers to count down from.&#10;- The count down for these numbers.&#10;- The enable signal for the EnabledComposite actor.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 165.0]">
         </property>
     </property>
     <entity name="DisplayCount" class="ptolemy.domains.sr.lib.NonStrictDisplay">
@@ -47,7 +47,7 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 350, 152, 416}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 350, 150, 414}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 175.0]">
         </property>
@@ -55,7 +55,7 @@
     <entity name="CountDown" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 185.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={146, 232, 815, 516}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={146, 232, 815, 518}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -320,7 +320,7 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={306, 351, 152, 416}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={306, 351, 150, 414}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 260.0]">
         </property>
@@ -389,7 +389,7 @@
             </property>
             <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 350, 152, 416}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 350, 150, 414}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 165.0]">
             </property>

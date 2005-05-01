@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RunDemos" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 214, 815, 518}, maximized=false}">
     </property>
@@ -40,7 +40,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 190.0]">
         </property>
     </property>
     <property name="directoryOrURL" class="ptolemy.data.expr.FileParameter" value="http://ptolemy.eecs.berkeley.edu/demos">
@@ -59,7 +59,15 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 215.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: It may be hard to stop this execution once&#10;it is started because the window will be burried&#10;under other windows. To stop it, you must get access&#10;to this window and click on the stop button.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 85.0]">
         </property>
     </property>
     <entity name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
@@ -69,7 +77,7 @@
         </property>
         <property name="listOnlyFiles" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 290.0]">
         </property>
     </entity>
     <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference">
@@ -81,7 +89,7 @@
         </property>
         <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="close Vergil graph">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 290.0]">
         </property>
     </entity>
     <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
@@ -95,7 +103,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 290.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

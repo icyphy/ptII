@@ -29,7 +29,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sensors placed in a parking lot can be used to collect data (including which parking spot is taken, &#10;how long a car has parked on a spot). The parking lot can process the collected data and provide &#10;some services to clients to guide their parking. This demo illustrates these ideas. The dots are &#10;sensors on the parking spots. We use green color to indicate the spot is free and red to indicate &#10;the spot is taken. When a sensor detect a car arrives/leaves the spot, it sends an update to the &#10;server of the parking lot, which collects and processes sensor updates to provide information to &#10;parking clients. The &quot;car model&quot; component models when a car arrive/leave, and where if pick to &#10;park based on the information the server provides. It is a abstraction for all the cars dynamics &#10;during a specific of time. The components in the up right corner represents the server function, &#10;which receives sensor data and provides information the clients. The &quot;signal light&quot; component &#10;indicate whether the parking lot is full (using red color) or not (using green color).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sensors placed in a parking lot can be used to collect data (including which parking spot is taken, &#10;how long a car has parked on a spot). The parking lot can process the collected data and provide &#10;some services to clients to guide their parking. This demo illustrates these ideas. The dots are &#10;sensors on the parking spots. We use green color to indicate the spot is free and red to indicate &#10;the spot is taken. When a sensor detects a car arriving or leaving a spot, it sends an update to the &#10;server of the parking lot, which collects and processes sensor updates to provide information to &#10;parking clients. The &quot;car model&quot; component models when a car arrives or leaves, and where to &#10;park based on the information the server provides. It is a abstraction for all the cars dynamics &#10;during a specific time. The components in the upper right corner represent the server function, &#10;which receives sensor data and provides information the clients. The &quot;signal light&quot; component &#10;indicates whether the parking lot is full (using red) or not (using green).">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 445.0]">
         </property>
@@ -43,7 +43,7 @@
         </property>
     </property>
     <entity name="LotSensor" class="ptolemy.domains.wireless.demo.SmartParking.LotSensor">
-        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A27">
         </property>
@@ -388,7 +388,7 @@
         </port>
     </entity>
     <entity name="LotSensor3" class="ptolemy.domains.wireless.demo.SmartParking.LotSensor">
-        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A37">
         </property>
@@ -536,7 +536,7 @@
         </port>
     </entity>
     <entity name="LotSensor7" class="ptolemy.domains.wireless.demo.SmartParking.LotSensor">
-        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A17">
         </property>
@@ -684,7 +684,7 @@
         </port>
     </entity>
     <entity name="LotSensor11" class="ptolemy.domains.wireless.demo.SmartParking.LotSensor">
-        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A35">
         </property>
@@ -832,7 +832,7 @@
         </port>
     </entity>
     <entity name="LotSensor15" class="ptolemy.domains.wireless.demo.SmartParking.LotSensor">
-        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A15">
         </property>
@@ -1165,7 +1165,7 @@
         </port>
     </entity>
     <entity name="LotSensor24" class="ptolemy.domains.wireless.demo.SmartParking.LotSensor">
-        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A14">
         </property>
@@ -1239,7 +1239,7 @@
         </port>
     </entity>
     <entity name="LotSensor26" class="ptolemy.domains.wireless.demo.SmartParking.LotSensor">
-        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A22">
         </property>
@@ -1387,7 +1387,7 @@
         </port>
     </entity>
     <entity name="LotSensor30" class="ptolemy.domains.wireless.demo.SmartParking.LotSensor">
-        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+        <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A2">
         </property>

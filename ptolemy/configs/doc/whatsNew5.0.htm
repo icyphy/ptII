@@ -13,37 +13,222 @@ so that we can easily find and update the version number
 </head>
 <body>
 <h1>
-Quick Tour of What's New in Version 5.0
+Tour of What's New in Version 5.0
 </h1>
 See also <a href="whatsNew4.0.htm">What's new in Version 4.0</a>.
-
-<h2>
-Highlights
-</h2>
+Contents:
 <ul>
-<li> FIXME
+<li> <a href="#highlights">Highlights</a>
+<li> <a href="#other">Other Key New Capabilities</a>
+<li> <a href="#libraries">New and Enhanced Actor Libraries</a>
+<li> <a href="#demos">New demonstrations</a>
+<li> <a href="#features">Additional features</a>
+<li> <a href="#bugs">Bug fixes</a>
 </ul>
 
-<h2>
-Other Key New Capabilities
+<h2> <a name="highlights">Highlights</a>
 </h2>
 <ul>
-<li>New Parameters:
-<ul>
-<li> <a href="../../../doc/codeDoc/ptolemy/actor/parameters/DoubleRangeParameter.html">DoubleRangeParameter</a>
-<li> <a href="../../../doc/codeDoc/ptolemy/actor/parameters/FilePortParameter.html">FilePortParameter</a>
-<li> <a href="../../../doc/codeDoc/ptolemy/moml/SharedParameter.html">SharedParameter</a>
-</ul>
+<li> <i>Dynamic Dataflow</i>:
+<a href="../../domains/ddf/demo/HanoiTower/HanoiTower.xml">HanoiTower</a>
+(see also
+<a href="../../domains/ddf/demo/Eratosthenes/Eratosthenes.xml">Eratosthenes</a>,
+<a href="../../domains/ddf/demo/IfThenElse/IfThenElse.xml">IfThenElse</a>,
+<a href="../../domains/ddf/demo/Loop/Loop.xml">Loop</a>,
+<a href="../../domains/ddf/demo/OrderedMerge/OrderedMerge.xml">OrderedMerge</a>,
+<a href="../../domains/ddf/demo/RandomWalk/RandomWalk.xml">RandomWalk</a>)
+<br>
+In dynamic dataflow (DDF) models, actors are fired in response to available
+input data. The schedule is dynamic and data dependent, and actors can
+change their production and consumption rates in each firing.
+Unlike synchronous dataflow, the DDF model of computation is Turing
+complete, and questions of deadlock and boundedness are undecidable.
+The <a href="../../domains/ddf/demo/HanoiTower/HanoiTower.xml">HanoiTower</a>
+example exploits this to give an algorithmic solution to the well-known
+towers of Hanoi problem.
 
-</ul>
-
-<h2>
-New and Enhanced Actor Libraries
-</h2>
-<ul>
+<br>
 <li>
+<i>Modeling of hybrid systems</i>:
+<a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradleComplicated.xml">NewtonsCradleComplicated</a>.
+<br>
+<i>Hybrid systems</i> are a special case of modal models
+where finite-state machines (FSMs) are combined with the continuous-time (CT) models
+to get mixed continuous-time and discrete-event models.
+The <a href="../hyvisual/intro.htm">HyVisual</a> package
+is a subset of Ptolemy II that includes the FSM and CT domains and libraries
+that support the design of hybrid systems.
+Version 5.0 introduces significant rework of the hybrid systems
+modeling infrastructure to have more complete and predictable
+semantics, as described in the paper
+"<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics/#in_browser">
+Operational Semantics of Hybrid Systems</a>".
+The
+<a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradleComplicated.xml">NewtonsCradleComplicated</a>
+example illustrates this with a model of a physical system that has simultaneous
+events.
+
+<br>
+<li> <i>Heterochronous Dataflow</i>:
+<a href="../../domains/hdf/demo/Fibonacci/Fibonacci.xml">Fibonacci</a>
+(see also
+<a href="../../domains/hdf/demo/Merge/Merge.xml">Merge</a>).
+<br>
+Heterochronous dataflow (HDF) is an extension of synchronous dataflow
+(SDF) that permits dynamically changing production and consumption
+patterns without sacrificing static scheduling. In SDF, the production
+and consumption patterns of an actor are constant.
+In HDF they are allowed to change between iterations of the HDF schedule.
+Modal models can be used to change these patterns.
+Although HDF can express many data-dependent computations that cannot
+be represented by SDF, it is not Turing complete.  Consequently, deadlock
+and boundedness remain decidable.
+The <a href="../../domains/hdf/demo/Fibonacci/Fibonacci.xml">Fibonacci</a>
+example uses this mechanism in a clever way to extract a Fibonacci sequence
+from a counting sequence.
+
+</ul>
+
+<h2><a name="other">Other Key New Capabilities</a>
+</h2>
+<ul>
+
+<li><i>Unbounded model time</i>:
+<a href="../../domains/de/demo/LongRuns/LongRuns.xml">LongRuns</a>.
+<br>
+Version 5.0 introduces a new
+<a href="../../../doc/codeDoc/ptolemy/actor/util/Time.html">Time</a> class
+that represents model time in a manner that has a specified resolution
+and unbounded growth potential. Any two time values that are within the specified
+resolution are treated as equal. Moreover, time can increase forever without
+concern for loss of resolution or overflow.
+The <a href="../../domains/de/demo/LongRuns/LongRuns.xml">LongRuns</a>
+example is a discrete-event model that can be run forever, in principle,
+without (significant) growth of memory requirements and without loss
+of (internal) precision in model time.
+The precision of time representations is given by a director parameter
+whose value is shared across all directors in a model (see
+<a href="../../../doc/codeDoc/ptolemy/moml/SharedParameter.html">SharedParameter</a>).
+<br>
+
+<li><i>Synchronous Reactive Modeling</i>:
+<a href="../../domains/sr/demo/GuardedCount/GuardedCount.xml">GuardedCount</a>.
+<br>
+The synchronous/reactive (SR) domain,
+which is inspired by the synchronous languages Esterel, Lustre, and Signal,
+realizes a concurrency model where actors react instantaneously and simultaneously
+at ticks of a logical clock. Version 5.0 introduces a richer set of actors
+for use with this domain, as well as a bug fix permitting
+SROptimizedScheduler to be used inside a composite actor.
+The <a href="../../domains/sr/demo/GuardedCount/GuardedCount.xml">GuardedCount</a>
+example illustrates some of these new capabilities.
+The new actors are:
+<ul>
+ <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/Current.html">Current</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/Default.html">Default</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/EnabledComposite.html">EnabledComposite</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/Pre.html">Pre</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/When.html">When</a>
+</ul>
+
+<li><i>Nondeterministic merge in Process Networks (PN)</i>:
+<a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>.
+<br>
+The PN domain now supports a NondeterministicMerge actor, which merges two
+incoming streams nondeterministically. This new actor should be used with
+caution, since determinism is one of the key features of PN. Use of this
+actor is risky because any given execution is only representative of
+the possible executions. Nonetheless, this offers a considerable
+increment in expressiveness.
+
+<br>
+
+<li><i>New Parameters</i>:
+<br>
+A number of new parameters have been introduced.
+The <a href="../../../doc/codeDoc/ptolemy/actor/parameters/DoubleRangeParameter.html">DoubleRangeParameter</a>
+limits the range and precision of a double-valued parameter,
+and is supported in the user interface by providing a slider by default in parameter
+editing dialogs.
+The <a href="../../../doc/codeDoc/ptolemy/actor/parameters/FilePortParameter.html">FilePortParameter</a>
+is used by actors to specify a file or URL using both a
+parameter and a port. The user interface supports this by offering a file browser
+dialog by default when editing this parameter. The
+<a href="../../../doc/codeDoc/ptolemy/moml/SharedParameter.html">SharedParameter</a>
+is a parameter
+whose value is constrained to be identical to a suite of other instances of
+SharedParameter in the same model. This parameter is used, for example, to
+handle seeds in random number generators, as illustrated for example in
 <a href="../../actor/lib/colt/demo/ColtRandom/ColtRandom.xml">
-Random number generators</a>.
+ColtRandom</a>.
+
+<br>
+<li><i>Higher Order Components</i>:
+<a href="../../demo/ExecDemos.xml">ExecDemos</a>
+(see also
+<a href="../../actor/lib/hoc/demo/IterateOverArray/IterateOverArray.xml">IterateOverArray</a>).
+<br>
+The higher-order component capabilities of Ptolemy II continue to evolve.
+The <a href="../../demo/ExecDemos.xml">ExecDemos</a> model, when executed, starts a new
+Java virtual machine that then executes the
+<a href="../../demo/RunDemos.xml">RunDemos</a> model,
+which runs all demos in a specified directory using full-screen mode.
+This illustrates how to use higher-order actors to control the lifecylcle of other Ptolemy II
+models. This example can be set up to automatically and repeatedly run demos
+unattended by following the instructions in the
+<a href="../../demo/README.txt">README.txt</a> file.
+The new higher-order actors include:
+<ul>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/ApplyFilterOverArray.html">ApplyFilterOverArray</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/ApplyFunction.html">ApplyFunction</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/ApplyFunctionOverSequence.html">ApplyFunctionOverSequence</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/IterateOverArray.html">IterateOverArray</a>
+</ul>
+
+<li> <i>Graphics domain</i>:
+<a href="../../domains/gr/demo/SolarSystem/SolarSystem.xml">SolarSystem</a>
+(see also <a href="../../domains/gr/demo/Helen/Helen.xml">Helen</a>).
+<br>
+The graphics (GR) domain has been extensively revised to take better advantage of underlying
+capabilities in the Java 3D package. For example, the
+<a href="../../domains/gr/demo/SolarSystem/SolarSystem.xml">SolarSystem</a>
+model illustrates transparency (see the rings of Saturn), and the
+<a href="../../domains/gr/demo/Helen/Helen.xml">Helen</a> model
+illustrates texture mapping and movable viewer positioning.
+The following capabilities are now supported:
+<ul>
+ <li>transparency
+ <li>texture mapping
+ <li>shininess
+ <li>colors use ColorAttribute
+ <li>more colors can be set
+ <li>settable resolution
+ <li>wireframe option for shapes
+ <li>flat facets option for shapes
+ <li>run-time changes of parameter values
+ <li>parameters in the Text3D actor
+ <li>movable viewer position
+</ul>
+
+</ul>
+
+<h2><a name="libraries">New and Enhanced Actor Libraries</a>
+</h2>
+A number of new and enhanced actor libraries are included in version 5.0.
+You may also wish to refer to the
+<a href="../../../doc/codeDoc/ptolemy/actor/lib/package-summary.html">ptolemy.actor.lib</a>
+package, where most of the domain-polymorphic actors reside (domain-polymorphic actors are
+those that can be used in more than one domain).
+
+<ul>
+<li><i>New generic actors</i>:
+<ul>
+<li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/Sequence.html">Sequence</a>
+</ul>
+
+<li><i>Random number generators</i>:
+<a href="../../actor/lib/colt/demo/ColtRandom/ColtRandom.xml">
+ColtRandom</a>.
 <br>
 A new library of random number generators, developed jointly with
 David Bauer and Kostas Oikonomou from AT&amp;T Research, is based on the popular
@@ -57,63 +242,32 @@ The library supports many
 commonly used probability distributions and provides
 systematic management of seeds and random number generation
 techniques.
-</ul>
 
-<h2>
-New Demonstrations of Older Capabilities
-</h2>
+<br>
+<li><i>New discrete-event actors</i>:
 <ul>
-<li> FIXME
-</ul>
-
-<h2>
-Capabilities requiring additional software and/or hardware
-</h2>
-
-<ul>
-<li> FIXME
-</ul>
-
-<h2>
-<a name="features">
-Additional Features
-</a>
-</h2>
-<ul>
-<li> FIXME
-</ul>
-
-<h2>New Actors</h2>
-
-
-<menu>
-<li> <b><a href="../../../doc/codeDoc/ptolemy/actor/lib/package-summary.html">ptolemy.actor.lib</a></b>
-
-<dl>
-<dt><a href="../../../doc/codeDoc/ptolemy/actor/lib/ArrayAverage.html">FIXME</a>:
-<dd>(FIXME: Authors)
-FIXME
-</menu>
-
-
-<h2> FIXME: Organize what's below according to the above </h2>
-<ul>
-
-<li> CT and DE work
-<i>FIXME: Need CT/DE description (Haiyang)</i>
-<ul>
-<li> <a href="../../../doc/codeDoc/ptolemy/actor/TimedActor.html">TimedActor</a>
-<li> <a href="../../../doc/codeDoc/ptolemy/actor/TimedDirector.html">TimedDirector</a>
-<li> <a href="../../../doc/codeDoc/ptolemy/actor/util/Time.html">Time</a>
-<li> <a href="../../../doc/codeDoc/ptolemy/domains/ct/kernel/CTExecutionPhase.html">CTExecutionPhase</a>
-<li> <a href="../../../doc/codeDoc/ptolemy/domains/ct/kernel/CTGeneralDirector.html">CTGeneralDirector</a>
-<li> <a href="../../../doc/codeDoc/ptolemy/domains/ct/kernel/util/GeneralComparator.html">GeneralComparator</a>
 <li> <a href="../../../doc/codeDoc/ptolemy/domains/de/lib/NonInterruptibleTimer.html">NonInterruptibleTimer</a>
 <li> <a href="../../../doc/codeDoc/ptolemy/domains/de/lib/Register.html">Register</a>
-<li><i>FIXME: Need Time demo(Haiyang)</i>
 </ul>
 
-<li>New Continuous Time demos
+<li> <i>Communications library</i>:
+<br>
+The <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/package-summary.html">communications library</a>
+includes a number of new actors:
+<ul>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/HuffmanBasic.html">HuffmanBasic</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/HuffmanCoder.html">HuffmanCoder</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/HuffmanDecoder.html">HuffmanDecoder</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/LempelZivCoder.html">LempelZivCoder</a>
+ <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/LempelZivDecoder.html">LempelZivDecoder</a>
+</ul>
+
+</ul>
+
+<h2> <a name="demos">New Demonstrations</a>
+</h2>
+<ul>
+<li>New Continuous Time demos:
 <ul>
 <li> <a href="../../domains/ct/demo/Brownian/Brownian.xml">Brownian</a> 
 <li> <a href="../../domains/ct/demo/ContinuousClock/ContinuousClock.xml">Continuous Clock</a>
@@ -135,17 +289,13 @@ FIXME
 <li> <a href="../../domains/ct/demo/V2V/V2V.xml">Vehicle 2 Vehicle</a>
 </ul>
 
-<li>New Discrete Event demos
+<li>New Discrete Event (DE) demos:
 <ul>
  <li><a href="../../domains/de/demo/AssemblyLine/AssemblyLine.xml">Assembly Line</a> 
  <li><a href="../../domains/de/demo/HierarchicalModel/HierarchicalModel.xml">Hierarchical Model</a> 
 </ul>
 
-
-<li> Dynamic Dataflow (DDF), a model of computation that extends Synchronous Dataflow by allowing change of
-consumption rates and production rates of an actor betweeen iterations of this actor (i.e., it can change rates
-after each firing). Due to Turing-completeness of this MoC, a DDF director dynamically schedules the firings of actors.  
-
+<li> New Dynamic Dataflow (DDF) demos:
 <ul>
  <li><a href="../../domains/ddf/demo/Eratosthenes/Eratosthenes.xml">Eratosthenes</a>
  <li><a href="../../domains/ddf/demo/Factorial/Factorial.xml">Factorial</a>
@@ -157,9 +307,7 @@ after each firing). Due to Turing-completeness of this MoC, a DDF director dynam
  <li><a href="../../domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml">RijndaelEncryption</a>
 </ul>
 
-<li> Heterochronous Dataflow (HDF), a model of computation that extends Synchronous Dataflow by allowing change of
-consumption rates and production rates of an actor between global iterations. The change of rates is often modeled
-by using a modal model.
+<li> New Heterochronous Dataflow (HDF) demos:
 <ul>
  <li><a href="../../domains/hdf/demo/AdaptiveCoding/AdaptiveCoding.xml">AdaptiveCoding</a>
  <li><a href="../../domains/hdf/demo/Fibonacci/Fibonacci.xml">Fibonacci</a>
@@ -167,120 +315,58 @@ by using a modal model.
  <li><a href="../../domains/hdf/demo/Merge/Merge.xml">Merge</a>
 </ul>
 
-<li> Modal Model Configuration (suggested directors)
-<br><i>FIXME: Need description for list of FSM directors: FSMDirector, HSDirector, MultirateFSMDirector,
-HDFFSMDirector, NonStrictFSMDirector (?) (Haiyang, Rachel)</i>
+<li>New Giotto demos:
+<ul>
+<li><a href="../../domains/giotto/demo/Multimode/Multimode.xml">Multimode</a>
+</ul>
 
-<li> Ptolemy II can be compiled under Java 1.5.0_01.  Java 1.4.2_07
+<li> New Graphics (GR) demos
+(requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>):
+<ul>
+<li> <a href="../../domains/gr/demo/Helen/Helen.xml">Helen</a>
+<li> <a href="../../domains/gr/demo/SolarSystem/SolarSystem.xml">SolarSystem</a>
+</ul>
+
+<li> New Wireless demos:
+<ul>
+<li> <a href="../../domains/wireless/demo/SmartParking/SmartParking.xml">SmartParking</a>
+</ul>
+
+</ul>
+
+<h2>
+<a name="features"> Additional Features </a>
+</h2>
+<ul>
+
+<li> <i>Java compatibility</i>:
+<br>
+Ptolemy II can be compiled under Java 1.5.0_01.  Java 1.4.2_07
 is preferred though.
 
-<li>Fractional math
+<br>
+
+<li>Support changing the order of attributes, ports, etc., and
+support moving objects towards the foreground or background
+in the user interface. This is particularly helpful when
+editing icons, since the elements of the icon can now be sent
+to the background or brought to the foreground by right clicking
+and selecting the appropriate option.
+
+<br>
+
+<li> <i>Fractional math</i>:
+<br>
+A new library supporting arithmetic on fractions has been created. See:
 <ul>
  <li> <a href="../../../doc/codeDoc/ptolemy/math/FractionArrayMath.html">FractionArrayMath</a>
  <li> <a href="../../../doc/codeDoc/ptolemy/math/FractionMatrixMath.html">FractionMatrixMath</a>
 </ul>
 
-<li> New Actors:
-<pre>
-<li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/Sequence.html">Sequence</a>
-</pre>
-<li> lib/comm actors
-<ul>
- <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/HuffmanBasic.html">HuffmanBasic</a>
- <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/HuffmanCoder.html">HuffmanCoder</a>
- <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/HuffmanDecoder.html">HuffmanDecoder</a>
- <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/LempelZivCoder.html">LempelZivCoder</a>
- <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/LempelZivDecoder.html">LempelZivDecoder</a>
-</ul>
-
-<li> New Higher Order Components (hoc)
-<ul>
- <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/ApplyFilterOverArray.html">ApplyFilterOverArray</a>
- <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/ApplyFunction.html">ApplyFunction</a>
- <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/ApplyFunctionOverSequence.html">ApplyFunctionOverSequence</a>
- <li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/IterateOverArray.html">IterateOverArray</a>
-</ul>
-Hoc demos
-<ul>
-<li><a href="../../actor/lib/hoc/demo/IterateOverArray/IterateOverArray.xml">IterateOverArray</a>
-</ul>
-
-<li> Extensive revisions of GR
-<ul>
- <li>transparency
- <li>shininess
- <li>colors use ColorAttribute
- <li>more colors can be set
- <li>settable resolution
- <li>wireframe option for shapes
- <li>flat facets option for shapes
- <li>run-time changes of parameter values
- <li>parameters in Text3D
-</ul>
-
-<li>Escher work
-<li>Giotto Codegen work
-<li>New Giotto demos
-<pre>
- <! -- FIXME: what about domains/giotto/demo/FireAtDE/FireAtDE.xml ? -->
- <li><a href="../../domains/giotto/demo/Multimode/Multimode.xml">Multimode</a>
-</pre>
-
-<li> New actors in the Synchronous Reactive domain:
-<I>FIXME: Need sr actors description (Edward)</I>
-<ul>
- <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/Current.html">Current</a>
- <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/Default.html">Default</a>
- <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/EnabledComposite.html">EnabledComposite</a>
- <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/Pre.html">Pre</a>
- <li> <a href="../../../doc/codeDoc/ptolemy/domains/sr/lib/When.html">When</a>
-</ul>
-New sr demo
-<ul>
-<li><a href="../../domains/sr/demo/GuardedCount/GuardedCount.xml">GuardedCount</a> 
-</ul>
-Fixed bug in SR where SROptimizedScheduler could not be
-used inside a composite actor.
-
-<li>New PN demo
-<ul>
-<li><a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">Nondeterministic Merge</a>
-</ul>
-
-<li> Wireless work?
-<br>Wireless demo
-<ul>
-<li> <a href="../../domains/wireless/demo/SmartParking/SmartParking.xml">SmartParking</a>
-</ul>
-<li>Fixed a number of potential deadlock situations:
-<ul>
- <li> deadlock while dragging actors during a run.
- <li> deadlocks in PN when exceptions occur in the model.
-</ul>
 <li>Added external source (URL) option to the Instantiate Entity
 command in the Graph menu.
 
-<li>Fixed "Restore Defaults" when actors and directors
-use the three argument constructor for parameters.
-
-<li>Previously, if a class definition were to show the name
-of ports, there was no way to turn this off (the attribute
-_showName) could not be removed. Now, marker attributes
-such as _showName are boolean valued parameters, so they
-can be turned off by overriding their value.
-
-<li>Support changing the order of attributes, ports, etc., and
-support moving objects towards the foreground or background
-in the user interface.
-
-<li>Fixed long standing bug in copy where objects are represented
-in the wrong order in the exported MoML.
-
-<li>Fixed some subtle bugs in ModalModel, where changes to
-input/output status and ordering of ports were not properly
-reflected in the mirror ports.
-
-<li> Other New java files
+<li> Other New java files:
 <pre>
 ptolemy/actor/StateReceiver.java
 ptolemy/actor/TypeOpaqueCompositeActor.java
@@ -291,9 +377,6 @@ ptolemy/actor/lib/UnaryMathFunction.java
 ptolemy/actor/util/DFUtilities.java
 ptolemy/caltrop/actors/AbstractCalInterpreter.java
 ptolemy/domains/fsm/kernel/NonStrictFSMDirector.java
-ptolemy/domains/gr/lib/MovableViewScreen3D.java
-ptolemy/domains/gr/lib/ViewScreen3D.java
-ptolemy/domains/pn/kernel/NondeterministicMerge.java
 ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.java
 ptolemy/kernel/util/Moveable.java
 ptolemy/moml/filter/GRColorChanges.java
@@ -303,6 +386,37 @@ ptolemy/vergil/kernel/attributes/AttributeValueAttribute.java
 ptolemy/vergil/kernel/attributes/IDAttribute.java
 ptolemy/vergil/toolbox/MoveAction.java
 </pre>
+
+</ul>
+
+<h2>
+<a name="bugs"> Bug fixes </a>
+</h2>
+<ul>
+
+<li>Fixed "Restore Defaults" when actors and directors
+use the three argument constructor for parameters.
+
+<li>Previously, if a class definition were to show the name
+of ports, there was no way to turn this off (the attribute
+_showName) could not be removed. Now, marker attributes
+such as _showName are boolean valued parameters, so they
+can be turned off by overriding their value.
+
+<li>Fixed long standing bug in copy where objects are represented
+in the wrong order in the exported MoML.
+
+<li>Fixed some subtle bugs in ModalModel, where changes to
+input/output status and ordering of ports were not properly
+reflected in the mirror ports.
+
+<li> A number of potential deadlocks have been fixed:
+<ul>
+ <li> deadlock while dragging actors during a run.
+ <li> deadlocks in PN when exceptions occur in the model.
+</ul>
+
+</ul>
 
 </ul>
 

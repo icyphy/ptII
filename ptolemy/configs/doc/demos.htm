@@ -105,7 +105,7 @@ the <a href="../../configs/hyvisual/intro.htm">HyVisual introduction</a>
 .
 <br>
 
- <i>Hybrid systems</i> are a special case of modal models
+<i>Hybrid systems</i> are a special case of modal models
 where finite-state machines (FSMs) are combined with the continuous-time (CT) models
 to get mixed continuous-time and discrete-event models.
 The <a href="../hyvisual/intro.htm">HyVisual</a> package
@@ -296,10 +296,17 @@ from a counting sequence.
 <!--sr does not get included in demosPtiny.htm -->
 <li><i>Synchronous/Reactive Modeling</i>:
 <a href="../../domains/sr/demo/TokenRing/TokenRing.xml">
-TokenRing</a>.<br>
-This example illustrates the <i>synchronous/reactive</i> (SR) domain,
-which is inspired by the synchronous languages Esterel, Lustre, and Signal.
-The example uses the fixed-point semantics of SR to arbitrate access
+TokenRing</a> (see also
+<a href="../../domains/sr/demo/GuardedCount/GuardedCount.xml">
+GuardedCount</a>).
+<br>
+The synchronous/reactive (SR) domain,
+which is inspired by the synchronous languages Esterel, Lustre, and Signal,
+realizes a concurrency model where actors react instantaneously and simultaneously
+at ticks of a logical clock.
+The <a href="../../domains/sr/demo/TokenRing/TokenRing.xml">
+TokenRing</a>
+example uses the fixed-point semantics of SR to arbitrate access
 to a shared medium using a token-ring protocol.
 
 <!--vergilDocs-->
