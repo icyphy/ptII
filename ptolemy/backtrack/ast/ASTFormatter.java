@@ -899,12 +899,16 @@ public class ASTFormatter extends ASTVisitor {
      * @see ASTVisitor#visit(Javadoc)
      */
     public boolean visit(Javadoc node) {
+        _output(_indent);
         _output("/** ");
+        _output(_indent);
         for (Iterator it = node.tags().iterator(); it.hasNext(); ) {
             ASTNode e = (ASTNode) it.next();
             e.accept(this);
         }
-        _output("\n */\n");
+        _output("\n");
+        _output(_indent);
+        _output(" */\n");
         return false;
     }
 
@@ -1469,7 +1473,9 @@ public class ASTFormatter extends ASTVisitor {
             _openBrace();
         } else {
             // top-level tags always begin on a new line
-            _output("\n * ");
+            _output("\n");
+            _output(_indent);
+            _output(" * ");
         }
         boolean previousRequiresWhiteSpace = false;
         if (node.getTagName() != null) {
@@ -1484,7 +1490,9 @@ public class ASTFormatter extends ASTVisitor {
             // TagElement do not include white space
             boolean currentIncludesWhiteSpace = (e instanceof TextElement);
             if (previousRequiresNewLine && currentIncludesWhiteSpace) {
-                _output("\n * ");
+                _output("\n");
+				_output(_indent);
+				_output(" * ");
             }
             previousRequiresNewLine = currentIncludesWhiteSpace;
             // add space if required to separate
