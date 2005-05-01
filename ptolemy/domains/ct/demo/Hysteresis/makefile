@@ -48,6 +48,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Hysteresis.xml \
+	HysteresisWithBernouliLosses.xml \
+	HysteresisWithNoise.xml \
 	HysteresisWithRandomDelay.xml \
 	HysteresisWithRandomLosses.xml
 
