@@ -768,6 +768,7 @@ proc createAndExecute {file} {
 	    || [file tail $file] == "SamplerWithDefault.xml" \
 	    || [file tail $file] == "SamplerWithDefault1.xml" \
 	    || [file tail $file] == "SamplerWithDefault2.xml" \
+	    || [file tail $file] == "SimpleTest.xml" \
 	    || [file tail $file] == "StateSpace.xml" \
 	    || [file tail $file] == "RateLimiter.xml" \
 	    || [file tail $file] == "multirate.xml" \
