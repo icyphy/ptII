@@ -4,7 +4,7 @@
 <entity name="Composite" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[627, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[627, 383]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[206, 241]">
     </property>
@@ -23,7 +23,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 75.0]">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -43,7 +43,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 245.0]">
         </property>
     </property>
     <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -63,37 +63,14 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 335.0]">
         </property>
     </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">A composite demo with a Giotto model embedded in a DE model.
-The Giotto model is driven by two separate events according 
-to the DE semantics.
-</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 35.0]">
-        </property>
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 19, 842, 468}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 19, 842, 501}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{313.5, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{313.5, 191.5}">
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -112,11 +89,17 @@ to the DE semantics.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 310.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how a Giotto model works inside a DE model.&#10;&#10;The trigger events generated from the event source actors &#10;simply update the inputs for the computation specified by &#10;the Giotto model. However, whether the inputs are consumed &#10;by the Giotto model is determined by the period of the Giotto&#10;model.&#10;&#10;The Giotto model starts at the same time the DE model starts,&#10;and keeps running until its iteration counts are met or the top &#10;level (the DE model) stops execution.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 5.0]">
         </property>
     </property>
     <entity name="giotto" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 245.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[427, 350]">
         </property>
@@ -279,7 +262,7 @@ another event from outside becomes available.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 225.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -298,7 +281,7 @@ another event from outside becomes available.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 315.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -307,7 +290,7 @@ another event from outside becomes available.</text></svg></configure>
         </port>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 285.0]">
         </property>
     </entity>
     <entity name="State" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -321,7 +304,7 @@ another event from outside becomes available.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 245.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -345,7 +328,7 @@ another event from outside becomes available.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 330.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -361,7 +344,7 @@ another event from outside becomes available.</text></svg></configure>
         </configure>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[280.0, 195.0]">
+        <vertex name="vertex1" value="[270.0, 285.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
