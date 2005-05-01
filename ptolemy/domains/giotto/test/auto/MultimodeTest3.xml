@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Multimode" class="ptolemy.actor.TypedCompositeActor">
+<entity name="MultimodeTest3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[512, 389]">
@@ -129,26 +129,6 @@ Iterations 20</text></svg></configure>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows how to combine a modal model&#10;with a giotto model to achieve mode changes.&#10;&#10;The modal model monitors the output value of&#10;the Ramp actor and adjusts its own output value.&#10;&#10;The frequency parameters of actors indicate how&#10;many times will these actors be invoked during&#10;one iteration of this model.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 210.0]">
-        </property>
-    </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:black">Author: Haiyang Zheng</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 355.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -385,30 +365,6 @@ Iterations 20</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 280.0">
                 </property>
             </entity>
-            <entity name="mode1" class="ptolemy.actor.lib.gui.TimedPlotter">
-                <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 132, 481, 301}, maximized=false}">
-                </property>
-                <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[473, 246]">
-                </property>
-                <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 285.0">
-                </property>
-                <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>mode1</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="2.0"/>
-<yRange min="0.0" max="38.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-                </configure>
-            </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -423,7 +379,6 @@ Iterations 20</text></svg></configure>
             <link port="AddSubtract.plus" relation="relation3"/>
             <link port="AddSubtract.output" relation="relation4"/>
             <link port="Ramp.output" relation="relation3"/>
-            <link port="mode1.input" relation="relation4"/>
         </entity>
         <entity name="mode2" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -482,30 +437,6 @@ Iterations 20</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 230.0">
                 </property>
             </entity>
-            <entity name="mode2" class="ptolemy.actor.lib.gui.TimedPlotter">
-                <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 436, 481, 301}, maximized=false}">
-                </property>
-                <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[473, 246]">
-                </property>
-                <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 305.0">
-                </property>
-                <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>mode2</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="2.0"/>
-<yRange min="0.0" max="38.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-                </configure>
-            </entity>
             <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
                 <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -530,7 +461,6 @@ Iterations 20</text></svg></configure>
             <link port="AddSubtract.plus" relation="relation"/>
             <link port="AddSubtract.minus" relation="relation3"/>
             <link port="AddSubtract.output" relation="relation8"/>
-            <link port="mode2.input" relation="relation8"/>
             <link port="Ramp.output" relation="relation3"/>
         </entity>
         <relation name="inRelation" class="ptolemy.actor.TypedIORelation">
@@ -546,36 +476,20 @@ Iterations 20</text></svg></configure>
         <link port="mode2.in" relation="inRelation"/>
         <link port="mode2.out" relation="outRelation"/>
     </entity>
-    <entity name="outputs" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 4, 7, 10, 13, 11, 11, 11, 11, 11, 26, 29, 32, 35, 38, 21, 21, 21}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={540, 437, 482, 302}, maximized=false}">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[474, 247]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 155.0]">
         </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 155.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>outputs</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="2.0"/>
-<yRange min="0.0" max="38.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="relation3"/>
     <link port="modal model.in" relation="relation3"/>
-    <link port="modal model.out" relation="relation2"/>
-    <link port="outputs.input" relation="relation2"/>
+    <link port="modal model.out" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation"/>
 </entity>

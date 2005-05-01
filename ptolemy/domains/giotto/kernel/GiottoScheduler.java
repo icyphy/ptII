@@ -27,6 +27,7 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.giotto.kernel;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
@@ -173,7 +174,7 @@ public class GiottoScheduler extends Scheduler {
         int actorCount = actorList.size();
 
         if (actorCount < 1) {
-            throw new NotSchedulableException("Could not get schedule, "
+            throw new NotSchedulableException(this, "Could not get schedule, "
                     + "the number of deeply contained entities for '"
                     + compositeActor.getFullName() + "' is " + actorCount
                     + ", which is less than 1."
@@ -183,30 +184,47 @@ public class GiottoScheduler extends Scheduler {
 
         int[] frequencyArray = new int[actorCount];
         int[] intervalArray = new int[actorCount];
-        int[] iterateArray = new int[actorCount];
 
         ListIterator actorListIterator = actorList.listIterator();
 
         int i = 0;
+        int biggestFrequency = 
+            _candidateFrequencies[_candidateFrequencies.length-1];
 
         while (actorListIterator.hasNext()) {
             Actor actor = (Actor) actorListIterator.next();
-            iterateArray[i] = frequencyArray[i] = getFrequency(actor);
-            i++;
+            int frequency = getFrequency(actor);
+            if (Arrays.binarySearch(_candidateFrequencies, frequency) >= 0) {
+                // this frequency is a good candidate to calculate accurate
+                // _unitTimeIncrement for the director.
+                frequencyArray[i] = frequency;
+                i++;
+            } else if (frequency > biggestFrequency){
+                throw new NotSchedulableException(this,
+                        "The specified frequency " 
+                        + frequency + " is bigger than the allowed biggest " 
+                        + "frequency " + biggestFrequency + ". \n Try "
+                        + "introducing hierarchies or reducing the period " 
+                        + "parameter of the director to achieve shorter " 
+                        + "execution time.");
+            } else {
+                throw new NotSchedulableException(this,
+                        "Cannot assign a frequency " 
+                        + frequency + " to " + actor.getName() 
+                        + ", because time cannot be calculated accurately. \n"
+                        + " A good frequency will be of 2^m*5^n, where m and n"
+                        + " are non-negative integers.");
+            }
         }
 
         _lcm = _lcm(frequencyArray);
-        _gcd = _gcd(frequencyArray);
 
         if (_debugging) {
             _debug("LCM of frequencies is " + _lcm);
-            _debug("GCD of frequencies is " + _gcd);
         }
 
         for (i = 0; i < actorCount; i++) {
             intervalArray[i] = _lcm / frequencyArray[i];
-
-            //System.out.println("The " + i + " actor has frequency " + frequencyArray[i] + " ----> " + intervalArray[i]);
         }
 
         // Compute schedule
@@ -220,23 +238,18 @@ public class GiottoScheduler extends Scheduler {
             for (i = 0; i < actorCount; i++) {
                 Actor actor = (Actor) actorListIterator.next();
 
-                if (((_giottoSchedulerTime % intervalArray[i]) == 0)
-                        && (iterateArray[i] > 0)) {
-                    Firing firing = new Firing();
-                    firing.setActor(actor);
-                    fireAtSameTimeSchedule.add(firing);
+                if ((_giottoSchedulerTime % intervalArray[i]) == 0) {
+                    fireAtSameTimeSchedule.add(new Firing(actor));
                 }
             }
 
-            _giottoSchedulerTime += _gcd;
+            _giottoSchedulerTime += 1;
 
             // there may be several null schedule in schedule...
             // and the time step is period / _lcm
-            //System.out.println("the size of fireAtSameTimeSchedule is " + fireAtSameTimeSchedule.size());
             schedule.add(fireAtSameTimeSchedule);
         }
 
-        //System.out.println("the size of schedule is " + schedule.size());
         return schedule;
     }
 
@@ -322,15 +335,20 @@ public class GiottoScheduler extends Scheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private int _lcm = 1;
-    private int _gcd = 1;
+    // This is a list of frequencies that can be used to calculate 
+    // _unitTimeIncrement accurately.
+    private static int[] _candidateFrequencies = new int[] {
+            1, 2, 4, 5, 8, 10, 16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 
+            160, 200, 250, 256, 320, 400, 500, 512, 625, 640, 800, 1000, 1024, 
+            1250, 1280, 1600, 2000, 2048, 2500, 2560, 3125, 3200, 4000, 4096, 
+            5000, 5120, 6250, 6400, 8000, 8192, 10000, 10240, 12500, 12800, 
+            15625, 16000, 16384, 20000, 20480, 25000, 25600, 31250, 32000, 
+            32768, 40000, 40960, 50000, 51200, 62500, 64000, 65536, 78125, 
+            80000, 81920, 100000 };
+    
     private int _giottoSchedulerTime = 0;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    ///////////////////////////////////////////////////////////////////
-    //// GiottoActorComparator
-
+    private int _lcm = 1;
+    
     /* This class implements the Comparator interface for actors
        based on the <I>frequency</I> parameter of the actors.
        The frequency of an actor which does not have a <I>frequency</I>

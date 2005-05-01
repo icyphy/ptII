@@ -23,35 +23,33 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, -1, 764, 621}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 0, 764, 621}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.5, 251.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how a Giotto model works inside a DE model.&#10;The trigger events from DE model simply update the inputs &#10;for the computation specified inside the Giotto model. However,&#10;whether the inputs are consumed by the Giotto model is defined by&#10;the its period.&#10;The Giotto model starts at the same time the whole starts,&#10;and keeps running until its iteration counts are met or the top &#10;level (the DE model) stop time is met.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how a Giotto model works inside a DE model.&#10;&#10;The trigger events generated from the event source actors &#10;simply update the inputs for the computation specified by &#10;the Giotto model. However, whether the inputs are consumed &#10;by the Giotto model is determined by the period of the Giotto&#10;model.&#10;&#10;The Giotto model starts at the same time the DE model starts,&#10;and keeps running until its iteration counts are met or the top &#10;level (the DE model) stops execution.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 65.0]">
         </property>
     </property>
-    <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
-        <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Sep 16, 2004 12:15:31 PM">
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 22, 2005 2:34:18 PM">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
         </property>
-        <property name="author" class="ptolemy.kernel.util.StringAttribute" value="hyzheng">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 440.0]">
         </property>
     </property>
     <entity name="giotto" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 305.0]">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[490, 378]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[259, 534]">
         </property>
@@ -82,7 +80,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 75.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[131.0, 63.0]">
             </property>
         </property>
         <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -102,27 +100,47 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 335.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 310.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 705, 496}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{245.0, 189.0}">
+        </property>
+        <property name="1:annotation2" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">frequency 1 (by default)</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 125.0]">
+            </property>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 260.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 200.0]">
             </property>
         </port>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 310.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[326.0, 283.0]">
             </property>
         </port>
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 310.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[206.0, 283.0]">
             </property>
             <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -131,25 +149,27 @@
             <property name="init" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 120.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 145.0]">
             </property>
             <property name="frequency" class="ptolemy.data.expr.Parameter" value="4">
             </property>
         </entity>
-        <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <entity name="TimedPlotter Inside Giotto Model" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="internal state, seen inputs">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={516, 47, 508, 355}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 170.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 200.0]">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
+<title>TimedPlotter Inside Giotto Model</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.02" max="0.4"/>
@@ -161,7 +181,7 @@
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="100.0, 260.0">
+            <vertex name="vertex1" value="[110.0, 200.0]">
             </vertex>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -172,10 +192,10 @@
         <link port="CurrentTime.trigger" relation="relation5"/>
         <link port="Ramp.output" relation="relation"/>
         <link port="Ramp.step" relation="relation5"/>
-        <link port="TimedPlotter.input" relation="relation"/>
-        <link port="TimedPlotter.input" relation="relation5"/>
+        <link port="TimedPlotter Inside Giotto Model.input" relation="relation"/>
+        <link port="TimedPlotter Inside Giotto Model.input" relation="relation5"/>
     </entity>
-    <entity name="1:SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="EventSource2" class="ptolemy.domains.de.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.02">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -186,7 +206,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 400.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -194,11 +214,11 @@
             </property>
         </port>
     </entity>
-    <entity name="1:Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 295.0]">
+    <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 350.0]">
         </property>
     </entity>
-    <entity name="1:1:SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="EventSource1" class="ptolemy.domains.de.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.15">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -209,7 +229,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 325.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -217,30 +237,32 @@
             </property>
         </port>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="TimedPlotter at the Top Level" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="time from Giotto model, trigger events">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 409, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={516, 383, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 350.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
+<title>TimedPlotter at the Top Level</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.02" max="0.4"/>
-<yRange min="0.02" max="3.0"/>
+<xRange min="0.0" max="0.4"/>
+<yRange min="0.0" max="3.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[220.0, 295.0]">
+        <vertex name="vertex1" value="[220.0, 350.0]">
         </vertex>
     </relation>
     <relation name="1:relation2" class="ptolemy.actor.TypedIORelation">
@@ -251,11 +273,11 @@
     </relation>
     <link port="giotto.in" relation="relation3"/>
     <link port="giotto.out" relation="relation2"/>
-    <link port="1:SingleEvent.output" relation="1:relation2"/>
-    <link port="1:Merge.input" relation="1:relation"/>
-    <link port="1:Merge.input" relation="1:relation2"/>
-    <link port="1:Merge.output" relation="relation3"/>
-    <link port="1:1:SingleEvent.output" relation="1:relation"/>
-    <link port="TimedPlotter.input" relation="relation2"/>
-    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="EventSource2.output" relation="1:relation2"/>
+    <link port="Merge.input" relation="1:relation"/>
+    <link port="Merge.input" relation="1:relation2"/>
+    <link port="Merge.output" relation="relation3"/>
+    <link port="EventSource1.output" relation="1:relation"/>
+    <link port="TimedPlotter at the Top Level.input" relation="relation2"/>
+    <link port="TimedPlotter at the Top Level.input" relation="relation3"/>
 </entity>

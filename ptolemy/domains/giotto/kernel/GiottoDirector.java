@@ -152,10 +152,12 @@ public class GiottoDirector extends StaticSchedulingDirector
         }
     }
 
-    /** Iterate the actors in the next minor cycle of the schedule.
-     *  After iterating the actors, increment time by the minor cycle time.
-     *  Also, update the receivers that are destinations of all actors that
-     *  will be invoked in the next minor cycle of the schedule.
+    /** Fire a complete iteration and advance time to the current time plus
+     *  the period value. A complete iteration consists of several minor cycles.
+     *  At each minor cycle, iterate actors in the corresponding minor cycle 
+     *  schedule. After iterating the actors, increment time by the minor cycle 
+     *  time. Also, update the receivers that are destinations of all actors 
+     *  that will be invoked in the next minor cycle of the schedule.
      *  This works because all actors in Giotto are invoked periodically,
      *  and the ones that will be invoked in the next cycle are the ones
      *  that are completing invocation at the end of this cycle.
@@ -169,9 +171,6 @@ public class GiottoDirector extends StaticSchedulingDirector
             throw new IllegalActionException(this, "Has no container!");
         }
 
-        // A schedule consists of a set of subschedules, one for each
-        // "unit" of Giotto.  If there are no more subschedules to
-        // execute, then start over with the original schedule.
         if (_debugging) {
             _debug("Giotto director firing!");
         }
@@ -180,123 +179,118 @@ public class GiottoDirector extends StaticSchedulingDirector
             return;
         }
 
-        // Grab the next schedule to execute.
-        Schedule unitSchedule = (Schedule) _schedule.get(_unitIndex);
+        while (_unitIndex < _schedule.size() && !_stopRequested) {
 
-        // We only do synchronization to real time here and leave time
-        // update to upper level directors or the postfile process.
-        if (_synchronizeToRealTime) {
-            long elapsedTime = System.currentTimeMillis() - _realStartTime;
-            double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
-
-            if (_expectedNextIterationTime.getDoubleValue() > elapsedTimeInSeconds) {
-                long timeToWait = (long) ((_expectedNextIterationTime
-                                                  .getDoubleValue() - elapsedTimeInSeconds) * 1000.0);
-
-                if (timeToWait > 0) {
-                    if (_debugging) {
-                        _debug("Waiting for real time to pass: " + timeToWait);
-                    }
-
-                    // Synchronize on the scheduler.
-                    Scheduler scheduler = getScheduler();
-
-                    synchronized (scheduler) {
-                        try {
-                            scheduler.wait(timeToWait);
-                        } catch (InterruptedException ex) {
-                            // Continue executing.
+            setModelTime(_expectedNextIterationTime);
+            
+            // Grab the next minor cycle (unit) schedule to execute.
+            Schedule unitSchedule = (Schedule) _schedule.get(_unitIndex);
+    
+            // We only do synchronization to real time here and leave time
+            // update to upper level directors or the postfire() method.
+            if (_synchronizeToRealTime) {
+                long elapsedTime = System.currentTimeMillis() - _realStartTime;
+                double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+    
+                if (_expectedNextIterationTime.getDoubleValue() > elapsedTimeInSeconds) {
+                    long timeToWait = (long) ((_expectedNextIterationTime
+                                                      .getDoubleValue() - elapsedTimeInSeconds) * 1000.0);
+    
+                    if (timeToWait > 0) {
+                        if (_debugging) {
+                            _debug("Waiting for real time to pass: " + timeToWait);
+                        }
+    
+                        // Synchronize on the scheduler.
+                        Scheduler scheduler = getScheduler();
+    
+                        synchronized (scheduler) {
+                            try {
+                                scheduler.wait(timeToWait);
+                            } catch (InterruptedException ex) {
+                                // Continue executing.
+                            }
                         }
                     }
                 }
             }
-        }
-
-        // Find the actors that will be invoked in this minor cycle (unit)
-        // and update the receivers that are their destinations.
-        // The reason that the destinations are updated is that any
-        // actor that is to be run in this unit is also presumably
-        // just completing a run from the previous iteration (because
-        // of the periodic semantics of Giotto).
-        // Of course, in the first iteration, the actors are not
-        // (obviously) completing any previous cycle.  However, according
-        // to Giotto semantics, the first unit always involves a firing
-        // of every actor.  Hence, the first unit schedule will include
-        // every actor.  Thus, in the first iteration, we will be
-        // committing the outputs of every actor.  This has the effect
-        // of committing any data values that the actor may have produced
-        // in its initialize() method.
-        Iterator scheduleIterator = unitSchedule.iterator();
-
-        while (scheduleIterator.hasNext()) {
-            Actor actor = ((Firing) scheduleIterator.next()).getActor();
-
-            if (_debugging) {
-                _debug("Updating destination receivers of "
-                        + ((NamedObj) actor).getFullName());
-            }
-
-            List outputPortList = actor.outputPortList();
-            Iterator outputPorts = outputPortList.iterator();
-
-            while (outputPorts.hasNext()) {
-                IOPort port = (IOPort) outputPorts.next();
-                Receiver[][] channelArray = port.getRemoteReceivers();
-
-                for (int i = 0; i < channelArray.length; i++) {
-                    Receiver[] receiverArray = channelArray[i];
-
-                    for (int j = 0; j < receiverArray.length; j++) {
-                        GiottoReceiver receiver = (GiottoReceiver) receiverArray[j];
-                        receiver.update();
+    
+            // Find the actors that will be invoked in this minor cycle (unit)
+            // and update the receivers that are their destinations.
+            // The reason that the destinations are updated is that any
+            // actor that is to be run in this unit is also presumably
+            // just completing a run from the previous iteration (because
+            // of the periodic semantics of Giotto).
+            // Of course, in the first iteration, the actors are not
+            // (obviously) completing any previous cycle.  However, according
+            // to Giotto semantics, the first unit always involves a firing
+            // of every actor.  Hence, the first unit schedule will include
+            // every actor.  Thus, in the first iteration, we will be
+            // committing the outputs of every actor.  This has the effect
+            // of committing any data values that the actor may have produced
+            // in its initialize() method.
+            Iterator scheduleIterator = unitSchedule.iterator();
+    
+            while (scheduleIterator.hasNext()) {
+                Actor actor = ((Firing) scheduleIterator.next()).getActor();
+    
+                if (_debugging) {
+                    _debug("Updating destination receivers of "
+                            + ((NamedObj) actor).getFullName());
+                }
+    
+                List outputPortList = actor.outputPortList();
+                Iterator outputPorts = outputPortList.iterator();
+    
+                while (outputPorts.hasNext()) {
+                    IOPort port = (IOPort) outputPorts.next();
+                    Receiver[][] channelArray = port.getRemoteReceivers();
+    
+                    for (int i = 0; i < channelArray.length; i++) {
+                        Receiver[] receiverArray = channelArray[i];
+    
+                        for (int j = 0; j < receiverArray.length; j++) {
+                            GiottoReceiver receiver = (GiottoReceiver) receiverArray[j];
+                            receiver.update();
+                        }
                     }
                 }
             }
-        }
+    
+            scheduleIterator = unitSchedule.iterator();
+    
+            while (scheduleIterator.hasNext()) {
+                Actor actor = ((Firing) scheduleIterator.next()).getActor();
+    
+                if (_debugging) {
+                    _debug("Iterating " + ((NamedObj) actor).getFullName());
+                }
+    
+                if (actor.iterate(1) == STOP_ITERATING) {
+                    // FIXME: How to handle this? 
+                    // put the actor on a no-fire hashtable?
+                }
+            }
+            
+            _unitIndex++;
 
-        scheduleIterator = unitSchedule.iterator();
-
-        while (scheduleIterator.hasNext()) {
-            Actor actor = ((Firing) scheduleIterator.next()).getActor();
+            _expectedNextIterationTime = 
+                _expectedNextIterationTime.add(_unitTimeIncrement);
 
             if (_debugging) {
-                _debug("Iterating " + ((NamedObj) actor).getFullName());
+                _debug("next Iteration time " + _expectedNextIterationTime + "\n");
             }
+        } 
+        
+        if (_unitIndex >= _schedule.size()) {
+            _unitIndex = 0;
 
-            if (actor.iterate(1) == STOP_ITERATING) {
-                // FIXME: put the actor on a no-fire hashtable.
+            // Iteration is complete when the unit index wraps around.
+            if (_debugging) {
+                _debug("===== Director completing unit of iteration: "
+                        + _iterationCount);
             }
-        }
-
-        // handle the actors the request refiring
-        while (_refireActors.size() > 0) {
-            Actor refireActor = ((Firing) _refireActors.remove(0)).getActor();
-
-            // NOTE:
-            // We can not iterate the actor because the time synchronization
-            // operations in the prefire method will trigger exceptions for
-            // setting time backwards.
-            // Instead, we fire and postfire the refire actor only.
-            refireActor.fire();
-
-            if (!refireActor.postfire()) {
-                // FIXME: put the actor on a no-fire hashtable.
-            }
-        }
-    }
-
-    /** Put the actor that requests to refire into an actor list. The director
-     *  will iterate the actor list in its fire method.
-     */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
-        // The lower level keeps requesting refiring unless its firing
-        // counts are met. So, the upper level needs to check whether the
-        // firing can be granted. If the requested time is before the
-        // scheduled next iteraton time, grant it. Otherwise, discard
-        // the request.
-        // This is particular useful in hierarchical Giotto models.
-        if (time.compareTo(getModelNextIterationTime()) < 0) {
-            _refireActors.add(new Firing(actor));
+            _iterationCount++;
         }
     }
 
@@ -315,13 +309,6 @@ public class GiottoDirector extends StaticSchedulingDirector
      */
     public Time getModelNextIterationTime() {
         return getModelTime().add(_unitTimeIncrement);
-    }
-
-    /** Return the next time that this director expects activity.
-     *  @return The time of the next iteration.
-     */
-    public double getNextIterationTime() {
-        return getModelNextIterationTime().getDoubleValue();
     }
 
     /** Get the period of the giotto director in ms.
@@ -344,7 +331,6 @@ public class GiottoDirector extends StaticSchedulingDirector
         _iterationCount = 0;
         _unitIndex = 0;
         _expectedNextIterationTime = getModelTime();
-        ;
 
         // The receivers should be reset before their initialization.
         Iterator receivers = _receivers.iterator();
@@ -394,7 +380,7 @@ public class GiottoDirector extends StaticSchedulingDirector
             }
         }
 
-        // Or set the initial time.
+        // Set the initial time.
         setModelTime(_expectedNextIterationTime);
 
         _realStartTime = System.currentTimeMillis();
@@ -425,44 +411,21 @@ public class GiottoDirector extends StaticSchedulingDirector
             return true;
         }
 
-        _unitIndex++;
-
-        if (_unitIndex >= _schedule.size()) {
-            _unitIndex = 0;
-
-            // Iteration is complete when the unit index wraps around.
-            if (_debugging) {
-                _debug("===== Director completing unit of iteration: "
-                        + _iterationCount);
-            }
-
-            _iterationCount++;
-        }
-
         int numberOfIterations = ((IntToken) (iterations.getToken())).intValue();
-
-        _expectedNextIterationTime = _expectedNextIterationTime.add(_unitTimeIncrement);
-
-        if (_debugging) {
-            _debug("next Iteration time " + _expectedNextIterationTime + "\n");
-        }
 
         if ((numberOfIterations > 0) && (_iterationCount >= numberOfIterations)) {
             // iterations limit is reached
             _iterationCount = 0;
-
             if (_isEmbedded()) {
                 return true;
             } else {
                 return false;
             }
         } else {
-            setModelTime(_expectedNextIterationTime);
-
             // continue iterations
             if (_isEmbedded()) {
                 // unless the iteration counts are met,
-                // keep firing itself.
+                // keep requesting to fire itself.
                 _requestFiring();
             }
         }
@@ -494,11 +457,9 @@ public class GiottoDirector extends StaticSchedulingDirector
             if (outsideCurrentTime.compareTo(_expectedNextIterationTime) < 0) {
                 // not the scheduled time to fire.
                 _readyToFire = false;
-            } else if (outsideCurrentTime.compareTo(_expectedNextIterationTime) > 0) {
-                // FIXME: the outside time should be equal to the expected
+            } else if (outsideCurrentTime.compareTo(_expectedNextIterationTime) == 0) {
+                // the outside time is equal to the expected
                 // next iteration time...
-                // FIXME: the following catch up is too early!
-                // catch up with the outside time.
                 setModelTime(outsideCurrentTime);
 
                 if (_debugging) {
@@ -506,9 +467,19 @@ public class GiottoDirector extends StaticSchedulingDirector
                 }
 
                 _readyToFire = true;
-            }
+            } else {
+                // the outside time is later than the expected next iteration 
+                // time. This may happen when a giotto model stops firing at
+                // some time and resumes firing after a while. See the giotto
+                // composite demo.
+                _expectedNextIterationTime = outsideCurrentTime;
+                setModelTime(outsideCurrentTime);
 
-            // guaranteed to be synchronized to outside.
+                if (_debugging) {
+                    _debug("Set current time as: " + getModelTime());
+                }
+                _readyToFire = true;
+            }
         } else {
             _readyToFire = true;
         }
@@ -554,7 +525,6 @@ public class GiottoDirector extends StaticSchedulingDirector
         // schedule is constructed only once.
         GiottoScheduler scheduler = (GiottoScheduler) getScheduler();
         _schedule = scheduler.getSchedule();
-        _refireActors = new Schedule();
         _unitTimeIncrement = scheduler._getMinTimeStep(_periodValue);
     }
 
@@ -731,8 +701,9 @@ public class GiottoDirector extends StaticSchedulingDirector
 
     // Request that the container of this director be refired in the future.
     // This method is used when the director is embedded inside an opaque
-    // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
-    // If the queue is empty, then throw an InvalidStateException
+    // composite actor. If the outside director is a Giotto director, this
+    // method has no effect. if the outside director is a DE director, this
+    // method will cause the container of this director to be fired again.
     private void _requestFiring() throws IllegalActionException {
         if (_debugging) {
             _debug("Request refiring of opaque composite actor at "
@@ -748,7 +719,7 @@ public class GiottoDirector extends StaticSchedulingDirector
     ////                         private variables                 ////
     // The time for next iteration.
     private Time _expectedNextIterationTime;
-
+    
     // The count of iterations executed.
     private int _iterationCount = 0;
 
@@ -763,9 +734,6 @@ public class GiottoDirector extends StaticSchedulingDirector
 
     // List of all receivers this director has created.
     private LinkedList _receivers;
-
-    // Actors that request refire.
-    private Schedule _refireActors;
 
     // Schedule to be executed.
     private Schedule _schedule;

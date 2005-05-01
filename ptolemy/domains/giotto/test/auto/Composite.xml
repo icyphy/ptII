@@ -86,7 +86,7 @@ to the DE semantics.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 20.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 19, 842, 468}, maximized=false}">
@@ -94,26 +94,6 @@ to the DE semantics.
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{313.5, 175.0}">
-    </property>
-    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:black">Author: Haiyang Zheng</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 270.0]">
-        </property>
     </property>
     <entity name="giotto" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 155.0]">
@@ -310,55 +290,25 @@ another event from outside becomes available.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 195.0]">
         </property>
     </entity>
-    <entity name="State" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 3.0, 4.0}">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Internal States, Reacting Time">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={436, 429, 526, 312}, maximized=false}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 125.0]">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[518, 257]">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 155.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>States of Giotto Model</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="1.5"/>
-<yRange min="0.0" max="5.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
     </entity>
-    <entity name="Trigger Events" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.4, 1.0, 1.4}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 429, 436, 312}, maximized=false}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 190.0]">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[428, 257]">
+    </entity>
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 4.0}">
         </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 255.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 240.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Trigger Events</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="1.5"/>
-<yRange min="0.0" max="5.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[280.0, 195.0]">
@@ -368,19 +318,19 @@ another event from outside becomes available.</text></svg></configure>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="giotto.in" relation="relation3"/>
-    <link port="giotto.out" relation="relation6"/>
-    <link port="giotto.time" relation="relation5"/>
+    <link port="giotto.out" relation="relation4"/>
+    <link port="giotto.time" relation="relation6"/>
     <link port="First Event.output" relation="relation2"/>
     <link port="Second Event.output" relation="relation"/>
     <link port="Merge.input" relation="relation"/>
     <link port="Merge.input" relation="relation2"/>
     <link port="Merge.output" relation="relation3"/>
-    <link port="State.input" relation="relation6"/>
-    <link port="State.input" relation="relation5"/>
-    <link port="Trigger Events.input" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="NonStrictTest2.input" relation="relation6"/>
+    <link port="NonStrictTest3.input" relation="relation3"/>
 </entity>
