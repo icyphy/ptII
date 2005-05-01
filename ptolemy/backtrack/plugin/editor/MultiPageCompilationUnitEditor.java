@@ -64,6 +64,11 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
         
         _createPages();
         
+        // Create _preview's part control first so that its key bindings do not
+        // conflict with superclass' key bindings.
+        _preview.createPartControl((Composite)_container.getItem(1).getControl());
+        super.createPartControl((Composite)_container.getItem(0).getControl());
+
         ISourceViewer sourceViewer= getSourceViewer();
         if (sourceViewer == null)
             return;
@@ -174,7 +179,7 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
         
         Composite composite = new Composite(_container, _getOrientation(this));
         composite.setLayout(new FillLayout());
-        super.createPartControl(composite);
+        //super.createPartControl(composite);
         
         _editor = this;
         
@@ -224,8 +229,8 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
                             return true;
                         }
             });
-            _preview.createPartControl(
-                    (Composite)_container.getItem(pageIndex).getControl());
+            //_preview.createPartControl(
+            //        (Composite)_container.getItem(pageIndex).getControl());
         } catch (Exception e) {
             OutputConsole.outputError(e.getMessage());
         }
