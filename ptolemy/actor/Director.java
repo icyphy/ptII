@@ -1006,8 +1006,8 @@ public class Director extends Attribute implements Executable {
 
         if (comparisonResult > 0) {
             throw new IllegalActionException(this,
-                    "Attempt to move current " + "time backwards. (newTime = "
-                    + newTime + ") < (getCurrentTime() = " + getModelTime() + ")");
+                    "Attempt to move current " + "time backwards. (new time = "
+                    + newTime + ") < (current time = " + getModelTime() + ")");
         } else if (comparisonResult < 0) {
             if (_debugging) {
                 _debug("==== Set current time to: " + newTime);
