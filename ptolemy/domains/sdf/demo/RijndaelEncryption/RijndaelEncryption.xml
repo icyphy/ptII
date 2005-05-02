@@ -1774,9 +1774,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The final encryption round, which is similar to a normal encrpytion round, 
+                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The final encryption round, which is similar to a normal encryption round, 
 except that it lacks the MixColumn operation.
-This makes encrpytion and decryption more symmetric.</text></svg></configure>
+This makes encryption and decryption more symmetric.</text></svg></configure>
                     </property>
                     <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                         <configure>
