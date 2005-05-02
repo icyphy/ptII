@@ -90,7 +90,7 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS = \
 	alldeep \
-	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JLONG_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
