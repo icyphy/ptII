@@ -130,7 +130,7 @@ at java.lang.Thread.run(Thread.java:536)
 	<li> Running the Networked demo via an applet on the local
 	file system results in an AccessControlException.
 <pre>
-com.microstar.xml.XmlException: XML element "entity" triggers exception:
+com.microstar.htm.htmException: XML element "entity" triggers exception:
   java.lang.Exception: Attempted to lookup 'Waveform', but got: 
   java.lang.ClassNotFoundException: Waveform
 Attempted to find as a moml class, but got: 
@@ -139,12 +139,12 @@ Attempted to find as a moml class, but got:
 	     in file:/C:/Program Files/Ptolemy/Ptolemy II 3.0 beta2/
                    ptolemy/moml/demo/Networked/ at line 62 and column 118
 	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:1341)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:944)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1117)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:946)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:495)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:175)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:145)
+	at com.microstar.htm.htmParser.parseElement(XmlParser.java:944)
+	at com.microstar.htm.htmParser.parseContent(XmlParser.java:1117)
+	at com.microstar.htm.htmParser.parseElement(XmlParser.java:946)
+	at com.microstar.htm.htmParser.parseDocument(XmlParser.java:495)
+	at com.microstar.htm.htmParser.doParse(XmlParser.java:175)
+	at com.microstar.htm.htmParser.parse(XmlParser.java:145)
 	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:492)
 	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:471)
 	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:456)
@@ -162,7 +162,7 @@ Attempted to find as a moml class, but got:
 	<li> If an icon file is not present, then a Vergil applet might
 	try to download the icon file multiple times.  Ptolemy II
 	uses XML files to store icons.  For example
-<a href="../ptolemy/actor/lib/BooleanSwitchIcon.xml"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitchIcon.xml</CODE></a>
+<a href="../ptolemy/actor/lib/BooleanSwitchIcon.htm"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitchIcon.htm</CODE></a>
 	is an icon for
 <a href="../ptolemy/actor/lib/BooleanSwitch.java"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitch.java</CODE></a>
 	 <br>The problem is that if an actor does not have an icon file,
