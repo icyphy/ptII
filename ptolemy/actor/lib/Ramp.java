@@ -169,12 +169,26 @@ public class Ramp extends SequenceSource {
      *  performed.
      */
     public int iterate(int count) throws IllegalActionException {
+        
         // Check whether we need to reallocate the output token array.
         if (count > _resultArray.length) {
             _resultArray = new Token[count];
         }
 
         for (int i = 0; i < count; i++) {
+            
+            // First read any trigger inputs.
+            // NOTE: It might seem that using trigger.numberOfSources() is
+            // correct here, but it is not. It is possible for channels
+            // to be connected, for example, to other output ports or
+            // even back to this same trigger port, in which case higher
+            // numbered channels will not have their inputs read.
+            for (int j = 0; i < trigger.getWidth(); j++) {
+                if (trigger.hasToken(j)) {
+                    trigger.get(j);
+                }
+            }
+
             _resultArray[i] = _stateToken;
 
             try {
