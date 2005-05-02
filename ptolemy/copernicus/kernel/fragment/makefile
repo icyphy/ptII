@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II code generation kernle
+# Makefile for Ptolemy II code generation kernel
 #
 # @Authors: Steve Neuendorffer, Christopher Hylands
 #
@@ -57,7 +57,15 @@ EXTRA_SRCS =    JavaFragmentParser.jj $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS)
 
-DERIVED_JSRCS = JavaFragmentParser.java
+DERIVED_JSRCS = \
+	JavaFragmentParser.java \
+	JavaCharStream.java \
+	JavaFragmentParserConstants.java \
+	JavaFragmentParser.java \
+	JavaFragmentParserTokenManager.java \
+	ParseException.java \
+	Token.java \
+	TokenMgrError.java
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
