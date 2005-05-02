@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HysteresisWithRandomDelay" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -207,20 +207,28 @@ second refinement called "wait" that triggers an event after a specified time.</
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 84, 906, 599}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 84, 906, 638}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[691, 481]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[691, 520]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{345.5, 240.5}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{345.5, 260.0}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
                 </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside either wait state&#10;to see the state refinements.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 280.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 285.0]">
+                </property>
+            </property>
+            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that we need to check the &quot;reset&quot; &#10;option of transitions that go from low &#10;to wait2 and from high to wait1, because&#10;wait1 and wait2 have refinements that &#10;contain level crossing detectors, whose&#10;internal states need to be reset.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 405.0]">
                 </property>
             </property>
             <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -293,7 +301,7 @@ second refinement called "wait" that triggers an event after a specified time.</
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.021228907208027007">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -517,6 +525,12 @@ second refinement called "wait" that triggers an event after a specified time.</
                 </property>
             </entity>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 150.0]">
                 </property>
             </entity>
