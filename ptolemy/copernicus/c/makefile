@@ -76,7 +76,7 @@ JSRCS = \
 	Main.java \
         MainFileGenerator.java \
 	MakeFileGenerator.java \
-	MakefileGenerator_C6000.java
+	MakefileGenerator_C6000.java \
 	MethodCodeGenerator.java \
 	MethodListGenerator.java \
 	NativeMethodGenerator.java \
