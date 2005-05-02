@@ -69,11 +69,14 @@ JSRCS = \
 	ExceptionTracker.java \
 	FileHandler.java \
 	HeaderFileGenerator.java \
+	InterfaceLookupGenerator.java \
+	InstanceOfFunctionGenerator.java \
         InstanceStructureGenerator.java \
 	JavaToC.java \
 	Main.java \
         MainFileGenerator.java \
 	MakeFileGenerator.java \
+	MakefileGenerator_C6000.java \
 	MethodCodeGenerator.java \
 	MethodListGenerator.java \
 	NativeMethodGenerator.java \
