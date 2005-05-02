@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NondeterministicMergeTest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
@@ -81,7 +81,7 @@
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
@@ -104,6 +104,8 @@
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="timeStep2">
@@ -264,11 +266,11 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 1000.0, 1500.0, 2000.0, 3000.0, 3000.0, 4000.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 1000.0, 1500.0, 2000.0, 3000.0, 3000.0, 4500.0, 4000.0, 5000.0, 6000.0, 6000.0, 7500.0, 7000.0, 8000.0, 9000.0, 9000.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="500.0">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 175.0]">
         </property>
