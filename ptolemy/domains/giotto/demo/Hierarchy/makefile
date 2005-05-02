@@ -50,6 +50,7 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	composite.xml \
 	Hierarchy.xml \
+	HierarchyCG.xml 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
