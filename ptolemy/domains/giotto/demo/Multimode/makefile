@@ -50,6 +50,7 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Controller.xml \
 	Multimode.xml \
+	MultimodeCG.xml \
 	OneMode.xml
 
 EXTRA_SRCS = \
