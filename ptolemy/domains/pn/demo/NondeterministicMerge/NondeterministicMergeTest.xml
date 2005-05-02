@@ -68,18 +68,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 375.0]">
         </property>
     </property>
-    <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
-        <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="timeStep1">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 135.0]">
-        </property>
-    </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -89,18 +77,6 @@
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 135.0]">
-        </property>
-    </entity>
-    <entity name="Sleep2" class="ptolemy.actor.lib.Sleep">
-        <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="timeStep2">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 215.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
@@ -266,11 +242,11 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 1000.0, 1500.0, 2000.0, 3000.0, 3000.0, 4500.0, 4000.0, 5000.0, 6000.0, 6000.0, 7500.0, 7000.0, 8000.0, 9000.0, 9000.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 1500.0, 3000.0, 1000.0, 4500.0, 2000.0, 3000.0, 4000.0, 6000.0, 5000.0, 7500.0, 6000.0, 7000.0, 8000.0, 9000.0, 9000.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="500.0">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 175.0]">
         </property>
@@ -279,14 +255,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 190.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[310.0, 210.0]">
         </vertex>
@@ -299,14 +267,14 @@
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Sleep.input" relation="relation2"/>
-    <link port="Sleep.output" relation="relation"/>
-    <link port="Ramp.output" relation="relation2"/>
-    <link port="Sleep2.input" relation="relation3"/>
-    <link port="Sleep2.output" relation="relation4"/>
-    <link port="Ramp2.output" relation="relation3"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="Ramp2.output" relation="relation2"/>
     <link port="NondeterministicMerge.input" relation="relation"/>
-    <link port="NondeterministicMerge.input" relation="relation4"/>
+    <link port="NondeterministicMerge.input" relation="relation2"/>
     <link port="NondeterministicMerge.output" relation="relation9"/>
     <link port="Comparator.left" relation="relation5"/>
     <link port="Comparator.right" relation="relation7"/>
