@@ -60,7 +60,9 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
-		#$(JGRAPHICAL_TESTS)
+	badRateChanges2.xml \
+	badRateChanges.xml \
+	rateConsistency.xml #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
