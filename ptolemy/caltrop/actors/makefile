@@ -51,6 +51,7 @@ PTPACKAGE = 	actors
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	AbstractCalInterpreter.java \
 	CalInterpreter.java
 
 EXTRA_SRCS =	$(JSRCS)
