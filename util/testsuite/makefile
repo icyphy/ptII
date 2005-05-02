@@ -65,10 +65,12 @@ TCL_SRCS = \
 # Shell scripts that should be made executable
 SCRIPTS = \
 	cgstats \
+	chkdemosize \
 	chkeol \
 	chkextra \
 	chkjava \
 	chksize \
+	controlm \
 	cvs2cl.pl \
 	deprecated \
 	gcstats \
