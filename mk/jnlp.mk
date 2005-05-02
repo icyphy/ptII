@@ -70,7 +70,6 @@ lib/joystickWindows.jar:
 # NATIVE_SIGNED_LIB_JARS is a separate vaiable so that we can
 # include it in ALL_JNLP_JARS
 NATIVE_SIGNED_LIB_JARS = \
-	lib/jaiWindows.jar \
 	lib/joystickWindows.jar \
 	lib/matlabWindows.jar \
 	lib/matlabSunOS.jar
