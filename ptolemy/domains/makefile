@@ -32,8 +32,9 @@
 ME =		ptolemy/domains
 
 # Domains we do not ship
-EXPERIMENTAL_DOMAINS = \
-		hdf ptinyos rtp 
+EXPERIMENTAL_DOMAINS =
+
+#		ptinyos rtp 
 
 # Domains, in alphabetical order.  If you change this, change
 # PTCLASSALLJARS below
@@ -43,7 +44,7 @@ EXPERIMENTAL_DOMAINS = \
 # PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
 #   Java 3D was found
 # The tm domain uses java.util.Timer, so it requires JDK 1.3
-DOMAINS =	ci csp ct dde ddf de fsm pn sdf dt giotto petrinet \
+DOMAINS =	ci csp ct dde ddf de fsm hdf pn sdf dt giotto petrinet \
 		$(PTPSDF_DIR) \
 		sr tm $(PTJAVA3D_DIR) wireless
 
