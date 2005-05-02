@@ -35,14 +35,17 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 import ptolemy.backtrack.plugin.dialogs.AboutDialog;
 
+//////////////////////////////////////////////////////////////////////////
+//// AboutAction
 /**
- * Our sample action implements workbench action delegate.
- * The action proxy will be created by the workbench and
- * shown in the UI. When the user tries to use the action,
- * this delegate will be created and execution will be 
- * delegated to it.
- * @see IWorkbenchWindowActionDelegate
- */
+
+
+@author Thomas Feng
+@version $Id$
+@since Ptolemy II 5.1
+@Pt.ProposedRating Red (tfeng)
+@Pt.AcceptedRating Red (tfeng)
+*/
 public class AboutAction implements IWorkbenchWindowActionDelegate {
     private IWorkbenchWindow window;
     /**

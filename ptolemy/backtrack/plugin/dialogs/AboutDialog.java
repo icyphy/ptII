@@ -45,6 +45,17 @@ import org.eclipse.swt.widgets.Shell;
 
 import ptolemy.backtrack.plugin.EclipsePlugin;
 
+//////////////////////////////////////////////////////////////////////////
+//// AboutDialog
+/**
+
+
+@author Thomas Feng
+@version $Id$
+@since Ptolemy II 5.1
+@Pt.ProposedRating Red (tfeng)
+@Pt.AcceptedRating Red (tfeng)
+*/
 public class AboutDialog extends Dialog {
 
     Object result;
