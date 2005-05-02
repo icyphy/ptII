@@ -13,6 +13,620 @@
       See also the quick tour in ptII/doc/tour
 -->
 
+<h2>Major Features that are new in Ptolemy II 4.0</h2>
+Below are new features that were not present in Ptolemy II 3.x
+<ul>
+<li>
+<a href="../ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.htm">
+Modeling wireless sensor networks</a> (see also
+<a href="design/visualsense.pdf" target="_top">VisualSense</a>).
+<br>
+The wireless domain extends the DE domain with wireless channel modeling and
+library of components and methodologies for modeling wireless systems.
+This domain is packaged in a Ptolemy II configuration called
+VisualSense, which includes
+an extensive suite of demos.
+
+<li>
+<a href="../ptolemy/domains/sdf/demo/NoisySinewave/NoisySinewaveVergil.htm">
+Hierarchical classes, subclasses, and inner classes</a>. (See also
+<a href="../ptolemy/configs/doc/ClassesIllustrated.png">
+classes illustrated visually</a> and
+<a href="../ptolemy/domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.htm">
+Rijndael Encryption</a>).
+<br>
+Version 4.0 introduces actor-oriented classes, subclasses, and
+inner classes with inheritance. This is a major improvement in
+the modularity mechanisms available in actor-oriented design. 
+A side effect of the class mechanism is that MoML files are now
+much smaller since they do not duplicate information defined
+in a base class.
+
+<li>
+<a href="../ptolemy/domains/sdf/demo/MultipleRuns/MultipleRuns.htm">
+Lifecycle management</a> (see also
+<a href="../ptolemy/actor/lib/hoc/demo/ModelReference/ModelReference.htm">
+ModelReference</a>).
+<br>
+Version 4.0 introduces the first of a family of
+<i>lifecycle management</i> actors, which are actors
+that control the execution of associated models.
+This example uses one model to control repeated runs of another.
+
+</ul>
+
+<h2>Other Features that are new in Ptolemy II 4.0</h2>
+<ul>
+<li>
+<a href="../ptolemy/data/unit/demo/StaticUnits/NonAppletStaticUnits.htm">
+Statically Checked Unit System</a> (see also the older
+<a href="../ptolemy/data/unit/demo/Units/Units.htm">
+Dynamically Checked Units System</a>).
+<br>
+The new statically checked units system associates
+units with ports and checks compatibility in connections.
+
+<li>
+<a href="../ptolemy/actor/lib/hoc/demo/MobileFunction/MobileFunction.htm">
+Higher-Order Components</a>.
+Version 4.0 adds <i>higher-order components</i>,
+which are components (like actors) that operate on other
+components and functions rather than directly on data.
+
+<li>
+<a href="../ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.htm">
+Interactive decorations in Vergil diagrams</a>.
+<br>
+Actors can have custom icons, diagrams can be decorated with
+decorative elements, and parameters of the icons and decorative
+elements can be tied to values compute by the model.
+
+<li>
+<a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.htm">Reconfiguration analysis</a>
+<br>
+A new capability helps to ensure the safe use of reconfiguration.
+Currently it is primarily used by the code generator to
+ensure that synchronous dataflow rate parameters are constant
+over the lifetime of the model.  This analysis also enables
+parameterized static scheduling of some models where rate parameters
+change only between iterations of a sub-model.
+
+<li>
+<a href="../ptolemy/domains/de/demo/HierarchicalModel/HierarchicalModel.htm">
+Causality analysis</a> (see also
+<a href="../ptolemy/domains/sr/demo/FeedbackLoop/FeedbackLoop.htm">SR FeedbackLoop</a>).
+<br>
+A new (and still evolving) capability unifies causality analysis
+that is required by several domains. It provides a systematic
+framework for determining whether events at a particular input
+affect a particular output.
+
+<li>
+Copernicus
+<br>
+The copernicus code generator has matured significantly:
+<ul>
+<li>Better handling of data types, reconfiguration, and attributes other than
+simple parameters.
+<li>Code Generation for the Giotto domain.
+<li>A primitive code generator for generating atomic actors from models.
+<li>Static analysis of reachable code for generating self-contained jar files.
+</ul>
+
+<!-- FIXME: String parameters -->
+
+</ul>
+
+<h3>New Demonstrations</h3>
+
+<h2>
+New and Enhanced Actor Libraries
+</h2>
+<ul>
+
+<li> 
+<a href="codeDoc/ptolemy/actor/lib/security/package-summary.html">Security library</a>.
+
+<li>
+<a href="codeDoc/ptolemy/actor/lib/security/package-summary.html">Array manipulatoin library</a> (See also
+<a href="../ptolemy/domains/sdf/demo/Array/Array.htm">
+Array</a>).
+
+<li>
+<a href="codeDoc/ptolemy/actor/lib/comm/package-summary.html#package_description">
+Communications library</a> (see also
+   <a href="../ptolemy/actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.htm">ConvolutionalCoder</a>,
+   <a href="../ptolemy/actor/lib/comm/demo/Scrambler/Scrambler.htm">Scrambler</a>,
+   <a href="../ptolemy/actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.htm">TrellisDecoder</a>,
+   <a href="../ptolemy/actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.htm">ViterbiDecoder</a>).
+   
+<!-- FIXME: String library -->
+
+</ul>
+<h2>
+New Demonstrations of Older Capabilities
+</h2>
+<ul>
+<!-- "../ptolemy/domains/de/demo/SmartSender/SmartSender.htm">
+Self repairing model is not a very good applet-->
+
+<li> <a href="../ptolemy/domains/ct/demo/Transmission/Transmission.htm">
+Using function closures to simplify a hybrid system model (of a car transmission)</a>.
+
+<li> <a href="../ptolemy/domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.htm">
+SynthesizedVoice</a>.
+
+</ul>
+<h2>
+Capabilities requiring additional software and/or hardware
+</h2>
+
+<ul>
+<li>
+<a href="codeDoc/ptolemy/actor/lib/io/comm/SerialComm.html">
+Serial port actors</a>.
+
+<li>
+<a href="codeDoc/ptolemy/actor/lib/x10/X10Interface.html">
+X10 power-line network actors</a>.
+
+<li>
+The 
+<a href="codeDoc/ptolemy/matlab/Expression.html">Matlab Expression actor</a>
+now takes a String Parameter instead of a  StringAttribute.
+This means that you can now reference parameters in scope using the
+$name or ${name} syntax.  For instance, if there is a parameter named
+foo, you can specify a Matlab expression like:
+<pre>
+    output = fft(in, $foo)
+</pre>
+Before, you would have to have read foo in a Const actor and
+provided it as input to the Matlab expression actor.
+
+<li> <a href="codeDoc/ptolemy/actor/lib/jmf/package-summary.html#package_description">
+Java Media Framework (JMF) actors</a>.
+
+<li><a href="codeDoc/ptolemy/domains/gr/lib/quicktime/package-summary.html#package_description">
+GR Quicktime actors</a>.
+
+</ul>
+
+
+<h2>
+<a name="features">
+Additional Features
+</a>
+</h2>
+<ul>
+
+
+<li> Other updates to Vergil:
+	<menu>
+	<li> Expert mode parameter editing
+	<li><CODE>vergil -help</CODE> lists available configurations.
+	<li> Full-screen mode for use in presentations (accessible from the toolbar).
+	<li> <a href="codeDoc/ptolemy/vergil/kernel/attributes/DocumentationAttribute.html">DocumentationAttribute</a>
+    </menu>
+
+<li> Single Window Mode (contributed by Thales).
+<br> If <code>vergil -single</code> is invoked, then a single window interface
+is used.  This interface is experimental.
+<br>Limitations:
+<ul>
+<li>The <code>-single</code> argument should be the first argument.
+<li>The plot windows come up outside of the single window interface.
+</ul>
+
+<li> XMLToken.
+This is a preliminary mechanism for manipulating XML data in Ptolemy II models.
+
+<li> Sandbox support
+<br>Vergil has better support for operating in a security sandbox.
+For details, see the
+<a href="sandbox.htm">Ptolemy II Sandbox documentation</a>.
+</ul>
+
+<h2>New Actors</h2>
+
+
+<menu>
+<li> <b><a href="codeDoc/ptolemy/actor/lib/package-summary.html">ptolemy.actor.lib</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/actor/lib/ArrayAverage.html">ArrayAverage</a>:
+<dd>(Mark Oliver, Edward A. Lee)
+An actor that outputs the average of the input array.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/ArrayLevelCrossing.html">ArrayLevelCrossing</a>:
+<dd>(Edward A. Lee, Steve Neuendorffer)
+An actor that finds the index of the first item in an array to cross a specified threshold.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/ArrayPeakSearch.html">ArrayPeakSearch</a>:
+<dd>(Edward A. Lee)
+An actor that identifies peaks in an array.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/ArraySort.html">ArraySort</a>:
+<dd>(Mark Oliver, Edward A. Lee)
+An actor that sorts the elements of an array.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/ArrayToElements.html">ArrayToElements</a>:
+<dd>(Rachel Zhou)
+An actor that disassemble an ArrayToken to a multiport output.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/ComputeHistogram.html">ComputeHistogram</a>:
+<dd>(Steve Neuendorffer)
+Compute a histogram of input data.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/ElementsToArray.html">ElementsToArray</a>:
+<dd>(Rachel Zhou)
+An actor that reads a token from each input channel to assemble an ArrayToken.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/Exec.html">Exec</a>:
+<dd>(Christopher Hylands Brooks, Contributor: Edward A. Lee)
+Execute a command in a subprocess.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/Exit.html">Exit</a>:
+<dd>(Edward A. Lee)
+A simple sink actor that consumes and discards input tokens and then calls System.exit() in wrapup.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/GradientAdaptiveLattice.html">GradientAdaptiveLattice</a>:
+<dd>(Steve Neuendorffer)
+An IIR filter actor that uses a direct form II implementation.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/SetVariable.html">SetVariable</a>:
+<dd>(Edward A. Lee, Steve Neuendorffer)
+Set the value of a variable contained by the container.
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/actor/lib/comm/package-summary.html">ptolemy.actor.lib.comm</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/actor/lib/comm/Slicer.html">Slicer</a>:
+<dd>(Rachel Zhou)
+A Slicer, which functions as a decoder of the LineCoder of complex type.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/comm/TrellisDecoder.html">TrellisDecoder</a>:
+<dd>(Rachel Zhou, contributor: Edward A. Lee)
+Decode convolutional code with non-antipodal constellation.
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/actor/lib/conversions/package-summary.html">ptolemy.actor.lib.conversions</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/actor/lib/conversions/StringToXML.html">StringToXML</a>:
+<dd>(Yang Zhao)
+An actor that outputs data read from a URL.
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/actor/lib/hoc/package-summary.html">ptolemy.actor.lib.hoc</a></b>
+
+<dt><a href="codeDoc/ptolemy/actor/lib/hoc/MobileFunction.html">MobileFunction</a>:
+<dd>(Yang Zhao)
+An actor that apply dynamically defined functions to its input.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/hoc/MobileModel.html">MobileModel</a>:
+<dd>(Yang Zhao)
+A composite actor that apply models dynamically.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/hoc/ModelReference.html">ModelReference</a>:
+<dd>(Edward A. Lee)
+An atomic actor that executes a model specified by a file or URL.
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/actor/lib/io/package-summary.html">ptolemy.actor.lib.io</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/actor/lib/io/DirectoryListing.html">DirectoryListing</a>:
+<dd>( Christopher Hylands, Edward A. Lee)
+An actor that produces an array that lists the contents of a directory.
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/actor/lib/jai/package-summary.html">ptolemy.actor.lib.jai</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/actor/lib/jai/AdaptiveMedian.html">AdaptiveMedian</a>:
+<dd>(James Yeh)
+An actor that performs adaptive median filtering on a double matrix.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/jai/ImageToJAI.html">ImageToJAI</a>:
+<dd>(James Yeh)
+Convert an ImageToken to a JAIImageToken.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/jai/JAIConstant.html">JAIConstant</a>:
+<dd>(James Yeh, Steve Neuendorffer)
+An actor that produces a JAIImageToken with constant bands.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/jai/JAIDataConvert.html">JAIDataConvert</a>:
+<dd>(James Yeh)
+An actor that changes the data format in a JAIImageToken.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/jai/JAIPNGWriter.html">JAIPNGWriter</a>:
+<dd>(James Yeh)
+An actor that writes to a PNG file.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/jai/SaltAndPepper.html">SaltAndPepper</a>:
+<dd>()
+package ptolemy.actor.lib.jai;
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/actor/lib/javasound/package-summary.html">ptolemy.actor.lib.javasound</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/actor/lib/javasound/LiveSoundActor.html">LiveSoundActor</a>:
+<dd>(Steve Neuendorffer)
+An actor that reads in audio samples and plays the audio data.
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/actor/lib/jmf/package-summary.html">ptolemy.actor.lib.jmf</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/actor/lib/jmf/AudioPlayer.html">AudioPlayer</a>:
+<dd>(James Yeh)
+An actor that plays a DataSource containing a music file.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/jmf/ImageToJMF.html">ImageToJMF</a>:
+<dd>(Christopher Hylands Brooks)
+Convert an ImageToken into a JMFImageToken.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/jmf/MovieReader.html">MovieReader</a>:
+<dd>(James Yeh)
+An actor that outputs frames from a video file.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/jmf/MovieWriter.html">MovieWriter</a>:
+<dd>(James Yeh)
+An actor that writes frames to a video file.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/jmf/StreamLoader.html">StreamLoader</a>:
+<dd>(James Yeh)
+Load a datasource from a URL.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/jmf/VideoPlayer.html">VideoPlayer</a>:
+<dd>(James Yeh)
+An actor that displays a AVI, Quicktime or MPEG video file.
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/actor/lib/security/package-summary.html">ptolemy.actor.lib.security</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/actor/lib/security/CipherActor.html">CipherActor</a>:
+<dd>(Christopher Hylands Brooks, Contributor: Rakesh Reddy)
+A base class for actors that encrypt and decrypt data.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/CryptographyActor.html">CryptographyActor</a>:
+<dd>(Christopher Hylands Brooks, Contributor: Rakesh Reddy)
+A base class for cryptographic actors.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/KeyReader.html">KeyReader</a>:
+<dd>( Christopher Hylands Brooks)
+Read in a keystore from a FileParameter and output a Key.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/KeyStoreActor.html">KeyStoreActor</a>:
+<dd>( Christopher Hylands Brooks)
+A baseclass for actors that read or write keystores.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/KeyToken.html">KeyToken</a>:
+<dd>(Christopher Hylands Brooks, Based on TestToken by Steve Neuendorffer)
+Tokens that contain java.security.Keys
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/KeyWriter.html">KeyWriter</a>:
+<dd>( Christopher Brooks)
+Read in a Key from the input port and write it out to a KeyStore.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/PrivateKeyReader.html">PrivateKeyReader</a>:
+<dd>( Christopher Hylands Brooks)
+Open a keystore from a FileParameter and output a PrivateKey.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/PublicKeyReader.html">PublicKeyReader</a>:
+<dd>( Christopher Brooks)
+Open a keystore from a FileParameter and output a PublicKey.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/SecretKey.html">SecretKey</a>:
+<dd>(Christopher Hylands Brooks, Contributor: Rakesh Reddy)
+Create a secret key and send it on the output.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/SecretKeyReader.html">SecretKeyReader</a>:
+<dd>( Christopher Hylands Brooks)
+Open a keystore from a FileParameter and output a SecretKey.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/SignatureActor.html">SignatureActor</a>:
+<dd>(Christopher Hylands Brooks, Contributor: Rakesh Reddy)
+A base class for signature actors.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/SignatureSigner.html">SignatureSigner</a>:
+<dd>(Christopher Hylands Brooks, Contributor: Rakesh Reddy)
+Sign the input data using a private key.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/SignatureVerifier.html">SignatureVerifier</a>:
+<dd>(Christopher Hylands Brooks, Contributor: Rakesh Reddy)
+Verify the signature of the input data.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/SymmetricDecryption.html">SymmetricDecryption</a>:
+<dd>(Christopher Hylands Brooks, Contributor: Rakesh Reddy)
+Decrypt an unsigned byte array using a symmetric algorithm.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/security/SymmetricEncryption.html">SymmetricEncryption</a>:
+<dd>(Christopher Hylands Brooks, Contributor: Rakesh Reddy)
+Encrypt an unsigned byte array using a symmetric algorithm.
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/actor/lib/string/package-summary.html">ptolemy.actor.lib.string</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/actor/lib/string/StringCompare.html">StringCompare</a>:
+<dd>(Vinay Krishnan, Daniel L\341zaro Cuadrado (contributor: Edward A. Lee))
+An actor that computes a specified String comparison function on the two String inputs.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/string/StringFunction.html">StringFunction</a>:
+<dd>(Mike Kofi Okyere, Ismael M. Sarmiento)
+Trim a string, convert a string to uppercase, or convert a string to lowercase depending on the user's selection.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/string/StringIndexOf.html">StringIndexOf</a>:
+<dd>(Rakesh Reddy, Philip Baldwin, Edward A. Lee)
+Finds index of a string contained in a given text
+
+<dt><a href="codeDoc/ptolemy/actor/lib/string/StringLength.html">StringLength</a>:
+<dd>(Edward A. Lee)
+Output the length of a string provided at the input.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/string/StringMatches.html">StringMatches</a>:
+<dd>(Antonio Yordan-Nones, Colin Cochran (contributor Edward A. Lee))
+Pattern match a string to a regular expression.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/string/StringReplace.html">StringReplace</a>:
+<dd>(Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee)
+Replace an instance of a string with another input string according to a regular expression.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/string/StringSubstring.html">StringSubstring</a>:
+<dd>(Neil E. Turner and Edward A. Lee)
+Output a substring of the string provided at the input.
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/actor/lib/x10/package-summary.html">ptolemy.actor.lib.x10</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/actor/lib/x10/ApplianceController.html">ApplianceController</a>:
+<dd>(Colin Cochran (contributor: Edward A. Lee))
+An ApplianceController actor sends x10-appliance-module commands to the x10 network.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/x10/CommandListener.html">CommandListener</a>:
+<dd>(Colin Cochran and Edward A. Lee)
+This actor senses specified X10 commands.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/x10/LampController.html">LampController</a>:
+<dd>(Colin Cochran and Edward A. Lee)
+A LampController actor sends X10-light-module commands to the X10 network.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/x10/LevelListener.html">LevelListener</a>:
+<dd>(Colin Cochran and Edward A. Lee)
+This actor senses specified X10 commands.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/x10/Listener.html">Listener</a>:
+<dd>(Colin Cochran (contributor: Edward A. Lee))
+Output X10 commands detected on the X10 network.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/x10/Receiver.html">Receiver</a>:
+<dd>(Colin Cochran and Edward A. Lee)
+Receive x10 commands propagating through an x10 network.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/x10/Sender.html">Sender</a>:
+<dd>(Colin Cochran (contributor: Edward A. Lee))
+Send commands to an x10 network.
+
+<dt><a href="codeDoc/ptolemy/actor/lib/x10/X10Interface.html">X10Interface</a>:
+<dd>(Colin Cochran and Edward A. Lee)
+This class creates an x10 inteface device which can send and receive 
+10 commands to and from an x10 network.
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/actor/lib/xslt/package-summary.html">ptolemy.actor.lib.xslt</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/actor/lib/xslt/XSLTransformer.html">XSLTransformer</a>:
+<dd>( Yang Zhao, Christopher Hylands Brooks)
+An actor that read an XSLT file and apply it to its input.
+
+</dl>
+
+
+<li> <b><a href="codeDoc/ptolemy/domains/gr/lib/package-summary.html">ptolemy.domains.gr.lib</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/Box2D.html">Box2D</a>:
+<dd>(Steve Neuendorffer)
+A class that represents a 2D rectangle in a GR model.
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/Ellipse2D.html">Ellipse2D</a>:
+<dd>(Ismael M. Sarmiento, Steve Neuendorffer)
+Create a rectangle, rounded rectangle, or ellipse with the size and position specified by the user.
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/FigureInteractor.html">FigureInteractor</a>:
+<dd>(Ismael M. Sarmiento)
+Listen for and handle events on Diva figures.
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/GRShape2D.html">GRShape2D</a>:
+<dd>(Steve Neuendorffer, Ismael M. Sarmiento)
+An abstract base class for shaded GR Actors
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/GRTransform2D.html">GRTransform2D</a>:
+<dd>(Steve Neuendorffer)
+An abstract base class for transforming input 3D shape
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/IconViewScreen3D.html">IconViewScreen3D</a>:
+<dd>(Steve Neuendorffer)
+A GR scene viewer
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/Image2D.html">Image2D</a>:
+<dd>(Ismael M. Sarmiento, Steve Neuendorffer)
+Create a figure from a user specified image file.
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/Line2D.html">Line2D</a>:
+<dd>(Steve Neuendorffer, Ismael M. Sarmiento)
+Create a line with the endpoints provided by the user.
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/Rectangle2D.html">Rectangle2D</a>:
+<dd>(Ismael M. Sarmiento, Steve Neuendorffer)
+Create a rectangle, rounded rectangle, or ellipse with the size and position specified by the user.
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/RectangularFigure2D.html">RectangularFigure2D</a>:
+<dd>(Ismael M. Sarmiento, Steve Neuendorffer)
+Create a rectangle, rounded rectangle, or ellipse with the size and position specified by the user.
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/Rotate2D.html">Rotate2D</a>:
+<dd>(Ismael M. Sarmiento, Steve Neuendorffer)
+Rotate a two-dimensional figure based on the angle and anchor point provided by the user.
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/Scale2D.html">Scale2D</a>:
+<dd>(Ismael M. Sarmiento, Steve Neuendorffer)
+Scale a two-dimensional figure based on the size provided by the user.
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/Translate2D.html">Translate2D</a>:
+<dd>(Steve Neuendorffer)
+An actor that translates the input 3D shape
+
+<dt><a href="codeDoc/ptolemy/domains/gr/lib/ViewScreen2D.html">ViewScreen2D</a>:
+<dd>(Steve Neuendorffer, Ismael M. Sarmiento)
+A GR scene viewer
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/domains/sdf/lib/package-summary.html">ptolemy.domains.sdf.lib</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/domains/sdf/lib/CountTrues.html">CountTrues</a>:
+<dd>(Steve Neuendorffer)
+An actor that counts true inputs.
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/domains/sr/lib/package-summary.html">ptolemy.domains.sr.lib</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/domains/sr/lib/NonStrictTokenToExpression.html">NonStrictTokenToExpression</a>:
+<dd>(Haiyang Zheng)
+A non-strict actor that converts tokens into expressions.
+
+</dl>
+
+<li> <b><a href="codeDoc/ptolemy/vergil/actor/lib/package-summary.html">ptolemy.vergil.actor.lib</a></b>
+
+<dl>
+<dt><a href="codeDoc/ptolemy/vergil/actor/lib/VisualModelReference.html">VisualModelReference</a>:
+<dd>(Edward A. Lee)
+An atomic actor that executes a model specified by a file or URL.
+
+</dl>
+</menu>
+
 <h2>Major Features that were new in Ptolemy 3.0 </h2>
 <menu>
 
