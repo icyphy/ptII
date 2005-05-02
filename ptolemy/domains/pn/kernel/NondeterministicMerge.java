@@ -155,7 +155,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
                     // ProcessThread associated with the actor might
                     // be blocked on a wait on the director.
                     // So we need to notify on the director also.
-                    Director director = getDirector();
+                    Director director = getExecutiveDirector();
 
                     synchronized (director) {
                         director.notifyAll();
@@ -221,9 +221,9 @@ public class NondeterministicMerge extends TypedCompositeActor {
                     // atomic so that the channel port gets tokens
                     // in the same order as the output port.
                     // We synchronize on the director because the send()
-                    // may call wait() on the director, so synchronizing
-                    // on anything else could cause deadlock.
-                    synchronized (getDirector()) {
+                    // may call wait() on the director of the container,
+                    // so synchronizing on anything else could cause deadlock.
+                    synchronized (((NondeterministicMerge)getContainer()).getExecutiveDirector()) {
                         output.send(0, result);
                         channel.send(0, _channelValue);
                     }

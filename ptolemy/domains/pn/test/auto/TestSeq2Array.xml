@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TestSeq2Array" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
@@ -27,7 +27,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This PN model illustrates a bug&#10;in the SDF SequenceToArray actor.&#10;Is the SequenceToArray actor meant to be used in the PN domain?  I've&#10;attached a workflow that demonstrates behavior that I don't&#10;understand.&#10;&#10;A SequenceToArray actor has two ports: input and arrayLength.  It&#10;should package up arrayLength number of input tokens into an array and&#10;send that out along its output port.&#10;&#10;In [this model], I send 7, then 2 to the arrayLength port.&#10;However, the output consists of two array tokens both with length 7.&#10;&#10;Can someone please explain to me why the second output isn't an array&#10;of length 2?&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This PN model illustrates a former bug&#10;in the SDF SequenceToArray actor.&#10;Is the SequenceToArray actor meant to be used in the PN domain?  I've&#10;attached a workflow that demonstrates behavior that I don't&#10;understand.&#10;&#10;A SequenceToArray actor has two ports: input and arrayLength.  It&#10;should package up arrayLength number of input tokens into an array and&#10;send that out along its output port.&#10;&#10;In [this model], I send 7, then 2 to the arrayLength port.&#10;However, the output consists of two array tokens both with length 7.&#10;&#10;This used to fail because array reads from a buffer used to have&#10;lengths that were larger than or equal to the desired length.&#10;Now they always have the desired length.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 25.0]">
         </property>
@@ -110,7 +110,7 @@
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{1, 2, 3, 4, 5, 6, 7}, {8, 9}}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 355.0]">
         </property>

@@ -89,38 +89,10 @@ test PNQueueReceiver-3.2 {Check hasToken} {
     # hasToken(int) always returns true
     list [$rec hasToken] [$rec hasToken -1] [$rec hasToken 0] [$rec hasToken 10] } {1 1 1 1}
 
-######################################################################
-####
-#
-test PNQueueReceiver-3.3 {Test the setting of the blocking flags} {
-    $rec setReadPending true
-    list [$rec isReadBlocked] [$rec isWriteBlocked]
-} {1 0}
-
-######################################################################
-####
-#
-test PNQueueReceiver-3.4 {Test the setting of the blocking flags} {
-    $rec setWritePending true
-    list [$rec isReadBlocked] [$rec isWriteBlocked]
-} {1 1}
-
 # Call the various boundary* methods on the receiver
 proc describeBoundary {receiver} {
     return [list [$receiver isConnectedToBoundary] [$receiver isConnectedToBoundaryInside] [$receiver isConnectedToBoundaryOutside] [$receiver isConsumerReceiver] [$receiver isProducerReceiver] [$receiver isReadBlocked] [$receiver isWriteBlocked]]
 }
-######################################################################
-####
-#
-test PNQueueReceiver-3.5 {Test the various boolean methods} {
-    $rec setReadPending false
-    $rec setWritePending false
-    set r1 [describeBoundary $rec]
-    $rec setReadPending true
-    $rec setWritePending true
-    set r2 [describeBoundary $rec]
-    list $r1 $r2
-} {{0 0 0 0 0 0 0} {0 0 0 0 0 1 1}}
 
 ######################################################################
 ####
@@ -157,8 +129,8 @@ test PNQueueReceiver-4.3 {Test for reset} {
     $rec put [java::new {ptolemy.data.IntToken int} 4]
     $rec put [java::new {ptolemy.data.IntToken int} 5]
     $rec put [java::new {ptolemy.data.IntToken int} 6]
-    $rec setReadPending true
-    $rec setWritePending true
+    # $rec setReadPending true
+    # $rec setWritePending true
     $rec requestFinish
     $rec reset
     set elem [$rec elements]

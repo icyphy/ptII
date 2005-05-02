@@ -33,9 +33,9 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IORelation;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.process.CompositeProcessDirector;
-import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -95,7 +95,7 @@ import ptolemy.kernel.util.Workspace;
    an exception is thrown.  This can be used to detect erroneous models
    that require unbounded queues.
 
-   @author Mudit Goel
+   @author Mudit Goel, Edward A. Lee, Xiaowen Xin
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (mudit)
@@ -113,7 +113,8 @@ public class PNDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public PNDirector() throws IllegalActionException, NameDuplicationException {
+    public PNDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -275,6 +276,22 @@ public class PNDirector extends CompositeProcessDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+        
+        // Check that no relation has multiple sources of data connected to it.
+        // FIXME: This only detects the error at this level of the hierarchy.
+        // Probably need to recursively descend into composite actors.
+        CompositeEntity container = (CompositeEntity)getContainer();
+        Iterator relations = container.relationList().iterator();
+        while (relations.hasNext()) {
+        	IORelation relation = (IORelation)relations.next();
+            if (relation.linkedSourcePortList().size() > 1) {
+                throw new IllegalActionException(relation,
+                        "Relation has multiple sources of data,"
+                        + " which is not allowed in PN."
+                        + " If you want nondeterministic merge,"
+                        + " use the NondeterministicMerge actor.");   
+            }
+        }
 
         // Reset the capacities of all the receivers.
         Parameter parameter = (Parameter) getAttribute("initialQueueCapacity");
@@ -312,10 +329,9 @@ public class PNDirector extends CompositeProcessDirector {
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
-        return new String[] {
+        return new String [] {
             "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
-            "ptolemy.domains.fsm.kernel.FSMDirector"
-        };
+            "ptolemy.domains.fsm.kernel.FSMDirector"};
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -384,8 +400,12 @@ public class PNDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If the resulting capacity would
      *   exceed the value of <i>maximumQueueCapacity</i>.
      */
-    protected void _incrementLowestWriteCapacityPort()
+    protected synchronized void _incrementLowestWriteCapacityPort()
             throws IllegalActionException {
+        // NOTE: This is synchronized as a precaution, although in theory
+        // it gets called only within a synchronized block of the fire()
+        // method of the parent ProcessDirector. It must be synchronized
+        // because of the notifyAll() call at the end.
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
         Iterator receivers = _writeBlockedQueues.iterator();
@@ -416,10 +436,14 @@ public class PNDirector extends CompositeProcessDirector {
                 .intValue();
 
             if ((maximumCapacity > 0) && ((capacity * 2) > maximumCapacity)) {
-                throw new IllegalActionException(this,
+                String msg =
                         "Queue size exceeds the maximum capacity in port "
                         + smallestCapacityQueue.getContainer().getFullName()
-                        + ". Perhaps you have an unbounded queue?");
+						+ ". Perhaps you have an unbounded queue?";
+                if (_debugging) {
+                	_debug(msg);
+                }
+                throw new IllegalActionException(this, msg);
             }
 
             smallestCapacityQueue.setCapacity(capacity * 2);
@@ -431,12 +455,8 @@ public class PNDirector extends CompositeProcessDirector {
                     + smallestCapacityQueue.getCapacity());
         }
 
-        _actorUnBlocked(smallestCapacityQueue);
-        smallestCapacityQueue.setWritePending(false);
-
-        synchronized (smallestCapacityQueue) {
-            smallestCapacityQueue.notifyAll();
-        }
+        smallestCapacityQueue.setWritePending();
+        notifyAll();
 
         return;
     }
@@ -447,14 +467,13 @@ public class PNDirector extends CompositeProcessDirector {
      *  of the process blocking on a read. If either of them is detected,
      *  then notify the directing thread of the same.
      */
-    protected synchronized void _actorBlocked(ProcessReceiver receiver) {
-        if (receiver.isReadBlocked()) {
+    protected synchronized void _actorBlocked(
+        PNQueueReceiver receiver, boolean readBlocked) {
+        if(readBlocked) {
             _readBlockCount++;
-        }
-
-        if (receiver.isWriteBlocked()) {
-            _writeBlockedQueues.add(receiver);
+        } else {
             _writeBlockCount++;
+            _writeBlockedQueues.add(receiver);
         }
 
         super._actorBlocked(receiver);
@@ -465,19 +484,18 @@ public class PNDirector extends CompositeProcessDirector {
      *  the process listeners that the relevant process has resumed its
      *  execution.
      *  @param receiver The receiver that is unblocked.
+     *  @param readBlocked Whether this is read or write blocked.
      */
-    protected synchronized void _actorUnBlocked(PNQueueReceiver receiver) {
-        if (receiver.isReadBlocked()) {
+    protected synchronized void _actorUnBlocked(
+        PNQueueReceiver receiver, boolean readBlocked) {
+        if(readBlocked) {
             _readBlockCount--;
-        }
-
-        if (receiver.isWriteBlocked()) {
+        } else {
             _writeBlockCount--;
             _writeBlockedQueues.remove(receiver);
         }
 
         super._actorUnBlocked(receiver);
-        return;
     }
 
     /** Resolve an artificial deadlock and return true. If the
@@ -503,13 +521,15 @@ public class PNDirector extends CompositeProcessDirector {
      */
     protected boolean _resolveInternalDeadlock() throws IllegalActionException {
         if ((_writeBlockCount == 0) && (_readBlockCount > 0)) {
-            //            System.out.println("Real Deadlock");
             // There is a real deadlock.
+            if (_debugging) {
+                _debug("Deadlock detected: no processes blocked on write, but some are blocked on read.");
+            }
             return false;
         } else if (_getActiveActorsCount() == 0) {
             // There is a real deadlock as no processes are active.
             if (_debugging) {
-                _debug("Detected Deadlock");
+                _debug("No more active processes.");
             }
 
             return false;
@@ -555,8 +575,10 @@ public class PNDirector extends CompositeProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private LinkedList _processListeners = new LinkedList();
 
+    /** List of process listeners. */
+    private LinkedList _processListeners = new LinkedList();
+    
     /** The list of all receivers that this director has created. */
     private LinkedList _receivers = new LinkedList();
 }
