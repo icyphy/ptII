@@ -244,7 +244,7 @@ For example, the guard expression, (p1 == p2) and (v1 - v2) > 0.0,
 indicates that two masses are touched and their relative velocity
 is greater than 0.0, which means they collide.
 
-Simarly, the guard expression, stickiness + force less_than 0 
+Similarly, the guard expression, stickiness + force less_than 0 
 indicates that if the stickiness (always positive) can not compensate 
 the forces applied by the springs, the masses depart.</text></svg></configure>
                 </property>
