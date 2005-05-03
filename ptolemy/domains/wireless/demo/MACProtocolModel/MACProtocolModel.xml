@@ -218,7 +218,7 @@ sensor nets. Please look inside "node" to see the protocol. Note that the DataCo
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The statistics of the waiting time and collison.</text></svg></configure>
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The statistics of the waiting time and collision.</text></svg></configure>
             </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>

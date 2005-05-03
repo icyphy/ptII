@@ -249,7 +249,7 @@ public class ConvolutionalCoder extends Transformer {
             // the value until all parameters have been set.
             _inputNumberInvalid = true;
 
-            // Set the input comsumption rate.
+            // Set the input consumption rate.
             _inputRate.setToken(new IntToken(_inputNumber));
         } else if (attribute == polynomialArray) {
             ArrayToken maskToken = ((ArrayToken) polynomialArray.getToken());

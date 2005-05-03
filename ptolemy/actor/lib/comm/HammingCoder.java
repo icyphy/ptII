@@ -161,7 +161,7 @@ public class HammingCoder extends Transformer {
             // have been set.
             _parameterInvalid = true;
 
-            // Set the input comsumption rate.
+            // Set the input consumption rate.
             _inputRate.setToken(new IntToken(_uncodeSizeValue));
         } else {
             super.attributeChanged(attribute);
