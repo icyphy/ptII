@@ -30,6 +30,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -90,7 +91,7 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
         _setActivePage(0);
         
         IPreferenceStore store = EclipsePlugin.getDefault()
-        .getPreferenceStore();
+                .getPreferenceStore();
         store.addPropertyChangeListener(new IPropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent event) {
                 String property = event.getProperty();
@@ -207,6 +208,10 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
         _container.setSelection(pageIndex);
     }
     
+    protected void setTitleImage(Image titleImage) {
+        // TODO: Set different title images for different states.
+    }
+
     private void _createRawPage() {
         int pageIndex = 0;
         

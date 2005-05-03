@@ -82,8 +82,8 @@ public class PtolemyPreferencePage
         gridData.horizontalAlignment = SWT.CENTER;
         logo.setLayoutData(gridData);
         ImageDescriptor descriptor =
-            ImageDescriptor.createFromFile(EclipsePlugin.class,
-                    "images/ptolemy.gif");
+            EclipsePlugin.getImageDescriptor(
+                    "ptolemy/backtrack/plugin/images/ptolemy.gif");
         logo.setImage(descriptor.createImage());
 	}
 
