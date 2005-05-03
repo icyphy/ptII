@@ -55,30 +55,36 @@ JSRCS = \
 	AddSubtract.java \
 	Average.java \
 	CodeStream.java \
+	Const.java \
 	Counter.java \
 	Differential.java \
 	Limiter.java \
 	Minimum.java \
+	MultiplyDivide.java \
 	Ramp.java \
 	Remainder.java \
 	Scale.java \
 	Sequence.java \
 	Test.java \
-	TrigFunction.java
+	TrigFunction.java \
+	UnaryMathFuntion.java
 
 OTHER_FILES_TO_BE_JARED = \
 	AbsoluteValue.c \
 	Accumulator.c \
 	Average.c \
+	Const.c \
 	Counter.c \
 	Differential.c \
 	Limiter.c \
+	Minimum.c \
 	Ramp.c \
 	Remainder.c \
 	Scale.c \
 	Sequence.c \
 	Test.c \
-	TrigFunction.c
+	TrigFunction.c \
+	UnaryMathFuntion.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
