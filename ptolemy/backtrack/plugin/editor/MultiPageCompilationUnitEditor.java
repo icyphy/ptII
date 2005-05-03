@@ -57,7 +57,7 @@ import ptolemy.backtrack.util.Strings;
  * </ul>
  */
 public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
-	
+    
     protected void _createPages() {
 		_createRawPage();
 		_createPreviewPage();
