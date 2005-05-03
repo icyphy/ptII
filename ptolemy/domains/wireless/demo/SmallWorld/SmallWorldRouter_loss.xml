@@ -158,7 +158,7 @@
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This demo shows the message loss rate when the long link is not very reliable.
 
 Configure the node next to the initiator to "doublePath" to see whether uses two
-pathes can improve message delivery. Surprisingly, I don't see abvious improvement.
+pathes can improve message delivery. Surprisingly, I don't see obvious improvement.
 
 Refer to the SmallWorldRouter.xml demo.
 </text></svg></configure>
