@@ -179,7 +179,7 @@ public class BluetoothNode extends TypedAtomicActor {
      */
     public StringParameter outputChannelName;
 
-    /** The transmition range of the sensor. The icon for this sensor
+    /** The transmission range of the sensor. The icon for this sensor
      *  node includes a circle with this as its radius. This is a
      *  double and default to 50.0.
      */
