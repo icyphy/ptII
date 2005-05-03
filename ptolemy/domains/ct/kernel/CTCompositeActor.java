@@ -1,4 +1,4 @@
-/* A composite actor specially designed for the CT domain.
+/* A composite actor designed for the CT domain.
 
 Copyright (c) 1998-2005 The Regents of the University of California.
 All rights reserved.
@@ -39,10 +39,10 @@ import ptolemy.kernel.util.Workspace;
 //// CTCompositeActor
 
 /**
-   A composite actor specially designed for the CT domain. This class
+   A composite actor designed for the CT domain. This class
    extends TypedCompositeActor and implements the following interfaces:
    CTDynamicActor, CTEventGenerator, CTStatefulActor, CTStepSizeControlActor,
-   CTWaveformGenerator.
+   and CTWaveformGenerator.
    <p>
    In the CT domain, normal opaque composite actors are not fired
    in every iteration. They are only fired in the discrete phase of execution
@@ -64,8 +64,8 @@ import ptolemy.kernel.util.Workspace;
    @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
    @see ptolemy.domains.ct.kernel.CTDynamicActor
    @see ptolemy.domains.ct.kernel.CTEventGenerator
    @see ptolemy.domains.ct.kernel.CTStatefulActor
@@ -132,13 +132,15 @@ public class CTCompositeActor extends TypedCompositeActor
     /** Call the emitCurrentStates() method of the local director if the
      *  local director is an instance of CTTransparentDirector. Otherwise,
      *  do nothing.
-     *  @exception IllegalActionException If tentative states can not be emitted.
+     *  @exception IllegalActionException If tentative states cannot be emitted.
      */
     public void emitCurrentStates() throws IllegalActionException {
-        Director dir = getDirector();
-
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            ((CTTransparentDirector) dir).emitCurrentStates();
+        Director director = getDirector();
+        // We do not need to check whether director is null, because
+        // the preinitialize() method of the CompositeActor ensures this
+        // actor to have an director.
+        if (director instanceof CTTransparentDirector) {
+            ((CTTransparentDirector) director).emitCurrentStates();
         }
     }
 
@@ -147,10 +149,10 @@ public class CTCompositeActor extends TypedCompositeActor
      *  @exception IllegalActionException If there is no marked state.
      */
     public void goToMarkedState() throws IllegalActionException {
-        Director dir = getDirector();
+        Director director = getDirector();
 
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            ((CTTransparentDirector) dir).goToMarkedState();
+        if (director instanceof CTTransparentDirector) {
+            ((CTTransparentDirector) director).goToMarkedState();
         }
     }
 
@@ -161,10 +163,10 @@ public class CTCompositeActor extends TypedCompositeActor
      *  @return True if there is an event at the current time.
      */
     public boolean hasCurrentEvent() {
-        Director dir = getDirector();
+        Director director = getDirector();
 
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector) dir).hasCurrentEvent();
+        if (director instanceof CTTransparentDirector) {
+            return ((CTTransparentDirector) director).hasCurrentEvent();
         }
 
         return false;
@@ -176,10 +178,10 @@ public class CTCompositeActor extends TypedCompositeActor
      *  @return True if the current step size is accurate w.r.t. outputs.
      */
     public boolean isOutputAccurate() {
-        Director dir = getDirector();
+        Director director = getDirector();
 
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector) dir).isOutputAccurate();
+        if (director instanceof CTTransparentDirector) {
+            return ((CTTransparentDirector) director).isOutputAccurate();
         }
 
         return true;
@@ -187,14 +189,16 @@ public class CTCompositeActor extends TypedCompositeActor
 
     /** Call the isStateAccurate() method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise, return
-     *  true, which indicates the current step size is accurate w.r.t. states.
-     *  @return True if the current step size is accurate w.r.t. states.
+     *  true, which indicates the current step size is accurate w.r.t. the 
+     *  current states.
+     *  @return True if the current step size is accurate w.r.t. the current
+     *  states.
      */
     public boolean isStateAccurate() {
-        Director dir = getDirector();
+        Director director = getDirector();
 
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector) dir).isStateAccurate();
+        if (director instanceof CTTransparentDirector) {
+            return ((CTTransparentDirector) director).isStateAccurate();
         }
 
         return true;
@@ -204,10 +208,10 @@ public class CTCompositeActor extends TypedCompositeActor
      *  director is an instance of CTTransparentDirector. Otherwise, do nothing.
      */
     public void markState() {
-        Director dir = getDirector();
+        Director director = getDirector();
 
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            ((CTTransparentDirector) dir).markState();
+        if (director instanceof CTTransparentDirector) {
+            ((CTTransparentDirector) director).markState();
         }
     }
 
@@ -217,10 +221,10 @@ public class CTCompositeActor extends TypedCompositeActor
      *  @return The predicted step size.
      */
     public double predictedStepSize() {
-        Director dir = getDirector();
+        Director director = getDirector();
 
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector) dir).predictedStepSize();
+        if (director instanceof CTTransparentDirector) {
+            return ((CTTransparentDirector) director).predictedStepSize();
         }
 
         return java.lang.Double.MAX_VALUE;
@@ -235,10 +239,10 @@ public class CTCompositeActor extends TypedCompositeActor
      *  @exception IllegalActionException If the local director throws it.
      */
     public boolean prefireDynamicActors() throws IllegalActionException {
-        Director dir = getDirector();
+        Director director = getDirector();
 
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector) dir).prefireDynamicActors();
+        if (director instanceof CTTransparentDirector) {
+            return ((CTTransparentDirector) director).prefireDynamicActors();
         }
 
         return true;
@@ -250,10 +254,10 @@ public class CTCompositeActor extends TypedCompositeActor
      *  @return The refined step size.
      */
     public double refinedStepSize() {
-        Director dir = getDirector();
+        Director director = getDirector();
 
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector) dir).refinedStepSize();
+        if (director instanceof CTTransparentDirector) {
+            return ((CTTransparentDirector) director).refinedStepSize();
         }
 
         return ((CTGeneralDirector) getExecutiveDirector()).getCurrentStepSize();

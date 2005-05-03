@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
    <p>
    For an ODE of the form:
    <pre>
-   dx/dt = f(x, t), x(0) = x0
+   dx(t)/dt = f(x(t), t), x(0) = x0
    </pre>
    it does the following:
    <pre>
@@ -72,19 +72,22 @@ import ptolemy.kernel.util.Workspace;
    (512.0/1771 - 0.25)*K5]*h.
    </pre>
    <P>
-   If the LTE is less than the error tolerance, then this step h is considered
-   successful, and the next integration step h' is predicted as:
+   If the LTE is less than the error tolerance, then this step size h is 
+   considered successful, and the next integration step size h' is predicted as:
    <pre>
    h' = h * Math.pow((ErrorTolerance/LTE), 1.0/5.0)
    </pre>
    This is a fourth order method, but uses a fifth order procedure to estimate
    the local truncation error.
+   <p>
+   It takes 6 steps for this solver to resolve a state with an integration
+   step size. A round counter is used to record which step this solver performs. 
 
    @author  Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Green (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class ExplicitRK45Solver extends ODESolver {
     /** Construct a solver in the default workspace.
@@ -140,7 +143,7 @@ public class ExplicitRK45Solver extends ODESolver {
 
     /** Fire state transition actors. Increment the round count.
      *  If the current round is the last (sixth) round, set converged flag to
-     *  true indicating a fixed-point states have been reached. Reset
+     *  true indicating the fixed-point states have been reached. Reset
      *  the round count if the current round is the last round.
      *  @exception IllegalActionException If thrown in the super class.
      */
@@ -269,22 +272,27 @@ public class ExplicitRK45Solver extends ODESolver {
 
             //store the Local Truncation Error into k[6]
             integrator.setAuxVariables(6, error);
-            _debug("Integrator: " + integrator.getName()
-                    + " local truncation error = " + error);
-
-            if (error < tolerance) {
+            if (_debugging) {
                 _debug("Integrator: " + integrator.getName()
-                        + " report a success.");
+                        + " local truncation error = " + error);
+            }
+            if (error < tolerance) {
+                if (_debugging) {
+                    _debug("Integrator: " + integrator.getName()
+                            + " report a success.");
+                }
                 return true;
             } else {
-                _debug("Integrator: " + integrator.getName()
-                        + " reports a failure.");
+                if (_debugging) {
+                    _debug("Integrator: " + integrator.getName()
+                            + " reports a failure.");
+                }
                 return false;
             }
         } catch (IllegalActionException e) {
             //should never happen.
-            throw new InternalErrorException(integrator.getName()
-                    + " can't read input." + e.getMessage());
+            throw new InternalErrorException(this, e, 
+                    integrator.getName() + " can't read input.");
         }
     }
 
@@ -293,7 +301,7 @@ public class ExplicitRK45Solver extends ODESolver {
      *  to predict the next step size based on the current estimation
      *  of the local truncation error.
      *
-     *  @param integrator The integrator of that calls this method.
+     *  @param integrator The integrator that calls this method.
      *  @return The next step size suggested by the given integrator.
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
@@ -307,18 +315,20 @@ public class ExplicitRK45Solver extends ODESolver {
             newh = h * Math.pow((tolerance / error), 1.0 / _order);
         }
 
-        _debug("integrator: " + integrator.getName()
-                + " suggests next step size = " + newh);
+        if (_debugging) {
+            _debug("integrator: " + integrator.getName()
+                    + " suggests next step size = " + newh);
+        }
         return newh;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The name of the solver
+    /** The name of the solver */
     private static final String _DEFAULT_NAME = "CT_Runge_Kutta_4_5_Solver";
 
-    // The ratio of time increments within one integration step.
+    /** The ratio of time increments within one integration step. */
     private static final double[] _timeInc = {
         0.2,
         0.3,
@@ -328,7 +338,7 @@ public class ExplicitRK45Solver extends ODESolver {
         1.0
     };
 
-    // B coefficients
+    /** B coefficients */
     private static final double[][] _B = {
         {
             0.2
@@ -365,7 +375,7 @@ public class ExplicitRK45Solver extends ODESolver {
         }
     };
 
-    // E coefficients
+    /** E coefficients */
     private static final double[] _E = {
         (37.0 / 378) - (2825.0 / 27648),
         0.0,
@@ -375,6 +385,6 @@ public class ExplicitRK45Solver extends ODESolver {
         (512.0 / 1771) - 0.25
     };
 
-    // The order of the algorithm.
+    /** The order of the algorithm. */
     private static final int _order = 5;
 }
