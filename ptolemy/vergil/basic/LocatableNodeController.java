@@ -186,8 +186,10 @@ public class LocatableNodeController extends BasicNodeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    // Fourth argument makes this highlight transluscent, which enables
-    // combination with other highlights.
+
+    /** Fourth argument makes this highlight translucent, which enables
+     *  combination with other highlights.
+     */
     public static Color CLASS_ELEMENT_HIGHLIGHT_COLOR = new Color(255, 64, 64,
             200);
 
