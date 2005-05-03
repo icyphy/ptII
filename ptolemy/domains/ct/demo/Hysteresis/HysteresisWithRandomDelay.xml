@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 815, 568}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
     </property>
     <property name="highThreshold" class="ptolemy.data.expr.Parameter" value="0.5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -143,9 +143,9 @@ soon as a guard becomes true, the transition is always taken.</text></svg></conf
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Edward A. Lee and Haiyang Zheng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 435.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -153,13 +153,13 @@ soon as a guard becomes true, the transition is always taken.</text></svg></conf
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the ModalModel to&#10;see how this is implemented.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 390.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 395.0]">
         </property>
         <port name="in" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -207,7 +207,7 @@ second refinement called "wait" that triggers an event after a specified time.</
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 84, 906, 638}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 65, 906, 638}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[691, 520]">
             </property>
@@ -221,14 +221,6 @@ second refinement called "wait" that triggers an event after a specified time.</
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside either wait state&#10;to see the state refinements.">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 285.0]">
-                </property>
-            </property>
-            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-                </property>
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that we need to check the &quot;reset&quot; &#10;option of transitions that go from low &#10;to wait2 and from high to wait1, because&#10;wait1 and wait2 have refinements that &#10;contain level crossing detectors, whose&#10;internal states need to be reset.">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 405.0]">
                 </property>
             </property>
             <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -301,7 +293,7 @@ second refinement called "wait" that triggers an event after a specified time.</
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.021228907208027007">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -468,7 +460,7 @@ second refinement called "wait" that triggers an event after a specified time.</
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 15.0]">
                 </property>
             </property>
-            <property name="time" class="ptolemy.data.expr.Parameter" value="0.5197959213247">
+            <property name="time" class="ptolemy.data.expr.Parameter" value="0.8353607348804">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -536,6 +528,8 @@ second refinement called "wait" that triggers an event after a specified time.</
             </entity>
             <entity name="LevelCrossingDetector" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
                 <property name="level" class="ptolemy.data.expr.Parameter" value="time">
+                </property>
+                <property name="direction" class="ptolemy.data.expr.StringParameter" value="rising">
                 </property>
                 <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
@@ -608,7 +602,7 @@ second refinement called "wait" that triggers an event after a specified time.</
     <entity name="ContinuousSinewave" class="ptolemy.domains.ct.lib.ContinuousSinewave">
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 345.0]">
         </property>
         <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -622,13 +616,13 @@ second refinement called "wait" that triggers an event after a specified time.</
         </port>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="in, out, waitTime">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="in, out, waitTime, high, low">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={515, 413, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 345.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -642,13 +636,43 @@ second refinement called "wait" that triggers an event after a specified time.</
 </plot>?>
         </configure>
     </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="highThreshold">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 285.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="lowThreshold">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 325.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[125.0, 295.0]">
+        <vertex name="vertex1" value="[130.0, 345.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ModalModel.in" relation="relation"/>
     <link port="ModalModel.out" relation="relation2"/>
@@ -657,4 +681,8 @@ second refinement called "wait" that triggers an event after a specified time.</
     <link port="TimedPlotter.input" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation5"/>
+    <link port="Const.output" relation="relation4"/>
+    <link port="Const2.output" relation="relation5"/>
 </entity>
