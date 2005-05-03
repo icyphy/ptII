@@ -38,7 +38,7 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a hybrid control system for a high-attitute take-off operation of a helicopter. 
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a hybrid control system for a high-attitude take-off operation of a helicopter. 
 Only the x-z plane dynamics of the helicopter is considered. The take-off operation is divided
 into 5 sub-operations (i.e. modes): hover, accelerate, cruise, climb, and cruise. 
 Five controllers are applied sequentially to the modes.</text>

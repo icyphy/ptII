@@ -14,7 +14,7 @@
 communication system. This system uses 2-level PAM (pulse
 amplitude modulation). It has a square-root raised cosine
 pulse shaper, where a top-level parameter (editable from the
-run control panel) specifies the excess bandwith, which is
+run control panel) specifies the excess bandwidth, which is
 typically between 0.0 and 1.0. The model has a matched
 filter. The output display is known as an "eye diagram."</text>
            </svg>
