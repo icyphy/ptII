@@ -117,8 +117,9 @@ public class ExplicitRK45Solver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire dynamic actors. Advance the model time. The amount of the increment
-     *  is decided by the number of the round counter and the current step size.
+    /** Fire dynamic actors. Advance the model time. The amount of the
+     *  increment is decided by the number of the round counter and
+     *  the current step size.
      *  @exception IllegalActionException If thrown in the super class or the
      *  model time can not be set.
      */
@@ -133,7 +134,8 @@ public class ExplicitRK45Solver extends ODESolver {
         Time iterationBeginTime = director.getIterationBeginTime();
         double currentStepSize = director.getCurrentStepSize();
         director.setModelTime(iterationBeginTime.add(
-                                      currentStepSize * _timeInc[_getRoundCount()]));
+                                      currentStepSize
+                                      * _timeInc[_getRoundCount()]));
     }
 
     /** Fire state transition actors. Increment the round count.
@@ -179,7 +181,7 @@ public class ExplicitRK45Solver extends ODESolver {
         CTDirector director = (CTDirector) getContainer();
         int r = _getRoundCount();
         double xn = integrator.getState();
-        double outvalue;
+        double outputValue;
         double h = director.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
 
@@ -189,21 +191,21 @@ public class ExplicitRK45Solver extends ODESolver {
             // Get the derivative at t;
             double k0 = integrator.getDerivative();
             integrator.setAuxVariables(0, k0);
-            outvalue = xn + (h * k0 * _B[0][0]);
+            outputValue = xn + (h * k0 * _B[0][0]);
             break;
 
         case 1:
 
             double k1 = ((DoubleToken) integrator.input.get(0)).doubleValue();
             integrator.setAuxVariables(1, k1);
-            outvalue = xn + (h * ((k[0] * _B[1][0]) + (k1 * _B[1][1])));
+            outputValue = xn + (h * ((k[0] * _B[1][0]) + (k1 * _B[1][1])));
             break;
 
         case 2:
 
             double k2 = ((DoubleToken) integrator.input.get(0)).doubleValue();
             integrator.setAuxVariables(2, k2);
-            outvalue = xn
+            outputValue = xn
                 + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) + (k2 * _B[2][2])));
             break;
 
@@ -211,7 +213,7 @@ public class ExplicitRK45Solver extends ODESolver {
 
             double k3 = ((DoubleToken) integrator.input.get(0)).doubleValue();
             integrator.setAuxVariables(3, k3);
-            outvalue = xn
+            outputValue = xn
                 + (h * ((k[0] * _B[3][0]) + (k[1] * _B[3][1])
                            + (k[2] * _B[3][2]) + (k3 * _B[3][3])));
             break;
@@ -220,7 +222,7 @@ public class ExplicitRK45Solver extends ODESolver {
 
             double k4 = ((DoubleToken) integrator.input.get(0)).doubleValue();
             integrator.setAuxVariables(4, k4);
-            outvalue = xn
+            outputValue = xn
                 + (h * ((k[0] * _B[4][0]) + (k[1] * _B[4][1])
                            + (k[2] * _B[4][2]) + (k[3] * _B[4][3])
                            + (k4 * _B[4][4])));
@@ -230,11 +232,11 @@ public class ExplicitRK45Solver extends ODESolver {
 
             double k5 = ((DoubleToken) integrator.input.get(0)).doubleValue();
             integrator.setAuxVariables(5, k5);
-            outvalue = xn
+            outputValue = xn
                 + (h * ((k[0] * _B[5][0]) + (k[1] * _B[5][1])
                            + (k[2] * _B[5][2]) + (k[3] * _B[5][3])
                            + (k[4] * _B[5][4]) + (k5 * _B[5][5])));
-            integrator.setTentativeState(outvalue);
+            integrator.setTentativeState(outputValue);
             break;
 
         default:
@@ -242,7 +244,7 @@ public class ExplicitRK45Solver extends ODESolver {
                     "execution sequence out of range.");
         }
 
-        integrator.output.broadcast(new DoubleToken(outvalue));
+        integrator.output.broadcast(new DoubleToken(outputValue));
     }
 
     /** Return true if the integration is accurate for the given
@@ -312,6 +314,7 @@ public class ExplicitRK45Solver extends ODESolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     // The name of the solver
     private static final String _DEFAULT_NAME = "CT_Runge_Kutta_4_5_Solver";
 
