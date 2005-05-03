@@ -147,7 +147,7 @@ modal model ports.
 Another feature is that the state transitions has a "triggering" semantics.
 Once the transition is enabled, it must be taken immediately. This process 
 takes zero time. With this triggering semantics, piecewise continuous-time 
-signals are generated as shown in the plots of velocities and accelarations.
+signals are generated as shown in the plots of velocities and accelerations.
 
 The third feature is that an event detection mechanism is associated with the
 process of checking enabled guard expressions. For example, given

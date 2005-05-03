@@ -157,12 +157,12 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This demo shows how to benifit from both of the short links and long links in a network 
 with rich local connections and some remont connections. Each sensor node implements
-a routing algrithm based on local information to deliver a message via a short path.
+a routing algorithm based on local information to deliver a message via a short path.
 
 When you run the demo, the initiator move randomly and imit a signal that can only
 be detected by sensors within a certain range from it. When a sensor detect the signal
 it will report to the base station. The message is routed via a short path according to the
-routing algrithm. A node turns to be green for one second if it is on the routing path and receives 
+routing algorithm. A node turns to be green for one second if it is on the routing path and receives 
 the message. Modify the "exponent" parameter to see different behavior. </text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
