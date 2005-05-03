@@ -244,6 +244,10 @@ public class SDFDirector extends Director {
                     + ", " + channelNumber);
         }
 
+        // Paranoid coding.
+        // This if clause is never true as this method is only called
+        // if the port width is greater than zero, which means the
+        // there is always a connected relation.
         if (connectedRelations.size() == 0) {
             return bufferSize;
         }
