@@ -658,6 +658,14 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 355.0]">
                 </property>
             </entity>
+            <entity name="AntennaModel" class="ptolemy.domains.wireless.demo.AntennaPattern.AntennaModel">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 220.0]">
+                </property>
+                <property name="numberOfElements" class="ptolemy.data.expr.Parameter" value="numberOfElements">
+                </property>
+                <property name="steeringAngle" class="ptolemy.data.expr.Parameter" value="steeringAngle">
+                </property>
+            </entity>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -706,6 +714,8 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             <link port="MultiplyDivide.multiply" relation="relation12"/>
             <link port="MultiplyDivide.multiply" relation="relation3"/>
             <link port="MultiplyDivide.output" relation="relation9"/>
+            <link port="AntennaModel.angle" relation="relation8"/>
+            <link port="AntennaModel.gain" relation="relation3"/>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
