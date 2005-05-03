@@ -28,7 +28,7 @@ or better, meaning that the received signal
 has at least twice the power of the
 interfering signal.  When Transmitter1 is
 far away from the receiver, it cannot
-interfere with the tranmission of
+interfere with the transmission of
 Transmitter0.  However, when it gets close,
 it can.
 
@@ -36,7 +36,7 @@ The upper plot shows the received power
 density (in watts per square meter) seen
 by Receiver for both transmitters. It
 also shows the duration of the transmissions.
-If the tranmissions overlap, then one of the
+If the transmissions overlap, then one of the
 transmissions is surely lost.  The second
 is lost only if its power is not greater
 than twice the power of the interferer.

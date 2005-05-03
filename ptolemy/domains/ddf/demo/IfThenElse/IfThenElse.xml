@@ -50,7 +50,7 @@
             </property>
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The requiredFiringsPerIteration &#10;paramater for this DDFBooleanSelect &#10;is set to 2, which defines one &#10;iteration of this inside DDF domain.">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The requiredFiringsPerIteration &#10;parameter for this DDFBooleanSelect &#10;is set to 2, which defines one &#10;iteration of this inside DDF domain.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 15.0]">
             </property>
