@@ -444,7 +444,7 @@ BluetoothNode.java adn BluetoothChannel.java</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 95.0">
         </property>
     </entity>
-    <entity name="BluetoothNode" class="ptolemy.domains.wireless.demo.PersoanlAreaNetwork.BluetoothNode">
+    <entity name="BluetoothNode" class="ptolemy.domains.wireless.demo.PersonalAreaNetwork.BluetoothNode">
         <property name="messageChannelName" class="ptolemy.data.expr.StringParameter" value="BluetoothChannel">
         </property>
         <property name="signalChannelName" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
