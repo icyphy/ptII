@@ -44,15 +44,12 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
      */
     public void run(IAction action) {
         if (!Environment.setupTransformerArguments(window.getShell(),
-                true, false)) {
-            OutputConsole.outputError("Cannot setup Transformer environment.");
+                true, false))
             return;
-        }
         
-        IPreferenceStore store = EclipsePlugin.getDefault()
-                .getPreferenceStore();
-        String sourceList =
-            store.getString(PreferenceConstants.BACKTRACK_SOURCE_LIST);
+        String sourceList = Environment.getSourceList(window.getShell());
+        if (sourceList == null)
+            return;
 
         PrintStream oldSystemErr = System.err;
         OutputConsole console = EclipsePlugin.getDefault().getConsole();
@@ -65,8 +62,17 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
             console.newMessageStream();
         errorStream.setColor(new Color(null, 255, 0, 0));
         
+        IPreferenceStore store = EclipsePlugin.getDefault()
+                .getPreferenceStore();
+        String extraClassPaths = store.getString(
+                            PreferenceConstants.BACKTRACK_EXTRA_CLASSPATHS);
+        
         new TransformThread(
-                new String[]{"@" + sourceList},
+                new String[]{
+                        "-classpath",
+                        extraClassPaths,
+                        "@" + sourceList
+                },
                 new AsyncPrintStream(outputStream),
                 new AsyncPrintStream(errorStream)
         ).start();

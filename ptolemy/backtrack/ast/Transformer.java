@@ -50,6 +50,7 @@ import ptolemy.backtrack.ast.transform.TransformRule;
 import ptolemy.backtrack.util.ClassFileLoader;
 import ptolemy.backtrack.util.PathFinder;
 import ptolemy.backtrack.util.SourceOutputStream;
+import ptolemy.backtrack.util.Strings;
 import ptolemy.backtrack.xmlparser.ConfigParser;
 import ptolemy.backtrack.xmlparser.XmlOutput;
 
@@ -95,14 +96,8 @@ public class Transformer {
                     break;
             }
 
-            if (_extraClassPaths != null) {
-                String[] morePaths =
-                    new String[paths.length + _extraClassPaths.length];
-                System.arraycopy(paths, 0, morePaths, 0, paths.length);
-                System.arraycopy(_extraClassPaths, 0, morePaths, paths.length,
-                        _extraClassPaths.length);
-                paths = morePaths;
-            }
+            if (_extraClassPaths != null)
+                paths = Strings.combineArrays(paths, _extraClassPaths);
 
             // Set up the list of file names.
             List fileList = new LinkedList();
@@ -451,7 +446,8 @@ public class Transformer {
         if (arg.equals("-classpath") || arg.equals("-cp")) {
             position++;
             String classPaths = args[position];
-            _extraClassPaths = classPaths.split(File.pathSeparator);
+            _extraClassPaths = Strings.combineArrays(_extraClassPaths,
+                    Strings.decodeFileNames(classPaths));
             position++;
         } else if (arg.equals("-prefix") || arg.equals("-p")) {
             position++;
@@ -623,7 +619,7 @@ public class Transformer {
 
     /** Extra classpaths to resolve classes.
      */
-    private static String[] _extraClassPaths;
+    private static String[] _extraClassPaths = new String[0];
     
     /** Whether the default output is the standard output. If it is
      *  <tt>true</tt> and no "-prefix" parameter is given, the result of

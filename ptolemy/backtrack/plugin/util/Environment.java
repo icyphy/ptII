@@ -45,6 +45,7 @@ import ptolemy.backtrack.ast.Transformer;
 import ptolemy.backtrack.plugin.EclipsePlugin;
 import ptolemy.backtrack.plugin.preferences.PreferenceConstants;
 import ptolemy.backtrack.util.PathFinder;
+import ptolemy.backtrack.util.Strings;
 
 //////////////////////////////////////////////////////////////////////////
 //// Environment
@@ -67,14 +68,8 @@ public class Environment {
         IPreferenceStore store = EclipsePlugin.getDefault()
                 .getPreferenceStore();
         String PTII = store.getString(PreferenceConstants.PTII);
-        IPath path = Path.fromOSString(PTII);
-        IContainer container = getContainer(path);
-        PTII = container.getLocation().toOSString();
         
-        boolean valid = true;
-        if (PTII == null || PTII.equals(""))
-            valid = false;
-        
+        boolean valid = !PTII.equals("");
         if (!valid) {
             if (shell != null)
                 MessageDialog.openError(shell,
@@ -86,6 +81,58 @@ public class Environment {
             return PTII;
     }
     
+    public static String getRefactoringRoot() {
+        return getRefactoringRoot(null);
+    }
+    
+    public static String getRefactoringRoot(Shell shell) {
+        IPreferenceStore store = EclipsePlugin.getDefault()
+                .getPreferenceStore();
+        String root = store.getString(PreferenceConstants.BACKTRACK_ROOT);
+        IPath rootPath = Path.fromOSString(root);
+        String[] segments = rootPath.segments();
+        if (segments.length == 1)
+            root = ResourcesPlugin.getWorkspace()
+                    .getRoot().getProject(segments[0])
+                            .getLocation().toOSString();
+        else
+            root = ResourcesPlugin.getWorkspace()
+                    .getRoot().getFolder(rootPath)
+                            .getLocation().toOSString();
+
+        boolean valid = !root.equals("");
+        if (!valid) {
+            if (shell != null)
+                MessageDialog.openError(shell,
+                        "Ptolemy II Environment Error",
+                        "Refactoring root is invalid.\n" +
+                        "Please set it in Ptolemy -> Options.");
+            return null;
+        } else
+            return root;
+    }
+    
+    public static String getSourceList() {
+        return getSourceList(null);
+    }
+    
+    public static String getSourceList(Shell shell) {
+        IPreferenceStore store = EclipsePlugin.getDefault()
+                .getPreferenceStore();
+        String sourceList = store.getString(PreferenceConstants.BACKTRACK_SOURCE_LIST);
+        
+        boolean valid = !sourceList.equals("");
+        if (!valid) {
+            if (shell != null)
+                MessageDialog.openError(shell,
+                        "Ptolemy II Environment Error",
+                        "Refactored source list is invalid.\n" +
+                        "Please set it in Ptolemy -> Options.");
+            return null;
+        } else
+            return sourceList;
+    }
+    
     public static String[] getClassPaths(Shell shell) {
         IPreferenceStore store = EclipsePlugin.getDefault()
             .getPreferenceStore();
@@ -94,19 +141,6 @@ public class Environment {
             return new String[]{PTII};
         else
             return null;
-    }
-    
-    public static String[] combineArrays(String[] array1, String[] array2) {
-        if (array1 == null)
-            return array2;
-        else if (array2 == null)
-            return array1;
-        
-        String[] result = new String[array1.length + array2.length];
-        System.arraycopy(array1, 0, result, 0, array1.length);
-        System.arraycopy(array2, 0, result, array1.length,
-                array2.length);
-        return result;
     }
     
     public static IPath getRefactoredFile(String source, String packageName) {
@@ -181,21 +215,18 @@ public class Environment {
         if (PTII == null)
             return false;
         
+        String root = getRefactoringRoot(shell);
+        if (root == null)
+            return false;
+
+        //String sourceList = getSourceList(shell);
+        //if (sourceList == null)
+        //    return false;
+        
         IPreferenceStore store = EclipsePlugin.getDefault()
             .getPreferenceStore();
         String prefix =
             store.getString(PreferenceConstants.BACKTRACK_PREFIX);
-        String root;
-        try {
-            IPath path = Path.fromOSString(
-                    store.getString(PreferenceConstants.BACKTRACK_ROOT));
-            IContainer container = getContainer(path);
-            root = container.getLocation().toOSString();
-        } catch (Exception e) {
-            return false;
-        }
-        String sourceList =
-            store.getString(PreferenceConstants.BACKTRACK_SOURCE_LIST);
         boolean overwrite = alwaysOverwrite ||
             store.getBoolean(PreferenceConstants.BACKTRACK_OVERWRITE);
         boolean generateConfiguration =
@@ -215,7 +246,7 @@ public class Environment {
             String[] extraArgs = new String[] {
                     "-config", configuration
             };
-            args = combineArrays(args, extraArgs);
+            args = Strings.combineArrays(args, extraArgs);
         }
         
         PathFinder.setPtolemyPath(PTII);

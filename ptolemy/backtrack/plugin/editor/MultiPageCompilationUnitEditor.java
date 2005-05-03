@@ -22,6 +22,8 @@ import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.custom.CTabFolder;
@@ -42,6 +44,7 @@ import ptolemy.backtrack.plugin.EclipsePlugin;
 import ptolemy.backtrack.plugin.console.OutputConsole;
 import ptolemy.backtrack.plugin.preferences.PreferenceConstants;
 import ptolemy.backtrack.plugin.util.Environment;
+import ptolemy.backtrack.util.Strings;
 
 /**
  * An example showing how to create a multi-page editor.
@@ -85,6 +88,23 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
             });
 
         _setActivePage(0);
+        
+        IPreferenceStore store = EclipsePlugin.getDefault()
+        .getPreferenceStore();
+        store.addPropertyChangeListener(new IPropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent event) {
+                String property = event.getProperty();
+                if (property == PreferenceConstants.BACKTRACK_ROOT ||
+                        property == PreferenceConstants.BACKTRACK_PREFIX) {
+                    try {
+                        IFile previewFile = _getPreviewFile();
+                        _preview.setInput(new FileEditorInput(previewFile));
+                    } catch (Exception e) {
+                        OutputConsole.outputError(e.getMessage());
+                    }
+                }
+            }
+        });
     }
     
     private CTabFolder _createContainer(Composite parent) {
@@ -100,7 +120,6 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
     }
 	
     protected void pageChange(int newPageIndex) {
-        // FIXME
 		if (newPageIndex == 1) {
             if (_preview == null)
                 _setupPreviewPage();
@@ -112,6 +131,16 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
         if (!_needRefactoring)
             return;
 
+        String PTII = Environment.getPtolemyHome(_container.getShell());
+        if (PTII == null)
+            return;
+        
+        String root = Environment.getRefactoringRoot(_container.getShell());
+        if (root == null)
+            return;
+        
+        IPreferenceStore store = EclipsePlugin.getDefault()
+                .getPreferenceStore();
         IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
         IFile previewFile =
             ((IFileEditorInput)_preview.getEditorInput()).getFile();
@@ -122,8 +151,6 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
 
         try {
             Environment.createFolders(previewFile.getParent());
-            IPreferenceStore store = EclipsePlugin.getDefault()
-                    .getPreferenceStore();
     
             boolean overwrite =
                 store.getBoolean(PreferenceConstants.BACKTRACK_OVERWRITE);
@@ -144,18 +171,24 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
             String[] PTClassPaths = Environment.getClassPaths(null);
             String[] extraClassPaths = new String[0];
             if (file.getProject() != null)
-                extraClassPaths = new String[]{file.getProject().getLocation().toOSString()};
+                extraClassPaths = new String[]{
+                    file.getProject().getLocation().toOSString()
+                };
+            String extraClassPathsInOptions = store.getString(
+                    PreferenceConstants.BACKTRACK_EXTRA_CLASSPATHS);
+            if (!extraClassPathsInOptions.equals(""))
+                extraClassPaths = Strings.combineArrays(extraClassPaths,
+                        Strings.decodeFileNames(extraClassPathsInOptions));
             if (!Environment.setupTransformerArguments(_container.getShell(),
                     false, true)) {
                 OutputConsole.outputError("Cannot setup Transformer environment.");
                 return;
             }
 
-            // FIXME: classpaths
             BusyIndicator.showWhile(Display.getCurrent(),
                     new TransformerRunnable(file.getName(), compilationUnit,
                             writer,
-                            Environment.combineArrays(PTClassPaths, extraClassPaths),
+                            Strings.combineArrays(PTClassPaths, extraClassPaths),
                             new String[]{}));
             _needRefactoring = false;
         } catch (Exception e) {
@@ -169,7 +202,7 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
             }
         }
     }
-    
+
     protected void _setActivePage(int pageIndex) {
         _container.setSelection(pageIndex);
     }
@@ -200,39 +233,20 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
     
     private void _setupPreviewPage() {
         int pageIndex = 1;
-        
-        IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
-        try {
-            CompilationUnit compilationUnit = _getCompilationUnit();
-            String packageName = null;
-            if (compilationUnit.getPackage() != null)
-                packageName = compilationUnit.getPackage().getName().toString();
-            
-            IPath refactoredFile =
-                Environment.getRefactoredFile(file.getLocation().toOSString(),
-                        packageName);
-            IFile previewFile =
-                Environment.getContainer(refactoredFile).getFile(null);
-            
-            // Initialize the file (seems not needed).
-            /*Environment.createFolders(previewFile.getParent());
-            if (!previewFile.exists()) {
-                ByteArrayInputStream inputStream =
-                    new ByteArrayInputStream(new byte[0]);
-                previewFile.create(null, true, null);
-            }*/
-            
-            _preview = new CompilationUnitEditor();
-            _preview.init(_editor.getEditorSite(),
-                    new FileEditorInput(previewFile) {
-                        public boolean exists() {
-                            return true;
-                        }
-            });
-            //_preview.createPartControl(
-            //        (Composite)_container.getItem(pageIndex).getControl());
-        } catch (Exception e) {
-            OutputConsole.outputError(e.getMessage());
+
+        _preview = new CompilationUnitEditor();
+        IFile previewFile = _getPreviewFile();
+        if (previewFile != null) {
+            try {
+                _preview.init(_editor.getEditorSite(),
+                        new FileEditorInput(previewFile) {
+                    public boolean exists() {
+                        return true;
+                    }
+                });
+            } catch (Exception e) {
+                OutputConsole.outputError(e.getMessage());
+            }
         }
     }
     
@@ -254,6 +268,28 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
         CTabItem item = new CTabItem(_container, SWT.NONE, index);
         item.setControl(control);
         return item;
+    }
+    
+    private IFile _getPreviewFile() {
+        try {
+            IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
+            
+            CompilationUnit compilationUnit = _getCompilationUnit();
+            String packageName = null;
+            if (compilationUnit.getPackage() != null)
+                packageName = compilationUnit.getPackage().getName().toString();
+            
+            IPath refactoredFile =
+                Environment.getRefactoredFile(file.getLocation().toOSString(),
+                        packageName);
+            IFile previewFile =
+                Environment.getContainer(refactoredFile).getFile(null);
+            
+            return previewFile;
+        } catch (Exception e) {
+            OutputConsole.outputError(e.getMessage());
+            return null;
+        }
     }
     
     private class RefactoredFile extends File {

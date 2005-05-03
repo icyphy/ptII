@@ -84,7 +84,8 @@ public class EclipsePlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("Test", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin(
+                "ptolemy.backtrack", path);
 	}
     
     public OutputConsole getConsole() {

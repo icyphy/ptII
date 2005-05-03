@@ -35,11 +35,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.StringTokenizer;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.BooleanFieldEditor;
@@ -72,6 +70,7 @@ import ptolemy.backtrack.plugin.EclipsePlugin;
 import ptolemy.backtrack.plugin.util.Environment;
 import ptolemy.backtrack.plugin.util.SaveFileFieldEditor;
 import ptolemy.backtrack.plugin.widgets.DirectoryFieldEditor;
+import ptolemy.backtrack.util.Strings;
 
 //////////////////////////////////////////////////////////////////////////
 //// BacktrackingPreferencePage
@@ -165,6 +164,10 @@ public class BacktrackingPreferencePage
                 PreferenceConstants.BACKTRACK_SOURCE_LIST,
                 "Source &list file:", currentComposite) {
             protected boolean checkState() {
+                if (Environment.getPtolemyHome() == null)
+                    return true;
+                
+                String currentValue = getStringValue();
                 boolean superResult = super.checkState();
                 
                 if (!getTextControl(_getParent(this)).isEnabled())
@@ -174,9 +177,9 @@ public class BacktrackingPreferencePage
                     if (superResult)
                         return true;
                 } else {
-                    _lastString = getStringValue();
+                    _lastString = currentValue;
                     _sourcesModified = false;
-                    if (superResult)
+                    if (superResult || currentValue.equals(""))
                         return _updateSources();
                 }
                 
@@ -203,12 +206,7 @@ public class BacktrackingPreferencePage
                 PreferenceConstants.BACKTRACK_SOURCES,
                 "&Sources", currentComposite) {
             protected String createList(String[] items) {
-                StringBuffer path = new StringBuffer("");
-                for (int i = 0; i < items.length; i++) {
-                    path.append(items[i]);
-                    path.append(File.pathSeparator);
-                }
-                return path.toString();
+                return Strings.encodeFileNames(items);
             }
             
             protected String getNewInputObject() {
@@ -228,14 +226,7 @@ public class BacktrackingPreferencePage
             }
             
             protected String[] parseString(String stringList) {
-                StringTokenizer st =
-                    new StringTokenizer(stringList, File.pathSeparator
-                            + "\n\r");
-                ArrayList v = new ArrayList();
-                while (st.hasMoreElements()) {
-                    v.add(st.nextElement());
-                }
-                return (String[]) v.toArray(new String[v.size()]);
+                return Strings.decodeFileNames(stringList);
             }
             
             protected void doLoad() {
@@ -284,6 +275,7 @@ public class BacktrackingPreferencePage
         _root = new DirectoryFieldEditor(
                 PreferenceConstants.BACKTRACK_ROOT,
                 "&Root of refactoring:", currentComposite);
+        _root.setCanBeEmpty(true);
         GridData gridData = new GridData();
         gridData.widthHint = 0;
         gridData.horizontalAlignment = SWT.FILL;
@@ -423,10 +415,14 @@ public class BacktrackingPreferencePage
     
     private boolean _updateSources() {
         String fileName = _sourceList.getStringValue();
-        File sourceListFile = new File(fileName);
-        File sourceListPath = sourceListFile.getParentFile();
         List list = _sources.getListControl(_getParent(_sources));
         list.removeAll();
+
+        if (fileName.equals(""))
+            return true;
+        
+        File sourceListFile = new File(fileName);
+        File sourceListPath = sourceListFile.getParentFile();
         try {
             BufferedReader reader =
                 new BufferedReader(new InputStreamReader(

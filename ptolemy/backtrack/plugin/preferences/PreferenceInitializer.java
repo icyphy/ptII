@@ -26,7 +26,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
             ResourcesPlugin.getWorkspace().getRoot().getProject("ptII");
         if (ptIIProject.exists()) {
             store.setDefault(PreferenceConstants.PTII,
-                    ptIIProject.getFullPath().toOSString());
+                    ptIIProject.getLocation().toOSString());
             
             IFile sourceList = ptIIProject.getFile(
                     "ptolemy/backtrack/automatic/source.lst");

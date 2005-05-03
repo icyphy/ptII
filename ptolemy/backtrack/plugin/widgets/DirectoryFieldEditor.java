@@ -61,6 +61,14 @@ public class DirectoryFieldEditor extends
         super(name, labelText, parent);
     }
     
+    public boolean canBeEmpty() {
+        return _canBeEmpty;
+    }
+    
+    public void setCanBeEmpty(boolean canBeEmpty) {
+        _canBeEmpty = canBeEmpty;
+    }
+    
     protected String changePressed() {
         String folderName = getTextControl().getText();
         IPath path = Path.fromOSString(folderName);
@@ -79,6 +87,10 @@ public class DirectoryFieldEditor extends
     
     protected boolean doCheckState() {
         String folderName = getTextControl().getText();
+        
+        if (_canBeEmpty && folderName.equals(""))
+            return true;
+        
         IWorkspaceRoot root =
             ResourcesPlugin.getWorkspace().getRoot();
         IPath path = Path.fromOSString(folderName);
@@ -93,4 +105,6 @@ public class DirectoryFieldEditor extends
         } else
             return false;
     }
+    
+    private boolean _canBeEmpty = false;
 }
