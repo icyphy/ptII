@@ -83,7 +83,7 @@ the 8-bit truncation of one of the integers.</text></svg></configure>
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">DatagramReader copies each byte into an integer. 
-These integers are assembeled into an integer array.</text></svg></configure>
+These integers are assembled into an integer array.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>

@@ -109,7 +109,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The HeatExchanger.TempVessel&#10;port and the Growth.vatTemp&#10;port bothhave units degrees.&#10;However, the Integrator.output&#10;will have units calories. ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The HeatExchanger.TempVessel&#10;port and the Growth.vatTemp&#10;port both have units degrees.&#10;However, the Integrator.output&#10;will have units calories. ">
         </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>

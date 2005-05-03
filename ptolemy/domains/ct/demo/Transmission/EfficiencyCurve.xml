@@ -24,7 +24,7 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model plots an appproximate efficiency
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model plots an approximate efficiency
 curve for a hypothetical internal combustion engine.
 
 The plot is given by the equation:

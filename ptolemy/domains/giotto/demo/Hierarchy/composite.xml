@@ -21,7 +21,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For a Giotto model that is embedded inside another Giotto model, the period &#10;parameter of the local director is meaningless. So, during the prefire method&#10;of the local Giotto director, the period is set according the frequency of&#10;the embedded Giotto model and the period of the upper level Giotto director.&#10;&#10;Note: due to the possible numerical error introduced by divisions like&#10;1.0 (period) / 3 (frequency) = 0.333333..., a good design will choose an &#10;approciate frequency such that the local period can be represented by a finite&#10;number of digits. &#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For a Giotto model that is embedded inside another Giotto model, the period &#10;parameter of the local director is meaningless. So, during the prefire method&#10;of the local Giotto director, the period is set according the frequency of&#10;the embedded Giotto model and the period of the upper level Giotto director.&#10;&#10;Note: due to the possible numerical error introduced by divisions like&#10;1.0 (period) / 3 (frequency) = 0.333333..., a good design will choose an &#10;appropriate frequency such that the local period can be represented by a finite&#10;number of digits. &#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 200.0]">
         </property>
