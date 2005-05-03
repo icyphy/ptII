@@ -427,7 +427,7 @@ sensor nets. Please look inside "node" to see the protocol. Note that the DataCo
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -1340,7 +1340,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -2253,7 +2253,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -3166,7 +3166,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -4079,7 +4079,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -4992,7 +4992,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -5905,7 +5905,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -6818,7 +6818,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -7731,7 +7731,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -8644,7 +8644,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -9557,7 +9557,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -10470,7 +10470,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -11383,7 +11383,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -12296,7 +12296,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -13209,7 +13209,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -14122,7 +14122,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -15035,7 +15035,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -15948,7 +15948,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -16861,7 +16861,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -17774,7 +17774,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -18687,7 +18687,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -19600,7 +19600,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -20513,7 +20513,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -21426,7 +21426,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>
@@ -22339,7 +22339,7 @@ component. </text></svg></configure>
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The protocol assumes that propagation takes no time but transmition takes time
-that depends on the packege's size. When having data to send, it first sense 
+that depends on the package's size. When having data to send, it first sense 
 whether the channel is free or busy. If free, send the data, if not, then wait
 for a random time and try again. The detection inteface is provided by the senseAir 
 component. </text></svg></configure>

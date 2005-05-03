@@ -1884,7 +1884,7 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The 'first' encrpytion round, which just XORs the key</text></svg></configure>
+                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The 'first' encryption round, which just XORs the key</text></svg></configure>
                     </property>
                     <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                         <configure>
@@ -2135,7 +2135,7 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
         <link port="SequenceToArray3.output" relation="relation13"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Encrpyted Block">
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Encrypted Block">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={632, 533, 330, 237}, maximized=false}">
         </property>
