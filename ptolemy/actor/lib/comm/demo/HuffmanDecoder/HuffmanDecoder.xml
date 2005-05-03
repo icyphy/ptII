@@ -17,7 +17,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows the Huffman coding and decoding given an alphabet list and its&#10;probability mass function (pmf).The Huffman coding scheme is an optimal source&#10;coding method for data compression. It uses fewer bits to represent symbols that&#10;have high probability of occurence and more bits for symbols that have low&#10;probability of occurence. Therefore, Huffman coding uses fewer bits on average&#10;to encode than fixed length coding scheme. Huffman code is also an instantaneous&#10;code which means it is uniquely decodable.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows the Huffman coding and decoding given an alphabet list and its&#10;probability mass function (pmf).The Huffman coding scheme is an optimal source&#10;coding method for data compression. It uses fewer bits to represent symbols that&#10;have high probability of occurrence and more bits for symbols that have low&#10;probability of occurrence. Therefore, Huffman coding uses fewer bits on average&#10;to encode than fixed length coding scheme. Huffman code is also an instantaneous&#10;code which means it is uniquely decodable.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 430.0]">
         </property>

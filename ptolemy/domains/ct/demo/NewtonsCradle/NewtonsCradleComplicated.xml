@@ -236,7 +236,7 @@ reach their equilibrium positions at the different times with
 different velocities. Therefore, the collisions between ball 
 #1 and #2 and between ball #2 and #3 do not happen at the same 
 time. This indicates that the momentum transfer process takes 
-a non-zero time, which makes the balls' dynaimcs complicated.
+a non-zero time, which makes the balls' dynamics complicated.
 
 In particular, because ball #2 has a smaller initial angle than
 that of ball #1, its period is smaller. Therefore, ball #2 is

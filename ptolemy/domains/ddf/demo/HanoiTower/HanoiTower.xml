@@ -170,7 +170,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model solves Tower of Hanoi puzzle using the ActorRecursion actor. &#10;A tower of disks initially stacked in increasing size on the source tower &#10;shall be transferred to the detination tower, moving only at one disk at a &#10;time and never a larger one onto a smaller through the third tower. &#10;&#10;The number of disks can be adjusted through the parameter numberOfDisks.&#10;The three towers are indexed as 0,1,2. The animation speed can be adjusted &#10;through the parameter interpolationFactor.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model solves Tower of Hanoi puzzle using the ActorRecursion actor. &#10;A tower of disks initially stacked in increasing size on the source tower &#10;shall be transferred to the destination tower, moving only at one disk at a &#10;time and never a larger one onto a smaller through the third tower. &#10;&#10;The number of disks can be adjusted through the parameter numberOfDisks.&#10;The three towers are indexed as 0,1,2. The animation speed can be adjusted &#10;through the parameter interpolationFactor.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 20.0]">
         </property>
