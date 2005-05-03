@@ -77,6 +77,7 @@ JSRCS = \
 	KeyInput3D.java \
 	Line2D.java \
 	MouseInput3D.java \
+	MovableViewScreen3D.java \
 	PolyCylinder3D.java \
 	Rectangle2D.java \
 	RectangularFigure2D.java \
