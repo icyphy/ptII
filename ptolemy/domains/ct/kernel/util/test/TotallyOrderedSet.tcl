@@ -74,7 +74,7 @@ test TotallyOrderedSet-3.1 {get the comparator} {
     set comp [java::cast ptolemy.domains.ct.kernel.util.FuzzyDoubleComparator \
 	    [$toset getComparator]]
     list [$comp getThreshold]
-} {0.0}
+} {1e-10}
 
 ######################################################################
 ####  set up some Double objects

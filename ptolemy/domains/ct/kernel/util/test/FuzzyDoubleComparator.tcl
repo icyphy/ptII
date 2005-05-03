@@ -54,7 +54,7 @@ if {[string compare test [info procs test]] == 1} then {
 test FuzzyDoubleComparator-2.1 {Construct a FuzzyDoubleComparator} {
     set fdc [java::new ptolemy.domains.ct.kernel.util.FuzzyDoubleComparator]
     list [$fdc getThreshold]
-} {0.0}
+} {1e-10}
 
 test FuzzyDoubleComparator-2.2 {Construct with threshold} {
     set fdc [java::new \
