@@ -29,7 +29,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Brownian motion is the integral of white noise.&#10;This model generates two Brownian motion random&#10;processes and plots the value of one vs. the other.&#10;This creates a random walk effect. White noise is&#10;approximated as a signal where any two samples&#10;are independent and identically distributed&#10;Gaussian random variables.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Brownian motion is the integral of white noise.&#10;This model generates approximations of two&#10;Brownian motion random processes and plots the&#10;value of one vs. the other. This creates a&#10;random walk effect. White noise is approximated&#10;as a signal where any two samples are independent&#10;and identically distributed Gaussian random variables.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 265.0]">
         </property>
@@ -101,7 +101,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="-1.3732190585218176" max="0.22707363483602439"/>
+<yRange min="-0.0683275275138371" max="2.82544495939659"/>
 </plot>?>
         </configure>
     </entity>
@@ -120,7 +120,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="-4.429647757109736" max="3.9797842201877116"/>
+<yRange min="-3.525005260397737" max="4.076060176833891"/>
 <noGrid/>
 </plot>?>
         </configure>

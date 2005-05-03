@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="IncreasingRatePoisson" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="400.0">
@@ -29,7 +29,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 330.0]">
         </property>
     </property>
     <property name="rateOfRateIncrease" class="ptolemy.data.expr.Parameter" value="0.005">
@@ -103,9 +103,9 @@ value of this random variable multiplied by the current (increasing) rate.</text
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that on this transition, only one of the&#10;two integrators is reset, so the rate continues&#10;continues to increase linearly.">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that on this transition, only one of the&#10;two integrators is reset, so the rate continues&#10;to increase linearly.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 235.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 240.0]">
                 </property>
             </property>
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -139,7 +139,13 @@ value of this random variable multiplied by the current (increasing) rate.</text
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="event_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="wait.threshold = -log(1-random()); wait.Integrator.initialState = 0.0">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="wait.threshold = -log(1-random());&#10;wait.Integrator.initialState = 0.0">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.356194490192345">
                 </property>
@@ -174,7 +180,7 @@ value of this random variable multiplied by the current (increasing) rate.</text
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
                 </property>
             </property>
-            <property name="threshold" class="ptolemy.data.expr.Parameter" value="1.0293170187486">
+            <property name="threshold" class="ptolemy.data.expr.Parameter" value="1.3473431196095">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -220,11 +226,19 @@ value of this random variable multiplied by the current (increasing) rate.</text
                 </property>
             </entity>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 195.0}">
                 </property>
             </entity>
             <entity name="LevelCrossingDetector" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
                 <property name="level" class="ptolemy.data.expr.Parameter" value="threshold">
+                </property>
+                <property name="direction" class="ptolemy.data.expr.StringParameter" value="rising">
                 </property>
                 <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
@@ -236,6 +250,12 @@ value of this random variable multiplied by the current (increasing) rate.</text
                 </property>
             </entity>
             <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 195.0]">
                 </property>
             </entity>
@@ -276,8 +296,8 @@ value of this random variable multiplied by the current (increasing) rate.</text
 <title>Events</title>
 <xLabel>time</xLabel>
 <yLabel>elapsed time</yLabel>
-<xRange min="15.9162238519" max="399.7720718125"/>
-<yRange min="0.0015713765148629493" max="7.461546227349584"/>
+<xRange min="12.058268011300001" max="399.3520627451"/>
+<yRange min="0.00352443803367774" max="5.552579547932402"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
@@ -300,8 +320,8 @@ value of this random variable multiplied by the current (increasing) rate.</text
 <title>Times Between Events</title>
 <xLabel>amount of time</xLabel>
 <yLabel>number of occurrences</yLabel>
-<xRange min="0.1" max="7.6"/>
-<yRange min="0.0" max="90.0"/>
+<xRange min="0.1" max="5.6"/>
+<yRange min="0.0" max="58.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
 </plot>?>
