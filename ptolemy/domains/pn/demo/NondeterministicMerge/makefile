@@ -53,7 +53,6 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	MergeRamps.xml \
-	NondeterministicMergeTest.xml \
 	NondeterministicMerge.htm
 
 # Sources that may or may not be present, but if they are present, we don't
