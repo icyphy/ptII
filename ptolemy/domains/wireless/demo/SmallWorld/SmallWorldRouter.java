@@ -63,30 +63,33 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 //// SmallWorldRouter
 
 /**
-   This actor implements a routing algrithm to route a message to the destination
-   via a short path based only on local information. It assumes that it knows which
-   nodes are in range and the location of that node. It also assumes that the
-   location of the destination is known. Based on this information, it finds the
-   node that is closest to the destination from its connected node set.
-   <p>
-   We assume that the actor are connected to nodes inside a particular range,
-   specified by the <i>sureRange<i> parameter, for sure. Outside this range,
-   it may connected to a node with probability propotional to the r-th inverse power
-   of the distance between them. Whether it is connected to a particular
-   node is independent of whether it is connected to any other node.
-   <p>
-   For convenience, a variable named "distance" is available and
-   equal to the distance between this actor and other actors. The
-   loss probability can be given as an expression that depends
-   on this distance.
-   <p>
-   The distance between the transmitter and receiver is determined
-   by the protected method _distanceBetween(), which is also used
-   to set the value of the <i>distance</i> variable that can be
-   used in the expression for loss probability.
+
+   This actor implements a routing algorithm to route a message to the
+   destination via a short path based only on local information. It
+   assumes that it knows which nodes are in range and the location of
+   that node. It also assumes that the location of the destination is
+   known. Based on this information, it finds the node that is closest
+   to the destination from its connected node set.
+
+   <p> We assume that the actor are connected to nodes inside a
+   particular range, specified by the <i>sureRange<i> parameter, for
+   sure. Outside this range, it may connected to a node with
+   probability propotional to the r-th inverse power of the distance
+   between them. Whether it is connected to a particular node is
+   independent of whether it is connected to any other node.
+
+   <p> For convenience, a variable named "distance" is available and
+   equal to the distance between this actor and other actors. The loss
+   probability can be given as an expression that depends on this
+   distance.
+
+   <p> The distance between the transmitter and receiver is determined
+   by the protected method _distanceBetween(), which is also used to
+   set the value of the <i>distance</i> variable that can be used in
+   the expression for loss probability.
 
    @author Yang Zhao
-   @version $ $
+   @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (pjb2e)
@@ -259,15 +262,17 @@ public class SmallWorldRouter extends TypedAtomicActor {
      */
     public Parameter seed;
 
-    /** If true, then this actor will also route the message to the node that
-     *  is the second closest to the destination among all its connected nodes.
-     *  FIXME: This is still under experiment. The issue I try to address is that
-     *  some links may fail and long links may fail with higher probability. If so,
-     *  routing a message to two paths may improve the hit probability. However, this
-     *  will also cost more energy and also lower the capacity of the network.
-     *  There is a tradeoff. A simple idea is to use a threshold to control the
-     *  exponentially increased branches. For example, with a threshold equals 2,
-     *  it only route to two pathes for the first hop.
+    /** If true, then this actor will also route the message to the
+     *  node that is the second closest to the destination among all
+     *  its connected nodes.  FIXME: This is still under
+     *  experiment. The issue I try to address is that some links may
+     *  fail and long links may fail with higher probability. If so,
+     *  routing a message to two paths may improve the hit
+     *  probability. However, this will also cost more energy and also
+     *  lower the capacity of the network.  There is a tradeoff. A
+     *  simple idea is to use a threshold to control the exponentially
+     *  increased branches. For example, with a threshold equals 2, it
+     *  only route to two pathes for the first hop.
      */
     public Parameter doublePath;
 
