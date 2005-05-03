@@ -231,8 +231,10 @@ public class ClassDefinitionController extends ActorController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Fourth argument makes this highlight transluscent, which enables
-    // combination with other highlights.
+
+    /** Fourth argument makes this highlight translucent, which enables
+     * combination with other highlights.
+     */
     private static Color _HIGHLIGHT_COLOR = new Color(0, 0, 255, 64);
 
     ///////////////////////////////////////////////////////////////////

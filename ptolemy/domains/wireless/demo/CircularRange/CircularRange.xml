@@ -36,7 +36,7 @@ The channel is a LimitedRangeChannel, which is a simple wireless channel
 model where the transmitter specifies via a parameter in its output port
 the distance over which it can transmit.  In this model, that distance is
 shown graphically as the radius of the circular icon for the transmitter.
-As the model executes, at random times, the range of the tranmitter decreases.</text></svg></configure>
+As the model executes, at random times, the range of the transmitter decreases.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>

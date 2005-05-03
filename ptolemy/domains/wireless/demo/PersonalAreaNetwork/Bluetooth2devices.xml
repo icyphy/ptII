@@ -104,7 +104,7 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:Times New Roman; fill:red">The two displays show (1) The information recieved (2) The mode currently in.</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:Times New Roman; fill:red">The two displays show (1) The information received (2) The mode currently in.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
