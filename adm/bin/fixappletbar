@@ -1,0 +1,51 @@
+#!/bin/sh
+# This script reads in applets and updates the html to
+# handle the latest version of the plugin
+#
+# $Id$
+# Usage: fixapplets [-n] file.htm [...]
+
+printOnly=no
+if [ $# -lt 1 ]; then
+    echo "$0: Usage: $0 file . . ."
+    exit 4
+fi
+
+if [ "$1" = "-n" ]; then
+    echo "$0: -n: Not updating files"
+    printOnly=yes
+    shift
+fi
+
+for file in $@
+do
+     egrep progressbar $file
+     retval=$?
+     if [ $retval != 0 ]; then
+	 echo "$file does not contain \"progressbar\""
+	 awk '{ if ($0 ~ /NAME = "scriptable" VALUE = "false"/) {
+                    print  "            <PARAM NAME = \"progressbar\" VALUE = \"true\"> \\"  
+                } else {
+                    if ($0 ~ /scriptable = "false"/) {
+                        print "            progressbar = \"true\" \\"
+                    }
+                }
+                print $0
+         }' $file > fixapplets.htm
+     fi              
+
+     diff -c $file fixapplets.htm
+     if [ "$printOnly" = "no" ]; then
+	 mv fixapplets.htm $file
+	 cvs commit -m "Added progressbar applet parameter" $file
+     else 
+	 tmpFile="`basename $file .htm`.htm"
+	 if [ ! -f $tmpFile ]; then
+	     mv fixapplets.htm $tmpFile
+	     echo "Your results are in $tmpFile"
+	 else 
+	     echo "Your results are in fixapplets.htm"
+	 fi    
+     fi
+
+done
