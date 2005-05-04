@@ -110,7 +110,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 45.0]">
         </property>
     </property>
-    <property name="probabilityOfFailure" class="ptolemy.data.expr.Parameter" value="0.1">
+    <property name="probabilityOfFailure" class="ptolemy.data.expr.Parameter" value="0.3">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -159,11 +159,6 @@
             <property name="output"/>
         </port>
         <port name="fail" class="ptolemy.domains.fsm.modal.ModalPort">
-            <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-        </port>
-        <port name="crossing" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
             </property>
@@ -226,12 +221,6 @@ The transitions between states change the values of the constant output.</text><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 275.0]">
                 </property>
             </port>
-            <port name="crossing" class="ptolemy.domains.fsm.modal.RefinementPort">
-                <property name="input"/>
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 325.0]">
-                </property>
-            </port>
             <entity name="high" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="constant, ThresholdDetector">
                 </property>
@@ -255,7 +244,7 @@ The transitions between states change the values of the constant output.</text><
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="crossing_isPresent &amp;&amp; fail_isPresent &amp;&amp; !fail">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fail_isPresent &amp;&amp; !fail">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="constant.outputValue = lowValue; &#10;ThresholdDetector.levelThreshold = highThreshold;&#10;ThresholdDetector.direction = &quot;rising&quot;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -275,7 +264,7 @@ The transitions between states change the values of the constant output.</text><
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="crossing_isPresent &amp;&amp; fail_isPresent &amp;&amp; !fail">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fail_isPresent &amp;&amp; !fail">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="constant.outputValue = highValue; &#10;ThresholdDetector.levelThreshold = lowThreshold;&#10;ThresholdDetector.direction = &quot;falling&quot;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -330,7 +319,7 @@ The transitions between states change the values of the constant output.</text><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
                 </property>
             </property>
-            <property name="outputValue" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="outputValue" class="ptolemy.data.expr.Parameter" value="-1.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -378,11 +367,6 @@ The transitions between states change the values of the constant output.</text><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 140.0]">
                 </property>
             </port>
-            <port name="crossing" class="ptolemy.domains.fsm.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 185.0]">
-                </property>
-            </port>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="outputValue">
                 </property>
@@ -406,7 +390,7 @@ The transitions between states change the values of the constant output.</text><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
                 </property>
             </property>
-            <property name="levelThreshold" class="ptolemy.data.expr.Parameter" value="-0.5">
+            <property name="levelThreshold" class="ptolemy.data.expr.Parameter" value="0.5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -425,7 +409,7 @@ The transitions between states change the values of the constant output.</text><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 40.0]">
                 </property>
             </property>
-            <property name="direction" class="ptolemy.data.expr.Parameter" value="&quot;falling&quot;">
+            <property name="direction" class="ptolemy.data.expr.Parameter" value="&quot;rising&quot;">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -467,11 +451,6 @@ The transitions between states change the values of the constant output.</text><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 140.0]">
                 </property>
             </port>
-            <port name="crossing" class="ptolemy.domains.fsm.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 215.0]">
-                </property>
-            </port>
             <entity name="LevelCrossingDetector" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
                 <property name="level" class="ptolemy.data.expr.Parameter" value="levelThreshold">
                 </property>
@@ -505,7 +484,6 @@ The transitions between states change the values of the constant output.</text><
             </relation>
             <link port="in" relation="relation"/>
             <link port="fail" relation="relation4"/>
-            <link port="crossing" relation="relation2"/>
             <link port="LevelCrossingDetector.output" relation="relation2"/>
             <link port="LevelCrossingDetector.trigger" relation="relation"/>
             <link port="Bernoulli.output" relation="relation4"/>
@@ -517,24 +495,18 @@ The transitions between states change the values of the constant output.</text><
         </relation>
         <relation name="failRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="crossingRelation" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <link port="in" relation="inRelation"/>
         <link port="out" relation="outRelation"/>
         <link port="fail" relation="failRelation"/>
-        <link port="crossing" relation="crossingRelation"/>
         <link port="_Controller.in" relation="inRelation"/>
         <link port="_Controller.out" relation="outRelation"/>
         <link port="_Controller.fail" relation="failRelation"/>
-        <link port="_Controller.crossing" relation="crossingRelation"/>
         <link port="constant.in" relation="inRelation"/>
         <link port="constant.out" relation="outRelation"/>
         <link port="constant.fail" relation="failRelation"/>
-        <link port="constant.crossing" relation="crossingRelation"/>
         <link port="ThresholdDetector.in" relation="inRelation"/>
         <link port="ThresholdDetector.out" relation="outRelation"/>
         <link port="ThresholdDetector.fail" relation="failRelation"/>
-        <link port="ThresholdDetector.crossing" relation="crossingRelation"/>
     </entity>
     <entity name="ContinuousSinewave" class="ptolemy.domains.ct.lib.ContinuousSinewave">
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="0.1">
