@@ -29,17 +29,37 @@ we do codegen, we get Foo.java instead of foo.java
 See the <a href="demos.htm">quick tour</a> for a smaller
 set of demos that highlight the key features of Ptolemy II.
 
+<h1>Ptolemy II Domains</h1>
+<ul>
+<li> <a href="#ci">CI (Component Interaction, or push/pull)</a>
+ <!-- csp -->
+<li> <a href="#ct">CT (Continuous Time)</a>
+<li> <a href="#de">DE (Discrete Events)</a>
+ <!-- dde -->	
+<li> <a href="#ddf">DDF (Dynamic Dataflow)</a>
+<li> <a href="#dt">DT (Discrete Time)</a>
+<li> <a href="#fsm">FSM (Finite State Machines)</a>
+<li> <a href="#giotto">Giotto (Synchronous Periodic Systems)</a>
+<li> <a href="#gr">GR (Three-D Graphics)</a>
+<li> <a href="#hdf">HDF (Heterochronous Dataflow)</a>
+<li> <a href="#psdf">PSDF (Parameterized Synchronous Dataflow)</a>
+<li> <a href="#pn">PN (Process Networks)</a>
+<li> <a href="#sdf">SDF (Synchronous Dataflow)</a>
+<li> <a href="#sr">SR (Synchronous/Reactive)</a>
+<li> <a href="#tm">TM (Timed Multitasking)</a>
+<li> <a href="#wireless">Wireless</a>
+</ul>
 
 <!--csp -->
 
 <!--/vergilDocs-->
-<h3>ComponentInteraction</h3>
+<h3><a name="ci">Component Interaction</a></h3>
 <ul>
 <li> <a href="../../domains/ci/demo/Router/Router.xml">Router</a>
 </ul>
 <!--vergilDocs-->
 
-<h3>Continuous Time</h3>
+<h3><a name="ct">Continuous Time</a></h3>
 
 <ul>
 <!-- Please keep the demos alphabetical -->
@@ -115,7 +135,7 @@ Windows only, requires that Matlab be installed locally
 
 <!--dde domain -->
 
-<h3>Discrete Event</h3>
+<h3><a name="Discrete Event">Discrete Event</a></h3>
 <ul>
 <!--/vergilDocs-->
 <li><a href="../../domains/de/demo/AssemblyLine/AssemblyLine.xml">Assembly Line</a> 
@@ -153,15 +173,11 @@ X10Interface actor documentation</a>)
 </ul>
 
 <!--/vergilDocs-->
-<!--Ptiny does not include DT-->
-<h3>Discrete Time</h3>
-<ul>
-<li><a href="../../domains/dt/demo/Eye/Eye.xml">Eye</a>
-</ul>
 
-<!--/vergilDocs-->
+<!-- dde? -->
+
 <!--Ptiny does not include ddf-->
-<h3>Dynamic Dataflow</h3>
+<h3><a name="ddf">Dynamic Dataflow</a></h3>
 <ul>
 <li><a href="../../domains/ddf/demo/Eratosthenes/Eratosthenes.xml">Eratosthenes</a>
 (New in Ptolemy II 5.0)
@@ -180,10 +196,18 @@ X10Interface actor documentation</a>)
 <li><a href="../../domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml">RijndaelEncryption</a>
 (New in Ptolemy II 5.0)
 </ul>
+
+<!--Ptiny does not include DT-->
+<h3><a name="dt">Discrete Time</a></h3>
+<ul>
+<li><a href="../../domains/dt/demo/Eye/Eye.xml">Eye</a>
+</ul>
+
+
 <!--vergilDocs-->
 
 
-<h3>Finite State Machine</h3>
+<h3><a name="fsm">Finite State Machine</a></h3>
 <ul>
 <li> <a href="../../domains/fsm/demo/ABP/ABP.xml">Alternating&nbsp;Bit</a>
 <li> <a href="../../domains/fsm/demo/Blending/Blending.xml">Blending</a> 
@@ -199,7 +223,7 @@ FSM MultipleRuns has problems with dangling threads, so we comment it out.
 
 <!--/vergilDocs-->
 <!--Ptiny does not include Giotto-->
-<h3>Giotto</h3>
+<h3><a name="giotto">Giotto</a></h3>
 <ul>
 <li> <a href="../../domains/giotto/demo/Composite/Composite.xml">Composite</a> 
  <!-- ../../domains/giotto/demo/FireAtDE/FireAtDE.xml -->
@@ -211,7 +235,7 @@ FSM MultipleRuns has problems with dangling threads, so we comment it out.
 
 <!--/vergilDocs-->
 <!--Ptiny does not include GR-->
-<h3>Graphics</h3>
+<h3><a name="gr">Graphics</a></h3>
 Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 <ul>
 <li> <a href="../../domains/gr/demo/FurutaPendulum/FurutaPendulum.xml">FurutaPendulum</a> 
@@ -224,7 +248,7 @@ Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 
 <!--/vergilDocs-->
 <!--Ptiny does not include hdf-->
-<h3>Heterochronous Dataflow</h3>
+<h3><a name="Heterochronous Dataflow">hdf</a></h3>
 <ul>
 <li><a href="../../domains/hdf/demo/AdaptiveCoding/AdaptiveCoding.xml">AdaptiveCoding</a>
 (New in Ptolemy II 5.0)
@@ -237,14 +261,15 @@ Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 </ul>
 
 <!--Ptiny does not include PSDF --> 
-<h3>Parameterized Synchronous Data Flow</h3>
+<h3><a name="psdf">Parameterized Synchronous Data Flow</a></h3>
 <!-- Please keep the demos alphabetical -->
 <ul>
 <li><a href="../../domains/psdf/demo/BlindCommunication/BlindCommunication.xml">Blind Communication</a>
 </ul>
 <!--vergilDocs-->
 
-<h3>Process Networks</h3>
+<h3><a name="pn">Process Networks</a>
+
 <ul>
 <li><a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">Nondeterministic Merge</a>
 (New in Ptolemy II 5.0)
@@ -257,7 +282,7 @@ Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 <!-- RTP -->
 
 <!--vergilDocs-->
-<h3>Synchronous Data Flow</h3>
+<h3><a name="sdf">Synchronous Data Flow</a></h3>
 <ul>
 <!-- Please keep the demos alphabetical -->
 
@@ -368,7 +393,7 @@ Windows only, requires that Matlab be installed locally
 </ul>
 
 <!--/vergilDocs-->
-<h3>Synchronous Reactive</h3>
+<h3><a name="Synchronous Reactive">SR</a></h3>
 <ul>
 <!-- Reflex Game is not really SR
 	../../domains/sr/demo/ReflexGame/ReflexGame.xml -->
@@ -382,7 +407,7 @@ Windows only, requires that Matlab be installed locally
 
 <!--/vergilDocs-->
 <!--Ptiny does not include TM-->
-<h3>Priority driven multi-tasking (TM)</h3>
+<h3><a name="tm">Priority driven multi-tasking (TM)</a></h3>
 <ul>
 <li> <a href="../../domains/tm/demo/SimpleTasks/SimpleTasks.xml">Two simple tasks</a> 
 <li> <a href="../../domains/tm/demo/Controllers/Controllers.xml">Two control loops</a> 
@@ -394,7 +419,7 @@ Windows only, requires that Matlab be installed locally
 
 <!--/vergilDocs-->
 <!--Ptiny does not include Wireless-->
-<h3>Wireless</h3>
+<h3><a name="wireless">Wireless</a></h3>
 <ul>
 <li><a href="../../domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml">Antenna Pattern (Transmit)</a>
 <li><a href="../../domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml">Antenna Pattern (Receiver)</a>
