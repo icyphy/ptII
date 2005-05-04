@@ -34,13 +34,11 @@ ME =		.
 # Order matters here.
 # Go into util first so we get the latest version of the testsuite
 # Go into com before compiling ptolemy so we get JLex
-# PTJNI_DIR is set to jni by configure in $PTII/mk/ptII.mk
-#   if gcc or cc was found.
 # PTMESCAL_DIR is set to mescal by configure in $PTII/mk/ptII.mk
 #   if $PTII/mescal was found
 PTTHALES_DIR = thales
 
-DIRS = util com diva ptolemy $(PTJNI_DIR) $(PTMESCAL_DIR) $(PTTHALES_DIR) \
+DIRS = util com diva ptolemy $(PTMESCAL_DIR) $(PTTHALES_DIR) \
 	bin doc
 
 # Root of Ptolemy II directory
