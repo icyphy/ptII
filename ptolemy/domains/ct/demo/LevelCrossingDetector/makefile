@@ -49,12 +49,12 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	LevelCrossingDetector.xml \
-	LevelCrossingDetectorVergil.xml \
 	LevelCrossingDetectorDetectingDirections.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	LevelCrossingDetector.htm \
+	LevelCrossingDetectorVergil.htm \
 	LevelCrossingDetectorDetectingDirections.htm
 
 # Sources that may or may not be present, but if they are present, we don't
