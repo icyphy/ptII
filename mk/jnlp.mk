@@ -273,6 +273,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/ddf/demo/demo.jar \
+	ptolemy/domains/ddf/doc/doc.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/dt/doc/doc.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
@@ -281,6 +282,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
 	ptolemy/domains/hdf/demo/demo.jar \
+	ptolemy/domains/hdf/doc/doc.jar \
 	ptolemy/domains/psdf/psdf.jar \
 	ptolemy/domains/psdf/demo/demo.jar \
 	lib/mapss.jar \
