@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/demos
+ME =		ptolemy/demo
 
 DIRS = 		Demos
 
