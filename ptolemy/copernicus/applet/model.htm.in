@@ -57,6 +57,7 @@ applet is displayed on a XGA screen-->
                    VALUE = "application/x-java-applet;version=1.4.2" > \
             <PARAM NAME = "scriptable" VALUE = "false" > \
             <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@" > \
+            <PARAM NAME = "progressbar" VALUE = "true"> \
 	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
 	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
 	    <PARAM NAME = "orientation" VALUE = "vertical" > \
@@ -74,6 +75,7 @@ applet is displayed on a XGA screen-->
             archive = "@modelJarFiles@" \
             width = "@appletWidth@" \
             height = "@appletHeight@" \
+            progressbar = "true" \
             NAME = "@sanitizedModelName@" background = "#faf0e6" controls = "buttons, directorParameters, topParameters" orientation = "vertical" modelURL = "@sanitizedModelName@.xml"  \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
@@ -92,6 +94,7 @@ applet is displayed on a XGA screen-->
             height = "@appletHeight@" \
             > \
             <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@" > \
+            <PARAM NAME = "progressbar" VALUE = "true"> \
 	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
 	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters, topParameters" > \
 	    <PARAM NAME = "orientation" VALUE = "vertical" > \
