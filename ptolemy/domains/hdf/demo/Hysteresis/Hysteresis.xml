@@ -23,7 +23,7 @@
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 0, 726, 620}, maximized=false}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows the Hysteresis effect. Hysteresis is a retardation &#10;of an effect when the forces acting upon a body are changed. It is&#10;often used to describe the phenomenon in which the magnetic induction &#10;of a ferromagnetic material lags behind the changing magnetic field.&#10;&#10;In this example, the noisy sinewave is turned into square wave. However,&#10;the polarity of the square wave does not change immediately as the&#10;sinewave change changes polarity.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows the Hysteresis effect. Hysteresis is a retardation &#10;of an effect when the forces acting upon a body are changed. It is&#10;often used to describe the phenomenon in which the magnetic induction &#10;of a ferromagnetic material lags behind the changing magnetic field.&#10;&#10;In this example, the noisy sinewave is turned into a square wave. However,&#10;the polarity of the square wave does not change immediately when the&#10;sinewave changes polarity.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 300.0]">
         </property>
