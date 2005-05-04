@@ -41,23 +41,23 @@ import java.util.List;
 /**
    An object of this class is a totally ordered set with an increasing order.
    The order between any two elements in the set can be checked by calling the
-   compare method of a comparator associated with this object. An element, a,
+   compare() method of a comparator associated with this object. An element, a,
    in this set is said to precede another one, b, if compare(a, b) returns -1.
    <p>
-   The set does not containt repeated elements, which means comparing any two
+   The set does not contain repeated elements, which means comparing any two
    elements in this set never returns 0.
 
    @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (johnr)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class TotallyOrderedSet {
     /** Construct a set with the given comparator.
-     *  @param comparator The Comparator to compare elements.  Note that
-     *  the comparator cannot be changed after this TotallyOrderedSet
-     *  is constructed.
+     *  @param comparator The Comparator with which to compare elements.  
+     *  Note that the comparator cannot be changed after this TotallyOrderedSet
+     *  object is constructed.
      *  @see java.util.Comparator
      */
     public TotallyOrderedSet(Comparator comparator) {
@@ -68,7 +68,7 @@ public class TotallyOrderedSet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the element with the given index.
+    /** Return the element with the given index. The index starts with 0.
      *  @param index The index of the element to return.
      *  @return The requested element.
      */
@@ -87,7 +87,7 @@ public class TotallyOrderedSet {
      *  If the type of given element is not comparable by the comparator,
      *  then a ClassCastException will be thrown.
      *  @param object The object to check for containment.
-     *  @return True If the elements is contained in this set.
+     *  @return True If the element is contained in this set.
      */
     public boolean contains(Object object) {
         boolean result = false;
@@ -153,10 +153,10 @@ public class TotallyOrderedSet {
         return _set.indexOf(obj);
     }
 
-    /** Insert the given element, keeping the set sorted. If the set
-     *  contains an element "equals" the given element, then do nothing.
+    /** Insert the given element while keeping the set sorted. If the set
+     *  contains an element "equal to" the given element, then do nothing.
      *  The equivalence relation is defined by the comparator.
-     *  If the type of given element is not comparable, then a
+     *  If the type of the given element is not comparable, then a
      *  ClassCastException will be thrown.
      *  @param obj The element to be inserted.
      */
@@ -166,13 +166,11 @@ public class TotallyOrderedSet {
 
         while (elements.hasNext()) {
             Object next = elements.next();
-            int com = _comparator.compare(obj, next);
+            int comparisonResult = _comparator.compare(obj, next);
 
-            if (com == 0) {
+            if (comparisonResult == 0) {
                 return;
-            }
-
-            if (com < 0) {
+            } else if (comparisonResult < 0) {
                 _set.add(count, obj);
                 return;
             }
@@ -259,10 +257,11 @@ public class TotallyOrderedSet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The comparator for the order.  The comparator is a blank final
-    // field that can't be changed after creation.
+    /** The comparator for the order.  The comparator is a blank final
+     *  field that can't be changed after creation.
+     */
     private final Comparator _comparator;
 
-    // The set.
+    /** The set. */
     private LinkedList _set;
 }

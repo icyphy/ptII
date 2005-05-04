@@ -1,4 +1,4 @@
-/* Interface for actors that controls integration step sizes.
+/* Interface for actors that control integration step sizes.
 
 Copyright (c) 1998-2005 The Regents of the University of California.
 All rights reserved.
@@ -45,17 +45,17 @@ import ptolemy.actor.Actor;
    the CTDirector will treat <i>t</i> as a breakpoint. Actors that only
    introduce predictable breakpoints need not implement this interface.
    <P>
-   The second way of controlling step size is through the accuracy checking
-   after each integration step. Accuracy, in this context, means that
+   The second way of controlling step size is through checking the accuracy 
+   after each integration step. We treat an integration step accurate if 
    the numerical integration error is less than the error tolerance and
    there is no (unpredictable) breakpoints within this step.
    Actors that use this mechanism need to implement this interface.
-   At the end of each integration step, each CTStepSizeControlActors
-   will be asked whether this step is accurate by calling their
+   At the end of each integration step, each CTStepSizeControlActor
+   will be asked whether this step is accurate by calling its
    isOutputAccurate() or isStateAccurate() method. If either method returns
    false, that actor will then be asked to suggest a refined step size. If
-   there are more than one actors find that this step is not accurate, then the
-   smallest of the suggested step size will be used by the director to restart
+   there are more than one actor finds that this step is not accurate, then the
+   smallest of the suggested steps size will be used by the director to restart
    the integration step.
    <p>
    If all step size control actors find the integration step accurate,
@@ -65,29 +65,30 @@ import ptolemy.actor.Actor;
    <P>
    If there are no step size control actors in a model, the step size
    is controlled by the director.  Most (or possibly all) CT directors
-   will leave default the step size at its initial value, and only deviate
+   will leave the default step size at its initial value and only deviate
    from these steps when there is a predictable breakpoint that does not
    coincide with one of these steps.
+   
    @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public interface CTStepSizeControlActor extends Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Implementations of this method should return
-     *  true if the all output actors declare the
-     *  current integration step is accurate.
+     *  true if this actor declares the current integration step 
+     *  is accurate w.r.t. its output values.
      *  @return True if the current step is accurate.
      */
     public boolean isOutputAccurate();
 
     /** Implementations of this method should return
-     *  true if all stateful actors declare the
-     *  current integration step is accurate.
+     *  true if this actor declares the current integration step 
+     *  is accurate w.r.t. its current states.
      *  @return True if the current step is accurate.
      */
     public boolean isStateAccurate();

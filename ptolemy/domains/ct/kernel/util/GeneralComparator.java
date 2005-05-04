@@ -34,18 +34,19 @@ import java.util.Comparator;
 
 /**
    This class compares two comparable objects, object_1 and object_2,
-   by calling <i>compare(object_1, object_2)</i>. This method returns
+   by calling <i>compare(object_1, object_2)</i>. A comparable object 
+   implements the {@link java.lang.Comparable} interface. This method returns
    -1, 0, or 1 if object_1 is less than, equal to, or bigger than object_2.
 
    @author Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class GeneralComparator implements Comparator {
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                         public methods                    ////
 
     /** Return -1, 0, or 1 if the first object is less than, equal to, or
      *  bigger than the second object.
