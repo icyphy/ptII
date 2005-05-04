@@ -75,12 +75,32 @@ the <a href="../../configs/hyvisual/intro.htm">HyVisual introduction</a>
 .
 <br>
 
- <i>Hybrid systems</i> are a special case of modal models
+<i>Hybrid systems</i> are a special case of modal models
 where finite-state machines (FSMs) are combined with the continuous-time (CT) models
 to get mixed continuous-time and discrete-event models.
 The <a href="../hyvisual/intro.htm">HyVisual</a> package
 is a subset of Ptolemy II that includes the FSM and CT domains and libraries
 that support the design of hybrid systems.
+<!--vergilDocs-->
+
+<br>
+<li>
+<i>Stochastic hybrid systems</i>:
+<a href="../../domains/ct/demo/Spontaneous/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
+(see also
+<a href="../../domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>,
+<a href="../../domains/ct/demo/Brownian/Brownian.xml">Brownian</a>
+).
+<br>
+Stochastic hybrid systems add random behavior to continuous-time models mixed
+with discrete events. The 
+<a href="../../domains/ct/demo/Spontaneous/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
+models spontaneous mode transitions governed by a Poisson process.
+The <a href="../../domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>
+example uses similar spontaneous mode transitions to model random delay in mode transitions.
+The <a href="../../domains/ct/demo/Brownian/Brownian.xml">Brownian</a> example
+models a stochastic differential equation describing a random walk process.
+
 <!--vergilDocs-->
 
 <br>
@@ -214,7 +234,7 @@ As of version 5.0, we have extended this model of computation with a
 nondeterministic merge actor, illustrated in
 <a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>.
 
-
+<!--vergilDocs-->
 <br>
 
 <!--vergilDocs-->
