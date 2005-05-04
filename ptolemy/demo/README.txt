@@ -1,3 +1,5 @@
+ptolemy/demo/README.txt
+$Id$
 
 This directory contains a Ptolemy II model that executes a suite
 of other Ptolemy II models. Executing this model effectively provides
