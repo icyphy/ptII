@@ -55,9 +55,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 OTHER_FILES_TO_BE_JARED = \
 	giotto.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
-	giotto.mk \
-	mkGiottoCGJava
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
