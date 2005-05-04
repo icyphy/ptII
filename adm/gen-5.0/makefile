@@ -35,7 +35,7 @@
 MAJOR_VERSION = 	5.0
 MINOR_VERSION =		beta
 
-VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
+VERSION=	$(MAJOR_VERSION)-$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
 WINDOWS_VERSION =	5_0_beta
 
@@ -100,6 +100,7 @@ PTIIDIST = 	$(PTIIADM)/dists/ptII$(VERSION)
 # include in the tar file.
 PTII_TOPDIR=	.cshrc \
 		.classpath.in \
+		.classpath.default \
 		.eclipse.epf \
 		README.txt \
 		bin \
