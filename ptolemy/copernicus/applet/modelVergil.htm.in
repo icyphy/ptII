@@ -53,6 +53,7 @@ The @sanitizedModelName@ shown using Vergil, Ptolemy II schematic editor:
                    VALUE = "@modelJarFiles@" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;version=1.4.2" > \
+            <PARAM NAME = "progressbar" VALUE = "true"> \
             <PARAM NAME = "scriptable" VALUE = "false" > \
             <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@Viewer" > \
 	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
@@ -73,6 +74,7 @@ The @sanitizedModelName@ shown using Vergil, Ptolemy II schematic editor:
             width = "@vergilWidth@" \
             height = "@vergilHeight@" \
             NAME = "@sanitizedModelName@Viewer" background = "#faf0e6" modelURL = "@sanitizedModelName@.xml" controls = "buttons" includeRunPanel = "true"  \
+            progressbar = "true" \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
               <NOEMBED> \

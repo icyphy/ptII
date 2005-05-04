@@ -46,6 +46,7 @@ is given below:
                    VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/giotto/giotto.jar" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;version=1.4.2" > \
+            <PARAM NAME = "progressbar" VALUE = "true"> \
             <PARAM NAME = "scriptable" VALUE = "false" > \
             <PARAM NAME = "NAME" VALUE = "Multimode" > \
 	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
@@ -65,6 +66,7 @@ is given below:
             width = "600" \
             height = "750" \
             NAME = "Multimode" background = "#faf0e6" modelURL = "Multimode.xml" includeRunPanel = "true"  \
+            progressbar = "true" \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
               <NOEMBED> \
@@ -124,6 +126,7 @@ The middle component is defined by the following FSM:
                    VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/fsm/fsm.jar" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;version=1.4.2" > \
+            <PARAM NAME = "progressbar" VALUE = "true"> \
             <PARAM NAME = "scriptable" VALUE = "false" > \
             <PARAM NAME = "NAME" VALUE = "Controller" > \
 	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
@@ -142,6 +145,7 @@ The middle component is defined by the following FSM:
             width = "600" \
             height = "200" \
             NAME = "Controller" background = "#faf0e6" modelURL = "Controller.xml"  \
+            progressbar = "true" \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
               <NOEMBED> \
@@ -215,6 +219,7 @@ Each state refines to a separate instance of the following model:
                    VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/giotto/giotto.jar" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;version=1.4.2" > \
+            <PARAM NAME = "progressbar" VALUE = "true"> \
             <PARAM NAME = "scriptable" VALUE = "false" > \
             <PARAM NAME = "NAME" VALUE = "One Mode" > \
 	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
@@ -233,6 +238,7 @@ Each state refines to a separate instance of the following model:
             width = "600" \
             height = "200" \
             NAME = "One Mode" background = "#faf0e6" modelURL = "OneMode.xml"  \
+            progressbar = "true" \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
               <NOEMBED> \
