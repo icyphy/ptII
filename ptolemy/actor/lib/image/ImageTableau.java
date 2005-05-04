@@ -127,7 +127,8 @@ public class ImageTableau extends TokenTableau {
     /** Display the specified tokens.
      *  If the display is not a MatrixPane, or the tokens are not
      *  instances of MatrixToken, do nothing.
-     *  @exception IllegalActionException If the tokens are not instances of ImageToken.
+     *  @exception IllegalActionException If the tokens are not
+     *  instances of ImageToken.
      */
     public void append(List list) throws IllegalActionException {
         Iterator tokens = list.iterator();
@@ -190,7 +191,8 @@ public class ImageTableau extends TokenTableau {
 
     /** Display the specified token.
      *  @param token The token to append.
-     *  @exception If the token is not an ImageToken.
+     *  @exception IllegalActionException If the token is null or
+     *  not an ImageToken.
      */
     public void display(ImageToken token) throws IllegalActionException {
         Image image = token.asAWTImage();

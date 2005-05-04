@@ -37,9 +37,10 @@ import java.awt.image.BufferedImage;
 //// Transform
 
 /**
+   Transform an image by either rotating or scaling it.
 
 <p>Some of the code in this file is based on code from
-<a href="http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html">http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html</a>
+<a href="http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html">http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html</a>.
 
 @author  Christopher Hylands
 @version $Id$

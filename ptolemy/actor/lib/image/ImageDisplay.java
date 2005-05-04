@@ -364,7 +364,7 @@ public class ImageDisplay extends Sink implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The container for the image display, set by calling place() */
+    /** The container for the image display, set by calling place(). */
     protected Container _container;
 
     /** The effigy for the image data. */
