@@ -269,6 +269,7 @@ FULL_ONLY_JNLP_JARS = \
 	lib/saxon7.jar \
 	ptolemy/caltrop/caltrop.jar \
 	ptolemy/caltrop/demo/demo.jar \
+	ptolemy/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/ddf/demo/demo.jar \
