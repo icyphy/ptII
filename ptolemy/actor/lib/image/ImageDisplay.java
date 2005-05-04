@@ -123,7 +123,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
     /** Get the background.
      *  @return The background color.
-     *  @see #setBackground()
+     *  @see #setBackground(Color)
      */
     public Color getBackground() {
         return _container.getBackground();

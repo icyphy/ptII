@@ -41,7 +41,6 @@ import java.awt.image.BufferedImage;
 <p>Some of the code in this file is based on code from
 <a href="http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html">http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html</a>
 
-@see ptolemy.apps.fullscreen.FullScreenImageDisplay
 @author  Christopher Hylands
 @version $Id$
 @since Ptolemy II 3.0
