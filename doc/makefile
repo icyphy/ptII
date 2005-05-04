@@ -211,6 +211,7 @@ HYVISUALPACKAGES = \
 			ptolemy.actor.lib.comm \
 			ptolemy.actor.lib.conversions \
 			ptolemy.actor.lib.gui \
+			ptolemy.actor.lib.image \
 			ptolemy.actor.lib.io \
 			ptolemy.actor.lib.logic \
 			ptolemy.actor.lib.python \
