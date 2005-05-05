@@ -657,7 +657,7 @@ inside the modal model to see more detailed explanation.
 initial settings. In particular,  theta_1_dot (0.3) > theta_2_dot (0.2) > theta_3_dot (0.0),  
    x_1 + diameter) == x_2, and x_2 + diameter) == x_3.
 This makes this state machine nondeterministic. However, the order of the executions 
-of these enabled transitiosn do not change the model's behavior. In fact, there is one 
+of these enabled transitions do not change the model's behavior. In fact, there is one 
 and only one behavior. 
 
 Suppose we execute Transition 1 first, the result is theta_1_dot = 0.2 and theta_2_dot = 0.3. 
