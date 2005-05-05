@@ -551,13 +551,17 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 
 
 update_ftp: update_ptii_ftp untar
-update_ptii_ftp:
+update_ptii_ftp: codeDoc.jar
 	@echo "Copying ptII files to website"
-	scp -p $(PTII_FULL) $(PTII_SRC) \
+	scp -p $(PTII_FULL) $(PTII_SRC) codeDoc.jar \
 		messier:$(PTII_FTP)
 untar:
 	ssh messier rm -rf $(PTII_FTP)/ptII$(VERSION)
 	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
+	ssh messier "cd $(PTII_FTP)/ptII$(VERSION)/doc; /usr/local/bin/tar -xf ../../codeDoc.jar"
+
+codeDoc.jar:
+	cd ../../doc; tar -cf $(PTIIADM)/gen-$(MAJOR_VERSION)/codeDoc.jar codeDoc
 
 # Make the distribution, run htmlchek
 htmlchek:
