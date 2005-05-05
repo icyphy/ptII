@@ -279,6 +279,7 @@ $(PTII_SRC): $(PTII_FULL)
 		find doc -name "*.jar" -ls -exec rm {} \; ;\
 		rm -rf doc/codeDoc*; \
 		rm -rf `cat $(GENDIR)/src.ex`; \
+		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
 		$(FINDCLEAN); \
 		cd ..; \
 		echo "#  Starting tar of $@"; \
@@ -306,6 +307,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		bin/emachine.bat \
 		bin/giottoc.bat \
 		bin/histogram.bat \
+		bin/hyvisual \
 		bin/jode.bat \
 		bin/mescal.bat \
 		bin/moml.bat \
