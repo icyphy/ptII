@@ -1,4 +1,4 @@
-/*
+/* Handler of alias points in the AST.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -39,24 +39,64 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 //////////////////////////////////////////////////////////////////////////
 //// AliasHandler
 /**
+   Handler of alias points in the AST.
+   <p>
+   A handler can be registered to the type analyzer. It defines functions that
+   are called back by the type analyzer when certain language constructs are
+   seen.
+   <p>
+   Classes that implement this alias handler define functions to be called back
+   when the type analyzer sees language constructs that may cause aliasing of
+   fields. Such alias points include assignment from an array field to a local
+   variable, calling a method with an array field (so that it may be changed
+   with another name within the method), returning an array field from a
+   method, etc.
 
-
-@author Thomas Feng
-@version $Id$
-@since Ptolemy II 5.1
-@Pt.ProposedRating Red (tfeng)
-@Pt.AcceptedRating Red (tfeng)
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
 */
 public interface AliasHandler {
 
+    /** Handle an assignment. It may or may not be an aliasing.
+     * 
+     *  @param node The node to be handled.
+     *  @param state The current state of the type analyzer.
+     */
     public void handle(Assignment node, TypeAnalyzerState state);
 
+    /** Handle a class instance creation (with the <tt>new</tt> operator). The
+     *  arguments to the class constructor may or may not be alias of fields.
+     * 
+     *  @param node The node to be handled.
+     *  @param state The current state of the type analyzer.
+     */
     public void handle(ClassInstanceCreation node, TypeAnalyzerState state);
 
+    /** Handle a method invocation. The arguments of the invocation may or may
+     *  not be alias of fields.
+     * 
+     *  @param node The node to be handled.
+     *  @param state The current state of the type analyzer.
+     */
     public void handle(MethodInvocation node, TypeAnalyzerState state);
 
+    /** Handle a return statement. The return expression may or may not be an
+     *  aliased field.
+     * 
+     *  @param node The node to be handled.
+     *  @param state The current state of the type analyzer.
+     */
     public void handle(ReturnStatement node, TypeAnalyzerState state);
 
+    /** Handle a variable declaration fragment. Its initializer may or may not
+     *  be an aliased field.
+     * 
+     *  @param node The node to be handled.
+     *  @param state The current state of the type analyzer.
+     */
     public void handle(VariableDeclarationFragment node,
             TypeAnalyzerState state);
 
