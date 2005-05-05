@@ -2052,7 +2052,7 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
         <link port="convertToString.port2" relation="relation3"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Encrpyted Block">
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Encrypted Block">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={576, 509, 330, 237}, maximized=false}">
         </property>

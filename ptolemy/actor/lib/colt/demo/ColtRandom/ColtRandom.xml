@@ -367,7 +367,7 @@
         </configure>
     </entity>
     <entity name="HistogramPlotter2" class="ptolemy.actor.lib.gui.HistogramPlotter">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="ExponetialPower, Normal, VonMises">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="ExponentialPower, Normal, VonMises">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={382, -2, 374, 380}, maximized=false}">
         </property>
