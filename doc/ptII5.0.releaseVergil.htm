@@ -162,7 +162,7 @@ Attempted to find as a moml class, but got:
 	<li> If an icon file is not present, then a Vergil applet might
 	try to download the icon file multiple times.  Ptolemy II
 	uses XML files to store icons.  For example
-<a href="../ptolemy/actor/lib/BooleanSwitchIcon.htm"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitchIcon.htm</CODE></a>
+<a href="../ptolemy/actor/lib/BooleanSwitchIcon.xml"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitchIcon.xml</CODE></a>
 	is an icon for
 <a href="../ptolemy/actor/lib/BooleanSwitch.java"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitch.java</CODE></a>
 	 <br>The problem is that if an actor does not have an icon file,
@@ -534,28 +534,9 @@ Then edit the file by hand in Illustrator to add the transparency back in.
 	Ptolemy II as source files and compile.
 
 
-<li> The JNI user interface does not permit creation of new JNI actors.
+<li> The JNI user interface was removed between Ptolemy II 4.0
+and Ptolemy II 5.0 because the UI stopped working.
 
-<p>If you follow the instructions in 
-<a href="codeDoc/jni/JNIUtilities.html">JNIUtilities</a>, then
-eventually you will get a NameDuplicationException.
-<p>The resulting model will be missing
-<pre>
-&lt;property name="output" class="jni.Argument" value="false,false,true,double"&gt;
-&lt;/property&gt;
-</pre>
-We are working with the original authors on a solution.
-<br>In the short term, one workaround is to edit the xml file directly
-and add the appropriate property by hand.
-
-<li> JNI will not work with Hierarchical classes, subclasses, and inner
-classes
-
-
-<li> If Ptolemy exits when running the JNI model, then
-try using gcc-3.2.x in the Cygwin installer from
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII5.0/cygwin.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII5.0/cygwin.htm</CODE></a>
-which includes gcc-3.2.x
 </menu>
 
 
