@@ -221,7 +221,9 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
         
         _editor = this;
         
-        _createItem(pageIndex, composite).setText("Raw");
+        CTabItem item = _createItem(pageIndex, composite);
+        item.setText("Raw");
+        item.setToolTipText("Editor for raw Java source file");
     }
     
     private void _createPreviewPage() {
@@ -233,7 +235,10 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
         _createItem(pageIndex, composite);
         _setupPreviewPage();
         
-        _container.getItem(pageIndex).setText("Preview");
+        CTabItem item = _container.getItem(pageIndex);
+        item.setText("Preview");
+        item.setToolTipText("Preview for refactored Java source " +
+                "(a build might be necessary to get the accurate result)");
     }
     
     private void _setupPreviewPage() {
