@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/giotto
 
-DIRS =		kernel demo doc test cgc
+DIRS =		kernel demo doc test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -47,8 +47,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		kernel/kernel.jar \
-                cgc/cgc.jar
+		kernel/kernel.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
