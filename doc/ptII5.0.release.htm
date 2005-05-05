@@ -216,8 +216,7 @@ from a counting sequence.
 </h2>
 <ul>
 
-<li><i>Unbounded model time</i>:
-<a href="../ptolemy/domains/de/demo/LongRuns/LongRuns.htm">LongRuns</a>.
+<li><i>Unbounded model time</i>: LongRuns
 <br>
 Version 5.0 introduces a new
 <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/util/Time.html">Time</a> class
@@ -282,19 +281,18 @@ is a parameter
 whose value is constrained to be identical to a suite of other instances of
 SharedParameter in the same model. This parameter is used, for example, to
 handle seeds in random number generators, as illustrated for example in
-<a href="../ptolemy/actor/lib/colt/demo/ColtRandom/ColtRandom.htm">
-ColtRandom</a>.
+ColtRandom.
 
 <br>
 <li><i>Higher Order Components</i>:
-<a href="../ptolemy/demo/ExecDemos.htm">ExecDemos</a>
+ExecDemos
 (see also
 <a href="../ptolemy/actor/lib/hoc/demo/IterateOverArray/IterateOverArray.htm">IterateOverArray</a>).
 <br>
 The higher-order component capabilities of Ptolemy II continue to evolve.
-The <a href="../ptolemy/demo/ExecDemos.htm">ExecDemos</a> model, when executed, starts a new
+The ExecDemos model, when executed, starts a new
 Java virtual machine that then executes the
-<a href="../ptolemy/demo/RunDemos.htm">RunDemos</a> model,
+RunDemos model,
 which runs all demos in a specified directory using full-screen mode.
 This illustrates how to use higher-order actors to control the lifecylcle of other Ptolemy II
 models. This example can be set up to automatically and repeatedly run demos
@@ -350,8 +348,7 @@ those that can be used in more than one domain).
 </ul>
 
 <li><i>Random number generators</i>:
-<a href="../ptolemy/actor/lib/colt/demo/ColtRandom/ColtRandom.htm">
-ColtRandom</a>.
+ColtRandom.
 <br>
 A new library of random number generators, developed jointly with
 David Bauer and Kostas Oikonomou from AT&amp;T Research, is based on the popular
@@ -503,7 +500,6 @@ command in the Graph menu.
     <li> <a href="codeDoc/ptolemy/caltrop/actors/AbstractCalInterpreter.html">ptolemy/caltrop/actors/AbstractCalInterpreter.java</a>
     <li> <a href="codeDoc/ptolemy/domains/ct/kernel/solver/ExplicitRK45Solver.html">ptolemy/domains/ct/kernel/solver/ExplicitRK45Solver.java</a>
     <li> <a href="codeDoc/ptolemy/domains/fsm/kernel/NonStrictFSMDirector.html">ptolemy/domains/fsm/kernel/NonStrictFSMDirector.java</a>
-    <li> <a href="codeDoc/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.html">ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.java</a>
     <li> <a href="codeDoc/ptolemy/kernel/util/Moveable.html">ptolemy/kernel/util/Moveable.java</a>
     <li> <a href="codeDoc/ptolemy/moml/filter/GRColorChanges.html">ptolemy/moml/filter/GRColorChanges.java</a>
     <li> <a href="codeDoc/ptolemy/vergil/kernel/attributes/AbstractTextAttribute.html">ptolemy/vergil/kernel/attributes/AbstractTextAttribute.java</a>
@@ -956,7 +952,7 @@ Attempted to find as a moml class, but got:
 	<li> If an icon file is not present, then a Vergil applet might
 	try to download the icon file multiple times.  Ptolemy II
 	uses XML files to store icons.  For example
-<a href="../ptolemy/actor/lib/BooleanSwitchIcon.htm"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitchIcon.htm</CODE></a>
+<a href="../ptolemy/actor/lib/BooleanSwitchIcon.xml"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitchIcon.xml</CODE></a>
 	is an icon for
 <a href="../ptolemy/actor/lib/BooleanSwitch.java"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitch.java</CODE></a>
 	 <br>The problem is that if an actor does not have an icon file,
@@ -1328,28 +1324,9 @@ Then edit the file by hand in Illustrator to add the transparency back in.
 	Ptolemy II as source files and compile.
 
 
-<li> The JNI user interface does not permit creation of new JNI actors.
+<li> The JNI user interface was removed between Ptolemy II 4.0
+and Ptolemy II 5.0 because the UI stopped working.
 
-<p>If you follow the instructions in 
-<a href="codeDoc/jni/JNIUtilities.html">JNIUtilities</a>, then
-eventually you will get a NameDuplicationException.
-<p>The resulting model will be missing
-<pre>
-&lt;property name="output" class="jni.Argument" value="false,false,true,double"&gt;
-&lt;/property&gt;
-</pre>
-We are working with the original authors on a solution.
-<br>In the short term, one workaround is to edit the xml file directly
-and add the appropriate property by hand.
-
-<li> JNI will not work with Hierarchical classes, subclasses, and inner
-classes
-
-
-<li> If Ptolemy exits when running the JNI model, then
-try using gcc-3.2.x in the Cygwin installer from
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII5.0/cygwin.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII5.0/cygwin.htm</CODE></a>
-which includes gcc-3.2.x
 </menu>
 
 
