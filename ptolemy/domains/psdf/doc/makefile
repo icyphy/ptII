@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II SDF domain documentation
+# Makefile for Ptolemy II PSDF domain documentation
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/doc
+ME =		ptolemy/domains/psdf/doc
 
 # Root of the Java directory
 ROOT =		../../../..
