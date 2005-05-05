@@ -447,7 +447,7 @@ public class Transformer {
     /** Output XML configuration to the pre-defined file (specified with
      *  "-config" argument in {@link #main(String[])}).
      * 
-     *  @throws Exception Thrown if error occurs.
+     *  @exception Exception If any error occurs.
      */
     protected static void _outputConfig() throws Exception {
         if (_configName != null) {
