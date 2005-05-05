@@ -49,15 +49,7 @@ import java.util.List;
 public class Checkpoint {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
-
-    /** Add an object to the monitored object list.
-     *
-     *  @param object The object to be added.
-     */
-    public void addObject(Rollbackable object) {
-        _state.getMonitoredObjects().add(object);
-    }
+    ////                        constructors                       ////
 
     /** Construct a checkpoint object with an initial object in its monitored
      *  object list.
@@ -68,6 +60,17 @@ public class Checkpoint {
     public Checkpoint(Rollbackable object) {
         if (object != null)
             addObject(object);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Add an object to the monitored object list.
+     *
+     *  @param object The object to be added.
+     */
+    public void addObject(Rollbackable object) {
+        _state.getMonitoredObjects().add(object);
     }
 
     /** Commit the changes on all the monitored objects up to the given
@@ -164,6 +167,9 @@ public class Checkpoint {
             object.$SET$CHECKPOINT(checkpoint);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
     /** The current state of the checkpoint object.
      */

@@ -50,6 +50,9 @@ import java.util.List;
 */
 public class CheckpointState {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
     /** Create a new checkpoint, and return the new timestamp.
      *
      *  @return The new timestamp.
@@ -73,6 +76,9 @@ public class CheckpointState {
     public long getTimestamp() {
         return _currentTimestamp;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
     /** The current timestamp. It is static, so different checkpoint states use
      *  different timestamps, and the timestamps are always increasing in the
