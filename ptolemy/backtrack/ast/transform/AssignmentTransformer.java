@@ -89,10 +89,19 @@ import ptolemy.backtrack.util.FieldRecord;
    The assignment transformer to transform Java source programs into new
    programs that support backtracking.
    <p>
-   In this scheme, each assignment to a <em>state variable</em> is
+   In this approach, each assignment to a <em>state variable</em> is
    refactored to become a method call, which, before actually assigning
    the new value, back up the old value of the field in a record (see
    {@link FieldRecord}).
+   <p>
+   This transformer implements several handlers. It does the refactoring as the
+   type analyzer ({@link TypeAnalyzer}) analyzes the original source code. The
+   analyzer calls back methods defined in the handlers after assigning
+   appropriate types to AST nodes. Those callback methods (implemented in this
+   class) refactors the given nodes on-the-fly as the type analysis goes on.
+   <p>
+   This class must be used at the same time as {@link ConstructorTransformer}
+   to get the correct refactoring result.
 
    @author Thomas Feng
    @version $Id$
@@ -107,14 +116,91 @@ public class AssignmentTransformer extends AbstractTransformer
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
+    /** Enter an anonymous class declaration. Nothing is done in this method.
+     *
+     *  @param node The AST node of the anonymous class declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void enter(AnonymousClassDeclaration node,
+            TypeAnalyzerState state) {
+    }
+
+    /** Enter a method declaration. If the method is static, a flag is set so
+     *  that handling of other nodes (such as assignment) may be different from
+     *  those in non-static methods.
+     *
+     *  @param node The AST node of the method declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void enter(MethodDeclaration node, TypeAnalyzerState state) {
+        if (Modifier.isStatic(node.getModifiers()))
+            _isInStaticMethod.push(Boolean.TRUE);
+        else
+            _isInStaticMethod.push(Boolean.FALSE);
+    }
+
+    /** Enter an class declaration. Nothing is done in this method.
+     *
+     *  @param node The AST node of the anonymous class declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void enter(TypeDeclaration node, TypeAnalyzerState state) {
+    }
+
+    /** Exit an anonymous class declaration, and add extra methods and fields
+     *  to it.
+     *  <p>
+     *  This function is called after all the existing methods and fields in
+     *  the same class has been visited, and all the field assignments in it
+     *  are handled with {@link #handle(Assignment, TypeAnalyzerState)}.
+     *
+     *  @param node The AST node of the anonymous class declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void exit(AnonymousClassDeclaration node,
+            TypeAnalyzerState state) {
+        _handleDeclaration(node, node.bodyDeclarations(), state);
+    }
+
+    /** Exit a method declaration. The flag of static method is set back to its
+     *  old value before the method was entered.
+     *
+     *  @param node The AST node of the method declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void exit(MethodDeclaration node, TypeAnalyzerState state) {
+        _isInStaticMethod.pop();
+    }
+
+    /** Exit a class declaration, and add extra methods and fields to it.
+     *  <p>
+     *  This function is called after all the existing methods and fields in
+     *  the same class has been visited, and all the field assignments in it
+     *  are handled with {@link #handle(Assignment, TypeAnalyzerState)}.
+     *
+     *  @param node The AST node of the anonymous class declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void exit(TypeDeclaration node, TypeAnalyzerState state) {
+        _handleDeclaration(node, node.bodyDeclarations(), state);
+    }
+
     /** Handle an assignment, and refactor it to be a special method call if the
      *  left-hand side of the assignment is a state variable. The accessed field
      *  is also recorded in a list so that extra private methods used to back up
      *  fields are only created for those used fields. If the field on the
      *  left-hand side is a multi-dimensional array, access with different
      *  numbers of indices is recorded with multiple entries. For each of those
-     *  entries, an extra method is created for each different number of
-     *  indices.
+     *  entries, an extra method is created.
+     *  <p>
+     *  An assignment may also be an alias point, in which case an array field
+     *  is aliased with a local variable. For example: Suppose <tt>field</tt>
+     *  is an array field recognized as a state variable. Expression <tt>buffer
+     *  = field</tt> aliases the field with a local variable <tt>buffer</tt>.
+     *  After that, the method may modify the <tt>field</tt> array (with the
+     *  name <tt>buffer</tt>) without letting <tt>field</tt>'s owner class
+     *  know. So, this is an alias point. This function refactors this alias
+     *  point and replaces <tt>field</tt> with a function call.
      *
      *  @param node The assignment to be refactored.
      *  @param state The current state of the type analyzer.
@@ -126,6 +212,21 @@ public class AssignmentTransformer extends AbstractTransformer
             _handleAssignment(node, state);
     }
 
+    /** Handle a class instance creation. If there are arguments that are
+     *  aliased array fields, complete backup arrays are created for them and
+     *  stored in memory.
+     *  <p>
+     *  For example: Suppose <tt>field</tt> is an array field recognized as a
+     *  state variable. Expression <tt>new MyClass(field)</tt> instantiates an
+     *  object of class <tt>MyClass</tt> with argument <tt>field</tt>. The
+     *  constructor of <tt>MyClass</tt> may modify the <tt>field</tt> array
+     *  without letting <tt>field</tt>'s owner class know. So, this is an alias
+     *  point. This function refactors this alias point and replaces
+     *  <tt>field</tt> with a function call.
+     *
+     *  @param node The class instance creation to be refactored.
+     *  @param state The current state of the type analyzer.
+     */
     public void handle(ClassInstanceCreation node, TypeAnalyzerState state) {
         Iterator arguments = node.arguments().iterator();
         while (arguments.hasNext()) {
@@ -134,6 +235,20 @@ public class AssignmentTransformer extends AbstractTransformer
         }
     }
 
+    /** Handle a method invocation. If there are arguments that are aliased
+     *  array fields, complete backup arrays are created for them and stored in
+     *  memory.
+     *  <p>
+     *  For example: Suppose <tt>field</tt> is an array field recognized as a
+     *  state variable. Expression <tt>func(field)</tt> invokes method
+     *  <tt>func</tt> an with argument <tt>field</tt>. <tt>func</tt> may modify
+     *  the <tt>field</tt> array in its body without letting <tt>field</tt>'s
+     *  owner class know. So, this is an alias point. This function refactors
+     *  this alias point and replaces <tt>field</tt> with a function call.
+     *
+     *  @param node The method invocation to be refactored.
+     *  @param state The current state of the type analyzer.
+     */
     public void handle(MethodInvocation node, TypeAnalyzerState state) {
         Iterator arguments = node.arguments().iterator();
         while (arguments.hasNext()) {
@@ -142,20 +257,65 @@ public class AssignmentTransformer extends AbstractTransformer
         }
     }
 
+    /** Handle a postfix expression, and refactor it to be a special method
+     *  call if its subexpression evaluates to be a state variable. The
+     *  accessed field is also recorded in a list so that extra private
+     *  methods used to back up fields are only created for those used fields.
+     *  If the field in the subexpression is a multi-dimensional array, access
+     *  with different numbers of indices is recorded with multiple entries.
+     *  For each of those entries, an extra method is created.
+     *
+     *  @param node The postfix expression to be refactored.
+     *  @param state The current state of the type analyzer.
+     */
     public void handle(PostfixExpression node, TypeAnalyzerState state) {
         _handleAssignment(node, state);
     }
 
+    /** Handle a prefix expression, and refactor it to be a special method
+     *  call if its subexpression evaluates to be a state variable. The
+     *  accessed field is also recorded in a list so that extra private
+     *  methods used to back up fields are only created for those used fields.
+     *  If the field in the subexpression is a multi-dimensional array, access
+     *  with different numbers of indices is recorded with multiple entries.
+     *  For each of those entries, an extra method is created.
+     *
+     *  @param node The prefix expression to be refactored.
+     *  @param state The current state of the type analyzer.
+     */
     public void handle(PrefixExpression node, TypeAnalyzerState state) {
         _handleAssignment(node, state);
     }
 
+    /** Handle a return statement. If the expression to be returned is an
+     *  aliased array field, a complete backup array is created for it and
+     *  stored in memory.
+     *  <p>
+     *  For example: Suppose <tt>field</tt> is an array field recognized as a
+     *  state variable. Statement <tt>return field;</tt> returns the field to
+     *  the calling method. The calling method may modify the <tt>field</tt>
+     *  array in its body without letting <tt>field</tt>'s owner class know.
+     *  So, this is an alias point. This function refactors this alias point
+     *  and replaces <tt>field</tt> with a function call.
+     *
+     *  @param node The return statement to be refactored.
+     *  @param state The current state of the type analyzer.
+     */
     public void handle(ReturnStatement node, TypeAnalyzerState state) {
         if (node.getExpression() != null)
             _handleAlias(node.getExpression(), state);
     }
 
-    /** Fix the refactoring when the set of cross-analyzed types changes.
+    /** Fix the refactoring result when the set of cross-analyzed types
+     *  changes.
+     *  <p>
+     *  The set of cross-analyzed types defines the growing set of types that
+     *  are analyzed in a run. Special care is taken for cross-analyzed types
+     *  because they are monitored by checkpoint objects, and
+     *  checkpoint-related extra methods are added to them. Unfortunately, it
+     *  is not possible to know all the cross-analyzed types at the beginning.
+     *  It is then necessary to fix the refactoring result when more
+     *  cross-analyzed types are discovered later.
      *
      *  @param state The current state of the type analyzer.
      */
@@ -219,76 +379,26 @@ public class AssignmentTransformer extends AbstractTransformer
         }
     }
 
+    /** Handle a variable declaration fragment. If the frament has an
+     *  initializer and the initializer evaluates to an aliased array field,
+     *  a complete backup array is created for it and stored in memory.
+     *  <p>
+     *  For example: Suppose <tt>field</tt> is an array field recognized as a
+     *  state variable. Variable declaration <tt>int[] buffer = field</tt>
+     *  (with one fragment only) aliases the field to with name
+     *  <tt>buffer</tt>. The declaring method may modify the <tt>field</tt>
+     *  array (with name <tt>buffer</tt>) in its body without letting
+     *  <tt>field</tt>'s owner class know. So, this is an alias point. This
+     *  function refactors this alias point and replaces <tt>field</tt> with a
+     *  function call.
+     *
+     *  @param node The variable declaration fragment to be refactored.
+     *  @param state The current state of the type analyzer.
+     */
     public void handle(VariableDeclarationFragment node,
             TypeAnalyzerState state) {
         if (node.getInitializer() != null)
             _handleAlias(node.getInitializer(), state);
-    }
-
-    /** Enter an anonymous class declaration. Nothing is done in this method.
-     *
-     *  @param node The AST node of the anonymous class declaration.
-     *  @param state The current state of the type analyzer.
-     */
-    public void enter(AnonymousClassDeclaration node,
-            TypeAnalyzerState state) {
-    }
-
-    /** Enter a method declaration.
-     *
-     *  @param node The AST node of the method declaration.
-     *  @param state The current state of the type analyzer.
-     */
-    public void enter(MethodDeclaration node, TypeAnalyzerState state) {
-        if (Modifier.isStatic(node.getModifiers()))
-            _isInStaticMethod.push(Boolean.TRUE);
-        else
-            _isInStaticMethod.push(Boolean.FALSE);
-    }
-
-    /** Enter an class declaration. Nothing is done in this method.
-     *
-     *  @param node The AST node of the anonymous class declaration.
-     *  @param state The current state of the type analyzer.
-     */
-    public void enter(TypeDeclaration node, TypeAnalyzerState state) {
-    }
-
-    /** Exit an anonymous class declaration, and add extra methods and fields
-     *  to it.
-     *  <p>
-     *  This function is called after all the existing methods and fields in
-     *  the same class has been visited, and all the field assignments in it
-     *  are handled with {@link #handle(Assignment, TypeAnalyzerState)}.
-     *
-     *  @param node The AST node of the anonymous class declaration.
-     *  @param state The current state of the type analyzer.
-     */
-    public void exit(AnonymousClassDeclaration node,
-            TypeAnalyzerState state) {
-        _handleDeclaration(node, node.bodyDeclarations(), state);
-    }
-
-    /** Exit a method declaration.
-     *
-     *  @param node The AST node of the method declaration.
-     *  @param state The current state of the type analyzer.
-     */
-    public void exit(MethodDeclaration node, TypeAnalyzerState state) {
-        _isInStaticMethod.pop();
-    }
-
-    /** Exit a class declaration, and add extra methods and fields to it.
-     *  <p>
-     *  This function is called after all the existing methods and fields in
-     *  the same class has been visited, and all the field assignments in it
-     *  are handled with {@link #handle(Assignment, TypeAnalyzerState)}.
-     *
-     *  @param node The AST node of the anonymous class declaration.
-     *  @param state The current state of the type analyzer.
-     */
-    public void exit(TypeDeclaration node, TypeAnalyzerState state) {
-        _handleDeclaration(node, node.bodyDeclarations(), state);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -447,6 +557,7 @@ public class AssignmentTransformer extends AbstractTransformer
      *   dimensions less than the original field type).
      *  @param indices The number of indices.
      *  @param special Whether to handle special assign operators.
+     *  @return The body of the assignment method.
      */
     private Block _createAssignmentBlock(AST ast, TypeAnalyzerState state,
             String fieldName, Type fieldType, int indices, boolean special) {
@@ -584,7 +695,8 @@ public class AssignmentTransformer extends AbstractTransformer
                                 ASTNode.copySubtree(ast,
                                         assignment.getLeftHandSide()));
                         postfix.setOperator(
-                                PostfixExpression.Operator.toOperator(operator));
+                                PostfixExpression.Operator.toOperator(
+                                        operator));
                         expression = postfix;
 
                         // Produce prefix operators next time.
@@ -630,6 +742,18 @@ public class AssignmentTransformer extends AbstractTransformer
         return block;
     }
 
+    /** Create a backup method that backs up an array (possibly with some given
+     *  indices) in memory, and return the same array to be aliased.
+     * 
+     *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
+     *  @param state The current state of the type analyzer.
+     *  @param fieldName The name of the field to be backed up.
+     *  @param fieldType The type of the field.
+     *  @param indices The number of indices.
+     *  @param isStatic Whether the field is static.
+     *  @return The declaration of the backup method.
+     */
     private MethodDeclaration _createBackupMethod(AST ast,
             CompilationUnit root, TypeAnalyzerState state, String fieldName,
             Type fieldType, int indices, boolean isStatic) {
@@ -869,12 +993,13 @@ public class AssignmentTransformer extends AbstractTransformer
             MethodInvocation commitFields = ast.newMethodInvocation();
             commitFields.setExpression(
                     createName(ast, getClassName(
-                                       FieldRecord.class.getName(), state, root)));
+                            FieldRecord.class.getName(), state, root)));
             commitFields.setName(ast.newSimpleName("commit"));
             commitFields.arguments().add(ast.newSimpleName(RECORDS_NAME));
             commitFields.arguments().add(ast.newSimpleName("timestamp"));
             MethodInvocation topTimestamp = ast.newMethodInvocation();
-            topTimestamp.setExpression(ast.newSimpleName(CHECKPOINT_RECORD_NAME));
+            topTimestamp.setExpression(
+                    ast.newSimpleName(CHECKPOINT_RECORD_NAME));
             topTimestamp.setName(ast.newSimpleName("getTopTimestamp"));
             commitFields.arguments().add(topTimestamp);
             body.statements().add(ast.newExpressionStatement(commitFields));
@@ -896,7 +1021,8 @@ public class AssignmentTransformer extends AbstractTransformer
                 commitCheckpoint.setExpression(
                         ast.newSimpleName(CHECKPOINT_RECORD_NAME));
                 commitCheckpoint.setName(ast.newSimpleName("commit"));
-                commitCheckpoint.arguments().add(ast.newSimpleName("timestamp"));
+                commitCheckpoint.arguments().add(
+                        ast.newSimpleName("timestamp"));
                 body.statements().add(
                         ast.newExpressionStatement(commitCheckpoint));
 
@@ -964,6 +1090,15 @@ public class AssignmentTransformer extends AbstractTransformer
         return field;
     }
 
+    /** Create a get checkpoint method that returns the checkpoint object.
+     * 
+     *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
+     *  @param state The current state of the type analyzer.
+     *  @param isAnonymous Whether the current class is anonymous.
+     *  @param isInterface Whether the current type is an interface.
+     *  @return The declaration of the get checkpoint method.
+     */
     private MethodDeclaration _createGetCheckpointMethod(AST ast,
             CompilationUnit root, TypeAnalyzerState state,
             boolean isAnonymous, boolean isInterface) {
@@ -998,7 +1133,9 @@ public class AssignmentTransformer extends AbstractTransformer
             body.statements().add(returnStatement);
         }
 
-        method.setModifiers(isInterface ? Modifier.PUBLIC : (Modifier.PUBLIC | Modifier.FINAL));
+        method.setModifiers(
+                isInterface ?
+                        Modifier.PUBLIC : (Modifier.PUBLIC | Modifier.FINAL));
 
         if (!isAnonymous && parent != null)
             addToLists(_nodeSubstitution, parent.getName(),
@@ -1082,7 +1219,8 @@ public class AssignmentTransformer extends AbstractTransformer
                 ast.newSimpleName(_getGetCheckpointMethodName(false)));
         getCheckpoint.setReturnType(createType(ast, checkpointType));
         invocation = ast.newMethodInvocation();
-        invocation.setName(ast.newSimpleName(_getGetCheckpointMethodName(true)));
+        invocation.setName(
+                ast.newSimpleName(_getGetCheckpointMethodName(true)));
         body = ast.newBlock();
         ReturnStatement returnStatement = ast.newReturnStatement();
         returnStatement.setExpression(invocation);
@@ -1109,7 +1247,8 @@ public class AssignmentTransformer extends AbstractTransformer
         // Add a call to the setcheckpoint method in the enclosing anonymous
         // class.
         invocation = ast.newMethodInvocation();
-        invocation.setName(ast.newSimpleName(_getSetCheckpointMethodName(true)));
+        invocation.setName(
+                ast.newSimpleName(_getSetCheckpointMethodName(true)));
         invocation.arguments().add(ast.newSimpleName("checkpoint"));
 
         // Return this object.
@@ -1229,17 +1368,20 @@ public class AssignmentTransformer extends AbstractTransformer
                         ast.newSimpleName(_getRecordName(fieldName)));
 
                 // Set the restore method name.
-                restoreMethodCall.arguments().add(ast.newSimpleName(fieldName));
+                restoreMethodCall.arguments().add(
+                        ast.newSimpleName(fieldName));
                 restoreMethodCall.setName(ast.newSimpleName("restore"));
 
                 // Add two arguments to the restore method call.
-                restoreMethodCall.arguments().add(ast.newSimpleName("timestamp"));
+                restoreMethodCall.arguments().add(
+                        ast.newSimpleName("timestamp"));
                 restoreMethodCall.arguments().add(ast.newSimpleName("trim"));
 
                 boolean isFinal = false;
                 try {
                     Field field = currentClass.getDeclaredField(fieldName);
-                    if (java.lang.reflect.Modifier.isFinal(field.getModifiers()))
+                    if (java.lang.reflect.Modifier.isFinal(
+                            field.getModifiers()))
                         isFinal = true;
                 } catch (NoSuchFieldException e) {
                 }
@@ -1267,7 +1409,8 @@ public class AssignmentTransformer extends AbstractTransformer
                     Assignment assignment = ast.newAssignment();
                     assignment.setLeftHandSide(ast.newSimpleName(fieldName));
                     assignment.setRightHandSide(rightHandSide);
-                    body.statements().add(ast.newExpressionStatement(assignment));
+                    body.statements().add(
+                            ast.newExpressionStatement(assignment));
                 }
             }
 
@@ -1291,9 +1434,11 @@ public class AssignmentTransformer extends AbstractTransformer
 
                 InfixExpression timestampTester = ast.newInfixExpression();
                 timestampTester.setLeftOperand(ast.newSimpleName("timestamp"));
-                timestampTester.setOperator(InfixExpression.Operator.LESS_EQUALS);
+                timestampTester.setOperator(
+                        InfixExpression.Operator.LESS_EQUALS);
                 MethodInvocation topTimestamp = ast.newMethodInvocation();
-                topTimestamp.setExpression(ast.newSimpleName(CHECKPOINT_RECORD_NAME));
+                topTimestamp.setExpression(
+                        ast.newSimpleName(CHECKPOINT_RECORD_NAME));
                 topTimestamp.setName(ast.newSimpleName("getTopTimestamp"));
                 timestampTester.setRightOperand(topTimestamp);
                 restoreCheckpoint.setExpression(timestampTester);
@@ -1303,12 +1448,14 @@ public class AssignmentTransformer extends AbstractTransformer
 
                 // Assign the old checkpoint.
                 Assignment assignCheckpoint = ast.newAssignment();
-                assignCheckpoint.setLeftHandSide(ast.newSimpleName(CHECKPOINT_NAME));
+                assignCheckpoint.setLeftHandSide(
+                        ast.newSimpleName(CHECKPOINT_NAME));
                 MethodInvocation restoreCheckpointInvocation =
                     ast.newMethodInvocation();
                 restoreCheckpointInvocation.setExpression(
                         ast.newSimpleName(CHECKPOINT_RECORD_NAME));
-                restoreCheckpointInvocation.setName(ast.newSimpleName("restore"));
+                restoreCheckpointInvocation.setName(
+                        ast.newSimpleName("restore"));
                 restoreCheckpointInvocation.arguments().add(
                         ast.newSimpleName(CHECKPOINT_NAME));
                 restoreCheckpointInvocation.arguments().add(
@@ -1323,7 +1470,8 @@ public class AssignmentTransformer extends AbstractTransformer
 
                 // Pop the old states.
                 MethodInvocation popStates = ast.newMethodInvocation();
-                String recordType = getClassName(FieldRecord.class, state, root);
+                String recordType =
+                    getClassName(FieldRecord.class, state, root);
                 popStates.setExpression(createName(ast, recordType));
                 popStates.setName(ast.newSimpleName("popState"));
                 popStates.arguments().add(ast.newSimpleName(RECORDS_NAME));
@@ -1342,7 +1490,8 @@ public class AssignmentTransformer extends AbstractTransformer
 
                 if (parent != null)
                     addToLists(_nodeSubstitution, parent.getName(),
-                            new NodeReplace(restoreCheckpoint, superRestoreStatement));
+                            new NodeReplace(restoreCheckpoint,
+                                    superRestoreStatement));
             }
         }
 
@@ -1351,6 +1500,23 @@ public class AssignmentTransformer extends AbstractTransformer
         return method;
     }
 
+    /** Create an expression that evaluates to a {@link Rollbackable} object
+     *  for the current class.
+     *  <p>
+     *  {@link Rollbackable} is the interfact that every rollbackable class
+     *  must implement. For an ordinary class, the {@link Rollbackable} object
+     *  is <tt>this</tt> object, because the class, after refactoring,
+     *  implements {@link Rollbackable}. For an anonymous class, a special
+     *  proxy class is created as a nested class in it. The proxy class
+     *  implements {@link Rollbackable} and deligates the calls to its methods
+     *  to the enclosing anonymous class. In that case, the {@link
+     *  Rollbackable} object is an object of the proxy class.
+     * 
+     *  @param ast The {@link AST} object.
+     *  @param isAnonymous Whether the current class is anonymous.
+     *  @return The expression that evaluates to a {@link Rollbackable} object
+     *   at run-time.
+     */
     private Expression _createRollbackableObject(AST ast, boolean isAnonymous) {
         if (isAnonymous) {
             ClassInstanceCreation proxy = ast.newClassInstanceCreation();
@@ -1411,6 +1577,7 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @param root The root of the AST.
      *  @param state The current state of the type analyzer.
      *  @param isAnonymous Whether the current class is anonymous.
+     *  @param isInterface Whether the current type is an interface.
      *  @return The declaration of the method that sets the checkpoint object.
      */
     private MethodDeclaration _createSetCheckpointMethod(AST ast,
@@ -1431,7 +1598,8 @@ public class AssignmentTransformer extends AbstractTransformer
         if (!isAnonymous && parent != null &&
                 (state.getCrossAnalyzedTypes().
                         contains(parent.getName()) ||
-                        hasMethod(parent, methodName, new Class[]{Checkpoint.class})))
+                        hasMethod(parent, methodName,
+                                new Class[]{Checkpoint.class})))
             return null;
 
         MethodDeclaration method = ast.newMethodDeclaration();
@@ -1538,7 +1706,8 @@ public class AssignmentTransformer extends AbstractTransformer
             body.statements().add(returnStatement);
         }
 
-        method.setModifiers(isInterface ? Modifier.PUBLIC : (Modifier.PUBLIC | Modifier.FINAL));
+        method.setModifiers(isInterface ?
+                Modifier.PUBLIC : (Modifier.PUBLIC | Modifier.FINAL));
 
         if (!isAnonymous && parent != null)
             addToLists(_nodeSubstitution, parent.getName(),
@@ -1592,6 +1761,15 @@ public class AssignmentTransformer extends AbstractTransformer
         return COMMIT_NAME + (isAnonymous ? "_ANONYMOUS" : "");
     }
 
+    /** Get the name of the get checkpoint method.
+     * 
+     *  @param isAnonymous Whether the current class is an anonymous class.
+     *  @return The name of the get checkpoint method.
+     */
+    private String _getGetCheckpointMethodName(boolean isAnonymous) {
+        return GET_CHECKPOINT_NAME + (isAnonymous ? "_ANONYMOUS" : "");
+    }
+
     /** Get the name of the proxy class to be created in each anonymous class.
      *
      *  @return The proxy class name.
@@ -1616,10 +1794,6 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     private String _getRestoreMethodName(boolean isAnonymous) {
         return RESTORE_NAME + (isAnonymous ? "_ANONYMOUS" : "");
-    }
-
-    private String _getGetCheckpointMethodName(boolean isAnonymous) {
-        return GET_CHECKPOINT_NAME + (isAnonymous ? "_ANONYMOUS" : "");
     }
 
     /** Get the name of the set checkpoint method.
@@ -1685,7 +1859,8 @@ public class AssignmentTransformer extends AbstractTransformer
             while (nodeIterator instanceof ArrayAccess) {
                 nIndices++;
                 ArrayAccess arrayAccess = (ArrayAccess)nodeIterator;
-                indices.add(0, ASTNode.copySubtree(ast, arrayAccess.getIndex()));
+                indices.add(0,
+                        ASTNode.copySubtree(ast, arrayAccess.getIndex()));
                 nodeIterator = arrayAccess.getArray();
                 while (nodeIterator instanceof ParenthesizedExpression)
                     nodeIterator =
@@ -1991,11 +2166,14 @@ public class AssignmentTransformer extends AbstractTransformer
 
                         // Get the list of numbers of indices.
                         Hashtable[] tables = new Hashtable[] {
-                            _accessedFields, _specialAccessedFields, _backupFields
+                            _accessedFields,
+                            _specialAccessedFields,
+                            _backupFields
                         };
                         for (int i = 0; i < tables.length; i++) {
                             List indicesList =
-                                _getAccessedField(tables[i], currentClass.getName(),
+                                _getAccessedField(tables[i],
+                                        currentClass.getName(),
                                         fieldName);
                             if (indicesList == null)
                                 continue;
@@ -2010,14 +2188,14 @@ public class AssignmentTransformer extends AbstractTransformer
                                 // number of indices.
                                 if (tables[i] == _backupFields)
                                     newMethods.add(_createBackupMethod(ast,
-                                                           root, state, fieldName, type,
-                                                           indices, isStatic));
+                                            root, state, fieldName, type,
+                                            indices, isStatic));
                                 else
                                     newMethods.add(_createAssignMethod(ast,
-                                                           root, state,
-                                                           fieldName, type, indices,
-                                                           tables[i] == _specialAccessedFields,
-                                                           isStatic));
+                                            root, state, fieldName, type,
+                                            indices, tables[i] ==
+                                                _specialAccessedFields,
+                                            isStatic));
                             }
                         }
 
@@ -2283,6 +2461,9 @@ public class AssignmentTransformer extends AbstractTransformer
             indicesList.add(iIndices);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
+
     /** The table of access fields and their indices. Keys are class names;
      *  valus are hash tables. In each table, keys are field names, values
      *  are lists of indices.
@@ -2349,16 +2530,16 @@ public class AssignmentTransformer extends AbstractTransformer
             _fixedDeclarations.addAll(nodes);
         }
 
+        List _getBodyDeclarations() {
+            return _bodyDeclarations;
+        }
+
         List _getExtendedDeclarations() {
             return _extendedDeclarations;
         }
 
         List _getFixedDeclarations() {
             return _fixedDeclarations;
-        }
-
-        List _getBodyDeclarations() {
-            return _bodyDeclarations;
         }
 
         private List _bodyDeclarations;

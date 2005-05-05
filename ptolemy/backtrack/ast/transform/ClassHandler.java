@@ -52,6 +52,7 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
    @Pt.AcceptedRating Red (tfeng)
 */
 public interface ClassHandler {
+    
     /** Enter an anonymous class declaration.
      *
      *  @param node The anonymous class declaration to be handled.
@@ -59,19 +60,19 @@ public interface ClassHandler {
      */
     public void enter(AnonymousClassDeclaration node, TypeAnalyzerState state);
 
-    /** Exit an anonymous class declaration.
-     *
-     *  @param node The anonymous class declaration to be handled.
-     *  @param state The current state of the analyzer.
-     */
-    public void exit(AnonymousClassDeclaration node, TypeAnalyzerState state);
-
     /** Enter a class declaration.
      *
      *  @param node The class declaration to be handled.
      *  @param state The current state of the analyzer.
      */
     public void enter(TypeDeclaration node, TypeAnalyzerState state);
+
+    /** Exit an anonymous class declaration.
+     *
+     *  @param node The anonymous class declaration to be handled.
+     *  @param state The current state of the analyzer.
+     */
+    public void exit(AnonymousClassDeclaration node, TypeAnalyzerState state);
 
     /** Exit a class declaration.
      *
