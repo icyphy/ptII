@@ -95,5 +95,13 @@ public class ASTBuilder {
         }
     }
     
+    public static int getLanguageSpecification() {
+        return LEVEL;
+    }
+    
+    public static void setLanguageSpecification(int level) {
+        LEVEL = level;
+    }
+    
     public static int LEVEL = AST.JLS2;
 }
