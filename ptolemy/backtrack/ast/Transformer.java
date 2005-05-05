@@ -70,6 +70,9 @@ import ptolemy.backtrack.xmlparser.XmlOutput;
 */
 public class Transformer {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
     /** Transform a set of files into backtracking-enabled ones. The set of
      *  files is given by an array of strings as their names, or the names of
      *  the directories that contain them. If a string in the array is a file
@@ -118,7 +121,8 @@ public class Transformer {
                     List strings = new LinkedList();
                     String line = reader.readLine();
                     while (line != null) {
-                        strings.add(new File(listPath, line).getCanonicalPath());
+                        strings.add(
+                                new File(listPath, line).getCanonicalPath());
                         line = reader.readLine();
                     }
                     files = new File[strings.size()];
@@ -184,6 +188,53 @@ public class Transformer {
             if (_defaultToStandardOutput)
                 standardWriter.close();
         }
+    }
+
+    /** Parse the command-line arguments starting from the given position.
+     *  If one or more argument corresponds to an option, proper actions are
+     *  performed to record that option. The position is adjusted to the next
+     *  file name or option and returned.
+     *
+     *  @param args The command-line arguments.
+     *  @param position The starting position.
+     *  @return The new position.
+     */
+    public static int parseArguments(String[] args, int position) {
+        String arg = args[position];
+        if (arg.equals("-classpath") || arg.equals("-cp")) {
+            position++;
+            String classPaths = args[position];
+            _extraClassPaths = Strings.combineArrays(_extraClassPaths,
+                    Strings.decodeFileNames(classPaths));
+            position++;
+        } else if (arg.equals("-prefix") || arg.equals("-p")) {
+            position++;
+            _prefix = args[position];
+            for (int i = 0; i < RULES.length; i++)
+                if (RULES[i] instanceof PackageRule) {
+                    ((PackageRule)RULES[i]).setPrefix(_prefix);
+                    break;
+                }
+            position++;
+            _defaultToStandardOutput = false;
+        } else if (arg.equals("-output") || arg.equals("-o")) {
+            position++;
+            _rootPath = args[position];
+            if (_rootPath.length() == 0)
+                _rootPath = ".";
+            position++;
+        } else if (arg.equals("-overwrite") || arg.equals("-w")) {
+            position++;
+            _overwrite = true;
+        } else if (arg.equals("-nooverwrite") || arg.equals("-nw")) {
+            position++;
+            _overwrite = false;
+        } else if (arg.equals("-config") || arg.equals("-c")) {
+            position++;
+            _configName = args[position];
+            position++;
+        }
+        return position;
     }
 
     /** Transform the Java source with no explicit class path, and
@@ -360,12 +411,18 @@ public class Transformer {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public fields                       ////
+
     /** The refactoring rules to be sequentially applied to the source code.
      */
     public static TransformRule[] RULES = new TransformRule[] {
         new AssignmentRule(),
         new PackageRule()
     };
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
 
     /** Call the <tt>afterTraverse</tt> of all the refactoring rules. For
      *  each rule, the <tt>afterTraverse</tt> is called after the AST is
@@ -387,6 +444,11 @@ public class Transformer {
             RULES[i].beforeTraverse(_visitor, _ast);
     }
 
+    /** Output XML configuration to the pre-defined file (specified with
+     *  "-config" argument in {@link #main(String[])}).
+     * 
+     *  @throws Exception Thrown if error occurs.
+     */
     protected static void _outputConfig() throws Exception {
         if (_configName != null) {
             // Remove the configuration.
@@ -432,53 +494,6 @@ public class Transformer {
             _ast = ASTBuilder.parse(_source);
     }
 
-    /** Parse the command-line arguments starting from the given position.
-     *  If one or more argument corresponds to an option, proper actions are
-     *  performed to record that option. The position is adjusted to the next
-     *  file name or option and returned.
-     *
-     *  @param args The command-line arguments.
-     *  @param position The starting position.
-     *  @return The new position.
-     */
-    public static int parseArguments(String[] args, int position) {
-        String arg = args[position];
-        if (arg.equals("-classpath") || arg.equals("-cp")) {
-            position++;
-            String classPaths = args[position];
-            _extraClassPaths = Strings.combineArrays(_extraClassPaths,
-                    Strings.decodeFileNames(classPaths));
-            position++;
-        } else if (arg.equals("-prefix") || arg.equals("-p")) {
-            position++;
-            _prefix = args[position];
-            for (int i = 0; i < RULES.length; i++)
-                if (RULES[i] instanceof PackageRule) {
-                    ((PackageRule)RULES[i]).setPrefix(_prefix);
-                    break;
-                }
-            position++;
-            _defaultToStandardOutput = false;
-        } else if (arg.equals("-output") || arg.equals("-o")) {
-            position++;
-            _rootPath = args[position];
-            if (_rootPath.length() == 0)
-                _rootPath = ".";
-            position++;
-        } else if (arg.equals("-overwrite") || arg.equals("-w")) {
-            position++;
-            _overwrite = true;
-        } else if (arg.equals("-nooverwrite") || arg.equals("-nw")) {
-            position++;
-            _overwrite = false;
-        } else if (arg.equals("-config") || arg.equals("-c")) {
-            position++;
-            _configName = args[position];
-            position++;
-        }
-        return position;
-    }
-
     /** Start the transformation by first parsing the source with
      *  {@link #_parse()}, then call {@link #_beforeTraverse()},
      *  then traverse the AST with {@link TypeAnalyzer} visitor,
@@ -498,61 +513,52 @@ public class Transformer {
         _afterTraverse();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        nested class                       ////
+
+    //////////////////////////////////////////////////////////////////////////
+    //// InnerClassFilter
+    /**
+       File name filter for inner classes in the given class. Inner classes
+       are saved in class files with names containing "$".
+    
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+    */
     private static class InnerClassFilter implements FilenameFilter {
 
+        /** Construct an inner class filter.
+         * 
+         *  @param className The name of the class whose inner classes (if any)
+         *   are looked for.
+         */
         InnerClassFilter(String className) {
             _className = className;
         }
 
+        /** Test whether a file in a directory is accepted.
+         * 
+         *  @param dir The directory where the file is in.
+         *  @param name The simple name of the file.
+         *  @return <tt>true</tt> if the file is accepted; <tt>false</tt>
+         *   otherwise.
+         */
         public boolean accept(File dir, String name) {
             return name.startsWith(_className + "$") &&
                 name.endsWith(".class");
         }
 
+        /** The name of the given class whose inner classes (if any) are looked
+         *  for.
+         */
         private String _className;
     }
 
-    private static void _addInnerClasses(Set crossAnalysis, String classFileName,
-            String packageName) {
-        File topFile = new File(classFileName);
-        File path = topFile.getParentFile();
-        if (path == null)
-            path = new File(".");
-        String className =
-            topFile.getName().substring(0, topFile.getName().length() - 6);
-        File[] files = path.listFiles(new InnerClassFilter(className));
-        for (int i = 0; i < files.length; i++) {
-            File file = files[i];
-            className =
-                file.getName().substring(0, file.getName().length() - 6);
-            if (packageName != null)
-                className = packageName + "." + className;
-            crossAnalysis.add(className);
-        }
-    }
-
-    private static void _printUsage() {
-        System.err.println(
-                "USAGE: java ptolemy.backtrack.ast.Transform");
-        System.err.println(
-                "           " +
-                "[options] " +
-                "[java_files | directories | @file_lists]");
-        System.err.println();
-        System.err.println("Options:");
-        System.err.println("          -classpath <paths> " +
-                "add extra class path(s)");
-        System.err.println("          -config <file>     " +
-                "save the configuration in a new file");
-        System.err.println("          -nooverwrite       " +
-                "do not overwrite existing Java files (default)");
-        System.err.println("          -output <root>     " +
-                "root directory of output files");
-        System.err.println("          -overwrite         " +
-                "overwrite existing Java files");
-        System.err.println("          -prefix <name>     " +
-                "prefix to be added to the package names");
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
 
     /** Construct a transformer. This constructor should not be called from
      *  outside of this class.
@@ -579,6 +585,59 @@ public class Transformer {
         _fileName = fileName;
         _visitor = new TypeAnalyzer(classPaths);
     }
+
+    /** Add an inner class to the cross-analysis set.
+     * 
+     *  @param crossAnalysis The cross-analysis set.
+     *  @param classFileName The file name of the inner class to be added.
+     *  @param packageName The name of the package that the inner class is in.
+     */
+    private static void _addInnerClasses(Set crossAnalysis,
+            String classFileName, String packageName) {
+        File topFile = new File(classFileName);
+        File path = topFile.getParentFile();
+        if (path == null)
+            path = new File(".");
+        String className =
+            topFile.getName().substring(0, topFile.getName().length() - 6);
+        File[] files = path.listFiles(new InnerClassFilter(className));
+        for (int i = 0; i < files.length; i++) {
+            File file = files[i];
+            className =
+                file.getName().substring(0, file.getName().length() - 6);
+            if (packageName != null)
+                className = packageName + "." + className;
+            crossAnalysis.add(className);
+        }
+    }
+
+    /** Print the command-line usage of the transformer.
+     */
+    private static void _printUsage() {
+        System.err.println(
+                "USAGE: java ptolemy.backtrack.ast.Transform");
+        System.err.println(
+                "           " +
+                "[options] " +
+                "[java_files | directories | @file_lists]");
+        System.err.println();
+        System.err.println("Options:");
+        System.err.println("          -classpath <paths> " +
+                "add extra class path(s)");
+        System.err.println("          -config <file>     " +
+                "save the configuration in a new file");
+        System.err.println("          -nooverwrite       " +
+                "do not overwrite existing Java files (default)");
+        System.err.println("          -output <root>     " +
+                "root directory of output files");
+        System.err.println("          -overwrite         " +
+                "overwrite existing Java files");
+        System.err.println("          -prefix <name>     " +
+                "prefix to be added to the package names");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
     /** The Java source file name, if not <tt>null</tt>.
      */
