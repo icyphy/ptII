@@ -39,15 +39,21 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 //////////////////////////////////////////////////////////////////////////
 //// AliasHandler
 /**
-   Handler of alias points in the AST.
+   Interface of the alias handlers called by {@link TypeAnalyzer}.
+   Users may register alias handlers (and other kinds of supported
+   handlers) to the {@link TypeAnalyzer} used to analyze Java source code.
+   When the analyzer detects an alias point, it calls back those alias
+   handlers after proper types are assigned to both the left-hand side and
+   the right-hand side of the assignment.
    <p>
-   A handler can be registered to the type analyzer. It defines functions that
-   are called back by the type analyzer when certain language constructs are
-   seen.
+   Alias handlers are allowed to modify the alias AST node, either by
+   modifying its children in the AST, or by replacing the whole alias node
+   with another expression or statement. This is because the handler is called
+   after the subtree rooted at the alias node is completely visited by the
+   analyzer. However, modifying any node out of this subtree (e.g., changing
+   the parent of this alias node to another one) may cause unexpected effect.
    <p>
-   Classes that implement this alias handler define functions to be called back
-   when the type analyzer sees language constructs that may cause aliasing of
-   fields. Such alias points include assignment from an array field to a local
+   Alias points in Java include assignment from an array field to a local
    variable, calling a method with an array field (so that it may be changed
    with another name within the method), returning an array field from a
    method, etc.

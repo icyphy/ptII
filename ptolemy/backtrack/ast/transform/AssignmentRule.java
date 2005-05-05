@@ -50,6 +50,9 @@ import ptolemy.backtrack.ast.TypeAnalyzer;
 */
 public class AssignmentRule extends TransformRule {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
     /** Execution actions after the AST is traversed. (Not necessary for
      *  this rule.)
      *
@@ -77,7 +80,8 @@ public class AssignmentRule extends TransformRule {
         analyzer.getHandlers().addAssignmentHandler(assignmentTransformer);
         analyzer.getHandlers().addClassHandler(assignmentTransformer);
         analyzer.getHandlers().addCrossAnalysisHandler(assignmentTransformer);
-        analyzer.getHandlers().addMethodDeclarationHandler(assignmentTransformer);
+        analyzer.getHandlers().addMethodDeclarationHandler(
+                assignmentTransformer);
 
         analyzer.getHandlers().addClassHandler(constructorTransformer);
         analyzer.getHandlers().addConstructorHandler(constructorTransformer);
@@ -85,6 +89,9 @@ public class AssignmentRule extends TransformRule {
         analyzer.getHandlers().addMethodDeclarationHandler(
                 constructorTransformer);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
     /** The list of handlers used.
      */
