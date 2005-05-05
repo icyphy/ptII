@@ -51,6 +51,17 @@ import java.util.Stack;
 public class TypeAnalyzerState {
 
     ///////////////////////////////////////////////////////////////////
+    ////                        constructor                        ////
+
+    /** Construct a state object for a type analyzer.
+     *
+     *  @param analyzer The type analyzer.
+     */
+    public TypeAnalyzerState(TypeAnalyzer analyzer) {
+        _analyzer = analyzer;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
     /** Add a variable to the current scope.
@@ -62,6 +73,14 @@ public class TypeAnalyzerState {
         Hashtable table = (Hashtable)_variableStack.peek();
         table.put(name, type);
     }
+
+    /** Enter the scope of a block.
+    *
+    *  @see #leaveBlock()
+    */
+   public void enterBlock() {
+       _previousClasses.push(new Hashtable());
+   }
 
     /** Enter the scope of a class. The current class is set to the class
      *  entered and the last current class is pushed to the previous class
@@ -75,14 +94,6 @@ public class TypeAnalyzerState {
         _anonymousCounts.push(new Integer(0));
         _currentClass = c;
         _loader.setCurrentClass(_currentClass, false);
-    }
-
-    /** Enter the scope of a block.
-     *
-     *  @see #leaveBlock()
-     */
-    public void enterBlock() {
-        _previousClasses.push(new Hashtable());
     }
 
     /** Get the type analyzer that owns this state.
@@ -210,6 +221,14 @@ public class TypeAnalyzerState {
             !_classScopes.contains(new Integer(i));
     }
 
+    /** Leave a block declaration.
+     *
+     *  @see #enterBlock()
+     */
+    public void leaveBlock() {
+        _previousClasses.pop();
+    }
+
     /** Leave a class declaration. The current class is set back to the
      *  last current class (the class on the top of the previous class
      *  stack).
@@ -226,14 +245,6 @@ public class TypeAnalyzerState {
         _loader.setCurrentClass(_currentClass, false);
     }
 
-    /** Leave a block declaration.
-     *
-     *  @see #enterBlock()
-     */
-    public void leaveBlock() {
-        _previousClasses.pop();
-    }
-
     /** Get the next count of anonymous classes in the current class.
      *
      *  @return The count.
@@ -242,7 +253,6 @@ public class TypeAnalyzerState {
         int lastCount = ((Integer)_anonymousCounts.pop()).intValue();
         _anonymousCounts.push(new Integer(++lastCount));
         return lastCount;
-
     }
 
     /** Get the next count of total anonymous classes.
@@ -306,14 +316,6 @@ public class TypeAnalyzerState {
      */
     public void setVariableStack(Stack variableStack) {
         _variableStack = variableStack;
-    }
-
-    /** Construct a state object for a type analyzer.
-     *
-     *  @param analyzer The type analyzer.
-     */
-    public TypeAnalyzerState(TypeAnalyzer analyzer) {
-        _analyzer = analyzer;
     }
 
     /** Unset the current scope as a class scope (a scope opened by a
