@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -184,94 +185,98 @@ public class HDFDirector extends SDFDirector {
         Scheduler scheduler = getScheduler();
         Schedule schedule;
 
-        if (isScheduleValid()) {
-            // This will return a the current schedule.
-            //System.out.println(getName() + " The schedule is valid");
+        //System.out.println(getName() + " The schedule is invalid.");
+        // The schedule is no longer valid, so check the schedule
+        // cache.
+        if (_inputPortList == null
+                || _workspaceVersion != workspace().getVersion()) {
+            _inputPortList = _getInputPortList();
+        }
+        
+        if (_outputPortList == null
+                || _workspaceVersion != workspace().getVersion()) {
+            _outputPortList = _getOutputPortList();
+        }
+        _workspaceVersion = workspace().getVersion();
+        
+        Iterator inputPorts = _inputPortList.iterator();
+        StringBuffer rates = new StringBuffer();
+        
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            int rate = DFUtilities.getTokenConsumptionRate(inputPort);
+            rates.append(rate);
+        }
+        
+        Iterator outputPorts = _outputPortList.iterator();
+        
+        while (outputPorts.hasNext()) {
+            IOPort outputPort = (IOPort) outputPorts.next();
+            int rate = DFUtilities.getTokenProductionRate(outputPort);
+            rates.append(rate);
+            
+            int initRate = DFUtilities.getTokenInitProduction(outputPort);
+            rates.append(rate);
+        }
+        
+        String rateKey = rates.toString();
+        int cacheSize = ((IntToken) (scheduleCacheSize.getToken()))
+            .intValue();
+        
+        if (cacheSize != _cacheSize) {
+            // cache size has changed. reset the cache.
+            _scheduleCache = new HashMap();
+            _scheduleKeyList = new ArrayList(cacheSize);
+            _externalRatesCache = new TreeMap();
+            _cacheSize = cacheSize;
+        }
+        
+        if (rateKey.equals(_mostRecentRates)) {
+            // System.out.println(getName() + " just use the current");
             schedule = ((SDFScheduler) scheduler).getSchedule();
+        } else if (_scheduleCache.containsKey(rateKey)) {
+            // cache hit.
+            // System.out.println(getName() + " cache hit");
+            _mostRecentRates = rateKey;
+            
+            if (cacheSize > 0) {
+                // Remove the key from its old position in
+                // the list and add it to the head of the list.
+                _scheduleKeyList.remove(rateKey);
+                _scheduleKeyList.add(0, rateKey);
+            }
+            
+            schedule = (Schedule) _scheduleCache.get(rateKey);
+            Map externalRates = (Map) _externalRatesCache.get(rateKey);
+            ((SDFScheduler) scheduler).setContainerRates(externalRates);
+            
         } else {
-            //System.out.println(getName() + " The schedule is invalid.");
-            // The schedule is no longer valid, so check the schedule
-            // cache.
-            if (_inputPortList == null
-                    || _workspaceVersion != workspace().getVersion()) {
-                _inputPortList = _getInputPortList();
-            }
-
-            if (_outputPortList == null
-                    || _workspaceVersion != workspace().getVersion()) {
-                _outputPortList = _getOutputPortList();
-            }
-            _workspaceVersion = workspace().getVersion();
-
-            Iterator inputPorts = _inputPortList.iterator();
-            StringBuffer rates = new StringBuffer();
-
-            while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort) inputPorts.next();
-                int rate = DFUtilities.getTokenConsumptionRate(inputPort);
-                rates.append(rate);
-            }
-
-            Iterator outputPorts = _outputPortList.iterator();
-
-            while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort) outputPorts.next();
-                int rate = DFUtilities.getTokenProductionRate(outputPort);
-                rates.append(rate);
-
-                int initRate = DFUtilities.getTokenInitProduction(outputPort);
-                rates.append(rate);
-            }
-
-            String rateKey = rates.toString();
-            int cacheSize = ((IntToken) (scheduleCacheSize.getToken()))
-                .intValue();
-
-            if (cacheSize != _cacheSize) {
-                // cache size has changed. reset the cache.
-                _scheduleCache = new HashMap();
-                _scheduleKeyList = new ArrayList(cacheSize);
-                _cacheSize = cacheSize;
-            }
-
-            if (rateKey.equals(_mostRecentRates)) {
-                //System.out.println(getName() + " just use the current");
-                schedule = ((SDFScheduler) scheduler).getSchedule();
-            } else if (_scheduleCache.containsKey(rateKey)) {
-                // cache hit.
-                //System.out.println(getName() + " cache hit");
-                _mostRecentRates = rateKey;
-
-                if (cacheSize > 0) {
-                    // Remove the key from its old position in
-                    // the list and add it to the head of the list.
-                    _scheduleKeyList.remove(rateKey);
-                    _scheduleKeyList.add(0, rateKey);
+            // System.out.println(getName() + " cache miss");
+            // cache miss.
+            _mostRecentRates = rateKey;
+            
+            if (cacheSize > 0) {
+                while (_scheduleKeyList.size() >= cacheSize) {
+                    // Cache is full. Remove tail of list.
+                    //System.out.println(getName() + " cache is full.");
+                    Object object = _scheduleKeyList.get(cacheSize - 1);
+                    _scheduleKeyList.remove(cacheSize - 1);
+                    _scheduleCache.remove(object);
+                    _externalRatesCache.remove(object);
                 }
-
-                schedule = (Schedule) _scheduleCache.get(rateKey);
-
-            } else {
-                //System.out.println(getName() + " cache miss");
-                // cache miss.
-                _mostRecentRates = rateKey;
-
-                if (cacheSize > 0) {
-                    while (_scheduleKeyList.size() >= cacheSize) {
-                        // Cache is full. Remove tail of list.
-                        //System.out.println(getName() + " cache is full.");
-                        Object object = _scheduleKeyList.get(cacheSize - 1);
-                        _scheduleKeyList.remove(cacheSize - 1);
-                        _scheduleCache.remove(object);
-                    }
-                    // Add key to head of list.
-                    _scheduleKeyList.add(0, rateKey);
-                }
-
-                // Add key/schedule to the schedule map.
-                schedule = ((SDFScheduler) scheduler).getSchedule();
-                _scheduleCache.put(rateKey, schedule);
+                // Add key to head of list.
+                _scheduleKeyList.add(0, rateKey);
             }
+            
+            // Compute the SDF schedule.
+            schedule = ((SDFScheduler) scheduler).getSchedule();
+            // Add key/schedule to the schedule map.
+            _scheduleCache.put(rateKey, schedule);
+            Map externalRates = ((SDFScheduler) scheduler).getExternalRates();
+            _externalRatesCache.put(rateKey, externalRates);
+            // Note: we do not need to set the external rates of 
+            // the container here. When the SDFSchedule is recomputed,
+            // it will set the external rates.
         }
         getScheduler().setValid(true);
         return schedule;
@@ -283,18 +288,18 @@ public class HDFDirector extends SDFDirector {
      *  or if the super class method throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        /*
-        if (isScheduleValid()) {
-            //System.out.println("before HDF postfire(): schedule valid");
-        } else {
-            //System.out.println("before HDF postfire(): schedule not valid");
+        
+        /*if (isScheduleValid()) {
+            System.out.println("before HDF postfire(): schedule valid");
         }*/
+        
         // If this director is not at the top level, the HDFFSMDirector
         // of the modal model that it contains may change rates after
         // making a change request, which invalidates this HDF's schedule.
         // So we need to get the schedule of this HDFDirector also in a
         // change request.
         if (!isScheduleValid() || getContainer() != toplevel()) {
+        // if (!isScheduleValid()) {
             CompositeActor container = (CompositeActor) getContainer();
             ChangeRequest request = new ChangeRequest(this, "reschedule") {
                 protected void _execute() throws KernelException {
@@ -306,9 +311,7 @@ public class HDFDirector extends SDFDirector {
         }
         boolean postfire = super.postfire();
         /*if (isScheduleValid()) {
-            //System.out.println("HDF postfire(): schedule valid");
-        } else {
-            //System.out.println("HDF postfire(): schedule not valid");
+            System.out.println("after HDF postfire(): schedule valid");
         }*/
         return postfire;
     }
@@ -400,6 +403,7 @@ public class HDFDirector extends SDFDirector {
 
         _scheduleCache = new HashMap();
         _scheduleKeyList = new ArrayList(cacheSize);
+        _externalRatesCache = new TreeMap();
 
         allowRateChanges.setToken(BooleanToken.TRUE);
         allowRateChanges.setVisibility(Settable.EXPERT);
@@ -415,6 +419,9 @@ public class HDFDirector extends SDFDirector {
     // List of the schedule keys, which are strings that represent
     // the rate signature.
     private List _scheduleKeyList;
+
+    // Map for the cache of the external rates.
+    private Map _externalRatesCache;
 
     // A string that represents the most recent port rates.
     private String _mostRecentRates;
