@@ -50,7 +50,7 @@ towers of Hanoi problem.
 <i>Hybrid systems</i> are a special case of modal models
 where finite-state machines (FSMs) are combined with the continuous-time (CT) models
 to get mixed continuous-time and discrete-event models.
-The <a href="../hyvisual/intro.htm">HyVisual</a> package
+The HyVisual package
 is a subset of Ptolemy II that includes the FSM and CT domains and libraries
 that support the design of hybrid systems.
 Version 5.0 introduces significant rework of the hybrid systems
@@ -459,177 +459,231 @@ recompiling is safer.
 
 <h3>Backward compatible issues that are handled automatically</h3>
 
-<menu>
-<li>ptolemy.moml.filter.AddEditorFactory:
-If a parameter has a _location, then
+<ul>
+<li>ptolemy.moml.filter.AddEditorFactory: If a parameter has a _location, then
 add a VisibleParameterEditorFactory named _editorFactory.
 
-<li>ptolemy.moml.filter.AddIcon:
-Add specialized icons that display the value of one of the parameters.
+<li>ptolemy.moml.filter.AddIcon: Add specialized icons that display the value
+of one of the parameters.
 <br>The affected actors are:
-        <menu>
+	<ul>
 	<li>ptolemy.actor.lib.Const
 	<li>ptolemy.actor.lib.MathFunction
 	<li>ptolemy.actor.lib.TrigFunction
 	<li>ptolemy.actor.lib.Scale
 	<li>ptolemy.actor.lib.Expression
-        </menu>
-<li>ptolemy.moml.filter.ClassChanges:
-change any class names that have been renamed and remove obsolete classes.
-<br>Below are original class names followed by the new class names:
-        <menu>
-	<li>ptolemy.vergil.fsm.modal.ModalController	-&gt; ptolemy.domains.fsm.modal.ModalController
-	<li>ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory	-&gt; ptolemy.vergil.fsm.modal.ModalTableauFactory
-	<li>ptolemy.vergil.fsm.modal.TransitionRefinement	-&gt; ptolemy.domains.fsm.modal.TransitionRefinement
-	<li>ptolemy.vergil.fsm.modal.RefinementPort	-&gt; ptolemy.domains.fsm.modal.RefinementPort
-	<li>ptolemy.vergil.fsm.modal.Refinement	-&gt; ptolemy.domains.fsm.modal.Refinement
-	<li>ptolemy.kernel.util.VersionAttribute	-&gt; ptolemy.kernel.attributes.VersionAttribute
-	<li>ptolemy.vergil.icon.ImageEditorIcon	-&gt; ptolemy.vergil.icon.ImageIcon
-	<li>ptolemy.vergil.fsm.modal.ModalPort	-&gt; ptolemy.domains.fsm.modal.ModalPort
-	<li>ptolemy.vergil.fsm.modal.TransitionRefinementPort	-&gt; ptolemy.domains.fsm.modal.TransitionRefinementPort
-	<li>ptolemy.kernel.attributes.FileAttribute	-&gt; ptolemy.data.expr.FileParameter
-	<li>ptolemy.domains.sdf.kernel.SDFIOPort	-&gt; ptolemy.actor.TypedIOPort
-	<li>ptolemy.moml.Location	-&gt; ptolemy.kernel.util.Location
-	<li>ptolemy.domains.fsm.lib.RelationList	-&gt; ptolemy.domains.fsm.kernel.RelationList
-	<li>ptolemy.actor.lib.comm.SerialComm	-&gt; ptolemy.actor.lib.io.comm.SerialComm
-	<li>ptolemy.actor.hoc.MultiInstanceComposite	-&gt; ptolemy.actor.lib.hoc.MultiInstanceComposite
-	<li>ptolemy.vergil.fsm.modal.ModalModel	-&gt; ptolemy.domains.fsm.modal.ModalModel
-	</menu>
+        </ul>
+
+<li>ptolemy.moml.filter.ClassChanges: change any class names that have been renamed and remove obsolete classes.
+Below are original class names followed by the new class names:
+	<ul>
+	<li>ptolemy.vergil.fsm.modal.ModalController	 -&gt; ptolemy.domains.fsm.modal.ModalController
+	<li>ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory	 -&gt; ptolemy.vergil.fsm.modal.ModalTableauFactory
+	<li>ptolemy.vergil.fsm.modal.TransitionRefinement	 -&gt; ptolemy.domains.fsm.modal.TransitionRefinement
+	<li>ptolemy.vergil.fsm.modal.RefinementPort	 -&gt; ptolemy.domains.fsm.modal.RefinementPort
+	<li>ptolemy.vergil.fsm.modal.Refinement	 -&gt; ptolemy.domains.fsm.modal.Refinement
+	<li>ptolemy.kernel.util.VersionAttribute	 -&gt; ptolemy.kernel.attributes.VersionAttribute
+	<li>ptolemy.vergil.icon.ImageEditorIcon	 -&gt; ptolemy.vergil.icon.ImageIcon
+	<li>ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition	 -&gt; ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition
+	<li>ptolemy.vergil.fsm.modal.ModalPort	 -&gt; ptolemy.domains.fsm.modal.ModalPort
+	<li>ptolemy.kernel.attributes.IDAttribute	 -&gt; ptolemy.vergil.kernel.attributes.IDAttribute
+	<li>ptolemy.vergil.fsm.modal.TransitionRefinementPort	 -&gt; ptolemy.domains.fsm.modal.TransitionRefinementPort
+	<li>ptolemy.kernel.attributes.FileAttribute	 -&gt; ptolemy.data.expr.FileParameter
+	<li>ptolemy.domains.sr.lib.Latch	 -&gt; ptolemy.domains.sr.lib.Current
+	<li>ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+	<li>ptolemy.moml.Location	 -&gt; ptolemy.kernel.util.Location
+	<li>ptolemy.domains.fsm.lib.RelationList	 -&gt; ptolemy.domains.fsm.kernel.RelationList
+	<li>ptolemy.domains.gr.lib.ViewScreen	 -&gt; ptolemy.domains.gr.lib.ViewScreen3D
+	<li>ptolemy.actor.lib.comm.SerialComm	 -&gt; ptolemy.actor.lib.io.comm.SerialComm
+	<li>ptolemy.actor.hoc.MultiInstanceComposite	 -&gt; ptolemy.actor.lib.hoc.MultiInstanceComposite
+	<li>ptolemy.vergil.fsm.modal.ModalModel	 -&gt; ptolemy.domains.fsm.modal.ModalModel
+        <ul>
 Below are the classes to remove:
-        <menu> 
+	<ul>
 	<li>ptolemy.data.expr.NotEditableParameter
-        </menu>
+	<li>ptolemy.domains.de.kernel.DEIOPort
+	<ul>
 
 <li>ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add _hideName if necessary.
 
-<li>ptolemy.moml.filter.MultiportToSinglePort:
-Update any actor multiports that are now single ports.
+<li>ptolemy.moml.filter.MultiportToSinglePort: Update any actor multiports that are now
+single ports.
 <br>Below are the actors that are affected, along with the port name:
-        <menu>
-	<li>input	ptolemy.actor.lib.gui.MatrixViewer
+	<ul>
+	<li>ptolemy.actor.lib.gui.MatrixViewer
 	<li>input	ptolemy.domains.sdf.lib.Autocorrelation
 	<li>output	ptolemy.actor.lib.Const
 	<li>output	ptolemy.actor.lib.NonStrictTest
-        </menu>
+	<li>input
+	</ul>
+
 <li>ptolemy.moml.filter.ParameterNameChanges: Update any Parameter names
 that have been renamed.
 <br>Below are the actors that are affected, along with the Parameter name 
 and the new name:
-        <menu>
+	<ul>
+	<li>ptolemy.domains.de.lib.Server
+		serviceTime	 -&gt; newServiceTime
 	<li>ptolemy.domains.pn.kernel.PNDirector
-	<br>	Initial_queue_capacity	-&gt; initialQueueCapacity
-	</menu>
-
-<li>ptolemy.moml.filter.PortClassChanges: Update any actor port classes that have been changed.
+		Initial_queue_capacity	 -&gt; initialQueueCapacity
+	<li>ptolemy.domains.de.lib.VariableDelay
+		defaultDelay	 -&gt; delay
+	<ul>
+<li>ptolemy.moml.filter.PortClassChanges: Update any actor port classes that have been
+changed.
 <br>Below are the actors that are affected, along
 with the old port class and the new port class:
-        <menu>
+	<ul>
+	<li>ptolemy.domains.sdf.lib.vq.HTVQEncode.input
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+	<li>output
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+	<li>ptolemy.domains.de.lib.Server.newServiceTime
+		<ul>
+	<li>	ptolemy.domains.de.kernel.DEIOPort	 -&gt; ptolemy.actor.parameters.ParameterPort
+		</ul>
+	<li>ptolemy.domains.sdf.lib.vq.VQDecode.input
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+	<li>output
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+	<li>ptolemy.domains.sdf.lib.vq.ImagePartition.input
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+	<li>output
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
 	<li>ptolemy.domains.de.lib.VariableDelay.delay
-	<li>ptolemy.domains.de.kernel.DEIOPort	-&gt; ptolemy.actor.parameters.ParameterPort
-	</menu>
+		<ul>
+		ptolemy.domains.de.kernel.DEIOPort	 -&gt; ptolemy.actor.parameters.ParameterPort
+		</ul>
+	<li>ptolemy.domains.sdf.lib.vq.ImageUnpartition.input
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+	<li>output
+		<ul>
+		<li>ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+        </ul>
 
-<li>ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been renamed.
+<li>ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been
+renamed.
 <br>Below are the actors that are affected, along
 with the old port name and the new port name:
-        <menu>
+	<ul>
+	<li>ptolemy.domains.de.lib.Server
+		serviceTime	 -&gt; newServiceTime
 	<li>ptolemy.actor.lib.comm.Scrambler
-	        <menu>
-		<li>initial	-&gt; initialState
-	        </menu>
+		initial	 -&gt; initialState
 	<li>ptolemy.actor.lib.conversions.CartesianToComplex
-	        <menu>
-		<li>imag	-&gt; y
-		<li>real	-&gt; x
-	        </menu>
+		imag	 -&gt; y
+		real	 -&gt; x
 	<li>ptolemy.actor.lib.comm.ConvolutionalCoder
-	        <menu>
-		<li>uncodeBlockSize	-&gt; uncodedRate
-		<li>initial	-&gt; initialState
-	        </menu>
+		uncodeBlockSize	 -&gt; uncodedRate
+		initial	 -&gt; initialState
 	<li>ptolemy.actor.lib.comm.ViterbiDecoder
-	        <menu>
-		<li>uncodeBlockSize	-&gt; uncodedRate
-		<li>amplitude	-&gt; constellation
-	        </menu>
+		uncodeBlockSize	 -&gt; uncodedRate
+		amplitude	 -&gt; constellation
 	<li>ptolemy.actor.lib.Sleep
-	        <menu>
-		<li>delay	-&gt; sleepTime
-	        </menu>
+		delay	 -&gt; sleepTime
 	<li>ptolemy.actor.lib.conversions.ComplexToCartesian
-	        <menu>
-		<li>imag	-&gt; y
-		<li>real	-&gt; x
-	        </menu>
-	 </menu>
+		imag	 -&gt; y
+		real	 -&gt; x
+        </ul>
 
 <li>ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names
 that have been renamed.
 <br>Below are the actors that are affected, along with the port name
 and the new classname:
-	<li>ptolemy.domains.sdf.lib.ArrayToSequence
-	<li>ptolemy.domains.sdf.lib.Autocorrelation
-	<li>ptolemy.domains.sdf.lib.BitsToInt
-	<li>ptolemy.domains.sdf.lib.Chop
-	<li>ptolemy.domains.sdf.lib.CountTrues
-	<li>ptolemy.domains.sdf.lib.DoubleToMatrix
-	<li>ptolemy.domains.sdf.lib.DownSample
-	<li>ptolemy.domains.sdf.lib.FFT
-	<li>ptolemy.domains.sdf.lib.FIR
-	<li>ptolemy.domains.sdf.lib.IFFT
-	<li>ptolemy.domains.sdf.lib.IntToBits
-	<li>ptolemy.domains.sdf.lib.LineCoder
-	<li>ptolemy.domains.sdf.lib.MatrixToDouble
-	<li>ptolemy.domains.sdf.lib.MatrixToSequence
-	<li>ptolemy.domains.sdf.lib.Repeat
-	<li>ptolemy.domains.sdf.lib.SampleDelay
-	<li>ptolemy.domains.sdf.lib.SequenceToArray
-	<li>ptolemy.domains.sdf.lib.SequenceToMatrix
-	<li>ptolemy.domains.sdf.lib.UpSample
-	<li>ptolemy.domains.sdf.lib.VariableFIR
-	        <menu>
-		<li>tokenProductionRate	-&gt; null
-		<li>tokenInitProduction	-&gt; null
-		<li>tokenConsumptionRate	-&gt; null
-	        </menu>
+	<ul>
+	<li>ptolemy.domains.ct.lib.ZeroCrossingDetector
+		useEventValue	 -&gt; null
 	<li>ptolemy.actor.lib.MathFunction
-	        <menu>
-		<li>function	-&gt; ptolemy.data.expr.StringParameter
-	        </menu>
-	<li>ptolemy.domains.sdf.lib.vq.ImageUnpartition
-	        <menu>
-		<li>input	-&gt; ptolemy.actor.TypedIOPort
-		<li>output	-&gt; ptolemy.actor.TypedIOPort
-	        </menu>
+		function	 -&gt; ptolemy.data.expr.StringParameter
+	<li>ptolemy.domains.ct.lib.LevelCrossingDetector
+		useEventValue	 -&gt; null
+	<li>ptolemy.domains.ct.kernel.CTEmbeddedDirector
+		breakpointODESolver	 -&gt; null
+	<li>ptolemy.domains.sdf.lib.Autocorrelation
+	<li>ptolemy.domains.sdf.lib.FIR
+	<li>ptolemy.domains.sdf.lib.Chop
+	<li>ptolemy.domains.sdf.lib.BitsToInt
+	<li>ptolemy.domains.sdf.lib.DownSample
+	<li>ptolemy.domains.sdf.lib.DoubleToMatrix
+	<li>ptolemy.domains.sdf.lib.IntToBits
+	<li>ptolemy.domains.sdf.lib.ArrayToSequence
+	<li>ptolemy.domains.sdf.lib.CountTrues
+	<li>ptolemy.domains.sdf.lib.VariableFIR
+	<li>ptolemy.domains.sdf.lib.MatrixToSequence
+	<li>ptolemy.domains.sdf.lib.IFFT
+	<li>ptolemy.domains.sdf.lib.SequenceToArray
+	<li>ptolemy.domains.sdf.lib.FFT
+	<li>ptolemy.domains.sdf.lib.SampleDelay
+	<li>ptolemy.domains.sdf.lib.MatrixToDouble
+	<li>ptolemy.domains.sdf.lib.LineCoder
+	<li>ptolemy.domains.sdf.lib.SequenceToMatrix
+	<li>ptolemy.domains.sdf.lib.Repeat
+	<li>ptolemy.domains.sdf.lib.UpSample
+		tokenProductionRate	 -&gt; null
+		tokenInitProduction	 -&gt; null
+		tokenConsumptionRate	 -&gt; null
+	<li>ptolemy.kernel.util.Attribute
+		_hideName	 -&gt; ptolemy.kernel.util.SingletonAttribute
+	<li>ptolemy.domains.sr.kernel.Director
+		scheduler	 -&gt; ptolemy.data.expr.StringParameter
+	<li>ptolemy.actor.lib.io.DirectoryListing
+		directoryOrURL	 -&gt; ptolemy.actor.parameters.FilePortParameter
 	<li>ptolemy.actor.lib.TrigFunction
-	        <menu>
-		<li>function	-&gt; ptolemy.data.expr.StringParameter
-	        </menu>
+		function	 -&gt; ptolemy.data.expr.StringParameter
+	<li>ptolemy.vergil.actor.lib.VisualModelReference
+		modelFileOrURL	 -&gt; ptolemy.actor.parameters.FilePortParameter
 	<li>ptolemy.actor.lib.Expression
-	        <menu>
-		<li>expression	-&gt; ptolemy.kernel.util.StringAttribute
-	        </menu>
-	<li>ptolemy.domains.sdf.lib.vq.HTVQEncode
-	        <menu>
-		<li>input	-&gt; ptolemy.actor.TypedIOPort
-		<li>output	-&gt; ptolemy.actor.TypedIOPort
-	        </menu>
-	<li>ptolemy.domains.sdf.lib.vq.VQDecode
-	        <menu>
-		<li>input	-&gt; ptolemy.actor.TypedIOPort
-		<li>output	-&gt; ptolemy.actor.TypedIOPort
-	        </menu>
-	<li>ptolemy.domains.sdf.lib.vq.ImagePartition
-	        <menu>
-		<li>input	-&gt; ptolemy.actor.TypedIOPort
-		<li>output	-&gt; ptolemy.actor.TypedIOPort
-	        </menu>
+		expression	 -&gt; ptolemy.kernel.util.StringAttribute
+	<li>ptolemy.domains.ct.kernel.CTMixedSignalDirector
+		breakpointODESolver	 -&gt; null
+	<li>ptolemy.actor.lib.hoc.ModelReference
+		modelFileOrURL	 -&gt; ptolemy.actor.parameters.FilePortParameter
 	<li>ptolemy.matlab.Expression
-	        <menu>
-		<li>expression	-&gt; ptolemy.data.expr.StringParameter
-	        </menu>
+		expression	 -&gt; ptolemy.data.expr.StringParameter
+	<li>ptolemy.domains.fsm.modal.ModalModel
+		_Director	 -&gt; null
+		directorClass	 -&gt; ptolemy.data.expr.StringParameter
+	<li>ptolemy.domains.ct.kernel.CTMultiSolverDirector
+		breakpointODESolver	 -&gt; null
+	</ul>
+<li>ptolemy.moml.filter.GRColorChanges: Update GR actor with the following changes:
+	Parameter name "RGB color" --&gt; "diffuseColor"
 
-	</menu>
+<li>ptolemy.moml.filter.RemoveProperties: Remove the properties listed below:
+        <ul>
+	<li>stopTime
+		<ul>
+	<li>	MaxDouble	 -&gt; null
+	<li>	ptolemy.data.expr.Parameter	 -&gt; null
+	<li>	1.7976931348623157E308	 -&gt; null
+	<li>	1.7976931348623E308	 -&gt; null
+	<li>	1.797693134862316E308	 -&gt; null
+		</ul>
+	<li>directorClass
+		<ul>
+	<li>	ptolemy.data.expr.StringParameter	 -&gt; null
+	<li>	ptolemy.domains.fsm.kernel.HSDirector	 -&gt; null
+	<li>	ptolemy.kernel.util.StringAttribute	 -&gt; null
+		</ul>
+        </ul>	
+
+</ul>
 
 </body>
 </html>
