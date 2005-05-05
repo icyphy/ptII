@@ -1,4 +1,4 @@
-/*
+/* The abstract superclass of Java source code transformers.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -49,15 +49,28 @@ import ptolemy.backtrack.ast.LocalClassLoader.ClassImport;
 //////////////////////////////////////////////////////////////////////////
 //// AbstractTransformer
 /**
+   The abstract superclass of Java source code transformers. A transformer is a
+   class that defines transformation on Java Abstract Syntax Trees (ASTs). It
+   modifies the input AST and produces the output according to a certain
+   transformation semantics.
+   <p>
+   Static methods that can be used in any transformer are defined in this
+   class. It is also safe to call them in non-transformer classes to modify the
+   AST.
+   <p>
+   This abstract class has no protected methods that need to be overridden by
+   subclasses. It is stateless. States may be introduced by subclasses.
 
-
-@author Thomas Feng
-@version $Id$
-@since Ptolemy II 5.1
-@Pt.ProposedRating Red (tfeng)
-@Pt.AcceptedRating Red (tfeng)
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
 */
 public abstract class AbstractTransformer {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
 
     /** Given a table of lists, add a value to the list associated with a key.
      *  If the list does not exist, it is created and put into the table.
@@ -75,6 +88,40 @@ public abstract class AbstractTransformer {
         list.add(value);
     }
 
+    /** Create an AST name node with a name string (possibly partitioned with
+     *  ".").
+     *
+     *  @param ast The {@link AST} object.
+     *  @param name The name.
+     *  @return The AST name node.
+     */
+    public static Name createName(AST ast, String name) {
+        int oldPos = 0;
+        Name fullName = null;
+        while (oldPos != -1) {
+            int pos = indexOf(name, new char[]{'.', '$'}, oldPos);
+            String subname =
+                pos == -1 ?
+                        name.substring(oldPos) :
+                        name.substring(oldPos, pos);
+            char c = subname.charAt(0);
+            while (c >= '0' && c <= '9') {
+                subname = subname.substring(1);
+                c = subname.charAt(0);
+            }
+            if (fullName == null)
+                fullName = ast.newSimpleName(subname);
+            else
+                fullName = ast.newQualifiedName(fullName,
+                        ast.newSimpleName(subname));
+            if (pos == -1)
+                oldPos = -1;
+            else
+                oldPos = pos + 1;
+        }
+        return fullName;
+    }
+
     /** Create an AST type node with a type string (possibly partitioned with
      *  "." and "[]").
      *
@@ -82,7 +129,8 @@ public abstract class AbstractTransformer {
      *  @param type The type.
      *  @return The AST type node.
      */
-    public static org.eclipse.jdt.core.dom.Type createType(AST ast, String type) {
+    public static org.eclipse.jdt.core.dom.Type createType(AST ast,
+            String type) {
         String elementName = Type.getElementType(type);
 
         org.eclipse.jdt.core.dom.Type elementType;
@@ -99,36 +147,6 @@ public abstract class AbstractTransformer {
             returnType = ast.newArrayType(returnType);
 
         return returnType;
-    }
-
-    /** Create an AST name node with a name string (possibly partitioned with
-     *  ".").
-     *
-     *  @param ast The {@link AST} object.
-     *  @param name The name.
-     *  @return The AST name node.
-     */
-    public static Name createName(AST ast, String name) {
-        int oldPos = 0;
-        Name fullName = null;
-        while (oldPos != -1) {
-            int pos = indexOf(name, new char[]{'.', '$'}, oldPos);
-            String subname = pos == -1 ? name.substring(oldPos) : name.substring(oldPos, pos);
-            char c = subname.charAt(0);
-            while (c >= '0' && c <= '9') {
-                subname = subname.substring(1);
-                c = subname.charAt(0);
-            }
-            if (fullName == null)
-                fullName = ast.newSimpleName(subname);
-            else
-                fullName = ast.newQualifiedName(fullName, ast.newSimpleName(subname));
-            if (pos == -1)
-                oldPos = -1;
-            else
-                oldPos = pos + 1;
-        }
-        return fullName;
     }
 
     /** Get the shortest possible name of the a class. If there is no conflict,
@@ -173,40 +191,6 @@ public abstract class AbstractTransformer {
         return name;
     }
 
-    /** Find the first appearance of any of the given characters in a string.
-     *
-     *  @param s The string.
-     *  @param chars The array of characters.
-     *  @param startPos The starting position from which the search begins.
-     *  @return The index of the first appearance of any of the given
-     *   characters in the string, or -1 if none of them is found.
-     */
-    public static int indexOf(String s, char[] chars, int startPos) {
-        int pos = -1;
-        for (int i = 0; i < chars.length; i++) {
-            int newPos = s.indexOf(chars[i], startPos);
-            if (newPos != -1 && (pos == -1 || newPos < pos))
-                pos = newPos;
-        }
-        return pos;
-    }
-
-    /** Test if a field to be added already exists.
-     *
-     *  @param c The current class.
-     *  @param fieldName The field name.
-     *  @return <tt>true</tt> if the field is already in the class.
-     */
-    public static boolean isFieldDuplicated(Class c, String fieldName) {
-        // Does NOT check fields inherited from interfaces.
-        try {
-            c.getDeclaredField(fieldName);
-            return true;
-        } catch (NoSuchFieldException e) {
-            return false;
-        }
-    }
-
     /** Test if a method exists in a class or its superclasses. This is the
      *  same as <tt>_hasMethod(c, methodName, parameters, false)</tt>.
      *
@@ -242,11 +226,44 @@ public abstract class AbstractTransformer {
         }
     }
 
-    /** Find the last appearance of any of the given characters in a string.
+    /** Find the first appearance of any of the given characters in a string.
      *
      *  @param s The string.
      *  @param chars The array of characters.
      *  @param startPos The starting position from which the search begins.
+     *  @return The index of the first appearance of any of the given
+     *   characters in the string, or -1 if none of them is found.
+     */
+    public static int indexOf(String s, char[] chars, int startPos) {
+        int pos = -1;
+        for (int i = 0; i < chars.length; i++) {
+            int newPos = s.indexOf(chars[i], startPos);
+            if (newPos != -1 && (pos == -1 || newPos < pos))
+                pos = newPos;
+        }
+        return pos;
+    }
+
+    /** Test if a field to be added already exists.
+     *
+     *  @param c The current class.
+     *  @param fieldName The field name.
+     *  @return <tt>true</tt> if the field is already in the class.
+     */
+    public static boolean isFieldDuplicated(Class c, String fieldName) {
+        // Does NOT check fields inherited from interfaces.
+        try {
+            c.getDeclaredField(fieldName);
+            return true;
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
+    }
+
+    /** Find the last appearance of any of the given characters in a string.
+     *
+     *  @param s The string.
+     *  @param chars The array of characters.
      *  @return The index of the last appearance of any of the given
      *   characters in the string, or -1 if none of them is found.
      */
@@ -296,6 +313,9 @@ public abstract class AbstractTransformer {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public fields                       ////
+
     /** The prefix of assignment methods.
      */
     public static String ASSIGN_PREFIX = "$ASSIGN$";
@@ -320,6 +340,9 @@ public abstract class AbstractTransformer {
      */
     public static String SET_CHECKPOINT_NAME = "$SET$CHECKPOINT";
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
     /** Get the name of the assignment method.
      *
      *  @param fieldName The field name.
@@ -338,6 +361,9 @@ public abstract class AbstractTransformer {
     protected String _getBackupMethodName(String fieldName) {
         return BACKUP_PREFIX + fieldName;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
 
     /** Get the shortest possible name of the a class. If there is no conflict,
      *  the class is first imported, and only the simple class is returned;
@@ -370,13 +396,13 @@ public abstract class AbstractTransformer {
         else {
             int dollarPos = currentClassName.length();
             while (dollarPos >= 0) {
-                String baseName = currentClassName.substring(0, dollarPos) + "$";
+                String baseName =
+                    currentClassName.substring(0, dollarPos) + "$";
                 if (name.startsWith(baseName))
                     return name.substring(baseName.length());
                 dollarPos = currentClassName.lastIndexOf('$', dollarPos - 1);
             }
         }
-        // FIXME
 
         Iterator importedClasses = loader.getImportedClasses().iterator();
         while (importedClasses.hasNext()) {
