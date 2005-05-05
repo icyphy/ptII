@@ -551,9 +551,9 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 
 
 update_ftp: update_ptii_ftp untar
-update_ptii_ftp: codeDoc.jar
+update_ptii_ftp:
 	@echo "Copying ptII files to website"
-	scp -p $(PTII_FULL) $(PTII_SRC) codeDoc.jar \
+	scp -p $(PTII_FULL) $(PTII_SRC) \
 		messier:$(PTII_FTP)
 untar:
 	ssh messier rm -rf $(PTII_FTP)/ptII$(VERSION)
