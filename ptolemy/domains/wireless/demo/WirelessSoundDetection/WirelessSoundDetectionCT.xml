@@ -64,7 +64,7 @@ the sound and their current location.</text></svg></configure>
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This example shows a SoundSource
 (concentric circles icon) moving through
 a field of sensors (SoundSensor
-actors, with transluscent circle icons)
+actors, with translucent circle icons)
 that detect the sound and communicate with
 a Triangulator actor (overlapping ellipses
 icon). The Triangulator performs sensor

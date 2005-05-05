@@ -156,7 +156,7 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This demo shows how to benefit from both of the short links and long links in a network 
-with rich local connections and some remont connections. Each sensor node implements
+with rich local connections and some remote connections. Each sensor node implements
 a routing algorithm based on local information to deliver a message via a short path.
 
 When you run the demo, the initiator move randomly and imit a signal that can only
