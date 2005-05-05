@@ -53,6 +53,9 @@ import org.eclipse.jdt.core.dom.Expression;
 */
 public class ASTDump extends ASTVisitor {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        constructors                       ////
+
     /** Construct an AST dump with a {@link StringBuffer} where the
      *  output will be added.
      *
@@ -70,6 +73,9 @@ public class ASTDump extends ASTVisitor {
     public ASTDump(Writer writer) {
         _writer = writer;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
 
     /** Read in one or more Java source files, parse them with the
      *  Eclipse parser, and output their AST structure to standard
@@ -137,6 +143,9 @@ public class ASTDump extends ASTVisitor {
         super.preVisit(node);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
+
     /** Decrease the current indentation by a unit (four spaces).
      */
     private void _decreaseIndent() {
@@ -202,6 +211,9 @@ public class ASTDump extends ASTVisitor {
                 throw new ASTIORuntimeException(e);
             }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
     /** The current indentation, a string of spaces.
      */

@@ -52,6 +52,21 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 */
 public class ASTBuilder {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Return the ID of the Java language specification being used by the
+     *  parser.
+     *  
+     *  @return The ID of the Java language specification.
+     *  @see #setLanguageSpecification(int)
+     *  @see AST#JLS2
+     *  @see AST#JLS3
+     */
+    public static int getLanguageSpecification() {
+        return _languageSpecification;
+    }
+    
     /** Parse the Java source code given in the source buffer, and
      *  return the root of the AST.
      *
@@ -63,7 +78,7 @@ public class ASTBuilder {
      */
     public static CompilationUnit parse(char[] source)
             throws ASTMalformedException {
-        ASTParser parser = ASTParser.newParser(LEVEL);   // Java 1.4
+        ASTParser parser = ASTParser.newParser(_languageSpecification);
         parser.setSource(source);
         CompilationUnit ast = (CompilationUnit)parser.createAST(null);
         if ((ast.getFlags() & CompilationUnit.MALFORMED) != 0)
@@ -95,13 +110,30 @@ public class ASTBuilder {
         }
     }
     
-    public static int getLanguageSpecification() {
-        return LEVEL;
-    }
-    
+    /** Set the ID of the Java language specification being used by the
+     *  parser.
+     *  <p>
+     *  Users may change the language specification <em>before</em> Java source
+     *  is parsed. The language specification is set statically. It is users'
+     *  responsibility to synchronize its usage if multiple threads parse Java
+     *  sources at the same time with different language specifications.
+     *  
+     *  @param level The ID of the Java language specification.
+     *  @see #getLanguageSpecification()
+     *  @see AST#JLS2
+     *  @see AST#JLS3
+     */
     public static void setLanguageSpecification(int level) {
-        LEVEL = level;
+        _languageSpecification = level;
     }
     
-    public static int LEVEL = AST.JLS2;
+    ///////////////////////////////////////////////////////////////////
+    ////                       public fields                       ////
+
+    /** The ID of the Java language specification being used by the parser.
+     * 
+     *  @see #getLanguageSpecification()
+     *  @see #setLanguageSpecification(int)
+     */
+    private static int _languageSpecification = AST.JLS2;
 }
