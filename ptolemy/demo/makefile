@@ -52,6 +52,7 @@ PTAUXALLJARS = \
 PTAUXALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
+	README.txt \
 	ExecDemos.xml \
 	RunDemos.xml \
 	Shell.xml
