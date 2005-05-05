@@ -1,4 +1,4 @@
-/* A formatter to output Java source from eclipse AST.
+/* A formatter to output Java source code from eclipse AST.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -25,6 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
+
 /******************************************************************************
   Copyright (c) 2000, 2004 IBM Corporation and others.
   All rights reserved. This program and the accompanying materials
@@ -151,9 +152,12 @@ import org.eclipse.jdt.core.dom.WildcardType;
    @since Ptolemy II 5.1
    @Pt.ProposedRating Red (tfeng)
    @Pt.AcceptedRating Red (tfeng)
-   @see org.eclipse.jdt.core.dom.NaiveASTFlattener
+   @see org.eclipse.jdt.core.dom.ASTVisitor
 */
 public class ASTFormatter extends ASTVisitor {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        constructors                       ////
 
     /** Construct an AST formatter with a {@link StringBuffer} where the
      *  formatter output will be added.
@@ -172,6 +176,9 @@ public class ASTFormatter extends ASTVisitor {
     public ASTFormatter(Writer writer) {
         _writer = writer;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
 
     /** Read in one or more Java source files, parse them with the
      *  Eclipse parser, format their AST, and print out to the standard
@@ -1491,8 +1498,8 @@ public class ASTFormatter extends ASTVisitor {
             boolean currentIncludesWhiteSpace = (e instanceof TextElement);
             if (previousRequiresNewLine && currentIncludesWhiteSpace) {
                 _output("\n");
-				_output(_indent);
-				_output(" * ");
+                                _output(_indent);
+                                _output(" * ");
             }
             previousRequiresNewLine = currentIncludesWhiteSpace;
             // add space if required to separate
@@ -1798,6 +1805,9 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
+
     /** Output a closing brase and a new line character after it, and
      *  also decrease the indent amount.
      *  <p>
@@ -1937,6 +1947,9 @@ public class ASTFormatter extends ASTVisitor {
             _output("transient ");
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
     /** The current indentation, a string of spaces.
      */
