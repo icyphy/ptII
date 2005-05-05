@@ -46,13 +46,13 @@ import java.util.Set;
    the behavior of loading a class from the within of another class, as the
    following example:
    <pre>    package pkg;
-   class A {
-   class B {
-   class C {
-   }
-   }
-   B.C field;
-   }</pre>
+    class A {
+        class B {
+            class C {
+            }
+        }
+        B.C field;
+    }</pre>
    The loading of class <tt>B.C</tt> requires some name resolving, which is
    done in the <tt>javac</tt> compiler, so that the type of <tt>field</tt> is
    always known as <tt>pkg.A$B$C</tt> at run-time.
@@ -61,9 +61,9 @@ import java.util.Set;
    importations. In the following example, <tt>Hashtable</tt> is resolved as
    <tt>java.util.Hashtable</tt>:
    <pre>    import java.util.*;
-   class A {
-   Hashtable table;
-   }</pre>
+    class A {
+        Hashtable table;
+    }</pre>
    <p>
    This class loader only loads classes from the specified class paths and
    Java built-in classes. It does not use the <tt>CLASSPATH</tt> environment
@@ -404,10 +404,18 @@ public class LocalClassLoader extends URLClassLoader {
             _className = className;
         }
 
+        /** Get the name of the package that the class is in.
+         * 
+         *  @return The package name.
+         */
         public String getPackageName() {
             return _packageName;
         }
 
+        /** Get the simple class name.
+         * 
+         *  @return The simple class name.
+         */
         public String getClassName() {
             return _className;
         }
