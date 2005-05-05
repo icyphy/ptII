@@ -558,10 +558,8 @@ update_ptii_ftp: codeDoc.jar
 untar:
 	ssh messier rm -rf $(PTII_FTP)/ptII$(VERSION)
 	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
-	ssh messier "cd $(PTII_FTP)/ptII$(VERSION)/doc; /usr/local/bin/tar -xf ../../codeDoc.jar"
+	-echo "Copy gr.jar and codeDoc in from a windows box"
 
-codeDoc.jar:
-	cd ../../doc; tar -cf $(PTIIADM)/gen-$(MAJOR_VERSION)/codeDoc.jar codeDoc
 
 # Make the distribution, run htmlchek
 htmlchek:
