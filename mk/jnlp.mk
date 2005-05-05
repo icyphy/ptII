@@ -242,7 +242,8 @@ PTJACL_JARS =
 
 WIRELESS_JARS = \
 	ptolemy/domains/wireless/wireless.jar \
-	ptolemy/domains/wireless/demo/demo.jar
+	ptolemy/domains/wireless/demo/demo.jar \
+	ptolemy/domains/wireless/doc/doc.jar
 
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
