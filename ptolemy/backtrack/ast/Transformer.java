@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -237,40 +238,6 @@ public class Transformer {
         return position;
     }
 
-    /** Transform the Java source with no explicit class path, and
-     *  output the result to the writer. This is the same as calling
-     *  <tt>transform(source, writer, null)</tt>.
-     *
-     *  @param source The Java source.
-     *  @param writer The writer where output is written.
-     *  @exception IOException If IO exception occurs when writing to
-     *   the output.
-     *  @exception ASTMalformedException If the Java source is illegal.
-     *  @see #transform(char[], Writer, String[])
-     */
-    public static void transform(char[] source, Writer writer)
-            throws IOException, ASTMalformedException {
-        transform(source, writer, null);
-    }
-
-    /** Transform the Java source with given classpaths, and output the
-     *  result to the writer.
-     *
-     *  @param source The Java source.
-     *  @param writer The writer where output is written.
-     *  @param classPaths The class paths.
-     *  @exception IOException If IO exception occurs when writing to the
-     *   output.
-     *  @exception ASTMalformedException If the Java source is illegal.
-     *  @see #transform(char[], Writer)
-     */
-    public static void transform(char[] source, Writer writer,
-            String[] classPaths)
-            throws IOException, ASTMalformedException {
-        Transformer transform = new Transformer(source, classPaths);
-        transform._startTransform();
-    }
-
     /** Transform the Java source in the file given by its name with no
      *  explicit class path, and output the result to the writer. This
      *  is the same as calling <tt>transform(fileName, writer, null)</tt>.
@@ -381,7 +348,7 @@ public class Transformer {
             needClose = true;
         }
 
-        transform._outputSource(writer);
+        transform._outputSource(writer, fileName);
 
         if (needClose)
             writer.close();
@@ -473,9 +440,12 @@ public class Transformer {
      *
      *  @param writer The writer where the output is written to.
      */
-    protected void _outputSource(Writer writer) {
-        ASTFormatter formatter = new ASTFormatter(writer);
+    protected void _outputSource(Writer writer, String fileName) 
+            throws IOException {
+        FileInputStream stream = new FileInputStream(fileName);
+        ASTFormatter formatter = new ASTFormatter(writer, stream);
         _ast.accept(formatter);
+        stream.close();
     }
 
     /** Parse the Java source and retrieve the AST. If a source file name is
@@ -655,6 +625,8 @@ public class Transformer {
     /** The visitor used to traverse the AST.
      */
     private TypeAnalyzer _visitor;
+    
+    private InputStream _docStream;
 
     /** The prefix to be added to the package name of the source.
      */

@@ -39,7 +39,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.ast;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Iterator;
@@ -68,6 +70,7 @@ import org.eclipse.jdt.core.dom.CastExpression;
 import org.eclipse.jdt.core.dom.CatchClause;
 import org.eclipse.jdt.core.dom.CharacterLiteral;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
+import org.eclipse.jdt.core.dom.Comment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ConditionalExpression;
 import org.eclipse.jdt.core.dom.ConstructorInvocation;
@@ -168,6 +171,29 @@ public class ASTFormatter extends ASTVisitor {
         _buffer = buffer;
     }
 
+    /** Construct an AST formatter with a {@link StringBuffer} where the
+     *  formatter output will be added.
+     *
+     *  @param buffer The string buffer to be used.
+     *  @param source The array that contains the Java source.
+     */
+    public ASTFormatter(StringBuffer buffer, char[] source) {
+        _buffer = buffer;
+        _source = source;
+    }
+
+    /** Construct an AST formatter with a {@link StringBuffer} where the
+     *  formatter output will be added.
+     *
+     *  @param buffer The string buffer to be used.
+     *  @param sourceStream The input stream from which the Java source can be
+     *   read in.
+     */
+    public ASTFormatter(StringBuffer buffer, InputStream sourceStream) {
+        _buffer = buffer;
+        _sourceStream = sourceStream;
+    }
+
     /** Construct an AST formatter with a writer to which the formatted
      *  output will be written.
      *
@@ -175,6 +201,29 @@ public class ASTFormatter extends ASTVisitor {
      */
     public ASTFormatter(Writer writer) {
         _writer = writer;
+    }
+
+    /** Construct an AST formatter with a writer to which the formatted
+     *  output will be written.
+     *
+     *  @param writer The writer to write to.
+     *  @param source The array that contains the Java source.
+     */
+    public ASTFormatter(Writer writer, char[] source) {
+        _writer = writer;
+        _source = source;
+    }
+
+    /** Construct an AST formatter with a writer to which the formatted
+     *  output will be written.
+     *
+     *  @param writer The writer to write to.
+     *  @param sourceStream The input stream from which the Java source can be
+     *   read in.
+     */
+    public ASTFormatter(Writer writer, InputStream sourceStream) {
+        _writer = writer;
+        _sourceStream = sourceStream;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -195,12 +244,26 @@ public class ASTFormatter extends ASTVisitor {
             Writer writer = new OutputStreamWriter(System.out);
             for (int i = 0; i < args.length; i++) {
                 String fileName = args[i];
+                FileInputStream stream = new FileInputStream(fileName);
                 CompilationUnit root = ASTBuilder.parse(fileName);
-                ASTFormatter formatter = new ASTFormatter(writer);
+                ASTFormatter formatter = new ASTFormatter(writer, stream);
                 root.accept(formatter);
+                stream.close();
             }
             writer.close();
         }
+    }
+
+    public void postVisit(ASTNode node) {
+        super.postVisit(node);
+        if (!(node instanceof BlockComment || node instanceof LineComment))
+            _checkComments(node.getStartPosition() + node.getLength());
+    }
+
+    public void preVisit(ASTNode node) {
+        if (!(node instanceof BlockComment || node instanceof LineComment))
+            _checkComments(node.getStartPosition());
+        super.preVisit(node);
     }
 
     /*
@@ -219,6 +282,7 @@ public class ASTFormatter extends ASTVisitor {
             BodyDeclaration d = (BodyDeclaration) it.next();
             d.accept(this);
         }
+        _checkComments(node.getStartPosition() + node.getLength());
         _closeBrace();
         return false;
     }
@@ -255,6 +319,7 @@ public class ASTFormatter extends ASTVisitor {
             BodyDeclaration b = (BodyDeclaration) it.next();
             b.accept(this);
         }
+        _checkComments(node.getStartPosition() + node.getLength());
         _closeBrace(false);
         return false;
     }
@@ -315,6 +380,7 @@ public class ASTFormatter extends ASTVisitor {
             }
             _output("\n");
         }
+        _checkComments(node.getStartPosition() + node.getLength());
         _closeBrace(false);
         return false;
     }
@@ -368,6 +434,7 @@ public class ASTFormatter extends ASTVisitor {
             Statement s = (Statement) it.next();
             s.accept(this);
         }
+        _checkComments(node.getStartPosition() + node.getLength());
         _closeBrace(newLineAfterBlock);
         _newLineAfterBlock = true;
         return false;
@@ -378,7 +445,8 @@ public class ASTFormatter extends ASTVisitor {
      * @since 3.0
      */
     public boolean visit(BlockComment node) {
-        _output("/* */\n");
+        _output(_indent);
+        _output(_commentString + "\n");
         return false;
     }
 
@@ -484,6 +552,17 @@ public class ASTFormatter extends ASTVisitor {
      * @see ASTVisitor#visit(CompilationUnit)
      */
     public boolean visit(CompilationUnit node) {
+        // Set up the comment iterator.
+        List comments = node.getCommentList();
+        if (!comments.isEmpty()) {
+            _commentIterator = comments.iterator();
+            try {
+                _nextComment();
+            } catch (IOException e) {
+                throw new ASTIORuntimeException(e);
+            }
+        }
+        
         // Sort all the importations.
         List imports = node.imports();
         int length = imports.size();
@@ -508,6 +587,7 @@ public class ASTFormatter extends ASTVisitor {
             ImportDeclaration d = (ImportDeclaration) it.next();
             d.accept(this);
         }
+        _output("\n");
         for (Iterator it = node.types().iterator(); it.hasNext(); ) {
             AbstractTypeDeclaration d = (AbstractTypeDeclaration) it.next();
             d.accept(this);
@@ -698,6 +778,7 @@ public class ASTFormatter extends ASTVisitor {
             }
             d.accept(this);
         }
+        _checkComments(node.getStartPosition() + node.getLength());
         _closeBrace();
         return false;
     }
@@ -726,7 +807,6 @@ public class ASTFormatter extends ASTVisitor {
      * @see ASTVisitor#visit(FieldDeclaration)
      */
     public boolean visit(FieldDeclaration node) {
-        _output("\n");
         if (node.getJavadoc() != null) {
             node.getJavadoc().accept(this);
         }
@@ -748,6 +828,7 @@ public class ASTFormatter extends ASTVisitor {
             }
         }
         _output(";\n");
+        _output("\n");
         return false;
     }
 
@@ -887,7 +968,6 @@ public class ASTFormatter extends ASTVisitor {
      * @see ASTVisitor#visit(Initializer)
      */
     public boolean visit(Initializer node) {
-        _output("\n");
         if (node.getJavadoc() != null) {
             node.getJavadoc().accept(this);
         }
@@ -899,6 +979,7 @@ public class ASTFormatter extends ASTVisitor {
         }
         _output(_indent);
         node.getBody().accept(this);
+        _output("\n");
         return false;
     }
 
@@ -935,7 +1016,8 @@ public class ASTFormatter extends ASTVisitor {
      * @since 3.0
      */
     public boolean visit(LineComment node) {
-        _output("//\n");
+        _output(_indent);
+        _output(_commentString + "\n");
         return false;
     }
 
@@ -1012,7 +1094,6 @@ public class ASTFormatter extends ASTVisitor {
      * @see ASTVisitor#visit(MethodDeclaration)
      */
     public boolean visit(MethodDeclaration node) {
-        _output("\n");
         if (node.getJavadoc() != null) {
             node.getJavadoc().accept(this);
         }
@@ -1080,6 +1161,7 @@ public class ASTFormatter extends ASTVisitor {
             _output(" ");
             node.getBody().accept(this);
         }
+        _output("\n");
         return false;
     }
 
@@ -1454,6 +1536,7 @@ public class ASTFormatter extends ASTVisitor {
             if (!(s instanceof SwitchCase))
                 _decreaseIndent();
         }
+        _checkComments(node.getStartPosition() + node.getLength());
         _closeBrace();
         return false;
     }
@@ -1511,6 +1594,7 @@ public class ASTFormatter extends ASTVisitor {
                 !currentIncludesWhiteSpace && !(e instanceof TagElement);
         }
         if (node.isNested()) {
+            _checkComments(node.getStartPosition() + node.getLength());
             _closeBrace();
         }
         return false;
@@ -1573,9 +1657,9 @@ public class ASTFormatter extends ASTVisitor {
      * @see ASTVisitor#visit(TypeDeclaration)
      */
     public boolean visit(TypeDeclaration node) {
-        _output("\n");
-        if (node.getJavadoc() != null) {
-            node.getJavadoc().accept(this);
+        Javadoc javadoc = node.getJavadoc();
+        if (javadoc != null) {
+            javadoc.accept(this);
         }
         _output(_indent);
         if (node.getAST().apiLevel() == AST.JLS2) {
@@ -1644,6 +1728,7 @@ public class ASTFormatter extends ASTVisitor {
             }
         }
         _openBrace();
+        _output("\n");
         BodyDeclaration prev = null;
         Iterator it;
         for (it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
@@ -1661,7 +1746,9 @@ public class ASTFormatter extends ASTVisitor {
             }
             d.accept(this);
         }
+        _checkComments(node.getStartPosition() + node.getLength());
         _closeBrace();
+        _output("\n");
         return false;
     }
 
@@ -1947,6 +2034,76 @@ public class ASTFormatter extends ASTVisitor {
             _output("transient ");
         }
     }
+    
+    private void _checkComments(int startPosition) {
+        if (_comment != null) {
+            if (_commentStartPosition <= startPosition) {
+                // Output the comment.
+                _comment.accept(this);
+                try {
+                    _nextComment();
+                } catch (IOException e) {
+                    throw new ASTIORuntimeException(e);
+                }
+            }
+        }
+    }
+    
+    private void _nextComment() throws IOException {
+        // Get the next comment.
+        if (_commentIterator.hasNext()) {
+            _comment = (Comment)_commentIterator.next();
+            while (_comment instanceof Javadoc && _commentIterator.hasNext())
+                _comment = (Comment)_commentIterator.next();
+            if (_comment instanceof Javadoc) {
+                _comment = null;
+                _commentIterator = null;
+            } else
+                _commentString = _getSource(_comment.getStartPosition(),
+                        _comment.getLength());
+        } else {
+            _comment = null;
+            _commentIterator = null;
+        }
+    }
+    
+    private String _getSource(int startPosition, int length)
+            throws IOException {
+        if (_sourceStream != null) {
+            byte[] skipContent;
+            if (_sourceStreamPosition < startPosition) {
+                int skipLength = startPosition - _sourceStreamPosition;
+                skipContent = new byte[skipLength];
+                _sourceStream.read(skipContent);
+            } else
+                skipContent = new byte[0];
+            byte[] buffer = new byte[length];
+            int readCount = _sourceStream.read(buffer);
+            _sourceStreamPosition = startPosition + readCount;
+            _commentStartPosition = startPosition;
+            for (int i = skipContent.length - 1; i >= 0; i--)
+                if (skipContent[i] == ' ' ||
+                        skipContent[i] == '\t' ||
+                        skipContent[i] == '\n' ||
+                        skipContent[i] == '\r')
+                    _commentStartPosition--;
+                else
+                    break;
+            return new String(buffer);
+        } else if (_source != null) {
+            _commentStartPosition = startPosition;
+            for (int i = startPosition - 1; i >= 0; i--)
+                if (_source[i] == ' ' ||
+                        _source[i] == '\t' ||
+                        _source[i] == '\n' ||
+                        _source[i] == '\r')
+                    _commentStartPosition--;
+                else
+                    break;
+            return new String(_source, startPosition, length);
+        }
+        return null;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
@@ -1974,5 +2131,35 @@ public class ASTFormatter extends ASTVisitor {
      *  followed by "catch", "finally" and so on.
      */
     private boolean _newLineAfterBlock = true;
+    
+    /** The Java source input stream, if not <tt>null</tt>. It is used to
+     *  generate comments.
+     */
+    private InputStream _sourceStream;
+    
+    /** The current position in the source input stream.
+     */
+    private int _sourceStreamPosition = 0;
+    
+    /** The array that contains Java source, if not <tt>null</tt>. It is used
+     *  to generate comments.
+     */
+    private char[] _source;
+    
+    /** The iterator of comments in the whole program.
+     */
+    private Iterator _commentIterator;
+    
+    /** The next comment to be output, or <tt>null</tt> if there is no more
+     *  comment.
+     */
+    private Comment _comment;
+    
+    /** The start position of the comment.
+     */
+    private int _commentStartPosition;
+    
+    /** The content of the next comment.
+     */
+    private String _commentString;
 }
-

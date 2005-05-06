@@ -187,8 +187,8 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
             }
 
             BusyIndicator.showWhile(Display.getCurrent(),
-                    new TransformerRunnable(file.getName(), compilationUnit,
-                            writer,
+                    new TransformerRunnable(file.getLocation().toOSString(),
+                            compilationUnit, writer,
                             Strings.combineArrays(PTClassPaths, extraClassPaths),
                             new String[]{}));
             _needRefactoring = false;
@@ -244,7 +244,11 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
     private void _setupPreviewPage() {
         int pageIndex = 1;
 
-        _preview = new CompilationUnitEditor();
+        _preview = new CompilationUnitEditor() {
+            public boolean isEditable() {
+                return false;
+            }
+        };
         IFile previewFile = _getPreviewFile();
         if (previewFile != null) {
             try {
