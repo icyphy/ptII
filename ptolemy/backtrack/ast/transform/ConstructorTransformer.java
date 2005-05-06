@@ -1,4 +1,4 @@
-/*
+/* Constructor transformer.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -53,44 +53,115 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 //////////////////////////////////////////////////////////////////////////
 //// ConstructorTransformer
 /**
+   The constructor transformer to transform Java source programs into new
+   programs that support backtracking.
+   <p>
+   When the type analyzer detects constructor declarations or a constructor
+   invocations, it calls back methods in this class to further handle them.
+   This transformer simply adds an extra method call to certain constructor
+   invocations to modify the checkpoint objects of the newly created objects.
+   <p>
+   Normally, when a new object is created as an instance of a refactored class,
+   its checkpoint object is default to an empty checkpoint object. The
+   checkpoint object then monitors the newly created object only. When the
+   extra call is placed on the newly created object, its checkpoint object is
+   set to be the same as the object that issues the call.
 
-
-@author Thomas Feng
-@version $Id$
-@since Ptolemy II 5.1
-@Pt.ProposedRating Red (tfeng)
-@Pt.AcceptedRating Red (tfeng)
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
 */
 public class ConstructorTransformer extends AbstractTransformer
     implements ConstructorHandler, ClassHandler, CrossAnalysisHandler,
                MethodDeclarationHandler {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Enter an anonymous class declaration.
+     * 
+     *  @param node The AST node of the anonymous class declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void enter(AnonymousClassDeclaration node,
+            TypeAnalyzerState state) {
+        _currentMethods.push(null);
+    }
+
+    /** Enter a field declaration.
+     * 
+     *  @param node The AST node of the field declaration.
+     *  @param state The current state of the type analyzer.
+     */
     public void enter(FieldDeclaration node, TypeAnalyzerState state) {
-        _isStaticField.push(new Boolean(Modifier.isStatic(node.getModifiers())));
+        _isStaticField.push(
+                new Boolean(Modifier.isStatic(node.getModifiers())));
     }
 
-    public void exit(FieldDeclaration node, TypeAnalyzerState state) {
-        _isStaticField.pop();
-    }
-
+    /** Enter a method declaration.
+     * 
+     *  @param node The AST node of the method declaration.
+     *  @param state The current state of the type analyzer.
+     */
     public void enter(MethodDeclaration node, TypeAnalyzerState state) {
         _currentMethods.push(node);
     }
 
+    /** Enter a type declaration.
+     * 
+     *  @param node The AST node of the type declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void enter(TypeDeclaration node, TypeAnalyzerState state) {
+        _currentMethods.push(null);
+    }
+
+    /** Exit an anonymous class declaration.
+     * 
+     *  @param node The AST node of the anonymous class declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void exit(AnonymousClassDeclaration node,
+            TypeAnalyzerState state) {
+        _currentMethods.pop();
+    }
+
+    /** Exit a field declaration.
+     * 
+     *  @param node The AST node of the field declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void exit(FieldDeclaration node, TypeAnalyzerState state) {
+        _isStaticField.pop();
+    }
+
+    /** Exit a method declaration.
+     * 
+     *  @param node The AST node of the method declaration.
+     *  @param state The current state of the type analyzer.
+     */
     public void exit(MethodDeclaration node, TypeAnalyzerState state) {
         _currentMethods.pop();
     }
 
-    /**
-     *  @param node
-     *  @param state
+    /** Exit a type declaration.
+     * 
+     *  @param node The AST node of the type declaration.
+     *  @param state The current state of the type analyzer.
      */
-    public void handle(MethodDeclaration node, TypeAnalyzerState state) {
+    public void exit(TypeDeclaration node, TypeAnalyzerState state) {
+        _currentMethods.pop();
     }
 
-    /**
-     *  @param node
-     *  @param state
+    /** Handle a class instance creation. If the instance is not created in a
+     *  method, it is not static, and the class that it belongs to is
+     *  refactored, a new method call is added to it. The checkpoint object of
+     *  the new instance is set to be the same as the object that creates it.
+     * 
+     *  @param node The AST node of the class instance creation.
+     *  @param state The current state of the type analyzer.
      */
     public void handle(ClassInstanceCreation node, TypeAnalyzerState state) {
         if (_currentMethods.peek() == null) {
@@ -114,29 +185,36 @@ public class ConstructorTransformer extends AbstractTransformer
         }
     }
 
-    public void handle(SuperConstructorInvocation node, TypeAnalyzerState state) {
+    /** Handle a method declaration. Nothing is done in this method.
+     * 
+     *  @param node The AST node of the method declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void handle(MethodDeclaration node, TypeAnalyzerState state) {
     }
 
-    public void enter(AnonymousClassDeclaration node,
+    /** Handle a super constructor invocation. Nothing is done in this method.
+     * 
+     *  @param node The AST node of the super constructor invocation.
+     *  @param state The current state of the type analyzer.
+     */
+    public void handle(SuperConstructorInvocation node,
             TypeAnalyzerState state) {
-        _currentMethods.push(null);
     }
 
-    public void exit(AnonymousClassDeclaration node,
-            TypeAnalyzerState state) {
-        _handleDeclaration(node, node.bodyDeclarations(), state);
-        _currentMethods.pop();
-    }
-
-    public void enter(TypeDeclaration node, TypeAnalyzerState state) {
-        _currentMethods.push(null);
-    }
-
-    public void exit(TypeDeclaration node, TypeAnalyzerState state) {
-        _handleDeclaration(node, node.bodyDeclarations(), state);
-        _currentMethods.pop();
-    }
-
+    /** Fix the refactoring result when the set of cross-analyzed types
+     *  changes.
+     *  <p>
+     *  The set of cross-analyzed types defines the growing set of types that
+     *  are analyzed in a run. Special care is taken for cross-analyzed types
+     *  because they are monitored by checkpoint objects, and
+     *  checkpoint-related extra methods are added to them. Unfortunately, it
+     *  is not possible to know all the cross-analyzed types at the beginning.
+     *  It is then necessary to fix the refactoring result when more
+     *  cross-analyzed types are discovered later.
+     *
+     *  @param state The current state of the type analyzer.
+     */
     public void handle(TypeAnalyzerState state) {
         Set crossAnalyzedTypes = state.getCrossAnalyzedTypes();
         Iterator crossAnalysisIter = crossAnalyzedTypes.iterator();
@@ -155,8 +233,22 @@ public class ConstructorTransformer extends AbstractTransformer
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public fields                       ////
+
+    /** Whether to map special types to new types.
+     * 
+     *  @see #SPECIAL_TYPE_MAPPING
+     */
     public final static boolean HANDLE_SPECIAL_TYPE_MAPPINGS = true;
 
+    /** Mapping from names of special types to the names of types used to
+     *  substitute them. During type analysis, when an object is seen to be
+     *  declared as an instance of a special type (such as
+     *  <tt>java.util.Random</tt>), its declaraing class is substituted to be
+     *  the corresponding backtracking-enabled type (such as
+     *  <tt>ptolemy.backtrack.util.java.util.Random</tt>).
+     */
     public static final Hashtable SPECIAL_TYPE_MAPPING = new Hashtable();
 
     static {
@@ -166,10 +258,17 @@ public class ConstructorTransformer extends AbstractTransformer
                 "ptolemy.backtrack.util.java.util.TreeMap");
     }
 
-    private void _handleDeclaration(ASTNode node, List bodyDeclarations,
-            TypeAnalyzerState state) {
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
 
+    /** Refactor a class instance creation node and add a method call to it.
+     *  At run-time, this results in setting the checkpoint object of the new
+     *  instance to be the same as the checkpoint object of the object that
+     *  creates it.
+     * 
+     *  @param node The AST node of the class instance creation.
+     *  @param state The current state of the type analyzer.
+     */
     private void _refactor(ClassInstanceCreation node,
             TypeAnalyzerState state) {
         AST ast = node.getAST();
@@ -179,9 +278,10 @@ public class ConstructorTransformer extends AbstractTransformer
             (ClassInstanceCreation)ASTNode.copySubtree(ast, node);
 
         if (SPECIAL_TYPE_MAPPING.containsKey(type.getName())) {
-            type = Type.createType((String)SPECIAL_TYPE_MAPPING.get(type.getName()));
+            type = Type.createType(
+                    (String)SPECIAL_TYPE_MAPPING.get(type.getName()));
             newNode.setName(createName(ast,
-                                    getClassName(type.getName(), state, root)));
+                    getClassName(type.getName(), state, root)));
             Type.setType(node, type);
         }
 
@@ -198,9 +298,24 @@ public class ConstructorTransformer extends AbstractTransformer
         replaceNode(node, typeCast);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
+
+    /** The class instance creation nodes that have not been refactored. Keys
+     *  are the types that they depend on; values are those nodes. When the
+     *  type that a node depends on is added to the cross-analyzed set, the
+     *  node must be refactored in {@link #handle(TypeAnalyzerState)}.
+     */
     private Hashtable _unhandledNodes = new Hashtable();
 
+    /** The stack of currently entered method declarations. A <tt>null</tt>
+     *  object is added to this stack when a type declaration or an anonymous
+     *  class declaration is entered.
+     */
     private Stack _currentMethods = new Stack();
 
+    /** The stack of {@link Boolean}s on whether the methods entered are
+     *  static.
+     */
     private Stack _isStaticField = new Stack();
 }
