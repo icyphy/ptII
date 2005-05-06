@@ -47,7 +47,7 @@ import java.util.Comparator;
    @deprecated As Ptolemy II 4.1, use GeneralComparator instead.
 
    @Pt.ProposedRating Yellow (liuj)
-   @Pt.AcceptedRating Red (johnr)
+   @Pt.AcceptedRating Yellow (hyzheng)
 */
 public class FuzzyDoubleComparator implements Comparator {
     /** Construct a FuzzyDoubleComparator. The compare threshold is
