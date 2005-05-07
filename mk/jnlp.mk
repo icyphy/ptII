@@ -261,7 +261,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/jmf/jmf.jar \
 	ptolemy/actor/lib/jmf/demo/demo.jar \
 	ptolemy/actor/lib/joystick/joystick.jar \
-	ptolemy/actor/lib/jxta/jxta.jar \
 	ptolemy/actor/lib/x10/x10.jar \
 	vendors/misc/joystick/Joystick.jar \
 	ptolemy/actor/lib/x10/demo/demo.jar \
@@ -751,12 +750,13 @@ jnlp_verify:
 	done;
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII4.0/jnlp-4.0-beta
+DIST_BASE = ptolemyII/ptII5.0/jnlp
 DIST_DIR = /vol/ptolemy/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
 	ptolemy/configs/hyvisual/hyvisualPlanet.gif
-KEYSTORE2=/users/ptII/adm/certs/ptkeystore
+#KEYSTORE2=/users/ptII/adm/certs/ptkeystore
+KEYSTORE2=/users/cxh/certs/ptkeystore
 KEYALIAS2=ptolemy
 # make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
 # make DIST_DIR=c:/cxh/hyv DIST_URL=file:///c:/cxh/hyv jnlp_dist KEYSTORE2=ptKeystore KEYALIAS2=claudius
