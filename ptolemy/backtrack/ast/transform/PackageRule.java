@@ -168,7 +168,8 @@ public class PackageRule extends TransformRule {
             if (transform) {
                 ImportDeclaration importDeclaration =
                     ast.newImportDeclaration();
-                importDeclaration.setName(AbstractTransformer.createName(ast, fullName));
+                importDeclaration.setName(
+                        AbstractTransformer.createName(ast, fullName));
                 root.imports().add(importDeclaration);
                 loader.importClass(fullName);
             }
@@ -334,12 +335,17 @@ public class PackageRule extends TransformRule {
                     while (specialTypesIter.hasNext()) {
                         String specialType = (String)specialTypesIter.next();
                         String simpleType =
-                            specialType.substring(specialType.lastIndexOf(".") + 1);
+                            specialType.substring(
+                                    specialType.lastIndexOf(".") + 1);
                         String newId = null;
                         if (id.startsWith(specialType + "."))
-                            newId = id.substring(specialType.length() + 1 - simpleType.length());
+                            newId = id.substring(
+                                    specialType.length() + 1 -
+                                        simpleType.length());
                         else if (id.equals(specialType))
-                            newId = id.substring(specialType.length() - simpleType.length());
+                            newId = id.substring(
+                                    specialType.length() -
+                                        simpleType.length());
                         if (newId != null)
                             AbstractTransformer.replaceNode(node,
                                     AbstractTransformer.createName(
