@@ -72,7 +72,8 @@ GCC_FILES = \
 	java/util/Stack.java \
 	java/util/TreeMap.java \
 	java/util/TreeSet.java \
-	java/util/Vector.java
+	java/util/Vector.java \
+	java/util/WeakHashMap.java
 	
 GCC_CLASSES = $(GCC_FILES:%.java=%.class)
 
