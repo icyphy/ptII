@@ -99,15 +99,12 @@ CORE_JNLP_JARS = \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/domains.jar \
-	lib/matlab.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar \
-	ptolemy/matlab/matlab.jar \
-	ptolemy/matlab/demo/demo.jar \
 	lib/matlab.jar \
-	ptolemy/ptsupport.jar \
-	ptolemy/vergil/vergil.jar
+	ptolemy/matlab/matlab.jar \
+	ptolemy/matlab/demo/demo.jar
 
 #######
 # DSP - The smallest runtime
