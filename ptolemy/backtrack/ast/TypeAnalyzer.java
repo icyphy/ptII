@@ -104,6 +104,7 @@ import ptolemy.backtrack.ast.transform.AssignmentHandler;
 import ptolemy.backtrack.ast.transform.ClassHandler;
 import ptolemy.backtrack.ast.transform.ConstructorHandler;
 import ptolemy.backtrack.ast.transform.CrossAnalysisHandler;
+import ptolemy.backtrack.ast.transform.FieldDeclarationHandler;
 import ptolemy.backtrack.ast.transform.MethodDeclarationHandler;
 import ptolemy.backtrack.ast.transform.HandlerList;
 import ptolemy.backtrack.util.PathFinder;
@@ -405,6 +406,15 @@ public class TypeAnalyzer extends ASTVisitor {
             while (handlersIter.hasNext()) {
                 ConstructorHandler handler =
                     (ConstructorHandler)handlersIter.next();
+                handler.exit(node, _state);
+            }
+        }
+        if (_handlers.hasFieldDeclarationHandler()) {
+            List handlerList = _handlers.getFieldDeclarationHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                FieldDeclarationHandler handler =
+                    (FieldDeclarationHandler)handlersIter.next();
                 handler.exit(node, _state);
             }
         }
@@ -1157,6 +1167,15 @@ public class TypeAnalyzer extends ASTVisitor {
             while (handlersIter.hasNext()) {
                 ConstructorHandler handler =
                     (ConstructorHandler)handlersIter.next();
+                handler.enter(node, _state);
+            }
+        }
+        if (_handlers.hasFieldDeclarationHandler()) {
+            List handlerList = _handlers.getFieldDeclarationHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                FieldDeclarationHandler handler =
+                    (FieldDeclarationHandler)handlersIter.next();
                 handler.enter(node, _state);
             }
         }
