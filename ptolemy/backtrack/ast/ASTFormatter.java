@@ -282,7 +282,7 @@ public class ASTFormatter extends ASTVisitor {
             BodyDeclaration d = (BodyDeclaration) it.next();
             d.accept(this);
         }
-        _checkComments(node.getStartPosition() + node.getLength());
+        _checkComments(node.getStartPosition() + node.getLength() - 1);
         _closeBrace();
         return false;
     }
@@ -319,7 +319,7 @@ public class ASTFormatter extends ASTVisitor {
             BodyDeclaration b = (BodyDeclaration) it.next();
             b.accept(this);
         }
-        _checkComments(node.getStartPosition() + node.getLength());
+        _checkComments(node.getStartPosition() + node.getLength() - 1);
         _closeBrace(false);
         return false;
     }
@@ -380,7 +380,7 @@ public class ASTFormatter extends ASTVisitor {
             }
             _output("\n");
         }
-        _checkComments(node.getStartPosition() + node.getLength());
+        _checkComments(node.getStartPosition() + node.getLength() - 1);
         _closeBrace(false);
         return false;
     }
@@ -434,7 +434,7 @@ public class ASTFormatter extends ASTVisitor {
             Statement s = (Statement) it.next();
             s.accept(this);
         }
-        _checkComments(node.getStartPosition() + node.getLength());
+        _checkComments(node.getStartPosition() + node.getLength() - 1);
         _closeBrace(newLineAfterBlock);
         _newLineAfterBlock = true;
         return false;
@@ -778,7 +778,7 @@ public class ASTFormatter extends ASTVisitor {
             }
             d.accept(this);
         }
-        _checkComments(node.getStartPosition() + node.getLength());
+        _checkComments(node.getStartPosition() + node.getLength() - 1);
         _closeBrace();
         return false;
     }
@@ -1536,7 +1536,7 @@ public class ASTFormatter extends ASTVisitor {
             if (!(s instanceof SwitchCase))
                 _decreaseIndent();
         }
-        _checkComments(node.getStartPosition() + node.getLength());
+        _checkComments(node.getStartPosition() + node.getLength() - 1);
         _closeBrace();
         return false;
     }
@@ -1594,7 +1594,7 @@ public class ASTFormatter extends ASTVisitor {
                 !currentIncludesWhiteSpace && !(e instanceof TagElement);
         }
         if (node.isNested()) {
-            _checkComments(node.getStartPosition() + node.getLength());
+            _checkComments(node.getStartPosition() + node.getLength() - 1);
             _closeBrace();
         }
         return false;
@@ -1746,7 +1746,7 @@ public class ASTFormatter extends ASTVisitor {
             }
             d.accept(this);
         }
-        _checkComments(node.getStartPosition() + node.getLength());
+        _checkComments(node.getStartPosition() + node.getLength() - 1);
         _closeBrace();
         _output("\n");
         return false;
@@ -2036,15 +2036,14 @@ public class ASTFormatter extends ASTVisitor {
     }
     
     private void _checkComments(int startPosition) {
-        if (_comment != null) {
-            if (_commentStartPosition <= startPosition) {
-                // Output the comment.
-                _comment.accept(this);
-                try {
-                    _nextComment();
-                } catch (IOException e) {
-                    throw new ASTIORuntimeException(e);
-                }
+        while (_comment != null && _commentStartPosition <= startPosition) {
+            // Output the comment.
+            _comment.accept(this);
+            startPosition = _comment.getStartPosition() + _comment.getLength();
+            try {
+                _nextComment();
+            } catch (IOException e) {
+                throw new ASTIORuntimeException(e);
             }
         }
     }
