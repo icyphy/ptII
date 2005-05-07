@@ -1,4 +1,7 @@
-/* This file is part of GNU Classpath.
+/* LinkedList.java -- Linked list implementation of the List interface
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+
+This file is part of GNU Classpath.
 
 GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,7 +34,6 @@ or based on this library.  If you modify this library, you may extend
 this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
-
 package ptolemy.backtrack.util.java.util;
 
 import java.io.IOException;
@@ -49,50 +51,122 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
+/** 
+ * Linked list implementation of the List interface. In addition to the
+ * methods of the List interface, this class provides access to the first
+ * and last list elements in O(1) time for easy stack, queue, or double-ended
+ * queue (deque) creation. The list is doubly-linked, with traversal to a
+ * given index starting from the end closest to the element.<p>
+ * LinkedList is not synchronized, so if you need multi-threaded access,
+ * consider using:<br>
+ * <code>List l = Collections.synchronizedList(new LinkedList(...));</code>
+ * <p>
+ * The iterators are <i>fail-fast</i>, meaning that any structural
+ * modification, except for <code>remove()</code> called on the iterator
+ * itself, cause the iterator to throw a{
+@link ConcurrentModificationException}
+ rather than exhibit
+ * non-deterministic behavior.
+ * @author Original author unknown
+ * @author Bryce McKinlay
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see List
+ * @see ArrayList
+ * @see Vector
+ * @see Collections#synchronizedList(List)
+ * @since 1.2
+ * @status missing javadoc, but complete to 1.4
+ */
 public class LinkedList extends AbstractSequentialList implements List, Cloneable, Serializable, Rollbackable {
 
+    /**     
+     * Compatible with JDK 1.2.
+     */
     private static final long serialVersionUID = 876323262645176354L;
 
+    /**     
+     * The first element in the list.
+     */
     private transient Entry first;
 
+    /**     
+     * The last element in the list.
+     */
     private transient Entry last;
 
+    /**     
+     * The current length of the list.
+     */
     private transient int size = 0;
 
+    /**     
+     * Class to represent an entry in the list. Holds a single element.
+     */
     private static final class Entry implements Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
+        /**         
+         * The element in the list. 
+         */
         private Object data;
 
+        /**         
+         * The next list entry, null if this is last. 
+         */
         private Entry next;
 
+        /**         
+         * The previous list entry, null if this is first. 
+         */
         private Entry previous;
 
+        /**         
+         * Construct an entry.
+         * @param data the list element
+         */
         Entry(Object data) {
             this.setData(data);
         }
 
+        /**         
+         * @param data The data to set.
+         */
         void setData(Object data) {
             this.$ASSIGN$data(data);
         }
 
+        /**         
+         * @return Returns the data.
+         */
         Object getData() {
             return data;
         }
 
+        /**         
+         * @param next The next to set.
+         */
         void setNext(Entry next) {
             this.$ASSIGN$next(next);
         }
 
+        /**         
+         * @return Returns the next.
+         */
         Entry getNext() {
             return next;
         }
 
+        /**         
+         * @param previous The previous to set.
+         */
         void setPrevious(Entry previous) {
             this.$ASSIGN$previous(previous);
         }
 
+        /**         
+         * @return Returns the previous.
+         */
         Entry getPrevious() {
             return previous;
         }
@@ -167,26 +241,66 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         private FieldRecord $RECORD$previous = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$data,
-            $RECORD$next,
-            $RECORD$previous
-        };
+                $RECORD$data,
+                $RECORD$next,
+                $RECORD$previous
+            };
+
     }
 
+    // class Entry
+    // Package visible for use in nested classes.
+    // n less than size/2, iterate from start
+    /**         // n greater than size/2, iterate from end
+
+     *     // Package visible for use in nested classes.
+A ListIterator over the list. This class keeps track of its    // Get the entries just before and after index. If index is at the start
+    // of the list, BEFORE is null. If index is at the end of the list, AFTER
+    // is null. If the list is empty, both are null.
+
+     *     // Create the first new entry. We do not yet set the link from `before'
+    // to the first entry, in order to deal with the case where (c == this).
+    // [Actually, we don't have to handle this case to fufill the
+    // contract for addAll(), but Sun's implementation appears to.]
+position in the list and the two list entries it is between.    // Create and link all the remaining entries.
+    // Link the new chain of entries into the list.
+
+     * @author Original author unknown
+     * @author Eric Blake <ebb9@email.byu.edu>
+     */
     private final class LinkedListItr implements ListIterator, Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
+        /**         
+         * Number of modifications we know about. 
+         */
         private int knownMod = getModCount();
 
+        /**         
+         * Entry that will be returned by next(). 
+         */
         private Entry next;
 
+        /**         
+         * Entry that will be returned by previous(). 
+         */
         private Entry previous;
 
+        /**         
+         * Entry that will be affected by remove() or set(). 
+         */
         private Entry lastReturned;
 
+        /**         
+         * Index of `next'. 
+         */
         private int position;
 
+        /**         
+         * Initialize the iterator.
+         * @param index the initial index
+         */
         LinkedListItr(int index) {
             if (index == size) {
                 $ASSIGN$next(null);
@@ -198,31 +312,61 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             $ASSIGN$position(index);
         }
 
+        /**         
+         * Checks for iterator consistency.
+         * @throws ConcurrentModificationException if the list was modified
+         */
         private void checkMod() {
             if (knownMod != getModCount())
                 throw new ConcurrentModificationException();
         }
 
+        /**         
+         * Returns the index of the next element.
+         * @return the next index
+         * @throws ConcurrentModificationException if the list was modified
+         */
         public int nextIndex() {
             checkMod();
             return position;
         }
 
+        /**         
+         * Returns the index of the previous element.
+         * @return the previous index
+         * @throws ConcurrentModificationException if the list was modified
+         */
         public int previousIndex() {
             checkMod();
             return position - 1;
         }
 
+        /**         
+         * Returns true if more elements exist via next.
+         * @return true if next will succeed
+         * @throws ConcurrentModificationException if the list was modified
+         */
         public boolean hasNext() {
             checkMod();
             return (next != null);
         }
 
+        /**         
+         * Returns true if more elements exist via previous.
+         * @return true if previous will succeed
+         * @throws ConcurrentModificationException if the list was modified
+         */
         public boolean hasPrevious() {
             checkMod();
             return (previous != null);
         }
 
+        /**         
+         * Returns the next element.
+         * @return the next element
+         * @throws ConcurrentModificationException if the list was modified
+         * @throws NoSuchElementException if there is no next
+         */
         public Object next() {
             checkMod();
             if (next == null)
@@ -233,6 +377,12 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             return lastReturned.getData();
         }
 
+        /**         
+         * Returns the previous element.
+         * @return the previous element
+         * @throws ConcurrentModificationException if the list was modified
+         * @throws NoSuchElementException if there is no previous
+         */
         public Object previous() {
             checkMod();
             if (previous == null)
@@ -243,10 +393,17 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             return lastReturned.getData();
         }
 
+        /**         
+         * Remove the most recently returned element from the list.
+         * @throws ConcurrentModificationException if the list was modified
+         * @throws IllegalStateException if there was no last element
+         */
         public void remove() {
             checkMod();
             if (lastReturned == null)
                 throw new IllegalStateException();
+                // Adjust the position to before the removed element, if the element
+                // being removed is behind the cursor.
             if (lastReturned == previous)
                 $ASSIGN$SPECIAL$position(12, position);
             $ASSIGN$next(lastReturned.getNext());
@@ -256,6 +413,11 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             $ASSIGN$lastReturned(null);
         }
 
+        /**         
+         * Adds an element between the previous and next, and advance to the next.
+         * @param o the element to add
+         * @throws ConcurrentModificationException if the list was modified
+         */
         public void add(Object o) {
             checkMod();
             setModCount(getModCount() + 1);
@@ -277,6 +439,12 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             $ASSIGN$lastReturned(null);
         }
 
+        /**         
+         * Changes the contents of the element most recently returned.
+         * @param o the new element
+         * @throws ConcurrentModificationException if the list was modified
+         * @throws IllegalStateException if there was no last element
+         */
         public void set(Object o) {
             checkMod();
             if (lastReturned == null)
@@ -289,38 +457,38 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
                 $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-            case 0:
-                return knownMod += newValue;
-            case 1:
-                return knownMod -= newValue;
-            case 2:
-                return knownMod *= newValue;
-            case 3:
-                return knownMod /= newValue;
-            case 4:
-                return knownMod &= newValue;
-            case 5:
-                return knownMod |= newValue;
-            case 6:
-                return knownMod ^= newValue;
-            case 7:
-                return knownMod %= newValue;
-            case 8:
-                return knownMod <<= newValue;
-            case 9:
-                return knownMod >>= newValue;
-            case 10:
-                return knownMod >>>= newValue;
-            case 11:
-                return knownMod++;
-            case 12:
-                return knownMod--;
-            case 13:
-                return ++knownMod;
-            case 14:
-                return --knownMod;
-            default:
-                return knownMod;
+                case 0:
+                    return knownMod += newValue;
+                case 1:
+                    return knownMod -= newValue;
+                case 2:
+                    return knownMod *= newValue;
+                case 3:
+                    return knownMod /= newValue;
+                case 4:
+                    return knownMod &= newValue;
+                case 5:
+                    return knownMod |= newValue;
+                case 6:
+                    return knownMod ^= newValue;
+                case 7:
+                    return knownMod %= newValue;
+                case 8:
+                    return knownMod <<= newValue;
+                case 9:
+                    return knownMod >>= newValue;
+                case 10:
+                    return knownMod >>>= newValue;
+                case 11:
+                    return knownMod++;
+                case 12:
+                    return knownMod--;
+                case 13:
+                    return ++knownMod;
+                case 14:
+                    return --knownMod;
+                default:
+                    return knownMod;
             }
         }
 
@@ -366,38 +534,38 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
                 $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-            case 0:
-                return position += newValue;
-            case 1:
-                return position -= newValue;
-            case 2:
-                return position *= newValue;
-            case 3:
-                return position /= newValue;
-            case 4:
-                return position &= newValue;
-            case 5:
-                return position |= newValue;
-            case 6:
-                return position ^= newValue;
-            case 7:
-                return position %= newValue;
-            case 8:
-                return position <<= newValue;
-            case 9:
-                return position >>= newValue;
-            case 10:
-                return position >>>= newValue;
-            case 11:
-                return position++;
-            case 12:
-                return position--;
-            case 13:
-                return ++position;
-            case 14:
-                return --position;
-            default:
-                return position;
+                case 0:
+                    return position += newValue;
+                case 1:
+                    return position -= newValue;
+                case 2:
+                    return position *= newValue;
+                case 3:
+                    return position /= newValue;
+                case 4:
+                    return position &= newValue;
+                case 5:
+                    return position |= newValue;
+                case 6:
+                    return position ^= newValue;
+                case 7:
+                    return position %= newValue;
+                case 8:
+                    return position <<= newValue;
+                case 9:
+                    return position >>= newValue;
+                case 10:
+                    return position >>>= newValue;
+                case 11:
+                    return position++;
+                case 12:
+                    return position--;
+                case 13:
+                    return ++position;
+                case 14:
+                    return --position;
+                default:
+                    return position;
             }
         }
 
@@ -450,28 +618,46 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         private FieldRecord $RECORD$position = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$knownMod,
-            $RECORD$next,
-            $RECORD$previous,
-            $RECORD$lastReturned,
-            $RECORD$position
-        };
+                $RECORD$knownMod,
+                $RECORD$next,
+                $RECORD$previous,
+                $RECORD$lastReturned,
+                $RECORD$position
+            };
+
     }
 
+    // class LinkedListItr
+    /**     
+     * Obtain the Entry at a given position in a list. This method of course
+     * takes linear time, but it is intelligent enough to take the shorter of the
+     * paths to get to the Entry required. This implies that the first or last
+     * entry in the list is obtained in constant time, which is a very desirable
+     * property.
+     * For speed and flexibility, range checking is not done in this method:
+     * Incorrect values will be returned if (n &lt; 0) or (n &gt;= size).
+     * @param n the number of the entry to get
+     * @return the entry at position n
+     */
     Entry getEntry(int n) {
         Entry e;
         if (n < size / 2) {
             e = first;
-            while (n-- > 0)
+            while (n-- > 0) 
                 e = e.getNext();
         } else {
             e = last;
-            while (++n < size)
+            while (++n < size) 
                 e = e.getPrevious();
         }
         return e;
     }
 
+    /**     
+     * Remove an entry from the list. This will adjust size and deal with
+     * `first' and  `last' appropriatly.
+     * @param e the entry to remove
+     */
     void removeEntry(Entry e) {
         setModCount(getModCount() + 1);
         $ASSIGN$SPECIAL$size(12, size);
@@ -491,35 +677,69 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         }
     }
 
+    /**     
+     * Checks that the index is in the range of possible elements (inclusive).
+     * @param index the index to check
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size
+     */
     private void checkBoundsInclusive(int index) {
         if (index < 0 || index > size)
             throw new IndexOutOfBoundsException("Index: " + index+", Size:"+size);
     }
 
+    /**     
+     * Checks that the index is in the range of existing elements (exclusive).
+     * @param index the index to check
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size
+     */
     private void checkBoundsExclusive(int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException("Index: " + index+", Size:"+size);
     }
 
+    /**     
+     * Create an empty linked list.
+     */
     public LinkedList() {
     }
 
+    /**     
+     * Create a linked list containing the elements, in order, of a given
+     * collection.
+     * @param c the collection to populate this list from
+     * @throws NullPointerException if c is null
+     */
     public LinkedList(Collection c) {
         addAll(c);
     }
 
+    /**     
+     * Returns the first element in the list.
+     * @return the first list element
+     * @throws NoSuchElementException if the list is empty
+     */
     public Object getFirst() {
         if (size == 0)
             throw new NoSuchElementException();
         return first.getData();
     }
 
+    /**     
+     * Returns the last element in the list.
+     * @return the last list element
+     * @throws NoSuchElementException if the list is empty
+     */
     public Object getLast() {
         if (size == 0)
             throw new NoSuchElementException();
         return last.getData();
     }
 
+    /**     
+     * Remove and return the first element in the list.
+     * @return the former first element in the list
+     * @throws NoSuchElementException if the list is empty
+     */
     public Object removeFirst() {
         if (size == 0)
             throw new NoSuchElementException();
@@ -534,6 +754,11 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         return r;
     }
 
+    /**     
+     * Remove and return the last element in the list.
+     * @return the former last element in the list
+     * @throws NoSuchElementException if the list is empty
+     */
     public Object removeLast() {
         if (size == 0)
             throw new NoSuchElementException();
@@ -548,6 +773,10 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         return r;
     }
 
+    /**     
+     * Insert an element at the first of the list.
+     * @param o the element to insert
+     */
     public void addFirst(Object o) {
         Entry e = new Entry(o);
         setModCount(getModCount() + 1);
@@ -561,10 +790,18 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         $ASSIGN$SPECIAL$size(11, size);
     }
 
+    /**     
+     * Insert an element at the last of the list.
+     * @param o the element to insert
+     */
     public void addLast(Object o) {
         addLastEntry(new Entry(o));
     }
 
+    /**     
+     * Inserts an element at the end of the list.
+     * @param e the entry to add
+     */
     private void addLastEntry(Entry e) {
         setModCount(getModCount() + 1);
         if (size == 0)
@@ -577,6 +814,12 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         $ASSIGN$SPECIAL$size(11, size);
     }
 
+    /**     
+     * Returns true if the list contains the given object. Comparison is done by
+     * <code>o == null ? e = null : o.equals(e)</code>.
+     * @param o the element to look for
+     * @return true if it is found
+     */
     public boolean contains(Object o) {
         Entry e = first;
         while (e != null) {
@@ -587,15 +830,30 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         return false;
     }
 
+    /**     
+     * Returns the size of the list.
+     * @return the list size
+     */
     public int size() {
         return size;
     }
 
+    /**     
+     * Adds an element to the end of the list.
+     * @param e the entry to add
+     * @return true, as it always succeeds
+     */
     public boolean add(Object o) {
         addLastEntry(new Entry(o));
         return true;
     }
 
+    /**     
+     * Removes the entry at the lowest index in the list that matches the given
+     * object, comparing by <code>o == null ? e = null : o.equals(e)</code>.
+     * @param o the object to remove
+     * @return true if an instance of the object was removed
+     */
     public boolean remove(Object o) {
         Entry e = first;
         while (e != null) {
@@ -608,10 +866,27 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         return false;
     }
 
+    /**     
+     * Append the elements of the collection in iteration order to the end of
+     * this list. If this list is modified externally (for example, if this
+     * list is the collection), behavior is unspecified.
+     * @param c the collection to append
+     * @return true if the list was modified
+     * @throws NullPointerException if c is null
+     */
     public boolean addAll(Collection c) {
         return addAll(size, c);
     }
 
+    /**     
+     * Insert the elements of the collection in iteration order at the given
+     * index of this list. If this list is modified externally (for example,
+     * if this list is the collection), behavior is unspecified.
+     * @param c the collection to append
+     * @return true if the list was modified
+     * @throws NullPointerException if c is null
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     */
     public boolean addAll(int index, Collection c) {
         checkBoundsInclusive(index);
         int csize = c.size();
@@ -649,6 +924,9 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         return true;
     }
 
+    /**     
+     * Remove all elements from this list.
+     */
     public void clear() {
         if (size > 0) {
             setModCount(getModCount() + 1);
@@ -658,11 +936,24 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         }
     }
 
+    /**     
+     * Return the element at index.
+     * @param index the place to look
+     * @return the element at index
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     */
     public Object get(int index) {
         checkBoundsExclusive(index);
         return getEntry(index).getData();
     }
 
+    /**     
+     * Replace the element at the given location in the list.
+     * @param index which index to change
+     * @param o the new element
+     * @return the prior element
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     */
     public Object set(int index, Object o) {
         checkBoundsExclusive(index);
         Entry e = getEntry(index);
@@ -671,6 +962,12 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         return old;
     }
 
+    /**     
+     * Inserts an element in the given position in the list.
+     * @param index where to insert the element
+     * @param o the element to insert
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     */
     public void add(int index, Object o) {
         checkBoundsInclusive(index);
         Entry e = new Entry(o);
@@ -689,6 +986,12 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             addLastEntry(e);
     }
 
+    /**     
+     * Removes the element at the given position from the list.
+     * @param index the location of the element to remove
+     * @return the removed element
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     */
     public Object remove(int index) {
         checkBoundsExclusive(index);
         Entry e = getEntry(index);
@@ -696,6 +999,11 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         return e.getData();
     }
 
+    /**     
+     * Returns the first index where the element is located in the list, or -1.
+     * @param o the element to look for
+     * @return its position, or -1 if not found
+     */
     public int indexOf(Object o) {
         int index = 0;
         Entry e = first;
@@ -708,6 +1016,11 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         return -1;
     }
 
+    /**     
+     * Returns the last index where the element is located in the list, or -1.
+     * @param o the element to look for
+     * @return its position, or -1 if not found
+     */
     public int lastIndexOf(Object o) {
         int index = size - 1;
         Entry e = last;
@@ -720,11 +1033,24 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         return -1;
     }
 
+    /**     
+     * Obtain a ListIterator over this list, starting at a given index. The
+     * ListIterator returned by this method supports the add, remove and set
+     * methods.
+     * @param index the index of the element to be returned by the first call to
+     * next(), or size() to be initially positioned at the end of the list
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     */
     public ListIterator listIterator(int index) {
         checkBoundsInclusive(index);
         return new LinkedListItr(index);
     }
 
+    /**     
+     * Create a shallow copy of this LinkedList (the elements are not cloned).
+     * @return an object of the same class as this object, containing the
+     * same elements in the same order
+     */
     public Object clone() {
         LinkedList copy = null;
         try {
@@ -736,6 +1062,10 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         return copy;
     }
 
+    /**     
+     * Returns an array which contains the elements of the list in order.
+     * @return an array containing the list elements
+     */
     public Object[] toArray() {
         Object[] array = new Object[size];
         Entry e = first;
@@ -746,6 +1076,19 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         return array;
     }
 
+    /**     
+     * Returns an Array whose component type is the runtime component type of
+     * the passed-in Array.  The returned Array is populated with all of the
+     * elements in this LinkedList.  If the passed-in Array is not large enough
+     * to store all of the elements in this List, a new Array will be created 
+     * and returned; if the passed-in Array is <i>larger</i> than the size
+     * of this List, then size() index will be set to null.
+     * @param a the passed-in Array
+     * @return an array representation of this list
+     * @throws ArrayStoreException if the runtime type of a does not allow
+     * an element in this list
+     * @throws NullPointerException if a is null
+     */
     public Object[] toArray(Object[] a) {
         if (a.length < size)
             a = (Object[])Array.newInstance(a.getClass().getComponentType(), size);
@@ -759,6 +1102,13 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         return a;
     }
 
+    /**     
+     * Serializes this object to the given stream.
+     * @param s the stream to write to
+     * @throws IOException if the underlying stream fails
+     * @serialData the size of the list (int), followed by all the elements
+     * (Object) in proper order
+     */
     private void writeObject(ObjectOutputStream s) throws IOException  {
         s.defaultWriteObject();
         s.writeInt(size);
@@ -769,17 +1119,31 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         }
     }
 
+    /**     
+     * Deserializes this object from the given stream.
+     * @param s the stream to read from
+     * @throws ClassNotFoundException if the underlying stream fails
+     * @throws IOException if the underlying stream fails
+     * @serialData the size of the list (int), followed by all the elements
+     * (Object) in proper order
+     */
     private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
         s.defaultReadObject();
         int i = s.readInt();
-        while (--i >= 0)
+        while (--i >= 0) 
             addLastEntry(new Entry(s.readObject()));
     }
 
+    /**     
+     * @param size The size to set.
+     */
     void setSize(int size) {
         this.$ASSIGN$size(size);
     }
 
+    /**     
+     * @return Returns the size.
+     */
     int getSize() {
         return size;
     }
@@ -816,38 +1180,38 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-        case 0:
-            return size += newValue;
-        case 1:
-            return size -= newValue;
-        case 2:
-            return size *= newValue;
-        case 3:
-            return size /= newValue;
-        case 4:
-            return size &= newValue;
-        case 5:
-            return size |= newValue;
-        case 6:
-            return size ^= newValue;
-        case 7:
-            return size %= newValue;
-        case 8:
-            return size <<= newValue;
-        case 9:
-            return size >>= newValue;
-        case 10:
-            return size >>>= newValue;
-        case 11:
-            return size++;
-        case 12:
-            return size--;
-        case 13:
-            return ++size;
-        case 14:
-            return --size;
-        default:
-            return size;
+            case 0:
+                return size += newValue;
+            case 1:
+                return size -= newValue;
+            case 2:
+                return size *= newValue;
+            case 3:
+                return size /= newValue;
+            case 4:
+                return size &= newValue;
+            case 5:
+                return size |= newValue;
+            case 6:
+                return size ^= newValue;
+            case 7:
+                return size %= newValue;
+            case 8:
+                return size <<= newValue;
+            case 9:
+                return size >>= newValue;
+            case 10:
+                return size >>>= newValue;
+            case 11:
+                return size++;
+            case 12:
+                return size--;
+            case 13:
+                return ++size;
+            case 14:
+                return --size;
+            default:
+                return size;
         }
     }
 
@@ -870,8 +1234,10 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
     private FieldRecord $RECORD$size = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-        $RECORD$first,
-        $RECORD$last,
-        $RECORD$size
-    };
+            $RECORD$first,
+            $RECORD$last,
+            $RECORD$size
+        };
+
 }
+
