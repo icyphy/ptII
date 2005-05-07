@@ -80,6 +80,8 @@ public class AssignmentRule extends TransformRule {
         analyzer.getHandlers().addAssignmentHandler(assignmentTransformer);
         analyzer.getHandlers().addClassHandler(assignmentTransformer);
         analyzer.getHandlers().addCrossAnalysisHandler(assignmentTransformer);
+        analyzer.getHandlers().addFieldDeclarationHandler(
+                assignmentTransformer);
         analyzer.getHandlers().addMethodDeclarationHandler(
                 assignmentTransformer);
 

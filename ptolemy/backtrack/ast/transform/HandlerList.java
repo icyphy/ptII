@@ -96,6 +96,15 @@ public class HandlerList {
         _crossAnalysisHandlers.add(handler);
     }
 
+    /** Add a field declaration handler to the list.
+     *
+     *  @param handler The field declaration handler.
+     *  @see FieldDeclarationHandler
+     */
+    public void addFieldDeclarationHandler(FieldDeclarationHandler handler) {
+        _fieldDeclarationHandlers.add(handler);
+    }
+
     /** Add a method declaration handler to the list.
      *
      *  @param handler The method declaration handler.
@@ -143,6 +152,14 @@ public class HandlerList {
      */
     public List getCrossAnalysisHandlers() {
         return _crossAnalysisHandlers;
+    }
+
+    /** Get the list of field declaration handlers.
+     *
+     *  @return The list of field declaration handlers.
+     */
+    public List getFieldDeclarationHandlers() {
+        return _fieldDeclarationHandlers;
     }
 
     /** Get the list of method declaration handlers.
@@ -193,6 +210,14 @@ public class HandlerList {
         return !_crossAnalysisHandlers.isEmpty();
     }
 
+    /** Test is there is any field declaration handler.
+     *
+     *  @return <tt>true</tt> if there are field declaration handlers.
+     */
+    public boolean hasFieldDeclarationHandler() {
+        return !_fieldDeclarationHandlers.isEmpty();
+    }
+
     /** Test is there is any method declaration handler.
      *
      *  @return <tt>true</tt> if there are method declaration handlers.
@@ -241,6 +266,15 @@ public class HandlerList {
         _crossAnalysisHandlers.remove(handler);
     }
 
+    /** Remove a field declaration handler.
+     *
+     *  @param handler The field declaration handler to be removed.
+     */
+    public void removeFieldDeclarationHandler(
+            FieldDeclarationHandler handler) {
+        _fieldDeclarationHandlers.remove(handler);
+    }
+
     /** Remove a method declaration handler.
      *
      *  @param handler The method declaration handler to be removed.
@@ -272,6 +306,10 @@ public class HandlerList {
     /** The list of cross-analysis handlers.
      */
     private List _crossAnalysisHandlers = new LinkedList();
+
+    /** The list of field declaration handlers.
+     */
+    private List _fieldDeclarationHandlers = new LinkedList();
 
     /** The list of method declaration handlers.
      */

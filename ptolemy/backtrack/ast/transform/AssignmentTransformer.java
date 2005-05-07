@@ -111,7 +111,8 @@ import ptolemy.backtrack.util.FieldRecord;
 */
 public class AssignmentTransformer extends AbstractTransformer
     implements AliasHandler, AssignmentHandler, ClassHandler,
-               CrossAnalysisHandler, MethodDeclarationHandler {
+               CrossAnalysisHandler, FieldDeclarationHandler,
+               MethodDeclarationHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
@@ -125,6 +126,20 @@ public class AssignmentTransformer extends AbstractTransformer
             TypeAnalyzerState state) {
     }
 
+    /** Enter a field declaration. If the field is static, a flag is set so
+     *  that handling of other nodes (such as assignment) may be different from
+     *  those in non-static fields.
+     *
+     *  @param node The AST node of the field declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void enter(FieldDeclaration node, TypeAnalyzerState state) {
+        if (Modifier.isStatic(node.getModifiers()))
+            _isInStatic.push(Boolean.TRUE);
+        else
+            _isInStatic.push(Boolean.FALSE);
+    }
+
     /** Enter a method declaration. If the method is static, a flag is set so
      *  that handling of other nodes (such as assignment) may be different from
      *  those in non-static methods.
@@ -134,9 +149,9 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     public void enter(MethodDeclaration node, TypeAnalyzerState state) {
         if (Modifier.isStatic(node.getModifiers()))
-            _isInStaticMethod.push(Boolean.TRUE);
+            _isInStatic.push(Boolean.TRUE);
         else
-            _isInStaticMethod.push(Boolean.FALSE);
+            _isInStatic.push(Boolean.FALSE);
     }
 
     /** Enter an class declaration. Nothing is done in this method.
@@ -162,6 +177,16 @@ public class AssignmentTransformer extends AbstractTransformer
         _handleDeclaration(node, node.bodyDeclarations(), state);
     }
 
+    /** Exit a field declaration. The flag of static field is set back to its
+     *  old value before the field was entered.
+     *
+     *  @param node The AST node of the field declaration.
+     *  @param state The current state of the type analyzer.
+     */
+    public void exit(FieldDeclaration node, TypeAnalyzerState state) {
+        _isInStatic.pop();
+    }
+
     /** Exit a method declaration. The flag of static method is set back to its
      *  old value before the method was entered.
      *
@@ -169,7 +194,7 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @param state The current state of the type analyzer.
      */
     public void exit(MethodDeclaration node, TypeAnalyzerState state) {
-        _isInStaticMethod.pop();
+        _isInStatic.pop();
     }
 
     /** Exit a class declaration, and add extra methods and fields to it.
@@ -2238,8 +2263,8 @@ public class AssignmentTransformer extends AbstractTransformer
         }
 
         // Do not handle anonymous class declarations in a static method.
-        boolean ignore = !_isInStaticMethod.isEmpty() &&
-            _isInStaticMethod.peek() == Boolean.TRUE &&
+        boolean ignore = !_isInStatic.isEmpty() &&
+            _isInStatic.peek() == Boolean.TRUE &&
             isAnonymous;
 
         // Add an array of all the records.
@@ -2496,9 +2521,10 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     private static Hashtable _rightHandTypes = new Hashtable();
 
-    /** Whether the analyzer is currently analyzing a static method.
+    /** Whether the analyzer is currently analyzing a static method or a static
+     *  field.
      */
-    private Stack _isInStaticMethod = new Stack();
+    private Stack _isInStatic = new Stack();
 
     /** Keys are names of classes; values are lists of {@link
      *  RehandleDeclarationRecord} objects. If the classes are cross-analyzed,
