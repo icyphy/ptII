@@ -1,4 +1,4 @@
-/* List of different handlers.
+/* List of different handlers registered in the type analyzer.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -47,6 +47,9 @@ import ptolemy.backtrack.ast.transform.ClassHandler;
    @Pt.AcceptedRating Red (tfeng)
 */
 public class HandlerList {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
 
     /** Add an alias handler to the list.
      *
@@ -242,9 +245,13 @@ public class HandlerList {
      *
      *  @param handler The method declaration handler to be removed.
      */
-    public void removeMethodDeclarationHandler(MethodDeclarationHandler handler) {
+    public void removeMethodDeclarationHandler(
+            MethodDeclarationHandler handler) {
         _methodDeclarationHandlers.remove(handler);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
     /** The list of alias handlers.
      */
