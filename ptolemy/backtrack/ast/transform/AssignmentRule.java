@@ -53,7 +53,7 @@ public class AssignmentRule extends TransformRule {
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
-    /** Execution actions after the AST is traversed. (Not necessary for
+    /** Execute actions after the AST is traversed. (Not necessary for
      *  this rule.)
      *
      *  @param root The root of the AST.
