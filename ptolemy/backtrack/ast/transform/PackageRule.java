@@ -1,4 +1,4 @@
-/*
+/* Package renaming rule.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -51,26 +51,34 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 //////////////////////////////////////////////////////////////////////////
 //// PackageRule
 /**
+   Package renaming rule. This rule specifies the actions to be
+   executed before and after {@link TypeAnalyzer} traverses an AST. Those
+   actions rename the package that contains the given class.
 
-
-@author Thomas Feng
-@version $Id$
-@since Ptolemy II 5.1
-@Pt.ProposedRating Red (tfeng)
-@Pt.AcceptedRating Red (tfeng)
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
 */
 public class PackageRule extends TransformRule {
 
-    public String getPrefix() {
-        return _prefix;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
 
-    public void setPrefix(String prefix) {
-        _prefix = prefix;
-    }
-
-    /**
-     *  @param root
+    /** Rename the occurance of package names after the AST is traversed. The
+     *  transformer implemented for this rule traverses the AST once again and
+     *  looks up package names that need to be changed.
+     *  <p>
+     *  Due to the change of the package that the class belongs to, originally
+     *  accessible classes in the same package may becomes inaccessable. This
+     *  transformer explicitly imports those classes when necessary.
+     *  Unfortunately, protected classes originally in the same package may not
+     *  be imported, and protected members of other classes in that package are
+     *  no longer accessible. It is the user's responsibility to ensure that
+     *  those cases do not happen.
+     * 
+     *  @param root The root of the AST.
      */
     public void afterTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
         if (_prefix != null && _prefix.length() > 0) {
@@ -88,13 +96,45 @@ public class PackageRule extends TransformRule {
         }
     }
 
-    /**
-     *  @param analyzer
-     *  @param root
+    /** Execute actions before the AST is traversed. (Not necessary for
+     *  this rule.)
+     * 
+     *  @param analyzer The type analyzer.
+     *  @param root The root of the AST.
      */
     public void beforeTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
     }
 
+    /** Get the prefix to be added to the old package name.
+     * 
+     *  @return The prefix.
+     *  @see #setPrefix(String)
+     */
+    public String getPrefix() {
+        return _prefix;
+    }
+
+    /** Set the prefix to be added to the old package name.
+     * 
+     *  @param prefix The prefix.
+     *  @see #getPrefix()
+     */
+    public void setPrefix(String prefix) {
+        _prefix = prefix;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
+
+    /** Add an importation declaration for a class in the old package. That
+     *  class is implicitly imported by the class being handled. When the class
+     *  being handled is moved to a new package, the implicitly imported class
+     *  must then be explicitly imported.
+     * 
+     *  @param loader The class loader to be used to load the imported class.
+     *  @param name The AST node of the name of the imported class.
+     *  @param oldPackageName The name of the old package.
+     */
     private void _addImport(LocalClassLoader loader, Name name,
             String oldPackageName) {
         CompilationUnit root = (CompilationUnit)name.getRoot();
@@ -135,6 +175,13 @@ public class PackageRule extends TransformRule {
         }
     }
 
+    /** Add a prefix to the AST name node, and return the new AST name node.
+     * 
+     *  @param name The AST node of the name.
+     *  @param prefix The prefix to be added to the beginning of the name (not
+     *   including "." between the prefix and the name).
+     *  @return The new AST name node.
+     */
     private Name _addPrefix(Name name, String prefix) {
         AST ast = name.getAST();
         Name newName = null;
@@ -172,8 +219,29 @@ public class PackageRule extends TransformRule {
         return newName;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        inner class                        ////
+
+    //////////////////////////////////////////////////////////////////////////
+    //// Renamer
+    /**
+       The AST visitor that looks for occurance of old package names and
+       modifies them by adding the given prefix to them. This visitor also
+       looks for implicitly imported classes in the old package, and explicitly
+       import them as a result of the refactoring.
+    
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+    */
     private class Renamer extends ASTVisitor {
 
+        /** Construct a renamer.
+         * 
+         *  @param state The current state of the type analyzer.
+         */
         Renamer(TypeAnalyzerState state) {
             _state = state;
             _crossAnalysisTypes = state.getCrossAnalyzedTypes();
@@ -185,14 +253,27 @@ public class PackageRule extends TransformRule {
             }
         }
 
+        /** End the visit of a simple name AST node.
+         * 
+         *  @param node The AST node of the simple name.
+         */
         public void endVisit(SimpleName node) {
             _handleName(node);
         }
 
+        /** End the visit of a qualified name AST node.
+         * 
+         *  @param node The AST node of the qualified name.
+         */
         public void endVisit(QualifiedName node) {
             _handleName(node);
         }
 
+        /** Handle a name (either simple or qualified). If the name corresponds
+         *  to the old package name, the prefix is added to it.
+         *  
+         *  @param node The AST node of the name.
+         */
         private void _handleName(Name node) {
             if (node.getParent() != null) {
                 String id = node.toString();
@@ -268,16 +349,33 @@ public class PackageRule extends TransformRule {
             }
         }
 
+        /** The set of cross-analyzed types.
+         */
         private Set _crossAnalysisTypes;
 
+        /** The set of {@link String} names of cross-analyzed types.
+         */
         private Set _crossAnalysisNames;
 
+        /** The name of the old package.
+         */
         private String _oldPackageName;
 
+        /** The current state of the type analyzer.
+         */
         private TypeAnalyzerState _state;
 
+        /** The list of names of renamed classes.
+         */
         private List _specialTypes = new LinkedList();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
+
+    /** The prefix to be added to the package name, not including the "."
+     *  between it and the package name. If it is <tt>null</tt> or "", no
+     *  prefix is added.
+     */
     private String _prefix;
 }
