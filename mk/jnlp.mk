@@ -267,7 +267,16 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/caltrop/caltrop.jar \
 	ptolemy/caltrop/demo/demo.jar \
 	ptolemy/demo/demo.jar \
-	ptolemy/domains/experimentalDomains.jar \
+	ptolemy/domains/ci/ci.jar \
+	ptolemy/domains/dde/dde.jar \
+	ptolemy/domains/ddf/ddf.jar \
+	ptolemy/domains/dt/dt.jar \
+	ptolemy/domains/giotto/giotto.jar \
+	ptolemy/domains/gr/gr.jar \
+	ptolemy/domains/hdf/hdf.jar \
+	ptolemy/domains/petrinet/petrinet.jar \
+	ptolemy/domains/tm/tm.jar \
+	ptolemy/domains/sr/sr.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/ci/doc/doc.jar \
 	ptolemy/domains/csp/doc/doc.jar \
