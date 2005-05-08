@@ -30,7 +30,6 @@ package ptolemy.backtrack.ast;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -38,6 +37,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import ptolemy.backtrack.util.Strings;
 
 //////////////////////////////////////////////////////////////////////////
 //// LocalClassLoader
@@ -101,7 +102,7 @@ public class LocalClassLoader extends URLClassLoader {
      *   order.
      */
     public LocalClassLoader(String[] classPaths) {
-        super(_stringsToUrls(classPaths), null, null);
+        super(Strings.stringsToUrls(classPaths), null, null);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -708,26 +709,6 @@ public class LocalClassLoader extends URLClassLoader {
     }
 
     //----------------------------------------------------------------
-
-    /** Convert an array of strings to an array of {@link URL}s with
-     *  {@link File#toURL()}.
-     *
-     *  @param strings The array of strings.
-     *  @return The array of urls.
-     */
-    private static URL[] _stringsToUrls(String[] strings) {
-        if (strings == null)
-            return new URL[0];
-
-        URL[] urls = new URL[strings.length];
-        for (int i = 0; i < strings.length; i++)
-            try {
-                urls[i] = new File(strings[i]).toURL();
-            } catch (MalformedURLException e) {
-                throw new UnknownASTException();
-            }
-        return urls;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private fields                     ////
