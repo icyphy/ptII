@@ -83,15 +83,18 @@ awk '{
 	    if (dirs[1] == "lib" && ndirs == 2) {
 		split(dirs[2],filename,".")
 		package = filename[1]
+                part = package
 	    } else {
     		package = dirs[1]
+                part = package
 		# Skip the .jar part at the end.
 		for (m = 2; m < ndirs; m++) {
 		    package = package "." dirs[m]
+		    part = part "_" dirs[m]
 		}
 	    }
-	    part = package
-	    printf("\t<jar href=%c%s/%s%c\n\t\tpart=%c%s%c", 34, basedirectory, jars[n], 34, 34, part, 34)
+	    #printf("\t<jar href=%c%s/%s%c\n\t\tpart=%c%s%c", 34, basedirectory, jars[n], 34, 34, part, 34)
+            printf("\t<jar href=%c%s/%s%c", 34, basedirectory, jars[n], 34);
 	    printf("\n\t\tsize=%c%s%c", 34, sizes[n], 34)
 	    if (jars[n] == mainjar) {
 		printf("\n\t\tmain=%ctrue%c", 34, 34)
@@ -102,11 +105,24 @@ awk '{
 		    printf("\n\t\tdownload=%ceager%c", 34, 34)
 		} else {
 		    # Load everything else lazily
+   	            printf("\n\t\tpart=%c%s%c", 34, part, 34)
 		    printf("\n\t\tdownload=%clazy%c", 34, 34)
 		}
 	    }
 	    printf("/>\n")
-	    printf("\t<package name=%c%s.*%c\n\t\tpart=%c%s%c recursive=%ctrue%c/>\n", 34, package, 34, 34, part, 34, 34, 34)
+            if (n > (eagerjars+0)) {
+                # package only makes sense for lazy jars
+
+                # Substitute in different package names for various files
+                if (part == "mapss") {
+                    package = "mapss"
+                } else if (part == "ptcolt") {
+                    package = "edu.cornell.lassp"
+                } else if (part == "ptCal") {
+                    package = "caltrop"
+                }
+	        printf("\t<package name=%c%s.*%c\n\t\tpart=%c%s%c recursive=%ctrue%c/>\n", 34, package, 34, 34, part, 34, 34, 34)
+            }
 	}
     } else {
         if (sawStartJars != 1) {
