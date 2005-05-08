@@ -48,6 +48,9 @@ import ptolemy.util.StringUtilities;
 */
 public class PathFinder {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
     /** Get all the Java source files in a path.
      *
      *  @param path The path to be searched.
@@ -71,7 +74,8 @@ public class PathFinder {
             File[][] filesInSubdirs = new File[Directories.length][];
             int nTotal = 0;
             for (int i = 0; i < Directories.length; i++) {
-                filesInSubdirs[i] = getJavaFiles(Directories[i].getPath(), true);
+                filesInSubdirs[i] =
+                    getJavaFiles(Directories[i].getPath(), true);
                 nTotal += filesInSubdirs[i].length;
             }
 
@@ -123,6 +127,16 @@ public class PathFinder {
         return classPaths;
     }
     
+    /** Get the Ptolemy path. If the Ptolemy path is set with {@link
+     *  #setPtolemyPath(String)}, that path is returned. If it is not set,
+     *  <tt>ptolemy.ptII.dir</tt> system property is used (see {@link
+     *  StringUtilities#getProperty(String)}). If the property does not exist,
+     *  simply "./" is returned, assuming that the current path contains a
+     *  working version of Ptolemy (may not be correct).
+     * 
+     *  @return The Ptolemy path.
+     *  @see #setPtolemyPath(String)
+     */
     public static String getPtolemyPath() {
         if (_ptolemyPath == null) {
             String PTII = StringUtilities.getProperty("ptolemy.ptII.dir");
@@ -138,6 +152,11 @@ public class PathFinder {
         return _ptolemyPath;
     }
     
+    /** Set the Ptolemy path.
+     * 
+     *  @param path
+     *  @see #getPtolemyPath()
+     */
     public static void setPtolemyPath(String path) {
         _ptolemyPath = path;
         if (!_ptolemyPath.endsWith("" + File.separatorChar) &&
@@ -146,11 +165,14 @@ public class PathFinder {
             _ptolemyPath += File.separatorChar;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       nested classes                      ////
+
     //////////////////////////////////////////////////////////////////////////
     //// JarFileFilter
     /**
-     *  Filter out all the files in a directory, except for those with
-     *  "<tt>.jar</tt>" postfix.
+     *  Filter out all the files in a directory, except for those ending with
+     *  the given postfix.
      *
      *  @author Thomas Feng
      *  @version $Id$
@@ -159,24 +181,25 @@ public class PathFinder {
      */
     public static class PostfixFilter implements FileFilter {
 
-        /** Construct a filter.
+        /** Construct a filter with a postfix.
          *
-         *  @param postfix
+         *  @param postfix The postfix.
          */
         PostfixFilter(String postfix) {
             _postfix = postfix;
         }
 
-        /** Accept only files with names ending with "<tt>.jar</tt>".
+        /** Accept only files with names ending with the given postfix.
          *
-         *  @param pathname The file to be inspected.
-         *  @return <tt>true</tt> if the file has "<tt>.jar</tt>"
-         *   postfix.
+         *  @param file The file to be inspected.
+         *  @return <tt>true</tt> if the file name ends with the given postfix.
          */
         public boolean accept(File file) {
             return file.getName().endsWith(_postfix);
         }
 
+        /** The postfix.
+         */
         private String _postfix;
     }
 
@@ -195,7 +218,7 @@ public class PathFinder {
 
         /** Accept only directories.
          *
-         *  @param pathname The file to be inspected.
+         *  @param file The file to be inspected.
          *  @return <tt>true</tt> if the file corresponds to a directory.
          */
         public boolean accept(File file) {
@@ -203,7 +226,10 @@ public class PathFinder {
         }
     }
 
-    /** The default PTII path.
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
+
+    /** The Ptolemy path.
      */
     private static String _ptolemyPath = null;
 }
