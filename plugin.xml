@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="ptolemy.backtrack"
+   name="Ptolemy Backtracking Plug-in"
+   version="0.1.0"
+   provider-name="ptolemy.eecs.berkeley.edu"
+   class="ptolemy.backtrack.plugin.EclipsePlugin">
+
+   <runtime>
+      <library name="ptIIbacktrack.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.ui.forms"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.jdt.debug.ui"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.help"/>
+   </requires>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="ptolemy.backtrack.plugin.preferences.PreferenceInitializer"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="ptolemy.backtrack.plugin.preferences.PtolemyPreferencePage"
+            id="ptolemy.backtrack.plugin.preferences.PtolemyPreferencePage"
+            name="Ptolemy II"/>
+      <page
+            category="ptolemy.backtrack.plugin.preferences.PtolemyPreferencePage"
+            class="ptolemy.backtrack.plugin.preferences.BacktrackingPreferencePage"
+            id="ptolemy.backtrack.plugin.preferences.BacktrackingPreferencePage"
+            name="Backtracking"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="Ptolemy Backtracking"
+            visible="true"
+            id="ptolemy.backtrack.plugin.actionSet">
+         <menu
+               id="ptolemy"
+               label="&amp;Ptolemy">
+            <separator name="ptolemyGroup1"/>
+            <separator name="ptolemyGroup2"/>
+            <separator name="ptolemyGroup3"/>
+         </menu>
+         <menu
+               id="ptolemy.backtrack.plugin.menu"
+               label="&amp;Backtracking"
+               path="ptolemy/ptolemyGroup1">
+            <separator name="backtrackGroup1"/>
+         </menu>
+         <action
+               class="ptolemy.backtrack.plugin.actions.RefactorAction"
+               icon="ptolemy/backtrack/plugin/icons/ptolemy_icon.gif"
+               id="ptolemy.backtrack.plugin.refactor"
+               label="&amp;Refactor"
+               menubarPath="ptolemy/ptolemy.backtrack.plugin.menu/backtrackGroup1"
+               toolbarPath="backtrackGroup1"
+               tooltip="Refactor Ptolemy actors">
+         </action>
+         <action
+               class="ptolemy.backtrack.plugin.actions.OptionsAction"
+               id="ptolemy.backtrack.plugin.preferences"
+               label="&amp;Options..."
+               menubarPath="ptolemy/ptolemyGroup2"
+               tooltip="Modify Ptolemy options"/>
+         <action
+               class="ptolemy.backtrack.plugin.actions.AboutAction"
+               id="ptolemy.backtrack.plugin.about"
+               label="&amp;About Ptolemy II Plugin"
+               menubarPath="ptolemy/ptolemyGroup3"
+               tooltip="About Ptolemy II plugin for Eclipse"/>
+         <action
+               class="ptolemy.backtrack.plugin.actions.HelpAction"
+               id="ptolemy.backtrack.plugin.help"
+               label="&amp;Help Contents"
+               menubarPath="ptolemy/ptolemyGroup3"
+               tooltip="Help for Ptolemy II plugin for Eclipse"/>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.console.consoleFactories">
+      <consoleFactory
+            label="Ptolemy II Backtracking"
+            icon="ptolemy/backtrack/plugin/icons/ptolemy_icon.gif"
+            class="ptolemy.backtrack.plugin.console.ConsoleFactory"/>
+   </extension>
+   <extension
+         id="ptolemyeditor"
+         point="org.eclipse.ui.editors">
+      <editor
+            class="ptolemy.backtrack.plugin.editor.MultiPageCompilationUnitEditor"
+            contributorClass="org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditorActionContributor"
+            default="true"
+            extensions="java"
+            icon="ptolemy/backtrack/plugin/icons/ptolemy_icon.gif"
+            id="ptolemy.backtrack.plugin.editor.MultiPageEditor"
+            name="Ptolemy II Multi-page Editor"
+            symbolicFontName="org.eclipse.jdt.ui.editors.textfont"/>
+   </extension>
+   <extension point="org.eclipse.help.toc">
+      <toc file="ptolemy/backtrack/plugin/doc/toc.xml" primary="true"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="ptolemy.backtrack.plugin.editor.MultiPageEditor"
+            id="org.eclipse.jdt.debug.CompilationUnitEditor.BreakpointRulerActions">
+         <action
+               label="Toggle &amp;Breakpoint"
+               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+               actionID="RulerDoubleClick"
+               id="org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction">
+         </action>
+      </editorContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="ptolemy.backtrack.plugin.editor.MultiPageEditor"
+            id="org.eclipse.ui.texteditor.ruler.actions">
+         <action
+               label="%Dummy.label"
+               helpContextId="org.eclipse.ui.bookmark_action_context"
+               class="org.eclipse.ui.texteditor.BookmarkRulerAction"
+               actionID="RulerDoubleClick"
+               id="org.eclipse.ui.texteditor.BookmarkRulerAction">
+         </action>
+         <action
+               label="%Dummy.label"
+               class="org.eclipse.jdt.internal.ui.javaeditor.JavaSelectRulerAction"
+               actionID="RulerClick"
+               id="org.eclipse.jdt.internal.ui.javaeditor.JavaSelectRulerAction">
+         </action>
+      </editorContribution>
+   </extension>
+</plugin>
