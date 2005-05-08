@@ -1,4 +1,4 @@
-/*
+/* Class loader that tries to load a class from the given file.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -41,24 +41,54 @@ import ptolemy.backtrack.ast.UnknownASTException;
 //////////////////////////////////////////////////////////////////////////
 //// ClassFileLoader
 /**
+   Class loader that tries to load a class from the given file. This class
+   loader, unlike other class loaders that accept class names and load classes
+   with those names, accepts class file names and loads them as classes. It
+   uses {@link URLClassLoader#defineClass(java.lang.String, sun.misc.Resource)}
+   to define the class with the contents in the given file. If error occurs, it
+   falls back to traditional class loading with the class name in the exception
+   message.
 
-
-@author Thomas Feng
-@version $Id$
-@since Ptolemy II 5.1
-@Pt.ProposedRating Red (tfeng)
-@Pt.AcceptedRating Red (tfeng)
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
 */
 public class ClassFileLoader extends URLClassLoader {
 
+    /** Construct a class loader with no special class path. This class
+     *  loader can only load Java built-in classes indirectly, when they are
+     *  required by the class file to be loaded.
+     */
     public ClassFileLoader() {
         this(null);
     }
     
+    /** Construct a class loader with a set of class paths specified as
+     *  a string array. When the class file to be loaded requires other classes,
+     *  this class loader loads those required classes with the given class
+     *  paths.
+     *
+     *  @param classPaths The array of class paths to be searched in order.
+     */
     public ClassFileLoader(String[] classPaths) {
-        super(_stringsToUrls(classPaths), null, null);
+        super(Strings.stringsToUrls(classPaths), null, null);
     }
     
+    /** Load a class defined in a file, and return the {@link Class} object of
+     *  the class.
+     * 
+     *  @param classFile The file that defines the class.
+     *  @return The object of the loaded class.
+     *  @exception FileNotFoundException If the file cannot be found.
+     *  @exception IOException If error occurs when trying to read the file.
+     *  @exception LinkageError If {@link
+     *   URLClassLoader#defineClass(java.lang.String, sun.misc.Resource)}
+     *   issues a {@link LinkageError} and fails to define the class.
+     *  @exception ClassNotFoundException If some classes referenced by the
+     *   class in the file cannot be found.
+     */
     public Class loadClass(File classFile) throws FileNotFoundException,
             IOException, LinkageError, ClassNotFoundException {
         FileInputStream inputStream = new FileInputStream(classFile);
@@ -90,25 +120,5 @@ public class ClassFileLoader extends URLClassLoader {
             } else
                 throw e;
         }
-    }
-
-    /** Convert an array of strings to an array of {@link URL}s with
-     *  {@link File#toURL()}.
-     *
-     *  @param strings The array of strings.
-     *  @return The array of urls.
-     */
-    private static URL[] _stringsToUrls(String[] strings) {
-        if (strings == null)
-            return new URL[0];
-
-        URL[] urls = new URL[strings.length];
-        for (int i = 0; i < strings.length; i++)
-            try {
-                urls[i] = new File(strings[i]).toURL();
-            } catch (MalformedURLException e) {
-                throw new UnknownASTException();
-            }
-        return urls;
     }
 }
