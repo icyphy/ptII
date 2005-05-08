@@ -72,6 +72,9 @@ import java.util.Stack;
 */
 public class FieldRecord {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        constructors                       ////
+
     /** Construct a zero-dimensional (scalar) field record.
      */
     public FieldRecord() {
@@ -86,6 +89,9 @@ public class FieldRecord {
     public FieldRecord(int dimensions) {
         _states.push(new FieldRecordState(dimensions + 1));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
 
     /** Add an old value to the records, associated with a timestamp. This
      *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
@@ -440,20 +446,6 @@ public class FieldRecord {
                 new Record(indices, oldValue, timestamp, true));
     }
 
-    /** Return the iterator of all the records. If the field is an array,
-     *  the records with different indices are stored in separate lists.
-     *  The iterator returned by this function combines all those lists,
-     *  and the records that it returns are sorted with their timestamps.
-     *  Records created more recently are returned earlier with {@link
-     *  Iterator#next()}.
-     *
-     *  @return The iterator.
-     *  @see #iterator(int)
-     */
-    public Iterator iterator() {
-        return new CombinedIterator();
-    }
-
     /** Commit the changes up to the time represented by the timestamp. Records
      *  older than that time are deleted.
      *
@@ -517,6 +509,20 @@ public class FieldRecord {
         _states.clear();
         if (lastState != null)
             _states.push(lastState);
+    }
+
+    /** Return the iterator of all the records. If the field is an array,
+     *  the records with different indices are stored in separate lists.
+     *  The iterator returned by this function combines all those lists,
+     *  and the records that it returns are sorted with their timestamps.
+     *  Records created more recently are returned earlier with {@link
+     *  Iterator#next()}.
+     *
+     *  @return The iterator.
+     *  @see #iterator(int)
+     */
+    public Iterator iterator() {
+        return new CombinedIterator();
     }
 
     /** Return the iterator of the records with the specified index.
@@ -776,6 +782,9 @@ public class FieldRecord {
         else
             return ((Short)record.getValue()).shortValue();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       nested classes                      ////
 
     //////////////////////////////////////////////////////////////////////////
     //// CombinedIterator
@@ -1093,18 +1102,6 @@ public class FieldRecord {
         private boolean _isBackup;
     }
 
-    /** Get the state on the top of the states stack.
-     *
-     *  @return The state on the top, or <tt>null</tt> if the states stack is
-     *   empty.
-     */
-    protected FieldRecordState _getTopState() {
-        if (_states.isEmpty())
-            return null;
-        else
-            return (FieldRecordState)_states.peek();
-    }
-
     //////////////////////////////////////////////////////////////////////////
     //// RecordList
     /**
@@ -1188,6 +1185,9 @@ public class FieldRecord {
          */
         private RecordList _next = null;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
 
     /** Add a record to the list at the given index.
      *
@@ -1279,6 +1279,18 @@ public class FieldRecord {
         return lastRecord;
     }
 
+    /** Get the state on the top of the states stack.
+     *
+     *  @return The state on the top, or <tt>null</tt> if the states stack is
+     *   empty.
+     */
+    protected FieldRecordState _getTopState() {
+        if (_states.isEmpty())
+            return null;
+        else
+            return (FieldRecordState)_states.peek();
+    }
+
     /** Restore the old value in a record to the field.
      *
      *  @param field The field to be restored.
@@ -1334,5 +1346,10 @@ public class FieldRecord {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
+
+    /** The stack of (possibly) multiple field record states.
+     */
     private Stack _states = new Stack();
 }
