@@ -24,7 +24,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 20.0]">
         </property>
     </property>
-    <property name="LingerTimeInSeconds" class="ptolemy.data.expr.Parameter" value="15">
+    <property name="LingerTimeInSeconds" class="ptolemy.data.expr.Parameter" value="120">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
