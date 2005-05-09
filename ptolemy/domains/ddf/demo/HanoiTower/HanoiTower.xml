@@ -2125,9 +2125,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -2372,9 +2372,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -2547,9 +2547,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -2722,9 +2722,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -2897,9 +2897,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -3072,9 +3072,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -3247,9 +3247,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -3422,9 +3422,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -3597,9 +3597,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -3772,9 +3772,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -3947,9 +3947,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -4122,9 +4122,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -4297,9 +4297,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -4472,9 +4472,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -4647,9 +4647,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -4822,9 +4822,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
@@ -4997,9 +4997,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </port>
             <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
-                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                <property name="polyline" class="ptolemy.data.expr.Parameter" value="{xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate}">
                 </property>
-                <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">

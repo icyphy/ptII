@@ -11,7 +11,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model generates a Poisson process with a linearly&#10;increasing rate using the CT domain. The model plots the&#10;events vs. time and a histogram of the time between events.&#10;The technique here was suggested by John Lygeros.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is an example of a stochastic hybrid system.&#10;It generates a Poisson process with a linearly&#10;increasing rate using the CT domain. The model plots the&#10;events vs. time and a histogram of the time between events.&#10;The technique here was suggested by John Lygeros.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
         </property>
@@ -180,7 +180,7 @@ value of this random variable multiplied by the current (increasing) rate.</text
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
                 </property>
             </property>
-            <property name="threshold" class="ptolemy.data.expr.Parameter" value="1.3473431196095">
+            <property name="threshold" class="ptolemy.data.expr.Parameter" value="5.4632522790577">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -296,14 +296,14 @@ value of this random variable multiplied by the current (increasing) rate.</text
 <title>Events</title>
 <xLabel>time</xLabel>
 <yLabel>elapsed time</yLabel>
-<xRange min="12.058268011300001" max="399.3520627451"/>
-<yRange min="0.00352443803367774" max="5.552579547932402"/>
+<xRange min="15.4532894759" max="399.9444351867"/>
+<yRange min="0.005166322904077703" max="5.681569465138159"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 55, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 414, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -320,8 +320,8 @@ value of this random variable multiplied by the current (increasing) rate.</text
 <title>Times Between Events</title>
 <xLabel>amount of time</xLabel>
 <yLabel>number of occurrences</yLabel>
-<xRange min="0.1" max="5.6"/>
-<yRange min="0.0" max="58.0"/>
+<xRange min="0.1" max="5.8"/>
+<yRange min="0.0" max="75.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
 </plot>?>

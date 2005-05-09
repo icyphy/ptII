@@ -614,6 +614,10 @@
         </entity>
     </entity>
     <entity name="Rings" class="ptolemy.domains.gr.lib.CircularSweep3D">
+        <property name="polyline" class="ptolemy.data.expr.Parameter" value="{0.05, 0.001, 0.05, -0.001, 0.025, -0.001, 0.025, 0.001, 0.05, 0.001} ">
+        </property>
+        <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="2*PI">
+        </property>
         <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2}">
         </property>
         <property name="emissiveColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.2,1.0}">
@@ -625,10 +629,6 @@
         <property name="transparency" class="ptolemy.actor.parameters.DoubleRangeParameter" value="0.7">
         </property>
         <property name="wireFrame" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="polyline" class="ptolemy.data.expr.Parameter" value="[0.5, 0.01, 0.5, -0.01, 0.25, -0.01, 0.25, 0.01, 0.5, 0.01] * 0.1">
-        </property>
-        <property name="angleSpan" class="ptolemy.data.expr.Parameter" value="2*PI">
         </property>
         <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">

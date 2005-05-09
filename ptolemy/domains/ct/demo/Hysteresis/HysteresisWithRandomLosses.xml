@@ -101,7 +101,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Edward A. Lee and Haiyang Zheng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 320.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">

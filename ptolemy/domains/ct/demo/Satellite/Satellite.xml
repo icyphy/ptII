@@ -11,7 +11,7 @@
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-8">
         </property>
-        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ExplicitRK45Solver&quot;">
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ExplicitRK23Solver&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 45.0]">
         </property>
@@ -147,7 +147,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how a satellite moves around the earch and moon &#10;under the gravities. We assume that the satellite, the earth, and the&#10;moon are in the same plane. We also assume there is no friction and &#10;the earch and moon are prefectly round. &#10;&#10;y1 and y2 are the positions of the satellite relative to the earch and&#10;moon. The earth resides on (-miu, 0) and the moon resides on (1-miu, 0) &#10;always. The constant miu is defined as &#10;        Mass_of_Moon / (Mass_of_Moon + Mass_of_Earth) = 0.012129.&#10;&#10;The trajectory of the satellite is a periodic curve and the period is &#10;around 6.192169. &#10;&#10;This demo is based on the example 10.6 in &quot;Introduction of Computation Method&quot;,&#10;by Cuiwei Xu, 1985, Higher Education Press. &#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how a satellite moves around the earth and moon &#10;under the gravities. We assume that the satellite, the earth, and the&#10;moon are in the same plane. We also assume there is no friction and &#10;the earch and moon are prefectly round. &#10;&#10;y1 and y2 are the positions of the satellite relative to the earch and&#10;moon. The earth resides on (-miu, 0) and the moon resides on (1-miu, 0) &#10;always. The constant miu is defined as &#10;        Mass_of_Moon / (Mass_of_Moon + Mass_of_Earth) = 0.012129.&#10;&#10;The trajectory of the satellite is a periodic curve and the period is &#10;around 6.192169. &#10;&#10;This demo is based on the example 10.6 in &quot;Introduction of Computation Method&quot;,&#10;by Cuiwei Xu, 1985, Higher Education Press. &#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 330.0]">
         </property>
@@ -287,7 +287,7 @@
         </port>
     </entity>
     <entity name="Trajectory" class="ptolemy.actor.lib.gui.XYPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={573, 378, 446, 358}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 66, 446, 358}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[438, 303]">
         </property>
@@ -312,8 +312,8 @@
 <title>Satellite Trajectory</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-1.2621151587183537" max="1.2"/>
-<yRange min="-0.6678441150454416" max="0.6679569743152095"/>
+<xRange min="-1.262453005393114" max="1.2"/>
+<yRange min="-0.6681192337613956" max="0.6681266069983635"/>
 </plot>?>
         </configure>
     </entity>
