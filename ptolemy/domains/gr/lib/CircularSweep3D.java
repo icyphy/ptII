@@ -30,10 +30,12 @@ package ptolemy.domains.gr.lib;
 import javax.media.j3d.Node;
 import javax.media.j3d.Shape3D;
 
-import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -59,8 +61,7 @@ import com.sun.j3d.utils.geometry.Triangulator;
     swept.  The parameter <i>slices</i> determines the number of
     polygonal slices used in the sweep.
 
-
-    @author C. Fong
+    @author C. Fong (contributor: Edward A. Lee)
     @version $Id$
     @since Ptolemy II 1.0
     @Pt.ProposedRating Red (chf)
@@ -79,63 +80,61 @@ public class CircularSweep3D extends GRShadedShape {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        polyline = new Parameter(this, "polyline",
-                new DoubleMatrixToken(new double[][] {
-                    {
-                        0.5,
-                        0.25,
-                        0.5,
-                        -0.25,
-                        0.25,
-                        -0.25,
-                        0.25,
-                        0.25,
-                        0.5,
-                        0.25
-                    }
-                }));
-        angleSpan = new Parameter(this, "angleSpan",
-                new DoubleToken(2 * Math.PI));
+        polyline = new Parameter(this, "polyline");
+        polyline.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        polyline.setExpression("{0.5, 0.25, 0.5, -0.25, 0.25, -0.25, 0.25, 0.25, 0.5, 0.25}");
+
+        angleSpan = new Parameter(this, "angleSpan");
+        angleSpan.setTypeEquals(BaseType.DOUBLE);
+        angleSpan.setExpression("2.0 * PI");
+
         slices = new Parameter(this, "slices", new IntToken(32));
+        slices.setTypeEquals(BaseType.INT);
+        
+        slices.moveToFirst();
+        angleSpan.moveToFirst();
+        polyline.moveToFirst();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The line segment array that is to be swept
-     *  This parameter should contain a DoubleMatrixToken.
+    /** The line segment array that is to be swept.
+     *  This is an array of doubles that defaults to
+     *  a square with sides of 0.25 shifted right from
+     *  the origin so its left edge is at x = 0.25.
+     *  This results in an annular sweep.
      */
     public Parameter polyline;
 
-    /** The span of sweep angle
-     *  This parameter should contain a DoubleToken.
+    /** The span of sweep angle. This is a double that
+     *  defaults to "2.0 * PI".
      */
     public Parameter angleSpan;
 
-    /** The number of slices
-     *  This parameter should contain a IntToken.
+    /** The number of slices. This is an integer
+     *  that defaults to 32. Higher numbers result
+     *  in a smoother sweep.
      */
     public Parameter slices;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the shape and appearance of the encapsulated swept surface
+    /** Create the shape and appearance of the encapsulated swept surface.
      *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+     *   be obtained.
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
-        int numberOfSlices = _getSlices();
+        int numberOfSlices = ((IntToken) slices.getToken()).intValue();
         float[] data = _getPolyline();
         int numberOfSweepVertices = _getVertexCount();
         int numberOfQuads = (numberOfSweepVertices - 1) * numberOfSlices;
         int totalVertices = numberOfQuads * 4;
         float[] polydata = new float[totalVertices * 3];
-        double span = _getAngleSpan();
+        double span = ((DoubleToken) angleSpan.getToken()).doubleValue();
 
         int[] stripCount = new int[numberOfQuads];
         int i;
@@ -208,54 +207,36 @@ public class CircularSweep3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return the angle span of the sweep
-     *  @return the angle span of the sweep
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
-     */
-    private double _getAngleSpan() throws IllegalActionException {
-        return ((DoubleToken) angleSpan.getToken()).doubleValue();
-    }
-
-    /** Return the polyline
-     *  @return the polyline
-     *  @exception IllegalActionException If the value of some parameters
-     *   can't be obtained
+    /** Return the polyline as an array of floats.
+     *  @return The polyline.
+     *  @exception IllegalActionException If polyline parameter
+     *   cannot be evaluated.
      */
     private float[] _getPolyline() throws IllegalActionException {
-        DoubleMatrixToken matrixToken = ((DoubleMatrixToken) polyline.getToken());
-        int numberOfElements = matrixToken.getColumnCount() / 2;
-        float[] data = new float[numberOfElements * 2];
+        ArrayToken token = ((ArrayToken) polyline.getToken());
+        int numberOfElements = token.length();
+        float[] data = new float[numberOfElements];
 
-        for (int i = 0; i < (numberOfElements * 2); i++) {
-            data[i] = (float) (matrixToken.getElementAt(0, i));
+        for (int i = 0; i < numberOfElements; i++) {
+            data[i] = (float) ((DoubleToken)(token.getElement(i))).doubleValue();
         }
 
         return data;
     }
 
-    /** Return the number of slices
-     *  @return the number of slices
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
-     */
-    private int _getSlices() throws IllegalActionException {
-        return ((IntToken) slices.getToken()).intValue();
-    }
-
-    /** Return the vertex count
-     *  @return the vertex count
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+    /** Return the number of vertices of the polyline.
+     *  @return The vertex count.
+     *  @exception IllegalActionException If the polyline parameter
+     *   cannot be evaluated.
      */
     private int _getVertexCount() throws IllegalActionException {
-        DoubleMatrixToken matrixToken = ((DoubleMatrixToken) polyline.getToken());
-        int numberOfElements = matrixToken.getColumnCount() / 2;
-
-        return numberOfElements;
+        ArrayToken token = ((ArrayToken) polyline.getToken());
+        return token.length() / 2;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** The contained node. */
     private Shape3D _containedNode;
 }
