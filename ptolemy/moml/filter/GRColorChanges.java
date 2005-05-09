@@ -147,6 +147,23 @@ public class GRColorChanges implements MoMLFilter {
                 }
             }
         }
+
+        // Fix the polyline attribute of the CircularSweep3D actor.
+        if ((container != null) && container.getName().equals("polyline")) {
+            NamedObj actor = container.getContainer();
+
+            if ((actor != null)
+                    && actor.getClass().getName().equals("ptolemy.domains.gr.lib.CircularSweep3D")) {
+                String value = ((Settable) container).getExpression().trim();
+
+                if (value.startsWith("[")) {
+                    value = value.replace('[', '{');
+                    value = value.replace(']', '}');
+                    ((Settable) container).setExpression(value);
+                    MoMLParser.setModified(true);
+                }
+            }
+        }
     }
 
     /** Return a string that describes what the filter does.
