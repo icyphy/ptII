@@ -44,6 +44,11 @@
             class="ptolemy.backtrack.plugin.preferences.BacktrackingPreferencePage"
             id="ptolemy.backtrack.plugin.preferences.BacktrackingPreferencePage"
             name="Backtracking"/>
+      <page
+            category="ptolemy.backtrack.plugin.preferences.PtolemyPreferencePage"
+            class="ptolemy.backtrack.plugin.preferences.EditorPreferencePage"
+            id="ptolemy.backtrack.plugin.preferences.EditorPreferencePage"
+            name="Editor"/>
    </extension>
    <extension
          point="org.eclipse.ui.actionSets">
@@ -129,9 +134,6 @@
                id="org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction">
          </action>
       </editorContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.editorActions">
       <editorContribution
             targetID="ptolemy.backtrack.plugin.editor.MultiPageEditor"
             id="org.eclipse.ui.texteditor.ruler.actions">
