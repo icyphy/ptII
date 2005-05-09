@@ -58,7 +58,31 @@ do
     # Use ls -lg because Cygwin ls -l includes the group and
     # Solaris 8 /usr/ucb/ls -l does not
     otherjarssizes="$otherjarssizes `/bin/ls -l $basedirectory/$file | awk '{print $5}' - `"
+
+    # Determine what packages are in the jar file
+    echo "$file"
+    packages=`jar -tf $basedirectory/$file | 
+	grep -v '/$' | grep -v META | grep -v JNLP-INF |
+	awk -F / '{
+		   for(i = 1; i < NF; i++) {
+			if (i == 1) {
+				printf("%s", $i)
+			} else {
+				printf(".%s", $i)
+			}
+		   } 
+                   printf(".*\n")
+	}' | sort | uniq |
+	awk '{if (NR > 1) {
+		printf(",%s", $0)
+	     } else {
+	        printf("%s",$0)
+             }
+	}'`
+    otherjarspackages="$otherjarspackages $file:${packages}"
 done
+
+echo $otherjarspackages | awk -F " " '{for(i=1;i<NF;i++) print i, $i}'
 
 # Read in the jar files and generate jar and package lines for them
 # * We need to take in to account that one of the jar files
@@ -70,10 +94,15 @@ awk '{
 	print $0
 	printf("\t<!-- The list of jars below is automatically generated\n") 
 	printf("\t     by $PTII/bin/mkjnlp -->\n");
+
 	njars = split(otherjars, jars, " ") 
 	nsizes = split(otherjarssizes, sizes, " ") 
+        npackages = split(otherjarspackages, packages, " ");
 	if (njars != nsizes) {
-	    error "njars != nsizes (" nsizes " != " njars ")"
+	    error "njars != nsizes (" njars " != " npackages ")"
+	}
+	if (njars != npackages) {
+	    error "njars != npackages (" njars " != " npackages ")"
 	}
 
 	for(n = 1; n <= njars; n++) {
@@ -113,15 +142,21 @@ awk '{
             if (n > (eagerjars+0)) {
                 # package only makes sense for lazy jars
 
-                # Substitute in different package names for various files
-                if (part == "mapss") {
-                    package = "mapss"
-                } else if (part == "ptcolt") {
-                    package = "edu.cornell.lassp"
-                } else if (part == "ptCal") {
-                    package = "caltrop"
+                split(packages[n], fileAndPackages, ":")
+                np = split(fileAndPackages[2], p, ",");
+                for(i = 1; i <= np; i++) {
+                    printf("\t<!-- %d %s -->\n", n-eagerjars, fileAndPackages[1]);
+	            printf("\t<package name=%c%s%c\n\t\tpart=%c%s%c recursive=%ctrue%c/>\n", 34, p[i], 34, 34, part, 34, 34, 34)
                 }
-	        printf("\t<package name=%c%s.*%c\n\t\tpart=%c%s%c recursive=%ctrue%c/>\n", 34, package, 34, 34, part, 34, 34, 34)
+                # Substitute in different package names for various files
+                #if (part == "mapss") {
+                #    package = "mapss"
+                #} else if (part == "ptcolt") {
+                #    package = "edu.cornell.lassp"
+                #} else if (part == "ptCal") {
+                #    package = "caltrop"
+                #}
+	        #printf("\t<package name=%c%s.*%c\n\t\tpart=%c%s%c recursive=%ctrue%c/>\n", 34, package, 34, 34, part, 34, 34, 34)
             }
 	}
     } else {
@@ -139,6 +174,7 @@ awk '{
     mainjar=$mainjar \
     otherjars="$otherjars" \
     otherjarssizes="$otherjarssizes" \
+    otherjarspackages="$otherjarspackages" \
     $jnlpfile > $tmpfile
 
 #diff $tmpfile $jnlpfile
