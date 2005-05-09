@@ -5,6 +5,8 @@ package ptolemy.backtrack.plugin.preferences;
  */
 public class PreferenceConstants {
 
+    public static final String PTII_PREFERENCE_ID = "ptolemy.backtrack.plugin.preferences.PtolemyPreferencePage";
+    
 	public static final String PTII = "PTII";
 
 	public static final String BACKTRACK_SOURCE_LIST = "backtrackSourceList";
@@ -23,5 +25,7 @@ public class PreferenceConstants {
     
     public static final String BACKTRACK_CONFIGURATION = "backtrackConfiguration";
 
-    public static final String PTII_PREFERENCE_ID = "ptolemy.backtrack.plugin.preferences.PtolemyPreferencePage";
+    public static final String EDITOR_HIGHLIGHTING_ENABLED = "editorHighlightingEnabled";
+    
+    public static final String EDITOR_STATE_COLOR = "editorStateColor";
 }

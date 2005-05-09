@@ -37,12 +37,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
-import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.ListEditor;
@@ -58,13 +56,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.forms.events.ExpansionAdapter;
-import org.eclipse.ui.forms.events.ExpansionEvent;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.forms.widgets.TableWrapData;
-import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 import ptolemy.backtrack.plugin.EclipsePlugin;
 import ptolemy.backtrack.plugin.util.Environment;
@@ -83,24 +74,15 @@ import ptolemy.backtrack.util.Strings;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class BacktrackingPreferencePage
-    extends FieldEditorPreferencePage
+public class BacktrackingPreferencePage extends SectionPreferencePage
     implements IWorkbenchPreferencePage {
 
     public BacktrackingPreferencePage() {
-        super(GRID);
-        setPreferenceStore(EclipsePlugin.getDefault().getPreferenceStore());
-        setDescription("Ptolemy II backtracking settings.");
+        super("Ptolemy II backtracking settings.");
     }
     
     public Control createContents(Composite parent) {
-        _toolkit = new FormToolkit(getShell().getDisplay());
-        
-        _form = _toolkit.createScrolledForm(parent);
-        _form.setLayoutData(new GridData(GridData.FILL_BOTH));
-        _form.setBackground(parent.getBackground());
-        
-        _form.getBody().setLayout(new TableWrapLayout());
+        super.createContents(parent);
         
         _createSection1();
         _createSection2();
@@ -114,9 +96,6 @@ public class BacktrackingPreferencePage
         return parent;
     }
     
-    public void init(IWorkbench workbench) {
-    }
-    
     public void setVisible(boolean visible) {
         if (visible) {
             _updateSources();
@@ -125,18 +104,10 @@ public class BacktrackingPreferencePage
         super.setVisible(visible);
     }
 
-    protected void addField(FieldEditor editor) {
-        _fields.add(editor);
-        super.addField(editor);
-    }
-    
-    protected void createFieldEditors() {
-    }
-    
     private void _checkEnabled() {
         String PTII = Environment.getPtolemyHome();
         boolean formEnabled = PTII != null;
-        Iterator fieldsIter = _fields.iterator();
+        Iterator fieldsIter = getFields().iterator();
         while (fieldsIter.hasNext()) {
             FieldEditor editor = (FieldEditor)fieldsIter.next();
             if (formEnabled && editor == _configuration) {
@@ -374,45 +345,6 @@ public class BacktrackingPreferencePage
         addField(_overwrite);
     }
     
-    private Composite _createSection(String text, String description) {
-        Section section = _toolkit.createSection(_form.getBody(),
-                Section.DESCRIPTION |
-                Section.TWISTIE |
-                Section.CLIENT_INDENT);
-        section.setLayoutData(new TableWrapData());
-        section.setBackground(null);
-        section.setText(text);
-        section.setDescription(description);
-        section.addExpansionListener(new ExpansionAdapter() {
-            public void expansionStateChanged(ExpansionEvent e) {
-                _form.reflow(false);
-            }
-        });
-        
-        Composite composite = _newComposite(section);
-        section.setClient(composite);
-        
-        return composite;
-    }
-    
-    private Composite _newComposite(Composite parent) {
-        Composite composite = new Composite(parent, SWT.NULL);
-        composite.setBackground(null);
-        composite.setLayout(new GridLayout(1, true));
-        composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        return composite;
-    }
-    
-    private Group _newGroup(Composite parent, String text) {
-        Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
-        group.setBackground(null);
-        GridLayout layout = new GridLayout(1, true);
-        group.setLayout(layout);
-        group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        group.setText(text);
-        return group;
-    }
-    
     private boolean _updateSources() {
         String fileName = _sourceList.getStringValue();
         List list = _sources.getListControl(_getParent(_sources));
@@ -445,27 +377,11 @@ public class BacktrackingPreferencePage
         }
     }
     
-    private Composite _getParent(FieldEditor editor) {
-        return (Composite)_composites.get(editor);
-    }
-    
-    private void _setParent(FieldEditor editor, Composite parent) {
-        _composites.put(editor, parent);
-    }
-
     private static final int LIST_HEIGHT = 100;
     
     private boolean _sourcesModified = false;
     
-    private java.util.List _fields = new LinkedList();
-    
-    private Hashtable _composites = new Hashtable();
-    
     /* Controls */
-    private FormToolkit _toolkit;
-    
-    private ScrolledForm _form;
-    
     private FileFieldEditor _sourceList;
     
     private ListEditor _sources;

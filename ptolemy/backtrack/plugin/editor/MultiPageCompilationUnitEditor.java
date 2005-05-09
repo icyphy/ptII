@@ -1,6 +1,5 @@
 package ptolemy.backtrack.plugin.editor;
 
-
 import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -56,7 +55,7 @@ import ptolemy.backtrack.util.Strings;
  * <li>page 2 shows the words in page 0 in sorted order
  * </ul>
  */
-public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
+public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     
     protected void _createPages() {
 		_createRawPage();
@@ -89,7 +88,7 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
             });
 
         _setActivePage(0);
-        
+
         IPreferenceStore store = EclipsePlugin.getDefault()
                 .getPreferenceStore();
         store.addPropertyChangeListener(new IPropertyChangeListener() {
@@ -198,6 +197,7 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
             try {
                 writer.close();
                 _preview.setInput(new FileEditorInput(previewFile));
+                _preview.getViewer().setEditable(false);
             } catch (Exception e) {
                 OutputConsole.outputError(e.getMessage());
             }
@@ -244,11 +244,7 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
     private void _setupPreviewPage() {
         int pageIndex = 1;
 
-        _preview = new CompilationUnitEditor() {
-            public boolean isEditable() {
-                return false;
-            }
-        };
+        _preview = new PtolemyEditor();
         IFile previewFile = _getPreviewFile();
         if (previewFile != null) {
             try {
@@ -372,7 +368,7 @@ public class MultiPageCompilationUnitEditor extends CompilationUnitEditor {
     
     private CompilationUnitEditor _editor;
     
-    private CompilationUnitEditor _preview;
+    private PtolemyEditor _preview;
     
     private boolean _needRefactoring = true;
     

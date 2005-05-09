@@ -5,6 +5,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.swt.graphics.RGB;
 
 import ptolemy.backtrack.plugin.EclipsePlugin;
 
@@ -62,6 +64,12 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         store.setDefault(PreferenceConstants.BACKTRACK_PREFIX,
                 "ptolemy.backtrack.automatic");
         store.setDefault(PreferenceConstants.BACKTRACK_OVERWRITE, false);
+        
+        store.setDefault(PreferenceConstants.EDITOR_HIGHLIGHTING_ENABLED,
+                true);
+        PreferenceConverter.setDefault(store,
+                PreferenceConstants.EDITOR_STATE_COLOR,
+                new RGB(204, 40, 0));
 	}
 
 }
