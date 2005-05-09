@@ -1,5 +1,7 @@
 package ptolemy.backtrack.plugin.actions;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 
 import org.eclipse.core.resources.IContainer;
@@ -7,6 +9,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
@@ -53,7 +56,12 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
         PrintStream oldSystemErr = System.err;
         OutputConsole console = EclipsePlugin.getDefault().getConsole();
-        console.clearConsole();
+        IDocument document = console.getDocument();
+        try {
+            document.replace(0, document.getLength(), "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         console.show();
         MessageConsoleStream outputStream =
             console.newMessageStream();
@@ -153,16 +161,104 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
     private class AsyncPrintStream extends PrintStream {
         
         AsyncPrintStream(MessageConsoleStream stream) {
-            super(stream, true);
+            // Just construct with a dummy output stream (never used).
+            super(new ByteArrayOutputStream(), true);
             _stream = stream;
         }
         
-        public void println(String s) {
-            _display.syncExec(new PrintRunnable(s));
+        public boolean checkError() {
+            return false;
         }
         
-        private void _println(String s) {
-            _stream.println(s);
+        public void close() {
+        }
+        
+        public void flush() {
+            _display.syncExec(new PrintRunnable(null, PrintRunnable.FLUSH));
+        }
+        
+        public void write(int b) {
+            print((char)b);
+        }
+        
+        public void write(byte[] buffer, int offset, int length) {
+            print(new String(buffer, offset, length));
+        }
+        
+        public void print(boolean b) {
+            print(Boolean.toString(b));
+        }
+        
+        public void print(char c) {
+            print(Character.toString(c));
+        }
+        
+        public void print(int i) {
+            print(Integer.toString(i));
+        }
+        
+        public void print(long l) {
+            print(Long.toString(l));
+        }
+        
+        public void print(float f) {
+            print(Float.toString(f));
+        }
+        
+        public void print(double d) {
+            print(Double.toString(d));
+        }
+        
+        public void print(char[] s) {
+            print(new String(s));
+        }
+        
+        public void print(String s) {
+            _display.syncExec(new PrintRunnable(s, PrintRunnable.PRINT));
+        }
+        
+        public void print(Object obj) {
+            print(obj.toString());
+        }
+        
+        public void println() {
+            println("");
+        }
+        
+        public void println(boolean b) {
+            println(Boolean.toString(b));
+        }
+        
+        public void println(char c) {
+            println(Character.toString(c));
+        }
+        
+        public void println(int i) {
+            println(Integer.toString(i));
+        }
+        
+        public void println(long l) {
+            println(Long.toString(l));
+        }
+        
+        public void println(float f) {
+            println(Float.toString(f));
+        }
+        
+        public void println(double d) {
+            println(Double.toString(d));
+        }
+        
+        public void println(char[] s) {
+            println(new String(s));
+        }
+        
+        public void println(String s) {
+            _display.syncExec(new PrintRunnable(s, PrintRunnable.PRINTLN));
+        }
+        
+        public void println(Object o) {
+            println(o.toString());
         }
         
         private Display _display = EclipsePlugin.getStandardDisplay();
@@ -171,15 +267,33 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         
         private class PrintRunnable implements Runnable {
             
-            PrintRunnable(String s) {
+            static final int FLUSH   = 0;
+            static final int PRINT   = 1;
+            static final int PRINTLN = 2;
+            
+            PrintRunnable(String s, int operation) {
                 _s = s;
+                _operation = operation;
             }
             
             public void run() {
-                _println(_s);
+                switch (_operation) {
+                case PRINT:
+                    _stream.print(_s);
+                case PRINTLN:
+                    _stream.println(_s);
+                }
+                
+                // Flush every time.
+                try {
+                    _stream.flush();
+                } catch (IOException e) {
+                }
             }
             
             private String _s;
+            
+            private int _operation;
         }
     }
     

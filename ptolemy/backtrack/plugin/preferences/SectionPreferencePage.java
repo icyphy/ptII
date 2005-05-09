@@ -129,10 +129,17 @@ public class SectionPreferencePage extends FieldEditorPreferencePage
     }
     
     protected Composite _newComposite(Composite parent) {
+        return _newComposite(parent, 1);
+    }
+    
+    protected Composite _newComposite(Composite parent, int column) {
         Composite composite = new Composite(parent, SWT.NULL);
         composite.setBackground(null);
-        composite.setLayout(new GridLayout(1, true));
-        composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        GridLayout layout = new GridLayout(column, false);
+        composite.setLayout(layout);
+        GridData data = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalAlignment = GridData.BEGINNING;
+        composite.setLayoutData(data);
         return composite;
     }
     

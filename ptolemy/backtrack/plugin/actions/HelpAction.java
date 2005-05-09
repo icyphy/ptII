@@ -32,7 +32,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
+import org.eclipse.ui.help.WorkbenchHelp;
 
 //////////////////////////////////////////////////////////////////////////
 //// HelpAction
@@ -60,9 +60,7 @@ public class HelpAction implements IWorkbenchWindowActionDelegate {
      * @see IWorkbenchWindowActionDelegate#run
      */
     public void run(IAction action) {
-        IWorkbenchHelpSystem helpSystem =
-            window.getWorkbench().getHelpSystem();
-        helpSystem.displayHelpResource(HELP_RESOURCE);
+        WorkbenchHelp.displayHelpResource(HELP_RESOURCE);
     }
 
     /**

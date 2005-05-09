@@ -30,13 +30,9 @@ package ptolemy.backtrack.plugin.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
-import org.eclipse.jface.preference.FontFieldEditor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,14 +79,12 @@ public class EditorPreferencePage extends SectionPreferencePage
                 currentComposite) {
             protected void doLoadDefault() {
                 super.doLoadDefault();
-                _stateColor.setEnabled(getBooleanValue(),
-                        _getParent(_stateColor));
+                _colorGroup.setEnabled(getBooleanValue());
             }
 
             protected void valueChanged(boolean oldValue, boolean newValue) {
                 super.valueChanged(oldValue, newValue);
-                _stateColor.setEnabled(newValue,
-                        _getParent(_stateColor));
+                _colorGroup.setEnabled(newValue);
             }
         };
         _setParent(_highlightingEnabled, currentComposite);
@@ -98,23 +92,57 @@ public class EditorPreferencePage extends SectionPreferencePage
         
         _colorGroup = _newGroup(composite, "Colors");
         
-        currentComposite = _newComposite(_colorGroup);
-        _stateColor = new ColorFieldEditor(
+        Composite currentLine = _newComposite(_colorGroup, 3);
+        
+        currentComposite = _newComposite(currentLine);
+        ColorFieldEditor color = new ColorFieldEditor(
                 PreferenceConstants.EDITOR_STATE_COLOR,
                 "&State variable color",
                 currentComposite);
-        _setParent(_stateColor, currentComposite);
-        addField(_stateColor);
+        addField(color);
+        
+        currentComposite = _newComposite(currentLine);
+        BooleanFieldEditor bold = new BooleanFieldEditor(
+                PreferenceConstants.EDITOR_STATE_BOLD,
+                "Bold",
+                currentComposite);
+        addField(bold);
+        
+        currentComposite = _newComposite(currentLine);
+        BooleanFieldEditor italic = new BooleanFieldEditor(
+                PreferenceConstants.EDITOR_STATE_ITALIC,
+                "Italic",
+                currentComposite);
+        addField(italic);
+        
+        currentComposite = _newComposite(currentLine);
+        color = new ColorFieldEditor(
+                PreferenceConstants.EDITOR_STATE_COLOR,
+                "&State variable color",
+                currentComposite);
+        addField(color);
+        
+        currentComposite = _newComposite(currentLine);
+        bold = new BooleanFieldEditor(
+                PreferenceConstants.EDITOR_STATE_BOLD,
+                "Bold",
+                currentComposite);
+        addField(bold);
+        
+        currentComposite = _newComposite(currentLine);
+        italic = new BooleanFieldEditor(
+                PreferenceConstants.EDITOR_STATE_ITALIC,
+                "Italic",
+                currentComposite);
+        addField(italic);
     }
     
     private void _checkEnabled() {
         _colorGroup.setEnabled(
                 _highlightingEnabled.getBooleanValue());
     }
-
-    private BooleanFieldEditor _highlightingEnabled;
     
-    private ColorFieldEditor _stateColor;
+    private BooleanFieldEditor _highlightingEnabled;
     
     private Group _colorGroup;
 }

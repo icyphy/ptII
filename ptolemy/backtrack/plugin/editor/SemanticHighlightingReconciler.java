@@ -311,12 +311,12 @@ public class SemanticHighlightingReconciler
                         semanticHighlighting);
             _addColor(colorKey);
             
-            //String boldKey= SemanticHighlightings.getBoldPreferenceKey(semanticHighlighting);
-            int style = SWT.NORMAL; //_preferenceStore.getBoolean(boldKey) ? SWT.BOLD : SWT.NORMAL;
+            String boldKey= SemanticHighlightings.getBoldPreferenceKey(semanticHighlighting);
+            int style = _preferenceStore.getBoolean(boldKey) ? SWT.BOLD : SWT.NORMAL;
 
-            //String italicKey= SemanticHighlightings.getItalicPreferenceKey(semanticHighlighting);
-            //if (_preferenceStore.getBoolean(italicKey))
-            //    style |= SWT.ITALIC;
+            String italicKey= SemanticHighlightings.getItalicPreferenceKey(semanticHighlighting);
+            if (_preferenceStore.getBoolean(italicKey))
+                style |= SWT.ITALIC;
             
             boolean isEnabled = _preferenceStore.getBoolean(
                     SemanticHighlightings.getEnabledPreferenceKey(
@@ -364,7 +364,7 @@ public class SemanticHighlightingReconciler
                 continue;
             }
             
-            /*String boldKey= SemanticHighlightings.getBoldPreferenceKey(semanticHighlighting);
+            String boldKey= SemanticHighlightings.getBoldPreferenceKey(semanticHighlighting);
             if (boldKey.equals(event.getProperty())) {
                 adaptToTextStyleChange(_highlightings[i], event, SWT.BOLD);
                 _presenter.highlightingStyleChanged(_highlightings[i]);
@@ -376,7 +376,7 @@ public class SemanticHighlightingReconciler
                 adaptToTextStyleChange(_highlightings[i], event, SWT.ITALIC);
                 _presenter.highlightingStyleChanged(_highlightings[i]);
                 continue;
-            }*/
+            }
             
             String enabledKey= SemanticHighlightings.getEnabledPreferenceKey(semanticHighlighting);
             if (enabledKey.equals(event.getProperty())) {

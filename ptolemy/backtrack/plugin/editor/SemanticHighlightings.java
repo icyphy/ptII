@@ -71,8 +71,16 @@ public class SemanticHighlightings {
             return _testMethod(methodBinding);
         }
 
-        public String getPreferenceKey() {
-            return PreferenceConstants.EDITOR_STATE_COLOR;
+        public String getBoldPreferenceKey() {
+            return PreferenceConstants.EDITOR_ACTOR_METHOD_BOLD;
+        }
+
+        public String getColorPreferenceKey() {
+            return PreferenceConstants.EDITOR_ACTOR_METHOD_COLOR;
+        }
+
+        public String getItalicPreferenceKey() {
+            return PreferenceConstants.EDITOR_ACTOR_METHOD_ITALIC;
         }
         
         private boolean _testMethod(IMethodBinding binding) {
@@ -209,8 +217,16 @@ public class SemanticHighlightings {
                     !Modifier.isStatic(variableBinding.getModifiers());
         }
 
-        public String getPreferenceKey() {
+        public String getBoldPreferenceKey() {
+            return PreferenceConstants.EDITOR_STATE_BOLD;
+        }
+
+        public String getColorPreferenceKey() {
             return PreferenceConstants.EDITOR_STATE_COLOR;
+        }
+
+        public String getItalicPreferenceKey() {
+            return PreferenceConstants.EDITOR_STATE_ITALIC;
         }
     }
     
@@ -223,8 +239,16 @@ public class SemanticHighlightings {
         return _semanticHighlightings;
     }
     
+    public static String getBoldPreferenceKey(SemanticHighlighting semanticHighlighting) {
+        return semanticHighlighting.getBoldPreferenceKey();
+    }
+    
     public static String getColorPreferenceKey(SemanticHighlighting semanticHighlighting) {
-        return semanticHighlighting.getPreferenceKey();
+        return semanticHighlighting.getColorPreferenceKey();
+    }
+    
+    public static String getItalicPreferenceKey(SemanticHighlighting semanticHighlighting) {
+        return semanticHighlighting.getItalicPreferenceKey();
     }
     
     public static String getEnabledPreferenceKey(SemanticHighlighting semanticHighlighting) {

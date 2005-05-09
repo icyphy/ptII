@@ -41,7 +41,11 @@ package ptolemy.backtrack.plugin.editor;
  */
 public abstract class SemanticHighlighting {
 
-    public abstract String getPreferenceKey();
+    public abstract String getBoldPreferenceKey();
+    
+    public abstract String getColorPreferenceKey();
+    
+    public abstract String getItalicPreferenceKey();
     
     public abstract boolean consumes(SemanticToken token);
 }
