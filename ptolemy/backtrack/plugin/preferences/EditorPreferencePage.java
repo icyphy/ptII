@@ -30,6 +30,7 @@ package ptolemy.backtrack.plugin.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -92,49 +93,46 @@ public class EditorPreferencePage extends SectionPreferencePage
         
         _colorGroup = _newGroup(composite, "Colors");
         
-        Composite currentLine = _newComposite(_colorGroup, 3);
+        currentComposite = _newComposite(_colorGroup);
         
-        currentComposite = _newComposite(currentLine);
         ColorFieldEditor color = new ColorFieldEditor(
                 PreferenceConstants.EDITOR_STATE_COLOR,
                 "&State variable color",
                 currentComposite);
         addField(color);
         
-        currentComposite = _newComposite(currentLine);
+        //currentComposite = _newComposite(currentLine);
         BooleanFieldEditor bold = new BooleanFieldEditor(
                 PreferenceConstants.EDITOR_STATE_BOLD,
                 "Bold",
                 currentComposite);
         addField(bold);
         
-        currentComposite = _newComposite(currentLine);
         BooleanFieldEditor italic = new BooleanFieldEditor(
                 PreferenceConstants.EDITOR_STATE_ITALIC,
                 "Italic",
                 currentComposite);
         addField(italic);
         
-        currentComposite = _newComposite(currentLine);
         color = new ColorFieldEditor(
                 PreferenceConstants.EDITOR_ACTOR_METHOD_COLOR,
                 "&Actor method color",
                 currentComposite);
         addField(color);
         
-        currentComposite = _newComposite(currentLine);
         bold = new BooleanFieldEditor(
                 PreferenceConstants.EDITOR_ACTOR_METHOD_BOLD,
                 "Bold",
                 currentComposite);
         addField(bold);
         
-        currentComposite = _newComposite(currentLine);
         italic = new BooleanFieldEditor(
                 PreferenceConstants.EDITOR_ACTOR_METHOD_ITALIC,
                 "Italic",
                 currentComposite);
         addField(italic);
+        
+        currentComposite.setLayout(new GridLayout(4, false));
     }
     
     private void _checkEnabled() {
