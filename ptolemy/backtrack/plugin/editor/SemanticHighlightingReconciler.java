@@ -41,7 +41,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.internal.corext.dom.GenericVisitor;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
-import org.eclipse.jdt.internal.ui.javaeditor.ASTProvider;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaEditorMessages;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaSourceViewer;
@@ -49,7 +48,6 @@ import org.eclipse.jdt.internal.ui.text.JavaPresentationReconciler;
 import org.eclipse.jdt.internal.ui.text.java.IJavaReconcilingListener;
 import org.eclipse.jdt.ui.text.IColorManager;
 import org.eclipse.jdt.ui.text.IColorManagerExtension;
-import org.eclipse.jdt.ui.text.IJavaPartitions;
 import org.eclipse.jdt.ui.text.JavaSourceViewerConfiguration;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
@@ -139,7 +137,7 @@ public class SemanticHighlightingReconciler
                     }
                     CompilationUnit ast =
                         JavaPlugin.getDefault().getASTProvider().getAST(element,
-                                ASTProvider.WAIT_YES, monitor);
+                                true, monitor);
                     reconciled(ast, false, monitor);
                     synchronized (_jobLock) {
                         _job= null;
@@ -230,10 +228,10 @@ public class SemanticHighlightingReconciler
     private void _enable() {
         _initializeHighlightings();
 
+        final String JAVA_PARTITIONING= "___java_partitioning";
         _configuration =
             new JavaSourceViewerConfiguration(_colorManager,
-                    _preferenceStore, _editor,
-                    IJavaPartitions.JAVA_PARTITIONING);
+                    _preferenceStore, _editor, JAVA_PARTITIONING);
         _presentationReconciler = (JavaPresentationReconciler)
                 _configuration.getPresentationReconciler(_editor.getViewer());
         

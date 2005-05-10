@@ -390,7 +390,7 @@ public class SemanticHighlightingPresenter implements ITextPresentationListener,
                 List newPositions= new ArrayList(newSize);
                 Position position= null;
                 Position addedPosition= null;
-                for (int i= 0, j= 0, n= oldPositions.size(), m= addedPositions.length; i < n || position != null || j < m || addedPosition != null;) {
+                for (int i= 0, j= 0, n= oldPositions.size(), m= addedPositions.length; i < n || j < m;) {
                     while (position == null && i < n) {
                         position= (Position) oldPositions.get(i++);
                         if (position.isDeleted() || contain(removedPositionsList, position)) {
@@ -400,10 +400,6 @@ public class SemanticHighlightingPresenter implements ITextPresentationListener,
                     }
                     if (addedPosition == null && j < m) {
                         addedPosition= addedPositions[j++];
-                        String[] categories = document.getPositionCategories();
-                        if (addedPosition.getOffset() == 270) {
-                            int xxx = 0;
-                        }
                         document.addPosition(positionCategory, addedPosition);
                     }
                     

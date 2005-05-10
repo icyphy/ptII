@@ -1,9 +1,6 @@
 package ptolemy.backtrack.plugin.console;
 
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleFactory;
-import org.eclipse.ui.console.IConsoleManager;
 
 import ptolemy.backtrack.plugin.EclipsePlugin;
 
@@ -26,23 +23,14 @@ public class ConsoleFactory implements IConsoleFactory {
     public static void showConsole() {
         OutputConsole console = EclipsePlugin.getDefault().getConsole();
         if (console != null) {
-            IConsoleManager manager = ConsolePlugin.getDefault().getConsoleManager();
-            IConsole[] existing = manager.getConsoles();
-            boolean exists = false;
-            for (int i = 0; i < existing.length; i++) {
-                if(console == existing[i])
-                    exists = true;
-            }
-            if(! exists)
-                manager.addConsoles(new IConsole[] {console});
-            manager.showConsoleView(console);
+            console.register();
+            console.show();
         }
     }
     
     public static void closeConsole() {
-        IConsoleManager manager = ConsolePlugin.getDefault().getConsoleManager();
         OutputConsole console = EclipsePlugin.getDefault().getConsole();
         if (console != null)
-            manager.removeConsoles(new IConsole[] {console});
+            console.unregister();
     }
 }

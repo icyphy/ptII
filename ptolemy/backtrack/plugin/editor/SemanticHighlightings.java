@@ -65,8 +65,7 @@ public class SemanticHighlightings {
             if (binding == null || binding.getKind() != IBinding.METHOD)
                 return false;
             
-            IMethodBinding methodBinding =
-                ((IMethodBinding)binding).getMethodDeclaration();
+            IMethodBinding methodBinding = (IMethodBinding)binding;
             
             return _testMethod(methodBinding);
         }

@@ -89,7 +89,7 @@ public class Environment {
         IPreferenceStore store = EclipsePlugin.getDefault()
                 .getPreferenceStore();
         String root = store.getString(PreferenceConstants.BACKTRACK_ROOT);
-        IPath rootPath = Path.fromOSString(root);
+        IPath rootPath = new Path(root);
         String[] segments = rootPath.segments();
         if (segments.length == 1)
             root = ResourcesPlugin.getWorkspace()
@@ -168,7 +168,7 @@ public class Environment {
         
         String root =
             store.getString(PreferenceConstants.BACKTRACK_ROOT);
-        IPath rootPath = Path.fromOSString(root);
+        IPath rootPath = new Path(root);
         return rootPath.append(fileName);
     }
     
@@ -177,12 +177,12 @@ public class Environment {
                 .getPreferenceStore();
         String prefix =
             store.getString(PreferenceConstants.BACKTRACK_PREFIX);
-        IPath path = Path.fromOSString(
-                store.getString(PreferenceConstants.BACKTRACK_ROOT));
+        IPath path = new Path(store.getString(
+                PreferenceConstants.BACKTRACK_ROOT));
         IContainer container = getContainer(path);
         if (prefix != null && !prefix.equals(""))
             container =
-                container.getFolder(Path.fromOSString(
+                container.getFolder(new Path(
                         prefix.replace('.', File.separatorChar)));
         return container;
     }

@@ -138,7 +138,6 @@ public class SectionPreferencePage extends FieldEditorPreferencePage
         GridLayout layout = new GridLayout(column, false);
         composite.setLayout(layout);
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
-        data.horizontalAlignment = GridData.BEGINNING;
         composite.setLayoutData(data);
         return composite;
     }
@@ -151,6 +150,19 @@ public class SectionPreferencePage extends FieldEditorPreferencePage
         group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         group.setText(text);
         return group;
+    }
+    
+    protected static void _setEnabled(Composite composite,
+            boolean enabled) {
+        composite.setEnabled(enabled);
+        
+        Control[] children = composite.getChildren();
+        for (int i = 0; i < children.length; i++) {
+            Control child = children[i];
+            if (child instanceof Composite)
+                _setEnabled((Composite)child, enabled);
+            child.setEnabled(enabled);
+        }
     }
     
     protected FormToolkit _toolkit;

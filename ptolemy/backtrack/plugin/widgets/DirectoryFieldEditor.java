@@ -71,7 +71,7 @@ public class DirectoryFieldEditor extends
     
     protected String changePressed() {
         String folderName = getTextControl().getText();
-        IPath path = Path.fromOSString(folderName);
+        IPath path = new Path(folderName);
         IContainer container = Environment.getContainer(path);
         ContainerSelectionDialog dialog =
             new ContainerSelectionDialog(
@@ -93,7 +93,7 @@ public class DirectoryFieldEditor extends
         
         IWorkspaceRoot root =
             ResourcesPlugin.getWorkspace().getRoot();
-        IPath path = Path.fromOSString(folderName);
+        IPath path = new Path(folderName);
         String[] segments = path.segments();
         if (segments.length == 1) {
             IProject project = root.getProject(segments[0]);

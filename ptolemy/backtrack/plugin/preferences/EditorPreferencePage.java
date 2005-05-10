@@ -79,12 +79,12 @@ public class EditorPreferencePage extends SectionPreferencePage
                 currentComposite) {
             protected void doLoadDefault() {
                 super.doLoadDefault();
-                _colorGroup.setEnabled(getBooleanValue());
+                _setEnabled(_colorGroup, getBooleanValue());
             }
 
             protected void valueChanged(boolean oldValue, boolean newValue) {
                 super.valueChanged(oldValue, newValue);
-                _colorGroup.setEnabled(newValue);
+                _setEnabled(_colorGroup, newValue);
             }
         };
         _setParent(_highlightingEnabled, currentComposite);
@@ -117,21 +117,21 @@ public class EditorPreferencePage extends SectionPreferencePage
         
         currentComposite = _newComposite(currentLine);
         color = new ColorFieldEditor(
-                PreferenceConstants.EDITOR_STATE_COLOR,
-                "&State variable color",
+                PreferenceConstants.EDITOR_ACTOR_METHOD_COLOR,
+                "&Actor method color",
                 currentComposite);
         addField(color);
         
         currentComposite = _newComposite(currentLine);
         bold = new BooleanFieldEditor(
-                PreferenceConstants.EDITOR_STATE_BOLD,
+                PreferenceConstants.EDITOR_ACTOR_METHOD_BOLD,
                 "Bold",
                 currentComposite);
         addField(bold);
         
         currentComposite = _newComposite(currentLine);
         italic = new BooleanFieldEditor(
-                PreferenceConstants.EDITOR_STATE_ITALIC,
+                PreferenceConstants.EDITOR_ACTOR_METHOD_ITALIC,
                 "Italic",
                 currentComposite);
         addField(italic);

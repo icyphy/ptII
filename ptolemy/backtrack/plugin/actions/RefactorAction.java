@@ -1,7 +1,6 @@
 package ptolemy.backtrack.plugin.actions;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 
 import org.eclipse.core.resources.IContainer;
@@ -284,11 +283,11 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
                     _stream.println(_s);
                 }
                 
-                // Flush every time.
-                try {
+                // Flush every time, does not work for 3.0.
+                /*try {
                     _stream.flush();
                 } catch (IOException e) {
-                }
+                }*/
             }
             
             private String _s;

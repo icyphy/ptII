@@ -73,6 +73,13 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
                 new RGB(204, 40, 0));
         store.setDefault(PreferenceConstants.EDITOR_STATE_BOLD, false);
         store.setDefault(PreferenceConstants.EDITOR_STATE_ITALIC, false);
+        
+        PreferenceConverter.setDefault(store,
+                PreferenceConstants.EDITOR_ACTOR_METHOD_COLOR,
+                new RGB(255, 0, 0));
+        store.setDefault(PreferenceConstants.EDITOR_ACTOR_METHOD_BOLD, true);
+        store.setDefault(PreferenceConstants.EDITOR_ACTOR_METHOD_ITALIC,
+                false);
 	}
 
 }

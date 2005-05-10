@@ -34,12 +34,8 @@ import org.eclipse.jdt.internal.ui.javaeditor.SemanticHighlighting;
 import org.eclipse.jdt.internal.ui.javaeditor.SemanticHighlightings;
 import org.eclipse.jdt.internal.ui.text.JavaPresentationReconciler;
 import org.eclipse.jdt.ui.text.IColorManager;
-import org.eclipse.jdt.ui.text.IJavaPartitions;
 import org.eclipse.jdt.ui.text.JavaSourceViewerConfiguration;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceConverter;
-import org.eclipse.jface.text.TextAttribute;
-import org.eclipse.swt.SWT;
 
 //////////////////////////////////////////////////////////////////////////
 //// SemanticHighlightingManager
@@ -60,13 +56,16 @@ public class SemanticHighlightingManager {
 
     public void install(JavaEditor editor, JavaSourceViewer sourceViewer,
             IColorManager colorManager, IPreferenceStore preferenceStore) {
+        final String JAVA_PARTITIONING= "___java_partitioning";
+        
         _editor = editor;
         _sourceViewer = sourceViewer;
         _colorManager = colorManager;
         _preferenceStore = preferenceStore;
+        
         if (editor != null) {
             _configuration = new JavaSourceViewerConfiguration(colorManager,
-                    preferenceStore, editor, IJavaPartitions.JAVA_PARTITIONING);
+                    preferenceStore, editor, JAVA_PARTITIONING);
             _presentationReconciler = (JavaPresentationReconciler)
                     _configuration.getPresentationReconciler(sourceViewer);
         } else {

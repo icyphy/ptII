@@ -3,6 +3,7 @@ package ptolemy.backtrack.plugin;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -32,6 +33,7 @@ public class EclipsePlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+        _console = new OutputConsole();
 	}
 
 	/**
@@ -92,6 +94,10 @@ public class EclipsePlugin extends AbstractUIPlugin {
         return _console;
     }
     
+    public void startup() throws CoreException {
+        super.startup();
+    }
+
     public static Display getStandardDisplay() {
         Display display= Display.getCurrent();
         if (display == null) {
@@ -100,5 +106,5 @@ public class EclipsePlugin extends AbstractUIPlugin {
         return display;     
     }
     
-    private OutputConsole _console = new OutputConsole();
+    private OutputConsole _console;
 }

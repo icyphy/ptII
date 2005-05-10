@@ -34,10 +34,8 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.part.IWorkbenchPartOrientation;
 
 import ptolemy.backtrack.ast.Transformer;
 import ptolemy.backtrack.plugin.EclipsePlugin;
@@ -215,7 +213,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     private void _createRawPage() {
         int pageIndex = 0;
         
-        Composite composite = new Composite(_container, _getOrientation(this));
+        Composite composite = new Composite(_container, SWT.NULL);
         composite.setLayout(new FillLayout());
         //super.createPartControl(composite);
         
@@ -229,7 +227,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     private void _createPreviewPage() {
         int pageIndex = 1;
         
-        Composite composite = new Composite(_container, _getOrientation(this));
+        Composite composite = new Composite(_container, SWT.NULL);
         composite.setLayout(new FillLayout());
         
         _createItem(pageIndex, composite);
@@ -266,12 +264,6 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         ICompilationUnit unit =
             manager.getWorkingCopy(getEditorInput());
         return AST.parseCompilationUnit(unit, false);
-    }
-    
-    private int _getOrientation(IEditorPart editor) {
-        if(editor instanceof IWorkbenchPartOrientation)
-            return ((IWorkbenchPartOrientation) editor).getOrientation();
-        return getOrientation();
     }
     
     private CTabItem _createItem(int index, Control control) {

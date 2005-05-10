@@ -35,6 +35,7 @@ import org.eclipse.ui.console.IConsoleListener;
 import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
+import org.eclipse.ui.internal.console.ConsoleManager;
 
 import ptolemy.backtrack.plugin.EclipsePlugin;
 
@@ -52,20 +53,38 @@ import ptolemy.backtrack.plugin.EclipsePlugin;
 public class OutputConsole extends MessageConsole implements IConsoleListener {
 
     public OutputConsole() {
-        super("Ptolemy II Backtracking", null);
+        super("Ptolemy II Backtracking", EclipsePlugin.getImageDescriptor("ptolemy/backtrack/plugin/images/ptolemy.gif"));
+        register();
+    }
+    
+    public void register() {
+        IConsoleManager manager = ConsolePlugin.getDefault().getConsoleManager();
+        IConsole[] existing = manager.getConsoles();
+        boolean exists = false;
+        for (int i = 0; i < existing.length; i++) {
+            if(existing[i] == this) {
+                exists = true;
+                break;
+            }
+        }
+        if(!exists)
+            manager.addConsoles(new IConsole[] {this});
+    }
+    
+    public void unregister() {
+        IConsoleManager manager = ConsolePlugin.getDefault().getConsoleManager();
+        manager.removeConsoles(new IConsole[] {this});
     }
     
     public void consolesAdded(IConsole[] consoles) {
-        
     }
     
     public void consolesRemoved(IConsole[] consoles) {
-        
     }
-    
+
     public void show() {
-        ConsoleFactory.showConsole();
-        _consoleManager.showConsoleView(this);
+        IConsoleManager manager = ConsolePlugin.getDefault().getConsoleManager();
+        manager.showConsoleView(this);
     }
     
     public static void outputError(String message) {
@@ -92,12 +111,8 @@ public class OutputConsole extends MessageConsole implements IConsoleListener {
             MessageConsoleStream outputStream =
                 console.newMessageStream();
             outputStream.setColor(_color);
-            try {
-                console.show();
-                outputStream.write(_message + "\n");
-                outputStream.close();
-            } catch (Exception e) {
-            }
+            console.show();
+            outputStream.print(_message + "\n");
         }
         
         private String _message;
