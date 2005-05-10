@@ -133,6 +133,12 @@
                actionID="RulerDoubleClick"
                id="org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction">
          </action>
+         <!--<action
+               label="Toggle &amp;Breakpoint"
+               class="org.eclipse.jdt.internal.debug.ui.actions.ManageBreakpointRulerActionDelegate"
+               actionID="RulerDoubleClick"
+               id="org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction">
+         </action>-->
       </editorContribution>
       <editorContribution
             targetID="ptolemy.backtrack.plugin.editor.MultiPageEditor"
