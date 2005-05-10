@@ -17,6 +17,7 @@ import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jdt.ui.IWorkingCopyManager;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
@@ -34,7 +35,9 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.part.FileEditorInput;
 
 import ptolemy.backtrack.ast.Transformer;
@@ -118,11 +121,8 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     }
 	
     protected void pageChange(int newPageIndex) {
-		if (newPageIndex == 1) {
-            if (_preview == null)
-                _setupPreviewPage();
+		if (newPageIndex == 1)
 			_update();
-		}
 	}
 	
     protected void _update() {
@@ -140,8 +140,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         IPreferenceStore store = EclipsePlugin.getDefault()
                 .getPreferenceStore();
         IFile file = (IFile)getEditorInput().getAdapter(IFile.class);
-        IFile previewFile =
-            ((IFileEditorInput)_preview.getEditorInput()).getFile();
+        IFile previewFile = _getPreviewFile();
 
         PipedOutputStream outputStream = new PipedOutputStream();
         OutputStreamWriter writer =
@@ -246,10 +245,30 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         IFile previewFile = _getPreviewFile();
         if (previewFile != null) {
             try {
-                _preview.init(_editor.getEditorSite(),
+                /*_preview.init(_editor.getEditorSite(),
                         new FileEditorInput(previewFile) {
                     public boolean exists() {
                         return true;
+                    }
+                });*/
+                _preview.init(_editor.getEditorSite(), new IEditorInput() {
+                    public boolean exists() {
+                        return true;
+                    }
+                    public ImageDescriptor getImageDescriptor() {
+                        return null;
+                    }
+                    public String getName() {
+                        return "";
+                    }
+                    public IPersistableElement getPersistable() {
+                        return null;
+                    }
+                    public String getToolTipText() {
+                        return "";
+                    }
+                    public Object getAdapter(Class adapter) {
+                        return null;
                     }
                 });
             } catch (Exception e) {

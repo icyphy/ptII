@@ -242,8 +242,6 @@ public class SemanticHighlightingReconciler
         _jobSemanticHighlightings = _semanticHighlightings;
         
         _editor.addJavaReconcileListener(this);
-
-        //_scheduleJob();
     }
     
     private void _disable() {
