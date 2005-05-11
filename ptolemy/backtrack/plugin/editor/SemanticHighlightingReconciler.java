@@ -42,7 +42,6 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.internal.corext.dom.GenericVisitor;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor;
-import org.eclipse.jdt.internal.ui.javaeditor.JavaEditorMessages;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaSourceViewer;
 import org.eclipse.jdt.internal.ui.text.JavaPresentationReconciler;
 import org.eclipse.jdt.internal.ui.text.java.IJavaReconcilingListener;
@@ -120,9 +119,7 @@ public class SemanticHighlightingReconciler
     private void _scheduleJob() {
         final IJavaElement element = _editor.getInputJavaElement();
         if (element != null) {
-            Job job = new Job(
-                    JavaEditorMessages.getString(
-                            "PtolemySemanticHighlighting.job")) {
+            Job job = new Job("PtolemySemanticHighlighting.job") {
                 protected IStatus run(IProgressMonitor monitor) {
                     synchronized (_jobLock) {
                         if (_job != null)
