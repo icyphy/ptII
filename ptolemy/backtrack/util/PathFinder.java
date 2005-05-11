@@ -102,6 +102,10 @@ public class PathFinder {
      *  @return The class paths.
      */
     public static String[] getPtClassPaths() {
+        String PTII = getPtolemyPath();
+        if (PTII == null || PTII.equals(""))
+            return new String[0];
+        
         String[] subdirs = new String[] {
             "lib",
             "vendors/sun/commapi",
@@ -111,7 +115,7 @@ public class PathFinder {
         int totalNumber = 0;
         for (int i = 0; i < subdirs.length; i++) {
             files[i] =
-                new File(getPtolemyPath() + subdirs[i]).listFiles(
+                new File(PTII + subdirs[i]).listFiles(
                         new PostfixFilter(".jar")
                         );
             totalNumber += files[i].length;
@@ -159,7 +163,9 @@ public class PathFinder {
      */
     public static void setPtolemyPath(String path) {
         _ptolemyPath = path;
-        if (!_ptolemyPath.endsWith("" + File.separatorChar) &&
+        if (_ptolemyPath != null &&
+                !_ptolemyPath.equals("") &&
+                !_ptolemyPath.endsWith("" + File.separatorChar) &&
                 !_ptolemyPath.endsWith("/") &&
                 !_ptolemyPath.endsWith("\\"))
             _ptolemyPath += File.separatorChar;

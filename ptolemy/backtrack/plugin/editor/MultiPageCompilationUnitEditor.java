@@ -8,6 +8,9 @@ import java.io.Writer;
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
@@ -129,10 +132,6 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         if (!_needRefactoring)
             return;
 
-        String PTII = Environment.getPtolemyHome(_container.getShell());
-        if (PTII == null)
-            return;
-        
         String root = Environment.getRefactoringRoot(_container.getShell());
         if (root == null)
             return;
@@ -166,11 +165,13 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
             
             String[] classPaths = null;
             String[] PTClassPaths = Environment.getClassPaths(null);
-            String[] extraClassPaths = new String[0];
-            if (file.getProject() != null)
-                extraClassPaths = new String[]{
-                    file.getProject().getLocation().toOSString()
-                };
+            
+            IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
+            IProject[] projects = workspace.getProjects();
+            String[] extraClassPaths = new String[projects.length];
+            for (int i = 0; i < projects.length; i++)
+                extraClassPaths[0] = projects[i].getLocation().toOSString();
+            
             String extraClassPathsInOptions = store.getString(
                     PreferenceConstants.BACKTRACK_EXTRA_CLASSPATHS);
             if (!extraClassPathsInOptions.equals(""))
@@ -245,12 +246,6 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         IFile previewFile = _getPreviewFile();
         if (previewFile != null) {
             try {
-                /*_preview.init(_editor.getEditorSite(),
-                        new FileEditorInput(previewFile) {
-                    public boolean exists() {
-                        return true;
-                    }
-                });*/
                 _preview.init(_editor.getEditorSite(), new IEditorInput() {
                     public boolean exists() {
                         return true;

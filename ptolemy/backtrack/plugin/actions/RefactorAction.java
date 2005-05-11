@@ -1,10 +1,14 @@
 package ptolemy.backtrack.plugin.actions;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.PrintStream;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -21,6 +25,7 @@ import ptolemy.backtrack.plugin.EclipsePlugin;
 import ptolemy.backtrack.plugin.console.OutputConsole;
 import ptolemy.backtrack.plugin.preferences.PreferenceConstants;
 import ptolemy.backtrack.plugin.util.Environment;
+import ptolemy.backtrack.util.Strings;
 
 /**
  * Our sample action implements workbench action delegate.
@@ -69,9 +74,18 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
             console.newMessageStream();
         errorStream.setColor(new Color(null, 255, 0, 0));
         
+        IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
+        IProject[] projects = workspace.getProjects();
+        String[] ptojectPaths = new String[projects.length];
+        for (int i = 0; i < projects.length; i++)
+            ptojectPaths[0] = projects[i].getLocation().toOSString();
+        
+        String extraClassPaths = ptojectPaths.length > 0 ?
+                Strings.encodeFileNames(ptojectPaths) + File.pathSeparator :
+                "";
         IPreferenceStore store = EclipsePlugin.getDefault()
                 .getPreferenceStore();
-        String extraClassPaths = store.getString(
+        extraClassPaths = extraClassPaths + store.getString(
                             PreferenceConstants.BACKTRACK_EXTRA_CLASSPATHS);
         
         new TransformThread(

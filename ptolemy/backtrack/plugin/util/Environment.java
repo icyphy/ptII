@@ -89,16 +89,6 @@ public class Environment {
         IPreferenceStore store = EclipsePlugin.getDefault()
                 .getPreferenceStore();
         String root = store.getString(PreferenceConstants.BACKTRACK_ROOT);
-        IPath rootPath = new Path(root);
-        String[] segments = rootPath.segments();
-        if (segments.length == 1)
-            root = ResourcesPlugin.getWorkspace()
-                    .getRoot().getProject(segments[0])
-                            .getLocation().toOSString();
-        else
-            root = ResourcesPlugin.getWorkspace()
-                    .getRoot().getFolder(rootPath)
-                            .getLocation().toOSString();
 
         boolean valid = !root.equals("");
         if (!valid) {
@@ -108,8 +98,19 @@ public class Environment {
                         "Refactoring root is invalid.\n" +
                         "Please set it in Ptolemy -> Options.");
             return null;
-        } else
+        } else {
+            IPath rootPath = new Path(root);
+            String[] segments = rootPath.segments();
+            if (segments.length == 1)
+                root = ResourcesPlugin.getWorkspace()
+                        .getRoot().getProject(segments[0])
+                                .getLocation().toOSString();
+            else
+                root = ResourcesPlugin.getWorkspace()
+                        .getRoot().getFolder(rootPath)
+                                .getLocation().toOSString();
             return root;
+        }
     }
     
     public static String getSourceList() {
@@ -211,9 +212,9 @@ public class Environment {
     
     public static boolean setupTransformerArguments(Shell shell,
             boolean config, boolean alwaysOverwrite) {
-        String PTII = Environment.getPtolemyHome(shell);
-        if (PTII == null)
-            return false;
+        
+        // It is OK if PTII is not set.
+        String PTII = Environment.getPtolemyHome(null);
         
         String root = getRefactoringRoot(shell);
         if (root == null)
@@ -249,7 +250,10 @@ public class Environment {
             args = Strings.combineArrays(args, extraArgs);
         }
         
-        PathFinder.setPtolemyPath(PTII);
+        if (PTII != null)
+            PathFinder.setPtolemyPath(PTII);
+        else
+            PathFinder.setPtolemyPath("");
         
         int start = 0;
         while (start < args.length) {

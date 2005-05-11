@@ -35,13 +35,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.Iterator;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.BooleanFieldEditor;
-import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FileFieldEditor;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.ListEditor;
 import org.eclipse.jface.preference.PathEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -54,7 +51,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import ptolemy.backtrack.plugin.EclipsePlugin;
 import ptolemy.backtrack.plugin.util.Environment;
 import ptolemy.backtrack.plugin.util.SaveFileFieldEditor;
 import ptolemy.backtrack.plugin.widgets.DirectoryFieldEditor;
@@ -104,7 +100,7 @@ public class BacktrackingPreferencePage extends SectionPreferencePage
     private void _checkEnabled() {
         String PTII = Environment.getPtolemyHome();
         boolean formEnabled = PTII != null;
-        Iterator fieldsIter = getFields().iterator();
+        /*Iterator fieldsIter = getFields().iterator();
         while (fieldsIter.hasNext()) {
             FieldEditor editor = (FieldEditor)fieldsIter.next();
             if (formEnabled && editor == _configuration) {
@@ -115,7 +111,7 @@ public class BacktrackingPreferencePage extends SectionPreferencePage
                         _getParent(editor));
             } else
                 editor.setEnabled(formEnabled, _getParent(editor));
-        }
+        }*/
     }
     
     private void _createSection1() {
@@ -132,9 +128,6 @@ public class BacktrackingPreferencePage extends SectionPreferencePage
                 PreferenceConstants.BACKTRACK_SOURCE_LIST,
                 "Source &list file:", currentComposite) {
             protected boolean checkState() {
-                if (Environment.getPtolemyHome() == null)
-                    return true;
-                
                 String currentValue = getStringValue();
                 boolean superResult = super.checkState();
                 
@@ -264,7 +257,8 @@ public class BacktrackingPreferencePage extends SectionPreferencePage
         Composite composite = _createSection(
                 "Extra Class Paths",
                 "Add class paths to locate classes in name resolving. The " +
-                "Ptolemy II home directory is by default in the class paths.");
+                "directories of the projects in the current workspace are " +
+                "added automatically and need not be specified explicitly.");
         
         Composite currentComposite = _newComposite(composite);
         _extraClassPaths = new PathEditor(

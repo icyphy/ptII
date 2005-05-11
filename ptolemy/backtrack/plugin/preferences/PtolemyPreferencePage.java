@@ -2,7 +2,6 @@ package ptolemy.backtrack.plugin.preferences;
 
 import java.io.File;
 
-import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -14,6 +13,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import ptolemy.backtrack.plugin.EclipsePlugin;
+import ptolemy.backtrack.plugin.widgets.DirectoryFieldEditor;
 
 /**
  * This class represents a preference page that
@@ -68,6 +68,8 @@ public class PtolemyPreferencePage
                 super.fireValueChanged(property, oldValue, newValue);
             }
         };
+        directoryFieldEditor.setWorkspaceOnly(false);
+        directoryFieldEditor.setCanBeEmpty(true);
 		addField(directoryFieldEditor);
         
         Label space = new Label(parent, 0);

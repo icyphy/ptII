@@ -28,6 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.plugin.widgets;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -35,7 +37,9 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 import ptolemy.backtrack.plugin.util.Environment;
@@ -65,24 +69,51 @@ public class DirectoryFieldEditor extends
         return _canBeEmpty;
     }
     
+    public boolean workspaceOnly() {
+        return _workspaceOnly;
+    }
+    
     public void setCanBeEmpty(boolean canBeEmpty) {
         _canBeEmpty = canBeEmpty;
     }
     
+    public void setWorkspaceOnly(boolean workspaceOnly) {
+        _workspaceOnly = workspaceOnly;
+    }
+    
     protected String changePressed() {
         String folderName = getTextControl().getText();
-        IPath path = new Path(folderName);
-        IContainer container = Environment.getContainer(path);
-        ContainerSelectionDialog dialog =
-            new ContainerSelectionDialog(
-                    getShell(), container, false,
-                    "Select the Ptolemy home");
+        IContainer container;
+        if (folderName.equals(""))
+            container =
+                ResourcesPlugin.getWorkspace().getRoot();
+        else {
+            IPath path = new Path(folderName);
+            container = Environment.getContainer(path);
+        }
         
-        if (dialog.open() == ContainerSelectionDialog.OK) {
-            IPath result = (IPath)dialog.getResult()[0];
-            return result.toOSString();
-        } else
+        if (_workspaceOnly) {
+            ContainerSelectionDialog dialog =
+                new ContainerSelectionDialog(
+                        getShell(), container, false,
+                        "Select the Ptolemy home");
+            
+            if (dialog.open() == ContainerSelectionDialog.OK) {
+                IPath result = (IPath)dialog.getResult()[0];
+                return result.toOSString();
+            } else
+                return null;
+        } else {
+            DirectoryDialog fileDialog = new DirectoryDialog(getShell(), SWT.OPEN);
+            fileDialog.setFilterPath(container.getLocation().toOSString());
+            String dir = fileDialog.open();
+            if (dir != null) {
+                dir = dir.trim();
+                if (dir.length() > 0)
+                    return dir;
+            }
             return null;
+        }
     }
     
     protected boolean doCheckState() {
@@ -91,20 +122,27 @@ public class DirectoryFieldEditor extends
         if (_canBeEmpty && folderName.equals(""))
             return true;
         
-        IWorkspaceRoot root =
-            ResourcesPlugin.getWorkspace().getRoot();
-        IPath path = new Path(folderName);
-        String[] segments = path.segments();
-        if (segments.length == 1) {
-            IProject project = root.getProject(segments[0]);
-            return project.exists() && project.isOpen();
-        } else if (segments.length > 1){
-            IFolder folder =
-                root.getFolder(path);
-            return folder.exists();
-        } else
-            return false;
+        if (_workspaceOnly) {
+            IWorkspaceRoot root =
+                ResourcesPlugin.getWorkspace().getRoot();
+            IPath path = new Path(folderName);
+            String[] segments = path.segments();
+            if (segments.length == 1) {
+                IProject project = root.getProject(segments[0]);
+                return project.exists() && project.isOpen();
+            } else if (segments.length > 1){
+                IFolder folder =
+                    root.getFolder(path);
+                return folder.exists();
+            } else
+                return false;
+        } else {
+            File path = new File(folderName);
+            return path.exists() && path.isDirectory();
+        }
     }
     
     private boolean _canBeEmpty = false;
+    
+    private boolean _workspaceOnly = true;
 }
