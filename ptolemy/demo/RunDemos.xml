@@ -43,7 +43,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 190.0]">
         </property>
     </property>
-    <property name="directoryOrURL" class="ptolemy.data.expr.FileParameter" value="http://ptolemy.eecs.berkeley.edu/demos">
+    <property name="directoryOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/demo/Demos">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -74,6 +74,8 @@
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$directoryOrURL">
+        </property>
+        <property name="pattern" class="ptolemy.data.expr.StringParameter" value=".*\.xml">
         </property>
         <property name="listOnlyFiles" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -106,12 +108,21 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 290.0]">
         </property>
     </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 290, 227}, maximized=false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 345.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{320.0, 290.0}">
+        </vertex>
     </relation>
     <link port="DirectoryListing.output" relation="relation"/>
     <link port="VisualModelReference.modelFileOrURL" relation="relation2"/>
     <link port="ArrayToSequence.input" relation="relation"/>
     <link port="ArrayToSequence.output" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
 </entity>
