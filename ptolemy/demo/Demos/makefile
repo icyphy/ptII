@@ -45,18 +45,32 @@ PTPACKAGE = 	Demos
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
+	AdaptiveMedian.xml \
+	BouncingBall.xml \
+	Collisions.xml \
 	Controllers.xml \
+	EvaderAndPursuer.xml \
 	Eye.xml \
+	GuardedCount.xml \
+	HanoiTower.xml \
+	IncreasingRatePoisson.xml \
 	Inspection.xml \
 	Lorenz.xml \
 	MaximumEntropySpectrum.xml \
+	MobileFunction.xml \
+	MultipleRuns.xml \
+	NewtonsCradleAnimated.xml \
+	NondeterministicMerge.xml \
 	OrderedMerge.xml \
 	PythonScale.xml \
 	Router.xml \
 	SigmaDelta.xml \
+	SolarSystem.xml \
 	SoundSpectrum.xml \
+	TerrainModel.xml \
 	TimingParadox.xml \
 	TransmitAntennaPattern.xml \
+	ViterbiDecoder.xml \
 	WirelessSoundDetection.xml
 
 EXTRA_SRCS = \
