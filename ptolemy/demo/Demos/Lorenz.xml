@@ -60,7 +60,7 @@ model is known as a Lorenz attractor.</text>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[608, 481]">

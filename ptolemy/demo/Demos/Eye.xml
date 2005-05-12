@@ -20,7 +20,7 @@ filter. The output display is known as an "eye diagram."</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <property name="excess_bandwidth" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -41,7 +41,7 @@ is one symbol interval.</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <property name="0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
@@ -56,7 +56,7 @@ an actor, right click and select
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <property name="Discrete Time (DT) Director" class="ptolemy.domains.dt.kernel.DTDirector">
@@ -80,7 +80,7 @@ linger over the port.</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[708, 525]">
