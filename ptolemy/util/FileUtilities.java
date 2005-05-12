@@ -292,8 +292,8 @@ public class FileUtilities {
                     // demos that have actors that have defaults FileParameters
                     // like "$PTII/doc/img/PtolemyII.jpg", then resolve()
                     // bombs.
-                    String name2 = StringUtilities.substitute(name, "%20", " ");
-
+                    String name2 =
+                        StringUtilities.substitute(name, "%20", " ");
                     try {
                         newURI = baseDirectory.resolve(name2);
                         name = name2;
