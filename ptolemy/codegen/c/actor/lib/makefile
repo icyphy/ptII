@@ -67,7 +67,7 @@ JSRCS = \
 	Sequence.java \
 	Test.java \
 	TrigFunction.java \
-	UnaryMathFuntion.java
+	UnaryMathFunction.java
 
 OTHER_FILES_TO_BE_JARED = \
 	AbsoluteValue.c \
