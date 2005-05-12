@@ -757,7 +757,7 @@ public class StringUtilities {
      *  <code>{"-class", "<classname>")</code>
      *  @param commandFlags An array of Strings that list command-line
      *  options that are either present or not.
-     *  @return A string that descripts the command.
+     *  @return A string that describes the command.
      */
     public static String usageString(String commandTemplate,
             String[][] commandOptions, String[] commandFlags) {
