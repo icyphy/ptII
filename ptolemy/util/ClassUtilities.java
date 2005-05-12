@@ -152,7 +152,7 @@ public class ClassUtilities {
             // Convert backslashes
             String sanitizedResourceName =
                 StringUtilities.substitute(resourceFile
-                    .getPath(), "\\", "/");
+                        .getPath(), "\\", "/");
             return sanitizedResourceName;
         }
 
