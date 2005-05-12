@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MaximumEntropySpectrum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[764, 369]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[764, 520]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
@@ -17,7 +17,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 31.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 85.0]">
         </property>
     </property>
     <property name="log2numInputs" class="ptolemy.data.expr.Parameter" value="8">
@@ -44,10 +44,10 @@ by three different techniques.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[136.0, 64.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 5, 979, 487}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 5, 979, 638}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -66,27 +66,7 @@ by three different techniques.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 335.0]">
-        </property>
-    </property>
-    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">Synchronous Dataflow Modeling</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4.0, 389.0]">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -112,12 +92,32 @@ efficient code generation and optimization.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 90.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 105.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.0, 184.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.0, 260.0}">
+    </property>
+    <property name="annotation5" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:32; font-family:Serif; fill:black">Synchronous Dataflow Modeling</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 15.0]">
+        </property>
     </property>
     <entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
         <property name="order" class="ptolemy.data.expr.Parameter" value="ARorder">
@@ -146,7 +146,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="303.0, 244.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[304.0, 298.0]">
         </property>
     </entity>
     <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
@@ -159,7 +159,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </property>
         <property name="order" class="ptolemy.data.expr.Parameter" value="log2numInputs">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="303.0, 104.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[304.0, 158.0]">
         </property>
     </entity>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
@@ -170,7 +170,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noisePower">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 291.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[51.0, 345.0]">
         </property>
     </entity>
     <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
@@ -181,7 +181,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 105.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[56.0, 159.0]">
         </property>
         <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -221,7 +221,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[56.0, 219.0]">
         </property>
         <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -256,7 +256,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="54.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 279.0]">
         </property>
         <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -265,7 +265,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 122.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[171.0, 176.0]">
         </property>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -283,7 +283,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/(2^log2numInputs)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 295.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[461.0, 349.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -300,7 +300,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
     <entity name="IIR" class="ptolemy.actor.lib.IIR">
         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, 0.99}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="154.0, 283.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 337.0]">
         </property>
     </entity>
     <entity name="SmoothedPeriodogram" class="ptolemy.domains.sdf.lib.SmoothedPeriodogram">
@@ -311,7 +311,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </property>
         <property name="numberOfLags" class="ptolemy.data.expr.Parameter" value="64">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="303.0, 174.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[304.0, 228.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -321,7 +321,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="228.0, 128.0">
+        <vertex name="vertex1" value="[229.0, 182.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

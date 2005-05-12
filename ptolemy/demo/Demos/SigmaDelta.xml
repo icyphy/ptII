@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SigmaDelta" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -19,7 +19,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="80.33332824707031, 37.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.33332824707031, 87.0]">
         </property>
     </property>
     <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.02">
@@ -31,7 +31,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 60.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 110.0]">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This is a mixed-signal model of a MEMS accelerometer using a digital feedback
@@ -41,11 +41,11 @@ is related to Sigma-Delta A/D converters, is due to Mark Lemkin (Ph.D. thesis,
 differential system. The acceleration is sampled, filtered, and fed back
 to produce a countering electrostatic force.</text></svg></configure>
         </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
         <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 819, 572}, maximized=false}">
@@ -68,12 +68,32 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 395.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:32; font-family:Serif; fill:black">Mixed-Signal Systems</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 15.0]">
+        </property>
     </property>
     <entity name="CTSubsystem" class="ptolemy.actor.TypedCompositeActor">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
@@ -81,6 +101,8 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
         <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="feedbackGain">
         </property>
         <property name="CTMixedSignalDirector" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+            <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+            </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
@@ -101,16 +123,12 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
             </property>
             <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
             </property>
-            <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            </property>
             <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
-            </property>
-            <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="86.66666793823242, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[71.66666793823242, 275.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[684, 454]">
         </property>
@@ -155,11 +173,23 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
         <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
+            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 135.0">
             </property>
         </entity>
         <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 135.0">
             </property>
@@ -338,7 +368,7 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 275.0]">
         </property>
     </entity>
     <entity name="FIR Filter" class="ptolemy.domains.sdf.lib.FIR">
@@ -356,11 +386,11 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 275.0]">
         </property>
     </entity>
     <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 275.0]">
         </property>
     </entity>
     <entity name="DEPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -372,7 +402,7 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 310.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -400,7 +430,7 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 365.0]">
         </property>
     </entity>
     <entity name="Average 50 samples" class="ptolemy.domains.sdf.lib.FIR">
@@ -418,7 +448,7 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 365.0]">
         </property>
     </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
@@ -428,7 +458,7 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
     <relation name="_R2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" value="115.0, 260.0">
+        <vertex name="vertex" value="[100.0, 310.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

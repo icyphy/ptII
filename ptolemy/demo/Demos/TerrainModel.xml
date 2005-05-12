@@ -23,7 +23,7 @@
         </property>
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 75.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 214, 762, 556}, maximized=false}">
@@ -48,12 +48,32 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 400.0]">
         </property>
     </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:32; font-family:Serif; fill:black">Wireless Systems Modeling</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 15.0]">
+        </property>
+    </property>
     <entity name="PowerLossChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=Infinity, power=1.0}">
         </property>
         <property name="powerPropagationFactor" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 30.0]">
         </property>
     </entity>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">

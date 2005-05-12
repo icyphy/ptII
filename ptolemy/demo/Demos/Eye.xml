@@ -2,10 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Eye" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 60.0]">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -20,7 +20,7 @@ filter. The output display is known as an "eye diagram."</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </property>
     <property name="excess_bandwidth" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -28,7 +28,7 @@ filter. The output display is known as an "eye diagram."</text>
     <property name="noise_standard_deviation" class="ptolemy.data.expr.Parameter" value="0.1">
     </property>
     <property name="0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 62.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 112.0]">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -41,11 +41,11 @@ is one symbol interval.</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </property>
     <property name="0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 365.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 415.0]">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -56,7 +56,7 @@ an actor, right click and select
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </property>
     <property name="Discrete Time (DT) Director" class="ptolemy.domains.dt.kernel.DTDirector">
@@ -64,11 +64,11 @@ an actor, right click and select
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 90.0]">
         </property>
     </property>
     <property name="4:0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 360.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 410.0]">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -80,10 +80,10 @@ linger over the port.</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[708, 525]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -106,21 +106,41 @@ linger over the port.</text>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 420.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 470.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 2, 819, 572}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 2, 923, 643}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{354.0, 262.5}">
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:32; font-family:Serif; fill:black">Discrete-Time (DT) Modeling</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 15.0]">
+        </property>
     </property>
     <entity name="Random Symbol Source" class="ptolemy.actor.lib.DiscreteRandomSource">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{-1, 1}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 250.0]">
         </property>
     </entity>
     <entity name="Square Root Raised Cosine Pulse Shaper" class="ptolemy.domains.sdf.lib.RaisedCosine">
@@ -136,7 +156,7 @@ linger over the port.</text>
         </property>
         <property name="symbolInterval" class="ptolemy.data.expr.Parameter" value="16">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="236.0, 223.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[241.0, 273.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -152,7 +172,7 @@ linger over the port.</text>
         </port>
     </entity>
     <entity name="Adder" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 365.0]">
         </property>
     </entity>
     <entity name="Gaussian Noise Source" class="ptolemy.actor.lib.Gaussian">
@@ -163,7 +183,7 @@ linger over the port.</text>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noise_standard_deviation">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 305.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 355.0]">
         </property>
     </entity>
     <entity name="Matched Filter" class="ptolemy.domains.sdf.lib.RaisedCosine">
@@ -179,7 +199,7 @@ linger over the port.</text>
         </property>
         <property name="symbolInterval" class="ptolemy.data.expr.Parameter" value="16">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 365.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -207,7 +227,7 @@ linger over the port.</text>
         </property>
         <property name="persistence" class="ptolemy.data.expr.Parameter" value="32.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 365.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"

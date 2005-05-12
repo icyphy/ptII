@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Inspection" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="Discrete Event (DE) Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -19,7 +19,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 81.5]">
         </property>
     </property>
     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="100.0">
@@ -53,7 +53,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 460.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 466.5]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -73,7 +73,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="595.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 71.5]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -105,7 +105,7 @@ etc.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="595.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 101.5]">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -136,7 +136,7 @@ average arrival rate of busses is the same.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 20.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 66.5]">
         </property>
     </property>
     <property name="annotation5" class="ptolemy.kernel.util.Attribute">
@@ -160,12 +160,32 @@ order.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 96.5]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{405.5, 250.5}">
+    </property>
+    <property name="annotation6" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:32; font-family:Serif; fill:black">Discrete-Event (DE) Modeling</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 10.0]">
+        </property>
     </property>
     <entity name="Poisson Bus Arrivals" class="ptolemy.actor.lib.PoissonClock">
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="poissonBusArrivalRate">
@@ -174,7 +194,7 @@ order.</text></svg></configure>
         </property>
         <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 311.5]">
         </property>
     </entity>
     <entity name="Passenger Arrivals" class="ptolemy.actor.lib.PoissonClock">
@@ -184,11 +204,11 @@ order.</text></svg></configure>
         </property>
         <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 330.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 376.5]">
         </property>
     </entity>
     <entity name="Poisson Waiting Time" class="ptolemy.domains.de.lib.WaitingTime">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 301.5]">
         </property>
     </entity>
     <entity name="Timed Plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -202,7 +222,7 @@ order.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 211.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -231,7 +251,7 @@ order.</text></svg></configure>
         </property>
         <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 321.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -256,15 +276,15 @@ order.</text></svg></configure>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{3.0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 236.5]">
         </property>
     </entity>
     <entity name="Regular Waiting Time" class="ptolemy.domains.de.lib.WaitingTime">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="243.0, 318.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[238.0, 365.0]">
         </property>
     </entity>
     <entity name="Report Poisson Average" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="400.5, 348.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.5, 395.0]">
         </property>
         <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Poisson busses): &quot;">
         </property>
@@ -372,7 +392,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={589, 407, 430, 108}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 348.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 395.0]">
         </property>
     </entity>
     <entity name="SingleEvent0" class="ptolemy.domains.de.lib.SingleEvent">
@@ -386,11 +406,11 @@ actor, for example, adds strings by appending them.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 420.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 466.5]">
         </property>
     </entity>
     <entity name="Report Regular Average" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 410.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 456.5]">
         </property>
         <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Regular busses): &quot;">
         </property>
@@ -492,29 +512,29 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         <link port="Const.trigger" relation="relation9"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="165.0, 190.0">
+        <vertex name="vertex1" value="[160.0, 236.5]">
         </vertex>
     </relation>
     <relation name="relation27" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="275.0, 420.0">
+        <vertex name="vertex1" value="[270.0, 466.5]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="330.0, 300.0">
+        <vertex name="vertex1" value="[325.0, 346.5]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="150.0, 265.0">
+        <vertex name="vertex1" value="[145.0, 311.5]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="135.0, 330.0">
+        <vertex name="vertex1" value="[130.0, 376.5]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="310.0, 255.0">
+        <vertex name="vertex1" value="[305.0, 301.5]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

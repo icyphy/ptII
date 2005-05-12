@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="OrderedMerge" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 541]">
     </property>
@@ -13,7 +13,7 @@
         </property>
         <property name="maximumQueueCapacity" class="ptolemy.data.expr.Parameter" value="65536">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 80.0]">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -36,7 +36,7 @@ input sequences and merges them into one monotonically increasing output sequenc
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 50.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -59,7 +59,7 @@ computation, and produces outputs.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 367.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 412.5]">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -80,7 +80,7 @@ computation, and produces outputs.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 487.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 490.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 0, 1024, 659}, maximized=false}">
@@ -107,19 +107,39 @@ stopping the execution.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 140.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{404.5, 270.5}">
     </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:32; font-family:Serif; fill:black">Process Networks (PN)</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 15.0]">
+        </property>
+    </property>
     <entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 325.0]">
         </property>
     </entity>
     <entity name="OrderedMerge2" class="ptolemy.actor.lib.OrderedMerge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 350.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 395.0]">
         </property>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -133,7 +153,7 @@ stopping the execution.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 387.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 432.5]">
         </property>
     </entity>
     <entity name="Scale3" class="ptolemy.actor.lib.Scale">
@@ -147,7 +167,7 @@ stopping the execution.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 355.0]">
         </property>
     </entity>
     <entity name="Scale5" class="ptolemy.actor.lib.Scale">
@@ -161,7 +181,7 @@ stopping the execution.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 185.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -171,7 +191,7 @@ stopping the execution.</text></svg></configure>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={700, 509, 290, 227}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 472.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 517.5]">
         </property>
     </entity>
     <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
@@ -181,7 +201,7 @@ stopping the execution.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 225.0]">
         </property>
     </entity>
     <entity name="Limit on powers of 5" class="ptolemy.actor.lib.Const">
@@ -194,7 +214,7 @@ stopping the execution.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 205.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 250.0]">
         </property>
     </entity>
     <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
@@ -318,7 +338,7 @@ stopping the execution.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 185.0]">
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -330,7 +350,7 @@ stopping the execution.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 185.0]">
         </property>
     </entity>
     <entity name="SampleDelay2" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -342,7 +362,7 @@ stopping the execution.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 395.0]">
         </property>
     </entity>
     <entity name="SampleDelay3" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -354,17 +374,17 @@ stopping the execution.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 325.0]">
         </property>
     </entity>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="400.0, 422.5">
+        <vertex name="vertex1" value="[395.0, 467.5]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[500.0, 340.0]">
+        <vertex name="vertex1" value="[495.0, 385.0]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -372,11 +392,11 @@ stopping the execution.</text></svg></configure>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="215.0, 140.0">
+        <vertex name="vertex1" value="[210.0, 185.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="15.0, 225.0">
+        <vertex name="vertex1" value="[10.0, 270.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">

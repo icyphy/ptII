@@ -15,7 +15,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the use of SR primitive actors&#10;to make a CountDown actor. This (composite) actor outputs&#10;a true on the ready port when it is ready to count. In&#10;the same tick of the clock, the Sequence actor provides it&#10;with a starting number. It then counts down to zero on&#10;each subsequent tick of the clock, emitting true on ready&#10;when it again reaches zero.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 10.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 70.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -23,7 +23,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 485.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 340.0]">
         </property>
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
@@ -31,7 +31,7 @@
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 95.0]">
         </property>
         <property name="Scheduler" class="ptolemy.domains.sr.kernel.SROptimizedScheduler">
         </property>
@@ -39,7 +39,27 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The three displays show (left to right):&#10;&#10;- Requested numbers to count down from.&#10;- The count down for these numbers.&#10;- The enable signal for the EnabledComposite actor.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 225.0]">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:32; font-family:Serif; fill:black">Synchronous-Reactive (SR) Domain</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 20.0]">
         </property>
     </property>
     <entity name="DisplayCount" class="ptolemy.domains.sr.lib.NonStrictDisplay">
@@ -49,11 +69,11 @@
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 350, 150, 414}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 235.0]">
         </property>
     </entity>
     <entity name="CountDown" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 245.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={146, 232, 815, 518}, maximized=false}">
         </property>
@@ -322,7 +342,7 @@
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={306, 351, 150, 414}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 320.0]">
         </property>
     </entity>
     <entity name="EnabledComposite" class="ptolemy.domains.sr.lib.EnabledComposite">
@@ -332,7 +352,7 @@
             <property name="Scheduler" class="ptolemy.domains.sr.kernel.SROptimizedScheduler">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 245.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 212, 815, 516}, maximized=false}">
         </property>
@@ -419,7 +439,7 @@
         <link port="NonStrictDelay.output" relation="relation"/>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[270.0, 260.0]">
+        <vertex name="vertex1" value="[270.0, 320.0]">
         </vertex>
     </relation>
     <relation name="relation10_21" class="ptolemy.actor.TypedIORelation">

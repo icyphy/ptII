@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Router" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -19,7 +19,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="81.0, 41.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 85.0]">
         </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 479]">
@@ -27,7 +27,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="1:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 375.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[239.0, 354.0]">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -39,7 +39,7 @@ Rayleigh distribution.</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 597}, maximized=false}">
@@ -70,7 +70,7 @@ and decomposition.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 0.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[129.0, 44.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -97,8 +97,28 @@ and decomposition.</text></svg></configure>
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 239.5}">
     </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:32; font-family:Serif; fill:black">Composite Data Types</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 15.0]">
+        </property>
+    </property>
     <entity name="Record Assembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 240.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[234.0, 284.0]">
         </property>
         <port name="content" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -115,7 +135,7 @@ and decomposition.</text></svg></configure>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[144.0, 334.0]">
         </property>
     </entity>
     <entity name="Channel Model" class="ptolemy.domains.de.lib.VariableDelay">
@@ -127,7 +147,7 @@ and decomposition.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[314.0, 324.0]">
         </property>
     </entity>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
@@ -138,7 +158,7 @@ and decomposition.</text></svg></configure>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="0.3">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 350.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[84.0, 394.0]">
         </property>
     </entity>
     <entity name="Square" class="ptolemy.actor.lib.MathFunction">
@@ -158,7 +178,7 @@ and decomposition.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 350.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[194.0, 394.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -175,7 +195,7 @@ and decomposition.</text></svg></configure>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[34.0, 274.0]">
         </property>
     </entity>
     <entity name="String Sequence" class="ptolemy.actor.lib.Pulse">
@@ -187,11 +207,11 @@ and decomposition.</text></svg></configure>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[144.0, 274.0]">
         </property>
     </entity>
     <entity name="Record Disassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 270.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[379.0, 314.0]">
         </property>
         <port name="content" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -201,7 +221,7 @@ and decomposition.</text></svg></configure>
         </port>
     </entity>
     <entity name="Sequencer" class="ptolemy.actor.lib.Sequencer">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 405.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[464.0, 449.0]">
         </property>
     </entity>
     <entity name="Display As Received" class="ptolemy.actor.lib.gui.Display">
@@ -213,7 +233,7 @@ and decomposition.</text></svg></configure>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={613, 6, 290, 397}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[489.0, 269.0]">
         </property>
     </entity>
     <entity name="Display Resequenced" class="ptolemy.actor.lib.gui.Display">
@@ -225,7 +245,7 @@ and decomposition.</text></svg></configure>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={704, 328, 290, 397}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 325.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[489.0, 369.0]">
         </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -237,7 +257,7 @@ and decomposition.</text></svg></configure>
     <relation name="relation45" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="95.0, 230.0">
+        <vertex name="vertex1" value="[89.0, 274.0]">
         </vertex>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
@@ -245,7 +265,7 @@ and decomposition.</text></svg></configure>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="430.0, 280.0">
+        <vertex name="vertex1" value="[424.0, 324.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">

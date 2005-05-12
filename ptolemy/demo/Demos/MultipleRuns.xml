@@ -11,7 +11,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 95.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 0, 815, 468}, maximized=false}">
@@ -40,7 +40,7 @@ just one firing as would be typical of a composite actor.</text></svg></configur
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 65.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -62,7 +62,7 @@ repeatedly executed.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 255.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -82,15 +82,35 @@ repeatedly executed.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 325.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 175.0}">
     </property>
+    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:32; font-family:Serif; fill:black">Higher-Order Components</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 15.0]">
+        </property>
+    </property>
     <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 230.0]">
         </property>
         <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
@@ -377,7 +397,7 @@ on each run.</text></svg></configure>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 230.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

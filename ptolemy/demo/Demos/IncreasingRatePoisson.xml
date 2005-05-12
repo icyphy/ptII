@@ -7,13 +7,13 @@
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="400.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 95.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is an example of a stochastic hybrid system.&#10;It generates a Poisson process with a linearly&#10;increasing rate using the CT domain. The model plots the&#10;events vs. time and a histogram of the time between events.&#10;The technique here was suggested by John Lygeros.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 65.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, 1, 815, 518}, maximized=false}">
@@ -29,7 +29,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 380.0]">
         </property>
     </property>
     <property name="rateOfRateIncrease" class="ptolemy.data.expr.Parameter" value="0.005">
@@ -48,7 +48,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 135.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -56,13 +56,33 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the&#10;IncreasingRatePoisson&#10;actor to see how this&#10;is implemented.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 255.0]">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:32; font-family:Serif; fill:black">Stochastic Hybrid Systems</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 20.0]">
         </property>
     </property>
     <entity name="IncreasingRatePoisson" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 230.0]">
         </property>
         <property name="rateOfRateIncrease" class="ptolemy.data.expr.Parameter" value="rateOfRateIncrease">
         </property>
@@ -287,7 +307,7 @@ value of this random variable multiplied by the current (increasing) rate.</text
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 230.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -311,7 +331,7 @@ value of this random variable multiplied by the current (increasing) rate.</text
         </property>
         <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 315.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -328,7 +348,7 @@ value of this random variable multiplied by the current (increasing) rate.</text
         </configure>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[220.0, 180.0]">
+        <vertex name="vertex1" value="[220.0, 230.0]">
         </vertex>
     </relation>
     <link port="IncreasingRatePoisson.event" relation="relation2"/>
