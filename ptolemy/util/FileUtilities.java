@@ -88,7 +88,7 @@ public class FileUtilities {
 
         // If the sourceURL is not a jar URL, then check to see if we
         // have the same file.
-        if (sourceFile.getPath().indexOf("!/") == -1 
+        if (sourceFile.getPath().indexOf("!/") == -1
             && sourceFile.getPath().indexOf("!\\") == -1 ) {
             File canonicalFile = null;
 
