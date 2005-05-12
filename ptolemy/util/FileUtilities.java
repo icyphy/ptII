@@ -95,7 +95,8 @@ public class FileUtilities {
             try {
                 canonicalFile = sourceFile.getCanonicalFile();
 
-                if (sourceFile.getCanonicalFile().toURL().sameFile(destinationURL)) {
+                if (sourceFile.getCanonicalFile().toURL()
+                        .sameFile(destinationURL)) {
                     return false;
                 }
             } catch (IOException ex) {
@@ -130,7 +131,7 @@ public class FileUtilities {
                     try {
                         output.close();
                     } catch (Throwable throwable) {
-                        throwable.printStackTrace();
+                        throw new RuntimeException(throwable);
                     }
                 }
             }
@@ -139,7 +140,7 @@ public class FileUtilities {
                 try {
                     input.close();
                 } catch (Throwable throwable) {
-                    throwable.printStackTrace();
+                    throw new RuntimeException(throwable);
                 }
             }
         }
@@ -214,7 +215,8 @@ public class FileUtilities {
         // If the name begins with "$CLASSPATH", then attempt to
         // open the file relative to the classpath.
         // NOTE: Use the dummy variable constant set up in the constructor.
-        if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {
+        if (name.startsWith(_CLASSPATH_VALUE)
+                || name.startsWith("$CLASSPATH")) {
             // Try relative to classpath.
             String classpathKey;
 
@@ -270,7 +272,8 @@ public class FileUtilities {
                 if (!file.canRead()) {
                     throw new IOException("Cannot read file '" + name
                             + "' or '"
-                            + StringUtilities.substitute(name, "%20", " ") + "'");
+                            + StringUtilities.substitute(name, "%20", " ")
+                            + "'");
                 }
             }
 
@@ -297,12 +300,13 @@ public class FileUtilities {
                     } catch (Exception ex2) {
                         IOException io = new IOException(
                                 "Problem with URI format in '" + name + "'. "
-                                + "and '" + name2 + "'"
+                                + "and '" + name2 + "' "
                                 + "This can happen if the file name "
-                                + " is not absolute"
-                                + " and is not present relative to the directory"
-                                + " in which the specified model was read"
-                                + " (which was '" + baseDirectory + "')");
+                                + "is not absolute"
+                                + "and is not present relative to the "
+                                + "directory in which the specified model "
+                                + "was read (which was '"
+                                + baseDirectory + "')");
                         io.initCause(ex2);
                         throw io;
                     }
@@ -313,10 +317,10 @@ public class FileUtilities {
                     // Adding another '/' for remote execution.
                     if (newURI.getScheme() != null
                             && newURI.getAuthority() == null) {
-                        urlString = urlString.substring(0,6) + "//"
+                        urlString = urlString.substring(0, 6) + "//"
                             + urlString.substring(6);
                         //} else {
-                        // urlString = urlString.substring(0,6) + "/"
+                        // urlString = urlString.substring(0, 6) + "/"
                         // + urlString.substring(6);
                     }
                     return new URL(urlString);

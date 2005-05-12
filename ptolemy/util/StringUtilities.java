@@ -219,7 +219,8 @@ public class StringUtilities {
                 // Constants.java depends on this when running with
                 // -sandbox.
                 SecurityException security = new SecurityException(
-                        "Could not find '" + propertyName + "' System property");
+                        "Could not find '" + propertyName
+                        + "' System property");
                 security.initCause(ex);
                 throw security;
             }
@@ -329,9 +330,12 @@ public class StringUtilities {
 
             if (home == null) {
                 throw new RuntimeException("Could not find "
-                        + "'ptolemy.ptII.dir'" + " property.  Also tried loading '"
-                        + namedObjPath + "' as a resource and working from that. "
-                        + "Vergil should be " + "invoked with -Dptolemy.ptII.dir"
+                        + "'ptolemy.ptII.dir'" + " property.  "
+                        + "Also tried loading '"
+                        + namedObjPath
+                        + "' as a resource and working from that. "
+                        + "Vergil should be "
+                        + "invoked with -Dptolemy.ptII.dir"
                         + "=\"$PTII\"");
             }
 
@@ -493,7 +497,8 @@ public class StringUtilities {
                 // We look for the space from the end of the first length
                 // characters.  If we find one, then we use that
                 // as the place to insert a newline.
-                int lastSpaceIndex = token.substring(i, i + length).lastIndexOf(" ");
+                int lastSpaceIndex = token.substring(i, i + length)
+                    .lastIndexOf(" ");
 
                 if (lastSpaceIndex < 0) {
                     // No space found, just insert a new line after length
@@ -601,7 +606,8 @@ public class StringUtilities {
 
                 if (stringCanonicalPath.startsWith(prefixCanonicalPath)) {
                     return replacement
-                        + stringCanonicalPath.substring(prefixCanonicalPath.length());
+                        + stringCanonicalPath.substring(
+                                prefixCanonicalPath.length());
                 }
             } catch (Throwable throwable) {
                 // ignore.
@@ -639,8 +645,8 @@ public class StringUtilities {
         // Parse the command into tokens
         List commandList = new LinkedList();
 
-        StreamTokenizer streamTokenizer = new StreamTokenizer(new StringReader(
-                                                                      inputString));
+        StreamTokenizer streamTokenizer =
+            new StreamTokenizer(new StringReader(inputString));
 
         // We reset the syntax so that we don't convert to numbers,
         // otherwise, if PTII is "d:\\tmp\\ptII\ 2.0", then

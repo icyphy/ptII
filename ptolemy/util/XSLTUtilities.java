@@ -208,23 +208,27 @@ public class XSLTUtilities {
      */
     public static Document transform(Document inputDocument, String xslFileName)
             throws TransformerException, IOException {
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory =
+            TransformerFactory.newInstance();
         Transformer transformer = null;
 
         try {
-            transformer = transformerFactory.newTransformer(new StreamSource(
-                                                                    xslFileName));
+            transformer =
+                transformerFactory.newTransformer(new StreamSource(
+                                                          xslFileName));
         } catch (javax.xml.transform.TransformerConfigurationException ex) {
             try {
                 // We might be in the Swing Event thread, so
                 // Thread.currentThread().getContextClassLoader()
                 // .getResource(entry) probably will not work.
                 Class refClass = Class.forName("ptolemy.util.XSLTUtilities");
-                URL entryURL = refClass.getClassLoader().getResource(xslFileName);
+                URL entryURL =
+                    refClass.getClassLoader().getResource(xslFileName);
 
                 if (entryURL != null) {
-                    transformer = transformerFactory.newTransformer(new StreamSource(
-                                                                            entryURL.toString()));
+                    transformer = transformerFactory
+                        .newTransformer(new StreamSource(
+                                                entryURL.toString()));
                 } else {
                     IOException exception = new IOException("Failed to open '"
                             + xslFileName + "'");
@@ -289,8 +293,9 @@ public class XSLTUtilities {
             StreamResult result = new StreamResult(resultStream);
             TransformerFactory transformerFactory = TransformerFactory
                 .newInstance();
-            Transformer transformer = transformerFactory.newTransformer(new StreamSource(
-                                                                                xsltFileName));
+            Transformer transformer = transformerFactory
+                .newTransformer(new StreamSource(
+                                        xsltFileName));
             transformer.setOutputProperty("indent", "yes");
             transformer.transform(source, result);
             resultStream.flush();
@@ -299,9 +304,9 @@ public class XSLTUtilities {
                 try {
                     resultStream.close();
                 } catch (Throwable throwable) {
-                    System.out.println("Ignoring failure to close stream "
-                            + "on " + resultFileName);
-                    throwable.printStackTrace();
+                    throw new RuntimeException(
+                            "Ignoring failure to close stream on "
+                            + resultFileName, throwable);
                 }
             }
         }
@@ -321,8 +326,8 @@ public class XSLTUtilities {
      *  finding a transform file or applying a transform.
      */
     public static void transform(String input, FileWriter fileWriter,
-            List xslFileNames)
-            throws ParserConfigurationException, TransformerException, IOException {
+            List xslFileNames) throws ParserConfigurationException,
+            TransformerException, IOException {
         // This method takes a FileWriter so that the user can
         // ensure that the FileWriter exists and is writable before going
         // through the trouble of doing the conversion.

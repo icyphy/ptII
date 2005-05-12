@@ -150,7 +150,8 @@ public class ClassUtilities {
             File resourceFile = new File(resourceResults);
 
             // Convert backslashes
-            String sanitizedResourceName = StringUtilities.substitute(resourceFile
+            String sanitizedResourceName =
+                StringUtilities.substitute(resourceFile
                     .getPath(), "\\", "/");
             return sanitizedResourceName;
         }
