@@ -84,7 +84,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Sequence.c \
 	Test.c \
 	TrigFunction.c \
-	UnaryMathFuntion.c
+	UnaryMathFunction.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
