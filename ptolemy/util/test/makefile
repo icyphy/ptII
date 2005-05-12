@@ -49,8 +49,9 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	FileUtilities.tcl \
+	CancelException.tcl \
 	ClassUtilities.tcl \
+	FileUtilities.tcl \
 	MessageHandler.tcl \
 	StringUtilities.tcl \
 	XSLTUtilities.tcl
