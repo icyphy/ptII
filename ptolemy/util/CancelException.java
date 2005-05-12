@@ -50,7 +50,7 @@ public class CancelException extends Exception {
     /** Construct an exception with a default message.
      */
     public CancelException() {
-        super("Operation canceled by the user");
+        super("Operation cancelled by the user");
     }
 
     /** Construct an exception with the specified message.
