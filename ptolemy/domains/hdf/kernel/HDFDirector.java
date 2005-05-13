@@ -26,26 +26,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.hdf.kernel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.Scheduler;
-import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.sdf.kernel.CachedSDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -71,15 +59,17 @@ import ptolemy.kernel.util.Workspace;
    refinement infers a set of rate signatures. Within each state, the HDF
    model behaves like an SDF model.
    <p>
-   This director recomputes the schedules dynamically. Schedules are
-   cached and labeled by their corresponding rate signatures, with the most
-   recently used at the end of the queue. When a state is revisited,
-   the schedule identified by its rate signatures in the cache is used.
-   Therefore, we do not need to recompute the schedule.
-   The size of the cache can be set by the <i>scheduleCacheSize</i>
-   parameter. The default value of this parameter is 100. If the cache
-   is full, the least recently used schedule (at the beginning of the
-   cache) is discarded.
+   This director recomputes the schedules dynamically. To improve efficiency,
+   this director uses a CachedSDFScheduler. A CachedSDFScheduler caches
+   schedules labeled by their corresponding rate signatures, with the most
+   recently used at the beginning of the queue. Therefore, when a state in HDF
+   is revisited, the schedule identified by its rate signatures in the cache
+   is used. We do not need to recompute the schedule.
+   <p>
+   The size of the cache in the CachedSDFScheduler is set by the
+   <i>scheduleCacheSize</i> parameter of HDFDirector. The default value of
+   this parameter is 100. If the cache is full, the least recently used
+   schedule (at the end of the cache) is discarded.
    <p>
    <b>References</b>
    <p>
@@ -92,8 +82,9 @@ import ptolemy.kernel.util.Workspace;
    </ol>
 
    @see HDFFSMDirector
+   @see CachedSDFScheduler
 
-   @author Ye Zhou and Brian K. Vogel
+   @author Ye Zhou. Contributor: Brian K. Vogel
    @version $Id$
    @since Ptolemy II 5.0
    @Pt.ProposedRating Red (zhouye)
@@ -114,7 +105,7 @@ public class HDFDirector extends SDFDirector {
         _init();
     }
 
-    /** Construct a director in the  workspace with an empty name.
+    /** Construct a director in the workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace for this object.
@@ -163,123 +154,21 @@ public class HDFDirector extends SDFDirector {
      */
     public Parameter scheduleCacheSize;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////////
+    ////                         public methods                        ////
 
-    /** Return the scheduling sequence as an instance of Schedule.
-     *  For efficiency, this method maintains a schedule cache and
-     *  will attempt to return a cached version of the schedule.
-     *  If the cache does not contain the schedule for the current
-     *  HDF graph, then the schedule will be computed by calling
-     *  the getSchedule() method of the SDFScheduler.
-     *  <p>
-     *  The schedule cache uses a least-recently-used replacement policy,
-     *  which means if the cache is full, the least-recently-used schedule
-     *  will be discarded. The size of the cache is specified by the
-     *  scheduleCacheSize parameter. The default cache size is 100.
-     *  @return The Schedule for the current HDF graph.
-     *  @exception IllegalActionException If there is a problem getting
-     *   the schedule.
+    /** If the attribute changed is the <i>scheduleCacheSize</i> parameter,
+     *  construct the cache in the associated CachedSDFScheduler with the
+     *  given cache size.
+     *  @exception IllegalActionException If the super class throws it.
      */
-    public Schedule getSchedule() throws IllegalActionException {
-        Scheduler scheduler = getScheduler();
-        Schedule schedule;
-
-        //System.out.println(getName() + " The schedule is invalid.");
-        // The schedule is no longer valid, so check the schedule
-        // cache.
-        if (_inputPortList == null
-                || _workspaceVersion != workspace().getVersion()) {
-            _inputPortList = _getInputPortList();
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == scheduleCacheSize) {
+            int cacheSize = ((IntToken) scheduleCacheSize.getToken()).intValue();
+            ((CachedSDFScheduler) getScheduler()).constructCaches(cacheSize);
         }
-        
-        if (_outputPortList == null
-                || _workspaceVersion != workspace().getVersion()) {
-            _outputPortList = _getOutputPortList();
-        }
-        _workspaceVersion = workspace().getVersion();
-        
-        Iterator inputPorts = _inputPortList.iterator();
-        StringBuffer rates = new StringBuffer();
-        
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-            int rate = DFUtilities.getTokenConsumptionRate(inputPort);
-            rates.append(rate);
-        }
-        
-        Iterator outputPorts = _outputPortList.iterator();
-        
-        while (outputPorts.hasNext()) {
-            IOPort outputPort = (IOPort) outputPorts.next();
-            int rate = DFUtilities.getTokenProductionRate(outputPort);
-            rates.append(rate);
-            
-            int initRate = DFUtilities.getTokenInitProduction(outputPort);
-            rates.append(rate);
-        }
-        
-        String rateKey = rates.toString();
-        int cacheSize = ((IntToken) (scheduleCacheSize.getToken()))
-            .intValue();
-        
-        if (cacheSize != _cacheSize) {
-            // cache size has changed. reset the cache.
-            _scheduleCache = new HashMap();
-            _scheduleKeyList = new ArrayList(cacheSize);
-            _externalRatesCache = new TreeMap();
-            _cacheSize = cacheSize;
-        }
-        
-        if (rateKey.equals(_mostRecentRates)) {
-            // System.out.println(getName() + " just use the current");
-            schedule = ((SDFScheduler) scheduler).getSchedule();
-        } else if (_scheduleCache.containsKey(rateKey)) {
-            // cache hit.
-            // System.out.println(getName() + " cache hit");
-            _mostRecentRates = rateKey;
-            
-            if (cacheSize > 0) {
-                // Remove the key from its old position in
-                // the list and add it to the head of the list.
-                _scheduleKeyList.remove(rateKey);
-                _scheduleKeyList.add(0, rateKey);
-            }
-            
-            schedule = (Schedule) _scheduleCache.get(rateKey);
-            Map externalRates = (Map) _externalRatesCache.get(rateKey);
-            ((SDFScheduler) scheduler).setContainerRates(externalRates);
-            
-        } else {
-            // System.out.println(getName() + " cache miss");
-            // cache miss.
-            _mostRecentRates = rateKey;
-            
-            if (cacheSize > 0) {
-                while (_scheduleKeyList.size() >= cacheSize) {
-                    // Cache is full. Remove tail of list.
-                    //System.out.println(getName() + " cache is full.");
-                    Object object = _scheduleKeyList.get(cacheSize - 1);
-                    _scheduleKeyList.remove(cacheSize - 1);
-                    _scheduleCache.remove(object);
-                    _externalRatesCache.remove(object);
-                }
-                // Add key to head of list.
-                _scheduleKeyList.add(0, rateKey);
-            }
-            
-            // Compute the SDF schedule.
-            schedule = ((SDFScheduler) scheduler).getSchedule();
-            // Add key/schedule to the schedule map.
-            _scheduleCache.put(rateKey, schedule);
-            Map externalRates = ((SDFScheduler) scheduler).getExternalRates();
-            _externalRatesCache.put(rateKey, externalRates);
-            // Note: we do not need to set the external rates of 
-            // the container here. When the SDFSchedule is recomputed,
-            // it will set the external rates.
-        }
-        getScheduler().setValid(true);
-        return schedule;
+        super.attributeChanged(attribute);
     }
 
     /** Send a request to the manager to get the HDF schedule if the schedule
@@ -288,32 +177,23 @@ public class HDFDirector extends SDFDirector {
      *  or if the super class method throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        
-        /*if (isScheduleValid()) {
-            System.out.println("before HDF postfire(): schedule valid");
-        }*/
-        
+
         // If this director is not at the top level, the HDFFSMDirector
         // of the modal model that it contains may change rates after
         // making a change request, which invalidates this HDF's schedule.
         // So we need to get the schedule of this HDFDirector also in a
         // change request.
         if (!isScheduleValid() || getContainer() != toplevel()) {
-        // if (!isScheduleValid()) {
             CompositeActor container = (CompositeActor) getContainer();
             ChangeRequest request = new ChangeRequest(this, "reschedule") {
                 protected void _execute() throws KernelException {
-                    getSchedule();
+                    getScheduler().getSchedule();
                 }
             };
             request.setPersistent(false);
             container.requestChange(request);
         }
-        boolean postfire = super.postfire();
-        /*if (isScheduleValid()) {
-            System.out.println("after HDF postfire(): schedule valid");
-        }*/
-        return postfire;
+        return super.postfire();
     }
 
     /** Preinitialize the actors associated with this director.
@@ -322,71 +202,28 @@ public class HDFDirector extends SDFDirector {
      *  preinitialize throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        _scheduleKeyList.clear();
-        _scheduleCache.clear();
-        _mostRecentRates = "";
+        ((CachedSDFScheduler)getScheduler()).clearCaches();
         super.preinitialize();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return a list of all the input ports contained by the
-     *  deeply contained entities of the container of this director.
-     *  @return The list of input ports.
-     */
-    private List _getInputPortList() {
-        CompositeActor container = (CompositeActor) getContainer();
-        List actors = container.deepEntityList();
-        Iterator actorIterator = actors.iterator();
-        List inputPortList = new LinkedList();
-
-        while (actorIterator.hasNext()) {
-            Actor containedActor = (Actor) actorIterator.next();
-            List temporaryInputPortList = containedActor.inputPortList();
-            Iterator inputPortIterator = temporaryInputPortList.iterator();
-
-            while (inputPortIterator.hasNext()) {
-                IOPort inputPort = (IOPort) inputPortIterator.next();
-                inputPortList.add(inputPort);
-            }
-        }
-
-        return inputPortList;
-    }
-
-    /** Return a list of all the output ports contained by the
-     *  deeply contained entities of the container of this director.
-     *  @return The list of output ports.
-     */
-    private List _getOutputPortList() {
-        CompositeActor container = (CompositeActor) getContainer();
-        List actors = container.deepEntityList();
-        Iterator actorIterator2 = actors.iterator();
-        List outputPortList = new LinkedList();
-
-        while (actorIterator2.hasNext()) {
-            Actor containedActor = (Actor) actorIterator2.next();
-            List temporaryOutputPortList = containedActor.outputPortList();
-            Iterator outputPortIterator = temporaryOutputPortList.iterator();
-
-            while (outputPortIterator.hasNext()) {
-                IOPort outputPort = (IOPort) outputPortIterator.next();
-                outputPortList.add(outputPort);
-            }
-        }
-
-        return outputPortList;
-    }
-
     /** Initialize the object. In this case, we give the HDFDirector a
-     *  default scheduler of the class SDFScheduler and a cacheSize parameter.
+     *  default scheduler of the class CachedSDFScheduler and a 
+     *  cacheSize parameter with default value 100.
      */
     private void _init()
             throws IllegalActionException, NameDuplicationException {
+
+        // During construction, create the scheduleCacheSize parameter
+        // with default value of 100.
+        int cacheSize = 100;
+        scheduleCacheSize = new Parameter(this, "scheduleCacheSize",
+                new IntToken(cacheSize));
         try {
-            SDFScheduler scheduler = new SDFScheduler(this,
-                    uniqueName("Scheduler"));
+            CachedSDFScheduler scheduler = new CachedSDFScheduler(this,
+                    uniqueName("Scheduler"), cacheSize);
             setScheduler(scheduler);
         } catch (Exception e) {
             // if setScheduler fails, then we should just set it to Null.
@@ -396,45 +233,8 @@ public class HDFDirector extends SDFDirector {
                     "Could not create Default Scheduler:\n" + e.getMessage());
         }
 
-        int cacheSize = 100;
-        _cacheSize = cacheSize;
-        scheduleCacheSize = new Parameter(this, "scheduleCacheSize",
-                new IntToken(cacheSize));
-
-        _scheduleCache = new HashMap();
-        _scheduleKeyList = new ArrayList(cacheSize);
-        _externalRatesCache = new TreeMap();
-
         allowRateChanges.setToken(BooleanToken.TRUE);
         allowRateChanges.setVisibility(Settable.EXPERT);
         allowRateChanges.setPersistent(false);
     }
-
-    //////////////////////////////////////////////////////////////////
-    ////                       private variables                  ////
-
-    // Map for the schedule cache.
-    private Map _scheduleCache;
-
-    // List of the schedule keys, which are strings that represent
-    // the rate signature.
-    private List _scheduleKeyList;
-
-    // Map for the cache of the external rates.
-    private Map _externalRatesCache;
-
-    // A string that represents the most recent port rates.
-    private String _mostRecentRates;
-
-    // A list of the input ports.
-    private List _inputPortList;
-
-    // A list of the output ports.
-    private List _outputPortList;
-
-    // The cache size.
-    private int _cacheSize = 100;
-
-    // Local workspace version
-    private long _workspaceVersion = 0;
 }

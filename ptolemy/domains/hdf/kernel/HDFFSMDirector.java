@@ -71,7 +71,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    '' April 13, 1998.</LI>
    </ol>
 
-   @author Ye Zhou and Brian K. Vogel
+   @author Ye Zhou. Contributor: Brian K. Vogel
    @version $Id$
    @since Ptolemy II 5.0
    @Pt.ProposedRating Red (zhouye)
