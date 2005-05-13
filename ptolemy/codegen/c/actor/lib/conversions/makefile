@@ -1,4 +1,4 @@
-# Makefile for helper classes that match ptolemy.actor.lib classes
+# Makefile for helper classes that match ptolemy.actor.lib.conversions classes
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c/actor/lib
+ME =		ptolemy/codegen/c/actor/lib/conversions
 
 DIRS =		test
 
@@ -48,47 +48,15 @@ include $(CONFIG)
 PTPACKAGE = 	lib
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-#Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	conversions\conversions.jar
-
 # Keep this list alphabetized.
 JSRCS = \
-	AbsoluteValue.java \
-	Accumulator.java \
-	AddSubtract.java \
-	Average.java \
-	CodeStream.java \
-	Const.java \
-	Counter.java \
-	Differential.java \
-	Limiter.java \
-	Minimum.java \
-	MultiplyDivide.java \
-	Ramp.java \
-	Remainder.java \
-	Scale.java \
-	Sequence.java \
-	Test.java \
-	TrigFunction.java \
-	UnaryMathFunction.java
+	CartesianToPolar.java \
+	PolarToCartesian.java
 
 OTHER_FILES_TO_BE_JARED = \
-	AbsoluteValue.c \
-	Accumulator.c \
-	Average.c \
-	Const.c \
-	Counter.c \
-	Differential.c \
-	Limiter.c \
-	Minimum.c \
-	Ramp.c \
-	Remainder.c \
-	Scale.c \
-	Sequence.c \
-	Test.c \
-	TrigFunction.c \
-	UnaryMathFunction.c
+	CartesianToPolar.c \
+	PolarToCartesian.c
+	
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -97,11 +65,10 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
 MISC_FILES =	#test
 
+
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
