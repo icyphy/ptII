@@ -226,22 +226,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         return _getFiringCount(entity);
     }
 
-    /** This method simply calls _saveContainerRates(Map externalRates).
-     *  It is used in HDF when a cached schedule is used instead of
-     *  computing a new schedule.
-     *  @param externalRates A map from external port to the rate of that
-     *  port.
-     *  @exception NotSchedulableException If an external port is both
-     *  an input and an output, or neither an input or an output, or
-     *  connected on the inside to ports that have different
-     *  tokenInitProduction.
-     *  @exception IllegalActionException If any called method throws it.
-     */
-    public void setContainerRates(Map externalRates)
-            throws NotSchedulableException, IllegalActionException {
-        _saveContainerRates(externalRates);
-    }
-
     /** React to the fact that the specified Settable has changed.
      *  This class removes itself as a value listener from all rate
      *  parameters, and invalidates the schedule.
