@@ -8,7 +8,7 @@
    class="ptolemy.backtrack.plugin.EclipsePlugin">
 
    <runtime>
-      <library name="ptIIbacktrack.jar">
+      <library name=".">
          <export name="*"/>
       </library>
    </runtime>
@@ -127,12 +127,14 @@
       <editorContribution
             targetID="ptolemy.backtrack.plugin.editor.MultiPageEditor"
             id="org.eclipse.jdt.debug.CompilationUnitEditor.BreakpointRulerActions">
+         <!-- Eclipse 3.1 -->
          <action
                label="Toggle &amp;Breakpoint"
                class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
                actionID="RulerDoubleClick"
                id="org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction">
          </action>
+         <!-- Eclipse 3.0 -->
          <!--<action
                label="Toggle &amp;Breakpoint"
                class="org.eclipse.jdt.internal.debug.ui.actions.ManageBreakpointRulerActionDelegate"

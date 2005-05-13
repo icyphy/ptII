@@ -1,27 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="ptolemy.backtrack" default="zip.plugin" basedir="../../../..">
+<project name="ptolemy.backtrack" default="zip.3.1" basedir="../../../..">
 
-	<property name="basews" value="${ws}"/>
-	<property name="baseos" value="${os}"/>
-	<property name="basearch" value="${arch}"/>
-	<property name="basenl" value="${nl}"/>
 	<property name="version" value="0.1.0"/>
 
-	<!-- Compiler settings. -->
-	<property name="javacFailOnError" value="false"/>
-	<property name="javacDebugInfo" value="on"/>
-	<property name="javacVerbose" value="true"/>
-	<property name="javacSource" value="1.4"/>
-	<property name="javacTarget" value="1.4"/>
-	<property name="compilerArg" value=""/>
-	<path id="path_bootclasspath">
-		<fileset dir="${java.home}/lib">
-			<include name="*.jar"/>
-		</fileset>
-	</path>
-	<property name="bootclasspath" refid="path_bootclasspath"/>
-
-	<target name="init" depends="properties">
+	<target name="init">
 		<condition property="pluginTemp" value="${buildTempFolder}/plugins">
 			<isset property="buildTempFolder"/>
 		</condition>
@@ -34,22 +16,6 @@
 		<property name="builddir" value="${basedir}/ptolemy/backtrack/plugin/build"/>
 	</target>
 
-	<target name="properties" if="eclipse.running">
-		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
-
-	</target>
-
-	<target name="build.update.jar" depends="init" description="Build the plug-in: ptolemy.backtrack for an update site.">
-		<delete dir="${temp.folder}"/>
-		<mkdir dir="${temp.folder}"/>
-		<antcall target="build.jars"/>
-		<antcall target="gather.bin.parts">
-			<param name="destination.temp.folder" value="${temp.folder}/"/>
-		</antcall>
-		<zip destfile="${builddir}/ptolemy.backtrack_${version}.jar" basedir="${temp.folder}/ptolemy.backtrack_${version}" filesonly="false" whenempty="skip" update="false"/>
-		<delete dir="${temp.folder}"/>
-	</target>
-
 	<target name="ptIIbacktrack.jar" depends="init" unless="ptIIbacktrack.jar" description="Create jar: ptolemy.backtrack ptIIbacktrack.jar.">
 		<delete dir="${temp.folder}/ptIIbacktrack.jar.bin"/>
 		<mkdir dir="${temp.folder}/ptIIbacktrack.jar.bin"/>
@@ -57,7 +23,7 @@
 			<fileset dir="${basedir}/com/microstar/xml/" includes="**/*.class" excludes="**/demo/*"/>
 		</copy>
 		<copy todir="${temp.folder}/ptIIbacktrack.jar.bin/ptolemy/backtrack/" failonerror="true">
-			<fileset dir="${basedir}/ptolemy/backtrack/" includes="**/*.class, **/*.gif" excludes="automatic/, manual/, **/test/, plugin/doc/, plugin/icons/, plugin/images/"/>
+			<fileset dir="${basedir}/ptolemy/backtrack/" includes="**/*.class, **/*.gif" excludes="automatic/, manual/, **/test/, plugin/build/, plugin/doc/, plugin/icons/, plugin/images/"/>
 		</copy>
 		<mkdir dir="${build.result.folder}"/>
 		<jar destfile="${build.result.folder}/ptIIbacktrack.jar" basedir="${temp.folder}/ptIIbacktrack.jar.bin"/>
@@ -67,8 +33,8 @@
 	<target name="ptIIbacktracksrc.zip" depends="init" unless="ptIIbacktracksrc.zip">
 		<mkdir dir="${build.result.folder}"/>
 		<zip destfile="${build.result.folder}/ptIIbacktracksrc.zip" filesonly="false" whenempty="skip" update="false">
-			<fileset dir="${basedir}/com/microstar/xml/" includes="**/*.java"/>
-			<fileset dir="${basedir}/ptolemy/backtrack/" includes="**/*.java" excludes="automatic/, manual/, **/test/"/>
+			<fileset dir="${basedir}/" includes="com/microstar/xml/**/*.java"/>
+			<fileset dir="${basedir}/" includes="ptolemy/backtrack/**/*.java" excludes="ptolemy/backtrack/automatic/, ptolemy/backtrack/plugin/build/, ptolemy/backtrack/manual/, ptolemy/backtrack/**/test/"/>
 		</zip>
 	</target>
 
@@ -92,17 +58,9 @@
 		</copy>
 	</target>
 
-	<target name="build.zips" depends="init">
-	</target>
-
 	<target name="gather.sources" depends="init" if="destination.temp.folder">
 		<mkdir dir="${destination.temp.folder}/ptolemy.backtrack_${version}"/>
 		<copy file="${build.result.folder}/ptIIbacktracksrc.zip" todir="${destination.temp.folder}/ptolemy.backtrack_${version}" failonerror="false"/>
-	</target>
-
-	<target name="gather.logs" depends="init" if="destination.temp.folder">
-		<mkdir dir="${destination.temp.folder}/ptolemy.backtrack_${version}"/>
-		<copy file="${temp.folder}/ptIIbacktrack.jar.bin.log" todir="${destination.temp.folder}/ptolemy.backtrack_${version}" failonerror="false"/>
 	</target>
 
 	<target name="clean" depends="init" description="Clean the plug-in: ptolemy.backtrack of all the zips, jars and logs created.">
@@ -113,12 +71,7 @@
 		<delete dir="${temp.folder}"/>
 	</target>
 
-	<target name="refresh" depends="init" if="eclipse.running" description="Refresh this folder.">
-		<eclipse.convertPath fileSystemPath="${basedir}" property="resourcePath"/>
-		<eclipse.refreshLocal resource="${resourcePath}" depth="infinite"/>
-	</target>
-
-	<target name="zip.plugin" depends="init" description="Create a zip containing all the elements for the plug-in: ptolemy.backtrack.">
+	<target name="zip.3.0" depends="init">
 		<delete dir="${temp.folder}"/>
 		<mkdir dir="${temp.folder}"/>
 		<antcall target="build.jars"/>
@@ -129,10 +82,23 @@
 		<antcall target="gather.sources">
 			<param name="destination.temp.folder" value="${temp.folder}/plugins/"/>
 		</antcall>
-		<delete>
-			<fileset dir="${temp.folder}" includes="**/*.bin.log"			/>
-		</delete>
 		<zip destfile="${builddir}/ptolemy.backtrack_${version}.zip" basedir="${temp.folder}" filesonly="true" whenempty="skip" update="false"/>
+		<delete dir="${temp.folder}"/>
+	</target>
+	
+	<target name="zip.3.1" depends="init">
+		<delete dir="${temp.folder}"/>
+		<mkdir dir="${temp.folder}"/>
+		<copy todir="${temp.folder}/com/microstar/xml/" failonerror="true">
+			<fileset dir="${basedir}/com/microstar/xml/" includes="**/*.class, **/*.java" excludes="**/demo/*"/>
+		</copy>
+		<copy todir="${temp.folder}/ptolemy/backtrack/" failonerror="true">
+			<fileset dir="${basedir}/ptolemy/backtrack/" includes="**/*.class, **/*.gif, **/*.java, **/*.html, **/*.xml" excludes="automatic/, manual/, **/test/, plugin/build/"/>
+		</copy>
+		<copy todir="${temp.folder}" failonerror="true">
+			<fileset dir="${basedir}" includes="plugin.xml"/>
+		</copy>
+		<jar destfile="${builddir}/ptolemy.backtrack_${version}.jar" basedir="${temp.folder}"/>
 		<delete dir="${temp.folder}"/>
 	</target>
 
