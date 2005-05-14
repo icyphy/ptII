@@ -156,7 +156,7 @@ public abstract class ActorController extends AttributeController {
          _menuFactory.addMenuItemFactory(
          new MenuActionFactory(new SaveInFileAction()));
         */
-        if (((BasicGraphController) getController()).getFrame() != null) {
+        //if (((BasicGraphController) getController()).getFrame() != null) {
             // If we are in an applet, then we have no frame, so no need
             // for a "Listen to Actor" or "Save in Library" menu choices.
             // FIXME: this is not perfect, it would be better if we
@@ -171,7 +171,7 @@ public abstract class ActorController extends AttributeController {
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
                                                     _listenToActorAction));
             _listenToActorAction.setConfiguration(_configuration);
-        }
+            //}
 
         // "Set Breakpoints"
         if (access == FULL) {
