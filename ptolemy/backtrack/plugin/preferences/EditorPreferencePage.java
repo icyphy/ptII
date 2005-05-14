@@ -30,11 +30,14 @@ package ptolemy.backtrack.plugin.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+
+import ptolemy.backtrack.plugin.EclipsePlugin;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorPreferencePage
@@ -76,7 +79,7 @@ public class EditorPreferencePage extends SectionPreferencePage
         Composite currentComposite = _newComposite(composite);
         _highlightingEnabled = new BooleanFieldEditor(
                 PreferenceConstants.EDITOR_HIGHLIGHTING_ENABLED,
-                "&Use semantic highlighting",
+                "&Enable semantic highlighting (work since Eclipse 3.1)",
                 currentComposite) {
             protected void doLoadDefault() {
                 super.doLoadDefault();
@@ -131,6 +134,12 @@ public class EditorPreferencePage extends SectionPreferencePage
                 "Italic",
                 currentComposite);
         addField(italic);
+        
+        IPreferenceStore store = EclipsePlugin.getDefault()
+                .getPreferenceStore();
+        _setEnabled(_colorGroup,
+                store.getBoolean(
+                        PreferenceConstants.EDITOR_HIGHLIGHTING_ENABLED));
         
         currentComposite.setLayout(new GridLayout(4, false));
     }
