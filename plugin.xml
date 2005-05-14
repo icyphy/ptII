@@ -98,6 +98,7 @@
                tooltip="Help for Ptolemy II plugin for Eclipse"/>
       </actionSet>
    </extension>
+   <!-- Eclipse 3.1 only
    <extension
          point="org.eclipse.ui.console.consoleFactories">
       <consoleFactory
@@ -105,8 +106,8 @@
             icon="ptolemy/backtrack/plugin/icons/ptolemy_icon.gif"
             class="ptolemy.backtrack.plugin.console.ConsoleFactory"/>
    </extension>
+   -->
    <extension
-         id="ptolemyeditor"
          point="org.eclipse.ui.editors">
       <editor
             class="ptolemy.backtrack.plugin.editor.MultiPageCompilationUnitEditor"
@@ -127,20 +128,12 @@
       <editorContribution
             targetID="ptolemy.backtrack.plugin.editor.MultiPageEditor"
             id="org.eclipse.jdt.debug.CompilationUnitEditor.BreakpointRulerActions">
-         <!-- Eclipse 3.1 -->
          <action
                label="Toggle &amp;Breakpoint"
-               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+               class="ptolemy.backtrack.plugin.compatibility.RulerToggleBreakpointActionDelegate"
                actionID="RulerDoubleClick"
                id="org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction">
          </action>
-         <!-- Eclipse 3.0 -->
-         <!--<action
-               label="Toggle &amp;Breakpoint"
-               class="org.eclipse.jdt.internal.debug.ui.actions.ManageBreakpointRulerActionDelegate"
-               actionID="RulerDoubleClick"
-               id="org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction">
-         </action>-->
       </editorContribution>
       <editorContribution
             targetID="ptolemy.backtrack.plugin.editor.MultiPageEditor"
