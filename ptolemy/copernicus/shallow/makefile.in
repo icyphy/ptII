@@ -93,7 +93,7 @@ jodeDecompileDemo:
 	for class in $$classes; \
 	do \
 		echo "--- Decompiling $(DECOMPILERTARGETPACKAGE).$$class"; \
-		"$(JODE)" -d $(DECOMPILERTARGETPATH) $(DECOMPILERTARGETPACKAGE).$$class; \
+		"$(JODE)" -c . -d $(DECOMPILERTARGETPATH) $(DECOMPILERTARGETPACKAGE).$$class; \
 		relativetargetpath=`echo $(TARGETPACKAGE) | sed 's@\.@/@g'`; \
 		sh "$(ROOT)/ptolemy/copernicus/shallow/test/jode2java" \
 			$$relativetargetpath/$$class.java \
