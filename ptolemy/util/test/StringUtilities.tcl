@@ -159,6 +159,67 @@ test StringUtilities-3.1 {create a preferences directory} {
     file isdirectory $dir	
 } {1}
 
+proc ptjaclPolicy {script} {
+    global PTII
+    set pathSeparator [java::call ptolemy.util.StringUtilities \
+        getProperty path.separator]
+
+    exec java \
+            -Djava.security.manager "-Djava.security.policy=ptjacl.policy" \
+	    -classpath $PTII/lib/ptjacl.jar$pathSeparator$PTII \
+	    tcl.lang.Shell $script
+}
+
+test StringUtilities-3.8.1 {getProperty in a sandbox: property not accessible } {
+    catch {ptjaclPolicy user_dir.tcl} error
+    list $error
+} {{java.lang.SecurityException: Could not find 'user.dir' System property}}
+
+test StringUtilities-3.8.2 {getProperty in a sandbox: property accessible } {
+    set canonicalPTII \
+	[[[java::new java.io.File $PTII] getCanonicalFile] getPath]
+    set r [ptjaclPolicy ptolemy_ptII_dir.tcl]
+    expr {$canonicalPTII == $r}
+} {1}
+
+test StringUtilities-3.8.3 {getProperty: PTII includes cygdrive  } {
+    set pathSeparator [java::call ptolemy.util.StringUtilities \
+        getProperty path.separator]
+
+    # We use exec here so that we get the message each time
+    catch {
+        exec java \
+            -Dptolemy.ptII.dir=/cygdrive/c/ptII \
+	    -classpath $PTII/lib/ptjacl.jar$pathSeparator$PTII \
+	    tcl.lang.Shell ptolemy_ptII_dir.tcl
+    } errMsg
+    list $errMsg
+} {{/cygdrive/c/ptII
+ptolemy.ptII.dir property = "/cygdrive/c/ptII", which contains "cygdrive". This is almost always an error under Cygwin that is occurs when one does PTII=`pwd`.  Instead, do PTII=c:/foo/ptII}}
+
+test StringUtilities-3.8.4 {getProperty: ptolemy.ptII.dirAsURL} {
+    set dirAsURL [java::new java.net.URL \
+	[java::call ptolemy.util.StringUtilities \
+	getProperty ptolemy.ptII.dirAsURL]]
+
+    # FIXME: maybe the java code should do this for us?
+    set dirAsURL2 [[[java::new java.io.File [$dirAsURL getFile]] getCanonicalFile] toURL]
+
+    set ptIIURL [[[java::new java.io.File $PTII] getCanonicalFile] toURL]
+    $dirAsURL2 sameFile $ptIIURL
+} {1}
+
+test StringUtilities-3.9.1 {propertiesFileName} {
+   set propertiesFileName \
+	[java::call ptolemy.util.StringUtilities propertiesFileName]
+   set preferencesDirectory \
+	[java::call ptolemy.util.StringUtilities preferencesDirectory]
+
+   list [string first $preferencesDirectory $propertiesFileName] \
+	[expr {[string last "ptII.properties" $propertiesFileName] \
+	          == [string length "$propertiesFileName"] \
+	             - [string length "ptII.properties"]}]
+} {0 1}
 
 test StringUtilities-4.1 {split short string} {
     java::call ptolemy.util.StringUtilities split "short string"
