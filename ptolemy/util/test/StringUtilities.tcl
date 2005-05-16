@@ -221,6 +221,13 @@ test StringUtilities-3.9.1 {propertiesFileName} {
 	             - [string length "ptII.properties"]}]
 } {0 1}
 
+test StringUtilities-4.0.1 {sanitizeName} {
+    list \
+	[java::call ptolemy.util.StringUtilities sanitizeName ""] \
+	[java::call ptolemy.util.StringUtilities sanitizeName "Space Name"] \
+	[java::call ptolemy.util.StringUtilities sanitizeName "amp&anddot."] \
+} {{} Space_Name amp_anddot_}
+
 test StringUtilities-4.1 {split short string} {
     java::call ptolemy.util.StringUtilities split "short string"
 } {short string}
@@ -244,6 +251,20 @@ test StringUtilities-4.3 {split with null} {
     java::call ptolemy.util.StringUtilities split [java::null]
 } {<Unnamed>}
 
+test StringUtilities-4.3.5 {split with length} {
+    java::call ptolemy.util.StringUtilities split \
+	"012345678901234567890123456789" 10
+} {0123456789
+0123456789
+0123456789}
+
+test StringUtilities-4.3.8 {stringToURL} {
+    # stringToURL is deprecated, but we call it to get good coverage.
+    set file1 [java::call ptolemy.util.StringUtilities stringToURL \
+	[java::null] [java::null] [java::null]]
+    list [java::isnull $file1]
+} {1}
+
 
 test StringUtilities-4.4 {substituteFilePrefix - simple substitution } {
     java::call ptolemy.util.StringUtilities substituteFilePrefix \
@@ -256,7 +277,11 @@ test StringUtilities-4.5 {substituteFilePrefix - file based substitution} {
 	    $PTII $PTII/ptolemy/util/test/StringUtilities {$PTII}
 } {$PTII/ptolemy/util/test/StringUtilities}
 
-
+test StringUtilities-4.6 {substituteFilePrefix - prefix does not exist} {
+    # In the testsuite, $PTII is likely to be a relative pathname
+    java::call ptolemy.util.StringUtilities substituteFilePrefix \
+	    /a/b/c /d/e/f /x/y
+} {/d/e/f}
 
 test StringUtilities-5.1 {tokenizeForExec} {
     set command {ls -l "a b" c 'd e' \"f g \" d:\\tmp\\ptII\ 2.0 c:\ptII}
@@ -264,6 +289,14 @@ test StringUtilities-5.1 {tokenizeForExec} {
 	ptolemy.util.StringUtilities tokenizeForExec $command ]
     $results getrange	
 } {ls -l {a b} c 'd e' \\ f\ g\ \\ d:\\\\tmp\\\\ptII\\ 2.0 {c:\ptII}}
+
+test StringUtilities-5.2 {tokenizeForExec: insert an EOL } {
+    set command {ls -l "a \
+b"}
+    set results [java::call \
+	ptolemy.util.StringUtilities tokenizeForExec $command ]
+    $results getrange	
+} {ls -l {a b}}
 
 test StringUtilities-6.1 {usageString} {
     set commandOptions [java::new {java.lang.String[][]} {2 2} \
