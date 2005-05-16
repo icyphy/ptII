@@ -118,7 +118,9 @@ public class CachedSDFScheduler extends SDFScheduler {
      *  of this scheduler.
      */
     public void clearCaches() {
-        _scheduleKeyList.clear();
+        if (_cacheSize > 0) {
+            _scheduleKeyList.clear();
+        }
         _scheduleCache.clear();
         _externalRatesCache.clear();
         _mostRecentRates = "";
@@ -129,7 +131,9 @@ public class CachedSDFScheduler extends SDFScheduler {
      */
     public void constructCaches(int cacheSize) {
         _scheduleCache = new HashMap();
-        _scheduleKeyList = new ArrayList(cacheSize);
+        if (cacheSize > 0) {
+            _scheduleKeyList = new ArrayList(cacheSize);
+        }
         _externalRatesCache = new TreeMap();
         _cacheSize = cacheSize;
     }
@@ -202,13 +206,13 @@ public class CachedSDFScheduler extends SDFScheduler {
             if (_cacheSize > 0) {
                 while (_scheduleKeyList.size() >= _cacheSize) {
                     // Cache is full. Remove the end of the caches.
-                    Object object = _scheduleKeyList.get(_cacheSize - 1);
+                    Object key = _scheduleKeyList.get(_cacheSize - 1);
                     _scheduleKeyList.remove(_cacheSize - 1);
-                    _scheduleCache.remove(object);
-                    _externalRatesCache.remove(object);
-                    // Add key to head of list.
-                    _scheduleKeyList.add(0, rateKey);
+                    _scheduleCache.remove(key);
+                    _externalRatesCache.remove(key);
                 }
+                // Add key to head of list.
+                _scheduleKeyList.add(0, rateKey);
             }
 
             // Compute the SDF schedule.
