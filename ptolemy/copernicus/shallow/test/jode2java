@@ -83,46 +83,27 @@ awk '{ if ( $0 ~ /CompositeEntity compositeentity, String s\)$/ ) {
             }
         }
     '} |
-awk '{  if ($0 ~ /; */) {
+awk '{   if ($0 ~ /; */) {
             lastsemi = sawtrailingsemicolon;
             sawtrailingsemicolon = NR
          }
-            if ( $0 ~ /setExpression/) {
-                setExpression = NR
-            }
-            if (setExpression > 0 && NR > setExpression + 1) {
-                setExpression = 0
-            }
-            if ( $0 ~ /.getAttribute/) {
-                thisGetAttribute = NR
-                #print "/* 1thisGetAttribute = " thisGetAttribute " */"
-            }
-            if (thisGetAttribute > 0 && NR > thisGetAttribute + 1) {
-                thisGetAttribute = 0
-                #print "/* 2thisGetAttribute = " thisGetAttribute " " NR " */" 
-
-            }
-            if ( $1 ~ /\"/ ) {
-                if ((thisGetAttribute == 0 || thisGetAttribute + 1 != NR) && $1 !~ /.setExpression/ && (setExpression == 0 || setExpression + 1 != NR) && $0 !~ /"\);$/ ) {
-                     #print "/* 3thisGetAttribute = " thisGetAttribute " " NR " */" 
-
-                     stringRecord = NR
-                     print "         String tmp" stringRecord " = " $0
-                     dontprint = 1
-                }
-            }
-            if ( NR - stringRecord < 10 \
+         if ( $1 ~ /\"/ && $0 !~ /"\);$/ && $0 !~ /"\)\);$/ ) {
+             stringRecord = NR
+             print "         String tmp" stringRecord " = " $0
+             dontprint = 1
+         }
+         if ( NR - stringRecord < 10 \
                     && $0 ~ /throw new RuntimeException\(\);/) {
-                print substr($0, 1, length($0)-2) "tmp" stringRecord ");"
-                dontprint = 1
-                stringRecord = 0
+             print substr($0, 1, length($0)-2) "tmp" stringRecord ");"
+             dontprint = 1
+             stringRecord = 0
+         } else {
+             if (dontprint == 1) {
+                dontprint = 0
              } else {
-                if (dontprint == 1) {
-                    dontprint = 0
-                } else {
-                    print $0
-                }
-            }
+                print $0
+             }
+         }
      }' |
 sed -e 's@ final @ /*final*/ @g' \
     -e 's@new RuntimeException;@new RuntimeException(); // fixed by jode2java@' |
