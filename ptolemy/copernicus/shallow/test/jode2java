@@ -45,13 +45,13 @@ awk ' { if ($0 ~ /UNCONSTRUCTED/) {
       }
    END {print lastline}
 ' $1 |
-awk '{if ($0 ~ /public void __CGInit/ ) {
-            # Skip the trailing {
-            print substr($0,1, length($0)-2), "throws IllegalActionException, NameDuplicationException {"
-        } else {
-            print $0
-        }
-    }' |
+#awk '{if ($0 ~ /public void __CGInit/ ) {
+#            # Skip the trailing {
+#            print substr($0,1, length($0)-2), "throws IllegalActionException, NameDuplicationException {"
+#        } else {
+#            print $0
+#        }
+#    }' |
 awk '{ if ( $0 ~ /^package/ ) {
             print $0
             printf("\n");
@@ -95,16 +95,16 @@ awk '{  if ($0 ~ /; */) {
             }
             if ( $0 ~ /.getAttribute/) {
                 thisGetAttribute = NR
-                print "/* 1thisGetAttribute = " thisGetAttribute " */"
+                #print "/* 1thisGetAttribute = " thisGetAttribute " */"
             }
             if (thisGetAttribute > 0 && NR > thisGetAttribute + 1) {
                 thisGetAttribute = 0
-                print "/* 2thisGetAttribute = " thisGetAttribute " " NR " */" 
+                #print "/* 2thisGetAttribute = " thisGetAttribute " " NR " */" 
 
             }
             if ( $1 ~ /\"/ ) {
                 if ((thisGetAttribute == 0 || thisGetAttribute + 1 != NR) && $1 !~ /.setExpression/ && (setExpression == 0 || setExpression + 1 != NR) && $0 !~ /"\);$/ ) {
-                     print "/* 3thisGetAttribute = " thisGetAttribute " " NR " */" 
+                     #print "/* 3thisGetAttribute = " thisGetAttribute " " NR " */" 
 
                      stringRecord = NR
                      print "         String tmp" stringRecord " = " $0
