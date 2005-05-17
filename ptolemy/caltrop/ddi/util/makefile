@@ -51,7 +51,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	DataMapEnvironment.java \
-	DataflowActorInterpreter.java
+	DataflowActorInterpreter.java \
+	DataflowWithRatesActorInterpreter.java
 
 EXTRA_SRCS =	$(JSRCS)
 

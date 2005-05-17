@@ -69,6 +69,7 @@ class DFInputChannel implements InputChannel {
         }
 
         try {
+            //            System.out.println("Attempting to read " + n + " tokens from port with rate = " + ptolemy.actor.util.DFUtilities.getTokenConsumptionRate(port));
             if (!port.hasToken(channel, m)) {
                 throw new CalIOException("Insufficient number of tokens.");
             }

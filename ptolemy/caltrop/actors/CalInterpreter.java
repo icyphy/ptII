@@ -35,8 +35,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import caltrop.interpreter.ast.Actor;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// CalInterpreter
@@ -66,6 +66,15 @@ import caltrop.interpreter.ast.Actor;
    @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
 */
 public class CalInterpreter extends AbstractCalInterpreter {
+
+    /** Construct an actor in the given workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public CalInterpreter(Workspace workspace) {
+        super(workspace);
+    }
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.

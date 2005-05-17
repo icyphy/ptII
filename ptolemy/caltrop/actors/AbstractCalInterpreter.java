@@ -42,6 +42,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.caltrop.PtolemyPlatform;
 import ptolemy.caltrop.ddi.CSPFactory;
+import ptolemy.caltrop.ddi.DDFFactory;
 import ptolemy.caltrop.ddi.DDI;
 import ptolemy.caltrop.ddi.DDIFactory;
 import ptolemy.caltrop.ddi.Dataflow;
@@ -50,6 +51,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import caltrop.interpreter.Context;
 import caltrop.interpreter.ExprEvaluator;
 import caltrop.interpreter.ast.Actor;
@@ -65,7 +67,6 @@ import caltrop.interpreter.util.CalScriptImportHandler;
 import caltrop.interpreter.util.ClassLoadingImportHandler;
 import caltrop.interpreter.util.EnvironmentFactoryImportHandler;
 import caltrop.interpreter.util.ImportUtil;
-
 
 //////////////////////////////////////////////////////////////////////////
 ////AbstractCalInterpreter
@@ -97,6 +98,15 @@ import caltrop.interpreter.util.ImportUtil;
    @see PtolemyPlatform
 */
 abstract public class AbstractCalInterpreter extends TypedAtomicActor {
+
+    /** Construct an actor in the given workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public AbstractCalInterpreter(Workspace workspace) {
+        super(workspace);
+    }
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -403,6 +413,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     static {
         _directorToDDIMap.put("ptolemy.domains.sdf.kernel.SDFDirector",
                 new SDFFactory());
+        _directorToDDIMap.put("ptolemy.domains.ddf.kernel.DDFDirector",
+                new DDFFactory());
         _directorToDDIMap.put("ptolemy.domains.csp.kernel.CSPDirector",
                 new CSPFactory());
     }

@@ -389,12 +389,12 @@ public class DataflowActorInterpreter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private Actor actor;
-    private Context context;
-    private Environment actorEnv;
-    private Environment env = null;
-    private Action envAction = null;
-    private Map inputPortMap;
+    protected Actor actor;
+    protected Context context;
+    protected Environment actorEnv;
+    protected Environment env = null;
+    protected Action envAction = null;
+    protected Map inputPortMap;
 
     public void setOutputPortMap(Map outputPortMap) {
         this.outputPortMap = outputPortMap;
@@ -411,7 +411,7 @@ public class DataflowActorInterpreter {
      * us to defer the reading operation to the time when the token is
      * actually needed.
      */
-    private static class SingleTokenReaderThunk
+    protected static class SingleTokenReaderThunk
         implements Environment.VariableContainer {
         public Object value() {
             if (val == this) {
@@ -448,7 +448,7 @@ public class DataflowActorInterpreter {
         private Object val;
     }
 
-    private static class MultipleTokenReaderThunk
+    protected static class MultipleTokenReaderThunk
         implements Environment.VariableContainer {
         public Object value() {
             freeze();
@@ -493,7 +493,7 @@ public class DataflowActorInterpreter {
         private Context context;
     }
 
-    private static class EnvironmentKey {
+    protected static class EnvironmentKey {
         public EnvironmentKey(Object thingy) {
             this.thingy = thingy;
         }

@@ -59,12 +59,15 @@ JSRCS = \
 	AbstractDDI.java \
 	CSP.java \
 	CSPFactory.java \
+	DDF.java \
+	DDFFactory.java \
 	DDI.java \
 	DDIException.java \
 	DDIFactory.java \
 	DFInputChannel.java \
 	DFOutputChannel.java \
 	Dataflow.java \
+	DataflowWithRates.java \
 	SDF.java \
 	SDFFactory.java
 

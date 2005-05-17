@@ -152,7 +152,9 @@ public class Dataflow extends AbstractDDI implements DDI {
                     "Could not fire CAL actor '" + _actor.getName() + "'");
         }
     }
-
+    
+    /** Preinitialize this actor.
+     */    
     public void preinitialize() throws IllegalActionException {
     }
 
@@ -166,7 +168,7 @@ public class Dataflow extends AbstractDDI implements DDI {
      * @return The action number that was selected, a value <0 if no
      * action was selected.
      */
-    private int _selectAction() {
+    protected int _selectAction() {
         _rollbackInputChannels();
 
         for (int i = 0; i < _actions.length; i++) {

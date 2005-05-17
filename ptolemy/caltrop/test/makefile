@@ -61,6 +61,7 @@ JSIMPLE_TESTS = \
 # $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 JGRAPHICAL_TESTS = \
 	PtolemyPlatform.tcl \
+	DDF.tcl \
 	SDF.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
