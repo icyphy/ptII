@@ -45,13 +45,13 @@ awk ' { if ($0 ~ /UNCONSTRUCTED/) {
       }
    END {print lastline}
 ' $1 |
-#awk '{if ($0 ~ /public void __CGInit/ ) {
-#            # Skip the trailing {
-#            print substr($0,1, length($0)-2), "throws IllegalActionException, NameDuplicationException {"
-#        } else {
-#            print $0
-#        }
-#    }' |
+awk '{if ($0 ~ /public void __CGInit/ ) {
+            # Skip the trailing {
+            print substr($0,1, length($0)-2), "throws IllegalActionException, NameDuplicationException {"
+        } else {
+            print $0
+        }
+    }' |
 awk '{ if ( $0 ~ /^package/ ) {
             print $0
             printf("\n");
