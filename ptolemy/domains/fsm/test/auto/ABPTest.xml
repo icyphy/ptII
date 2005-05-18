@@ -7,7 +7,7 @@
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -40,25 +40,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of the discrete event (DE) domain&#10;and hierarchical finite state machines (FSMs) to model the alternating&#10;bit protocol (ABP). ABP is a simple mechanism for achieving reliable,&#10;ordered delivery of messages over channels with unreliable delivery and&#10;variable delay.&#10;&#10;This demo shows that:&#10;* Hierarchical FSMs can efficiently capture complex sequential control behavior.&#10;* Embedding FSMs within other models of computation is a clean and flexible&#10;way to model the concurrent execution of FSMs.&#10;&#10;A detailed discussion of this model is in&#10;$PTII/ptolemy/domains/fsm/demo/ABP/ABP.htm&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 325.0]">
-        </property>
-    </property>
-    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 55.0]">
         </property>
     </property>
     <entity name="MessageSource" class="ptolemy.domains.fsm.demo.ABP.DEMessageSource">
@@ -460,7 +441,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.6420454545454, 258.9363952020202}">
             </property>
-            <property name="count" class="ptolemy.data.expr.Parameter" value="5">
+            <property name="count" class="ptolemy.data.expr.Parameter" value="4">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -641,7 +622,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.825284090909, 193.0312499999999}">
             </property>
-            <property name="msg" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="msg" class="ptolemy.data.expr.Parameter" value="17">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
