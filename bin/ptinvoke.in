@@ -594,7 +594,10 @@ case $commandname in
 	help="Do deep codegen"
 	javastartupclass=ptolemy.copernicus.kernel.Copernicus
 	javasourcedir=
-	javaflag="-Xmx256M"
+        # Shallow cg of fsm/test/auto/ABPTest.xml,
+	# hdf/kernel/test/auto/TwoLevelHierarchyNullStates.xml
+	# wireless/test/auto/performance.xml all fail if we use Xmx256
+	javaflag="-Xmx384M"
         ;;
     copernicusjhdl)
 	help="Do deep jhdl codegen"
