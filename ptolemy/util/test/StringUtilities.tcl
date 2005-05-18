@@ -164,21 +164,21 @@ proc ptjaclPolicy {script} {
     set pathSeparator [java::call ptolemy.util.StringUtilities \
         getProperty path.separator]
 
-    exec java \
-            -Djava.security.manager "-Djava.security.policy=ptjacl.policy" \
-	    -classpath $PTII/lib/ptjacl.jar$pathSeparator$PTII \
-	    tcl.lang.Shell $script
+    set results [exec -stderrok make test_policy SCRIPT=$script]
+    regsub -all {^make\[.*$\n*} $results {} results2
+    list $results2	
 }
 
 test StringUtilities-3.8.1 {getProperty in a sandbox: property not accessible } {
     catch {ptjaclPolicy user_dir.tcl} error
     list $error
-} {{java.lang.SecurityException: Could not find 'user.dir' System property}}
+} {{{java.lang.SecurityException: Could not find 'user.dir' System property}}}
 
 test StringUtilities-3.8.2 {getProperty in a sandbox: property accessible } {
     set canonicalPTII \
 	[[[java::new java.io.File $PTII] getCanonicalFile] getPath]
     set r [ptjaclPolicy ptolemy_ptII_dir.tcl]
+    puts "$canonicalPTII == $r"
     expr {$canonicalPTII == $r}
 } {1}
 

@@ -67,6 +67,9 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	test.xml \
 	copy.xsl \
 	addMarkers.xsl \
+        ptjacl.policy \
+        ptolemy_ptII_dir.tcl \
+        user_dir.tcl 
 	#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -90,6 +93,18 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
+
+
+# Rule to run a $(SCRIPT) with a security policy
+# We have a rule here so that we can get AUXCLASSPATH for code coverage
+test_policy:
+	@"$(JAVA)" \
+            -Djava.security.manager "-Djava.security.policy=ptjacl.policy" \
+	    -classpath \
+	    $(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)  \
+	    "-Dptolemy.ptII.dir=$(PTII)" $(JTCLSHFLAGS) \
+	    tcl.lang.Shell $(SCRIPT)
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
