@@ -1421,7 +1421,7 @@ remote4javatest:
 	@echo "`uptime`"
 	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test; \
 		PTII=$(REMOTE4PTIIDIST) $(MAKE) \
-		"JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=75600 -Xmx256M" \
+		"JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=79200 -Xmx384M" \
 		test_long)
 
 ##########################################################################
