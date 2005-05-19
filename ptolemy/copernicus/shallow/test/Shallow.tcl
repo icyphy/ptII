@@ -96,6 +96,15 @@ test Shallow-1.2 {Compile and run the SDF IIR test} {
     global PTII
     set result [sootCodeGeneration $PTII \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
+	    MultiplexorDE.xml]]
+    puts $result
+    list {}
+} {{}}
+
+test Shallow-1.2 {Compile and run the SDF IIR test} {
+    global PTII
+    set result [sootCodeGeneration $PTII \
+	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    IIR.xml]]
     puts $result
     list {}
@@ -122,21 +131,37 @@ test Shallow-1.3 {Compile and run the MathFunction test, which tends to hang} {
 
 
 # Now try to generate code for all the tests in the auto directories.
-autoShallowCG [file join $relativePathToPTII ptolemy actor lib test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy actor lib comm test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy actor lib hoc test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy actor lib security test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy actor lib string test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy actor lib test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy actor lib xslt test auto]
 #autoShallowCG [file join $relativePathToPTII ptolemy actor lib javasound test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains ct kernel test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains ct lib test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains ct test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains ddf kernel test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains ddf lib test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains ddf test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains de lib test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains dt kernel test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains fsm kernel test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains fsm test auto]
-#autoShallowCG [file join $relativePathToPTII ptolemy domains giotto kernel test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains giotto kernel test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains giotto test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains hdf kernel test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains pn kernel test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains pn test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains psdf kernel test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains sdf kernel test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains sdf lib test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains sdf test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains sr kernel test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains sr lib test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains tm test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains wireless test auto]
 
 # Print out stats
