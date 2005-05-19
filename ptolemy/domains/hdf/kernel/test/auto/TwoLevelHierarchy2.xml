@@ -4,7 +4,7 @@
 <entity name="TwoLevelHierarchy2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 86, 803, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 190, 803, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[588, 400]">
     </property>
@@ -78,12 +78,12 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{294.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{295.7866161616162, 188.7921401515152}">
     </property>
     <property name="HDFTop" class="ptolemy.domains.hdf.kernel.HDFDirector">
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="9">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -109,12 +109,12 @@
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="5">
             </property>
         </port>
         <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="5">
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
@@ -562,12 +562,12 @@ to another. Then delete this annotation.</text>
                 </property>
                 <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
                     <property name="input"/>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="4">
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="5">
                     </property>
                 </port>
                 <port name="ouput" class="ptolemy.domains.fsm.modal.ModalPort">
                     <property name="output"/>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="5">
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
@@ -861,23 +861,21 @@ to another. Then delete this annotation.</text>
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Mode A1: 1&quot;, &quot;Mode A1: 2&quot;, &quot;Mode A1: 3&quot;, &quot;Mode A1: 4&quot;, &quot;Mode A2: 5&quot;, &quot;Mode A2: 6&quot;, &quot;Mode A2: 7&quot;, &quot;Mode A2: 8&quot;, &quot;Mode A2: 9&quot;, &quot;Mode A2: 10&quot;, &quot;Mode B1: 11&quot;, &quot;Mode B1: 12&quot;, &quot;Mode B1: 13&quot;, &quot;Mode B1: 14&quot;, &quot;Mode B2: 15&quot;, &quot;Mode B2: 16&quot;, &quot;Mode B2: 17&quot;, &quot;Mode B2: 18&quot;, &quot;Mode B2: 19&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Mode A1: 1&quot;, &quot;Mode A1: 2&quot;, &quot;Mode A1: 3&quot;, &quot;Mode A1: 4&quot;, &quot;Mode A2: 5&quot;, &quot;Mode A2: 6&quot;, &quot;Mode A2: 7&quot;, &quot;Mode A2: 8&quot;, &quot;Mode A2: 9&quot;, &quot;Mode A2: 10&quot;, &quot;Mode B1: 11&quot;, &quot;Mode B1: 12&quot;, &quot;Mode B1: 13&quot;, &quot;Mode B1: 14&quot;, &quot;Mode B2: 15&quot;, &quot;Mode B2: 16&quot;, &quot;Mode B2: 17&quot;, &quot;Mode B2: 18&quot;, &quot;Mode B2: 19&quot;, &quot;Mode A2: 20&quot;, &quot;Mode A2: 21&quot;, &quot;Mode A2: 22&quot;, &quot;Mode A2: 23&quot;, &quot;Mode A2: 24&quot;, &quot;Mode A2: 25&quot;, &quot;Mode B2: 26&quot;, &quot;Mode B2: 27&quot;, &quot;Mode B2: 28&quot;, &quot;Mode B2: 29&quot;, &quot;Mode B2: 30&quot;}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 125.0}">
         </property>
     </entity>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[315.0, 125.0]">
-        </vertex>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="TopCtrl.input" relation="relation"/>
-    <link port="TopCtrl.output" relation="relation5"/>
+    <link port="TopCtrl.output" relation="relation2"/>
     <link port="Ramp.output" relation="relation"/>
-    <link port="NonStrictTest.input" relation="relation5"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
 </entity>
