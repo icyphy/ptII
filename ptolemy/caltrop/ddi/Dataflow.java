@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.ArrayList;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -57,7 +58,7 @@ import caltrop.interpreter.util.PriorityUtil;
 //// Dataflow
 
 /**
-   @author J&#246;rn W. Janneck
+   @author J&#246;rn W. Janneck, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)
@@ -102,6 +103,7 @@ public class Dataflow extends AbstractDDI implements DDI {
     protected Context _context;
     protected Environment _env;
     protected Set _currentStateSet;
+    protected Transition[] _currentTransitions;
     protected DataflowActorInterpreter _actorInterpreter;
     protected Map _inputPorts;
     protected Map _outputPorts;
@@ -215,9 +217,11 @@ public class Dataflow extends AbstractDDI implements DDI {
     public void initialize() throws IllegalActionException {
         if (_actor.getScheduleFSM() == null) {
             _currentStateSet = null;
+            _currentTransitions = new Transition[0];
         } else {
             _currentStateSet = Collections.singleton(_actor.getScheduleFSM()
                     .getInitialState());
+            _computeNextTransitions();
         }
 
         try {
@@ -269,8 +273,7 @@ public class Dataflow extends AbstractDDI implements DDI {
      * Postfire this actor.
      */
     public boolean postfire() throws IllegalActionException {
-        _currentStateSet = computeNextStateSet(_currentStateSet,
-                _lastFiredAction);
+        computeNextStateSet(_lastFiredAction);
         _commitInputChannels();
         _lastFiredAction = null;
         return true;
@@ -306,13 +309,12 @@ public class Dataflow extends AbstractDDI implements DDI {
         QID tag = a.getTag();
 
         if ((tag != null) && (_currentStateSet != null)) {
-            Transition[] ts = _actor.getScheduleFSM().getTransitions();
-
-            for (int i = 0; i < ts.length; i++) {
-                Transition t = ts[i];
-
-                if (_currentStateSet.contains(t.getSourceState())
-                        && isPrefixedByTagList(tag, t.getActionTags())) {
+            
+            int length = _currentTransitions.length;
+            for (int i = 0; i < length; i++) {
+                Transition t = _currentTransitions[i];
+                
+                if (isPrefixedByTagList(tag, t.getActionTags())) {
                     return true;
                 }
             }
@@ -323,32 +325,49 @@ public class Dataflow extends AbstractDDI implements DDI {
         }
     }
 
-    private Set computeNextStateSet(Set s, Action a) {
-        if (s == null) {
-            return null;
+    private void computeNextStateSet(Action a) {
+        if (_currentStateSet == null) {
+            // No change
+            return;
         }
 
         if ((a == null) || (a.getTag() == null)) {
-            return s;
+            // No change
+            return;
         }
 
+        // The new state set.
         Set ns = new HashSet();
         QID tag = a.getTag();
-        Transition[] ts = _actor.getScheduleFSM().getTransitions();
 
-        for (int i = 0; i < ts.length; i++) {
-            Transition t = ts[i];
+        int length = _currentTransitions.length;
+        for (int i = 0; i < length; i++) {
+            Transition t = _currentTransitions[i];
 
-            if (s.contains(t.getSourceState())
-                    && isPrefixedByTagList(tag, t.getActionTags())) {
+            if (isPrefixedByTagList(tag, t.getActionTags())) {
                 ns.add(t.getDestinationState());
             }
         }
+        _currentStateSet = ns;
 
-        return ns;
+        _computeNextTransitions();
     }
 
-    private boolean isPrefixedByTagList(QID tag, QID[] tags) {
+    private void _computeNextTransitions() {
+        // The set of transitions that we can take in the current state.
+        ArrayList nt = new ArrayList();
+        Transition[] ts = _actor.getScheduleFSM().getTransitions();
+        
+        for (int i = 0; i < ts.length; i++) {
+            Transition t = ts[i];
+            if (_currentStateSet.contains(t.getSourceState())) {
+                nt.add(t);
+            }
+        }
+        _currentTransitions = (Transition[])nt.toArray(new Transition[nt.size()]);
+    }
+
+    private static boolean isPrefixedByTagList(QID tag, QID[] tags) {
         for (int j = 0; j < tags.length; j++) {
             if (tags[j].isPrefixOf(tag)) {
                 return true;
