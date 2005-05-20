@@ -85,15 +85,8 @@ public class NonInterruptibleTimer extends Timer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read one token from the input. If the value of the input is bigger than
-     *  0.0, save the input to be processed in the postfire method. Otherwise,
-     *  check whether there is any output scheduled to be produced at the
-     *  current time. If there is one, send out that output and save the
-     *  current input for future processing in the postfire method. If there
-     *  is no output to produce, the timer is not processing other inputs,
-     *  and the input value is 0.0, send an output immediately and reset the
-     *  current input to null, indicating no further processing of the current
-     *  input is necessary.
+    /** Read one token from the input. Send out a token that is scheduled
+     *  to produce at the current time to the output.
      *
      *  @exception IllegalActionException If the delay value is negative, or
      *  this actor can not send tokens to ports, or this actor can not get
@@ -137,10 +130,6 @@ public class NonInterruptibleTimer extends Timer {
             } else {
                 // no tokens to be produced at the current time.
             }
-        } else if ((_delay == 0.0) && (_delayedInputTokensList.size() > 0)) {
-            _delayedInputTokensList.removeFirst();
-            output.send(0, value.getToken());
-            _currentInput = null;
         }
     }
 

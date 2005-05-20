@@ -48,7 +48,7 @@ import ptolemy.kernel.util.StringAttribute;
    A server is either busy (serving a customer) or not busy at any given time.
    If an input arrives when the server is not busy, then the input token is
    produced on the output with a delay given by the <i>newServiceTime</i>
-   parameter. If the delay is 0.0, the current input is sent out immediately.
+   parameter. 
    If an input arrives while the server is busy, then that input is
    queued until the server becomes free, at which point it is produced
    on the output with a delay given by the <i>newServiceTime</i> parameter.
@@ -72,7 +72,7 @@ import ptolemy.kernel.util.StringAttribute;
    same time, the server will output the first available input and
    queue the other inputs to process in the future microsteps. A
    service time of zero can be usefully viewed as an infinitesimal
-   service time.
+   service time. See {@link TimedDelay}.
    <p>
    The key difference between the NonInterruptibleTimer actor and the Server
    actor is how the service time is specified.  In the NonInterruptibleTimer
@@ -127,8 +127,8 @@ public class Server extends VariableDelay {
         Time currentTime = getDirector().getModelTime();
 
         // consume input and put it into the _delayedInputTokensList
-        // NOTE: this list is different from the _delayedTokens defined in the
-        // TimedDelay class.
+        // NOTE: this list is different from the _delayedOutputTokens defined 
+        // in the TimedDelay class.
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
             _delayedInputTokensList.addLast(_currentInput);
@@ -155,9 +155,6 @@ public class Server extends VariableDelay {
             } else {
                 // no tokens to be produced at the current time.
             }
-        } else if ((_delay == 0) && (_delayedInputTokensList.size() > 0)) {
-            // The server is not busy.
-            output.send(0, (Token) _delayedInputTokensList.removeFirst());
         }
     }
 

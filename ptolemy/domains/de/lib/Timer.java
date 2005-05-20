@@ -52,8 +52,8 @@ import ptolemy.kernel.util.Workspace;
    later to generate an output. The amount of delay is specified by the
    input value. The value of output is specified by the <i>value</i>
    parameter of this actor. If the input value is 0.0, an output is
-   produced immediately. If the input is less than 0.0, an exception
-   will be thrown. If there is no input token, then no output is produced.
+   produced in the next firing with a bigger microstep. If the input is 
+   less than 0.0, an exception will be thrown. 
 
    <p> This actor is different from the {@link
    ptolemy.domains.de.lib.NonInterruptibleTimer} actor because the
@@ -112,14 +112,8 @@ public class Timer extends DETransformer {
         return newObject;
     }
 
-    /** Read one token from the input. If the value of the input is bigger than
-     *  0.0, save the input to be processed in the postfire method. Otherwise,
-     *  check whether there is any output scheduled to be produced at the
-     *  current time. If there is one, send out that output and save the
-     *  current input for future processing in the postfire method. If there
-     *  is no output to produce and the input value is 0.0, send an output
-     *  immediately and reset the current input to null, indicating no further
-     *  processing of the current input is necessary.
+    /** Read one token from the input. Send out a token that is scheduled
+     *  to produce at the current time to the output.
      *
      *  @exception IllegalActionException If there is no director, or can not
      *  send or get tokens from ports.
@@ -155,11 +149,6 @@ public class Timer extends DETransformer {
             } else {
                 // no tokens to be produced at the current time.
             }
-        }
-
-        if (_delay == 0.0) {
-            output.send(0, value.getToken());
-            _currentInput = null;
         }
     }
 
@@ -204,8 +193,7 @@ public class Timer extends DETransformer {
             }
         }
 
-        // If the current input is not processed, schedule a future firing
-        // to process it.
+        // Schedule a future firing to process the current input.
         if (_currentInput != null) {
             _delayedOutputTokens.put(new TimedEvent(delayToTime,
                                              value.getToken()));

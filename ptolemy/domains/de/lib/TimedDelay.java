@@ -50,28 +50,28 @@ import ptolemy.kernel.util.Workspace;
    The input and output types are unconstrained, except that the output type
    must be the same as that of the input.
    <p>
-   The behavior of this actor on each firing is to read a token from the input,
-   if there is one, and schedule itself to fire again to produce that token
-   on the corresponding output channel after the appropriate time delay.
-   Note that if the value of delay is 0.0, and there is no output scheduled
-   to produce at the same time the input arrives, the output is produced
-   immediately. Otherwise, the input is produced in the next available firing
-   at the same model time. If there is no input token, then no output token is
-   produced.
+   This actor keeps a local FIFO queue to store all received but not processed
+   inputs. The behavior of this actor on each firing is to read a token from 
+   the input, if there is one, store it into the local queue, and output the 
+   previously received token that is scheduled to be produced at the current 
+   time. 
+   <p> During the postfire() method, this actor schedules itself to fire again 
+   to produce the just received token on the corresponding output channel after 
+   the appropriate time delay. Note that if the value of delay is 0.0, the 
+   actor schedules itself to fire at the current model time. 
    <p>
    Occasionally, this actor is used inside a feedback loop just for scheduling
-   purpose, where the delay parameter is set to zero. This implies that no
+   purpose, where the delay parameter is set to 0.0. This implies that no
    output token is produced earlier than the time its trigger input arrives.
-   Therefore the actor declares that there is a delay between the input
-   and the output, and the DE director will leverage this when
+   Therefore the actor declares that there is a delay at microstep between the 
+   input and the output, and the DE director will leverage this when
    determining the precedences of the actors. It is sometimes useful to think
-   of this zero-valued delay as an infinitesimal delay.
+   of this zero-valued delay as an infinitesimal delay. 
    <p>
-   The output may have the same microstep as the input, if there is
-   no queued output scheduled to produce at the same time the input arrives.
-   Otherwise, the output is produced one microstep later. This guarantees that
-   a DE signal is functional in the sense that for any tag, there is
-   at most one value.
+   Note that the output always has a large tag, either bigger time or bigger 
+   microstep than that of the input. This guarantees that a DE signal is 
+   functional in the sense that for any tag (a tuple of time and microstep), 
+   there is at most one value.
 
    @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
    @see ptolemy.domains.de.lib.VariableDelay
@@ -185,15 +185,7 @@ public class TimedDelay extends DETransformer {
             if (eventTime.equals(currentTime)) {
                 _currentOutput = (Token) earliestEvent.contents;
                 output.send(0, _currentOutput);
-            } else {
-                // no tokens to be produced at the current time.
-            }
-        }
-
-        if ((_delay == 0) && (_currentInput != null)
-                && (_currentOutput == null)) {
-            output.send(0, _currentInput);
-            _currentInput = null;
+            } 
         }
     }
 
@@ -235,7 +227,7 @@ public class TimedDelay extends DETransformer {
             }
         }
 
-        // Process the current input if it is not processed.
+        // Process the current input.
         if (_currentInput != null) {
             _delayedOutputTokens.put(new TimedEvent(delayToTime, _currentInput));
             getDirector().fireAt(this, delayToTime);
