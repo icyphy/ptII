@@ -1499,7 +1499,7 @@ remote5shallowtest:
 	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; \
 		PTII=$(REMOTE5PTIIDIST) \
 		$(MAKE) \
-			"JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=28800 -Xmx256M"\
+			"JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=39600 -Xmx256M"\
 			test_long)
 
 
