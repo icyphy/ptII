@@ -60,6 +60,19 @@ import ptolemy.moml.MoMLChangeRequest;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class MirrorPort extends TypedIOPort {
+    /** Construct a port in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument
+     *  is null, then use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the port.
+     */
+    public MirrorPort(Workspace workspace) {
+        // This constructor is needed for Shallow codgen.
+        super(workspace);
+    }
+
     /** Create a new instance of a port.
      *  @param container The container for the port.
      *  @param name The name of the port.

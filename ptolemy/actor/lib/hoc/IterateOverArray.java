@@ -1202,6 +1202,18 @@ public class IterateOverArray extends TypedCompositeActor
      *  are reflected in the associated port.
      */
     public static class IteratePort extends MirrorPort {
+        /** Construct a port in the specified workspace with an empty
+         *  string as a name. You can then change the name with setName().
+         *  If the workspace argument
+         *  is null, then use the default workspace.
+         *  The object is added to the workspace directory.
+         *  Increment the version number of the workspace.
+         *  @param workspace The workspace that will list the port.
+         */
+        public IteratePort(Workspace workspace) {
+            // This constructor is needed for Shallow codgen.
+            super(workspace);
+        }
         // NOTE: This class has to be static because otherwise the
         // constructor has an extra argument (the first argument,
         // actually) that is an instance of the enclosing class.
