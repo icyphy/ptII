@@ -30,7 +30,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitCategory
@@ -47,6 +47,27 @@ import ptolemy.kernel.util.NamedObj;
    @see ptolemy.data.unit.BaseUnit
 */
 public class UnitCategory extends Attribute {
+    /** Construct a unit category in the default workspace with an empty string
+     *  as its name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     */
+    public UnitCategory() {
+        super();
+    }
+
+    /** Construct an attribute in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument
+     *  is null, then use the default workspace.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     */
+    public UnitCategory(Workspace workspace) {
+        super(workspace);
+    }
+
     /** Construct a unit category property with the given name contained by
      *  the specified
      *  entity. The container argument must not be null, or a
@@ -73,7 +94,26 @@ public class UnitCategory extends Attribute {
                 .getName());
     }
 
+    /** Return the base unit */
     public BaseUnit getBaseUnit() {
         return (BaseUnit) (getContainer());
+    }
+
+
+    /** Set the container and register this object in to the system wide
+     *  unit system by calling 
+     *  {@link UnitUtilities#registerUnitCategory(String)}.
+     *  @param container The container to attach this attribute to.
+     *  The type of the container must be an instances of BaseUnit.
+     *  @exception IllegalActionException If Attribute.setContainer()
+     *  throws it.
+     *  @exception NameDuplicationException If Attribute.setContainer()
+     *  throws it.
+     */   
+    public void setContainer(NamedObj container) 
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        UnitUtilities.registerUnitCategory(((BaseUnit) this.getContainer())
+                .getName());
     }
 }
