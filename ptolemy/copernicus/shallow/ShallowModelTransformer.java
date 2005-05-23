@@ -839,8 +839,9 @@ public class ShallowModelTransformer extends SceneTransformer
                 // occured during parsing:" so that the nightly build
                 // can detect errors.
 
-                System.err.println("Exception occurred during parsing: ");
+                System.err.println("Exception occurred during parsing: " + ex);
                 ex.printStackTrace();
+                System.out.println("done parsing:\n");
                 deferredObject = null;
             }
         }
