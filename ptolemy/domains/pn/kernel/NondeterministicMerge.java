@@ -192,6 +192,23 @@ public class NondeterministicMerge extends TypedCompositeActor {
      *  ports of the container.
      */
     private class ChannelActor extends TypedAtomicActor {
+        /** Construct an actor in the specified container with the specified
+         *  name. The index is set to 0.  This method is used by t 
+         *  shallow code generator, which requires a (container, name)
+         *  constructor.   
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception NameDuplicationException If an actor
+         *   with an identical name already exists in the container.
+         *  @exception IllegalActionException If the actor cannot be contained
+         *   by the proposed container.
+         */
+        public ChannelActor(NondeterministicMerge container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+            _channelIndex = 0;
+            _channelValue = new IntToken(_channelIndex);
+        }
         public ChannelActor(int index, NondeterministicMerge container)
                 throws IllegalActionException, NameDuplicationException {
             super(container, "ChannelActor" + index);
