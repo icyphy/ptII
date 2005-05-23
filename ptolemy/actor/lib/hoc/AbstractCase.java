@@ -128,7 +128,9 @@ public abstract class AbstractCase extends TypedCompositeActor {
 
     /** Our director.
      */
-    private class CaseDirector extends Director {
+    public class CaseDirector extends Director {
+        // This class needs to be public for shallow codgen.
+
         /** Construct a director in the given container with the given name.
          *  @param container The container.
          *  @param name The name of this director.
