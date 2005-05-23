@@ -67,5 +67,7 @@ public class ASTTest {
     }
 
     private int foo;
+
 }
+
 }}
