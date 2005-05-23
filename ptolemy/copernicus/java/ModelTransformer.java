@@ -1769,7 +1769,12 @@ public class ModelTransformer extends SceneTransformer
             } catch (InternalErrorException ex) {
                 throw ex;
             } catch (Exception ex) {
-                System.out.println("Exception occurred during parsing:\n" + ex);
+
+                // Don't print a newline after printing "Exception
+                // occured during parsing:" so that the nightly build can
+                // detect errors.
+
+                System.out.println("Exception occurred during parsing:" + ex);
                 ex.printStackTrace();
                 System.out.println("done parsing:\n");
                 deferredObject = null;

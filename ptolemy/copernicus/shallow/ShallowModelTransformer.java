@@ -834,7 +834,12 @@ public class ShallowModelTransformer extends SceneTransformer
                     //   deferredClass);
                 }
             } catch (Exception ex) {
-                System.err.println("Exception occurred during parsing:\n");
+
+                // Don't print a newline after printing "Exception
+                // occured during parsing:" so that the nightly build
+                // can detect errors.
+
+                System.err.println("Exception occurred during parsing: ");
                 ex.printStackTrace();
                 deferredObject = null;
             }
