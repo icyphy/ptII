@@ -69,7 +69,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	addMarkers.xsl \
         ptjacl.policy \
         ptolemy_ptII_dir.tcl \
-        user_dir.tcl 
+        user_name.tcl 
 	#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't

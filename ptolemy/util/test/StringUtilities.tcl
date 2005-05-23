@@ -171,9 +171,9 @@ proc ptjaclPolicy {script} {
 }
 
 test StringUtilities-3.8.1 {getProperty in a sandbox: property not accessible } {
-    catch {ptjaclPolicy user_dir.tcl} error
+    catch {ptjaclPolicy user_name.tcl} error
     list $error
-} {{{java.lang.SecurityException: Could not find 'user.dir' System property}}}
+} {{{java.lang.SecurityException: Could not find 'user.name' System property}}}
 
 test StringUtilities-3.8.2 {getProperty in a sandbox: property accessible } {
     set canonicalPTII \

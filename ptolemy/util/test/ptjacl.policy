@@ -1,5 +1,7 @@
 grant {
-  /*permission java.util.PropertyPermission "user.dir", "read";*/
+  /** JavaScope needs to read user.dir and user.home */
+  permission java.util.PropertyPermission "user.dir", "read";
+  permission java.util.PropertyPermission "user.home", "read";
   permission java.io.FilePermission "<<ALL FILES>>", "read";
   permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
   permission java.lang.RuntimePermission "getClassLoader";
