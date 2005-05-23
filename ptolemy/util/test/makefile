@@ -106,5 +106,17 @@ test_policy:
 	    tcl.lang.Shell $(SCRIPT)
 
 
+
+# Test running with ptolemy.ptII.dir containing cygrdrive.
+# We have a rule here so that we can get AUXCLASSPATH for code coverage
+test_cygdrive:
+	@"$(JAVA)" \
+	    -Dptolemy.ptII.dir=/cygdrive/c/ptII \
+	    -classpath \
+	    $(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)  \
+	    $(JTCLSHFLAGS) \
+	    tcl.lang.Shell ptolemy_ptII_dir.tcl$(SCRIPT)
+
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

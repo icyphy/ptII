@@ -190,12 +190,10 @@ test StringUtilities-3.8.3 {getProperty: PTII includes cygdrive  } {
 
     # We use exec here so that we get the message each time
     catch {
-        exec java \
-            -Dptolemy.ptII.dir=/cygdrive/c/ptII \
-	    -classpath $PTII/lib/ptjacl.jar$pathSeparator$PTII \
-	    tcl.lang.Shell ptolemy_ptII_dir.tcl
+	set results [exec -stderrok make test_cygdrive]
     } errMsg
-    list $errMsg
+    regsub -all {^make\[.*$\n*} $errMsg {} errMsg2
+    list $errMsg2
 } {{/cygdrive/c/ptII
 ptolemy.ptII.dir property = "/cygdrive/c/ptII", which contains "cygdrive". This is almost always an error under Cygwin that is occurs when one does PTII=`pwd`.  Instead, do PTII=c:/foo/ptII}}
 
