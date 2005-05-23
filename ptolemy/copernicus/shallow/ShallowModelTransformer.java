@@ -49,10 +49,12 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.MoMLFilter;
 import ptolemy.util.StringUtilities;
 import soot.Body;
 import soot.HasPhaseOptions;
@@ -815,6 +817,24 @@ public class ShallowModelTransformer extends SceneTransformer
 
                     try {
                         toplevel = (CompositeEntity) _reflectionParser.parse(source);
+                    } catch (InternalError ex) {
+                        // parsing lib/hoc/test/auto/MobileModelTest.xml
+                        // resulted in trying to expand vergil.icon.EditorIcon
+                        StringBuffer results = new StringBuffer("");
+                        try {
+                            for (Iterator momlFilters =
+                                     _reflectionParser.getMoMLFilters().iterator();
+                                 momlFilters.hasNext();) {
+                                MoMLFilter momlFilter =
+                                    (MoMLFilter)momlFilters.next();
+                                results.append(momlFilter.toString());
+                            }
+                        } catch (Exception ex2) {
+                            results.append(KernelException.stackTraceToString(ex2));
+                        }
+
+                        throw new InternalErrorException(null, ex,
+                                "Failed to parse \"" + source + "\"");
                     } catch (Exception ex) {
                         throw new InternalErrorException(null, ex,
                                 "Attempt " + "to create an instance of "
