@@ -40,7 +40,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// TransitionRefinementPort
@@ -67,6 +67,16 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (liuxj)
 */
 public class TransitionRefinementPort extends RefinementPort {
+    /** Construct a port in the given workspace.
+     *  @param workspace The workspace.
+     *  @exception IllegalActionException If the port is not of an acceptable
+     *   class for the container, or if the container does not implement the
+     *   TypedActor interface.
+     */
+    public TransitionRefinementPort(Workspace workspace) {
+        super(workspace);
+    }
+
     /** Construct a port with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
      *  must implement the TypedActor interface, or an exception will be
