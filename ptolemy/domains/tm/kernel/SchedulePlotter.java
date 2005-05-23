@@ -171,7 +171,11 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    private class SchedulePlotterEditorFactory extends EditorFactory {
+
+    /** Factory that creates the schedule plotter. */
+    public class SchedulePlotterEditorFactory extends EditorFactory {
+        // This class needs to be public for shallow code generation.
+
         public SchedulePlotterEditorFactory(NamedObj _container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(_container, name);
