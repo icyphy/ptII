@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Clock4" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Clock5" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -84,6 +84,21 @@
             </property>
         </port>
     </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.5, 2.5, 3.5, 4.5}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 270.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="90.0, 195.0">
         </vertex>
@@ -92,8 +107,13 @@
         <vertex name="vertex1" value="205.0, 195.0">
         </vertex>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="SingleEvent.output" relation="relation2"/>
     <link port="Test.input" relation="relation3"/>
     <link port="TriggeredClock.output" relation="relation3"/>
     <link port="TriggeredClock.start" relation="relation2"/>
+    <link port="CurrentTime.output" relation="relation"/>
+    <link port="CurrentTime.trigger" relation="relation3"/>
+    <link port="Test2.input" relation="relation"/>
 </entity>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BooleanSelect2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 60}">
@@ -34,8 +34,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 320.0]">
         </property>
     </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that only when the control input of the BooleanSelect actor&#10;has token, will the BooleanSelect actor return true from the prefire() method.&#10;&#10;Therefore, only at time 1.0 will the BooleanSelect actor be iterated.&#10;&#10;In the current implementation of DE, tokens stored in DEReceiver &#10;are not cleared if their destination actor does not consume them. &#10;Therefore, the BooleanSelect actor produces a &quot;false&quot; output at &#10;time 1.0, which is the (first) token received at the *True&quot; input &#10;port at time 0.0. &#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 370.0]">
+        </property>
+    </property>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 230.0]">
         </property>
@@ -44,6 +58,12 @@
         <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 315.0]">
         </property>
@@ -173,9 +193,9 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 240.0]">
         </property>
