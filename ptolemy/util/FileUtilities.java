@@ -365,7 +365,7 @@ public class FileUtilities {
      *  then the name is passed to {@link #nameToURL(String, URI, ClassLoader)}
      *  If the file name is not absolute, the it is assumed to be relative to
      *  the specified base URI.
-     *  @see #nameToURL(String, URI)
+     *  @see #nameToURL(String, URI, ClassLoader)
      *  @param name File name.
      *  @param base The base URI for relative references.
      *  @param classLoader The class loader to use to locate system
