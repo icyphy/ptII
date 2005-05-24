@@ -834,7 +834,8 @@ public class ShallowModelTransformer extends SceneTransformer
                         }
 
                         throw new InternalErrorException(null, ex,
-                                "Failed to parse \"" + source + "\"");
+                                "Failed to parse \"" + source
+                                + "\", filters:\n" + results.toString());
                     } catch (Exception ex) {
                         throw new InternalErrorException(null, ex,
                                 "Attempt " + "to create an instance of "
