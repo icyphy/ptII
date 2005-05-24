@@ -822,12 +822,14 @@ public class ShallowModelTransformer extends SceneTransformer
                         // resulted in trying to expand vergil.icon.EditorIcon
                         StringBuffer results = new StringBuffer("");
                         try {
+                            int i = 0;
                             for (Iterator momlFilters =
                                      _reflectionParser.getMoMLFilters().iterator();
                                  momlFilters.hasNext();) {
                                 MoMLFilter momlFilter =
                                     (MoMLFilter)momlFilters.next();
-                                results.append(momlFilter.toString());
+                                results.append("\nFilter " + (++i) + "\n"
+                                        + momlFilter.toString());
                             }
                         } catch (Exception ex2) {
                             results.append(KernelException.stackTraceToString(ex2));
