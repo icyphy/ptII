@@ -170,10 +170,16 @@ proc ptjaclPolicy {script} {
     list $results2
 }
 
+if {[java::call System getProperty "line.separator"] != "\n"} {
+    set knownError "This test does not work under Windows"
+} else {
+    set knownError {}
+}
+
 test StringUtilities-3.8.1 {getProperty in a sandbox: property not accessible } {
     catch {ptjaclPolicy user_name.tcl} error
     list $error
-} {{{java.lang.SecurityException: Could not find 'user.name' System property}}}
+} {{{java.lang.SecurityException: Could not find 'user.name' System property}}} $knownError
 
 test StringUtilities-3.8.2 {getProperty in a sandbox: property accessible } {
     set canonicalPTII \
@@ -195,7 +201,7 @@ test StringUtilities-3.8.3 {getProperty: PTII includes cygdrive  } {
     regsub -all {^make\[.*$\n*} $errMsg {} errMsg2
     list $errMsg2
 } {{/cygdrive/c/ptII
-ptolemy.ptII.dir property = "/cygdrive/c/ptII", which contains "cygdrive". This is almost always an error under Cygwin that is occurs when one does PTII=`pwd`.  Instead, do PTII=c:/foo/ptII}}
+ptolemy.ptII.dir property = "/cygdrive/c/ptII", which contains "cygdrive". This is almost always an error under Cygwin that is occurs when one does PTII=`pwd`.  Instead, do PTII=c:/foo/ptII}} $knownError
 
 test StringUtilities-3.8.4 {getProperty: ptolemy.ptII.dirAsURL} {
     set dirAsURL [java::new java.net.URL \
