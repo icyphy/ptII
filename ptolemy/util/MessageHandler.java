@@ -45,7 +45,7 @@ import java.io.InputStreamReader;
    This base class simply writes the errors to System.err.
    When an applet or application starts up, it may wish to set a subclass
    of this class as the message handler, to allow a nicer way of
-   reporting errors.  For example, a swing application will probably
+   reporting errors.  For example, a Swing application will probably
    want to report errors in a dialog box, using for example
    the derived class GraphicalMessageHandler.
    @see ptolemy.gui.GraphicalMessageHandler
@@ -53,8 +53,8 @@ import java.io.InputStreamReader;
    @author  Edward A. Lee, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (janneck)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Green (cxh)
 */
 public class MessageHandler {
     ///////////////////////////////////////////////////////////////////
@@ -136,14 +136,15 @@ public class MessageHandler {
         return throwableType;
     }
 
-    /** Defer to the set message handler to
-     *  show the specified message in a modal dialog.  If the user
-     *  clicks on the "Cancel" button, then throw an exception.
-     *  This gives the user the option of not continuing the
-     *  execution, something that is particularly useful if continuing
-     *  execution will result in repeated warnings.
-     *  NOTE: If the set message handler is graphical, then
-     *  this must be called in the swing event thread!
+    /** Display the warning message.  In this base class, the
+     *  the default handler merely prints the warning to stderr.
+     *  Derived classes such as ptolemy.gui.GraphicalMessageHandler
+     *  might display the message graphically.
+     *
+     *  <p>NOTE: If the message handler set by 
+     *  {@link #setMessageHandler(MessageHandler)} is graphical, then
+     *  this method must be called in the Swing event thread!
+     *
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
@@ -151,15 +152,15 @@ public class MessageHandler {
         _handler._warning(info);
     }
 
-    /** Show the specified message and throwable information
-     *  in a modal dialog.  If the user
-     *  clicks on the "Cancel" button, then throw an exception.
-     *  This gives the user the option of not continuing the
-     *  execution, something that is particularly useful if continuing
-     *  execution will result in repeated warnings.
-     *  By default, only the message of the throwable
-     *  is shown.  The stack trace information is only shown if the
-     *  user clicks on the "Display Stack Trace" button.
+    /** Display the warning message and throwable information.  In
+     *  this base class, the the default handler merely prints the
+     *  warning to stderr.  Derived classes such as
+     *  ptolemy.gui.GraphicalMessageHandler might display the message
+     *  graphically.
+     *
+     *  <p>NOTE: If the message handler set by 
+     *  {@link #setMessageHandler(MessageHandler)} is graphical, then
+     *  this method must be called in the Swing event thread!
      *  @param info The message.
      *  @param throwable The throwable associated with this warning.
      *  @exception CancelException If the user clicks on the "Cancel" button.
@@ -171,9 +172,11 @@ public class MessageHandler {
 
     /** Ask the user a yes/no question, and return true if the answer
      *  is yes.
-     *  NOTE: If the set error handler is graphical, then this must
-     *  be called from within the swing event thread, or deadlock or
-     *  rendering problems may occur.
+     *   
+     *  <p>NOTE: If the message handler set by 
+     *  {@link #setMessageHandler(MessageHandler)} is graphical, then
+     *  this method must be called in the Swing event thread!
+     *
      *  @param question The yes/no question.
      *  @return True if the answer is yes.
      */
@@ -193,9 +196,7 @@ public class MessageHandler {
 
     /** Show the specified message and throwable information.
      *  If the throwable is an instance of CancelException, then it
-     *  is not shown.  By default, only the message of the exception
-     *  is shown.  The stack trace information is only shown if the
-     *  user clicks on the "Display Stack Trace" button.
+     *  is not shown.
      *
      *  @param info The message.
      *  @param throwable The throwable.
@@ -210,7 +211,8 @@ public class MessageHandler {
         throwable.printStackTrace();
     }
 
-    /** Show the specified message.
+    /** Display the warning message.  In this base class, the
+     *  the default handler merely prints the warning to stderr.
      *  @param info The message.
      */
     protected void _message(String info) {
@@ -229,15 +231,9 @@ public class MessageHandler {
         _error(info);
     }
 
-    /** Show the specified message and throwable information
-     *  in a modal dialog.  If the user
-     *  clicks on the "Cancel" button, then throw an exception.
-     *  This gives the user the option of not continuing the
-     *  execution, something that is particularly useful if continuing
-     *  execution will result in repeated warnings.
-     *  By default, only the message of the throwable
-     *  is shown.  The stack trace information is only shown if the
-     *  user clicks on the "Display Stack Trace" button.
+    /** Display the warning message and throwable information.  In
+     *  this base class, the the default handler merely prints the
+     *  warning to stderr.
      *  @param info The message.
      *  @param throwable The Throwable.
      *  @exception CancelException If the user clicks on the "Cancel" button.

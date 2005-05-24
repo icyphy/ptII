@@ -51,11 +51,11 @@ import java.net.URL;
    A collection of utilities for manipulating files
    These utilities do not depend on any other ptolemy.* packages.
 
-   @author Christopher Hylands Brooks
+   @author Christopher Brooks
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Green (cxh)
 */
 public class FileUtilities {
     /** Instances of this class cannot be created.
@@ -72,8 +72,7 @@ public class FileUtilities {
      *  @return true if the file was copied, false if the file was not
      *  copied because the sourceURL and the destinationFile refer to the
      *  same file.
-     *  @exception IOException If the source file is not the same as the
-     *  destination file and the destination file does not exist.
+     *  @exception IOException If the source file does not exist.
      */
     public static boolean binaryCopyURLToFile(URL sourceURL,
             File destinationFile) throws IOException {
@@ -88,13 +87,11 @@ public class FileUtilities {
 
         // If the sourceURL is not a jar URL, then check to see if we
         // have the same file.
+        // FIXME: should we check for !/ and !\ everywhere?
         if (sourceFile.getPath().indexOf("!/") == -1
                 && sourceFile.getPath().indexOf("!\\") == -1 ) {
-            File canonicalFile = null;
 
             try {
-                canonicalFile = sourceFile.getCanonicalFile();
-
                 if (sourceFile.getCanonicalFile().toURL()
                         .sameFile(destinationURL)) {
                     return false;
@@ -110,6 +107,7 @@ public class FileUtilities {
             }
         }
 
+        // Copy the source file
         BufferedInputStream input = null;
 
         try {
@@ -148,20 +146,31 @@ public class FileUtilities {
         return true;
     }
 
-    /** Given a file name or URL, return the file. This method first attempts
-     *  to directly use the file name to construct the File. If the
-     *  resulting File is not absolute, then it attempts to resolve it
-     *  relative to the specified base directory, if there is one.
-     *  If there is no such base URI, then it simply returns the
-     *  relative File object.
+    /** Given a file name or URL, construct a java.io.File object that
+     *  refers to the file name or URL.  This method
+     *  first attempts to directly use the file name to construct the
+     *  File. If the resulting File is a relative pathname, then 
+     *  it is resolved relative to the specified base URI, if
+     *  there is one.  If there is no such base URI, then it simply
+     *  returns the relative File object.  See the java.io.File
+     *  documentation for a details about relative and absolute pathnames.
+     *
      *  <p>
      *  The file need not exist for this method to succeed.  Thus,
      *  this method can be used to determine whether a file with a given
      *  name exists, prior to calling openForWriting(), for example.
+     *
+     *  <p>This method is similar to
+     *  {@link #nameToURL(String, URI, ClassLoader)}
+     *  except that in this method, the file or URL must be readable.
+     *  Usually, this method is use for write a file and 
+     *  {@link #nameToURL(String, URI, ClassLoader)} is used for reading.
+     *
      *  @param name The file name or URL.
      *  @param base The base for relative URLs.
      *  @return A File, or null if the filename argument is null or
      *   an empty string.
+     *  @see #nameToURL(String, URI, ClassLoader)
      */
     public static File nameToFile(String name, URI base) {
         if ((name == null) || name.trim().equals("")) {
@@ -190,21 +199,28 @@ public class FileUtilities {
      *  "xxxxxxCLASSPATHxxxxxx" or "$CLASSPATH" then search for the
      *  file relative to the classpath.
      *
-     *  <p>Note that "xxxxxxCLASSPATHxxxxxx" the value of the globally
-     *  defined constant $CLASSPATH available in the Ptolemy II
-     *  expression language.  If no file is found, then throw an
-     *  exception.
+     *  <p>Note that "xxxxxxCLASSPATHxxxxxx" is the value of the
+     *  globally defined constant $CLASSPATH available in the Ptolemy
+     *  II expression language.  
+     *
+     *  <p>If no file is found, then throw an exception.
+     *
+     *  <p>This method is similar to {@link #nameToFile(String, URI)}
+     *  except that in this method, the file or URL must be readable.
+     *  Usually, this method is use for reading a file and 
+     *  is used for writing {@link #nameToFile(String, URI)}.
      *
      *  @param name The name of a file or URL.
      *  @param baseDirectory The base directory for relative file names,
      *   or null to specify none.
      *  @param classLoader The class loader to use to locate system
-     *   resources, or null to use the system class loader.
-     *  @return A URL, or null if no file name or URL has been specified.
+     *   resources, or null to use the system class loader that was used
+     *   to load this class.
+     *  @return A URL, or null if the name is null or the empty string.
      *  @exception IOException If the file cannot be read, or
      *   if the file cannot be represented as a URL (e.g. System.in), or
      *   the name specification cannot be parsed.
-     *  @exception MalformedURLException If the
+     *  @see #nameToFile(String, URI)
      */
     public static URL nameToURL(String name, URI baseDirectory,
             ClassLoader classLoader) throws IOException {
@@ -212,8 +228,9 @@ public class FileUtilities {
             return null;
         }
 
-        // If the name begins with "$CLASSPATH", then attempt to
-        // open the file relative to the classpath.
+        // If the name begins with "$CLASSPATH", or
+        // "xxxxxxCLASSPATHxxxxxx",then attempt to open the file
+        // relative to the classpath.
         // NOTE: Use the dummy variable constant set up in the constructor.
         if (name.startsWith(_CLASSPATH_VALUE)
                 || name.startsWith("$CLASSPATH")) {
@@ -229,19 +246,19 @@ public class FileUtilities {
             String trimmedName = name.substring(classpathKey.length() + 1);
 
             if (classLoader == null) {
+                String referenceClassName = "ptolemy.util.FileUtilities";
                 try {
                     // WebStart: We might be in the Swing Event thread, so
                     // Thread.currentThread().getContextClassLoader()
                     // .getResource(entry) probably will not work so we
                     // use a marker class.
-                    Class refClass = Class.forName(
-                            "ptolemy.kernel.util.NamedObj");
-                    classLoader = refClass.getClassLoader();
+                    Class referenceClass = Class.forName(referenceClassName);
+                    classLoader = referenceClass.getClassLoader();
                 } catch (Exception ex) {
                     // IOException constructor does not take a cause
                     IOException ioException = new IOException(
-                            "Cannot find file '" + trimmedName
-                            + "' in classpath");
+                            "Cannot look up class \"" + referenceClassName
+                            + "\" or get its ClassLoader.");
                     ioException.initCause(ex);
                     throw ioException;
                 }
@@ -342,22 +359,28 @@ public class FileUtilities {
         }
     }
 
-    /** Open the specified file for reading. If the
-     *  specified name is "System.in", then a reader from standard
-     *  in is returned. If the name begins with
-     *  "$CLASSPATH", then search for the file relative to the classpath.
-     *  If the file name is not absolute, the it is assumed
-     *  to be relative to the specified base directory.
-     *  @see #nameToFile(String, URI)
+    /** Open the specified file for reading. If the specified name is
+     *  "System.in", then a reader from standard in is returned. If
+     *  the name begins with "$CLASSPATH" or "xxxxxxCLASSPATHxxxxxx",
+     *  then the name is passed to {@link #nameToURL(String, URI, ClassLoader)}
+     *  If the file name is not absolute, the it is assumed to be relative to
+     *  the specified base URI.
+     *  @see #nameToURL(String, URI)
      *  @param name File name.
      *  @param base The base URI for relative references.
-     *  @param classLoader The class loader to use for opening files
-     *   relative to the classpath.
-     *  @return A buffered reader.
+     *  @param classLoader The class loader to use to locate system
+     *   resources, or null to use the system class loader that was used
+     *   to load this class.
+     *  @return If the name is null or the empty string,
+     *  then null is returned, otherwise a buffered reader is returned.
+
      *  @exception IOException If the file cannot be opened.
      */
     public static BufferedReader openForReading(String name, URI base,
             ClassLoader classLoader) throws IOException {
+        if (name == null || name.trim().equals("")) {
+            return null;
+        }
         if (name.trim().equals("System.in")) {
             if (STD_IN == null) {
                 STD_IN = new BufferedReader(new InputStreamReader(System.in));
@@ -370,33 +393,37 @@ public class FileUtilities {
         URL url = nameToURL(name, base, classLoader);
 
         if (url == null) {
-            throw new IOException("No file name has been specified.");
+            throw new IOException("Coul not convert \"" + name
+                    + "\" with base \"" + base + "\" to a URL.");
         }
 
         return new BufferedReader(new InputStreamReader(url.openStream()));
     }
 
     /** Open the specified file for writing or appending. If the
-     *  specified name is "System.out", then a writer to standard
-     *  out is returned. If the file does not exist, then
-     *  create it.  If the file name is not absolute, the it is assumed
-     *  to be relative to the specified base directory.
-     *  If permitted, this method will return a Writer that will simply
-     *  overwrite the contents of the file. It is up to the user of this
-     *  method to check whether this is OK (by first calling
-     *  {@link #nameToFile(String, URI)}
-     *  and calling exists() on the returned value).
+     *  specified name is "System.out", then a writer to standard out
+     *  is returned; otherwise, pass the name and base to {@link
+     *  #nameToFile(String, URI)} and create a file writer.  If the
+     *  file does not exist, then create it.  If the file name is not
+     *  absolute, the it is assumed to be relative to the specified
+     *  base directory.  If permitted, this method will return a
+     *  Writer that will simply overwrite the contents of the file. It
+     *  is up to the user of this method to check whether this is OK
+     *  (by first calling {@link #nameToFile(String, URI)} and calling
+     *  exists() on the returned value).
+     *
      *  @param name File name.
      *  @param base The base URI for relative references.
      *  @param append If true, then append to the file rather than
      *   overwriting.
-     *  @return A writer, or null if no file name is specified.
+     *  @return If the name is null or the empty string,
+     *  then null is returned, otherwise a writer is returned.
      *  @exception IOException If the file cannot be opened
      *   or created.
      */
     public static Writer openForWriting(String name, URI base, boolean append)
             throws IOException {
-        if (name == null) {
+        if (name == null || name.trim().equals("")) {
             return null;
         }
 
@@ -406,10 +433,6 @@ public class FileUtilities {
             }
 
             return STD_OUT;
-        }
-
-        if (name.trim().equals("")) {
-            return null;
         }
 
         File file = nameToFile(name, base);

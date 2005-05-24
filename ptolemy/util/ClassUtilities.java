@@ -36,15 +36,15 @@ import java.net.URL;
 //// ClassUtilities
 
 /**
-   A collection of utilities for manipulating classes
+   A collection of utilities for manipulating classes.
    These utilities do not depend on any other ptolemy.* packages.
 
 
    @author Christopher Hylands
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (cxh)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Green (cxh)
 */
 public class ClassUtilities {
     /** Instances of this class cannot be created.
@@ -56,21 +56,35 @@ public class ClassUtilities {
     ////                         public methods                    ////
 
     /** Lookup a jar URL and return the resource.
-     *  Given a jar url of the format jar:<i>url</i>!/{entry}, return
-     *  the resource, if any of the {entry}.
-     *  If the string does not contain <code>!/</code>, then return null.
-     *  Web Start uses jar URL, and there are some cases where
-     *  if we have a jar URL, then we may need to strip off the
-     *  jar:<i>url</i>!/ part so that we can search for the {entry}
-     *  as a resource.
+
+     *  A resource is a file such as a class file or image file that
+     *  is found in the classpath.  A jar URL is a URL that refers to
+     *  a resource in a jar file.  For example,
+     *  <code>file://./foo.jar!/a/b/c.class</code> is a jar URL that
+     *  refers to the <code>a/b/c.class</code> resource in
+     *  <code>foo.jar</code>.  If this method is called with
+     *  <code>file://./foo.jar!/a/b/c.class</code> then it will return
+     *  <code>a/b/c.class</code> if <code>a/b/c.class</code> can be
+     *  found as a resource in the class loader that loaded this class
+     *  (ptolemy.util.ClassUtilities).  If the resource cannot be found,
+     *  then an IOException is thrown. If the jarURLString parameter
+     *  does not contain <code>!/</code>, then return null.
+     *  Note that everything before the <code>!/</code> is removed before
+     *  searching the classpath.
      *
-     *  @param spec The string containing the jar url.
-     *  @return The resource, if any.
-     *  @exception IOException If it cannot convert the specification to
-     *   a URL.
+     *  <p>This method is necessary because Web Start uses jar URL, and
+     *  there are some cases where if we have a jar URL, then we may
+     *  need to strip off the jar:<i>url</i>!/ part so that we can
+     *  search for the {entry} as a resource.
+     *
+     *  @param jarURLString The string containing the jar URL.
+     *  @return The resource, if any.If the spec string does not
+     *  contain <code>!/</code>, then return null.
+     *  @exception IOException If this method cannot convert the specification
+     *  to a URL.
      *  @see java.net.JarURLConnection
      */
-    public static URL jarURLEntryResource(String spec)
+    public static URL jarURLEntryResource(String jarURLString)
             throws IOException {
         // At first glance, it would appear that this method could appear
         // in specToURL(), but the problem is that specToURL() creates
@@ -80,23 +94,27 @@ public class ClassUtilities {
         // which means that the jar url is not malformed, but there is
         // no resource by that name.  Probably specToURL() should return
         // the resource after calling new URL().
-        int jarEntry = spec.indexOf("!/");
+        int jarEntry = jarURLString.indexOf("!/");
 
         if (jarEntry == -1) {
             return null;
         } else {
             try {
                 // !/ means that this could be in a jar file.
-                String entry = spec.substring(jarEntry + 2);
+                String entry = jarURLString.substring(jarEntry + 2);
 
                 // We might be in the Swing Event thread, so
                 // Thread.currentThread().getContextClassLoader()
                 // .getResource(entry) probably will not work.
-                Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
+                Class refClass = Class.forName("ptolemy.util.ClassUtilities");
                 URL entryURL = refClass.getClassLoader().getResource(entry);
                 return entryURL;
             } catch (Exception ex) {
-                throw new IOException("File not found: " + spec + ": " + ex);
+                // IOException constructor does not take a cause, so we add it.
+                IOException ioException = new IOException(
+                        "Cannot find \"" + jarURLString + "\".");
+                ioException.initCause(ex);
+                throw ioException;
             }
         }
     }
@@ -104,15 +122,17 @@ public class ClassUtilities {
     /** Given a dot separated classname, return the jar file or directory
      *  where the class can be found.
      *  @param necessaryClass  The dot separated class name, for example
-     *  "ptolemy.kernel.util.NamedObj"
+     *  "ptolemy.util.ClassUtilities"
      *  @return If the class can be found as a resource, return the
      *  directory or jar file where the necessary class can be found.
-     *  otherwise, return null.
+     *  otherwise, return null.  If the resource is found in a directory,
+     *  then the return value will always have forward slashes, it will
+     *  never use backslashes.
      */
     public static String lookupClassAsResource(String necessaryClass) {
         // This method is called from copernicus.kernel.GeneratorAttribute
         // and actor.lib.python.PythonScript.  We moved it here
-        // to avoid dependencies
+        // to avoid dependencies.
         String necessaryResource = StringUtilities.substitute(necessaryClass,
                 ".", "/") + ".class";
 
@@ -132,11 +152,6 @@ public class ClassUtilities {
             // it is in
             resourceResults = resourceResults.substring(0,
                     resourceResults.length() - necessaryResource.length());
-
-            // Strip off the file:/
-            if (resourceResults.startsWith("file:/")) {
-                resourceResults = resourceResults.substring(6);
-            }
 
             // Strip off the trailing !/
             if (resourceResults.endsWith("!/")) {

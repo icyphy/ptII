@@ -1,4 +1,4 @@
-/* Utilities that manipulate strings using XSLT
+/* Utilities that manipulate strings using XSLT.
 
 Copyright (c) 2002-2005 The Regents of the University of California.
 All rights reserved.
@@ -57,7 +57,7 @@ import org.xml.sax.SAXException;
 //// XSLTUtilities
 
 /**
-   A collection of utilities for manipulating strings using XSLT
+   A collection of utilities for manipulating strings using XSLT.
    These utilities do not depend on any other ptolemy.* packages.
 
    <p>This file uses Saxon, the XSLT and XQuery Processor
@@ -71,8 +71,9 @@ import org.xml.sax.SAXException;
    @author Christopher Hylands, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
+   @Pt.ProposedRating Green (eal) 
+     Pending Java 1.5 changes
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class XSLTUtilities {
     /** Instances of this class cannot be created.
@@ -95,7 +96,7 @@ public class XSLTUtilities {
      * @param args At least three arguments:
      * <ul>
      * <li> The first argument is the input file name.
-     * <li> The second through n-1 arguments are the names xsl files.
+     * <li> The second through n-1 arguments are the named xsl files.
      * <li> The final argument is the output file name.
      * @exception Exception If there are problems with the transform.
      */
@@ -201,10 +202,10 @@ public class XSLTUtilities {
      *  @param xslFileName The file name of the xsl file to be used.
      *  If the file cannot be found, then we look up the file in the classpath.
      *  @return a transformed document
-     *  @exception TransformerException If there is a
-     *  a problem with the transform.
-     *  @exception IOException If there is a problem
-     *  finding the transform file.
+     *  @exception TransformerException If there is a problem with the
+     *  transform.
+     *  @exception IOException If there is a problem finding the
+     *  transform file.
      */
     public static Document transform(Document inputDocument, String xslFileName)
             throws TransformerException, IOException {
@@ -212,6 +213,7 @@ public class XSLTUtilities {
             TransformerFactory.newInstance();
         Transformer transformer = null;
 
+        // Set a valid transformer.
         try {
             transformer =
                 transformerFactory.newTransformer(new StreamSource(
@@ -278,9 +280,8 @@ public class XSLTUtilities {
      *  @param resultFileName The name of the file to be generated.
      *  @exception IOException If the resultFileName file
      *  cannot be found or if flushing the output stream throws it.
-     *  @exception TransformerException If there is a
-     *  a problem with the transform.
-     * the transformation.
+     *  @exception TransformerException If there is a problem with the
+     *  transform.
      */
     public static void transform(String xsltFileName, String sourceFileName,
             String resultFileName) throws IOException, TransformerException {
@@ -298,14 +299,13 @@ public class XSLTUtilities {
                                         xsltFileName));
             transformer.setOutputProperty("indent", "yes");
             transformer.transform(source, result);
-            resultStream.flush();
         } finally {
             if (resultStream != null) {
                 try {
                     resultStream.close();
                 } catch (Throwable throwable) {
                     throw new RuntimeException(
-                            "Ignoring failure to close stream on "
+                            "Failed to close stream on "
                             + resultFileName, throwable);
                 }
             }
@@ -315,7 +315,8 @@ public class XSLTUtilities {
     /** Transform a file by applying a list of XSL transforms.
      *  @param input The XML to be transformed
      *  @param fileWriter A FileWriter that will write to the MoML
-     *  file.
+     *  file.  The caller of this method is responsible for closing
+     *  the the FileWriter.
      *  @param xslFileNames A list of Strings naming the
      *  xsl files to be applied sequentially.
      *  @exception ParserConfigurationException If there is a problem
@@ -351,7 +352,7 @@ public class XSLTUtilities {
 
                 inputDocument = XSLTUtilities.parse(jarURL.toString());
             } catch (IOException ex2) {
-                // FIXME: IOException does not take a cause argument
+                // Rethrow the original exception
                 throw ex;
             }
         }

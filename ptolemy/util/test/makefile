@@ -101,7 +101,7 @@ test_policy:
 	@"$(JAVA)" \
             -Djava.security.manager "-Djava.security.policy=ptjacl.policy" \
 	    -classpath \
-	    $(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)  \
+	    "$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)"  \
 	    "-Dptolemy.ptII.dir=$(PTII)" $(JTCLSHFLAGS) \
 	    tcl.lang.Shell $(SCRIPT)
 
@@ -113,9 +113,9 @@ test_cygdrive:
 	@"$(JAVA)" \
 	    -Dptolemy.ptII.dir=/cygdrive/c/ptII \
 	    -classpath \
-	    $(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)  \
+	    "$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)"  \
 	    $(JTCLSHFLAGS) \
-	    tcl.lang.Shell ptolemy_ptII_dir.tcl$(SCRIPT)
+	    tcl.lang.Shell ptolemy_ptII_dir.tcl
 
 
 # Get the rest of the rules
