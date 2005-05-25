@@ -36,7 +36,7 @@ ME =		ptolemy/codegen/c/actor/lib/conversions
 DIRS =		test
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -56,7 +56,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	CartesianToPolar.c \
 	PolarToCartesian.c
-	
+
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
