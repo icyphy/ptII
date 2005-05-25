@@ -67,6 +67,7 @@ gawk '
 				errorMessage = firstLine "\n" $0
 				print "modelName: " modelName
 				errors[errorMessage] = errors[errorMessage] " " modelName
+                                #print "sawFailed==1: " errors[errorMessage]
 			    }
 	             } 		    
       sawFailed == 2 {
@@ -120,6 +121,8 @@ gawk '
 				    print "modelName2 is empty at line " NR
                                 }
 				errors[errorLine2] = errors[errorLine2] " " modelName2
+                                #print "sawTestGeneratedError==1: " errors[errorLine2] , errorLine2 
+                                #print
 			    }
 	             } 		    
 
@@ -154,6 +157,27 @@ gawk '
 			    }
 		      }	
 
+    $0  ~/---- testing / {
+                            # Reset the name if we see ---- testing
+                            # This handled errors that occur while parsing
+ 
+			    # Print out only the model name after ptolemy/
+			    nf = split($3, f, "/")
+			    okToPrint = 0
+			    modelName2 = ""
+			    for (i = 1; i < nf; i++) {
+				if (okToPrint == 1) {
+				    modelName2 = modelName2 f[i] "/"
+				}
+				if (f[i] == "ptolemy") {
+				    okToPrint = 1
+				}    
+			    }
+			    modelName2 = modelName2 f[nf]
+			    sawCommandFailed=0 
+			    sawTestGeneratedErrorAndWatchDogTimer = 0
+			    completedSawTestGeneratedError = 0
+	              }		    
     $0  ~/ Auto Automatic test in file/ {
 
 			    # Print out only the model name after ptolemy/
