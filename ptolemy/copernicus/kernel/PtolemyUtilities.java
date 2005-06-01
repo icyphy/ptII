@@ -673,7 +673,8 @@ public class PtolemyUtilities {
 
         if (constructor == null) {
             throw new RuntimeException("Could not find 2 argument constructor"
-                    + " for class " + objectClass);
+                    + " for class " + objectClass + "( " + container + ", \""
+                                       + name + "\")");
         }
 
         units.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(local,
