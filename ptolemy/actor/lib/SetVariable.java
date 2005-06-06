@@ -88,6 +88,11 @@ import ptolemy.util.MessageHandler;
    token is converted to a string and the setExpression() method
    on the variable is used to set the value.
 
+   <p>The variable can occur anywhere in the hierarchy above
+   the current level.  If the variable is not found in the container,
+   then the container of the container is checked until we reach the
+   top level.
+
    @author Edward A. Lee, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
@@ -182,7 +187,15 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         }
 
         String variableNameValue = variableName.getExpression();
-        Attribute attribute = container.getAttribute(variableNameValue);
+        Attribute attribute = null;
+
+        // Look for the variableName anywhere in the hierarchy
+        while (attribute == null && container != null) {
+            attribute = container.getAttribute(variableNameValue);
+            if (attribute == null) {
+                container = container.getContainer();
+            }
+        }
 
         if (attribute == null) {
             try {
