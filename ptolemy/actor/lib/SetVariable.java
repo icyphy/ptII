@@ -200,7 +200,9 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         if (attribute == null) {
             try {
                 workspace().getWriteAccess();
-                attribute = new Variable(container, variableNameValue);
+                // container might be null, so create the variable
+                // in the container of this actor.
+                attribute = new Variable(getContainer(), variableNameValue);
             } catch (NameDuplicationException ex) {
                 throw new InternalErrorException(ex);
             } finally {
