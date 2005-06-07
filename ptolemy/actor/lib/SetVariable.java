@@ -93,7 +93,7 @@ import ptolemy.util.MessageHandler;
    then the container of the container is checked until we reach the
    top level.
 
-   @author Edward A. Lee, Steve Neuendorffer
+   @author Edward A. Lee, Steve Neuendorffer, Contributor: J&eacute;r&ocirc;me Blanc
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (yuhong)
