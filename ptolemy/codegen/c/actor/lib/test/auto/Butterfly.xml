@@ -19,7 +19,7 @@
         </property>
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="file:/C:/CProject/main.c">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 95.0]">
         </property>
