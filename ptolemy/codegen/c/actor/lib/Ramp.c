@@ -1,5 +1,5 @@
 /***initBlock*/
-    $ref(output) = $val(init);
+    $ref(output) = $val(init) - $val(step);
 /**/
 
 
