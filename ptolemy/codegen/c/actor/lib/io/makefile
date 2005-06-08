@@ -51,7 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	LineReader.java \
-	LineWriter.java \
+	LineWriter.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.c)
