@@ -80,6 +80,7 @@ public class LineWriter extends CCodeGeneratorHelper {
 
         tmpStream.appendCodeBlock("initBlock");
 
+        
         if (actor.fileName.getExpression().equals("System.out")) {
             _fileOpen = false;
             tmpStream.appendCodeBlock("openForStdout");

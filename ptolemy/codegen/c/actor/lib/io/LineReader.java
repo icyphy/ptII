@@ -82,10 +82,13 @@ public class LineReader extends CCodeGeneratorHelper {
         int skipLines = Integer.parseInt(actor.numberOfLinesToSkip
                 .getExpression());
 
+        // FIXME: How do we fix the file path parameter of the actor?? 
         String fileNameString = actor.fileOrURL.getExpression();
         fileNameString = fileNameString.replaceFirst("file:/", "");
         fileNameString = fileNameString.replaceAll("%20", " ");
+        actor.fileOrURL.setExpression(fileNameString);
 
+        
         if (fileNameString.equals("System.in")) {
             _fileOpen = false;
             tmpStream.append("openForStdin");
