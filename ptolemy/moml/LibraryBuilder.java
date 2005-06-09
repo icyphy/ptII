@@ -30,6 +30,7 @@ import java.util.*;
 import java.io.*;
 
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 
 /**
@@ -79,7 +80,7 @@ public abstract class LibraryBuilder
    * @return ComponentEntity
    * @throws Exception
    */
-  public abstract ComponentEntity buildLibrary() throws Exception;
+  public abstract CompositeEntity buildLibrary(CompositeEntity container) throws Exception;
 
   ///////////////////////////////////////////////////////////////////
   ////                         private members                   ////

@@ -191,7 +191,7 @@ public class VergilApplication extends MoMLApplication {
      */
     public static void openLibrary(Configuration configuration, File file)
             throws Exception {
-        ComponentEntity library = null;
+        CompositeEntity library = null;
         final CompositeEntity libraryContainer = (CompositeEntity) configuration
             .getEntity("actor library");
 
@@ -217,7 +217,7 @@ public class VergilApplication extends MoMLApplication {
             alternateLibraryBuilderAttribute.attributeList());
           try
           {
-            library = libraryBuilder.buildLibrary();
+            library = libraryBuilder.buildLibrary(libraryContainer);
           }
           catch(Exception e)
           {
@@ -259,9 +259,11 @@ public class VergilApplication extends MoMLApplication {
             MoMLParser.setErrorHandler(new VergilErrorHandler());
             parser.parse(fileURL, fileURL);
 
-            library = (ComponentEntity) parser
+            library = (CompositeEntity) parser
                 .getToplevel();
           }
+
+          //library.setContainer(libraryContainer); //i don't know if this is needed
 
           // Now create the effigy with no tableau.
           final PtolemyEffigy finalLibraryEffigy = new PtolemyEffigy(directory
@@ -625,7 +627,7 @@ public class VergilApplication extends MoMLApplication {
      * instantiate a ComponentEntity and create the changeRequest to
      * implement it in the model
      */
-    private static void _instantiateLibrary(final ComponentEntity library,
+    private static void _instantiateLibrary(final CompositeEntity library,
       final ModelDirectory directory, Configuration configuration, File file,
       final CompositeEntity libraryContainer,
       final PtolemyEffigy finalLibraryEffigy) throws Exception {
