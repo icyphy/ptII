@@ -87,7 +87,7 @@ import javax.swing.SwingUtilities;
    If there are no command-line arguments at all, then the configuration
    file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
 
-   @author Edward A. Lee, Steve Neuendorffer, Christopher Hylands
+   @author Edward A. Lee, Steve Neuendorffer, Christopher Hylands, contributor: Chad Berkeley
    @version $Id$
    @since Ptolemy II 1.0
    @Pt.ProposedRating Yellow (eal)
@@ -148,7 +148,8 @@ public class VergilApplication extends MoMLApplication {
             SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         try {
-                            VergilApplication application = new VergilApplication(args);
+                            VergilApplication application =
+                                new VergilApplication(args);
                         } catch (Throwable throwable) {
                             // If we get an Error or and Exception while
                             // configuring, we will end up here.
@@ -192,38 +193,36 @@ public class VergilApplication extends MoMLApplication {
     public static void openLibrary(Configuration configuration, File file)
             throws Exception {
         CompositeEntity library = null;
-        final CompositeEntity libraryContainer = (CompositeEntity) configuration
-            .getEntity("actor library");
+        final CompositeEntity libraryContainer =
+            (CompositeEntity) configuration.getEntity("actor library");
 
         StringAttribute alternateLibraryBuilderAttribute =
-          (StringAttribute)libraryContainer.getAttribute("_alternateLibraryBuilder");
+          (StringAttribute)libraryContainer
+            .getAttribute("_alternateLibraryBuilder");
 
-        //if the _alternateLibraryBuilder attribute is present, then we use
-        //the specified class to build the library instead of just reading
-        //the moml.
-        if(alternateLibraryBuilderAttribute != null) {
-          List alternatLibrarySubAttributes =
-            alternateLibraryBuilderAttribute.attributeList();
-          //get the class that will build the library from the plugins
-          String libraryBuilderClassName =
-            alternateLibraryBuilderAttribute.getExpression();
-          //dynamically load the library builder and build the library
-          Class libraryBuilderClass = Class.forName(libraryBuilderClassName);
-          LibraryBuilder libraryBuilder =
-            (LibraryBuilder)libraryBuilderClass.newInstance();
-          //set the attributes defined in the moml to the attributes of the
-          //LibraryBuilder
-          libraryBuilder.addAttributes(
-            alternateLibraryBuilderAttribute.attributeList());
-          try
-          {
-            library = libraryBuilder.buildLibrary(libraryContainer);
-          }
-          catch(Exception e)
-          {
-            throw new Exception("Cannot create library with " +
-              "LibraryBuilder: " + e.getMessage());
-          }
+        // If the _alternateLibraryBuilder attribute is present, then we use
+        // the specified class to build the library instead of just reading
+        // the moml.
+        if (alternateLibraryBuilderAttribute != null) {
+            List alternatLibrarySubAttributes =
+                alternateLibraryBuilderAttribute.attributeList();
+            // Get the class that will build the library from the plugins
+            String libraryBuilderClassName =
+              alternateLibraryBuilderAttribute.getExpression();
+            // Dynamically load the library builder and build the library
+            Class libraryBuilderClass = Class.forName(libraryBuilderClassName);
+            LibraryBuilder libraryBuilder =
+                (LibraryBuilder)libraryBuilderClass.newInstance();
+            // Set the attributes defined in the moml to the attributes of the
+            // LibraryBuilder
+            libraryBuilder.addAttributes(
+                    alternateLibraryBuilderAttribute.attributeList());
+            try {
+                library = libraryBuilder.buildLibrary(libraryContainer);
+            } catch(Exception ex) {
+                throw new Exception("Cannot create library with " +
+                        "LibraryBuilder: ", ex);
+            }
         }
 
         if (libraryContainer == null) {
@@ -246,55 +245,59 @@ public class VergilApplication extends MoMLApplication {
         Effigy libraryEffigy = directory.getEffigy(identifier);
 
         if (libraryEffigy == null) {
-          if(library == null) {
-            //only do this if the library hasn't been set above
-            //by a LibraryBuilder
+            if (library == null) {
+                // Only do this if the library hasn't been set above
+                // by a LibraryBuilder
 
-            // No previous libraryEffigy exists that is identified by this URL.
-            // Parse the user library into the workspace of the actor library.
-            MoMLParser parser = new MoMLParser(libraryContainer.workspace());
+                // No previous libraryEffigy exists that is identified
+                // by this URL.  Parse the user library into the
+                // workspace of the actor library.
 
-            // Set the ErrorHandler so that if we have compatibility problems
-            // between devel and production versions, we can skip that element.
-            MoMLParser.setErrorHandler(new VergilErrorHandler());
-            parser.parse(fileURL, fileURL);
+                MoMLParser parser =
+                    new MoMLParser(libraryContainer.workspace());
 
-            library = (CompositeEntity) parser
-                .getToplevel();
-          }
+                // Set the ErrorHandler so that if we have
+                // compatibility problems between devel and production
+                // versions, we can skip that element.
 
-          //library.setContainer(libraryContainer); //i don't know if this is needed
+                MoMLParser.setErrorHandler(new VergilErrorHandler());
+                parser.parse(fileURL, fileURL);
 
-          // Now create the effigy with no tableau.
-          final PtolemyEffigy finalLibraryEffigy = new PtolemyEffigy(directory
-                  .workspace());
-          finalLibraryEffigy.setSystemEffigy(true);
+                library = (CompositeEntity) parser
+                    .getToplevel();
+            }
+            //library.setContainer(libraryContainer); //i don't know if this is needed
 
-          // Correct old library name, if the loaded library happens
-          // to the user library.
-          if (library.getName().equals("user library")) {
-              library.setName(BasicGraphFrame.VERGIL_USER_LIBRARY_NAME);
-          }
+            // Now create the effigy with no tableau.
+            final PtolemyEffigy finalLibraryEffigy =
+                new PtolemyEffigy(directory.workspace());
+            finalLibraryEffigy.setSystemEffigy(true);
 
-          finalLibraryEffigy.setName(directory.uniqueName(
-                                             library.getName()));
+            // Correct old library name, if the loaded library happens
+            // to the user library.
+            if (library.getName().equals("user library")) {
+                library.setName(BasicGraphFrame.VERGIL_USER_LIBRARY_NAME);
+            }
 
-          _instantiateLibrary(library, directory, configuration, file,
-            libraryContainer, finalLibraryEffigy);
+            finalLibraryEffigy.setName(directory.uniqueName(
+                                               library.getName()));
 
-          finalLibraryEffigy.setModel(library);
+            _instantiateLibrary(library, directory, configuration, file,
+                    libraryContainer, finalLibraryEffigy);
 
-          // Identify the URL from which the model was read
-          // by inserting an attribute into both the model
-          // and the effigy.
-          URIAttribute uri = new URIAttribute(library, "_uri");
-          uri.setURL(fileURL);
+            finalLibraryEffigy.setModel(library);
 
-          // This is used by TableauFrame in its
-          //_save() method.
-          finalLibraryEffigy.uri.setURL(fileURL);
+            // Identify the URL from which the model was read
+            // by inserting an attribute into both the model
+            // and the effigy.
+            URIAttribute uri = new URIAttribute(library, "_uri");
+            uri.setURL(fileURL);
 
-          finalLibraryEffigy.identifier.setExpression(identifier);
+            // This is used by TableauFrame in its
+            //_save() method.
+            finalLibraryEffigy.uri.setURL(fileURL);
+
+            finalLibraryEffigy.identifier.setExpression(identifier);
         }
     }
 
@@ -373,7 +376,8 @@ public class VergilApplication extends MoMLApplication {
             }
 
             if (libraryName != null) {
-                System.out.print("Opening user library " + libraryName + "...");
+                System.out.print("Opening user library "
+                        + libraryName + "...");
 
                 File file = new File(libraryName);
 
@@ -418,7 +422,8 @@ public class VergilApplication extends MoMLApplication {
                     openLibrary(configuration, file);
                     System.out.println(" Done");
                 } catch (Exception ex) {
-                    MessageHandler.error("Failed to display user library.", ex);
+                    MessageHandler.error("Failed to display user library.",
+                            ex);
                 }
             }
         }
@@ -504,8 +509,9 @@ public class VergilApplication extends MoMLApplication {
             throw new IllegalActionException("Missing configuration");
         }
 
-        String[] processedArgs = (String[]) processedArgsList.toArray(new String[processedArgsList
-                                                                              .size()]);
+        String[] processedArgs =
+            (String[]) processedArgsList.toArray(new String[processedArgsList
+                                                         .size()]);
 
         super._parseArgs(processedArgs);
     }
@@ -631,19 +637,18 @@ public class VergilApplication extends MoMLApplication {
       final ModelDirectory directory, Configuration configuration, File file,
       final CompositeEntity libraryContainer,
       final PtolemyEffigy finalLibraryEffigy) throws Exception {
-      ChangeRequest request = new ChangeRequest(configuration,
-              file.toURL().toString()) {
-              protected void _execute() throws Exception {
-                  // The library is a class!
-                  library.setClassDefinition(true);
-                  library.instantiate(libraryContainer, library.getName());
-                  finalLibraryEffigy.setContainer(directory);
-              }
-          };
+        ChangeRequest request = new ChangeRequest(configuration,
+                file.toURL().toString()) {
+                protected void _execute() throws Exception {
+                    // The library is a class!
+                    library.setClassDefinition(true);
+                    library.instantiate(libraryContainer, library.getName());
+                    finalLibraryEffigy.setContainer(directory);
+                }
+            };
 
-      libraryContainer.requestChange(request);
-      request.waitForCompletion();
-
+        libraryContainer.requestChange(request);
+        request.waitForCompletion();
     }
 
     ///////////////////////////////////////////////////////////////////
