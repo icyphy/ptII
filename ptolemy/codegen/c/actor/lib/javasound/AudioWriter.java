@@ -109,6 +109,12 @@ public class AudioWriter extends CCodeGeneratorHelper {
         ptolemy.actor.lib.javasound.AudioWriter actor = 
             (ptolemy.actor.lib.javasound.AudioWriter) getComponent();
 
+        //actor.bitsPerSample
+        //actor.channels
+        //actor.input
+        //actor.pathName
+        //actor.sampleRate 
+        
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("wrapupBlock");
 
@@ -122,7 +128,8 @@ public class AudioWriter extends CCodeGeneratorHelper {
      */
     public Set getIncludingFiles() {
         Set files = new HashSet();
-
+        files.add("\"math.h\"");
+        files.add("\"stdio.h\"");
         return files;
     }
 }
