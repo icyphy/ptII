@@ -1,5 +1,5 @@
-/***initBlock*/
-    $actorSymbol(previousInput) = 0;
+/***preinitBlock*/
+    double $actorSymbol(previousInput) = 0;
 /**/
 
 /***codeBlock1*/

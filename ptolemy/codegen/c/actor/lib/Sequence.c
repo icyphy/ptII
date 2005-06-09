@@ -1,6 +1,6 @@
-/***initBlock*/
-$actorSymbol(currentIndex) = 0;
-$actorSymbol(outputProduced) = 0;
+/***preinitBlock*/
+int $actorSymbol(currentIndex) = 0;
+int $actorSymbol(outputProduced) = 0;
 /**/
 
 

@@ -191,10 +191,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             code.append("#include " + file + "\n");
         }
 
+        String preinitializeCode = generatePreinitializeCode();
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
         generateVariableDeclarations(code);
         code.append("main() {\n");
+        code.append(preinitializeCode);
         code.append(initializeCode);
         code.append(bodyCode);
         generateWrapupCode(code);
@@ -229,6 +231,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  composite actor. This method calls the generatreInitializeCode()
      *  method of the code generator helper associated with the model director.
      *  @return The initialize code of the containing composite actor.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -241,6 +245,24 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return code.toString();
     }
 
+    /** Generate preinitialize code if there is any and attach it to the given
+     *  string buffer. This method calls the generatePreinitializeCode() method
+     *  of the code generator helper associated with the model director
+     *  @param code The string buffer to which the preinitialize code is
+     *   appended to.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
+     */
+    public String generatePreinitializeCode() 
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        ptolemy.actor.Director director = ((CompositeActor) getContainer())
+            .getDirector();
+        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
+        code.append(((Director)directorHelper).generatePreinitializeCode());
+        return code.toString();
+    }
+    
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
      *  @param code The given string buffer.

@@ -75,16 +75,16 @@ public class Sequence extends CCodeGeneratorHelper {
         stream.append(processCode(tmpStream.toString()));
     }
 
-    /** Generate initialization code.
-     *  This method reads the <code>initBlock</code> from Sequence.c,
+    /** Generate preinitialization code.
+     *  This method reads the <code>preinitBlock</code> from Sequence.c,
      *  replaces macros with their values and returns the results.
-     *  @return The processed <code>initBlock</code>.
+     *  @return The processed <code>preinitBlock</code>.
      */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
+    public String generatePreinitializeCode() throws IllegalActionException {
+        super.generatePreinitializeCode();
 
         CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("initBlock");
+        tmpStream.appendCodeBlock("preinitBlock");
 
         return processCode(tmpStream.toString());
     }

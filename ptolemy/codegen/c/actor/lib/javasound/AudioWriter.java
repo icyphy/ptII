@@ -85,6 +85,19 @@ public class AudioWriter extends CCodeGeneratorHelper {
         return processCode(tmpStream.toString());
     }
     
+    /** Generate preinitialization code.
+     *  This method reads the <code>preinitBlock</code> from AudioWriter.c,
+     *  replaces macros with their values and returns the results.
+     *  @return The processed code block.
+     */
+    public String generatePreinitializeCode()
+        throws IllegalActionException {
+        super.generatePreinitializeCode();
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("preinitBlock");
+        return processCode(tmpStream.toString());
+    }
+    
     /** Generate wrap up code.
      *  This method reads the <code>wrapupBlock</code> 
      *  from AudioWriter.c,

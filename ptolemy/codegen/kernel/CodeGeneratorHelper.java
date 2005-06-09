@@ -147,9 +147,23 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return "";
     }
 
+    /** Create the buffer size and offset map for each channels of the
+     *  actor associated with this helper class. This method generally
+     *  does not generate any execution code and returns an empty string.
+     *  Subclasses may generate code for variable declaration, defining
+     *  constants, etc.
+     *  @return A string of the preinitialize code for the helper.
+     *  @exception IllegalActionException Subclass may throw it.
+     */
+    public String generatePreinitializeCode() 
+            throws IllegalActionException {
+        createBufferAndOffsetMap();
+        return "";
+    }
+    
     /** Do nothing. Subclasses may extend this method to generate
      *  the wrapup code of the associated component and append the
-     *  code to the give string buffer.
+     *  code to the given string buffer.
      *  @param stream The given string buffer.
      *  @exception IllegalActionException Subclasses may throw it.
      */

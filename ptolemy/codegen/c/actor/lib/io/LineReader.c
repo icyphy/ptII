@@ -1,9 +1,12 @@
-/***initBlock*/
+/***preinitBlock*/
     FILE * $actorSymbol(filePtr);
     int $actorSymbol(charRead);
     int $actorSymbol(index);
     int $actorSymbol(length) = 80;
-    $ref(output) = (char*) malloc($actorSymbol(length) * sizeof(char));
+/**/
+
+/***initBlock*/
+	$ref(output) = (char*) malloc($actorSymbol(length) * sizeof(char));
 /**/
     
 

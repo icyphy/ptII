@@ -78,7 +78,7 @@ public class LineWriter extends CCodeGeneratorHelper {
         ptolemy.actor.lib.io.LineWriter actor = (ptolemy.actor.lib.io.LineWriter) getComponent();
         CodeStream tmpStream = new CodeStream(this);
 
-        tmpStream.appendCodeBlock("initBlock");
+        //tmpStream.appendCodeBlock("initBlock");
 
         
         if (actor.fileName.getExpression().equals("System.out")) {
@@ -108,6 +108,19 @@ public class LineWriter extends CCodeGeneratorHelper {
             }
         }
 
+        return processCode(tmpStream.toString());
+    }
+
+    /** Generate preinitialization code.
+     *  This method reads the <code>preinitBlock</code> from LineWriter.c,
+     *  replaces macros with their values and returns the results.
+     *  @return The processed code block.
+     */
+    public String generatePreinitializeCode()
+        throws IllegalActionException {
+        super.generatePreinitializeCode();
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("preinitBlock");
         return processCode(tmpStream.toString());
     }
 

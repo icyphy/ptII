@@ -1,4 +1,4 @@
-/***initBlock*/
+/***preinitBlock*/
     int $actorSymbol(overwriteOK) = 1;       // default: overwrite OK
     FILE * $actorSymbol(filePtr);
     int $actorSymbol(index);    

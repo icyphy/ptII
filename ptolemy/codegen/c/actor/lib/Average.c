@@ -1,6 +1,6 @@
-/***initBlock*/
-$actorSymbol(sum) = 0;
-$actorSymbol(count) = 0; 
+/***preinitBlock*/
+double $actorSymbol(sum) = 0;
+int $actorSymbol(count) = 0; 
 /**/
 
 /***codeBlock1*/

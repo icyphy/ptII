@@ -1,4 +1,4 @@
-/***initBlock*/
+/***preinitBlock*/
 // FIXME: how do we reset count?
 int $actorSymbol(count) = 0; 
 /**/

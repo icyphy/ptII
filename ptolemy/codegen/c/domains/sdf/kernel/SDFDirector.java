@@ -97,8 +97,7 @@ public class SDFDirector extends Director {
                 // Declare iteration outside of the loop to avoid
                 // "error: `for' loop initial declaration used outside C99
                 // mode" with gcc-3.3.3
-                code.append("int iteration = 0;\n"
-                        + "for (iteration = 0; iteration < " + iterationCount
+                code.append("for (iteration = 0; iteration < " + iterationCount
                         + "; iteration ++) {\n");
             }
 
@@ -224,6 +223,27 @@ public class SDFDirector extends Director {
         return initializeCode.toString();
     }
 
+    /** (non-Javadoc)
+     * @see ptolemy.codegen.kernel.Director#generatePreinitializeCode()
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
+        Attribute iterations = getComponent().getAttribute("iterations");
+        if (iterations != null) {
+            int iterationCount = ((IntToken) ((Variable) iterations).getToken())
+                .intValue();
+            if (iterationCount > 0) {
+                // Since there is only one director, we can declare this
+                // "iteration" variable. Alternatively, we can use $actorSymbol
+                // to define it in a "preinit" codeblock and calls 
+                // processCode(preinitializeCode);
+                code.append("int iteration = 0;\n");
+            }
+        }
+        return code.toString();
+    }
+    
     /** Return the buffer size of a given channel (i.e, a given port
      *  and a given channel number). The default value is 1.
      *  @param port The given port.

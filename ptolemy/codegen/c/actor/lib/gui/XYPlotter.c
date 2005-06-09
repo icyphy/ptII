@@ -1,5 +1,8 @@
-/***initBlock*/
+/***preinitBlock*/
     FILE* $actorSymbol(filePtr);
+/**/
+
+/***initBlock*/
     if(!($actorSymbol(filePtr) = fopen("$actorSymbol(filename)","w"))) {
         fprintf(stderr,"ERROR: cannot open output file for Plotter actor.\n");
         exit(1);

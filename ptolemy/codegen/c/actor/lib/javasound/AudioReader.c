@@ -1,4 +1,4 @@
-/*** initBlock */
+/***preinitBlock*/
     FILE* $actorSymbol(filePtr);
     char $actorSymbol(tmpChar)[4];
     unsigned int $actorSymbol(numChannel);
@@ -7,7 +7,9 @@
     double $actorSymbol(maxSampleReciprocal);
     int $actorSymbol(result);
     int $actorSymbol(i);
-    
+/**/
+
+/*** initBlock */
     if (!($actorSymbol(filePtr) = fopen ($ref(fileOrURL),"r"))) {
         fprintf(stderr,"ERROR: cannot open file for AudioReader actor.\n");
         exit(1);

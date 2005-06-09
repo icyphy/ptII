@@ -29,7 +29,6 @@ package ptolemy.codegen.kernel;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -101,19 +100,31 @@ public class Director implements ActorCodeGenerator {
         StringBuffer code = new StringBuffer();
         code.append("/* The initialization of the director. */\n");
 
-        List actorsList = ((CompositeActor) _codeGenerator.getContainer())
-            .deepEntityList();
-        Iterator actors = actorsList.iterator();
+        Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
+            .deepEntityList().iterator();
+        //Iterator actors = actorsList.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            code.append(helperObject.generateInitializeCode());
+        }
 
+        return code.toString();
+    }
+
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append("/* The preinitialization of the director. */\n");
+        Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
+            .deepEntityList().iterator();
+        //Iterator actors = actorsList.iterator();
         while (actors.hasNext()) {
             // Set the buffer sizes of each channel of the actor before
             // generating initialize code.
-            // FIXME: perhaps this part should be moved to preinitialize().
-            // need an API that CodeGenerator will call preinitialize() before
-            // generating initialize code.
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            helperObject.createBufferAndOffsetMap();
+            //helperObject.createBufferAndOffsetMap();
+            code.append(helperObject.generatePreinitializeCode());
 
             Set inputAndOutputPortsSet = new HashSet();
             inputAndOutputPortsSet.addAll(actor.inputPortList());
@@ -130,18 +141,9 @@ public class Director implements ActorCodeGenerator {
                 }
             }
         }
-
-        actors = actorsList.iterator();
-
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            code.append(helperObject.generateInitializeCode());
-        }
-
         return code.toString();
     }
-
+    
     /** Generate the wrapup code of the director associated with this helper
      *  class. For this base class, the wrapup code is just to generate
      *  the wrapup code for each actor.
