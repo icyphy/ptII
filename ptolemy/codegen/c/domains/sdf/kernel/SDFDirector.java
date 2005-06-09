@@ -223,8 +223,9 @@ public class SDFDirector extends Director {
         return initializeCode.toString();
     }
 
-    /** (non-Javadoc)
-     * @see ptolemy.codegen.kernel.Director#generatePreinitializeCode()
+    /** Generate the preinitialize code for the associated SDF director.
+     *  @return The generated preinitialize code.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
