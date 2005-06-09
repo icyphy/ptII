@@ -50,41 +50,42 @@ public abstract class LibraryBuilder
   ////                         public methods                    ////
 
   /**
-   * constructor.
+   * Construct a library builder.
    */
-  public LibraryBuilder()
-  {
-    //nothing to do, but makes it easier to use reflection
+  public LibraryBuilder() {
+    // Nothing to do, but makes it easier to use reflection.
   }
 
   /**
-   * add a list of Attributes
+   * Add a list of Attributes.
+   * @param attributeList The list of Attributes.
    */
-  public void addAttributes(List attributeList)
-  {
+  public void addAttributes(List attributeList) {
     _attributes = attributeList;
   }
 
   /**
-   * get the list of Attributs associated with this LibraryBuilder
+   * Get the list of Attributes associated with this LibraryBuilder.
+   * @return The list of Attributes.
    */
-  public List getAttributes()
-  {
+  public List getAttributes() {
     return _attributes;
   }
 
   /**
-   * build the library.  This should be built in the form of a CompontentEntity
-   * See the VergilApplication code if you want an example of what the
-   * ComponentEntity should look like
+   * Build the library.  This should be built in the form of a
+   * CompontentEntity See the VergilApplication code if you want an
+   * example of what the ComponentEntity should look like.
    * @return ComponentEntity
-   * @throws Exception
+   * @exception Exception
    */
-  public abstract CompositeEntity buildLibrary(CompositeEntity container) throws Exception;
+  public abstract CompositeEntity buildLibrary(CompositeEntity container)
+          throws Exception;
 
   ///////////////////////////////////////////////////////////////////
-  ////                         private members                   ////
+  ////                         protected members                   ////
 
-  /**attributes that can be added to a LibraryBuilder via moml configuration*/
+  /** Attributes that can be added to a LibraryBuilder via moml configuration.
+   */
   protected List _attributes;
 }
