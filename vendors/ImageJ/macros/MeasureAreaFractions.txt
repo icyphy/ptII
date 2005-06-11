@@ -1,0 +1,24 @@
+// Measures the percentage of black and white pixels in an 8-bit binary image.
+// A future version will work with thesholded images.
+
+  macro "Measure Percent Area" {
+      measureBinaryImage();
+  }
+
+
+  function measureBinaryImage() {
+      if (bitDepth!=8)
+          exit("8-bit image required");
+      getHistogram(values, counts, 256);
+      isBinary = true;
+      for (i=1; i<255; i++) {
+          if (counts[i]!=0)
+              exit("Binary image required");
+      }
+      total = counts[0]+counts[255];
+      percentBlack = counts[0]*100/total;
+      percentWhite = counts[255]*100/total;
+      print("white="+percentWhite+"%, black="+percentBlack+"%");
+  }
+
+  measureBinaryImage();

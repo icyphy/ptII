@@ -1,0 +1,38 @@
+// ReplaceRedWithMagenta.txt
+// This macro converts an RGB image to one in which
+// the red channel is replaced by magenta to allow
+// easier viewing of images with multiple fluorescence
+// by color blind viewers.
+//
+// Author: Joel Sheffield, Biology Department, Temple University
+
+  requires("1.33o");
+  setBatchMode(true);
+  orig = getTitle();
+  run("Duplicate...", "title=Copy");
+  run("RGB Split");
+  selectImage("Copy (blue)");
+  run("Blue");
+  run("RGB Color");
+  run("Rename...", "title=blue");
+  selectImage("Copy (green)");
+  run("Green");
+  run("RGB Color");
+  run("Rename...", "title=green");
+  selectImage("Copy (red)");
+  run("Magenta");
+  run("RGB Color");
+  run("Rename...", "title=red");
+  run("Image Calculator...", "image1=red operation=Add image2=blue create");
+  run("Image Calculator...", "image1='Result of red' operation=Add image2=green");
+  newtitle= "Recolor-" +orig;
+  run("Rename...", "title=[" +newtitle+"]");
+  selectImage("red");
+  close();
+  selectImage("blue");
+  close();
+  selectImage("green");
+  close();
+  selectImage(newtitle);
+  setBatchMode(false);
+

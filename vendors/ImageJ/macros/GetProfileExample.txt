@@ -1,0 +1,19 @@
+// This example macro shows how to use the getProfile() function
+
+// Set alt key down to average horizontally; requires 1.33k
+  //setKeyDown("alt");
+ 
+// Close "Log" window
+  if (isOpen("Log")) {
+      selectWindow("Log");
+      run("Close");
+  }
+
+// Get profile and display values in "Log" window
+  profile = getProfile();
+  for (i=0; i<profile.length; i++)
+      print(i+"  "+profile[i]);
+
+// Save as Excel compatible text file
+  //selectWindow("Log");
+  //run("Text...", "save=/Users/wayne/Desktop/Log.txt");

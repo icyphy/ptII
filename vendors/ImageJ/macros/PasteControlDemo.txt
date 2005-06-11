@@ -1,0 +1,20 @@
+//  Creates a circular 0 and 1 mask and paste/multiplies
+//  it into four different locations in an image.
+
+  requires("1.30l");
+  size = 256;
+  run("New...", "name=Ramp type=8-bit fill=Ramp width="+size*2+" height="+size*2);
+  run("New...", "name=Mask type=8-bit fill=Black width="+size+" height="+size);
+  selectWindow("Mask");
+  makeOval(size*0.1, size*0.1, size*0.8, size*0.8);
+  setColor(1);
+  fill();
+  makeRectangle(0,0,size,size);
+  run("Copy");
+  selectWindow("Ramp");
+  setPasteMode("Multiply");
+  makeRectangle(0,0,size,size); run("Paste");
+  makeRectangle(size,0,size,size); run("Paste");
+  makeRectangle(size,size,size,size); run("Paste");
+  makeRectangle(0,size,size,size); run("Paste");
+

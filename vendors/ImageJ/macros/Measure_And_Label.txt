@@ -1,0 +1,17 @@
+// Measure_And_Label.txt
+//
+// Measures, outlines and labels the current selection.
+// The selection is outlined in the current foreground
+// color. Move this file to the plugins folder and restart 
+// ImageJ to create a "Measure and Label" command.
+// Use Plugins>Shortcuts>Create Shortcut to 
+// create a keyboard shortcut. Remove the "//" at
+// the start of the 4th line to always outline
+// in yellow on RGB images.
+
+  outlineWidth = 2;
+  run("Measure");
+  run("Line Width...", "line="+outlineWidth);
+  // setForegroundColor(255,255,0); // yellow
+  run("Draw");
+  run("Label");

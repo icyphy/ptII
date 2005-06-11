@@ -1,0 +1,60 @@
+// Expand or shrink selection by a specified number of pixels
+
+  var n = 5;
+  n = getNumber("Expand(+)/shrink(-) by pixels:", n);
+  resize(n);
+
+  macro 'Expand Selection...' {
+      n = getNumber("Number of Pixels:", n);
+      resize(n);
+  } 
+
+  macro 'Shrink Selection...' {
+      n = getNumber("Number of Pixels:", n);
+      resize(-n);
+  } 
+
+  function resize(n) {
+      requires("1.33o");
+      type = selectionType();
+      if (type==0) {
+          getBoundingRect(x, y, width, height);
+          makeRectangle(x-n, y-n, width+n*2, height+n*2);
+     } else if (type==1) {
+          getBoundingRect(x, y, width, height);
+          makeOval(x-n, y-n, width+n*2, height+n*2);
+     } else
+          resizeMask(n);
+  }
+
+  function resizeMask(n) {
+      id = getImageID();
+      setBatchMode(true);
+      getBoundingRect(xbase, ybase, width, height);
+      run("Create Mask");
+      iterations = abs(n);
+      run("Options...", "iterations="+iterations);
+      if (n>0)
+          run("Dilate");
+      else
+          run("Erode");
+      x2=-1; y2=-1;
+      inc = 1;
+      if (width>5 && height>5)
+          inc = 5;
+      for (x=xbase; x<xbase+width; x+=inc) {
+          for (y=ybase; y<ybase+height; y+=inc) {
+              if (getPixel(x,y)==255) {
+                  x2= x;
+                  y2 = y;
+              }
+          }
+      }
+      if (x2==-1)
+          print('Selection is too small');
+     else
+          doWand(x2, y2);
+      close();
+      selectImage(id);
+      run("Restore Selection");
+  } 

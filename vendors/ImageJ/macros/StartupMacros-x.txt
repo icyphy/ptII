@@ -1,0 +1,40 @@
+// These macros are automatically installed in the Plugins>Macros submenu 
+// when ImageJ starts as long as the name of this file is StartupMacros.txt
+// and it is located in a folder named macros inside the ImageJ folder.
+
+macro 'Invert' {
+    run("Invert");
+}
+
+macro 'Find Edges' {
+    run("Find Edges");
+}
+
+macro 'Threshold' {
+     run("Threshold");
+}
+
+macro 'Add Noise' {
+    run("Add Noise");
+}
+
+macro '-' {}  // menu divider
+
+macro 'Measure And Label' {
+    // run "Measure and Label" plugin
+    run("Measure And Label");
+}
+
+macro 'Fluorescent Cells' {
+    run("Fluorescent Cells (58K)");
+}
+
+macro 'Float Image' {
+    run("New...", "name=Float type='32-bit Real' fill=Ramp width=400 height=400");
+
+}
+
+
+
+
+

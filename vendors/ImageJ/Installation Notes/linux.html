@@ -1,0 +1,87 @@
+<html>
+<head>
+<title>Linux x86 Installation</title>
+</head>
+<body bgcolor="#ffffff">
+<table width="550"><tr><td>
+<IMG SRC="images/linux.gif" align=center ALT="Linux Icon">
+&nbsp;&nbsp;
+
+
+<font color="#224488" face="Helvetica, Arial" size = +3><b>
+Linux x86 Installation
+</b></font>
+<p>
+To install and run ImageJ, <A HREF="http://rsb.info.nih.gov/ij/download.html">download </A> 
+the Linux x86 .tar.gz file, extract the ImageJ directory, change to the ImageJ directory, 
+and execute the 'run' script.
+<p>
+Here is an example:
+<blockquote><pre>
+gunzip ij123-x86.tar.gz
+tar xvf ij123-x86.tar
+cd ImageJ
+./run
+</pre></blockquote>
+
+This installation includes Sun's
+Java Runtime Environment 1.4.2
+and the complete ImageJ source code (in the src.zip).
+<p>
+
+<font color="#224488" face="Helvetica, Arial" size = +1><b>Memory</b></font><br>
+To make more than 128MB of memory available to ImageJ, edit the 'run' script. For example, 
+changing the script to
+<blockquote><pre>
+./jre/bin/java -Xmx256m -cp ij.jar ij.ImageJ
+</pre></blockquote>
+makes 256MB available to ImageJ.
+<p>
+
+
+<font color="#224488" face="Helvetica, Arial" size = +1><b>Upgrades</b></font><br>
+To upgrade to the latest version of ImageJ, replace the ij.jar JAR file in the ImageJ 
+directory with a newer one from 
+<A HREF="../../upgrade/index.html">http://rsb.info.nih.gov/ij/upgrade/</A>.
+<p>
+
+
+<font color="#224488" face="Helvetica, Arial" size = +1><b>Sharing ImageJ and the JRE</b></font><br>
+You can specify the location of the plugins directory from the command
+line using the -D option to set the "plugins.dir" property. This allows ImageJ to be in a common location (e.g., /usr/local/ImageJ) and run from the users home directory using a shell script. This example script runs ImageJ from /usr/local/ImageJ using a plugins directory at /home/wayne/ImageJ/plugins.
+
+<blockquote><pre>
+cd /usr/local/ImageJ
+./jre/bin/java -Xmx128m -cp ij.jar -Dplugins.dir=/home/wayne ij.ImageJ
+</pre></blockquote>
+
+
+<font color="#224488" face="Helvetica, Arial" size = +1><b>Compiling Plugins</b></font><br>
+The <i>Plugins/Compile and Run</i> command uses the javac compile contained in tools.jar. 
+The Java 1.4.2 runtime included with the Linux distribution of ImageJ includes tools.jar in
+ImageJ/jre/lib/ext. Users of the Java SDK will need to add tools.jar to the command line. 
+Here is an example:
+<blockquote><pre>
+java -Xmx200m -cp ij.jar:\usr\local\jdk1.4\lib\tools.jar ij.ImageJ
+</pre></blockquote>
+
+<font color="#224488" face="Helvetica, Arial" size = +1><b>Browser Support</b></font><br>
+The <i>Help/ImageJ Web Site</i> and <i>Help/Online Docs</i> commands run the Netscape browser to 
+open the ImageJ website. If Netscape is not installed you will
+need to brovide a symbolic link such as
+<blockquote><pre>
+ln -s /usr/local/bin/mozilla /usr/local/bin/netscape
+or
+ln -s /opt/kde3/bin/konqueror /usr/local/bin/netscape
+</pre></blockquote>
+
+
+</td></tr></table><p>
+<b>
+| <a href="index.html">Install</a>
+| <a href="../../download.html">Download</a>
+| <a href="../../index.html">Home</a> |
+</b>
+
+</body>
+</html>

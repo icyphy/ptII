@@ -1,0 +1,219 @@
+<html>
+<head>
+<title>OS X Installation</title>
+</head>
+<body bgcolor="#ffffff">
+
+
+&nbsp;<IMG SRC="images/osx.gif" align=center width=29 height=66 ALT="ImageJ Icon">
+
+&nbsp;&nbsp;
+
+<font color="#224488" face="Helvetica, Arial" size = +3><b>
+OS X Installation
+</b></font>
+<blockquote>
+
+<p>
+To install ImageJ, <a href="http://rsb.info.nih.gov/ij/download.html">download</a> the Mac OS X .tar.gz file and double-click on it to extract
+the "ImageJ (OS X)" folder. To run ImageJ, open this folder and double-click on the ImageJ icon.
+<p>
+
+<font color="#224488" face="Helvetica, Arial" size = +1><b>Memory</b></font><br>
+
+With ImageJ 1.32 or later, use the 
+<a href="http://rsb.info.nih.gov/ij/docs/menus/edit.html#memory"><i>Edit/Options/Memory</i></a>
+command to make more than 192MB of memory available to ImageJ.
+Setting the "Maximum Memory" value to more than about 75% of real RAM may result in poor perfomance due to virtual memory "thrashing". 
+The maximum amount of memory that can be allocated is about 1.8 GB.
+<p>
+With ImageJ 1.31, control-click on the ImageJ application, 
+select "Show Package Contents" and open the "Contents" folder. Then open the "Info.plist" file by dragging and 
+dropping on the TextEdit icon in the Dock and
+editing the line "<i>&lt;string&gt;-Xms32m -Xmx192m&lt;/string&gt;</i>", which is near the end of the file. 
+(If TextEdit is not on the Dock, drag it from the Application folder to the Dock.)
+As an example, to make 500MB available, 
+change the line to "<i>&lt;string&gt;-Xms32m -Xmx500m&lt;/string&gt;</i>".
+<p>
+With ImageJ 1.30 and earlier, use a text editor such as TextEdit 
+to edit the line
+"<i>com.apple.mrj.application.vm.options=-Xmx128M</i>"
+in ImageJ/Contents/Resources/MRJApp.properties.
+Another way to make more memory available to ImageJ is 
+by running from the command line and using the -Xmx option. The maximum amount of memory 
+that can be allocated is about 1.7 GB.
+<p>
+
+<a name=upgrade>
+<font color="#224488" face="Helvetica, Arial" size = +1><b>Upgrading</b></font><br>
+To upgrade to the latest version of ImageJ, replace the ij.jar file in the ImageJ 
+application with a newer one from <A HREF="../../upgrade/index.html">http://rsb.info.nih.gov/ij/upgrade/</A>. 
+To do this, control-click on the ImageJ application, select "Show Package Contents",  and 
+then drag the newer ij.jar into the Contents/Resources/Java folder. To make future upgrades easier, 
+drag the /Contents/Resources/Java folder to the dock or use Gilles Carpentier's
+<a href="http://image.bio.methods.free.fr/ijupdater.html">ImageJ Updater application</a>.
+<p>
+
+
+<font color="#224488" face="Helvetica, Arial" size = +1><b>Drag and Drop</b></font><br>
+The OS X version of ImageJ opens images, text files, ROIs and LUTs that are dropped on the ImageJ icon.
+<p>
+
+
+<a name=bugs>
+<font color="#224488" face="Helvetica, Arial" size = +1><b>Known Problems</b></font><br>
+
+<ol>
+
+	<li> <font color=red>ImageJ sometimes crashes on Panther (OS X 10.3). Upgrading to 
+	ImageJ 1.32 (which uses Java 1.4.1 or later) and to Java 1.4.2 Update 1 should 
+	reduce the number of crashes.  
+    This bug has been reported to Apple (ID# 3488737).  </font>
+	 
+	<li> With Java 1.4, the "OK" and "Cancel" buttons in dialogs are sometimes not visible. As a 
+	work around, resize the dialog. A 
+	<a href="http://rsb.info.nih.gov/ij/images/dialog-bug.jpg">screen shot</a> is avaiable.
+	(Fixed in Java 1.4.2 Update 1)
+
+	<li> ImageJ cannot use more than about 1.8GB of RAM. This has been 
+	submitted to Apple as bug #3492928.
+
+	<li> Plugins that use QuickTime for Java do not work with Java 1.4. One exception is the
+	<A HREF="http://rsb.info.nih.gov/ij/plugins/movie-opener.html">Movie Opener</a> plugin,
+	which was modified by Jeff Hardin to work with Java 1.4. 
+
+	<li>The "rubberband" is sometimes not visible or leaves "trails" when using the polygon or polyline 
+	tool to create a selection. This bug has been reported to Apple (ID# 3558433). ImageJ
+	1.32b and later work around this bug by not doing XOR mode drawing.
+	
+	<li>OS X requires a <b>lot</b> of memory for each open window. Converting a 1024x1024x10x8-bit stack (10MB)
+	 to separate  images requires 58MB of additional memory!
+
+	<li> Zoomed images may be blurry. (Fixed in Java 1.4.2)
+
+	<li> Tab support is broken in <i>Plugins/Edit</i> (Fixed in Java 1.4.1).
+
+	<li> Arrow keys don't work in <i>Plugins/Edit</i> (Fixed in Java 1.4.1).
+
+	<li> Mouse wheel doesn't work in <i>Plugins/Edit</i> (Fixed in Java 1.4.1).
+	
+    <li> There does not appear to be a way to unselect an ROI in the ROI Manager (java.awt.List bug). 
+    As a workaround, press the "Select All" button twice (v1.28d and later).
+
+	<li> Image drawing is very slow. The <A HREF="http://rsb.info.nih.gov/ij/plugins/plasma.html">Plasma plugin</a> and
+	<A HREF="http://rsb.info.nih.gov/plasma2">Plasma2 applet</a> are test cases for this problem.
+	
+	<li> Cut (cmd-x), copy (cmd-c) and paste (cmd-v) do not work in 
+	dialog boxes (Fixed in Java 1.4.1).
+		
+	<li> Plot coordinates are not displayed if a profile plot window is moved 
+	(Fixed in Java 1.4.1).
+	
+	<li> The "Paste" function of the System Clipboard plugin does not work.
+	(Worked around in 2004/06/25 version of the plugin.)
+	
+	<li> Interactive thresholding of 16 and 32 bit images does not work with Java 1.4. 
+	(Worked around in ImageJ 1.32c.)
+	
+	<li> The available memory value displayed by ImageJ (1.32h or later) is 64MB too high
+	when ImageJ is started by double-clicking on ij.jar or run from the command line
+	due to a bug in Java's Runtime.maxMemory() method.
+	
+	<li> With Java 1.4.2, the cursor is always an arrowhead. This bug has been reported to Apple (ID# 3761991).
+	A test case applet is <A HREF="http://rsb.info.nih.gov/ij/bugs/cursors">available</a>.
+
+</ol>
+
+<font color="#224488" face="Helvetica, Arial" size = +1><b>Adding a JAR File</b></font><br>
+Some plugins require adding a JAR file to ImageJ. In ImageJ 1.31 or later, this is done by copying 
+the JAR file into the plugins folder or an immediate subfolder of the plugins folder, then restarting
+ImageJ. To compile a plugin that uses a JAR file, copy the JAR file to /Library/Java/Extensions.
+<p>
+
+<a name=switching>
+<font color="#224488" face="Helvetica, Arial" size = +1><b>Switching Between Java 1.4.2 and Java 1.3.1</b></font><br>
+The ImageJ double-clickable application uses Java 1.4.1 or later. To use Java 1.3.1, 
+control-click on the ImageJ application, 
+select "Show Package Contents", open the "Contents" folder, drag and drop "Info.plist" on TextEdit, 
+then change the
+value of the Root&gt;Java&gt;JVMVersion property from "1.4+" to "1.3.1". Duplicate ImageJ before making 
+these changes to create separate Java 1.3.1 and Java 1.4 versions.
+<p>  
+<font color="#FF0000"> 
+Note: Panther (OS X 1.3) users should avoid Java 1.3.1 since the 
+combination of Panther and Java 1.3.1 seems to cause frequent ImageJ crashes.
+</font>
+
+<p>
+It is possible to revert to Java 1.3.1 when running Java programs from the command line 
+or by double clicking on a jar file by typing these two commands into a Terminal window:
+<blockquote>
+cd /System/Library/Frameworks/JavaVM.framework/Versions<br>
+sudo ln -sfh 1.3.1 CurrentJDK 
+</blockquote>
+This switches the symbolic link for the current JDK to 1.3.1.  
+You can view what the CurrenJDK is pointing to by running (in the same directory): 
+<blockquote>
+ls -al
+</blockquote>
+
+
+<font color="#224488" face="Helvetica, Arial" size = +1><b>Running from the Command Line</b></font><br>
+
+To run ImageJ from the command line, open a Terminal window, cd to the ImageJ directory, then use 
+the java command to run ImageJ.  The easiest way to do this is to drag the ImageJ folder to the Terminal Window, 
+type return, then type: 
+
+
+<blockquote><pre>
+java -jar -mx256m ImageJ.app/Contents/Resources/Java/ij.jar
+(or java -mx256m -cp ImageJ.app/Contents/Resources/Java/ij.jar ij.ImageJ)
+</pre></blockquote>
+
+Or if ij.jar is in the current directory, type:
+
+<blockquote><pre>
+java -jar -Xmx256m ij.jar
+(or java -Xmx256m -cp ij.jar ij.ImageJ)
+</pre></blockquote>
+
+The -Xmx256m switch specifies that ImageJ will have available a maximum of 256MB of RAM.
+
+<p>
+
+Here is a simple AppleScript that sends commands to Terminal to have it automatically launch ImageJ:
+
+<blockquote><pre>
+tell application "Terminal"
+    run
+    do script with command "cd /Applications/ImageJ 
+        java -jar -mx350m ./ImageJ.app/Contents/Resources/Java/IJ.jar"
+end tell
+</pre></blockquote>
+
+With OS X 10.1 or later, you can also run ImageJ by double-clicking on ij.jar.
+<p>
+
+<font color="#224488" face="Helvetica, Arial" size = +1><b>About the Icon</b></font><br>
+The ImageJ icon for OS X is based on a photograph by 
+<a href="http://www.tomgrill.com/">Tom Grill</a>
+of a <br>
+Hartnack microscope, circa 1870's, at 
+<a href="http://www.arsmachina.com/s-hart1209.htm">www.arsmachina.com</a>. An 
+<a href="http://www.macdevcenter.com/pub/a/mac/2001/05/24/aqua_design.html?page=1">article</a><br>
+on O'Reilly's
+<a href="http://www.macdevcenter.com/">macdevcenter.com</a>
+site explains how to create photorealistic<br>
+ icons for Mac OS X.
+<p>
+
+</blockquote>
+
+<b>
+| <a href="index.html">Install</a>
+| <a href="../../download.html">Download</a>
+| <a href="../../index.html">Home</a> |
+</b>
+
+</body>
+</html>

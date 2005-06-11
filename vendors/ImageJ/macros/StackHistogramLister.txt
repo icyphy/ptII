@@ -1,0 +1,43 @@
+// This macro prompts for a bin count and the
+// histogram min and max and then writes the 
+// histogram (as a table) to the "Results" window.
+//
+// Requires the ImageJ 1.33o preview at "http://rsb.info.nih.gov/ij/ij.jar"
+
+  requires("1.33o");
+  nBins = getNumber("Number of Bins:", 256);
+  hMin = getNumber("Histogram Min:", 0);
+  hMax = getNumber("Histogram Max:", 256);
+  row=0;
+  run("Clear Results");
+  if (bitDepth==32) {
+      for (slice=1; slice<=nSlices; slice++) {
+          if (nSlices>1) run("Set Slice...", "slice=" + slice);
+          getHistogram(values,counts,nBins,hMin,hMax);
+          for (i=0; i<nBins; i++) {
+              if (nSlices>1) setResult("Slice", row, slice);
+              setResult("Value", row, values[i]);
+              setResult("Count", row, counts[i]);
+              row++;
+          }
+      }
+  } else {
+      setBatchMode(true);
+      stack = getImageID();
+      for (slice=1; slice<=nSlices; slice++) {
+          selectImage(stack);
+          if (nSlices>1) run("Set Slice...", "slice=" + slice);
+          run("Duplicate...", "title=temp");
+          run("32-bit");
+          getHistogram(values,counts,nBins,hMin,hMax);
+          close();
+          for (i=0; i<nBins; i++) {
+              if (nSlices>1) setResult("Slice", row, slice);
+              setResult("Value", row, values[i]);
+              setResult("Count", row, counts[i]);
+              row++;
+          }
+      }
+  }
+  updateResults()
+

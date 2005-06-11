@@ -1,0 +1,39 @@
+//  This macro demonstrates how to use the getCursorLoc() function.
+//  Run the macro, move the cursor over the active image, then
+//  press left mouse button plus the shift, control or options keys.
+//  Pressing the right mouse button, or click-control on a Mac,
+//  displays a pop-up menu. There needs to be a way to disable 
+//  this feature. Pressing the alt key may not work on windows.
+//  The macro will quit after 8 seconds of inactivity.
+
+
+ macro "Show Cursor Location and Flags [f9]" {
+      requires("1.30e");
+      leftButton=16;
+      rightButton=4;
+      shift=1;
+      ctrl=2; 
+      alt=8;
+      timeout = 8; // seconds
+      startTime = getTime();
+      x2=-1; y2=-1; z2=-1;
+      while (getTime()<startTime+timeout*1000) {
+          getCursorLoc(x, y, z, flags);
+          if (x!=x2 || y!=y2 || z!=z2) {
+              s = " ";
+              if (flags&leftButton!=0) s = s + "<left>";
+              if (flags&rightButton!=0) s = s + "<right>";
+              if (flags&shift!=0) s = s + "<shift>";
+              if (flags&ctrl!=0) s = s + "<ctrl> ";
+              if (flags&alt!=0) s = s + "<alt>";
+              print(x+" "+y+" "+z+" "+flags + "" + s);
+             startTime = getTime();
+          }
+          x2=x; y2=y; z2=z;
+          wait(10);
+      }
+      print("Exiting after "+timeout+" seconds of inactivity");
+ }
+
+
+

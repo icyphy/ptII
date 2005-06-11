@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>OS/2 Installation</title>
+</head>
+<body bgcolor="#ffffff">
+<table width="550">
+  <tbody>
+    <tr>
+      <td>
+&nbsp;&nbsp;
+      <font color="#224488" face="Helvetica, Arial" size="+3"><b>OS/2 (eComStation)
+Installation
+      </b></font>
+      <p>To install and run ImageJ, <a
+ href="http://rsb.info.nih.gov/ij/download.html">download </a>ijXXX.zip
+file, where XXX is the version number of ImageJ. Unzip this file at the
+root of your application directory. This will create the ImageJ
+directory.
+      </p>
+      <p>Create a program icon for ImageJ by dropping the ij.jar file
+in the ImageJ directory on the Create Java13 Object icon on your
+desktop, and change the look of the icon by downloading and dropping
+the&nbsp; file <a href="../../NJDocs/IJeCS.ico">eCS.ico</a> on the
+created program object.<br>
+      </p>
+      <p><font color="#224488" face="Helvetica, Arial" size="+1"><b>Pre-requisites</b></font><br>
+You must have Java 1.3.1 runtime installed. This is part of eComStation
+1.1, and registered users of eComStation 1.0 may download the lastest
+version from <a href="http://www.ecomstation.com">www.eComStation.com</a>.
+      <br>
+      </p>
+      <p>To make installation of Java programs easy download and
+install run_java,&nbsp; a Generic script for starting Java 1.3 and 1.4
+applications in OS/2 or eCS by Cary Renquist. Download at <a
+ href="http://hobbes.nmsu.edu/cgi-bin/h-search?key=run_java"
+ target="_blank"> http://hobbes.nmsu.edu/cgi-bin/h-search?key=run_java</a>.<br>
+      </p>
+      <p><font color="#224488" face="Helvetica, Arial" size="+1"><b>Upgrades</b></font><br>
+To upgrade to the latest version of ImageJ, replace the ij.jar JAR file
+in the ImageJ directory with a newer one from <a
+ href="http://rsb.info.nih.gov/ij/upgrade/index.html">http://rsb.info.nih.gov/ij/upgrade/</a>.
+      </p>
+      <font color="#224488" face="Helvetica, Arial" size="+1"><b>Compiling
+Plugins</b></font><br>
+The <i>Plugins/Compile and Run</i> command uses the javac compile
+contained in tools.jar. The Java 1.3.1 development kit included with
+eComStation includes tools.jar in X:\Java131\lib directory, where X: is
+your boot drive. You need to create a command file with the following
+lines in order to use this feature:
+      <blockquote>
+        <pre>cd Y:\&lt;path to very you installed ImageJ&gt;\ImageJ<br>java -cp ij.jar;X:\java131\lib\tools.jar ij.ImageJ<br></pre>
+      </blockquote>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><b>
+| <a href="http://rsb.info.nih.gov/ij/docs/install/index.html">Install</a>
+| <a href="http://rsb.info.nih.gov/ij/download.html">Download</a>
+| <a href="http://rsb.info.nih.gov/ij/index.html">Home</a> |
+</b></p>
+</body>
+</html>

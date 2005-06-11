@@ -1,0 +1,18 @@
+// This macro batch measures a folder of images,
+
+   requires("1.33n"); 
+   dir = getDirectory("Choose a Directory ");
+   list = getFileList(dir);
+   start = getTime();
+   setBatchMode(true); // runs up to 6 times faster
+   for (i=0; i<list.length; i++) {
+        path = dir+list[i];
+        //print(i+"  "+path);
+        showProgress(i, list.length);
+        open(path);
+        run("Measure");
+        close();
+  }
+  //print((getTime()-start)/1000);
+
+
