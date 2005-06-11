@@ -13,7 +13,7 @@ import ij.ImagePlus;
 import ij.IJ;
 import ij.plugin.DICOM;
 
-import vendors.ImageJ.ij.ImagePlus;
+
 
 
 
