@@ -57,7 +57,7 @@ import javax.media.j3d.Shape3D;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.parameters.DoubleRangeParameter;
+//import ptolemy.actor.parameters.DoubleRangeParameter;
 import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -98,15 +98,6 @@ import java.awt.color.ColorSpace;
 
 import javax.vecmath.Point3d;
 
-import vendors.vr.ColormapChoiceAttr;
-import vendors.vr.Context;
-import vendors.vr.VolFile;
-import vendors.vr.Volume;
-import vendors.vr.Texture2DVolume;
-import vendors.vr.Axis2DRenderer;
-import vendors.vr.StringAttr;
-import vendors.vr.CoordAttr;
-import vendors.vr.VolRend;
 
 import java.awt.Image;
 import java.awt.Transparency;
@@ -120,9 +111,12 @@ import javax.imageio.ImageReadParam;
 
 
 import javax.imageio.stream.FileImageInputStream;
-import ij.ImagePlus;
+//import ij.ImagePlus;
+import vendors.ImageJ;
 
-import SourceCode.MyTextureLoader;
+
+
+import ptolemy.domains.gr.lib.vr.TextureLoader.MyTextureLoader;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture2D
