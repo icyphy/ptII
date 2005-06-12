@@ -111,12 +111,10 @@ import javax.imageio.ImageReadParam;
 
 
 import javax.imageio.stream.FileImageInputStream;
-//import ij.ImagePlus;
-import vendors.ImageJ;
-
 
 
 import ptolemy.domains.gr.lib.vr.TextureLoader.MyTextureLoader;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture2D
@@ -560,7 +558,7 @@ public class GRTexture2D extends GRGeometry {
     
     private Shape3D _texturedImage;
     
-    private ImagePlus _imagePlus;
+    //private ImagePlus _imagePlus;
     
     private String _fileRoot;
 

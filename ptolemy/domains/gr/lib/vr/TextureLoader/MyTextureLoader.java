@@ -42,7 +42,7 @@
  * $State$
  */
 
-package SourceCode;
+package ptolemy.domains.gr.lib.vr.TextureLoader;
 
 import javax.media.j3d.*;
 import java.awt.Image;
