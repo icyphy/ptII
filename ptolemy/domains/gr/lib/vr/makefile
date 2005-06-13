@@ -42,7 +42,8 @@ DIRS =	$(PTQUICKTIME_DIR)
 ROOT =		../../../../..
 
 # PTVAR_JAR is set by configure in $PTII/mk/ptII.mk to $PTII/lib/ptvr.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTVR_JAR)
+# IMAGEJ_JAR is set by configure in $PTII/mk/ptII.mk to $PTII/vendors/ImageJ/ij.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTVR_JAR)$(CLASSPATHSEPARATOR)$(IMAGEJ_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
