@@ -143,8 +143,8 @@ import ptolemy.domains.gr.lib.vr.TextureLoader.MyTextureLoader;
     only have an effect on the next run of the model.
 
     @author Tiffany Crawford
-    @version 
-    @since 
+    @version
+    @since
     @Pt.ProposedRating Red
     @Pt.AcceptedRating Red
 */
@@ -160,20 +160,20 @@ public class GRTexture2D extends GRGeometry {
     public GRTexture2D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        
+
+
         //voxelFile = new FilePortParameter(this, "voxelFile");
         //voxelFile.setExpression("$CLASSPATH/doc/img/brainMRI.jpg");
-     
+
         //FIXME Should this be one paramter, ie. 256x256
         xResolution = new Parameter(this, "xResolution");
         xResolution.setExpression("256");
         xResolution.setTypeEquals(BaseType.INT);
-        
+
         yResolution = new Parameter(this, "yResolution");
         yResolution.setExpression("256");
-        yResolution.setTypeEquals(BaseType.INT);  
-        
+        yResolution.setTypeEquals(BaseType.INT);
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -181,21 +181,21 @@ public class GRTexture2D extends GRGeometry {
     /** This parameter provides a third dimension to the images.  The
      * value is a scaled version of the actual known slice depth.
      */
-    
+
     /* The parameter that chooses along which axis the volume will be built.
      * The options are xAxis, yAxis, or zAxis.
-     */  
+     */
     public Parameter xResolution;
-    
+
     public Parameter yResolution;
-    
-    /** The input port that reads a in a URL to the file holding the 
+
+    /** The input port that reads a in a URL to the file holding the
      *  volume to be rendered.
      */
    // public FilePortParameter voxelFile;
-    
-    
-     
+
+
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         /** Initialize some variables */
@@ -203,13 +203,13 @@ public class GRTexture2D extends GRGeometry {
         _sSize = (int) ((IntToken) xResolution.getToken()).intValue();
         _tSize = (int) ((IntToken) yResolution.getToken()).intValue();
         _counter = 0;
-      
+
     }
 
     /** Return false if the scene graph is already initialized.
      *  @return False if the scene graph is already initialized.
      *  @exception IllegalActionException Not thrown in this base class
-     * @throws 
+     * @throws
      */
   /*public boolean prefire() throws IllegalActionException {
         if (_debugging) {
@@ -217,55 +217,55 @@ public class GRTexture2D extends GRGeometry {
             _debug("_isSceneGraphInitialized = " + _isSceneGraphInitialized);
             _debug("Does port have token?" + _parameterPort.hasToken(0));
         }
-      
+
           if (_parameterPort.hasToken(0)){
                 texture.update();
-                  
-                /** Set _isSceneGraphInitialized back to false so 
+
+                /** Set _isSceneGraphInitialized back to false so
                  * node can be sent. fire() will set it back to true
                  */
-                
+
          /*       _createModel();
                 //FIXME: Problem with name of variable, talk to Edward
                 _isSceneGraphInitialized = false;
-                 
+
                 if (_debugging) {
                     _debug("Prefire returned true");
                     _debug("texture = " + texture);
                 }
-                return true;   
+                return true;
             }else {
-             
+
                 return false;
             }
         } */
-           
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     /** Create the geometry for the Node that will hold the texture.
      */
-    protected void _createGeometry() throws IllegalActionException {          
+    protected void _createGeometry() throws IllegalActionException {
             _plane = new QuadArray(4, GeometryArray.COORDINATES|
                 GeometryArray.TEXTURE_COORDINATE_2);
-        
+
         if (_debugging) {
             _debug("inside _createGeometry");
             _debug("_axis = " + _axis);
            }
-        
+
         _quadCoords = new double [12];
         _texCoords = new float [8];
-        
+
         if(_axis == 1){
         double curY = _counter * _planeSpacing -.5;
-        
+
         if (_debugging) {
-         _debug("counter = " + _counter);   
+         _debug("counter = " + _counter);
          _debug("curY = " + curY);
-         
+
         }
-        
-        /** Set coordinates for the plane.  These coordinates assume 
+
+        /** Set coordinates for the plane.  These coordinates assume
          * that the the image's origin is at the lower left and rotates
          * it 90 degrees about the x-axis.
          */
@@ -275,24 +275,24 @@ public class GRTexture2D extends GRGeometry {
         _quadCoords[2] = 0.5;
         _texCoords[0]= 0;
         _texCoords[1]= 0;
-       
-        
+
+
         // lower right
         _quadCoords[3] = 0.5;
         _quadCoords[4] = curY;
         _quadCoords[5] = 0.5;
         _texCoords[2]= 1;
         _texCoords[3]= 0;
-      
-        
+
+
         // upper right
         _quadCoords[6] = 0.5;
         _quadCoords[7] = curY;
         _quadCoords[8] = -0.5;
         _texCoords[4]= 1;
         _texCoords[5]= 1;
-     
-        
+
+
         // upper left
         _quadCoords[9] = -0.5;
         _quadCoords[10] = curY;
@@ -300,10 +300,10 @@ public class GRTexture2D extends GRGeometry {
         _texCoords[6]= 0;
         _texCoords[7]= 1;
         } else if (_axis == 2){
-            
+
             double curZ = _counter * _planeSpacing - .5;
-            /** Set coordinates for the plane.  These coordinates assume 
-             * that the the image's origin is at the lower left and the planes 
+            /** Set coordinates for the plane.  These coordinates assume
+             * that the the image's origin is at the lower left and the planes
              * are aligned accordingly
              */
             // lower left
@@ -312,24 +312,24 @@ public class GRTexture2D extends GRGeometry {
             _quadCoords[2] = curZ;
             _texCoords[0]= 0;
             _texCoords[1]= 0;
-           
-            
+
+
             // lower right
             _quadCoords[3] = 0.5;
             _quadCoords[4] = -0.5;
             _quadCoords[5] = curZ;
             _texCoords[2]= 1;
             _texCoords[3]= 0;
-          
-            
+
+
             // upper right
             _quadCoords[6] = 0.5;
             _quadCoords[7] = 0.5;
             _quadCoords[8] = curZ;
             _texCoords[4]= 1;
             _texCoords[5]= 1;
-         
-            
+
+
             // upper left
             _quadCoords[9] = -0.5;
             _quadCoords[10] = 0.5;
@@ -338,8 +338,8 @@ public class GRTexture2D extends GRGeometry {
             _texCoords[7]= 1;
         }else if (_axis == 0){
             double curX = _counter * _planeSpacing -.5;
-            /** Set coordinates for the plane.  These coordinates assume 
-             * that the the image's origin is at the lower left and the planes 
+            /** Set coordinates for the plane.  These coordinates assume
+             * that the the image's origin is at the lower left and the planes
              * are aligned accordingly
              */
             // lower left
@@ -348,75 +348,75 @@ public class GRTexture2D extends GRGeometry {
             _quadCoords[2] = 0.5;
             _texCoords[0]= 0;
             _texCoords[1]= 0;
-           
-            
+
+
             // lower right
             _quadCoords[3] = curX;
             _quadCoords[4] = -0.5;
             _quadCoords[5] = -0.5;
             _texCoords[2]= 1;
             _texCoords[3]= 0;
-          
-            
+
+
             // upper right
             _quadCoords[6] = curX;
             _quadCoords[7] = 0.5;
             _quadCoords[8] = -0.5;
             _texCoords[4]= 1;
             _texCoords[5]= 1;
-         
-            
+
+
             // upper left
             _quadCoords[9] = curX;
             _quadCoords[10] = 0.5;
             _quadCoords[11] = 0.5;
             _texCoords[6]= 0;
             _texCoords[7]= 1;
-            
-            
+
+
         }else {
             if (_debugging) {
                 _debug("chose none of them");
-                
+
                }
         }
-            
-        
+
+
         _plane.setCoordinates(0, _quadCoords);
-        _plane.setTextureCoordinates(0, 0,_texCoords); 
-        _geometry = _plane; 
+        _plane.setTextureCoordinates(0, 0,_texCoords);
+        _geometry = _plane;
     }
-    
+
     protected void _createModel()throws IllegalActionException {
-            _readImage();  
+            _readImage();
             _counter++;
             super._createModel();
         _loadTexture();
     }
-    
-   
+
+
    /** Create the texture used for this 3D object.
-    * Define the texture coordinates and textureAttributes. 
+    * Define the texture coordinates and textureAttributes.
     * @throws IllegalActionException
-    */ 
+    */
    protected void _loadTexture() throws IllegalActionException {
 
     if (_debugging) {
         _debug("About to loadTexture");
     }
-    
+
      TextureAttributes attributes = null;
-     
+
     /*int arrayLength = _sSize*_tSize;
      double fraction = 1/255;
-     
+
      if (_debugging) {
         _debug("arrayLength = " + arrayLength);
         _debug("fraction = " + fraction);
      }
      double[] pixelArray = new double[arrayLength];
      double[] alphaArray = new double[arrayLength]; */
-     
+
    /*  try {
                 _bufferedImage = (BufferedImage)ImageIO.read (new File(_fileRoot));
         } catch (IOException e) {
@@ -425,23 +425,23 @@ public class GRTexture2D extends GRGeometry {
         }*/
     /* _alphaRaster = _bufferedImage.getAlphaRaster();
      if (_debugging){
-        _debug("_bufferedImage = " + _bufferedImage); 
-        _debug("Number of bands in _alphaRaster = " + _alphaRaster.getNumBands());   
+        _debug("_bufferedImage = " + _bufferedImage);
+        _debug("Number of bands in _alphaRaster = " + _alphaRaster.getNumBands());
      }
-     
+
     _dataRaster = (WritableRaster)_bufferedImage.getData();
      _dataRaster.getPixels(0,0,_sSize,_tSize,pixelArray );
-     
+
      if (_debugging){
         _debug("Number of bands in _dataRaster = " + _dataRaster.getNumBands());
      }
-     
-     for (int i=0; i < arrayLength; i ++){ 
+
+     for (int i=0; i < arrayLength; i ++){
         alphaArray[i] = 1 - pixelArray[i]*fraction;
      }
-     
+
      _dataRaster.setSamples(0,0,_sSize,_tSize,4, alphaArray); */
-     
+
     //if (_fileURL != null) {
     /*     MyTextureLoader loader;
          //String format = "LUMINANCE_ALPHA";
@@ -453,32 +453,32 @@ public class GRTexture2D extends GRGeometry {
     //     if (_token.getClass().toString() == "class ptolemy.data.AWTImageToken"){
                  loader = new MyTextureLoader(_image, _viewScreen.getCanvas());
       //   }else {
-          //  loader = new MyTextureLoader(_fileRoot, _viewScreen.getCanvas());  
+          //  loader = new MyTextureLoader(_fileRoot, _viewScreen.getCanvas());
         // }
-            
+
          /* Get the Loaded Texture */
          Texture loadedTexture = loader.getTexture();
          if (_debugging) {
              _debug("got texture");
              _debug("Texture format is = " + loadedTexture.getFormat());
          }
-         
-         
-         
-         
-         
+
+
+
+
+
          if (loadedTexture != null) {
              attributes = new TextureAttributes();
              attributes.setTextureMode(TextureAttributes.MODULATE);
-            
+
              _appearance.setTextureAttributes(attributes);
 
              _appearance.setTexture(loadedTexture);
-         }  
+         }
      //}
-     
+
    }
-    
+
 
     /**Read in file. */
     protected void _readImage() throws IllegalActionException {
@@ -492,9 +492,9 @@ public class GRTexture2D extends GRGeometry {
         if (_imagePlus == null) {
             _imagePlus = new ImagePlus(_fileRoot);
         } */
-        
+
       _token = input.get(0);
-      
+
      if (_token.getClass().toString() == "class ptolemy.data.AWTImageToken"){
       System.out.println("If returned true");
       ImageToken imageToken;
@@ -514,103 +514,103 @@ public class GRTexture2D extends GRGeometry {
         _fileRoot = stringToken.stringValue();
       }*/
     }
-        
-        
-         
-        
-        
- 
 
-    
+
+
+
+
+
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-  
+
     /** ?????? */
-    protected View _view; 
-    
+    protected View _view;
+
     protected Image _image;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The URL that specifies where the file is located. */
     private URL _url;
-       
+
     /** The NodeComponent defining the texture which must be added to the Appearance */
     private Texture2D _texture2D;
-    
+
     /** ImageComponent. */
     private ImageComponent2D _imageComponent;
-    
+
     /** QuadArray. */
     private QuadArray _plane;
-    
+
     /** Buffer of image data */
     private BufferedImage _bufferedImage;
-    
+
     /**Defines how to translate the pixels into color and alpha components.*/
     private ColorModel _colorModel;
-    
+
     /** The ColorSpace that defines the color space of the image */
     private ColorSpace _colorSpace;
-    
+
     private Shape3D _texturedImage;
-    
+
     //private ImagePlus _imagePlus;
-    
+
     private String _fileRoot;
 
     private File _file;
-    
+
     private FileImageInputStream _fileImageInputStream;
-    
-    private Texture2D _texture;  
-    
+
+    private Texture2D _texture;
+
     private Token _token;
 
-    private TexCoordGeneration _texCoordGeneration;  
-    
+    private TexCoordGeneration _texCoordGeneration;
+
     private WritableRaster _alphaRaster;
-    
+
     private WritableRaster _dataRaster;
-    
+
     private int[] _intData;
-    
+
     private double[] _quadCoords;
-    
+
     private float[] _texCoords;
-    
+
     //private TexCoord2f[] _texCoords;
-    
+
     private MyTextureLoader _myTextureLoader;
-    
+
     private DataBufferInt _dataBufferInt;
-    
+
     private DataBuffer _dataBuffer;
-    
+
     private int _sSize;
-    
+
     private int _tSize;
-    
+
     private ParameterPort _parameterPort;
-    
+
     private StringToken _stringToken;
-    
+
     private int _counter;
-    
+
     private String _eof;
-    
-  
- 
-    
-  
-    
- 
-    
-    
-    
-    
-  
+
+
+
+
+
+
+
+
+
+
+
+
 }

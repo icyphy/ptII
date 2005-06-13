@@ -1,6 +1,6 @@
 /* An actor that reads DICOM files.    */
- 
-  
+
+
 package ptolemy.domains.gr.lib.vr;
 
 
@@ -31,13 +31,13 @@ import ptolemy.actor.parameters.ParameterPort;
 //////////////////////////////////////////////////////////////////////////
 ////DICOMReader
 /**
- An actor that reads DICOM files. 
+ An actor that reads DICOM files.
 
 @see ptolemy.actor.lib.medicalimaging
 
 @author T. Crawford
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red
 @Pt.AcceptedRating Red
 
@@ -50,29 +50,29 @@ import ptolemy.actor.parameters.ParameterPort;
          * @exception NameDuplicationException If the container already has an
          *   actor with this name.
          */
-    
+
         public DICOMReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
          super(container, name);
-        
-        fileOrURL = new FilePortParameter(this, "fileOrURL");           
-        
+
+        fileOrURL = new FilePortParameter(this, "fileOrURL");
+
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
         output.setTypeEquals(BaseType.OBJECT);
-              
+
     }
 
     ////////////////////////////////////////////////////////////////////
-    ////////               ports and parameters                  ////////     
-    
+    ////////               ports and parameters                  ////////
+
     public FilePortParameter fileOrURL;
     public TypedIOPort output;
-       
-    ////////////////////////////////////////////////////////////////////
-    ////////                public methods                     ////////     
 
-    
+    ////////////////////////////////////////////////////////////////////
+    ////////                public methods                     ////////
+
+
     /** Output the data read in the prefire.
      *  @exception IllegalActionException If there's no director.
      */
@@ -80,14 +80,14 @@ import ptolemy.actor.parameters.ParameterPort;
         super.fire();
         output.broadcast(new AWTImageToken(_image));
     }
-    
-    
+
+
     public void initialize() throws IllegalActionException
     {
-      _parameterPort =  fileOrURL.getPort();  
+      _parameterPort =  fileOrURL.getPort();
     }
-    
-    
+
+
     public boolean prefire() throws IllegalActionException {
         super.prefire();
         if (_parameterPort.hasToken(0)){
@@ -96,13 +96,13 @@ import ptolemy.actor.parameters.ParameterPort;
             return true;
         }else {
             return false;
-        }  
+        }
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _readImage() throws IllegalActionException {
         _url = fileOrURL.asURL();
-        
+
         if (_url == null) {
             throw new IllegalActionException("sourceURL was null");
         }
@@ -112,16 +112,16 @@ import ptolemy.actor.parameters.ParameterPort;
             //_image = _imagePlus.getImage();
             DICOM _dicom;
             _image = ((ImagePlus)IJ.runPlugIn("ij.plugin.DICOM", _fileRoot)).getImage();
-           
+
         }
 
-          
+
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     //Image that is readin
     private ImagePlus _imagePlus;
 //  The URL as a string.
@@ -132,7 +132,7 @@ import ptolemy.actor.parameters.ParameterPort;
 
     // The URL of the file.
     private URL _url;
-    
+
     private ParameterPort _parameterPort;
 
  }
