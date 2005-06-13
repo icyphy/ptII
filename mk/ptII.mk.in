@@ -259,6 +259,9 @@ JINI_PRESENT =  @JINI_PRESENT@
 # http://java.sun.com/products/javacomm/
 COMMAPI_DIR =   @COMMAPI_DIR@
 
+# ImageJ Jar file, used to compile ptolemy/domains/gr/lib/vr
+IMAGEJ_JAR =	@IMAGEJ_JAR@
+
 # Jini home directory, see http://www.sun.com/jini/
 JINI_DIR =	@JINI_DIR@
 

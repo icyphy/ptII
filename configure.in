@@ -2720,10 +2720,28 @@ else
 	PTVR_JAR=$PTII/lib/ptvr.jar)
 
     if test -f "$PTVR_JAR"; then 
-       AC_MSG_RESULT(ok)
-       PTVR_DIR=vr
-       # PTVR_PACKAGES is used in ptII/doc/makefile
-       PTVR_PACKAGES="ptolemy.domains.gr.lib.vr"
+        AC_MSG_RESULT(ok)
+        AC_MSG_CHECKING([for ImageJ jar file])
+        AC_ARG_WITH(imagej-jar, [  --with-imagej-jar=JARFILE       use ImageJ from JARFILE,
+                          defaults to \$PTII/vendors/ImageJ/ij.jar],
+	IMAGEJ_JAR=$withval,
+	IMAGEJ_JAR=$PTII/vendors/ImageJ/ij.jar)
+
+        if test -f "$IMAGEJ_JAR"; then
+            AC_MSG_RESULT([$IMAGEJ_JAR])
+	    # VR requires ptvr.jar and ij.jar
+            PTVR_DIR=vr
+            # PTVR_PACKAGES is used in ptII/doc/makefile
+            PTVR_PACKAGES="ptolemy.domains.gr.lib.vr"
+        else
+            AC_MSG_WARN([Failed to find PTII/vendors/ImageJ/ij.jar
+    perhaps ImageJ is not installed?
+    You need not download ImageJ unless you plan on the Java3D VR actors
+    The ImageJ SDK can be downloaded from http://rsb.info.nih.gov/ij/])
+	# Note that we don't substitute in the ${PTII} here
+	    IMAGEJ_JAR='${PTII}/vendors/imagej/ij.jar'
+        fi 
+
     else
        AC_MSG_WARN(['Could not find $PTVR_JAR.
     http://www.j3d.org/tutorials/quick_fix/volume.html
@@ -2738,7 +2756,8 @@ if test -z "$PTVR_DIR"; then
     ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/vr"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	<classpathentry kind=\"lib\" path=\"$PTVR_JAR\"/> "
+	<classpathentry kind=\"lib\" path=\"$PTVR_JAR\"/> \
+	<classpathentry kind=\"lib\" path=\"$IMAGEJ_JAR\"/> "
 fi 
 
 #--------------------------------------------------------------------
@@ -2938,6 +2957,9 @@ AC_SUBST(ECLIPSE_EXCLUDING_SRC)
 # Eclipse .classpath lib elements of the format
 #    <classpathentry kind="lib" path="lib/diva.jar"/>
 AC_SUBST(ECLIPSE_CLASSPATHENTRY_LIBS)
+
+# ImageJ jar file
+AC_SUBST(IMAGEJ_JAR)
 
 # Jar files for Java Advanced Imaging (JAI) used by ptolemy/actor/lib/jai/makefile
 AC_SUBST(JAI_JARS)
