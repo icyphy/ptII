@@ -42,7 +42,7 @@ import ptolemy.actor.parameters.ParameterPort;
 @Pt.AcceptedRating Red
 
 */public class DICOMReader extends TypedAtomicActor{
-	    /**Construct an actor with the given container and name.
+            /**Construct an actor with the given container and name.
          * @param container The container
          * @param name The name of this actor
          * @exception IllegalActionException If the actor cannot be contained
@@ -51,7 +51,7 @@ import ptolemy.actor.parameters.ParameterPort;
          *   actor with this name.
          */
     
-	public DICOMReader(CompositeEntity container, String name)
+        public DICOMReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
          super(container, name);
         
@@ -91,7 +91,7 @@ import ptolemy.actor.parameters.ParameterPort;
     public boolean prefire() throws IllegalActionException {
         super.prefire();
         if (_parameterPort.hasToken(0)){
-        	fileOrURL.update();
+                fileOrURL.update();
             _readImage();
             return true;
         }else {

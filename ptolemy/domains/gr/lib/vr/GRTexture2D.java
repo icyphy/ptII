@@ -245,7 +245,7 @@ public class GRTexture2D extends GRGeometry {
     /** Create the geometry for the Node that will hold the texture.
      */
     protected void _createGeometry() throws IllegalActionException {          
-    	_plane = new QuadArray(4, GeometryArray.COORDINATES|
+            _plane = new QuadArray(4, GeometryArray.COORDINATES|
                 GeometryArray.TEXTURE_COORDINATE_2);
         
         if (_debugging) {
@@ -388,9 +388,9 @@ public class GRTexture2D extends GRGeometry {
     }
     
     protected void _createModel()throws IllegalActionException {
-    	_readImage();  
-    	_counter++;
-    	super._createModel();
+            _readImage();  
+            _counter++;
+            super._createModel();
         _loadTexture();
     }
     
@@ -418,11 +418,11 @@ public class GRTexture2D extends GRGeometry {
      double[] alphaArray = new double[arrayLength]; */
      
    /*  try {
-		_bufferedImage = (BufferedImage)ImageIO.read (new File(_fileRoot));
-	} catch (IOException e) {
+                _bufferedImage = (BufferedImage)ImageIO.read (new File(_fileRoot));
+        } catch (IOException e) {
         System.err.println(e);
         _bufferedImage = null;
-	}*/
+        }*/
     /* _alphaRaster = _bufferedImage.getAlphaRaster();
      if (_debugging){
         _debug("_bufferedImage = " + _bufferedImage); 
@@ -451,7 +451,7 @@ public class GRTexture2D extends GRGeometry {
          }
          MyTextureLoader loader;
     //     if (_token.getClass().toString() == "class ptolemy.data.AWTImageToken"){
-         	loader = new MyTextureLoader(_image, _viewScreen.getCanvas());
+                 loader = new MyTextureLoader(_image, _viewScreen.getCanvas());
       //   }else {
           //  loader = new MyTextureLoader(_fileRoot, _viewScreen.getCanvas());  
         // }
