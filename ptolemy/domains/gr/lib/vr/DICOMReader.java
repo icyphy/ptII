@@ -31,29 +31,29 @@ import ptolemy.actor.parameters.ParameterPort;
 //////////////////////////////////////////////////////////////////////////
 ////DICOMReader
 /**
- An actor that reads DICOM files.
+   An actor that reads DICOM files.
 
-@see ptolemy.actor.lib.medicalimaging
+   @see ptolemy.actor.lib.medicalimaging
 
-@author T. Crawford
-@version
-@since
-@Pt.ProposedRating Red
-@Pt.AcceptedRating Red
+   @author T. Crawford
+   @version
+   @since
+   @Pt.ProposedRating Red
+   @Pt.AcceptedRating Red
 
 */public class DICOMReader extends TypedAtomicActor{
-            /**Construct an actor with the given container and name.
-         * @param container The container
-         * @param name The name of this actor
-         * @exception IllegalActionException If the actor cannot be contained
-         *   by the proposed container.
-         * @exception NameDuplicationException If the container already has an
-         *   actor with this name.
-         */
+    /**Construct an actor with the given container and name.
+     * @param container The container
+     * @param name The name of this actor
+     * @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
 
-        public DICOMReader(CompositeEntity container, String name)
+    public DICOMReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(container, name);
+        super(container, name);
 
         fileOrURL = new FilePortParameter(this, "fileOrURL");
 
@@ -84,14 +84,14 @@ import ptolemy.actor.parameters.ParameterPort;
 
     public void initialize() throws IllegalActionException
     {
-      _parameterPort =  fileOrURL.getPort();
+        _parameterPort =  fileOrURL.getPort();
     }
 
 
     public boolean prefire() throws IllegalActionException {
         super.prefire();
         if (_parameterPort.hasToken(0)){
-                fileOrURL.update();
+            fileOrURL.update();
             _readImage();
             return true;
         }else {
@@ -124,7 +124,7 @@ import ptolemy.actor.parameters.ParameterPort;
 
     //Image that is readin
     private ImagePlus _imagePlus;
-//  The URL as a string.
+    //  The URL as a string.
     private String _fileRoot;
 
     // Image that is read in.
@@ -135,4 +135,4 @@ import ptolemy.actor.parameters.ParameterPort;
 
     private ParameterPort _parameterPort;
 
- }
+}

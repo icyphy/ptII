@@ -143,8 +143,8 @@ abstract  public class GRGeometry extends GRActor3D {
 
 
         /*nSlices = new Parameter(this, "nSlices");
-        nSlices.setExpression("50");
-        nSlices.setTypeEquals(BaseType.INT);*/
+          nSlices.setExpression("50");
+          nSlices.setTypeEquals(BaseType.INT);*/
 
         //FIXME How do I use static fields with this expression?
         axis = new Parameter(this, "axis");
@@ -245,7 +245,7 @@ abstract  public class GRGeometry extends GRActor3D {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-       // _nSlices = ((IntToken)nSlices.getToken()).intValue();
+        // _nSlices = ((IntToken)nSlices.getToken()).intValue();
         _axis = ((IntToken)axis.getToken()).intValue();
         _planeSpacing = ((DoubleToken)planeSpacing.getToken()).doubleValue();
     }
@@ -260,24 +260,24 @@ abstract  public class GRGeometry extends GRActor3D {
             _debug("Called prefire()");
             _debug("_isSceneGraphInitialized = " + _isSceneGraphInitialized);
         }
-            if(input.hasToken(0)){
-                System.out.println("Has token");
-                /** Set _isSceneGraphInitialized back to false so node
-                 * can be sent. fire() will set it back to true
-                 */
-                _createModel();
-                _isSceneGraphInitialized = false;
-                if(_debugging){
-                    _debug ("Prefire returns true");
-                 }
-                return true;
-            }else {
-                   System.out.println("Does not have token");
-                   if(_debugging){
-                    _debug ("Prefire returns false");
-                 }
-                return false;
+        if(input.hasToken(0)){
+            System.out.println("Has token");
+            /** Set _isSceneGraphInitialized back to false so node
+             * can be sent. fire() will set it back to true
+             */
+            _createModel();
+            _isSceneGraphInitialized = false;
+            if(_debugging){
+                _debug ("Prefire returns true");
             }
+            return true;
+        }else {
+            System.out.println("Does not have token");
+            if(_debugging){
+                _debug ("Prefire returns false");
+            }
+            return false;
+        }
     }
 
     /** Override the base class to ensure that material and

@@ -1,4 +1,4 @@
- /* An actor that performs volume rendering using 2D textures.
+/* An actor that performs volume rendering using 2D textures.
 
 Copyright (c) 1998-2005 The Regents of the University of California.
 All rights reserved.
@@ -192,14 +192,14 @@ public class GRTexture2D extends GRGeometry {
     /** The input port that reads a in a URL to the file holding the
      *  volume to be rendered.
      */
-   // public FilePortParameter voxelFile;
+    // public FilePortParameter voxelFile;
 
 
 
     public void initialize() throws IllegalActionException {
         super.initialize();
         /** Initialize some variables */
-       // _parameterPort = voxelFile.getPort();_parameterPort = voxelFile.getPort();
+        // _parameterPort = voxelFile.getPort();_parameterPort = voxelFile.getPort();
         _sSize = (int) ((IntToken) xResolution.getToken()).intValue();
         _tSize = (int) ((IntToken) yResolution.getToken()).intValue();
         _counter = 0;
@@ -211,94 +211,94 @@ public class GRTexture2D extends GRGeometry {
      *  @exception IllegalActionException Not thrown in this base class
      * @throws
      */
-  /*public boolean prefire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called prefire()");
-            _debug("_isSceneGraphInitialized = " + _isSceneGraphInitialized);
-            _debug("Does port have token?" + _parameterPort.hasToken(0));
-        }
+    /*public boolean prefire() throws IllegalActionException {
+      if (_debugging) {
+      _debug("Called prefire()");
+      _debug("_isSceneGraphInitialized = " + _isSceneGraphInitialized);
+      _debug("Does port have token?" + _parameterPort.hasToken(0));
+      }
 
-          if (_parameterPort.hasToken(0)){
-                texture.update();
+      if (_parameterPort.hasToken(0)){
+      texture.update();
 
-                /** Set _isSceneGraphInitialized back to false so
-                 * node can be sent. fire() will set it back to true
-                 */
+      /** Set _isSceneGraphInitialized back to false so
+      * node can be sent. fire() will set it back to true
+      */
 
-         /*       _createModel();
-                //FIXME: Problem with name of variable, talk to Edward
-                _isSceneGraphInitialized = false;
+    /*       _createModel();
+    //FIXME: Problem with name of variable, talk to Edward
+    _isSceneGraphInitialized = false;
 
-                if (_debugging) {
-                    _debug("Prefire returned true");
-                    _debug("texture = " + texture);
-                }
-                return true;
-            }else {
+    if (_debugging) {
+    _debug("Prefire returned true");
+    _debug("texture = " + texture);
+    }
+    return true;
+    }else {
 
-                return false;
-            }
-        } */
+    return false;
+    }
+    } */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     /** Create the geometry for the Node that will hold the texture.
      */
     protected void _createGeometry() throws IllegalActionException {
-            _plane = new QuadArray(4, GeometryArray.COORDINATES|
+        _plane = new QuadArray(4, GeometryArray.COORDINATES|
                 GeometryArray.TEXTURE_COORDINATE_2);
 
         if (_debugging) {
             _debug("inside _createGeometry");
             _debug("_axis = " + _axis);
-           }
+        }
 
         _quadCoords = new double [12];
         _texCoords = new float [8];
 
         if(_axis == 1){
-        double curY = _counter * _planeSpacing -.5;
+            double curY = _counter * _planeSpacing -.5;
 
-        if (_debugging) {
-         _debug("counter = " + _counter);
-         _debug("curY = " + curY);
+            if (_debugging) {
+                _debug("counter = " + _counter);
+                _debug("curY = " + curY);
 
-        }
+            }
 
-        /** Set coordinates for the plane.  These coordinates assume
-         * that the the image's origin is at the lower left and rotates
-         * it 90 degrees about the x-axis.
-         */
-        // lower left
-        _quadCoords[0] = -0.5;
-        _quadCoords[1] = curY;
-        _quadCoords[2] = 0.5;
-        _texCoords[0]= 0;
-        _texCoords[1]= 0;
-
-
-        // lower right
-        _quadCoords[3] = 0.5;
-        _quadCoords[4] = curY;
-        _quadCoords[5] = 0.5;
-        _texCoords[2]= 1;
-        _texCoords[3]= 0;
+            /** Set coordinates for the plane.  These coordinates assume
+             * that the the image's origin is at the lower left and rotates
+             * it 90 degrees about the x-axis.
+             */
+            // lower left
+            _quadCoords[0] = -0.5;
+            _quadCoords[1] = curY;
+            _quadCoords[2] = 0.5;
+            _texCoords[0]= 0;
+            _texCoords[1]= 0;
 
 
-        // upper right
-        _quadCoords[6] = 0.5;
-        _quadCoords[7] = curY;
-        _quadCoords[8] = -0.5;
-        _texCoords[4]= 1;
-        _texCoords[5]= 1;
+            // lower right
+            _quadCoords[3] = 0.5;
+            _quadCoords[4] = curY;
+            _quadCoords[5] = 0.5;
+            _texCoords[2]= 1;
+            _texCoords[3]= 0;
 
 
-        // upper left
-        _quadCoords[9] = -0.5;
-        _quadCoords[10] = curY;
-        _quadCoords[11] = -0.5;
-        _texCoords[6]= 0;
-        _texCoords[7]= 1;
+            // upper right
+            _quadCoords[6] = 0.5;
+            _quadCoords[7] = curY;
+            _quadCoords[8] = -0.5;
+            _texCoords[4]= 1;
+            _texCoords[5]= 1;
+
+
+            // upper left
+            _quadCoords[9] = -0.5;
+            _quadCoords[10] = curY;
+            _quadCoords[11] = -0.5;
+            _texCoords[6]= 0;
+            _texCoords[7]= 1;
         } else if (_axis == 2){
 
             double curZ = _counter * _planeSpacing - .5;
@@ -378,7 +378,7 @@ public class GRTexture2D extends GRGeometry {
             if (_debugging) {
                 _debug("chose none of them");
 
-               }
+            }
         }
 
 
@@ -388,131 +388,131 @@ public class GRTexture2D extends GRGeometry {
     }
 
     protected void _createModel()throws IllegalActionException {
-            _readImage();
-            _counter++;
-            super._createModel();
+        _readImage();
+        _counter++;
+        super._createModel();
         _loadTexture();
     }
 
 
-   /** Create the texture used for this 3D object.
-    * Define the texture coordinates and textureAttributes.
-    * @throws IllegalActionException
-    */
-   protected void _loadTexture() throws IllegalActionException {
+    /** Create the texture used for this 3D object.
+     * Define the texture coordinates and textureAttributes.
+     * @throws IllegalActionException
+     */
+    protected void _loadTexture() throws IllegalActionException {
 
-    if (_debugging) {
-        _debug("About to loadTexture");
-    }
+        if (_debugging) {
+            _debug("About to loadTexture");
+        }
 
-     TextureAttributes attributes = null;
+        TextureAttributes attributes = null;
 
-    /*int arrayLength = _sSize*_tSize;
-     double fraction = 1/255;
+        /*int arrayLength = _sSize*_tSize;
+          double fraction = 1/255;
 
-     if (_debugging) {
-        _debug("arrayLength = " + arrayLength);
-        _debug("fraction = " + fraction);
-     }
-     double[] pixelArray = new double[arrayLength];
-     double[] alphaArray = new double[arrayLength]; */
+          if (_debugging) {
+          _debug("arrayLength = " + arrayLength);
+          _debug("fraction = " + fraction);
+          }
+          double[] pixelArray = new double[arrayLength];
+          double[] alphaArray = new double[arrayLength]; */
 
-   /*  try {
-                _bufferedImage = (BufferedImage)ImageIO.read (new File(_fileRoot));
-        } catch (IOException e) {
-        System.err.println(e);
-        _bufferedImage = null;
-        }*/
-    /* _alphaRaster = _bufferedImage.getAlphaRaster();
-     if (_debugging){
-        _debug("_bufferedImage = " + _bufferedImage);
-        _debug("Number of bands in _alphaRaster = " + _alphaRaster.getNumBands());
-     }
+        /*  try {
+            _bufferedImage = (BufferedImage)ImageIO.read (new File(_fileRoot));
+            } catch (IOException e) {
+            System.err.println(e);
+            _bufferedImage = null;
+            }*/
+        /* _alphaRaster = _bufferedImage.getAlphaRaster();
+           if (_debugging){
+           _debug("_bufferedImage = " + _bufferedImage);
+           _debug("Number of bands in _alphaRaster = " + _alphaRaster.getNumBands());
+           }
 
-    _dataRaster = (WritableRaster)_bufferedImage.getData();
-     _dataRaster.getPixels(0,0,_sSize,_tSize,pixelArray );
+           _dataRaster = (WritableRaster)_bufferedImage.getData();
+           _dataRaster.getPixels(0,0,_sSize,_tSize,pixelArray );
 
-     if (_debugging){
-        _debug("Number of bands in _dataRaster = " + _dataRaster.getNumBands());
-     }
+           if (_debugging){
+           _debug("Number of bands in _dataRaster = " + _dataRaster.getNumBands());
+           }
 
-     for (int i=0; i < arrayLength; i ++){
-        alphaArray[i] = 1 - pixelArray[i]*fraction;
-     }
+           for (int i=0; i < arrayLength; i ++){
+           alphaArray[i] = 1 - pixelArray[i]*fraction;
+           }
 
-     _dataRaster.setSamples(0,0,_sSize,_tSize,4, alphaArray); */
+           _dataRaster.setSamples(0,0,_sSize,_tSize,4, alphaArray); */
 
-    //if (_fileURL != null) {
-    /*     MyTextureLoader loader;
-         //String format = "LUMINANCE_ALPHA";
-         loader = new MyTextureLoader(_bufferedImage,_viewScreen.getCanvas());*/
-         if (_debugging) {
-             _debug("Loaded texture");
-         }
-         MyTextureLoader loader;
-    //     if (_token.getClass().toString() == "class ptolemy.data.AWTImageToken"){
-                 loader = new MyTextureLoader(_image, _viewScreen.getCanvas());
-      //   }else {
-          //  loader = new MyTextureLoader(_fileRoot, _viewScreen.getCanvas());
+        //if (_fileURL != null) {
+        /*     MyTextureLoader loader;
+        //String format = "LUMINANCE_ALPHA";
+        loader = new MyTextureLoader(_bufferedImage,_viewScreen.getCanvas());*/
+        if (_debugging) {
+            _debug("Loaded texture");
+        }
+        MyTextureLoader loader;
+        //     if (_token.getClass().toString() == "class ptolemy.data.AWTImageToken"){
+        loader = new MyTextureLoader(_image, _viewScreen.getCanvas());
+        //   }else {
+        //  loader = new MyTextureLoader(_fileRoot, _viewScreen.getCanvas());
         // }
 
-         /* Get the Loaded Texture */
-         Texture loadedTexture = loader.getTexture();
-         if (_debugging) {
-             _debug("got texture");
-             _debug("Texture format is = " + loadedTexture.getFormat());
-         }
+        /* Get the Loaded Texture */
+        Texture loadedTexture = loader.getTexture();
+        if (_debugging) {
+            _debug("got texture");
+            _debug("Texture format is = " + loadedTexture.getFormat());
+        }
 
 
 
 
 
-         if (loadedTexture != null) {
-             attributes = new TextureAttributes();
-             attributes.setTextureMode(TextureAttributes.MODULATE);
+        if (loadedTexture != null) {
+            attributes = new TextureAttributes();
+            attributes.setTextureMode(TextureAttributes.MODULATE);
 
-             _appearance.setTextureAttributes(attributes);
+            _appearance.setTextureAttributes(attributes);
 
-             _appearance.setTexture(loadedTexture);
-         }
-     //}
+            _appearance.setTexture(loadedTexture);
+        }
+        //}
 
-   }
+    }
 
 
     /**Read in file. */
     protected void _readImage() throws IllegalActionException {
-/*
-        _url = texture.asURL();
-        /**Read in image containing data to be mapped
-        if (_url == null) {
-            throw new IllegalActionException("sourceURL was null");
+        /*
+          _url = texture.asURL();
+          /**Read in image containing data to be mapped
+          if (_url == null) {
+          throw new IllegalActionException("sourceURL was null");
+          }
+          _fileRoot = _url.getFile();
+          if (_imagePlus == null) {
+          _imagePlus = new ImagePlus(_fileRoot);
+          } */
+
+        _token = input.get(0);
+
+        if (_token.getClass().toString() == "class ptolemy.data.AWTImageToken"){
+            System.out.println("If returned true");
+            ImageToken imageToken;
+            imageToken = (ImageToken) _token;
+            _image = imageToken.asAWTImage();
+            System.out.println("token = " + _token.getType());
+            System.out.println("token = " + _token.getClass().toString());
         }
-        _fileRoot = _url.getFile();
-        if (_imagePlus == null) {
-            _imagePlus = new ImagePlus(_fileRoot);
-        } */
-
-      _token = input.get(0);
-
-     if (_token.getClass().toString() == "class ptolemy.data.AWTImageToken"){
-      System.out.println("If returned true");
-      ImageToken imageToken;
-      imageToken = (ImageToken) _token;
-      _image = imageToken.asAWTImage();
-      System.out.println("token = " + _token.getType());
-      System.out.println("token = " + _token.getClass().toString());
-     }
-     ImageToken imageToken;
-     imageToken = (ImageToken) _token;
-     _image = imageToken.asAWTImage();
-     System.out.println("token = " + _token.getType());
-     System.out.println("token = " + _token.getClass().toString());
-      /* }/*else{
-        StringToken stringToken;
-        stringToken = (StringToken) _token;
-        _fileRoot = stringToken.stringValue();
-      }*/
+        ImageToken imageToken;
+        imageToken = (ImageToken) _token;
+        _image = imageToken.asAWTImage();
+        System.out.println("token = " + _token.getType());
+        System.out.println("token = " + _token.getClass().toString());
+        /* }/*else{
+           StringToken stringToken;
+           stringToken = (StringToken) _token;
+           _fileRoot = stringToken.stringValue();
+           }*/
     }
 
 
