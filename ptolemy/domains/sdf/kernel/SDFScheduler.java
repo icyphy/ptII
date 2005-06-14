@@ -793,7 +793,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @return The number of times the actor can fire.
      *  @exception IllegalActionException If the rate parameters are invalid.
      */
-    private int _computeMaximumFirings(ComponentEntity currentActor,
+    protected int _computeMaximumFirings(ComponentEntity currentActor,
             Map waitingTokens) throws IllegalActionException {
         int maximumFirings = Integer.MAX_VALUE;
 
@@ -839,7 +839,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @return The number of unfulfilled inputs of the given actor.
      *  @exception IllegalActionException If any called method throws it.
      */
-    private int _countUnfulfilledInputs(Actor actor, LinkedList actorList,
+    protected int _countUnfulfilledInputs(Actor actor, LinkedList actorList,
             Map waitingTokens) throws IllegalActionException {
         if (_debugging && VERBOSE) {
             _debug("Counting unfulfilled inputs for "
@@ -894,7 +894,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  by the entity.
      *  @param entity One of the actors we are scheduling.
      */
-    private int _getFiringCount(Entity entity) {
+    protected int _getFiringCount(Entity entity) {
         return ((Integer) _firingVector.get(entity)).intValue();
     }
 
@@ -1593,7 +1593,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *
      *  @param newFiringVector A map from ComponentEntity to Integer.
      */
-    private void _setFiringVector(Map newFiringVector) {
+    protected void _setFiringVector(Map newFiringVector) {
         _firingVector = newFiringVector;
     }
 
@@ -1603,7 +1603,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      * very large number, since we assume that each external input port
      * is automatically fulfilled.
      */
-    private void _simulateExternalInputs(IOPort port, int count,
+    protected void _simulateExternalInputs(IOPort port, int count,
             LinkedList actorList, Map waitingTokens, Map minimumBufferSize)
             throws IllegalActionException {
         Receiver[][] receivers = port.deepGetReceivers();
@@ -1700,7 +1700,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  after it has consumed tokens.
      *  @exception IllegalActionException If the rate parameters are invalid.
      */
-    private boolean _simulateInputConsumption(ComponentEntity currentActor,
+    protected boolean _simulateInputConsumption(ComponentEntity currentActor,
             Map waitingTokens, int firingCount) throws IllegalActionException {
         boolean stillReadyToSchedule = true;
 
@@ -1742,6 +1742,10 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      * @param waitingTokens A map from port to an array of integers
      * representing the number of tokens in each receiver of an input port.
      * This will be updated according to the tokens that are created.
+     * @param minimumBufferSize A map from relation to an Integer
+     * representing the minimum size buffer necessary for the computed
+     * schedule.  The map will be populated during the execution of this
+     * method.
      */
     private void _simulateTokensCreated(IOPort outputPort, int createdTokens,
             LinkedList actorList, LinkedList readyToScheduleActorList,
@@ -1862,7 +1866,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     /** The firing vector.  A map from actor to an integer representing the
      * number of times the actor will fire.
      */
-    private Map _firingVector;
+    protected Map _firingVector;
 
     /** A fraction equal to -1.  Used in several places to indicate an
      * actor for which we have not determined the number of times it will
@@ -1876,7 +1880,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      * It gets populated with the fractional production ratios
      * and is used in the end to set final rates on external ports.
      */
-    private Map _externalRates = new TreeMap(new DFUtilities.NamedObjComparator());
+    protected Map _externalRates = new TreeMap(new DFUtilities.NamedObjComparator());
 
     //private Set _clusteredActors = new HashSet();
     //private Set _clusteredExternalPorts = new HashSet();
@@ -1884,5 +1888,5 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     /** The list of rate variables that this scheduler is listening to
      * for rate changes.
      */
-    private List _rateVariables = new LinkedList();
+    protected List _rateVariables = new LinkedList();
 }
