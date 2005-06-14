@@ -1,0 +1,64 @@
+<html>
+<head>
+<title>Simulation of cooperative behaviour using Visualsense and Ptolemy II</title>
+</head>
+
+<body>
+
+
+<H1>Simulation of cooperative behaviour using Visualsense and Ptolemy II</H1>
+
+<p>The model that illustrates cooperative behaviour has been
+developed with Visualsense, Visual Modeling for Wireless (and Sensor Network)
+Systems (a subset of Ptolemy).</p>
+
+<p>The modeling capabilities to be highlighted that are
+relevant in this context are:</p>
+
+
+<ul>
+ <li>Packet Structure: The sophisticated type system
+     includes record types that can be used to transmit properties and
+     construct packets.</li>
+ <li>Packet Losses: Channels include the parameter <i>lossProbability</i>
+     that can be used to model independent, identically distributed packet
+     losses. </li>
+ <li><st1:place w:st="on">Battery</st1:place> Power:
+     arbitrary Ptolemy models can model the allowing incorporating models of
+     energy and power consumption.</li>
+ <li>Power Loss: power variability can be model at the
+     receiver as for example a function of distance.</li>
+ <li>Collisions: By including events duration to the
+     underlying discrete-event semantics collisions can be modeled.</li>
+ <li>Transmit Antenna Gain: allows for modeling of
+     directional antennas.</li>
+</ul>
+
+
+<p>The model represents an scenario
+with a base station and cooperative terminals that belong to a group. The base
+station sends a packet every 2 seconds. A red circle is depicted whenever a
+packet is sent. The concentric black circle visually shows the range of the
+base station. Terminals outside of range won’t receive any packets. Terminals
+can move around. A red circle is depicted whenever a packet is received. The execution
+semantics are discrete events, where interaction between components is via
+events with time stamps. The execution of the model can be synchronized to Real
+Time. Components are defined as classes that define different types of
+terminals, they can be instantiated to include more terminals of a given type
+in the model. All the terminals in the model have been instantiated from one of
+the given classes. Properties can be configured for the base station, as for
+example, the transmission range. Different properties can be specified for the
+data transmission channel, for example the <i>lossProbability. </i>Properties
+can be configured for the terminals as for example, the group they belong to. The
+model can be navigated. Right-click and Look inside on a component and the
+sub-model inside is open in another window. Documentation is included in the
+model to make it more comprehensible. Some components have been developed
+specifically for the project. Every component is documented. Right-click over
+it and Get Documentation opens it.</p>
+
+
+<p>The aim of the demonstrator is to
+show the percentage of successfully received packets by each group.</p>
+</body>
+
+</html>
