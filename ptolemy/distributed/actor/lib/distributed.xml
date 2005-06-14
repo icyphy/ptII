@@ -1,0 +1,41 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="distributed" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Distributed Actors</doc>
+
+      <entity name="DistributedLineWriter" class="ptolemy.distributed.actor.lib.DistributedLineWriter">
+        <doc>Outputs a line with the incoming token in the standard output.</doc>
+      </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
