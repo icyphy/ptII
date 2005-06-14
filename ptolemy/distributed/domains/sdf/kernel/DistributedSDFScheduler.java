@@ -68,30 +68,30 @@ From the topological sort a schedule is created containing subschedules that
 contain the actors in the different levels, indicating they can be executed
 in parallel.
 I.e.:
-  <table border="0" cellpadding="0" cellspacing="0" width="300" align="center">
-    <tr>
-      <td width="20%" align="center">&nbsp;</td>
-      <td width="20%" align="center">&nbsp;</td>
-      <td width="20%" align="center">A</td>
-      <td width="20%" align="center">&nbsp;</td>
-      <td width="20%" align="center">&nbsp;</td>
-    </tr>
-    <tr>
-      <td width="20%" align="center">&nbsp;</td>
-      <td width="20%" align="center">B</td>
-      <td width="20%" align="center">&nbsp;</td>
-      <td width="20%" align="center">C</td>
-      <td width="20%" align="center">&nbsp;</td>
-    </tr>
-    <tr>
-      <td width="20%" align="center">D</td>
-      <td width="20%" align="center">&nbsp;</td>
-      <td width="20%" align="center">E&nbsp;&nbsp;&nbsp;&nbsp;
-      F</td>
-      <td width="20%" align="center">&nbsp;</td>
-      <td width="20%" align="center">G</td>
-    </tr>
-  </table>
+<table border="0" cellpadding="0" cellspacing="0" width="300" align="center">
+<tr>
+<td width="20%" align="center">&nbsp;</td>
+<td width="20%" align="center">&nbsp;</td>
+<td width="20%" align="center">A</td>
+<td width="20%" align="center">&nbsp;</td>
+<td width="20%" align="center">&nbsp;</td>
+</tr>
+<tr>
+<td width="20%" align="center">&nbsp;</td>
+<td width="20%" align="center">B</td>
+<td width="20%" align="center">&nbsp;</td>
+<td width="20%" align="center">C</td>
+<td width="20%" align="center">&nbsp;</td>
+</tr>
+<tr>
+<td width="20%" align="center">D</td>
+<td width="20%" align="center">&nbsp;</td>
+<td width="20%" align="center">E&nbsp;&nbsp;&nbsp;&nbsp;
+F</td>
+<td width="20%" align="center">&nbsp;</td>
+<td width="20%" align="center">G</td>
+</tr>
+</table>
 
 <ul>
 <li>Sequential: (ABDECFG)
@@ -122,7 +122,7 @@ have been modified their visibility from private to protected.
 @Pt.ProposedRating Red (kapokasa)
 @Pt.AcceptedRating
 @see ptolemy.domains.sdf.kernel.SDFScheduler
- */
+*/
 public class DistributedSDFScheduler extends SDFScheduler {
 
     /** Construct a scheduler with no container(director)
@@ -154,7 +154,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *   an attribute already in the container.
      */
     public DistributedSDFScheduler(Director container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -327,8 +327,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
         }
 
         /**************************************************
-        * > NEW!                                          *
-        **************************************************/
+         * > NEW!                                          *
+         **************************************************/
         // Schedule all the actors using the calculated firings.
         Schedule result =
             _scheduleInParallelConnectedActors(minimumBufferSize, externalRates,
@@ -547,7 +547,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                 }
             }
 
-//            System.out.println("readyToScheduleActorList:" + readyToScheduleActorList.toString());
+            //            System.out.println("readyToScheduleActorList:" + readyToScheduleActorList.toString());
             /**************************************************
              * > NEW!                                         *
              **************************************************/
@@ -555,17 +555,17 @@ public class DistributedSDFScheduler extends SDFScheduler {
             // to keep track of when we finalize processing every level.
             for (Iterator actors = readyToScheduleActorList.iterator();
                  actors.hasNext();)
-            {
-                // Changed from addFirst to addLast, this does not really
-                // matter since this is are all the sources that have
-                // no input requirements to be fired.
-                parallelLevel.addLast((Actor)actors.next());
-            }
+                {
+                    // Changed from addFirst to addLast, this does not really
+                    // matter since this is are all the sources that have
+                    // no input requirements to be fired.
+                    parallelLevel.addLast((Actor)actors.next());
+                }
             /**************************************************
              * > NEW!                                         *
              **************************************************/
 
-//            System.out.println("parallelLevel:" + parallelLevel.toString());
+            //            System.out.println("parallelLevel:" + parallelLevel.toString());
 
             // While we have actors left, pick one that is ready and fire it.
             while (readyToScheduleActorList.size() > 0) {
@@ -689,7 +689,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                      * < NEW!                                         *
                      **************************************************/
                 }
-//                System.out.println(parallelLevel.get(parallelLevel.size()-1));
+                //                System.out.println(parallelLevel.get(parallelLevel.size()-1));
 
                 /**************************************************
                  * > NEW!                                         *

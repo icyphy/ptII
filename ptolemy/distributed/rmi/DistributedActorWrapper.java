@@ -52,17 +52,17 @@ import ptolemy.moml.MoMLParser;
 //// DistributedActorWrapper
 
 /**
-The DistributedActorWrapper implements the RemoteDistributedActor interface.
-It is a remote distributed actor and wraps actors inside, making them believe
-they are executed locally while they are distributed. It receives rmi calls.
-The calls to methods that exist in the actor interface are forwarded to the
-wrapped actor.
+   The DistributedActorWrapper implements the RemoteDistributedActor interface.
+   It is a remote distributed actor and wraps actors inside, making them believe
+   they are executed locally while they are distributed. It receives rmi calls.
+   The calls to methods that exist in the actor interface are forwarded to the
+   wrapped actor.
 
-@author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version
-@since
-@Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating
+   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+   @version
+   @since
+   @Pt.ProposedRating Red (kapokasa)
+   @Pt.AcceptedRating
 */
 
 public class DistributedActorWrapper implements RemoteDistributedActor {
@@ -182,7 +182,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
 
         if (VERBOSE) {
             System.out.println("MoML Comparison after loading: " +
-                               moml.equals(((ComponentEntity) actor).exportMoML()));
+                    moml.equals(((ComponentEntity) actor).exportMoML()));
         }
 
         System.out.println("Class: " + actor.getClass() + " loaded.");
@@ -265,9 +265,9 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
             System.out.println("Received data. Token: " + token.toString() + " ids: " + idsList);
         }
         for (Iterator ids = idsList.iterator(); ids.hasNext();) {
-             Integer id = (Integer) ids.next();
-             Receiver receiver = (Receiver) idsReceiversMap.get(id);
-             receiver.put(token);
+            Integer id = (Integer) ids.next();
+            Receiver receiver = (Receiver) idsReceiversMap.get(id);
+            receiver.put(token);
         }
         if (VERBOSE) {
             System.out.println("Data Transferred to receivers");
@@ -321,7 +321,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                 Integer[][] integerReceivers = (Integer[][]) connections.get(portName);
                 if (VERBOSE) {
                     System.out.println("Receivers received for " + portName + "\n" +
-                                        DistributedUtilities.integersArrayToString(integerReceivers));
+                            DistributedUtilities.integersArrayToString(integerReceivers));
                 }
                 for (int i = 0; i < integerReceivers.length; i++) {
 
@@ -329,13 +329,13 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                         relation = (DistributedTypedIORelation) compositeActor.newRelation(portName + number);
                         number += 1;
                         if (VERBOSE) {
-//                            System.out.println("> for Port : " + portName + " created Relation: " + relation.getName());
+                            //                            System.out.println("> for Port : " + portName + " created Relation: " + relation.getName());
                         }
                         port.link(relation);
                     } catch (NameDuplicationException e) {
-                         e.printStackTrace();
+                        e.printStackTrace();
                     } catch (IllegalActionException e) {
-                         e.printStackTrace();
+                        e.printStackTrace();
                     }
                 }
                 director.setListOfIds(DistributedUtilities.convertIntegersToList(integerReceivers));
@@ -346,7 +346,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                 }
                 if (VERBOSE) {
                     System.out.println("Receivers created for " + portName + "\n" +
-                                       DistributedUtilities.receiversArrayToString(port.getReceivers()));
+                            DistributedUtilities.receiversArrayToString(port.getReceivers()));
                 }
 
 
@@ -356,13 +356,13 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                 try {
                     relation = (DistributedTypedIORelation) compositeActor.newRelation(portName);
                     if (VERBOSE) {
-//                        System.out.println("> for Port : " + portName + " created Relation: " + relation.getName());
+                        //                        System.out.println("> for Port : " + portName + " created Relation: " + relation.getName());
                     }
                     port.link(relation);
                 } catch (NameDuplicationException e) {
-                     e.printStackTrace();
+                    e.printStackTrace();
                 } catch (IllegalActionException e) {
-                     e.printStackTrace();
+                    e.printStackTrace();
                 }
                 relation.setServicesReceiversListMap((HashMap) connections.get(portName));
             }
@@ -397,10 +397,10 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
             // This is not needed, does not trigger runtime type checking on
             // these ports.
             /*
-            if (port.isOutput()) {
-                DistributedTypedIORelation relation = (DistributedTypedIORelation) compositeActor.getRelation(portName);
-                relation.connectedPort().setTypeEquals(type);
-            }
+              if (port.isOutput()) {
+              DistributedTypedIORelation relation = (DistributedTypedIORelation) compositeActor.getRelation(portName);
+              relation.connectedPort().setTypeEquals(type);
+              }
             */
         }
     }
@@ -502,85 +502,85 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
 }
 
 /*
-public boolean loadClass(String className) throws java.rmi.RemoteException {
-    Class classTemplate = null;
+  public boolean loadClass(String className) throws java.rmi.RemoteException {
+  Class classTemplate = null;
 
-    try {
-        classTemplate = Class.forName(className);
-    } catch (ClassNotFoundException e) {
-         e.printStackTrace();
-         throw new RemoteException("Remote ClassNotFoundException: " + e.getMessage());
-    }
-    return loadClass(classTemplate);
-}
+  try {
+  classTemplate = Class.forName(className);
+  } catch (ClassNotFoundException e) {
+  e.printStackTrace();
+  throw new RemoteException("Remote ClassNotFoundException: " + e.getMessage());
+  }
+  return loadClass(classTemplate);
+  }
 
-public boolean loadClass(Class classTemplate) throws java.rmi.RemoteException {
-    System.out.println("Loading class " + classTemplate.getName());
+  public boolean loadClass(Class classTemplate) throws java.rmi.RemoteException {
+  System.out.println("Loading class " + classTemplate.getName());
 
-    Class[] argumentsTemplate = {container.getClass(), name.getClass()};
-    Object[] arguments = {container, name};
+  Class[] argumentsTemplate = {container.getClass(), name.getClass()};
+  Object[] arguments = {container, name};
 
-    try {
-        constructor = classTemplate.getConstructor(argumentsTemplate);
-    } catch (SecurityException e) {
-        e.printStackTrace();
-        throw new RemoteException("Remote SecurityException: " + e.getMessage());
-    } catch (NoSuchMethodException e) {
-        e.printStackTrace();
-        throw new RemoteException("Remote NoSuchMethodException: " + e.getMessage());
-    }
+  try {
+  constructor = classTemplate.getConstructor(argumentsTemplate);
+  } catch (SecurityException e) {
+  e.printStackTrace();
+  throw new RemoteException("Remote SecurityException: " + e.getMessage());
+  } catch (NoSuchMethodException e) {
+  e.printStackTrace();
+  throw new RemoteException("Remote NoSuchMethodException: " + e.getMessage());
+  }
 
-    try {
-        actor = (Actor) constructor.newInstance(arguments);
-    } catch (IllegalArgumentException e) {
-         e.printStackTrace();
-        throw new RemoteException("Remote IllegalArgumentException: " + e.getMessage());
-    } catch (InvocationTargetException e) {
-         e.printStackTrace();
-        throw new RemoteException("Remote InvocationTargetException: " + e.getMessage());
-    } catch (IllegalAccessException e) {
-        e.printStackTrace();
-        throw new RemoteException("Remote IllegalAccessException: " + e.getMessage());
-    } catch (InstantiationException e) {
-        e.printStackTrace();
-        throw new RemoteException("Remote InstantiationException: " + e.getMessage());
-    }
+  try {
+  actor = (Actor) constructor.newInstance(arguments);
+  } catch (IllegalArgumentException e) {
+  e.printStackTrace();
+  throw new RemoteException("Remote IllegalArgumentException: " + e.getMessage());
+  } catch (InvocationTargetException e) {
+  e.printStackTrace();
+  throw new RemoteException("Remote InvocationTargetException: " + e.getMessage());
+  } catch (IllegalAccessException e) {
+  e.printStackTrace();
+  throw new RemoteException("Remote IllegalAccessException: " + e.getMessage());
+  } catch (InstantiationException e) {
+  e.printStackTrace();
+  throw new RemoteException("Remote InstantiationException: " + e.getMessage());
+  }
 
-    System.out.println(((NamedObj) actor).exportMoML());
-    System.out.println("InputPorts: ");
-    List portList = actor.inputPortList();
-    for (int i = 0; i < portList.size(); i++) {
-        System.out.println("    " + ((TypedIOPort)portList.get(i)).toString());
-    }
+  System.out.println(((NamedObj) actor).exportMoML());
+  System.out.println("InputPorts: ");
+  List portList = actor.inputPortList();
+  for (int i = 0; i < portList.size(); i++) {
+  System.out.println("    " + ((TypedIOPort)portList.get(i)).toString());
+  }
 
-    System.out.println("OutputPorts: ");
-    portList = actor.outputPortList();
-    for (int i = 0; i < portList.size(); i++) {
-        System.out.println("    " + ((TypedIOPort)portList.get(i)).toString());
-    }
-    return true;
-}
+  System.out.println("OutputPorts: ");
+  portList = actor.outputPortList();
+  for (int i = 0; i < portList.size(); i++) {
+  System.out.println("    " + ((TypedIOPort)portList.get(i)).toString());
+  }
+  return true;
+  }
 */
 /*
-public void sendReceivers(HashMap receiversMap) throws java.rmi.RemoteException {
-    if (VERBOSE) {
-        System.out.println("Received Receivers: " + receiversMap.toString());
+  public void sendReceivers(HashMap receiversMap) throws java.rmi.RemoteException {
+  if (VERBOSE) {
+  System.out.println("Received Receivers: " + receiversMap.toString());
 
-    }
-    portsReceiversMap = receiversMap;
+  }
+  portsReceiversMap = receiversMap;
 
-}
+  }
 
-/* (non-Javadoc)
- * @see ptolemy.actor.Executable#stop()
- */
+  /* (non-Javadoc)
+  * @see ptolemy.actor.Executable#stop()
+  */
 /*
-public void sendServer(ServiceItem server) throws java.rmi.RemoteException {
-    if (VERBOSE) {
-        System.out.println("Received Service: " + server.serviceID.toString() +
-         " in " + ((DistributedActor)server.service).getAddress().toString());
+  public void sendServer(ServiceItem server) throws java.rmi.RemoteException {
+  if (VERBOSE) {
+  System.out.println("Received Service: " + server.serviceID.toString() +
+  " in " + ((DistributedActor)server.service).getAddress().toString());
 
-    }
+  }
 
-}
+  }
 */

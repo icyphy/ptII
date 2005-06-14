@@ -35,14 +35,14 @@ import ptolemy.distributed.domains.sdf.kernel.DistributedSDFReceiver;
 //// DistributedUtilities
 
 /**
-Utilities for the distributed package. This includes different conversions
-and printing facilities.
+   Utilities for the distributed package. This includes different conversions
+   and printing facilities.
 
-@author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version
-@since
-@Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating
+   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+   @version
+   @since
+   @Pt.ProposedRating Red (kapokasa)
+   @Pt.AcceptedRating
 */
 
 public class DistributedUtilities {
@@ -79,7 +79,7 @@ public class DistributedUtilities {
      */
 
     public static LinkedList convertIntegersToList(Integer[][] receiversIntegers) {
-//        System.out.println("convertIntegersToList: \n" + integersArrayToString(receiversIntegers));
+        //        System.out.println("convertIntegersToList: \n" + integersArrayToString(receiversIntegers));
         LinkedList list = new LinkedList();
         for (int i = 0; i < receiversIntegers.length; i++) {
             for (int j = 0; j < receiversIntegers[i].length; j++) {
@@ -134,18 +134,18 @@ public class DistributedUtilities {
 }
 
 /*
-public static Receiver[][] convertIntegersToReceivers(Integer[][] receiversIntegers) {
-    System.out.println("convertIntegersToReceivers: \n" + integersArrayToString(receiversIntegers));
-    Receiver[][] receivers = new Receiver[receiversIntegers.length][];
-    for (int i = 0; i < receiversIntegers.length; i++) {
-        receivers[i] = new Receiver[receiversIntegers[i].length];
-        for (int j = 0; j < receivers[i].length; j++) {
-            if (receiversIntegers[i][j] != null) {
-                System.out.println("receiversIntegers[" + i + "][" + j + "] = " + receiversIntegers[i][j]);
-                receivers[i][j] = new DistributedSDFReceiver(receiversIntegers[i][j]);
-            }
-        }
-    }
-    return receivers;
-}
+  public static Receiver[][] convertIntegersToReceivers(Integer[][] receiversIntegers) {
+  System.out.println("convertIntegersToReceivers: \n" + integersArrayToString(receiversIntegers));
+  Receiver[][] receivers = new Receiver[receiversIntegers.length][];
+  for (int i = 0; i < receiversIntegers.length; i++) {
+  receivers[i] = new Receiver[receiversIntegers[i].length];
+  for (int j = 0; j < receivers[i].length; j++) {
+  if (receiversIntegers[i][j] != null) {
+  System.out.println("receiversIntegers[" + i + "][" + j + "] = " + receiversIntegers[i][j]);
+  receivers[i][j] = new DistributedSDFReceiver(receiversIntegers[i][j]);
+  }
+  }
+  }
+  return receivers;
+  }
 */

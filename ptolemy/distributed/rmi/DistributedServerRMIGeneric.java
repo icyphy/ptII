@@ -56,20 +56,20 @@ import net.jini.lookup.ServiceIDListener;
 //// DistributedServerRMIGeneric
 
 /**
-A distributed server to execute ptolemy actors in a distributed manner.
-It uses Jini as discovery protocol. It performs the following tasks:
-<ul>
-<li>Prepares for discovery of a service locator.
-<li>Loading of various settings as Unicast locators and service class.
-<li>Discovers the service locator (unicast, multicast or both).
-<li>Creates and exports the service proxy (that allows for RMI calls).
-<li>Stays alive.
-</ul>
-@author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version
-@since
-@Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating
+   A distributed server to execute ptolemy actors in a distributed manner.
+   It uses Jini as discovery protocol. It performs the following tasks:
+   <ul>
+   <li>Prepares for discovery of a service locator.
+   <li>Loading of various settings as Unicast locators and service class.
+   <li>Discovers the service locator (unicast, multicast or both).
+   <li>Creates and exports the service proxy (that allows for RMI calls).
+   <li>Stays alive.
+   </ul>
+   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+   @version
+   @since
+   @Pt.ProposedRating Red (kapokasa)
+   @Pt.AcceptedRating
 */
 
 public class DistributedServerRMIGeneric implements ServiceIDListener, DiscoveryListener {
@@ -92,7 +92,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
             try {
                 keepAlive.wait();
             } catch(InterruptedException e) {
-            // do nothing
+                // do nothing
             }
         }
     }
@@ -119,7 +119,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
         try {
             System.out.println("Starting server in: ");
             System.out.println("    " + InetAddress.getLocalHost().getHostName() + " (" +
-                                InetAddress.getLocalHost().getHostAddress() + ")");
+                    InetAddress.getLocalHost().getHostAddress() + ")");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -145,21 +145,21 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
         JoinManager joinMgr = null;
         try {
             LookupDiscoveryManager mgr = new LookupDiscoveryManager(groups,
-                                                                    unicastLocators,  // unicast locators
-                                                                    this); // DiscoveryListener
+                    unicastLocators,  // unicast locators
+                    this); // DiscoveryListener
             if (serviceID != null) {
                 joinMgr = new JoinManager(proxy, // service proxy
-                                          entries,  // attr sets
-                                          serviceID,  // ServiceID
-                                          mgr,   // DiscoveryManager
-                                          new LeaseRenewalManager());
+                        entries,  // attr sets
+                        serviceID,  // ServiceID
+                        mgr,   // DiscoveryManager
+                        new LeaseRenewalManager());
             } else {
                 joinMgr = new JoinManager(proxy, // service proxy
-                                          entries,  // attr sets
-                                          this,  // ServiceIDListener
-                                          mgr,   // DiscoveryManager
-                                          new LeaseRenewalManager());
-        }
+                        entries,  // attr sets
+                        this,  // ServiceIDListener
+                        mgr,   // DiscoveryManager
+                        new LeaseRenewalManager());
+            }
         } catch(Exception e) {
             e.printStackTrace();
             System.exit(1);
@@ -198,18 +198,18 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
         try {
             System.out.print("Reading exporter: ");
             exporter = (Exporter) configuration.getEntry(SERVER,
-                        "exporter",
-                        Exporter.class);
+                    "exporter",
+                    Exporter.class);
             System.out.println(exporter);
             System.out.print("Reading service: ");
             service = (Remote) configuration.getEntry(SERVER,
-                        "service",
-                        Remote.class);
+                    "service",
+                    Remote.class);
             System.out.println(service);
             System.out.print("Reading codebase: ");
             codebase = (String) configuration.getEntry(SERVER,
-                        "codebase",
-                        String.class);
+                    "codebase",
+                    String.class);
             System.out.println(codebase);
         } catch(NoSuchEntryException  e) {
             System.err.println("No config entry for " + e);
@@ -224,35 +224,35 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
         try {
             System.out.println("Reading unicastLocators: ");
             unicastLocators = (LookupLocator[])
-            configuration.getEntry( SERVER,
-                                    "unicastLocators",
-                                    LookupLocator[].class,
-                                    null); // default
+                configuration.getEntry( SERVER,
+                        "unicastLocators",
+                        LookupLocator[].class,
+                        null); // default
             for (int i=0; i<unicastLocators.length; i++) {
                 System.out.println("    " + unicastLocators[i]);
             }
 
             System.out.println("Reading entries: ");
             entries = (Entry[])
-            configuration.getEntry( SERVER,
-                                    "entries",
-                                    Entry[].class,
-                                    null); // default
+                configuration.getEntry( SERVER,
+                        "entries",
+                        Entry[].class,
+                        null); // default
             for (int i=0; i<entries.length; i++) {
                 System.out.println("    " + entries[i]);
             }
             System.out.print("Reading serviceIdFile: ");
             serviceIdFile = (File)
-            configuration.getEntry( SERVER,
-                                    "serviceIdFile",
-                                    File.class,
-                                    null); // default
+                configuration.getEntry( SERVER,
+                        "serviceIdFile",
+                        File.class,
+                        null); // default
             System.out.println(serviceIdFile);
             System.out.println("Reading groups: ");
             groups = (String[]) configuration.getEntry( SERVER,
-                                                        "groups",
-                                                        String[].class,
-                                                        null); // default
+                    "groups",
+                    String[].class,
+                    null); // default
             if (groups.length != 0) {
                 for (int i=0; i<groups.length; i++) {
                     System.out.println("    " + groups[i]);
@@ -282,18 +282,18 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
 
         // try to save the service ID in a file
         /*
-        if (serviceIdFile != null) {
-            DataOutputStream dout = null;
-            try {
-            dout = new DataOutputStream(new FileOutputStream(serviceIdFile));
-            serviceID.writeBytes(dout);
-            dout.flush();
-            dout.close();
-            System.out.println("Service id saved in " +  serviceIdFile);
-            } catch(Exception e) {
-            // ignore
-            }
-        }
+          if (serviceIdFile != null) {
+          DataOutputStream dout = null;
+          try {
+          dout = new DataOutputStream(new FileOutputStream(serviceIdFile));
+          serviceID.writeBytes(dout);
+          dout.flush();
+          dout.close();
+          System.out.println("Service id saved in " +  serviceIdFile);
+          } catch(Exception e) {
+          // ignore
+          }
+          }
         */
     }
 
@@ -330,12 +330,12 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
             ServiceRegistrar registrar = registrars[n];
 
             try {
-            System.out.println("Found a service locator at " + registrar.getLocator().getHost());
+                System.out.println("Found a service locator at " + registrar.getLocator().getHost());
             } catch(RemoteException e) {
                 e.printStackTrace();
                 continue;
             }
-    }
+        }
 
 
     }

@@ -34,19 +34,19 @@ import java.util.HashMap;
 //// DistributedActor
 
 /**
-An DistributedActor is a distributed executable entity. This interface defines the common
-functionality in DistributedActorWrapper and further implementations of
-distributed Actors. It defines the <i>action methods</i>, which determine
-how an distributed object can be invoked. It should be implemented by distributed actors.
+   An DistributedActor is a distributed executable entity. This interface defines the common
+   functionality in DistributedActorWrapper and further implementations of
+   distributed Actors. It defines the <i>action methods</i>, which determine
+   how an distributed object can be invoked. It should be implemented by distributed actors.
 
-@author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version
-@since
-@Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating
-@see ptolemy.distributed.rmi.DistributedActorWrapper
-@see ptolemy.actor.Actor
-@see ptolemy.actor.Executable
+   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+   @version
+   @since
+   @Pt.ProposedRating Red (kapokasa)
+   @Pt.AcceptedRating
+   @see ptolemy.distributed.rmi.DistributedActorWrapper
+   @see ptolemy.actor.Actor
+   @see ptolemy.actor.Executable
 */
 
 public interface DistributedActor {

@@ -34,16 +34,16 @@ import ptolemy.kernel.util.IllegalActionException;
 //// DistributedSDFReceiver
 
 /**
-The DistributedSDFReceiver class extends SDFReceiver with an unique ID. This
-is useful in order to unambiguously identify receivers in a distributed
-environment.
+   The DistributedSDFReceiver class extends SDFReceiver with an unique ID. This
+   is useful in order to unambiguously identify receivers in a distributed
+   environment.
 
-@author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version
-@since
-@Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating
-@see ptolemy.domains.sdf.kernel.SDFReceiver
+   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+   @version
+   @since
+   @Pt.ProposedRating Red (kapokasa)
+   @Pt.AcceptedRating
+   @see ptolemy.domains.sdf.kernel.SDFReceiver
 */
 public class DistributedSDFReceiver extends SDFReceiver {
 
@@ -70,7 +70,7 @@ public class DistributedSDFReceiver extends SDFReceiver {
      *   not accept this receiver.
      */
     public DistributedSDFReceiver(IOPort container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super(container);
         init();
     }
@@ -83,7 +83,7 @@ public class DistributedSDFReceiver extends SDFReceiver {
      *   not accept this receiver.
      */
     public DistributedSDFReceiver(IOPort container, int size)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super(container, size);
         init();
     }

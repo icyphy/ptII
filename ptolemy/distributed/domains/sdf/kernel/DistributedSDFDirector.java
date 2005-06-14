@@ -1,27 +1,27 @@
 /* Director for the distributed version of the synchronous dataflow
  * model of computation.
 
-@Copyright (c) 2005 The Regents of Aalborg University.
-All rights reserved.
+ @Copyright (c) 2005 The Regents of Aalborg University.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
-HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
+ HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 package ptolemy.distributed.domains.sdf.kernel;
@@ -133,7 +133,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public DistributedSDFDirector()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -151,7 +151,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public DistributedSDFDirector(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -172,7 +172,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public DistributedSDFDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -285,7 +285,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  @exception IllegalActionException If any actor executed by this
      *  actor return false in prefire.
 
-     */
+    */
     public void fire() throws IllegalActionException {
 
         if (VERBOSE) {
@@ -295,7 +295,7 @@ public class DistributedSDFDirector extends SDFDirector {
         boolean parallelExecutionValue = ((BooleanToken)parallelExecution.getToken()).booleanValue();
 
         if (VERBOSE) {
-//            System.out.println("parallelExecution: " + parallelExecutionValue);
+            //            System.out.println("parallelExecution: " + parallelExecutionValue);
         }
 
         if (!parallelExecutionValue)
@@ -388,17 +388,17 @@ public class DistributedSDFDirector extends SDFDirector {
                 if (receivers.length > 0) {
                     if (VERBOSE) {
                         System.out.print("Port: " + currentPort.getFullName() + "\n" +
-                                        DistributedUtilities.receiversArrayToString(receivers));
+                                DistributedUtilities.receiversArrayToString(receivers));
                     }
 
                     if (currentPort.isOutput()) {
                         portsReceiversMap.put(currentPort.getName(),
-                                              createServicesReceiversMap(receivers));
+                                createServicesReceiversMap(receivers));
                     }
 
                     if (currentPort.isInput()) {
                         portsReceiversMap.put(currentPort.getName(),
-                                              DistributedUtilities.convertReceiversToIntegers(receivers));
+                                DistributedUtilities.convertReceiversToIntegers(receivers));
                     }
                 }
             }
@@ -408,9 +408,9 @@ public class DistributedSDFDirector extends SDFDirector {
             try {
                 if (VERBOSE) {
                     System.out.println("Setting connections to: " + actor.getFullName() +
-                                        " in: " + server.serviceID.toString());
+                            " in: " + server.serviceID.toString());
                     System.out.println("Setting port Types: " + actor.getFullName() +
-                                            " in: " + server.serviceID.toString());
+                            " in: " + server.serviceID.toString());
                 }
                 distributedActor.setConnections(portsReceiversMap);
                 distributedActor.setPortTypes(portTypes);
@@ -436,13 +436,13 @@ public class DistributedSDFDirector extends SDFDirector {
                     IOPort port = receivers[i][j].getContainer();
                     Actor actor = (Actor) port.getContainer();
                     if (!servicesReceiversMap.containsKey(
-                        ((ClientThread) actorsThreadsMap.get(actor)).getService())) {
+                                ((ClientThread) actorsThreadsMap.get(actor)).getService())) {
                         servicesReceiversMap.put( ((ClientThread) actorsThreadsMap.get(actor)).getService(),
-                                                 new LinkedList());
+                                new LinkedList());
 
                     }
                     LinkedList list = (LinkedList) servicesReceiversMap.get(
-                        ((ClientThread) actorsThreadsMap.get(actor)).getService());
+                            ((ClientThread) actorsThreadsMap.get(actor)).getService());
                     Integer ID = ((DistributedSDFReceiver)receivers[i][j]).getID();
                     list.add(ID);
                 }
@@ -469,7 +469,7 @@ public class DistributedSDFDirector extends SDFDirector {
             try {
                 if (VERBOSE) {
                     System.out.println("Loading class: " + actor.getClass().getName() +
-                                        " in: " + server.serviceID.toString());
+                            " in: " + server.serviceID.toString());
                 }
                 distributedActor.loadMoML(actor.exportMoML());
 
@@ -516,7 +516,7 @@ public class DistributedSDFDirector extends SDFDirector {
         LinkedList allActorList = new LinkedList();
         // Populate it.
         for (Iterator entities = container.deepEntityList().iterator();
-            entities.hasNext();) {
+             entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
 
             // Fill allActorList with the list of things that we can schedule
@@ -609,7 +609,7 @@ public class DistributedSDFDirector extends SDFDirector {
             Schedule level = (Schedule)levels.next();
             Iterator firings = level.firingIterator();
 
-//            int returnValue = 0;
+            //            int returnValue = 0;
 
             HashMap commandsMap = new HashMap();
 
@@ -624,15 +624,15 @@ public class DistributedSDFDirector extends SDFDirector {
             synchronizer.setCommands(commandsMap);
 
             synchronizer.commandsProcessed(); // Here is where the synchronization takes place.
-/*
-            if (returnValue == STOP_ITERATING) {
-                _postfireReturns = false;
-            } else if (returnValue == NOT_READY) {
-                throw new IllegalActionException(this,
-                        (ComponentEntity) actor, "Actor " +
-                        "is not ready to fire.");
-            }
-*/
+            /*
+              if (returnValue == STOP_ITERATING) {
+              _postfireReturns = false;
+              } else if (returnValue == NOT_READY) {
+              throw new IllegalActionException(this,
+              (ComponentEntity) actor, "Actor " +
+              "is not ready to fire.");
+              }
+            */
         }
     }
 
@@ -664,7 +664,7 @@ public class DistributedSDFDirector extends SDFDirector {
                 Object auxActor = actorsIterator.next();
                 Object auxServer = serversIterator.next();
                 ClientThread auxClientThread = new ClientThread(synchronizer,
-                                                             (ServiceItem) auxServer);
+                        (ServiceItem) auxServer);
                 actorsThreadsMap.put(auxActor, auxClientThread);
                 auxClientThread.start();
             }
@@ -699,8 +699,8 @@ public class DistributedSDFDirector extends SDFDirector {
      */
     private void _init()
             throws IllegalActionException, NameDuplicationException {
-      DistributedSDFScheduler scheduler =
-          new DistributedSDFScheduler(this, uniqueName("Scheduler"));
+        DistributedSDFScheduler scheduler =
+            new DistributedSDFScheduler(this, uniqueName("Scheduler"));
 
         // We create the new parameter here.
         parallelSchedule =
@@ -733,66 +733,66 @@ public class DistributedSDFDirector extends SDFDirector {
 }
 
 /*
-protected void parallelFire() throws IllegalActionException {
+  protected void parallelFire() throws IllegalActionException {
 
-    Scheduler scheduler = getScheduler();
-    if (scheduler == null) {
-        throw new IllegalActionException("Attempted to fire " +
-                "system with no scheduler");
-    }
+  Scheduler scheduler = getScheduler();
+  if (scheduler == null) {
+  throw new IllegalActionException("Attempted to fire " +
+  "system with no scheduler");
+  }
 
-    // This will throw IllegalActionException if this director
-    // does not have a container.
-    Schedule schedule = scheduler.getSchedule();
-    Iterator levels = schedule.iterator();
+  // This will throw IllegalActionException if this director
+  // does not have a container.
+  Schedule schedule = scheduler.getSchedule();
+  Iterator levels = schedule.iterator();
 
-//    int levelNumber = 1;
+  //    int levelNumber = 1;
 
-    while (levels.hasNext() && !_stopRequested) {
+  while (levels.hasNext() && !_stopRequested) {
 
-//        levelNumber++;
+  //        levelNumber++;
 
-        Schedule level = (Schedule)levels.next();
-        Iterator firings = level.firingIterator();
+  Schedule level = (Schedule)levels.next();
+  Iterator firings = level.firingIterator();
 
-        int returnValue = 0;
+  int returnValue = 0;
 
-        while (firings.hasNext() && !_stopRequested) {
+  while (firings.hasNext() && !_stopRequested) {
 
-            Firing firing = (Firing)firings.next();
-            Actor actor = (Actor)firing.getActor();
+  Firing firing = (Firing)firings.next();
+  Actor actor = (Actor)firing.getActor();
 
-            // New!
-            ServiceItem server = ((ClientThread) actorsThreadsMap.get(actor)).getService();
-            DistributedActor distributedActor = (DistributedActor) server.service;
+  // New!
+  ServiceItem server = ((ClientThread) actorsThreadsMap.get(actor)).getService();
+  DistributedActor distributedActor = (DistributedActor) server.service;
 
-            int iterationCount = firing.getIterationCount();
+  int iterationCount = firing.getIterationCount();
 
-            if (_debugging) {
-                _debug(new FiringEvent(this, actor,
-                            FiringEvent.BEFORE_ITERATE, iterationCount));
-            }
+  if (_debugging) {
+  _debug(new FiringEvent(this, actor,
+  FiringEvent.BEFORE_ITERATE, iterationCount));
+  }
 
-            // New!
-            try {
-                returnValue = distributedActor.iterate(iterationCount);
+  // New!
+  try {
+  returnValue = distributedActor.iterate(iterationCount);
 
-            } catch (RemoteException e) {
-                 e.printStackTrace();
-            }
+  } catch (RemoteException e) {
+  e.printStackTrace();
+  }
 
-            if (returnValue == STOP_ITERATING) {
-                _postfireReturns = false;
-            } else if (returnValue == NOT_READY) {
-                throw new IllegalActionException(this,
-                        (ComponentEntity) actor, "Actor " +
-                        "is not ready to fire.");
-            }
+  if (returnValue == STOP_ITERATING) {
+  _postfireReturns = false;
+  } else if (returnValue == NOT_READY) {
+  throw new IllegalActionException(this,
+  (ComponentEntity) actor, "Actor " +
+  "is not ready to fire.");
+  }
 
-            if (_debugging) {
-                _debug(new FiringEvent(this, actor,
-                  FiringEvent.AFTER_ITERATE, iterationCount));
-            }
-        }
-    }
-}
+  if (_debugging) {
+  _debug(new FiringEvent(this, actor,
+  FiringEvent.AFTER_ITERATE, iterationCount));
+  }
+  }
+  }
+  }

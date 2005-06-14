@@ -56,18 +56,18 @@ import ptolemy.distributed.common.DistributedActor;
 //////////////////////////////////////////////////////////////////////////
 ////ClientServerInteractionManager
 /**
-Manager that handles and eases the discovery of services using JINI.
-Helps the client service discovery. It discovers the lookup service. A configuration
-file can be provided in the constructor to specify unicast locators, groups to join and
-the service to be located. After discovering a lookup service it queries for the given
-service and filters the dead services.
+   Manager that handles and eases the discovery of services using JINI.
+   Helps the client service discovery. It discovers the lookup service. A configuration
+   file can be provided in the constructor to specify unicast locators, groups to join and
+   the service to be located. After discovering a lookup service it queries for the given
+   service and filters the dead services.
 
-@author Daniel Lázaro Cuadrado (kapokasa@kom.aau.dk)
-@version
-@since
-@Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating
-@see "Jini Documentation"
+   @author Daniel Lázaro Cuadrado (kapokasa@kom.aau.dk)
+   @version
+   @since
+   @Pt.ProposedRating Red (kapokasa)
+   @Pt.AcceptedRating
+   @see "Jini Documentation"
 */
 
 public class ClientServerInteractionManager implements DiscoveryListener, ServiceDiscoveryListener {
@@ -172,7 +172,7 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
             try {
                 System.out.println("Starting ClientServerInteractionManager in: ");
                 System.out.println("    " + InetAddress.getLocalHost().getHostName() + " (" +
-                                    InetAddress.getLocalHost().getHostAddress() + ")");
+                        InetAddress.getLocalHost().getHostAddress() + ")");
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
@@ -185,12 +185,12 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
 
         try {
             LookupDiscoveryManager mgr = new LookupDiscoveryManager(groups,
-                                                                    unicastLocators,  // unicast locators
-                                                                    this); // DiscoveryListener
+                    unicastLocators,  // unicast locators
+                    this); // DiscoveryListener
             clientMgr = new ServiceDiscoveryManager(mgr, new LeaseRenewalManager());
         } catch(Exception e) {
-             e.printStackTrace();
-             System.exit(1);
+            e.printStackTrace();
+            System.exit(1);
         }
 
         // This is the class of the service we are looking for...
@@ -199,8 +199,8 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
 
         try {
             cache = clientMgr.createLookupCache(template,
-                                                null,  // no filter
-                                                this); // no listener
+                    null,  // no filter
+                    this); // no listener
         } catch(Exception e) {
             e.printStackTrace();
             System.exit(1);
@@ -212,7 +212,7 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
 
             if (VERBOSE) {
                 System.out.println("Not enough services yet, found: " + aliveServices.size() +
-                                    " required: " + requiredServices);
+                        " required: " + requiredServices);
             }
             try {
                 Thread.sleep(WAITFOR);
@@ -243,7 +243,7 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
         ServiceItem postItem = evt.getPostEventServiceItem();
         if (VERBOSE) {
             System.out.println("Service appeared: " + postItem.service.getClass().toString() +
-                               " with ID: " + postItem.serviceID.toString());
+                    " with ID: " + postItem.serviceID.toString());
         }
     }
 
@@ -263,7 +263,7 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
         ServiceItem preItem = evt.getPreEventServiceItem();
         if (VERBOSE) {
             System.out.println("Service removed: " + preItem.service.getClass().toString() +
-                               " with ID: " + preItem.serviceID.toString());
+                    " with ID: " + preItem.serviceID.toString());
         }
     }
 
@@ -283,7 +283,7 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
         ServiceItem postItem = evt.getPostEventServiceItem();
         if (VERBOSE) {
             System.out.println("Service changed: " + postItem.service.getClass().toString() +
-                               " with ID: " + postItem.serviceID.toString());
+                    " with ID: " + postItem.serviceID.toString());
         }
     }
 
@@ -332,42 +332,42 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
                 System.out.print("Reading service: " + CLIENT);
             }
             service = (Remote) configuration.getEntry(CLIENT,
-                                                      "service",
-                                                      Remote.class);
+                    "service",
+                    Remote.class);
             if (VERBOSE) {
                 System.out.println(service);
             }
         } catch(NoSuchEntryException  e) {
-             System.err.println("No config entry for " + e);
-             System.exit(1);
+            System.err.println("No config entry for " + e);
+            System.exit(1);
         } catch(Exception e) {
-             System.err.println(e.toString());
-             e.printStackTrace();
-             System.exit(2);
+            System.err.println(e.toString());
+            e.printStackTrace();
+            System.exit(2);
         }
 
-         // These fields can fallback to a default value
+        // These fields can fallback to a default value
         try {
             if (VERBOSE) {
                 System.out.println("Reading unicastLocators: ");
             }
             unicastLocators = (LookupLocator[])
-            configuration.getEntry( CLIENT,
-                                   "unicastLocators",
-                                   LookupLocator[].class,
-                                   null); // default
+                configuration.getEntry( CLIENT,
+                        "unicastLocators",
+                        LookupLocator[].class,
+                        null); // default
 
             if (VERBOSE) {
                 for (int i=0; i<unicastLocators.length; i++) {
-                   System.out.println("    " + unicastLocators[i]);
+                    System.out.println("    " + unicastLocators[i]);
                 }
                 System.out.println("Reading entries: ");
             }
             entries = (Entry[])
-            configuration.getEntry(CLIENT,
-                                   "entries",
-                                   Entry[].class,
-                                   null); // default
+                configuration.getEntry(CLIENT,
+                        "entries",
+                        Entry[].class,
+                        null); // default
             if (VERBOSE) {
                 for (int i=0; i<entries.length; i++) {
                     System.out.println("    " + entries[i]);
@@ -376,9 +376,9 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
             }
 
             groups = (String[]) configuration.getEntry(CLIENT,
-                                                       "groups",
-                                                       String[].class,
-                                                       null); // default
+                    "groups",
+                    String[].class,
+                    null); // default
             if (groups.length != 0) {
                 if (VERBOSE) {
                     for (int i=0; i<groups.length; i++) {

@@ -40,19 +40,19 @@ import ptolemy.kernel.util.Workspace;
 //// DistributedTypedIORelation
 
 /**
-Extension of TypedIORelation for distributed environments. It overrides the
-deepReceivers method that returns the connected receivers to this relation. In this
-case, the relation only contains (is connected to) one DistributedReceiver in charge
-of forwarding tokens to the distributed services that are connected.
+   Extension of TypedIORelation for distributed environments. It overrides the
+   deepReceivers method that returns the connected receivers to this relation. In this
+   case, the relation only contains (is connected to) one DistributedReceiver in charge
+   of forwarding tokens to the distributed services that are connected.
 
 
-@author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
 
-@version
-@since
-@Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating
-@see ptolemy.distributed.actor.DistributedReceiver
+   @version
+   @since
+   @Pt.ProposedRating Red (kapokasa)
+   @Pt.AcceptedRating
+   @see ptolemy.distributed.actor.DistributedReceiver
 */
 
 public class DistributedTypedIORelation extends TypedIORelation {
@@ -92,7 +92,7 @@ public class DistributedTypedIORelation extends TypedIORelation {
      *   a relation already in the container.
      */
     public DistributedTypedIORelation(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         init();
     }

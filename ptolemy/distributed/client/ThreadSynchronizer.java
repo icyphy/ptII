@@ -30,23 +30,23 @@ import java.util.HashMap;
 //////////////////////////////////////////////////////////////////////////
 ////ThreadSynchronizer
 /**
-Synchronizes the access to the commandsMap. In order to allow parallel
-execution of commands, the ClientThreads that manage remote actors locally
-in the DistributedSDFDirector have to be able to access the commands
-without blocking the main execution Thread in a synchronized manner.
-Commands are represented by integers. It provides mechanisms to issue
-sets of commands and synchronize the access to those commands by the
-client Threads.
-It is assumed that no new set of commands is issued before the previous
-set of commands has been processed. Every ClientThread is responsible to
-set itself as ready after performing a command.
+   Synchronizes the access to the commandsMap. In order to allow parallel
+   execution of commands, the ClientThreads that manage remote actors locally
+   in the DistributedSDFDirector have to be able to access the commands
+   without blocking the main execution Thread in a synchronized manner.
+   Commands are represented by integers. It provides mechanisms to issue
+   sets of commands and synchronize the access to those commands by the
+   client Threads.
+   It is assumed that no new set of commands is issued before the previous
+   set of commands has been processed. Every ClientThread is responsible to
+   set itself as ready after performing a command.
 
-@author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version
-@since
-@Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating
-@see ptolemy.distributed.client.ClientThread
+   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+   @version
+   @since
+   @Pt.ProposedRating Red (kapokasa)
+   @Pt.AcceptedRating
+   @see ptolemy.distributed.client.ClientThread
 */
 
 public class ThreadSynchronizer {
@@ -112,11 +112,11 @@ public class ThreadSynchronizer {
     public synchronized boolean commandsProcessed() {
         while (!notReadyMap.isEmpty()) {
             try {
-                 System.out.println("commandsEmpty: waiting for readyMap to be empty");
-                 wait();
-             } catch (InterruptedException e) {
-                 e.printStackTrace();
-             }
+                System.out.println("commandsEmpty: waiting for readyMap to be empty");
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         System.out.println("commandsProcessed!");
         return true;

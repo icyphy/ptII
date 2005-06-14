@@ -37,16 +37,16 @@ import ptolemy.kernel.util.Workspace;
 //// DistributedTypedCompositeActor
 
 /**
-An extension of TypedCompositeActor for distributed environments. It
-basically overrides the newRelation method to create
-DistributedTypedIORelations.
+   An extension of TypedCompositeActor for distributed environments. It
+   basically overrides the newRelation method to create
+   DistributedTypedIORelations.
 
-@author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version
-@since
-@Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating
-@see ptolemy.actor.TypedCompositeActor
+   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+   @version
+   @since
+   @Pt.ProposedRating Red (kapokasa)
+   @Pt.AcceptedRating
+   @see ptolemy.actor.TypedCompositeActor
 */
 public class DistributedTypedCompositeActor extends TypedCompositeActor {
 
@@ -90,7 +90,7 @@ public class DistributedTypedCompositeActor extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public DistributedTypedCompositeActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -106,17 +106,17 @@ public class DistributedTypedCompositeActor extends TypedCompositeActor {
      */
 
     public ComponentRelation newRelation(String name)
-        throws NameDuplicationException {
-            try {
-                workspace().getWriteAccess();
-                DistributedTypedIORelation relation = new DistributedTypedIORelation(this, name);
-                return relation;
-            } catch (IllegalActionException ex) {
-                // This exception should not occur, so we throw a runtime
-                // exception.
-                throw new InternalErrorException(this, ex, null);
-            } finally {
-                workspace().doneWriting();
-            }
+            throws NameDuplicationException {
+        try {
+            workspace().getWriteAccess();
+            DistributedTypedIORelation relation = new DistributedTypedIORelation(this, name);
+            return relation;
+        } catch (IllegalActionException ex) {
+            // This exception should not occur, so we throw a runtime
+            // exception.
+            throw new InternalErrorException(this, ex, null);
+        } finally {
+            workspace().doneWriting();
+        }
     }
 }
