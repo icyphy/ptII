@@ -63,6 +63,12 @@ PTCLASSALLJARS =
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	DICOMReader.java \
+	GRGeometry.java \
+	GRShadedShapea.java \
+	GRTexture2D.java \
+	GRTexture2Da.java \
+	GRTexture3D.java \
 	GRVolume.java
 
 OTHER_FILES_TO_BE_JARED = \
