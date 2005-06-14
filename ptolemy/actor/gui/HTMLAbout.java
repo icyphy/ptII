@@ -42,6 +42,7 @@ import javax.swing.event.HyperlinkEvent;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.FileUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -200,8 +201,16 @@ public class HTMLAbout {
             // <a href="about:copyright">about:copyright</a>
             // then event.getURL() will return null, so we have
             // to use getDescription()
-            newURL = _temporaryHTMLFile("copyright", ".htm",
-                    GenerateCopyrights.generateHTML(configuration));
+            try {
+                newURL = _temporaryHTMLFile("copyright", ".htm",
+                        GenerateCopyrights.generateHTML(configuration));
+            } catch (SecurityException ex) {
+                // Could be that we were running with -sandbox and
+                // cannot write the temporary file.
+                newURL = FileUtilities.nameToURL(
+                        "$CLASSPATH/ptolemy/configs/doc/copyright.htm",
+                        null, null);
+            }
         } else if (event.getDescription().equals("about:configuration")) {
             // about:expandConfiguration will expand the configuration
             // and report any problems such as missing classes.
