@@ -18,7 +18,7 @@ SUCH DAMAGE.
 AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
 HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -48,15 +48,15 @@ of forwarding tokens to the distributed services that are connected.
 
 @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
 
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating 
+@Pt.AcceptedRating
 @see ptolemy.distributed.actor.DistributedReceiver
 */
 
 public class DistributedTypedIORelation extends TypedIORelation {
- 
+
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Add the relation to the directory of the workspace.
      */
@@ -112,11 +112,11 @@ public class DistributedTypedIORelation extends TypedIORelation {
         }
         return intermediateReceiver;
     }
-    
+
     /** Specify the servicesReceiversListMap for the internal DistributedReceiver.
      *
      *  @param servicesReceiversListMap for the internal DistributedReceiver.
-     */    
+     */
     public void setServicesReceiversListMap(HashMap servicesReceiversListMap) {
         if (VERBOSE) {
             System.out.println("> DistributedTypedIORelation.setRemoteReceivers()");
@@ -126,31 +126,31 @@ public class DistributedTypedIORelation extends TypedIORelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Creates a DistributedReceiver and assigns it to the intermediateReceiver
      *  data structure. The container of the receiver is set to connectedPort.
-     */  
+     */
     protected void init() {
         DistributedReceiver receiver = new DistributedReceiver();
-       
+
         try {
             receiver.setContainer(connectedPort);
         } catch (IllegalActionException e) {
             e.printStackTrace();
         }
-       
-        intermediateReceiver[0][0] = receiver; 
+
+        intermediateReceiver[0][0] = receiver;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** Activates debugging information. */
-    protected boolean VERBOSE = false; 
-    
+    protected boolean VERBOSE = false;
+
     /** The port that the DistributedReceiver contained is connected to. */
     protected TypedIOPort connectedPort = new TypedIOPort();
-    
+
     /** Bidimensional array of Receiver to be returned by deepReceivers. */
-    protected Receiver[][] intermediateReceiver = new Receiver[1][1];      
+    protected Receiver[][] intermediateReceiver = new Receiver[1][1];
 }

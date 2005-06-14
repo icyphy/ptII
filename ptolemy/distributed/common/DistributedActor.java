@@ -18,7 +18,7 @@ SUCH DAMAGE.
 AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
 HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -35,15 +35,15 @@ import java.util.HashMap;
 
 /**
 An DistributedActor is a distributed executable entity. This interface defines the common
-functionality in DistributedActorWrapper and further implementations of 
+functionality in DistributedActorWrapper and further implementations of
 distributed Actors. It defines the <i>action methods</i>, which determine
 how an distributed object can be invoked. It should be implemented by distributed actors.
 
 @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating 
+@Pt.AcceptedRating
 @see ptolemy.distributed.rmi.DistributedActorWrapper
 @see ptolemy.actor.Actor
 @see ptolemy.actor.Executable
@@ -61,24 +61,24 @@ public interface DistributedActor {
      *  remote method call.
      */
     public void fire() throws java.rmi.RemoteException;
-        
-    /** Return the Internet Address where the distributed actor is executing. 
+
+    /** Return the Internet Address where the distributed actor is executing.
      *
-     *  @return InetAdress the Internet Address where the distributed actor is being executed. 
+     *  @return InetAdress the Internet Address where the distributed actor is being executed.
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
      */
-    
+
     public InetAddress getAddress() throws java.rmi.RemoteException;
 
-    /** Begin execution of the actor. 
+    /** Begin execution of the actor.
      *
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
      */
-    
+
     public void initialize() throws java.rmi.RemoteException;
 
     /** Invoke a specified number of iterations of the actor.
@@ -89,9 +89,9 @@ public interface DistributedActor {
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
      */
-   
+
     public int iterate(int count) throws java.rmi.RemoteException;
-    
+
     /** Load a moml representation of an actor.
      *
      *  @param moml The moml code representing the actor to be loaded.
@@ -99,9 +99,9 @@ public interface DistributedActor {
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
-     */   
-    
-    public boolean loadMoML(String moml) throws java.rmi.RemoteException; 
+     */
+
+    public boolean loadMoML(String moml) throws java.rmi.RemoteException;
 
     /** This method should be invoked once per iteration, after the last
      *  invocation of fire() in that iteration.
@@ -110,8 +110,8 @@ public interface DistributedActor {
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
-     */   
-    
+     */
+
     public boolean postfire() throws java.rmi.RemoteException;
 
     /** This method should be invoked once per iteration, before the first
@@ -121,8 +121,8 @@ public interface DistributedActor {
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
-     */   
-    
+     */
+
     public boolean prefire() throws java.rmi.RemoteException;
 
     /** This method should be invoked exactly once per execution
@@ -131,79 +131,79 @@ public interface DistributedActor {
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
-     */   
-    
+     */
+
     public void preinitialize() throws java.rmi.RemoteException;
-    
-    /** Puts copies of the token received into the Receivers included in the IDlist. 
+
+    /** Puts copies of the token received into the Receivers included in the IDlist.
      *  The data map contains a token and a list of IDs.
      *
      *  @param data contains a token and a list of IDs.
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
-     */   
-    
+     */
+
     public void put(HashMap data) throws java.rmi.RemoteException;
 
     /** Set the "virtual connections" concerning the wrapped actor.
-     *  The connections HashMap contains a list of ports, and for each 
+     *  The connections HashMap contains a list of ports, and for each
      *  of them a mapping depending on the type of port.
      *  - If the port is an input: a list of receiver IDs that are
      *  contained by the port.
      *  i.e.: inputport,(IDa,...,IDn)
-     *  - If it is an output port: a mapping of services to lists of 
+     *  - If it is an output port: a mapping of services to lists of
      *  receivers.
      *  i.e.: outputport,(servicea,(IDi,...,IDk),
      *                         ...
      *                    servicen,(IDn,...,IDs))
-     * 
+     *
      *  For the input ports, a new relation of the type is created of the
      *  type DistributedTypepIORelation for every ID that is received. This
      *  is to force a Receiver to be created whenever createReceivers in the
      *  corresponding port is called.
-     * 
-     *  For the output ports, one only relation of the type DistributedTypepIORelation 
-     *  is created and the mapping of services to IDs is set into the relation. The 
+     *
+     *  For the output ports, one only relation of the type DistributedTypepIORelation
+     *  is created and the mapping of services to IDs is set into the relation. The
      *  relation sets that same structure in its internal DistributedReceiver that is
      *  in charge of token forwarding whenever send is called on the port.
-     *  
+     *
      *  @param connections a mapping of ports, services and receiver IDs (see before).
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
-     */ 
-    
-    public void setConnections(HashMap connections) throws java.rmi.RemoteException;    
+     */
+
+    public void setConnections(HashMap connections) throws java.rmi.RemoteException;
 
     /** Set the port types of the wrapped actor.
-     *  
+     *
      *  @param portTypes is a Map of ports to port types.
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
-     */ 
-    
+     */
+
     public void setPortTypes(HashMap portTypes) throws java.rmi.RemoteException;
 
-    /** Request that execution of the wrapped actor to stop as 
+    /** Request that execution of the wrapped actor to stop as
      *  soon as possible.
      *
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
-     */  
-    
+     */
+
     public void stop() throws java.rmi.RemoteException;
 
-    /** Request that execution of the current iteration of the 
+    /** Request that execution of the current iteration of the
      *  wrapped actor complete.
      *
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
-     */   
-    
+     */
+
     public void stopFire() throws java.rmi.RemoteException;
 
     /** Terminate any currently executing model with extreme prejudice.
@@ -211,7 +211,7 @@ public interface DistributedActor {
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
-     */   
+     */
 
     public void terminate() throws java.rmi.RemoteException;
 
@@ -221,10 +221,10 @@ public interface DistributedActor {
      *  @exception RemoteException is the common superclass for a number of
      *  communication-related exceptions that may occur during the execution of a
      *  remote method call.
-     */   
+     */
 
-    public void wrapup() throws java.rmi.RemoteException; 
-    
-} 
+    public void wrapup() throws java.rmi.RemoteException;
+
+}
 
 

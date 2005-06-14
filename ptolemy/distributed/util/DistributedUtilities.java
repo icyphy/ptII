@@ -18,7 +18,7 @@ SUCH DAMAGE.
 AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
 HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -39,10 +39,10 @@ Utilities for the distributed package. This includes different conversions
 and printing facilities.
 
 @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating 
+@Pt.AcceptedRating
 */
 
 public class DistributedUtilities {
@@ -56,7 +56,7 @@ public class DistributedUtilities {
      *  @param receivers A bidimensional array of receivers.
      *  @return Integer[][] A bidimensional array of receivers IDs.
      */
-    
+
     public static Integer[][] convertReceiversToIntegers(Receiver[][] receivers) {
         Integer[][] receiversIntegers = new Integer[receivers.length][];
         for (int i = 0; i < receivers.length; i++) {
@@ -67,17 +67,17 @@ public class DistributedUtilities {
                 } else {
                     receiversIntegers[i][j] = null;
                 }
-            } 
+            }
         }
         return receiversIntegers;
     }
-    
+
     /** Converts a bidimensional array of Integer into a linked list of Integers.
      *
      *  @param receiversIntegers A bidimensional array of Integers.
      *  @return LinkedList A list.
      */
-    
+
     public static LinkedList convertIntegersToList(Integer[][] receiversIntegers) {
 //        System.out.println("convertIntegersToList: \n" + integersArrayToString(receiversIntegers));
         LinkedList list = new LinkedList();
@@ -86,7 +86,7 @@ public class DistributedUtilities {
                 if (receiversIntegers[i][j] != null) {
                     list.add(receiversIntegers[i][j]);
                 }
-            } 
+            }
         }
         return list;
     }
@@ -96,7 +96,7 @@ public class DistributedUtilities {
      *  @param array A bidimensional array of Receiver.
      *  @return String A string.
      */
-    
+
     public static String receiversArrayToString(Receiver[][] array) {
         if (array == null) {
             return "null";
@@ -107,10 +107,10 @@ public class DistributedUtilities {
                 print += ((DistributedSDFReceiver)array[i][j]).getID() + " ";
             }
             print += "\n";
-        }        
-        return print; 
+        }
+        return print;
     }
- 
+
     /** Converts a bidimensional array of Integer a String for printing purposes.
      *
      *  @param array A bidimensional array of Integer.
@@ -127,10 +127,10 @@ public class DistributedUtilities {
                 print += array[i][j] + " ";
             }
             print += "\n";
-        }        
-        return print; 
+        }
+        return print;
     }
- 
+
 }
 
 /*
@@ -144,7 +144,7 @@ public static Receiver[][] convertIntegersToReceivers(Integer[][] receiversInteg
                 System.out.println("receiversIntegers[" + i + "][" + j + "] = " + receiversIntegers[i][j]);
                 receivers[i][j] = new DistributedSDFReceiver(receiversIntegers[i][j]);
             }
-        } 
+        }
     }
     return receivers;
 }

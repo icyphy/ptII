@@ -18,7 +18,7 @@ SUCH DAMAGE.
 AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
 HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -36,11 +36,11 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
 The DistributedSDFReceiver class extends SDFReceiver with an unique ID. This
 is useful in order to unambiguously identify receivers in a distributed
-environment. 
+environment.
 
 @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red (kapokasa)
 @Pt.AcceptedRating
 @see ptolemy.domains.sdf.kernel.SDFReceiver
@@ -87,7 +87,7 @@ public class DistributedSDFReceiver extends SDFReceiver {
         super(container, size);
         init();
     }
-    
+
     /** Construct an empty receiver with no container and a given ID.
      *  @param newID The new ID for the Receiver.
      */
@@ -101,7 +101,7 @@ public class DistributedSDFReceiver extends SDFReceiver {
 
     /** Return the ID of the receiver.
      *  @return The ID of the Receiver.
-     */    
+     */
     public Integer getID() {
         return ID;
     }
@@ -111,7 +111,7 @@ public class DistributedSDFReceiver extends SDFReceiver {
 
     /** Initialize the receiver with an ID of value lastID. lastID is
      *  increased by 1.
-     */    
+     */
     protected void init() {
         ID = lastID;
         lastID = new Integer(lastID.intValue() + 1);
@@ -122,14 +122,14 @@ public class DistributedSDFReceiver extends SDFReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** Enables debugging messages. */
     protected boolean VERBOSE = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
-    /** Static member that contains the next ID value to be assigned to 
+
+    /** Static member that contains the next ID value to be assigned to
      * the next receiver constructed. */
     private static Integer lastID = new Integer(1);
 

@@ -18,7 +18,7 @@ SUCH DAMAGE.
 AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
 HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -37,20 +37,20 @@ import ptolemy.kernel.util.Workspace;
 //// DistributedTypedCompositeActor
 
 /**
-An extension of TypedCompositeActor for distributed environments. It 
-basically overrides the newRelation method to create 
+An extension of TypedCompositeActor for distributed environments. It
+basically overrides the newRelation method to create
 DistributedTypedIORelations.
 
 @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating 
+@Pt.AcceptedRating
 @see ptolemy.actor.TypedCompositeActor
 */
 public class DistributedTypedCompositeActor extends TypedCompositeActor {
 
-    /** Construct a Distributed TypedCompositeActor in the default workspace 
+    /** Construct a Distributed TypedCompositeActor in the default workspace
      *  with no container and an empty string as its name. Add the actor to the
      *  workspace directory.  You should set the local director or
      *  executive director before attempting to send data to the actor or
@@ -93,7 +93,7 @@ public class DistributedTypedCompositeActor extends TypedCompositeActor {
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     /** Create a new DistributedTypedIORelation with the specified name, add it
      *  to the relation list, and return it. Derived classes can override
      *  this to create domain-specific subclasses of TypedIORelation.
@@ -103,7 +103,7 @@ public class DistributedTypedCompositeActor extends TypedCompositeActor {
      *  @return A new TypedIORelation.
      *  @exception NameDuplicationException If name collides with a name
      *   already on the container's contents list.
-     */   
+     */
 
     public ComponentRelation newRelation(String name)
         throws NameDuplicationException {

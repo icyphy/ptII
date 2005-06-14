@@ -19,7 +19,7 @@ SUCH DAMAGE.
 AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
 HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -35,24 +35,24 @@ import net.jini.core.lookup.ServiceItem;
 //////////////////////////////////////////////////////////////////////////
 ////ClientThread
 /**
-Thread that manages the interaction with the remote service. It is required to 
+Thread that manages the interaction with the remote service. It is required to
 allow commands to be issued to the remote services in parallel. This
 threads prevent the main thread of execution to be blocked by the remote calls
 to the remote services. A synchronization mechanism to issue and access
-commands is provided by ThreadSynchronizer.  
+commands is provided by ThreadSynchronizer.
 
 @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
 
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red (kapokasa)
 @Pt.AcceptedRating
 @see ptolemy.distributed.client.ThreadSynchronizer
 */
 public class ClientThread extends Thread {
- 
+
     /** Construct a ClientThread with a given ThreadSynchronizer and a given service.
-     * 
+     *
      *  @param synchr A ThreadSynchronizer.
      *  @param serv The service correponding to the remote service that the Client
      *  Thread represents.
@@ -67,7 +67,7 @@ public class ClientThread extends Thread {
     ////                         public methods                    ////
 
     /** Return the service that this ClientThread controls.
-     * 
+     *
      *  @return A ServiceItem corresponding to the service this Client Thread is managing
      *  remotely.
      */
@@ -76,9 +76,9 @@ public class ClientThread extends Thread {
     }
 
 
-    /** Runs the thread. The thread blocks until it gets a command. When a command is 
+    /** Runs the thread. The thread blocks until it gets a command. When a command is
      *  fetched, the service performs remotely the method corresponding to the given
-     *  command. Once the task is performed, the thread is set to ready in the 
+     *  command. Once the task is performed, the thread is set to ready in the
      *  synchronizer. This is performed until de command is exit.
      */
 
@@ -96,12 +96,12 @@ public class ClientThread extends Thread {
                     case FIRE: distributedActor.fire(); break;
                     case ITERATE: distributedActor.iterate(iterationCount); break;
                 }
-            } catch (RemoteException e) {    
+            } catch (RemoteException e) {
                 e.printStackTrace();
             }
-            synchronizer.setReady(this);      
+            synchronizer.setReady(this);
         }
-        System.out.println(this + "Exits...");  
+        System.out.println(this + "Exits...");
         synchronizer.setReady(this);
     }
 
@@ -109,16 +109,16 @@ public class ClientThread extends Thread {
      *  Specify the number of times that the iteration command is to be
      *  performed. We assume that this will be set correctly before iterate
      *  is called.
-     * 
+     *
      *  @param iterationC Number of times the iteration has to be performed.
      */
     public void setIterationCount(int iterationC) {
         iterationCount = iterationC;
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The ThreadSynchronizer that synchronizes access to the commands.*/
     protected ThreadSynchronizer synchronizer;
 
@@ -127,19 +127,19 @@ public class ClientThread extends Thread {
 
     /** The number of times the iteration command is to be performed. */
     protected int iterationCount = 0;
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                       constants                           ////     
+    ////                       constants                           ////
 
     /** Exit command. */
     public static final int EXIT = 1;
-    
+
     /** Initialize command. */
     public static final int INITIALIZE = 2;
-    
+
     /** Fire command. */
     public static final int FIRE = 3;
-    
+
     /** Iterate command. */
     public static final int ITERATE = 4;
 }

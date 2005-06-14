@@ -19,7 +19,7 @@ SUCH DAMAGE.
 AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
 HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -41,10 +41,10 @@ An actor that writes the value of string tokens to the standard output,
 one per line.
 
 @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating 
+@Pt.AcceptedRating
 */
 
 public class DistributedLineWriter extends Sink {
@@ -60,14 +60,14 @@ public class DistributedLineWriter extends Sink {
     public DistributedLineWriter(CompositeEntity container, String name)
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         input.setTypeEquals(BaseType.STRING);
         input.setMultiport(false);
     }
 
     /** Read an input string token and write it to the standard output.
      *  If there is no input, do nothing.
-     * 
+     *
      *  @exception IllegalActionException Not thrown in this class.
      */
     public boolean postfire() throws IllegalActionException {

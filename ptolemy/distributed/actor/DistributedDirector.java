@@ -19,7 +19,7 @@ SUCH DAMAGE.
 AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
 HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -49,10 +49,10 @@ changed in case different MoC are to be implemented.
 @see ptolemy.actor.Director
 
 @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating 
+@Pt.AcceptedRating
 */
 
 public class DistributedDirector extends Director {
@@ -93,11 +93,11 @@ public class DistributedDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
-    /** Return the map from ID to the receiver containing the ID. 
+
+    /** Return the map from ID to the receiver containing the ID.
      *  @return A HashMap from ID to the receiver containing the ID.
      */
-    
+
     public HashMap getIdsReceiversMap() {
         return idsReceiversMap;
     }
@@ -108,7 +108,7 @@ public class DistributedDirector extends Director {
      *  1000 (lastID). This should never occur! It is there for testing
      *  purposes and could be removed.
      *  @return A DistributedSDFReceiver with the next available ID in the
-     *  listOfIds. 
+     *  listOfIds.
      */
     public Receiver newReceiver() {
         Integer ID;
@@ -124,15 +124,15 @@ public class DistributedDirector extends Director {
         } else {
             ID = new Integer(lastId);
             lastId += 1;
-            receiver = new DistributedSDFReceiver(ID);            
+            receiver = new DistributedSDFReceiver(ID);
         }
         return receiver;
     }
 
-    /** Specify the list of IDs to be used for Receiver creation by the 
+    /** Specify the list of IDs to be used for Receiver creation by the
      *  newReceiver method.
      *  @param list A list of IDs.
-     */ 
+     */
     public void setListOfIds(LinkedList list) {
         if (VERBOSE) {
             //            System.out.println("DistributedDirector.setListOfIds: " + list.toString());
@@ -147,13 +147,13 @@ public class DistributedDirector extends Director {
     protected LinkedList listOfIds = new LinkedList();
 
     /** Starting ID number for whenever a receiver is created and the list
-     *  of IDs is empty. This should never happen and it is meant for 
-     *  debugging purposes. */    
-    protected int lastId = 1000; 
-    
+     *  of IDs is empty. This should never happen and it is meant for
+     *  debugging purposes. */
+    protected int lastId = 1000;
+
     /** When true depicts debugging messages. */
     protected boolean VERBOSE = true;
 
-    /** Map from IDs to the receiver containing the ID. */    
+    /** Map from IDs to the receiver containing the ID. */
     protected HashMap idsReceiversMap = new HashMap();
 }

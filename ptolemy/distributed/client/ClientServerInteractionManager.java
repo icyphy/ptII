@@ -18,7 +18,7 @@ SUCH DAMAGE.
 AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
 HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -58,30 +58,30 @@ import ptolemy.distributed.common.DistributedActor;
 /**
 Manager that handles and eases the discovery of services using JINI.
 Helps the client service discovery. It discovers the lookup service. A configuration
-file can be provided in the constructor to specify unicast locators, groups to join and 
+file can be provided in the constructor to specify unicast locators, groups to join and
 the service to be located. After discovering a lookup service it queries for the given
-service and filters the dead services. 
+service and filters the dead services.
 
 @author Daniel Lázaro Cuadrado (kapokasa@kom.aau.dk)
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating 
+@Pt.AcceptedRating
 @see "Jini Documentation"
 */
 
 public class ClientServerInteractionManager implements DiscoveryListener, ServiceDiscoveryListener {
-    
+
     /** Construct a ClientServerInteractionManager inializing it with a given
      *  VERBOSE option.
-     * 
+     *
      *  @param verbose If true, flag messages will be printed in the standard
      *  output.
      */
     public ClientServerInteractionManager(boolean verbose) {
         VERBOSE = verbose;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         prublic methods                   ////
 
@@ -89,58 +89,58 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
     /** Required by DiscoveryListener interface.
      *  Called when one or more lookup service registrars has been discarded.
      *  The method should return quickly; e.g., it should not make remote calls.
-     * 
-     *  @param evt The event that describes the discarded registrars 
+     *
+     *  @param evt The event that describes the discarded registrars
      */
     public void discarded(DiscoveryEvent evt) {
         if (VERBOSE) {
             System.out.println("Registrars discarded: " + evt);
-        }  
+        }
     }
 
     /** Required by DiscoveryListener interface.
      *  Called when one or more lookup service registrars has been discovered.
      *  The method should return quickly; e.g., it should not make remote calls.
-     * 
+     *
      *  It prints the locator of the found Registrars.
-     * 
-     *  @param evt The event that describes the discovered registrars 
-     */    
+     *
+     *  @param evt The event that describes the discovered registrars
+     */
     public void discovered(DiscoveryEvent evt) {
 
         ServiceRegistrar[] serviceRegistrars = evt.getRegistrars();
         Class [] classes = new Class[] {DistributedActor.class};
 
         ServiceTemplate template = new ServiceTemplate(null, classes, null);
- 
+
         for (int n = 0; n < serviceRegistrars.length; n++) {
             try {
-                if (true) { 
+                if (true) {
                     System.out.println("Found a service locator at: " + serviceRegistrars[n].getLocator());
-                }    
+                }
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-        }    
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         prublic methods                   ////
 
     /** Construct the list of aliveServices.
-     */    
+     */
     protected void filterCacheServices() {
         ServiceItem[] items = cache.lookup(null, Integer.MAX_VALUE);
         aliveServices.clear();
-    
+
         for (int i = 0; i < items.length; i++) {
             if (VERBOSE) {
                 System.out.print("Service: " + items[i].serviceID);
-            }   
+            }
             try {
                 if (VERBOSE) {
                     System.out.println(" is alive in: " + ((DistributedActor)items[i].service).getAddress());
-                }    
+                }
                 aliveServices.add(items[i]);
             } catch (RemoteException e) {
                 if (VERBOSE) {
@@ -148,31 +148,31 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
                 }
             }
         }
-    }    
-    
+    }
+
     /** Returns the list of alive services.
-     * 
-     *  @return LinkedList of registrars containing the alive services. 
-     */    
+     *
+     *  @return LinkedList of registrars containing the alive services.
+     */
     public LinkedList getServices() {
         return aliveServices;
     }
-    
+
     /** Initializes the ClientServerInteractionManager. It loads the configuration
-     *  file and creates a ServiceDiscoveryManager in order to help locate the 
+     *  file and creates a ServiceDiscoveryManager in order to help locate the
      *  service. It searches for the service specified in the configuration file and
-     *  it filters the dead services. 
-     * 
-     *  @param configFileName String containing the name and/or path of the 
-     *  configuration file to be loaded. 
-     */   
-    
+     *  it filters the dead services.
+     *
+     *  @param configFileName String containing the name and/or path of the
+     *  configuration file to be loaded.
+     */
+
     public void init(String configFileName) {
         if (VERBOSE) {
             try {
                 System.out.println("Starting ClientServerInteractionManager in: ");
-                System.out.println("    " + InetAddress.getLocalHost().getHostName() + " (" + 
-                                    InetAddress.getLocalHost().getHostAddress() + ")");            
+                System.out.println("    " + InetAddress.getLocalHost().getHostName() + " (" +
+                                    InetAddress.getLocalHost().getHostAddress() + ")");
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
@@ -192,14 +192,14 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
              e.printStackTrace();
              System.exit(1);
         }
-  
-        // This is the class of the service we are looking for...    
+
+        // This is the class of the service we are looking for...
         Class [] classes = new Class[] {DistributedActor.class};
         ServiceTemplate template = new ServiceTemplate(null, classes, null);
 
         try {
-            cache = clientMgr.createLookupCache(template, 
-                                                null,  // no filter 
+            cache = clientMgr.createLookupCache(template,
+                                                null,  // no filter
                                                 this); // no listener
         } catch(Exception e) {
             e.printStackTrace();
@@ -207,7 +207,7 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
         }
 
         filterCacheServices();
-        
+
         while (aliveServices.size() < requiredServices) {
 
             if (VERBOSE) {
@@ -219,14 +219,14 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
             } catch(java.lang.InterruptedException e) {
                 // do nothing
             }
-            
+
             filterCacheServices();
-           
+
         }
-        
- 
+
+
     }
-    
+
     /** Required by ServiceDiscoveryListener interface.
      *  When the cache receives from one of the managed lookup services, an event signaling
      *  the registration of a service of interest for the first time (or for the first time
@@ -234,11 +234,11 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
      *  all instances of ServiceDiscoveryListener that are registered with the cache; doing
      *  so notifies the entity that a service of interest has been discovered.
      *  It just notifies of the event in the standard output.
-     * 
+     *
      *  @param evt an instance of ServiceDiscoveryEvent containing references to the
      *  service item corresponding to the event, including representations of the service's
-     *  state both before and after the event. 
-     */    
+     *  state both before and after the event.
+     */
     public void serviceAdded(ServiceDiscoveryEvent evt) {
         ServiceItem postItem = evt.getPostEventServiceItem();
         if (VERBOSE) {
@@ -254,11 +254,11 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
      *  that are registered with the cache; doing so notifies the entity that a service of
      *  interest has been discarded.
      *  It just notifies of the event in the standard output.
-     * 
+     *
      *  @param evt a ServiceDiscoveryEvent object containing references to the service item
      *  corresponding to the event, including representations of the service's state both before
-     *  and after the event. 
-     */    
+     *  and after the event.
+     */
     public void serviceRemoved(ServiceDiscoveryEvent evt) {
         ServiceItem preItem = evt.getPreEventServiceItem();
         if (VERBOSE) {
@@ -274,11 +274,11 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
      *  of ServiceDiscoveryListener  that are registered with the cache; doing so notifies the
      *  entity that the state of a service of interest has changed.
      *  It just notifies of the event in the standard output.
-     * 
+     *
      *  @param evt a ServiceDiscoveryEvent object containing references to the service item
      *  corresponding to the event, including representations of the service's state both before
      *  and after the event.
-     */    
+     */
     public void serviceChanged(ServiceDiscoveryEvent evt) {
         ServiceItem postItem = evt.getPostEventServiceItem();
         if (VERBOSE) {
@@ -288,55 +288,55 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
     }
 
     /** Specify the number of required services.
-     *  
+     *
      * @param requiredServices The number of requiredServices.
      */
     public void setRequiredServices(int requiredServices) {
         this.requiredServices = requiredServices;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////    
-    
+    ////                       protected methods                   ////
+
     /** Loads the configuration file.
      *  This file contains information about:
      *  codebase: location of the code.
-     *  exporter: export to be used. 
+     *  exporter: export to be used.
      *  groups: groups to join.
-     *  unicast locators: Know service locators can be specified here. 
+     *  unicast locators: Know service locators can be specified here.
      *  entries: Other info e.g. name and comments
      *  service: The service to be located.
-     * 
-     *  @param configFileName A string containing the name and/or path of the 
-     *  configuration file. 
-     */    
+     *
+     *  @param configFileName A string containing the name and/or path of the
+     *  configuration file.
+     */
     protected void getConfiguration(String configFileName) {
         if (VERBOSE) {
             System.out.println("Opening configuration file: " + configFileName);
-            System.out.println("Entry: " + CLIENT);            
-        }    
+            System.out.println("Entry: " + CLIENT);
+        }
         Configuration configuration = null;
-    
+
         // We have to get a configuration file or we can't continue
         try {
-            configuration = ConfigurationProvider.getInstance(new String[] {configFileName}); 
+            configuration = ConfigurationProvider.getInstance(new String[] {configFileName});
         } catch(ConfigurationException e) {
             System.err.println(e.toString());
             e.printStackTrace();
             System.exit(1);
         }
-        
+
         // The config file must have an exporter, a service and a codebase
         try {
             if (VERBOSE) {
                 System.out.print("Reading service: " + CLIENT);
             }
-            service = (Remote) configuration.getEntry(CLIENT, 
-                                                      "service", 
+            service = (Remote) configuration.getEntry(CLIENT,
+                                                      "service",
                                                       Remote.class);
             if (VERBOSE) {
                 System.out.println(service);
-            }                
+            }
         } catch(NoSuchEntryException  e) {
              System.err.println("No config entry for " + e);
              System.exit(1);
@@ -345,51 +345,51 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
              e.printStackTrace();
              System.exit(2);
         }
-    
-         // These fields can fallback to a default value 
+
+         // These fields can fallback to a default value
         try {
-            if (VERBOSE) {           
+            if (VERBOSE) {
                 System.out.println("Reading unicastLocators: ");
-            }       
-            unicastLocators = (LookupLocator[])          
-            configuration.getEntry( CLIENT, 
-                                   "unicastLocators", 
+            }
+            unicastLocators = (LookupLocator[])
+            configuration.getEntry( CLIENT,
+                                   "unicastLocators",
                                    LookupLocator[].class,
                                    null); // default
-            
-            if (VERBOSE) {           
+
+            if (VERBOSE) {
                 for (int i=0; i<unicastLocators.length; i++) {
-                   System.out.println("    " + unicastLocators[i]);                        
+                   System.out.println("    " + unicastLocators[i]);
                 }
                 System.out.println("Reading entries: ");
-            }               
-            entries = (Entry[]) 
-            configuration.getEntry(CLIENT, 
-                                   "entries", 
+            }
+            entries = (Entry[])
+            configuration.getEntry(CLIENT,
+                                   "entries",
                                    Entry[].class,
                                    null); // default
             if (VERBOSE) {
                 for (int i=0; i<entries.length; i++) {
-                    System.out.println("    " + entries[i]);                        
+                    System.out.println("    " + entries[i]);
                 }
-                System.out.println("Reading groups: ");                
-            }     
-           
-            groups = (String[]) configuration.getEntry(CLIENT, 
-                                                       "groups", 
+                System.out.println("Reading groups: ");
+            }
+
+            groups = (String[]) configuration.getEntry(CLIENT,
+                                                       "groups",
                                                        String[].class,
                                                        null); // default
             if (groups.length != 0) {
                 if (VERBOSE) {
                     for (int i=0; i<groups.length; i++) {
-                        System.out.println("    " + groups[i]);                        
+                        System.out.println("    " + groups[i]);
                     }
-                }    
+                }
             } else {
-                groups = LookupDiscovery.ALL_GROUPS; 
+                groups = LookupDiscovery.ALL_GROUPS;
                 System.out.println("    No groups specified, using LookupDiscovery.ALL_GROUPS.");
             }
-                    
+
         } catch(Exception e) {
             System.err.println(e.toString());
             e.printStackTrace();
@@ -405,28 +405,28 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
 
     /** Name and path of the configuration file. */
     protected String configFileName = "";
-    
+
     /** Key to be loaded from the configuration file. */
     protected static final String CLIENT = "ClientServerInteractionManager";
 
     /** Waiting time to receive responses when finding services.*/
     protected static final long WAITFOR = 1000L;
-    
+
     /** Service that we look for. */
     protected Remote service;
-    
+
     /**  Array of unicastLocators. */
     protected LookupLocator[] unicastLocators;
-    
+
     /** Information entries. */
     protected Entry[] entries;
-    
+
     /** Groups. */
     protected String[] groups;
-    
+
     /** Cache of registrars. */
     protected LookupCache cache = null;
-    
+
     /** List of alive services discovered and filtered. */
     protected LinkedList aliveServices = new LinkedList();
 

@@ -18,7 +18,7 @@ SUCH DAMAGE.
 AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
 HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -61,13 +61,13 @@ import ptolemy.actor.util.DFUtilities;
 
 A scheduler that extends the SDFScheduler. This class relies on the extended
 SDFScheduler to calculate sequential schedules. In case a parallelSchedule
-is requested, it performs a topological sort of the graph that can be 
+is requested, it performs a topological sort of the graph that can be
 constructed from the data dependencies among the actors.
 The existing SDFScheduler produces schedules in a depth-first fashion.
 From the topological sort a schedule is created containing subschedules that
 contain the actors in the different levels, indicating they can be executed
 in parallel.
-I.e.: 
+I.e.:
   <table border="0" cellpadding="0" cellspacing="0" width="300" align="center">
     <tr>
       <td width="20%" align="center">&nbsp;</td>
@@ -86,7 +86,7 @@ I.e.:
     <tr>
       <td width="20%" align="center">D</td>
       <td width="20%" align="center">&nbsp;</td>
-      <td width="20%" align="center">E&nbsp;&nbsp;&nbsp;&nbsp; 
+      <td width="20%" align="center">E&nbsp;&nbsp;&nbsp;&nbsp;
       F</td>
       <td width="20%" align="center">&nbsp;</td>
       <td width="20%" align="center">G</td>
@@ -117,11 +117,11 @@ and methods:
 have been modified their visibility from private to protected.
 
 @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version  
-@since 
+@version
+@since
 @Pt.ProposedRating Red (kapokasa)
 @Pt.AcceptedRating
-@see ptolemy.domains.sdf.kernel.SDFScheduler 
+@see ptolemy.domains.sdf.kernel.SDFScheduler
  */
 public class DistributedSDFScheduler extends SDFScheduler {
 
@@ -161,10 +161,10 @@ public class DistributedSDFScheduler extends SDFScheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the scheduling sequence. In case the parameter 
+    /** Return the scheduling sequence. In case the parameter
      *  parallelSchedule is true, it returns a parallel Schedule,
      *  otherwise it calls the parent's _getSchedule() method returning
-     *  the given result.  
+     *  the given result.
      *
      *  @return A schedule of the deeply contained opaque entities
      *  in the firing order, sequential or parallel depending of the
@@ -181,7 +181,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
         boolean parallelSchedule = false;
         Schedule schedule = null;
-        
+
         DistributedSDFDirector director =
             (DistributedSDFDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
@@ -194,19 +194,19 @@ public class DistributedSDFScheduler extends SDFScheduler {
         if (parallelSchedule)
             schedule = _getParallelSchedule();
         else
-            schedule = super._getSchedule(); 
+            schedule = super._getSchedule();
 
         return schedule;
     }
-    
+
     /** Return a parallelSchedule result of performing a topological
      *  sort of the graph that can be constructed from the model's data
-     *  dependencies. This method duplicates and modifies the code in 
+     *  dependencies. This method duplicates and modifies the code in
      *  _getSchedule from the extended SDFScheduler class. It differs on
-     *  the call to the _scheduleConnectedActors, that in this case is 
+     *  the call to the _scheduleConnectedActors, that in this case is
      *  substituted by a call to the _scheduleInParallelConnectedActors
      *  method.
-     *  Modifications are marked with NEW!. 
+     *  Modifications are marked with NEW!.
      *
      *  @return A parallelSchedule.
      *  @exception NotSchedulableException If the rates specified for
@@ -220,9 +220,9 @@ public class DistributedSDFScheduler extends SDFScheduler {
         SDFDirector director =
             (SDFDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
-        
+
         _checkDynamicRateVariables(model, _rateVariables);
-        
+
         int vectorizationFactor = 1;
         if (director instanceof SDFDirector) {
             Token token =
@@ -269,7 +269,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
         // An association between all the relations in a simulation and
         // and array of the maximum number of tokens that are ever
         // waiting on that relation.
-        Map minimumBufferSize = 
+        Map minimumBufferSize =
             new TreeMap(new DFUtilities.NamedObjComparator());
 
         // Initialize the buffer size of each relation to zero.
@@ -345,7 +345,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
         // Set parameters on each actor that contain the number
         // of firings in an iteration.
         _saveFiringCounts(entityToFiringsPerIteration);
-        
+
         // Set parameters on each relation that contain the maximum
         // buffer sizes necessary during execution.
         _saveBufferSizes(minimumBufferSize);
@@ -358,11 +358,11 @@ public class DistributedSDFScheduler extends SDFScheduler {
         _externalRates = externalRates;
         return result;
     }
-    
+
     /** Duplicate with modifications of the _scheduleConnectedActors
      *  method.
      *  Modifications are marked with NEW!.
-     * 
+     *
      *  @param minimumBufferSize A map from relation to an Integer
      *  representing the minimum size buffer necessary for the computed
      *  schedule.  The map will be populated during the execution of this
@@ -381,7 +381,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *  graph that is not consistent with the firing vector, or detects an
      *  inconsistent internal state, or detects a graph that cannot be
      *  scheduled.
-     * 
+     *
      */
     protected Schedule _scheduleInParallelConnectedActors(Map minimumBufferSize,
             Map externalRates, LinkedList actorList,
@@ -392,8 +392,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
         LinkedList readyToScheduleActorList = new LinkedList();
         // A linked list that will contain our new schedule.
         Schedule newSchedule = new Schedule();
-        
-        
+
+
         /**************************************************
          * > NEW!                                         *
          **************************************************/
@@ -402,10 +402,10 @@ public class DistributedSDFScheduler extends SDFScheduler {
         /**************************************************
          * < NEW!                                         *
          **************************************************/
-        
+
         // An association between each actor and the number of firings
         // for that actor that remain to be simulated.
-        Map firingsRemainingVector = 
+        Map firingsRemainingVector =
             new TreeMap(new DFUtilities.NamedObjComparator());
 
         // Initialized the firingsRemainingVector to the current
@@ -415,7 +415,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
         // A list of all that actors that we have not yet completely scheduled.
         LinkedList unscheduledActorList = new LinkedList();
         unscheduledActorList.addAll(actorList);
-        
+
         /**************************************************
          * > NEW!                                          *
          **************************************************/
@@ -424,10 +424,10 @@ public class DistributedSDFScheduler extends SDFScheduler {
         /**************************************************
          * < NEW!                                          *
          **************************************************/
-        
+
         // An association between all the input ports in a simulation and an
         // array of the number of tokens waiting on each relation of that port.
-        Map waitingTokens = 
+        Map waitingTokens =
             new TreeMap(new DFUtilities.NamedObjComparator());
         try {
             // Initialize waitingTokens
@@ -483,7 +483,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                 Iterator outputPorts = actor.outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     IOPort outputPort = (IOPort) outputPorts.next();
-                    int count = 
+                    int count =
                         DFUtilities.getTokenInitProduction(outputPort);
                     if (_debugging && VERBOSE) {
                         _debug("Simulating " + count
@@ -564,9 +564,9 @@ public class DistributedSDFScheduler extends SDFScheduler {
             /**************************************************
              * > NEW!                                         *
              **************************************************/
-            
+
 //            System.out.println("parallelLevel:" + parallelLevel.toString());
-                        
+
             // While we have actors left, pick one that is ready and fire it.
             while (readyToScheduleActorList.size() > 0) {
                 if (_debugging && VERBOSE) {
@@ -616,7 +616,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                 /**************************************************
                  * < NEW!                                         *
                  **************************************************/
-                
+
                 // Determine the number of times currentActor can fire.
                 int numberOfFirings =
                     _computeMaximumFirings(currentActor, waitingTokens);
@@ -656,7 +656,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                 Firing firing = new Firing();
                 firing.setActor((Actor)currentActor);
                 firing.setIterationCount(numberOfFirings);
-                
+
                 /**************************************************
                  * > NEW!                                         *
                  **************************************************/
@@ -673,7 +673,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                      outputPorts.hasNext();) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
-                    int count = 
+                    int count =
                         DFUtilities.getTokenProductionRate(outputPort);
                     /**************************************************
                      * > NEW!                                         *
@@ -690,7 +690,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                      **************************************************/
                 }
 //                System.out.println(parallelLevel.get(parallelLevel.size()-1));
-                
+
                 /**************************************************
                  * > NEW!                                         *
                  **************************************************/
@@ -806,11 +806,11 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
         return newSchedule;
     }
-    
+
     /** Duplicate and modification of the _simulateTokensCreated
      *  method.
      *  Modifications are marked with NEW!.
-     * 
+     *
      *  @param outputPort The port that is creating the tokens.
      *  @param createdTokens The number of tokens to create.
      *  @param actorList The list of actors that are being scheduled.
@@ -866,7 +866,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                     // transparent hierarchy... just ignore.
                     continue;
                 }
-                
+
                 if (_debugging && VERBOSE) {
                     _debug("destination receivers for relation "
                             + relation.getName() + " channel "
@@ -930,7 +930,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                             /**************************************************
                              * > NEW!                                         *
                              **************************************************/
-                            // NEW! Addlast in order to create a topological sort.    
+                            // NEW! Addlast in order to create a topological sort.
                             readyToScheduleActorList.addLast(connectedActor);
                             /**************************************************
                              * < NEW!                                         *

@@ -18,7 +18,7 @@ SUCH DAMAGE.
 AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
 HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -63,13 +63,13 @@ It uses Jini as discovery protocol. It performs the following tasks:
 <li>Loading of various settings as Unicast locators and service class.
 <li>Discovers the service locator (unicast, multicast or both).
 <li>Creates and exports the service proxy (that allows for RMI calls).
-<li>Stays alive.    
+<li>Stays alive.
 </ul>
 @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating 
+@Pt.AcceptedRating
 */
 
 public class DistributedServerRMIGeneric implements ServiceIDListener, DiscoveryListener {
@@ -112,18 +112,18 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
      *  - Creates and exports the service proxy (that allows for RMI calls).
      *
      *  @param configFileName The configuration file.
-     */    
-    
+     */
+
     public DistributedServerRMIGeneric(String configFileName) {
 
         try {
             System.out.println("Starting server in: ");
-            System.out.println("    " + InetAddress.getLocalHost().getHostName() + " (" + 
-                                InetAddress.getLocalHost().getHostAddress() + ")");            
+            System.out.println("    " + InetAddress.getLocalHost().getHostName() + " (" +
+                                InetAddress.getLocalHost().getHostAddress() + ")");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-       
+
         getConfiguration(configFileName);
 
         System.out.println("Setting codebase property " + codebase );
@@ -139,7 +139,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
 
         // install suitable security manager
         System.setSecurityManager(new RMISecurityManager());
-    
+
         tryRetrieveServiceId(serviceIdFile);
 
         JoinManager joinMgr = null;
@@ -172,45 +172,45 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
     /** Loads various settings from a configuration file.
      *  This file contains information about:
      *  - codebase: location of the code.
-     *  - exporter: export to be used. 
+     *  - exporter: export to be used.
      *  - groups: groups to join.
-     *  - unicast locators: Know service locators can be specified here. 
+     *  - unicast locators: Know service locators can be specified here.
      *  - entries: Other info e.g. name and comments
-     *  - service: The service to be located.     
-     * 
+     *  - service: The service to be located.
+     *
      *  @param configFileName The configuration file.
-     */      
-    
+     */
+
     private void getConfiguration(String configFileName) {
         System.out.println("Opening configuration file: " + configFileName);
         Configuration configuration = null;
-    
+
         // We have to get a configuration file or we can't continue
         try {
-            configuration = ConfigurationProvider.getInstance(new String[] {configFileName}); 
+            configuration = ConfigurationProvider.getInstance(new String[] {configFileName});
         } catch(ConfigurationException e) {
             System.err.println(e.toString());
             e.printStackTrace();
             System.exit(1);
         }
-        
+
         // The config file must have an exporter, a service and a codebase
         try {
             System.out.print("Reading exporter: ");
-            exporter = (Exporter) configuration.getEntry(SERVER, 
-                        "exporter", 
-                        Exporter.class); 
+            exporter = (Exporter) configuration.getEntry(SERVER,
+                        "exporter",
+                        Exporter.class);
             System.out.println(exporter);
             System.out.print("Reading service: ");
-            service = (Remote) configuration.getEntry(SERVER, 
-                        "service", 
+            service = (Remote) configuration.getEntry(SERVER,
+                        "service",
                         Remote.class);
-            System.out.println(service);            
-            System.out.print("Reading codebase: ");                         
+            System.out.println(service);
+            System.out.print("Reading codebase: ");
             codebase = (String) configuration.getEntry(SERVER,
                         "codebase",
                         String.class);
-            System.out.println(codebase);            
+            System.out.println(codebase);
         } catch(NoSuchEntryException  e) {
             System.err.println("No config entry for " + e);
             System.exit(1);
@@ -219,49 +219,49 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
             e.printStackTrace();
             System.exit(2);
         }
-    
-        // These fields can fallback to a default value 
+
+        // These fields can fallback to a default value
         try {
-            System.out.println("Reading unicastLocators: ");   
-            unicastLocators = (LookupLocator[])          
-            configuration.getEntry( SERVER, 
-                                    "unicastLocators", 
+            System.out.println("Reading unicastLocators: ");
+            unicastLocators = (LookupLocator[])
+            configuration.getEntry( SERVER,
+                                    "unicastLocators",
                                     LookupLocator[].class,
                                     null); // default
             for (int i=0; i<unicastLocators.length; i++) {
-                System.out.println("    " + unicastLocators[i]);                        
+                System.out.println("    " + unicastLocators[i]);
             }
-                 
-            System.out.println("Reading entries: ");           
-            entries = (Entry[]) 
-            configuration.getEntry( SERVER, 
-                                    "entries", 
+
+            System.out.println("Reading entries: ");
+            entries = (Entry[])
+            configuration.getEntry( SERVER,
+                                    "entries",
                                     Entry[].class,
                                     null); // default
             for (int i=0; i<entries.length; i++) {
-                System.out.println("    " + entries[i]);                        
+                System.out.println("    " + entries[i]);
             }
-            System.out.print("Reading serviceIdFile: ");           
-            serviceIdFile = (File) 
-            configuration.getEntry( SERVER, 
-                                    "serviceIdFile", 
+            System.out.print("Reading serviceIdFile: ");
+            serviceIdFile = (File)
+            configuration.getEntry( SERVER,
+                                    "serviceIdFile",
                                     File.class,
                                     null); // default
-            System.out.println(serviceIdFile);  
-            System.out.println("Reading groups: ");           
-            groups = (String[]) configuration.getEntry( SERVER, 
-                                                        "groups", 
+            System.out.println(serviceIdFile);
+            System.out.println("Reading groups: ");
+            groups = (String[]) configuration.getEntry( SERVER,
+                                                        "groups",
                                                         String[].class,
                                                         null); // default
             if (groups.length != 0) {
                 for (int i=0; i<groups.length; i++) {
-                    System.out.println("    " + groups[i]);                        
+                    System.out.println("    " + groups[i]);
                 }
             } else {
-                groups = LookupDiscovery.ALL_GROUPS; 
+                groups = LookupDiscovery.ALL_GROUPS;
                 System.out.println("    No groups specified, using LookupDiscovery.ALL_GROUPS.");
             }
-                    
+
         } catch(Exception e) {
             System.err.println(e.toString());
             e.printStackTrace();
@@ -271,15 +271,15 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
 
     /** Required by the ServiceIDListener interface.
      *  Called when the JoinManager gets a valid ServiceID from a lookup service.
-     * 
-     *  @param serviceID the service ID assigned by the lookup service. 
-     */   
-    
+     *
+     *  @param serviceID the service ID assigned by the lookup service.
+     */
+
     public void serviceIDNotify(ServiceID serviceID) {
         // called as a ServiceIDListener
         // Should save the id to permanent storage
         System.out.println("Got service ID " + serviceID.toString());
-    
+
         // try to save the service ID in a file
         /*
         if (serviceIdFile != null) {
@@ -292,18 +292,18 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
             System.out.println("Service id saved in " +  serviceIdFile);
             } catch(Exception e) {
             // ignore
-            } 
+            }
         }
         */
     }
-      
+
     /** Try to load the service ID from file. It isn't an error if we
      *  can't load it, because maybe this is the first time this service
      *  was run.
-     * 
+     *
      *  @param serviceIDFile name of the file where the serviceID is stored.
-     */  
-    
+     */
+
     public void tryRetrieveServiceId(File serviceIdFile) {
         System.out.print("Trying to retrieve ServiceID from: " + serviceIdFile.getAbsolutePath() + "... ");
         DataInputStream din = null;
@@ -319,10 +319,10 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
 
     /** Called when one or more lookup service registrars has been discovered.
      *  The method should return quickly; e.g., it should not make remote calls.
-     * 
+     *
      *  @param evt The event that describes the discovered registrars.
-     */  
-    
+     */
+
     public void discovered(DiscoveryEvent evt) {
         ServiceRegistrar[] registrars = evt.getRegistrars();
 
@@ -337,17 +337,17 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
             }
     }
 
-        
+
     }
 
     /** Called when one or more lookup service registrars has been discarded.
      *  The method should return quickly; e.g., it should not make remote calls.
-     * 
+     *
      *  @param evt The event that describes the discovered registrars.
-     */  
-    
+     */
+
     public void discarded(DiscoveryEvent evt) {
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -358,29 +358,29 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
 
     /** Proxy that allows for RMI calls to the service. */
     private Remote proxy;
-    
-    /** Service provided. */ 
+
+    /** Service provided. */
     private Remote service;
-    
+
     /** An abstraction for exporting a single remote object such that it
      *  can receive remote method invocations */
     private Exporter exporter;
-    
+
     /** Groups loaded from the config file. */
     private String[] groups;
-    
+
     /** Entries loaded from the config file. */
     private Entry[] entries;
-    
+
     /** UnicastLocators loaded from the config file. */
     private LookupLocator[] unicastLocators;
-    
+
     /**  File that stores the serviceID. */
     private File serviceIdFile;
-    
+
     /** Codebase. */
     private String codebase;
-    
+
     /** ID of the service. */
     private ServiceID serviceID;
-} 
+}

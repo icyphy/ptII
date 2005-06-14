@@ -19,7 +19,7 @@ SUCH DAMAGE.
 AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
 HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
@@ -43,14 +43,14 @@ import ptolemy.distributed.common.DistributedActor;
 
 /**
 An implementation of the Receiver interface for distributed environments.
-Basically, its task is to forward tokens to distributed services 
-whenever the put method is called.  
+Basically, its task is to forward tokens to distributed services
+whenever the put method is called.
 
 @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red (kapokasa)
-@Pt.AcceptedRating 
+@Pt.AcceptedRating
 @see ptolemy.actor.AbstractReceiver
 */
 public class DistributedReceiver extends AbstractReceiver {
@@ -58,31 +58,31 @@ public class DistributedReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Empty implementation of the inherited abstract method. 
+    /** Empty implementation of the inherited abstract method.
      */
     public Token get() throws NoTokenException {
         return null;
     }
 
-    /** Empty implementation of the inherited abstract method. 
+    /** Empty implementation of the inherited abstract method.
      */
     public boolean hasRoom() {
         return false;
     }
 
-    /** Empty implementation of the inherited abstract method. 
+    /** Empty implementation of the inherited abstract method.
      */
     public boolean hasRoom(int numberOfTokens) {
         return false;
     }
 
-    /** Empty implementation of the inherited abstract method. 
+    /** Empty implementation of the inherited abstract method.
      */
     public boolean hasToken() {
         return false;
     }
 
-    /** Empty implementation of the inherited abstract method. 
+    /** Empty implementation of the inherited abstract method.
      */
     public boolean hasToken(int numberOfTokens) {
         return false;
@@ -91,13 +91,13 @@ public class DistributedReceiver extends AbstractReceiver {
     /** Forward copies of the token to the distributed services
      *  specified in the servicesReceiversListMap.
      *  //TODO:This could be done in parallel. Is it worth the effort?
-     *  @param token The token to be forwarded. 
+     *  @param token The token to be forwarded.
      */
     public void put(Token token) throws NoRoomException {
         if (VERBOSE) {
             System.out.println("Forwarding token: " + token.toString());
         }
-        
+
         for (Iterator services = servicesReceiversListMap.keySet().iterator();
              services.hasNext();) {
             ServiceItem server = (ServiceItem) services.next();
@@ -110,13 +110,13 @@ public class DistributedReceiver extends AbstractReceiver {
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-        }         
+        }
     }
 
-    /** Specify the servicesReceiversListMap that contains a sequence of 
+    /** Specify the servicesReceiversListMap that contains a sequence of
      *  services and IDs of receivers in the service.
-     *  @param servRecListMap The map that contains a sequence of 
-     *  services and IDs of receivers. 
+     *  @param servRecListMap The map that contains a sequence of
+     *  services and IDs of receivers.
      */
     public void setServicesReceiversListMap(HashMap servRecListMap) {
         if (VERBOSE) {
