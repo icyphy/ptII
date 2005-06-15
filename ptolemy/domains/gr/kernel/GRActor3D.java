@@ -1,4 +1,4 @@
-/* A base class for all GR actors
+/* A base class for all 3D GR actors
    Copyright (c) 2003-2005 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
@@ -34,12 +34,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// GRActor
+//// GRActor3D
 
 /**
-   A base class for all GR actors. This is an abstract class that is never
-   used as a standalone actor in a Ptolemy model. Subclasses of this actor
-   include Geometry actors, Transform actors, Interaction actors, and the
+   An abstract base class for all 3D GR actors. Subclasses of this actor
+   include geometry actors, transform actors, interaction actors, and the
    ViewScreen3D display actor.
 
    @see ptolemy.domains.gr.lib
@@ -47,8 +46,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author C. Fong
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (chf)
-   @Pt.AcceptedRating Yellow (cxh)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (liuxj)
 */
 abstract public class GRActor3D extends GRActor {
     /** Create a new GRActor3D in the specified container with the specified
@@ -72,23 +71,24 @@ abstract public class GRActor3D extends GRActor {
     ////                         protected methods                 ////
 
     /** Add the node argument as a child to the encapsulated Java3D node
-     *  in this actor. Derived GR Actors should override this method
-     *
+     *  in this actor. Derived GR Actors should override this method if
+     *  they aggregate graphical nodes to treat a group as a unit.
+     *  @param node The node to add.
      *  @exception IllegalActionException Always thrown for this base class.
      */
     protected void _addChild(Node node) throws IllegalActionException {
         throw new IllegalActionException(this,
-                "GR domain actor cannot have children");
+                "Cannot have child nodes.");
     }
 
     /** Return the Java3D node associated with this actor. Derived
      *  GR Actors should override this method.
-     *
-     *  @return The Java3D node associated with this actor
+     *  @return The Java3D node associated with this actor.
      */
     abstract protected Node _getNodeObject();
 
     /** Set the view screen that this actor is connected to.
+     *  @param actor The view screen actor.
      *  @exception IllegalActionException If the given actor is not a
      *  ViewScreen3D.
      */
@@ -96,25 +96,16 @@ abstract public class GRActor3D extends GRActor {
         if (actor instanceof ViewScreen3D) {
             _viewScreen = (ViewScreen3D) actor;
         } else {
-            throw new RuntimeException("Actor " + getClass().getName()
+            throw new IllegalActionException(this,
+                    "Actor of class "
+                    + getClass().getName()
                     + " can only be used with a ViewScreen3D");
         }
     }
 
-    /** Start the Java3D renderer. This method will be overridden by some
-     *  derived GR Actors.
-     */
-    protected void _startRenderer() {
-    }
-
-    /** Stop the Java3D renderer. This method will be overridden by some
-     *  derived GR Actors.
-     */
-    protected void _stopRenderer() {
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // The actor displaying the scene, if there is one
+
+    /** The actor displaying the scene, if there is one. */
     protected ViewScreen3D _viewScreen;
 }

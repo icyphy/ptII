@@ -1,4 +1,4 @@
-/* A GR 3D scene viewer
+/* A GR 3D scene viewer.
 
 Copyright (c) 1998-2005 The Regents of the University of California.
 All rights reserved.
@@ -51,10 +51,8 @@ import javax.vecmath.Vector3f;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.gr.kernel.GRActor3D;
@@ -75,16 +73,19 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 //////////////////////////////////////////////////////////////////////////
 //// ViewScreen3D
 
-/** A sink actor that renders the GR geometry into a display screen
+/** A sink actor that renders the 3D GR geometry into a display screen.
 
 @author C. Fong, Adam Cataldo, Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Red (chf)
-@Pt.AcceptedRating Red (chf)
+@since Ptolemy II 4.1
+@Pt.ProposedRating Green (eal)
+@Pt.AcceptedRating Green (acataldo)
 */
-public class ViewScreen3D extends GRActor3D implements Placeable,
-                                                       ViewScreenInterface {
+public class ViewScreen3D extends GRActor3D
+        implements Placeable, ViewScreenInterface {
+    
+    // FIXME: Need a reset button to reset the viewpoint to the original.
+    
     /** Construct a ViewScreen in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -140,7 +141,9 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     ///////////////////////////////////////////////////////////////////
     ////                     Ports and Parameters                  ////
 
-    /** The input scene graph.
+    /** The input scene graph. Actors that produce 3D objects
+     *  can be connected to this port for rendering.
+     *  The type of this port is sceneGraph.
      */
     public TypedIOPort sceneGraphIn;
 
@@ -149,6 +152,8 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      *  is ignored.
      */
     public ColorAttribute backgroundColor;
+    
+    // FIXME: Need a backgroundTexture attribute.
 
     /** The width in pixels of the display screen.
      *  The larger of the vertical or horizontal size will

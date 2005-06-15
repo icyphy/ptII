@@ -1,4 +1,4 @@
-/* A GR scene viewer
+/* A marker interface for a GR scene viewer class.
 
 Copyright (c) 2003-2005 The Regents of the University of California.
 All rights reserved.
@@ -31,13 +31,13 @@ package ptolemy.domains.gr.kernel;
 //////////////////////////////////////////////////////////////////////////
 //// ViewScreenInterface
 
-/** An interface for view screens
+/** A marker interface for GR view screen classes.
 
 @author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Red (chf)
-@Pt.AcceptedRating Red (chf)
+@Pt.ProposedRating Green (eal)
+@Pt.AcceptedRating Green (acataldo)
 */
 public interface ViewScreenInterface {
 }
