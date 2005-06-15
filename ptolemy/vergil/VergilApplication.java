@@ -196,6 +196,10 @@ public class VergilApplication extends MoMLApplication {
         final CompositeEntity libraryContainer =
             (CompositeEntity) configuration.getEntity("actor library");
 
+        if (libraryContainer == null) {
+            return;
+        }
+
         StringAttribute alternateLibraryBuilderAttribute =
           (StringAttribute)libraryContainer
             .getAttribute("_alternateLibraryBuilder");
@@ -218,15 +222,13 @@ public class VergilApplication extends MoMLApplication {
             libraryBuilder.addAttributes(
                     alternateLibraryBuilderAttribute.attributeList());
             try {
-                library = libraryBuilder.buildLibrary(libraryContainer);
+                library = libraryBuilder.buildLibrary(libraryContainer.workspace());
             } catch(Exception ex) {
+                ex.printStackTrace();
                 throw new Exception("Cannot create library with " +
                         "LibraryBuilder: ", ex);
             }
-        }
-
-        if (libraryContainer == null) {
-            return;
+            System.out.println("\nActor Library built from alternative plugin");
         }
 
         final ModelDirectory directory = (ModelDirectory) configuration
