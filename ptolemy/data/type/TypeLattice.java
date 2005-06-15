@@ -508,8 +508,11 @@ public class TypeLattice {
             Type[] types = new Type[0];
             StructuredType recordRep = (new RecordType(labels, types))
                 ._getRepresentative();
+            StructuredType unionRep = (new UnionType(labels, types))
+                ._getRepresentative();
 
-            StructuredType functionRep = new ptolemy.data.type.FunctionType(new ptolemy.data.type.Type[0],
+            StructuredType functionRep = new ptolemy.data.type.FunctionType(
+                    new ptolemy.data.type.Type[0],
                     ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();
 
             _basicLattice.addNodeWeight(BaseType.BOOLEAN);
@@ -537,6 +540,7 @@ public class TypeLattice {
 
             _basicLattice.addNodeWeight(arrayRep);
             _basicLattice.addNodeWeight(recordRep);
+            _basicLattice.addNodeWeight(unionRep);
 
             _basicLattice.addEdge(BaseType.XMLTOKEN, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.XMLTOKEN);
@@ -584,6 +588,9 @@ public class TypeLattice {
 
             _basicLattice.addEdge(recordRep, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, recordRep);
+
+            _basicLattice.addEdge(unionRep, BaseType.GENERAL);
+            _basicLattice.addEdge(BaseType.UNKNOWN, unionRep);
 
             if (!_basicLattice.isLattice()) {
                 throw new InternalErrorException("TheTypeLattice: The "
