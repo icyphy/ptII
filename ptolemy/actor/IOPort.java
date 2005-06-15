@@ -800,6 +800,8 @@ public class IOPort extends ComponentPort {
      *  representation of the model time.
      *  @param channelIndex The channel index.
      *  @return The current time associated with a certain channel.
+     *  @exception IllegalActionException If the channel index
+     *  is out of range or if the port is not an input port.
      *  @deprecated As Ptolemy II 4.1,
      *  replaced by {@link #getModelTime}.
      */
@@ -1390,6 +1392,8 @@ public class IOPort extends ComponentPort {
      *  with any data they may contain.
      *  <p>
      *  This method is read-synchronized on the workspace.
+     *  @param relation The specified relation from which the remote
+     *  receivers can receive data.
      *  @return The receivers for output data, or an empty array if there
      *   are none.
      *  @exception IllegalActionException If the IORelation is not linked
@@ -3355,6 +3359,8 @@ public class IOPort extends ComponentPort {
      *  workspace, so the caller should be.
      *
      *  @param except The relation to exclude.
+     *  @return The sums of the width of the relations linked on the inside,
+     *  except for the specified port.
      */
     protected int _getInsideWidth(IORelation except) {
         int result = 0;
