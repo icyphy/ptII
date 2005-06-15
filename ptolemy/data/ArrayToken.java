@@ -368,7 +368,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @return An ArrayToken containing the extracted subarray.
      *  @exception IllegalActionException If the argument type is invalid
      *   or the result cannot be constructed.
-     *  @exception ArrayOutOfBoundsException  If the argument is an array
+     *  @exception ArrayIndexOutOfBoundsException  If the argument is an array
      *   of integers, and one or more of those integers is not a valid
      *   index into this array.
      *  @since Ptolemy II 4.1
@@ -414,7 +414,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @param index The index of the desired element.
      *  @return The token contained in this array token at the
      *  specified index.
-     *  @exception ArrayIndexOutOfBoundException If the specified index is
+     *  @exception ArrayIndexOutOfBoundsException If the specified index is
      *   outside the range of the token array.
      */
     public Token getElement(int index) {
