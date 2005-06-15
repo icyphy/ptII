@@ -459,7 +459,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  only makes sense for tokens where the distance between them is
      *  reasonably represented as a double. It is assumed that the
      *  argument is an RecordToken, and the isCloseTo() method of the
-     *  fields is is used.  If the fields do not match, then the
+     *  fields is used.  If the fields do not match, then the
      *  return value is false.
      *  @param rightArgument The token to compare to this token.
      *  @param epsilon The value that we use to determine whether two
