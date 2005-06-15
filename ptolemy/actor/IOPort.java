@@ -444,7 +444,8 @@ public class IOPort extends ComponentPort {
                     // we create a new list with one element.
                     // EAL 7/30/99.
                     if (_localReceiversTable.containsKey(relation)) {
-                        List occurrences = (List) (_localReceiversTable.get(relation));
+                        List occurrences =
+                            (List) (_localReceiversTable.get(relation));
                         occurrences.add(result);
                     } else {
                         List occurrences = new LinkedList();
@@ -478,7 +479,8 @@ public class IOPort extends ComponentPort {
                 // we create a new list with one element.
                 // EAL 7/30/99.
                 if (_localReceiversTable.containsKey(relation)) {
-                    List occurrences = (List) (_localReceiversTable.get(relation));
+                    List occurrences =
+                        (List) (_localReceiversTable.get(relation));
                     occurrences.add(result);
                 } else {
                     List occurrences = new LinkedList();
@@ -770,7 +772,8 @@ public class IOPort extends ComponentPort {
                     "get: no receiver at index: " + channelIndex + ".");
         }
 
-        Token[] retArray = localReceivers[channelIndex][0].getArray(vectorLength);
+        Token[] retArray =
+            localReceivers[channelIndex][0].getArray(vectorLength);
 
         if (retArray == null) {
             throw new NoTokenException(this,
@@ -803,58 +806,6 @@ public class IOPort extends ComponentPort {
     public double getCurrentTime(int channelIndex)
             throws IllegalActionException {
         return getModelTime(channelIndex).getDoubleValue();
-    }
-
-    /** Return the current time associated with a certain channel.
-     *  In most domains, this is just the current time of the director.
-     *  However, in some domains, the current time is a per-channel
-     *  concept.  If the channel has a token to be read (i.e. hasToken()
-     *  returns true), then the current time is the time associated with
-     *  that token.  If there is no token to be read, then the current
-     *  time is the time of most recently read token. If no token has been
-     *  previously read, then the current time is 0.0.  Notice that this
-     *  means that an actor accessing time should do things in the
-     *  following order:
-     *  <pre>
-     *     if (hasToken(n)) {
-     *        double time = port.getCurrentTime(n);
-     *        Token token = port.get(n);
-     *     }
-     *  </pre>
-     *  I.e., getCurrentTime() is called before get().
-     *  Currently, only the DT domain uses this per-channel time feature.
-     *
-     *  @param channelIndex The channel index.
-     *  @return The current time associated with a certain channel.
-     *  @exception IllegalActionException If the channel index
-     *  is out of range or if the port is not an input port.
-     */
-    public Time getModelTime(int channelIndex) throws IllegalActionException {
-        Receiver[][] localReceivers;
-
-        try {
-            try {
-                _workspace.getReadAccess();
-
-                // Note that the getReceivers() method might throw an
-                // IllegalActionException if there's no director.
-                localReceivers = getReceivers();
-
-                if (localReceivers[channelIndex] == null) {
-                    throw new IllegalActionException(this,
-                            "no receiver at index: " + channelIndex + ".");
-                }
-            } finally {
-                _workspace.doneReading();
-            }
-
-            AbstractReceiver receiver = (AbstractReceiver) localReceivers[channelIndex][0];
-            return receiver.getModelTime();
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may be thrown if the port is not an input port.
-            throw new IllegalActionException(this,
-                    "getCurrentTime: channel index is out of range.");
-        }
     }
 
     /** Get a token from the specified inside channel of this port.
@@ -1016,6 +967,59 @@ public class IOPort extends ComponentPort {
                     "Expected relation to be connected!");
         } finally {
             _workspace.doneReading();
+        }
+    }
+
+    /** Return the current time associated with a certain channel.
+     *  In most domains, this is just the current time of the director.
+     *  However, in some domains, the current time is a per-channel
+     *  concept.  If the channel has a token to be read (i.e. hasToken()
+     *  returns true), then the current time is the time associated with
+     *  that token.  If there is no token to be read, then the current
+     *  time is the time of most recently read token. If no token has been
+     *  previously read, then the current time is 0.0.  Notice that this
+     *  means that an actor accessing time should do things in the
+     *  following order:
+     *  <pre>
+     *     if (hasToken(n)) {
+     *        double time = port.getCurrentTime(n);
+     *        Token token = port.get(n);
+     *     }
+     *  </pre>
+     *  I.e., getCurrentTime() is called before get().
+     *  Currently, only the DT domain uses this per-channel time feature.
+     *
+     *  @param channelIndex The channel index.
+     *  @return The current time associated with a certain channel.
+     *  @exception IllegalActionException If the channel index
+     *  is out of range or if the port is not an input port.
+     */
+    public Time getModelTime(int channelIndex) throws IllegalActionException {
+        Receiver[][] localReceivers;
+
+        try {
+            try {
+                _workspace.getReadAccess();
+
+                // Note that the getReceivers() method might throw an
+                // IllegalActionException if there's no director.
+                localReceivers = getReceivers();
+
+                if (localReceivers[channelIndex] == null) {
+                    throw new IllegalActionException(this,
+                            "no receiver at index: " + channelIndex + ".");
+                }
+            } finally {
+                _workspace.doneReading();
+            }
+
+            AbstractReceiver receiver =
+                (AbstractReceiver) localReceivers[channelIndex][0];
+            return receiver.getModelTime();
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may be thrown if the port is not an input port.
+            throw new IllegalActionException(this,
+                    "getCurrentTime: channel index is out of range.");
         }
     }
 
@@ -1188,7 +1192,8 @@ public class IOPort extends ComponentPort {
 
             if (!isLinked(relation) && !insideLink) {
                 throw new IllegalActionException(this, relation,
-                        "getReceivers: Relation argument is not " + "linked to me.");
+                        "getReceivers: Relation argument is not "
+                        + "linked to me.");
             }
 
             boolean opaque = isOpaque();
@@ -1329,7 +1334,8 @@ public class IOPort extends ComponentPort {
 
             // For opaque port, try the cached _farReceivers
             // Check validity of cached version
-            if (isOpaque() && (_farReceiversVersion == _workspace.getVersion())) {
+            if (isOpaque()
+                    && (_farReceiversVersion == _workspace.getVersion())) {
                 return _farReceivers;
             }
 
@@ -1542,7 +1548,8 @@ public class IOPort extends ComponentPort {
         try {
             Receiver[][] farReceivers = getRemoteReceivers();
 
-            if ((farReceivers == null) || (farReceivers[channelIndex] == null)) {
+            if ((farReceivers == null)
+                    || (farReceivers[channelIndex] == null)) {
                 result = false;
             } else {
                 for (int j = 0; j < farReceivers[channelIndex].length; j++) {
@@ -1559,7 +1566,8 @@ public class IOPort extends ComponentPort {
         }
 
         if (_debugging) {
-            _debug("hasRoom on channel " + channelIndex + " returns " + result);
+            _debug("hasRoom on channel " + channelIndex + " returns "
+                    + result);
         }
 
         return result;
@@ -1585,7 +1593,8 @@ public class IOPort extends ComponentPort {
         try {
             Receiver[][] farReceivers = getInsideReceivers();
 
-            if ((farReceivers == null) || (farReceivers[channelIndex] == null)) {
+            if ((farReceivers == null)
+                    || (farReceivers[channelIndex] == null)) {
                 result = false;
             } else {
                 for (int j = 0; j < farReceivers[channelIndex].length; j++) {
@@ -1636,8 +1645,8 @@ public class IOPort extends ComponentPort {
             } else {
                 throw new IllegalActionException(this,
                         "Channel index " + channelIndex
-                        + " is out of range, because width is only " + getWidth()
-                        + ".");
+                        + " is out of range, because width is only "
+                        + getWidth() + ".");
             }
         }
 
@@ -1651,7 +1660,8 @@ public class IOPort extends ComponentPort {
         }
 
         if (_debugging) {
-            _debug("hasToken on channel " + channelIndex + " returns " + result);
+            _debug("hasToken on channel " + channelIndex + " returns "
+                    + result);
         }
 
         return result;
@@ -2348,7 +2358,8 @@ public class IOPort extends ComponentPort {
             }
 
             for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                farReceivers[channelIndex][j].putArray(tokenArray, vectorLength);
+                farReceivers[channelIndex][j].putArray(tokenArray,
+                        vectorLength);
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may occur if the channel index is out of range.
@@ -2415,7 +2426,8 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If a receiver does not support
      *   clear().
      */
-    public void sendClearInside(int channelIndex) throws IllegalActionException {
+    public void sendClearInside(int channelIndex)
+            throws IllegalActionException {
         Receiver[][] farReceivers;
 
         if (_debugging) {
@@ -2588,7 +2600,8 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted (not thrown in this base class).
      */
-    public void setMultiport(boolean isMultiport) throws IllegalActionException {
+    public void setMultiport(boolean isMultiport)
+            throws IllegalActionException {
         // No need for the try ... finally construct here because no
         // exception can occur.  Note that although the action here is
         // atomic, we still need to obtain write access to be sure that
@@ -2776,7 +2789,8 @@ public class IOPort extends ComponentPort {
     public boolean transferInputs() throws IllegalActionException {
         if (!isInput() || !isOpaque()) {
             throw new IllegalActionException(this,
-                    "transferInputs: this port is not an opaque" + "input port.");
+                    "transferInputs: this port is not an opaque"
+                    + "input port.");
         }
 
         boolean wasTransferred = false;
@@ -2834,7 +2848,8 @@ public class IOPort extends ComponentPort {
 
         if (!this.isOutput() || !this.isOpaque()) {
             throw new IllegalActionException(this,
-                    "transferOutputs: this port is not " + "an opaque output port.");
+                    "transferOutputs: this port is not "
+                    + "an opaque output port.");
         }
 
         boolean wasTransferred = false;
@@ -3351,7 +3366,8 @@ public class IOPort extends ComponentPort {
             if (relation != except) {
                 if (!relation.isWidthFixed()) {
                     throw new InvalidStateException(this,
-                            "Width of inside relations cannot " + "be determined.");
+                            "Width of inside relations cannot "
+                            + "be determined.");
                 }
 
                 result += relation.getWidth();
@@ -3445,7 +3461,8 @@ public class IOPort extends ComponentPort {
                 // Relation is a bus.
                 if (!isMultiport()) {
                     throw new IllegalActionException(this, relation,
-                            "Attempt to link a bus relation " + "to a single port.");
+                            "Attempt to link a bus relation "
+                            + "to a single port.");
                 }
 
                 if (!relation.isWidthFixed()) {
@@ -3474,7 +3491,8 @@ public class IOPort extends ComponentPort {
                 // Relation is a bus.
                 if (!isMultiport()) {
                     throw new IllegalActionException(this, relation,
-                            "Attempt to link a bus relation " + "to a single port.");
+                            "Attempt to link a bus relation "
+                            + "to a single port.");
                 }
 
                 Iterator relations = linkedRelationList().iterator();
@@ -3512,16 +3530,19 @@ public class IOPort extends ComponentPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // To avoid creating this repeatedly, we use a single version.
-    private static final Receiver[][] _EMPTY_RECEIVER_ARRAY = new Receiver[0][0];
 
-    // Indicate whether the port is an input, an output, or both.
-    // The value may be overridden in transparent ports, in that if
-    // a transparent port is inside linked to an input or output port,
-    // then it will be considered an inside or output port respectively.
-    // This determination is cached, so we need variables to track the
-    // validity of the cache.
-    // 'transient' means that the variable will not be serialized.
+    /** To avoid creating this repeatedly, we use a single version. */
+    private static final Receiver[][] _EMPTY_RECEIVER_ARRAY =
+        new Receiver[0][0];
+
+    /** Indicate whether the port is an input, an output, or both.
+     * The value may be overridden in transparent ports, in that if
+     * a transparent port is inside linked to an input or output port,
+     * then it will be considered an inside or output port respectively.
+     * This determination is cached, so we need variables to track the
+     * validity of the cache.
+     * 'transient' means that the variable will not be serialized.
+     */
     private boolean _isInput;
 
     // Indicate whether the port is an input, an output, or both.
