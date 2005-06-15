@@ -515,7 +515,7 @@ public class RecordType extends StructuredType {
      */
     protected int _compare(StructuredType type) {
         if (!(type instanceof RecordType)) {
-            throw new IllegalArgumentException("RecordType.compare: "
+            throw new IllegalArgumentException("RecordType._compare: "
                     + "The argument is not a RecordType.");
         }
 
