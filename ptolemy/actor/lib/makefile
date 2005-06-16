@@ -45,9 +45,6 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for the Joystick interface  and sets PTJOYSTICK_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJOYSTICK_DIR is empty.
 #
-# $PTII/configure looks for Jini and sets PTJSPACES_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJSPACES_DIR is empty.
-#
 # $PTII/configure looks for Jython and sets PTJYTHON_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJYTHON_DIR is empty.
 #
@@ -60,7 +57,7 @@ ME =		ptolemy/actor/lib
 DIRS = 		conversions gui logic hoc image javasound net io xslt \
 		test comm security string $(PTCOLT_DIR) $(PTJAI_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
-		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTX10_DIR) #$(PTJSPACES_DIR)
+		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTX10_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
@@ -259,7 +256,6 @@ OPTIONAL_FILES = \
 	jmf \
 	joystick \
 	x10 \
-	jspaces \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \
 	'Exec$$_StreamReaderThread.class' \
