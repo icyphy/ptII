@@ -150,31 +150,6 @@ CLASSPATHSEPARATOR="@CLASSPATHSEPARATOR@"
 # they add an optional package.
 ##################################################################
 
-#### Jini stuff.
-# PTJSPACES_DIR is set to jspaces if configure found jini
-PTJSPACES_DIR=@PTJSPACES_DIR@
-JINI_JARS=""
-if [ "$PTJSPACES_DIR" = "jspaces" ]; then
-    # Jini directory
-    JINI_DIR="@JINI_DIR@"
-
-    # Jini lib directory
-    JINI_LIB_DIR="$JINI_DIR/lib"
-
-    # Flags needed for Jini
-    JINI_JFLAG=\""-Djava.security.policy=${PTII}/bin/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -Djava.rmi.server.codebase=http://localhost:4444/"\"
-    # 4/03: Sun is not making Jini-1.0.1 available, so I removed it from ptII
-    JINI_JFLAG=
-
-    # Jini Jar files
-    JINI_CORE_JAR="${JINI_LIB_DIR}/jini-core.jar"
-    JINI_JSPACES_JAR="${JINI_LIB_DIR}/jini-jspaces.jar"
-    JINI_MAHALO_JAR="${JINI_LIB_DIR}/mahalo-dl.jar"
-    JINI_JARS="${JINI_JSPACES_JAR}${CLASSPATHSEPARATOR}${JINI_MAHALO_JAR}"
-    JINI_JARS=
-fi
-
-
 #### Jacl stuff
 # Location of ptjacl.jar
 # PTJACL_DIR is set to ptjacl if configure found ptjacl
@@ -251,6 +226,23 @@ if [ "$COMMAPI_PRESENT" = "yes" ]; then
 
     COMMAPI_JARS="${CLASSPATHSEPARATOR}${COMMAPI_DIR}/comm.jar"
 fi
+
+
+#### Jini stuff.
+# PTDISTRIBUTED_DIR is set to distributed if configure found jini
+PTDISTRIBUTED_DIR=@PTDISTRIBUTED_DIR@
+JINI_JARS=""
+if [ "$PTDISTRIBUTED_DIR" = "distributed" ]; then
+    # Jini directory
+    JINI_DIR="@JINI_DIR@"
+
+    # Flags needed for Jini
+    JINI_JFLAG=\""-Djava.security.policy=${PTII}/bin/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -Djava.rmi.server.codebase=http://localhost:4444/"\"
+
+    # Jini Jar files
+    JINI_JARS=@PTDISTRIBUTED_JARS@
+fi
+
 
 
 #### Diva stuff
