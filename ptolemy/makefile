@@ -35,17 +35,25 @@ ME =		ptolemy
 # so that when we compile in a directory we should have already compiled
 # any classes in other directories that we depend on.
 # Note that data.expr uses moml
+#
 # PTCOPERNICUS_DIR is set to copernicus by configure in $PTII/mk/ptII.mk
 # if the Soot package was found.
+#
 # copernicus should be compiled after the domains because it uses the domains.
+#
 # PTCHIC_DIR is set to chic by configure in $PTII/mk/ptII.mk
 # if $PTII/lib/chic.jar was found
+#
 # PTCALTROP_DIR is set to caltrop by configure in $PTII/mk/ptII.mk
 # if $PTII/lib/ptCal.jar was found
+#
+# $PTII/configure looks for Jini and sets PTDISTRIBUTED_DIR in
+# $PTII/mk/ptII.mk if it was found.  Otherwise, PTDISTRIBUTED_DIR is empty.
+#
 DIRS = util kernel plot graph moml data actor gui math media	\
 	$(PTMATLAB_DIR)	domains	$(PTCOPERNICUS_DIR) \
 	vergil hsif $(PTBACKTRACK_DIR) $(PTCHIC_DIR) codegen component \
-	apps $(PTCALTROP_DIR) configs demo
+	$(PTDISTRIBUTED_DIR) apps $(PTCALTROP_DIR) configs demo
 
 # Root of Ptolemy II directory
 ROOT =		..
