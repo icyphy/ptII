@@ -132,20 +132,3 @@ public class DistributedUtilities {
     }
 
 }
-
-/*
-  public static Receiver[][] convertIntegersToReceivers(Integer[][] receiversIntegers) {
-  System.out.println("convertIntegersToReceivers: \n" + integersArrayToString(receiversIntegers));
-  Receiver[][] receivers = new Receiver[receiversIntegers.length][];
-  for (int i = 0; i < receiversIntegers.length; i++) {
-  receivers[i] = new Receiver[receiversIntegers[i].length];
-  for (int j = 0; j < receivers[i].length; j++) {
-  if (receiversIntegers[i][j] != null) {
-  System.out.println("receiversIntegers[" + i + "][" + j + "] = " + receiversIntegers[i][j]);
-  receivers[i][j] = new DistributedSDFReceiver(receiversIntegers[i][j]);
-  }
-  }
-  }
-  return receivers;
-  }
-*/
