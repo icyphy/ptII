@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="demo1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Demo1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 287, 815, 503}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, -5, 919, 433}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 394]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 324]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1051949920852">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{286.4453125, 190.3740885416668}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.4958333333329, 158.7054687500003}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
@@ -23,11 +23,11 @@
         </property>
     </property>
     <entity name="DICOMReader" class="ptolemy.domains.gr.lib.vr.DICOMReader">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 205.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 190.0]">
         </property>
     </entity>
     <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="brainfiles.txt">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="C:\ptII\ptolemy\domains\gr\demo\Demo1\brainfilesii.txt">
         </property>
         <property name="numberOfLinesToSkip" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -36,7 +36,7 @@
         </property>
     </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 225.0]">
         </property>
         <property name="GR Director" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
@@ -98,12 +98,42 @@
         <link port="GRTexture2D.sceneGraphOut" relation="relation"/>
         <link port="ViewScreen3D.sceneGraphIn" relation="relation"/>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={380, 232, 264, 304}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 155.0}">
+        </property>
+    </entity>
+    <entity name="StackReader" class="ptolemy.domains.sdf.lib.StackReader">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="StackDisplay" class="ptolemy.actor.lib.image.StackDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 305.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{285.0, 190.0}">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[110.0, 190.0]">
+        </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="DICOMReader.fileOrURL" relation="relation2"/>
-    <link port="DICOMReader.output" relation="relation"/>
-    <link port="LineReader.output" relation="relation2"/>
-    <link port="CompositeActor.port" relation="relation"/>
+    <link port="DICOMReader.fileOrURL" relation="relation5"/>
+    <link port="DICOMReader.output" relation="relation3"/>
+    <link port="LineReader.output" relation="relation5"/>
+    <link port="CompositeActor.port" relation="relation3"/>
+    <link port="ImageDisplay.input" relation="relation3"/>
+    <link port="StackReader.input" relation="relation5"/>
+    <link port="StackReader.output" relation="relation"/>
+    <link port="StackDisplay.input" relation="relation"/>
 </entity>

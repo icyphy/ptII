@@ -13,9 +13,27 @@
 <entity name="GRTexture2D" class="ptolemy.domains.gr.lib.vr.GRTexture2D">
 </entity>
 
-<entity name="Box3Da" class="ptolemy.domains.gr.lib.vr.Box3Da">
+
+<entity name="GRQuadArray" class="ptolemy.domains.gr.lib.vr.GRQuadArray">
 </entity>
 
+<entity name="GRPolygonFilling" class="ptolemy.domains.gr.lib.vr.GRPolygonFilling">
+</entity>
+
+<entity name="DICOMReader" class="ptolemy.domains.gr.lib.vr.DICOMReader">
+</entity>
+
+<entity name="StackReader" class="ptolemy.domains.sdf.lib.StackReader">
+</entity>
+
+<entity name="Reslice" class="ptolemy.domains.gr.lib.vr.Reslice">
+</entity>
+
+<entity name="Montage" class="ptolemy.domains.gr.lib.vr.Montage">
+</entity>
+
+<entity name="StackToImage" class="ptolemy.domains.gr.lib.vr.StackToImage">
+</entity>
 
       </group>
     ?>
