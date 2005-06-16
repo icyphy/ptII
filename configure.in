@@ -1882,45 +1882,72 @@ if test -z "$PTJAVA3D_DIR"; then
 fi 
 
 #--------------------------------------------------------------------
-#       Jini is connection technology from Sun, see http://www.sun.com/jini/
+#       Jini is connection technology from Sun, see http://www.jini.org
 #       See if there was a command-line option for where Jini is
-#       If not, look in $PTII/vendors/sun/jini/jini1_0_1
+#       If not, look in $PTII/lib
 #--------------------------------------------------------------------
 
-# We only need to look for jini if the CarTracking demo is present
-JINI_USER_DIR="$PTII/ptolemy/domains/ct/demo/jspaces/CarTracking"
-JINI_VERSION=jini1_0_1
+# We only need to look for jini if the distributed directory is present
+JINI_USER_DIR="$PTII/ptolemy/distributed"
 JINI_PRESENT=no
-# PTJSPACES_DIR is set to jspaces and used in
-# $PTII/ptolemy/actor/lib/makefile if jini was found
-PTJSPACES_DIR=
+# PTDISTRIBUTED_DIR is set to distributed and used in
+# $PTII/ptolemy/makefile if jini was found.
+PTDISTRIBUTED_DIR=
 if test ! -d "$JINI_USER_DIR"; then
     AC_MSG_RESULT([$JINI_USER_DIR is not present,
     so we need not find Jini.])
     # We don't use JINI_VERSION here so that we don't expand PTII
     # in the makefile
-    JINI_DIR='\$PTII/vendors/sun/jini/jini1_0_1'
+    JINI_DIR='$PTII/lib'
 else
     AC_MSG_CHECKING([for jini directory])
-    AC_ARG_WITH(jini, [  --with-jini=DIR       use Jini from DIR,
-                          defaults to \$PTII/vendors/sun/$JINI_VERSION],
+    AC_ARG_WITH(jini, [  --with-jini=DIR       use Jini jars from DIR,
+                          defaults to \$PTII/lib],
 	JINI_DIR=$withval,
-	JINI_DIR=$PTII/vendors/sun/jini/$JINI_VERSION)
+	JINI_DIR=$PTII/lib)
+
+    JINI_JARS="jini-core.jar jini-ext.jar sun-util.jar"
 
     if test -d "$JINI_DIR"; then
 	AC_MSG_RESULT([$JINI_DIR])
+	AC_MSG_CHECKING([for jars used by jini])
 	JINI_PRESENT=yes
-	# Subdirectory that contains Java spaces specific code
-	PTJSPACES_DIR=jspaces
+	jinijarpath=
+	for jar in $JINI_JARS
+	do 
+	    echo $ECHO_N "$jar "
+	    jarpath="$JINI_DIR/$jar"
+   	    if test -f "$jarpath"; then
+  	        jinijarpath="$jinijarpath$CLASSPATHSEPARATOR$jarpath"
+		# FIXME: we should not be adding to ECLIPSE_CLASSPATHENTRY_LIBS
+		# unless we are sure that we can find all the jars
+		ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                <classpathentry kind=\"lib\" path=\"$jarpath\"/>"
+ 	    else   
+		AC_MSG_WARN([Failed to find $jar in $JINI_DIR: $jarpath])
+	        eclipsejarpath=
+		break
+	    fi
+        done 
+	if test ! -z "$jinijarpath"; then 
+	    AC_MSG_RESULT([ok])
+	    JINI_PRESENT="yes"
+	    # PTDISTRIBUTED_DIR is set to distributed and used in
+	    # $PTII/ptolemy/makefile if jini was found
+	    PTDISTRIBUTED_DIR=distributed
+   	    # PTDISTRIBUTED_PACKAGES is used in ptII/doc/makefile
+	    PTDISTRIBUTED_PACKAGES="ptolemy.distributed.actor.lib ptolemy.distributed.actor ptolemy.distributed.client ptolemy.distributed.common ptolemy.distributed.domains.sdf.kernel ptolemy.distributed.rmi ptolemy.distributed.util"
+	    PTDISTRIBUTED_JARS=$jinijarpath
+        fi
     else
-	JINI_DIR='$PTII'/vendors/sun/jini/$JINI_VERSION
+	JINI_DIR='$PTII/vendors/sun/jini/$JINI_VERSION'
     fi
+
     if test "$JINI_PRESENT" = "no"; then
-        AC_MSG_WARN([Failed to find $JINI_DIR/lib/jini-core.jar
-    Perhaps Jini is not installed?
-    You need not download Jini unless you plan on use Jini and JavaSpaces
-    Jini can be downloaded from http://java.sun.com/jini and placed
-    in \$PTII/vendors/sun/jini/$JINI_VERSION])
+        AC_MSG_WARN([Perhaps Jini is not installed?
+    You need not download Jini unless you plan on use ptolemy/distributed
+    Jini can be downloaded from http://www.jini.org, the
+    $JINI_JARS copied to \$PTII/lib and configure rerun.])
     fi
 
 fi
@@ -3096,6 +3123,18 @@ AC_SUBST(PTCOMM_PACKAGES)
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 AC_SUBST(PTCOPERNICUS_DIR)
 
+# Set to distributed and used in
+# $PTII/ptolemy/makefile if jini was found
+AC_SUBST(PTDISTRIBUTED_DIR)
+
+# Set to jini jar file and used
+# $PTII/ptolemy/distributed/*/makefile if jini was found
+AC_SUBST(PTDISTRIBUTED_JARS)
+
+# Ptolemy II packages that use the distributed
+# PTDISTRIBUTED_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTDISTRIBUTED_PACKAGES)
+
 # PTDOCLETS_DIR is set to doclets and used in 
 # $PTII/doc if tools.jar can be found.
 AC_SUBST(PTDOCLETS_DIR)
@@ -3194,10 +3233,6 @@ AC_SUBST(PTJOYSTICK_DIR)
 # Ptolemy II packages that use the Java Joystick facilty
 # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTJOYSTICK_PACKAGES)
-
-# Set to jspaces and used in
-# $PTII/ptolemy/actor/lib/makefile if jini was found
-AC_SUBST(PTJSPACES_DIR)
 
 # Set to python if jython.jar was found
 AC_SUBST(PTJYTHON_DIR)
