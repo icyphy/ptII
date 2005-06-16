@@ -337,6 +337,18 @@ PTCOMM_PACKAGES =	@PTCOMM_PACKAGES@
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
 
+# Set to distributed and used in
+# $PTII/ptolemy/makefile if jini was found
+PTDISTRIBUTED_DIR = @PTDISTRIBUTED_DIR@
+
+# Set to jini jar file and used
+# $PTII/ptolemy/distributed/*/makefile if jini was found
+PTDISTRIBUTED_JARS = @PTDISTRIBUTED_JARS@
+
+# Ptolemy II packages that use the distributed
+# PTDISTRIBUTED_PACKAGES is used in ptII/doc/makefile
+PTDISTRIBUTED_PACKAGES = @PTDISTRIBUTED_PACKAGES@
+
 # PTDOCLETS_DIR is set to doclets and used in 
 # $PTII/doc if tools.jar can be found.
 PTDOCLETS_DIR =		@PTDOCLETS_DIR@ 	
@@ -348,10 +360,6 @@ PTII_LOCALURL = @PTII_LOCALURL@
 # Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 PTJAVA3D_DIR = @PTJAVA3D_DIR@
-
-# Set to jspaces and used in $PTII/ptolemy/actor/lib/makefile if jini
-# was found
-PTJSPACES_DIR =	@PTJSPACES_DIR@
 
 # Set to kvm and used in $PTII/ptolemy/makefile if the PalmOS KVM was found
 PTKVM_DIR =	@PTKVM_DIR@
