@@ -195,6 +195,13 @@ public class VergilApplication extends MoMLApplication {
         CompositeEntity library = null;
         final CompositeEntity libraryContainer =
             (CompositeEntity) configuration.getEntity("actor library");
+        
+        final ModelDirectory directory = (ModelDirectory) configuration
+            .getEntity(Configuration._DIRECTORY_NAME);
+            
+        if (directory == null) {
+            return;
+        }
 
         if (libraryContainer == null) {
             return;
@@ -229,13 +236,6 @@ public class VergilApplication extends MoMLApplication {
                         "LibraryBuilder: ", ex);
             }
             System.out.println("\nActor Library built from alternative plugin");
-        }
-
-        final ModelDirectory directory = (ModelDirectory) configuration
-            .getEntity(Configuration._DIRECTORY_NAME);
-
-        if (directory == null) {
-            return;
         }
 
         // If we have a jar URL, convert spaces to %20
