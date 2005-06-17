@@ -91,9 +91,9 @@ public class DistributedSDFReceiver extends SDFReceiver {
     /** Construct an empty receiver with no container and a given ID.
      *  @param newID The new ID for the Receiver.
      */
-    public DistributedSDFReceiver(Integer newId) {
+    public DistributedSDFReceiver(Integer newID) {
         super();
-        ID = newId;
+        ID = newID;
     }
 
     ///////////////////////////////////////////////////////////////////

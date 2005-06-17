@@ -100,7 +100,7 @@ public class ThreadSynchronizer {
     /** Removes a given key from the readyMap. Wakes up all threads that are waiting
      *  on this object's monitor.
      *
-     *  @param commands HashMap representing the commands.
+     *  @param key The key to be removed.
      */
     public synchronized void setReady(Object key) {
         notReadyMap.remove(key);
