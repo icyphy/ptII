@@ -23,7 +23,7 @@
 <entity name="DICOMReader" class="ptolemy.domains.gr.lib.vr.DICOMReader">
 </entity>
 
-<entity name="StackReader" class="ptolemy.domains.sdf.lib.StackReader">
+<entity name="StackReader" class="ptolemy.domains.gr.lib.vr.StackReader">
 </entity>
 
 <entity name="Reslice" class="ptolemy.domains.gr.lib.vr.Reslice">
@@ -34,6 +34,13 @@
 
 <entity name="StackToImage" class="ptolemy.domains.gr.lib.vr.StackToImage">
 </entity>
+
+<entity name="StackDisplay" class="ptolemy.domains.gr.lib.vr.StackDisplay">
+</entity>
+
+<entity name="ImageCrop" class="ptolemy.domains.gr.lib.vr.ImageCrop">
+</entity>
+
 
       </group>
     ?>
