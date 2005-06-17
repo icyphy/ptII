@@ -224,6 +224,8 @@ public class MessageHandler {
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
      *  @param info The message.
+     *  @param throwable The throwable that will be displayed in the 
+     *  stack trace information window.
      *  @exception ptolemy.util.CancelException If the user clicks on
      *  the "Cancel" button.
      */

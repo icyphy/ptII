@@ -466,6 +466,8 @@ public class PNDirector extends CompositeProcessDirector {
      *  process. Check for a deadlock or pausing of the execution as a result
      *  of the process blocking on a read. If either of them is detected,
      *  then notify the directing thread of the same.
+     *  @param receiver The receiver that is blocked.
+     *  @param readBlocked Whether this is read or write blocked.
      */
     protected synchronized void _actorBlocked(
         PNQueueReceiver receiver, boolean readBlocked) {
