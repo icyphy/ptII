@@ -59,10 +59,10 @@ import ptolemy.moml.MoMLParser;
    wrapped actor.
 
    @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class DistributedActorWrapper implements RemoteDistributedActor {

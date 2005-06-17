@@ -47,10 +47,10 @@ import ptolemy.distributed.common.DistributedActor;
    whenever the put method is called.
 
    @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.actor.AbstractReceiver
 */
 public class DistributedReceiver extends AbstractReceiver {

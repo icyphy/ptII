@@ -43,10 +43,10 @@ import net.jini.core.lookup.ServiceItem;
 
    @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
 
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.distributed.client.ThreadSynchronizer
 */
 public class ClientThread extends Thread {

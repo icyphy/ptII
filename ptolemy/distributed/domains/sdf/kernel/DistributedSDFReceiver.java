@@ -39,10 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
    environment.
 
    @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.domains.sdf.kernel.SDFReceiver
 */
 public class DistributedSDFReceiver extends SDFReceiver {

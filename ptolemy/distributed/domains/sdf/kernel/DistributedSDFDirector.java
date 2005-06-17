@@ -109,10 +109,10 @@ import ptolemy.kernel.util.Workspace;
    BooleanToken with the value false.
    </ul>
    @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.distributed.rmi.DistributedServerRMIGeneric
    @see ptolemy.distributed.domains.sdf.kernel.DistributedSDFReceiver
    @see ptolemy.distributed.domains.sdf.kernel.DistributedSDFScheduler

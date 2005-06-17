@@ -66,10 +66,10 @@ import net.jini.lookup.ServiceIDListener;
    <li>Stays alive.
    </ul>
    @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class DistributedServerRMIGeneric implements ServiceIDListener, DiscoveryListener {
@@ -301,7 +301,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
      *  can't load it, because maybe this is the first time this service
      *  was run.
      *
-     *  @param serviceIDFile name of the file where the serviceID is stored.
+     *  @param serviceIdFile name of the file where the serviceID is stored.
      */
 
     public void tryRetrieveServiceId(File serviceIdFile) {

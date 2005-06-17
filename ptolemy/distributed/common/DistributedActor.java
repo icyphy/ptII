@@ -40,10 +40,10 @@ import java.util.HashMap;
    how an distributed object can be invoked. It should be implemented by distributed actors.
 
    @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.distributed.rmi.DistributedActorWrapper
    @see ptolemy.actor.Actor
    @see ptolemy.actor.Executable

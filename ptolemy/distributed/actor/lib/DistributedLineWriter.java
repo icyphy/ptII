@@ -41,10 +41,10 @@ import ptolemy.kernel.util.NameDuplicationException;
    one per line.
 
    @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class DistributedLineWriter extends Sink {

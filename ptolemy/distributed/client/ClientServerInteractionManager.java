@@ -63,10 +63,10 @@ import ptolemy.distributed.common.DistributedActor;
    service and filters the dead services.
 
    @author Daniel Lázaro Cuadrado (kapokasa@kom.aau.dk)
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating
+   @Pt.AcceptedRating Red (cxh)
    @see "Jini Documentation"
 */
 

@@ -48,10 +48,10 @@ import ptolemy.kernel.util.Workspace;
 
    @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
 
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.distributed.actor.DistributedReceiver
 */
 
