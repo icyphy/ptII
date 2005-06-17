@@ -148,9 +148,9 @@ import ptolemy.graph.InequalityTerm;
     ////                         private methods                   ////
     private void _readStack() throws IllegalActionException {
         _imageStack = new ImageStack(_xResolution, _yResolution);
+        Token[] token = input.get(0, _stackSize); 
         for(int i = 0; i< _stackSize; i++){
        	    _fileRoot = new String[_stackSize];
-            Token[] token = input.get(0, _stackSize); 
         	_fileRoot[i] = ((StringToken)token[i]).stringValue();
             System.out.println("_fileRoot = " + _fileRoot[i]);
         
