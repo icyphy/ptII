@@ -4,6 +4,8 @@
 # Usage: mkpackagehtml package1 [package2 ...]
 # Where each package name is a dot separated package name
 #
+# One way to find the packages:
+# grep package `find . -name "*.java" -print`  | awk '{print $NF}' | sort | uniq 
 
 packages=$@
 for package in $packages
@@ -17,7 +19,7 @@ do
       if [ -f $packagefile ]; then
 	  echo "$0: $packagefile exists, skipping"
       else 
-	  since=`grep -h @since *.java | sort | uniq | head -1`
+
 	  if [ "$since" = "" ]; then 
 	      since=`grep -h @since */*.java | sort | uniq | head -1`
 	  fi    
@@ -34,11 +36,25 @@ $since
 </body>
 </html>
 EoF
-
-
          echo "$packagefile"
 	 cvs add $packagefile
-	 cvs commit -m "Added package.html" $packagefile
+	 cvs commit -m "Added package.html" $packagefile 
       fi 
+
+
+      READMEfile=$directory/README.txt
+      if [ -f $READMEfile ]; then
+	  echo "$0: $READMEfile exists, skipping"
+      else 
+cat > $READMEfile << EoF2
+\$Id\$
+See package.html
+EoF2
+         echo "$READMEfile"
+	 cvs add $READMEfile
+	 cvs commit -m "Added README.html" $READMEfile 
+      fi
+
+
   fi
 done
