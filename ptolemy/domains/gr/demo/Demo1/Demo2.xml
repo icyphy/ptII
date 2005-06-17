@@ -8,13 +8,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 402, 815, 365}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={49, 230, 815, 459}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 256]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 128.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 175.0}">
     </property>
     <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="C:\ptII\ptolemy\domains\gr\demo\Demo1\brainfilesii.txt">
@@ -25,14 +25,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 165.0]">
         </property>
     </entity>
-    <entity name="StackDisplay" class="ptolemy.actor.lib.image.StackDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 155.0]">
-        </property>
-    </entity>
     <entity name="StackReader" class="ptolemy.domains.sdf.lib.StackReader">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 155.0]">
         </property>
@@ -41,12 +33,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 225.0]">
         </property>
     </entity>
-    <entity name="StackDisplay2" class="ptolemy.actor.lib.image.StackDisplay">
+    <entity name="StackDisplay" class="ptolemy.domains.gr.lib.vr.StackDisplay">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="StackDisplay2" class="ptolemy.domains.gr.lib.vr.StackDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 135.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -56,12 +56,16 @@
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="LineReader.output" relation="relation2"/>
-    <link port="StackDisplay.input" relation="relation4"/>
     <link port="StackReader.input" relation="relation2"/>
     <link port="StackReader.output" relation="relation4"/>
     <link port="Reslice.input" relation="relation4"/>
-    <link port="Reslice.output" relation="relation"/>
-    <link port="StackDisplay2.input" relation="relation"/>
+    <link port="Reslice.output" relation="relation3"/>
+    <link port="StackDisplay.input" relation="relation3"/>
+    <link port="StackDisplay2.input" relation="relation4"/>
 </entity>

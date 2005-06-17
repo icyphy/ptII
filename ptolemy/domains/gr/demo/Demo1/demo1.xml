@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Demo1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="demo1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, -5, 919, 433}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={163, 89, 919, 458}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 324]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 349]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1051949920852">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.4958333333329, 158.7054687500003}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.4958333333328, 170.0156901041669}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
@@ -99,7 +99,9 @@
         <link port="ViewScreen3D.sceneGraphIn" relation="relation"/>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={380, 232, 264, 304}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={390, 244, 264, 304}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
@@ -110,12 +112,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 305.0]">
         </property>
     </entity>
-    <entity name="StackDisplay" class="ptolemy.actor.lib.image.StackDisplay">
+    <entity name="StackDisplay" class="ptolemy.domains.gr.lib.vr.StackDisplay">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 300.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -127,6 +129,10 @@
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DICOMReader.fileOrURL" relation="relation5"/>
     <link port="DICOMReader.output" relation="relation3"/>
@@ -134,6 +140,6 @@
     <link port="CompositeActor.port" relation="relation3"/>
     <link port="ImageDisplay.input" relation="relation3"/>
     <link port="StackReader.input" relation="relation5"/>
-    <link port="StackReader.output" relation="relation"/>
-    <link port="StackDisplay.input" relation="relation"/>
+    <link port="StackReader.output" relation="relation2"/>
+    <link port="StackDisplay.input" relation="relation2"/>
 </entity>
