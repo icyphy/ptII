@@ -41,6 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Man-Kit Leung
+ * @version $Id$
  *
  */
 public class AbsoluteValue extends CCodeGeneratorHelper {
