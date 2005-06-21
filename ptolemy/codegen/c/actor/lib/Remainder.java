@@ -29,8 +29,6 @@
 /*
  * Created on Feb 21, 2005
  *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 package ptolemy.codegen.c.actor.lib;
 
@@ -40,9 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Man-Kit Leung
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @version $Id$
+ *  
  */
 public class Remainder extends CCodeGeneratorHelper {
     /**

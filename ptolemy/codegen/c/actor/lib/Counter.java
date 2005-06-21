@@ -40,9 +40,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Man-Kit Leung
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @version $Id$ 
+ *  
  */
 public class Counter extends CCodeGeneratorHelper {
     /**

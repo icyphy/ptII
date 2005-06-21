@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Man-Kit Leung
- *
+ * @version $Id$
  */
 public class Minimum extends CCodeGeneratorHelper {
     /**

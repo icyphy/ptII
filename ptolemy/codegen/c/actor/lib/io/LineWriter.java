@@ -43,7 +43,7 @@ import ptolemy.util.FileUtilities;
 
 /**
  * @author Jackie
- *
+ * @version $Id$
  */
 public class LineWriter extends CCodeGeneratorHelper {
     /**

@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Jackie
- *
+ * @version $Id$
  */
 public class PolarToCartesian extends CCodeGeneratorHelper {
     /**
