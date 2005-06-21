@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    There is a boolean parameter <i>discardEvents</i> associated
    with this actor, which decides how to handle simultaneously
    available inputs.  Each time this actor fires, it reads the first
-   available tokens from an input channels and sends them to the output
+   available tokens from an input channel and sends them to the output
    port. If the <i>discardEvents</i> parameter is configured to true,
    then this actor discards all the remaining inputs in the rest of
    channels. Otherwise, this actor requests refirings at the current
@@ -130,7 +130,7 @@ public class Merge extends DETransformer {
 
                     while (input.hasToken(i)) {
                         Token token = input.get(i);
-                        output.send(0, firstAvailableToken);
+                        output.send(0, token);
                     }
                 } else {
                     if (discard) {
