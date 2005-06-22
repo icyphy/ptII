@@ -164,11 +164,10 @@ public class Test extends NonStrictTest {
                 }
             } else {
                 ArrayList arrayList = new ArrayList();
-                _trainingTokens.add(arrayList);
-
                 for (int i = 0; i < width; i++) {
                     arrayList.add(input.get(i));
                 }
+                _trainingTokens.add(arrayList);
             }
 
             return;
