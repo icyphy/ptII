@@ -277,7 +277,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                             // Modified by Gang Zhou so that the port can
                             // be connected to the otherPort either from inside
                             // or from outside.
-                            boolean isInsideLinked = otherPort.isInsideLinked(oldRelation);
+                            boolean isInsideLinked = otherPort.isInsideGroupLinked(oldRelation);
 
                             if ((port.isInput()
                                         && ((!isInsideLinked
