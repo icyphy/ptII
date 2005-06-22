@@ -498,7 +498,8 @@ public class Relation extends NamedObj {
                     + "but it is " + container.getClass().getName());
         }
 
-        Relation candidate = ((CompositeEntity) container).getRelation(relativeName);
+        Relation candidate =
+            ((CompositeEntity) container).getRelation(relativeName);
 
         if ((candidate != null) && !getClass().isInstance(candidate)) {
             throw new IllegalActionException(this,
@@ -557,7 +558,8 @@ public class Relation extends NamedObj {
                         // Link must be to a relation.
                     Relation relation = (Relation)link;
                     if (!exceptRelations.contains(relation)) {
-                        result.addAll(relation._linkedPortList(exceptPort, exceptRelations));
+                        result.addAll(relation._linkedPortList(exceptPort,
+                                              exceptRelations));
                     }
                 }
             }
