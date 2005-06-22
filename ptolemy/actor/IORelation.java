@@ -251,7 +251,8 @@ public class IORelation extends ComponentRelation {
 
                         seen.put(p, new Integer(occurrence));
 
-                        receivers = p._getReceiversLinkedToGroup(this, occurrence);
+                        receivers =
+                            p._getReceiversLinkedToGroup(this, occurrence);
                     } catch (IllegalActionException ex) {
                         throw new InternalErrorException(this, ex, null);
                     }

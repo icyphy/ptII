@@ -1193,7 +1193,8 @@ public class IOPort extends ComponentPort {
 
             if (!isLinked(relation) && !insideLink) {
                 throw new IllegalActionException(this, relation,
-                        "getReceivers: Relation argument is not linked to me.");
+                        "getReceivers: Relation argument is not linked "
+                        + "to me.");
             }
             return _getReceivers(relation, occurrence, insideLink);
         } finally {
@@ -3307,7 +3308,8 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If the relation is not linked
      *   from the outside.
      */
-    protected Receiver[][] _getReceiversLinkedToGroup(IORelation relation, int occurrence)
+    protected Receiver[][] _getReceiversLinkedToGroup(IORelation relation,
+            int occurrence)
             throws IllegalActionException {
         try {
             _workspace.getReadAccess();
@@ -3318,7 +3320,8 @@ public class IOPort extends ComponentPort {
 
             if (!isGroupLinked(relation) && !insideLink) {
                 throw new IllegalActionException(this, relation,
-                        "getReceivers: Relation argument is not linked to me on the inside.");
+                        "getReceivers: Relation argument is not linked "
+                        + "to me on the inside.");
             }
 
             List groupRelationsList = relation.getRelationGroup();
@@ -3328,13 +3331,15 @@ public class IOPort extends ComponentPort {
                 return _getReceivers(relation, occurrence, insideLink);
             }
             // Create a linked list of the results to be merged.
-            Receiver[][][] results = new Receiver[groupRelationsList.size()][][];
+            Receiver[][][] results =
+                new Receiver[groupRelationsList.size()][][];
             int index = 0;
             int width = 0;
             Iterator groupRelations = groupRelationsList.iterator();
             while (groupRelations.hasNext()) {
                 IORelation groupRelation = (IORelation)groupRelations.next();
-                Receiver[][] oneResult = _getReceivers(groupRelation, occurrence, insideLink);
+                Receiver[][] oneResult =
+                    _getReceivers(groupRelation, occurrence, insideLink);
                 results[index] = oneResult;
                 index++;
                 if (oneResult != null && oneResult.length > width) {
@@ -3540,7 +3545,8 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If the relation is not linked
      *   from the outside.
      */
-    private Receiver[][] _getReceivers(IORelation relation, int occurrence, boolean insideLink)
+    private Receiver[][] _getReceivers(IORelation relation,
+            int occurrence, boolean insideLink)
             throws IllegalActionException {
 
         boolean opaque = isOpaque();
