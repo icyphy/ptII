@@ -41,6 +41,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -64,9 +65,12 @@ import ptolemy.kernel.util.Workspace;
    Calling setWidth() with an argument of zero makes the relation
    a bus with indeterminate width, in which case the width will be
    inferred (if possible) from the context.  The actual width of an IORelation
-   can never be less than one.
+   can never be less than one. If this IORelation is linked to another
+   instance of IORelation, then the width of the two IORelations is
+   constrained to be the same.
    <p>
-   Instances of IORelation can only be linked to instances of IOPort.
+   Instances of IORelation can only be linked to instances of IOPort
+   or instances of IORelation.
    Derived classes may further constrain this to subclasses of IOPort.
    Such derived classes should override the protected method _checkPort()
    to throw an exception.
@@ -84,9 +88,14 @@ import ptolemy.kernel.util.Workspace;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (davisj)
+   @Pt.AcceptedRating Yellow (eal)
 */
 public class IORelation extends ComponentRelation {
+    
+    // FIXME: Need to review support for relation groups.
+    //  setWidth(int)
+    //  _checkRelation(Relation)
+    
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Add the relation to the directory of the workspace.
      */
@@ -242,7 +251,7 @@ public class IORelation extends ComponentRelation {
 
                         seen.put(p, new Integer(occurrence));
 
-                        receivers = p.getReceivers(this, occurrence);
+                        receivers = p._getReceiversLinkedToGroup(this, occurrence);
                     } catch (IllegalActionException ex) {
                         throw new InternalErrorException(this, ex, null);
                     }
@@ -274,7 +283,6 @@ public class IORelation extends ComponentRelation {
         if (_width == 0) {
             return _inferWidth();
         }
-
         return _width;
     }
 
@@ -518,7 +526,8 @@ public class IORelation extends ComponentRelation {
         super.setContainer(container);
     }
 
-    /** Set the width of the IORelation. The width is the number of
+    /** Set the width of this relation and all relations in its
+     *  relation group. The width is the number of
      *  channels that the relation represents.  If the argument
      *  is zero, then the relation becomes a bus with unspecified width,
      *  and the width will be inferred from the way the relation is used
@@ -568,8 +577,13 @@ public class IORelation extends ComponentRelation {
                     }
                 }
             }
-
-            _width = width;
+            
+            // Set the width of all relations in the relation group.
+            Iterator relations = getRelationGroup().iterator();
+            while(relations.hasNext()) {
+            	IORelation relation = (IORelation)relations.next();
+                relation._width = width;
+            }
 
             // Do this as a second pass in case the change is aborted
             // above by an exception.
@@ -621,6 +635,30 @@ public class IORelation extends ComponentRelation {
             throw new IllegalActionException(this, port,
                     "IORelation can only link to a IOPort.");
         }
+    }
+    
+    /** Throw an exception if the specified relation is not an instance
+     *  of IORelation or if it does not have the same width as this relation.
+     *  @param relation The relation to link to.
+     *  @param symmetric If true, the call _checkRelation on the specified
+     *   relation with this as an argument.
+     *  @exception IllegalActionException If this relation has no container,
+     *   or if this relation is not an acceptable relation for the specified
+     *   relation, or if this relation and the specified relation do not
+     *   have the same width.
+     */
+    protected void _checkRelation(Relation relation, boolean symmetric)
+            throws IllegalActionException {
+        if (!(relation instanceof IORelation)) {
+            throw new IllegalActionException(this, relation,
+                    "IORelation can only link to a IORelation.");
+        }
+        if (((IORelation)relation)._width != _width) {
+            throw new IllegalActionException(this, relation,
+                    "Relations have different widths: " + _width
+                    + " != " + ((IORelation)relation)._width);
+        }
+        super._checkRelation(relation, symmetric);
     }
 
     /** Return a description of the object.  The level of detail depends
@@ -687,10 +725,12 @@ public class IORelation extends ComponentRelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Cascade two Receiver arrays to form a new array. For each row, each
-    // element of the second array is appended behind the elements of the
-    // first array. This method is solely for deepReceivers.
-    // The two input arrays must have the same number of rows.
+    
+    /** Cascade two Receiver arrays to form a new array. For each row, each
+     *  element of the second array is appended behind the elements of the
+     *  first array. This method is solely for deepReceivers.
+     *  The two input arrays must have the same number of rows.
+     */
     private Receiver[][] _cascade(Receiver[][] array1, Receiver[][] array2)
             throws InvalidStateException {
         if ((array1 == null) || (array1.length <= 0)) {

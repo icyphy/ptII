@@ -1187,117 +1187,7 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         try {
             _workspace.getReadAccess();
-
-            // Allow inside relations also to support opaque,
-            // non-atomic entities.
-            boolean insideLink = isInsideLinked(relation);
-
-            if (!isLinked(relation) && !insideLink) {
-                throw new IllegalActionException(this, relation,
-                        "getReceivers: Relation argument is not "
-                        + "linked to me.");
-            }
-
-            boolean opaque = isOpaque();
-
-            if (!isInput() && !(opaque && insideLink && isOutput())) {
-                return _EMPTY_RECEIVER_ARRAY;
-            }
-
-            int width = relation.getWidth();
-
-            if (width <= 0) {
-                return _EMPTY_RECEIVER_ARRAY;
-            }
-
-            Receiver[][] result = null;
-
-            // If the port is opaque, return the local Receivers for the
-            // relation.
-            if (opaque) {
-                // If _localReceiversTable is null, then createReceivers()
-                // hasn't been called, so there is nothing to return.
-                if (_localReceiversTable == null) {
-                    return _EMPTY_RECEIVER_ARRAY;
-                }
-
-                if (_localReceiversTable.containsKey(relation)) {
-                    // Get the list of receivers for this relation.
-                    List list = (List) _localReceiversTable.get(relation);
-
-                    try {
-                        result = (Receiver[][]) (list.get(occurrence));
-                    } catch (IndexOutOfBoundsException ex) {
-                        return _EMPTY_RECEIVER_ARRAY;
-                    }
-
-                    if (result.length != width) {
-                        throw new InvalidStateException(this,
-                                "getReceivers(IORelation, int): "
-                                + "Invalid receivers. "
-                                + "Need to call createReceivers().");
-                    }
-                }
-
-                return result;
-            } else {
-                // If a transparent input port, ask its all inside receivers,
-                // and trim the returned Receivers array to get the
-                // part corresponding to this occurrence of the IORelation.
-                Receiver[][] insideReceivers = getReceivers();
-
-                if (insideReceivers == null) {
-                    return _EMPTY_RECEIVER_ARRAY;
-                }
-
-                int insideWidth = insideReceivers.length;
-                int index = 0;
-                result = new Receiver[width][];
-
-                Iterator outsideRelations = linkedRelationList().iterator();
-                int seen = 0;
-
-                while (outsideRelations.hasNext()) {
-                    IORelation outsideRelation = (IORelation) outsideRelations
-                        .next();
-
-                    // A null link (supported since indexed links) might
-                    // yield a null relation here. EAL 7/19/00.
-                    if (outsideRelation != null) {
-                        if (outsideRelation == relation) {
-                            if (seen == occurrence) {
-                                // Have to be careful here to get the right
-                                // occurrence of the relation.  EAL 7/30/00.
-                                result = new Receiver[width][];
-
-                                int receiverSize = java.lang.Math.min(width,
-                                        insideWidth - index);
-
-                                for (int i = 0; i < receiverSize; i++) {
-                                    result[i] = insideReceivers[index++];
-                                }
-
-                                break;
-                            } else {
-                                seen++;
-                                index += outsideRelation.getWidth();
-
-                                if (index > insideWidth) {
-                                    break;
-                                }
-                            }
-                        } else {
-                            index += outsideRelation.getWidth();
-
-                            if (index > insideWidth) {
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                return result;
-            }
+            return _getReceivers(relation, occurrence);
         } finally {
             _workspace.doneReading();
         }
@@ -1489,7 +1379,6 @@ public class IOPort extends ComponentPort {
 
                 _width = sum;
             }
-
             return _width;
         } finally {
             _workspace.doneReading();
@@ -3383,6 +3272,93 @@ public class IOPort extends ComponentPort {
         return result;
     }
 
+    /** If the port is an input, return receivers that handle incoming
+     *  channels from the specified relation or any relation in its
+     *  relation group. If the port is an opaque output
+     *  and the relation is inside linked, return the receivers that handle
+     *  incoming channels from the inside. Since the port may be linked
+     *  multiple times to the specified relation, the <i>occurrences</i>
+     *  argument specifies which of the links we wish to examine.
+     *  The returned value is an array of arrays of the same form
+     *  as that returned by getReceivers() with no arguments.  Note that a
+     *  single occurrence of a relation may represent multiple channels
+     *  because it may be a bus.  If there are no matching receivers,
+     *  then return an empty array.
+     *  <p>
+     *  This method handles relation groups. That is, given any relation
+     *  in a relation group, it returns the combined receivers of all
+     *  the relations in the relation group, in the order as returned
+     *  by the getRelationGroup() method of Receiver.
+     *  <p>
+     *  This method is read-synchronized on the workspace.
+     *
+     *  @param relation Relations that are linked on the outside or inside.
+     *  @param occurrence The occurrence number that we are interested in,
+     *   starting at 0.
+     *  @return The local receivers, or an empty array if there are none.
+     *  @exception IllegalActionException If the relation is not linked
+     *   from the outside.
+     */
+    protected Receiver[][] _getReceiversLinkedToGroup(IORelation relation, int occurrence)
+            throws IllegalActionException {
+        try {
+            _workspace.getReadAccess();
+
+            List groupRelationsList = relation.getRelationGroup();
+            // For efficiency, if there is only one element, then just
+            // return the results of the private method.
+            if (groupRelationsList.size() == 1) {
+                return _getReceivers(relation, occurrence);
+            }
+            // Create a linked list of the results to be merged.
+            Receiver[][][] results = new Receiver[groupRelationsList.size()][][];
+            int index = 0;
+            int width = 0;
+            Iterator groupRelations = groupRelationsList.iterator();
+            while (groupRelations.hasNext()) {
+                IORelation groupRelation = (IORelation)groupRelations.next();
+                Receiver[][] oneResult = _getReceivers(groupRelation, occurrence);
+                results[index] = oneResult;
+                index++;
+                if (oneResult.length > width) {
+                    width = oneResult.length;
+                }
+            }
+            
+            Receiver[][] result = new Receiver[width][];
+            // Now fill in the result for each channel i.
+            for (int i = 0; i < width; i++) {
+                // First find out how many replicas there are
+                // for each channel.
+                int numberOfReplicas = 0;
+                for (int j = 0; j < results.length; j++) {
+                    if (results[j] == null || i >= results[j].length) {
+                        // This result has no more replicas to contribute.
+                        continue;
+                    }
+                    numberOfReplicas += results[j][i].length;
+                }
+                result[i] = new Receiver[numberOfReplicas];
+                
+                // Next, copy the replicas into the result.
+                index = 0;
+                for (int j = 0; j < results.length; j++) {
+                    if (results[j] == null || i >= results[j].length) {
+                        // This result has no more replicas to contribute.
+                        continue;
+                    }
+                    for (int k = 0; k < results[j][i].length; k++) {
+                        result[i][index] = results[j][i][k];
+                        index++;
+                    }
+                }
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** Create a new receiver compatible with the local director.
      *  This is done by asking the local director of the container for
      *  a new receiver, and then setting its
@@ -3516,6 +3492,144 @@ public class IOPort extends ComponentPort {
                     }
                 }
             }
+        }
+    }
+    
+    /** If the port is an input, return receivers that handle incoming
+     *  channels from the specified relation. If the port is an opaque output
+     *  and the relation is inside linked, return the receivers that handle
+     *  incoming channels from the inside. Since the port may be linked
+     *  multiple times to the specified relation, the <i>occurrences</i>
+     *  argument specifies which of the links we wish to examine.
+     *  The returned value is an array of arrays of the same form
+     *  as that returned by getReceivers() with no arguments.  Note that a
+     *  single occurrence of a relation may represent multiple channels
+     *  because it may be a bus.  If there are no matching receivers,
+     *  then return an empty array.
+     *  <p>
+     *  This method works only with relations directly linked to this
+     *  port. Use the public method to work on relation groups. If the
+     *  specified relation is not linked to this port, then this method
+     *  returns an empty array.
+     *  @param relation Relations that are linked on the outside or inside.
+     *  @param occurrence The occurrence number that we are interested in,
+     *   starting at 0.
+     *  @return The local receivers, or an empty array if there are none.
+     *  @exception IllegalActionException If the relation is not linked
+     *   from the outside.
+     */
+    private Receiver[][] _getReceivers(IORelation relation, int occurrence)
+            throws IllegalActionException {
+
+        // Allow inside relations also to support opaque,
+        // non-atomic entities.
+        boolean insideLink = isInsideLinked(relation);
+
+        if (!isLinked(relation) && !insideLink) {
+            // Used to throw an exception here, but that makes relation
+            // groups not work.
+            return _EMPTY_RECEIVER_ARRAY;
+        }
+
+        boolean opaque = isOpaque();
+
+        if (!isInput() && !(opaque && insideLink && isOutput())) {
+            return _EMPTY_RECEIVER_ARRAY;
+        }
+
+        int width = relation.getWidth();
+
+        if (width <= 0) {
+            return _EMPTY_RECEIVER_ARRAY;
+        }
+
+        Receiver[][] result = null;
+
+        // If the port is opaque, return the local Receivers for the
+        // relation.
+        if (opaque) {
+            // If _localReceiversTable is null, then createReceivers()
+            // hasn't been called, so there is nothing to return.
+            if (_localReceiversTable == null) {
+                return _EMPTY_RECEIVER_ARRAY;
+            }
+
+            if (_localReceiversTable.containsKey(relation)) {
+                // Get the list of receivers for this relation.
+                List list = (List) _localReceiversTable.get(relation);
+
+                try {
+                    result = (Receiver[][]) (list.get(occurrence));
+                } catch (IndexOutOfBoundsException ex) {
+                    return _EMPTY_RECEIVER_ARRAY;
+                }
+
+                if (result.length != width) {
+                    throw new InvalidStateException(this,
+                            "getReceivers(IORelation, int): "
+                            + "Invalid receivers. "
+                            + "Need to call createReceivers().");
+                }
+            }
+
+            return result;
+        } else {
+            // If a transparent input port, ask its all inside receivers,
+            // and trim the returned Receivers array to get the
+            // part corresponding to this occurrence of the IORelation.
+            Receiver[][] insideReceivers = getReceivers();
+
+            if (insideReceivers == null) {
+                return _EMPTY_RECEIVER_ARRAY;
+            }
+
+            int insideWidth = insideReceivers.length;
+            int index = 0;
+            result = new Receiver[width][];
+
+            Iterator outsideRelations = linkedRelationList().iterator();
+            int seen = 0;
+
+            while (outsideRelations.hasNext()) {
+                IORelation outsideRelation = (IORelation) outsideRelations
+                    .next();
+
+                // A null link (supported since indexed links) might
+                // yield a null relation here. EAL 7/19/00.
+                if (outsideRelation != null) {
+                    if (outsideRelation == relation) {
+                        if (seen == occurrence) {
+                            // Have to be careful here to get the right
+                            // occurrence of the relation.  EAL 7/30/00.
+                            result = new Receiver[width][];
+
+                            int receiverSize = java.lang.Math.min(width,
+                                    insideWidth - index);
+
+                            for (int i = 0; i < receiverSize; i++) {
+                                result[i] = insideReceivers[index++];
+                            }
+
+                            break;
+                        } else {
+                            seen++;
+                            index += outsideRelation.getWidth();
+
+                            if (index > insideWidth) {
+                                break;
+                            }
+                        }
+                    } else {
+                        index += outsideRelation.getWidth();
+
+                        if (index > insideWidth) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
     }
 

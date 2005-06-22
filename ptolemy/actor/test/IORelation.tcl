@@ -527,3 +527,48 @@ test IORelation-10.2 {Test clone} {
     set r9 [java::cast ptolemy.actor.IORelation [$r2 clone $w]]
     $r9 description $configuration
 } {configuration {width 3 fixed}}
+
+
+######################################################################
+####
+# Test relation groups
+test IORelation-11.1 {Test getWidth of a port} {
+    set e1 [java::new ptolemy.actor.CompositeActor]
+    $e1 setDirector $director
+    $e1 setManager $manager
+    $e1 setName E1
+    set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
+    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
+    set r2 [java::new ptolemy.actor.IORelation $e1 R2]
+    set p1 [java::new ptolemy.actor.IOPort $e2 P1]
+    $p1 link $r1
+    $r1 link $r2
+    $p1 setMultiport true
+    $r2 setWidth 4
+    $p1 getWidth
+} {4}
+
+test IORelation-11.2 {Test getWidth of a port with inferred relation width} {
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    $e0 setName E0
+    set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
+    set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
+    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
+    set r2 [java::new ptolemy.actor.IORelation $e0 R2]
+    set r3 [java::new ptolemy.actor.IORelation $e1 R3]
+    set r4 [java::new ptolemy.actor.IORelation $e0 R4]
+    set p1 [java::new ptolemy.actor.IOPort $e2 P1]
+    set p2 [java::new ptolemy.actor.IOPort $e1 P2]
+    $p1 link $r1
+    $p2 link $r1
+    $p2 link $r2
+    $r1 link $r3
+    $r2 link $r4
+    $p1 setMultiport true
+    $p2 setMultiport true
+    $r3 setWidth 0
+    $r4 setWidth 4
+    list [$p1 getWidth] [$r1 getWidth] [$p2 getWidth]
+} {4 4 4}

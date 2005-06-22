@@ -30,6 +30,7 @@ package ptolemy.actor;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -132,5 +133,23 @@ public class TypedIORelation extends IORelation {
             throw new IllegalActionException(this, port,
                     "TypedIORelation can only link to a TypedIOPort.");
         }
+    }
+    
+    /** Throw an exception if the specified relation is not an instance
+     *  of TypedIORelation.
+     *  @param relation The relation to link to.
+     *  @param symmetric If true, the call _checkRelation on the specified
+     *   relation with this as an argument.
+     *  @exception IllegalActionException If this port has no container,
+     *   or if this port is not an acceptable port for the specified
+     *   relation.
+     */
+    protected void _checkRelation(Relation relation, boolean symmetric)
+            throws IllegalActionException {
+        if (!(relation instanceof TypedIORelation)) {
+            throw new IllegalActionException(this, relation,
+                    "TypedIORelation can only link to a TypedIORelation.");
+        }
+        super._checkRelation(relation, symmetric);
     }
 }
