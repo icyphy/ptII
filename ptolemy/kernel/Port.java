@@ -229,7 +229,7 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             _checkLink(relation);
-            _relationsList.insertLink(index, relation._getPortList());
+            _relationsList.insertLink(index, relation._linkList);
 
             if (_container != null) {
                 _container.connectionsChanged(this);
@@ -286,7 +286,7 @@ public class Port extends NamedObj {
 
             if (relation != null) {
                 _checkLink(relation);
-                _relationsList.link(relation._getPortList());
+                _relationsList.link(relation._linkList);
             } else {
                 _relationsList.link(null);
             }

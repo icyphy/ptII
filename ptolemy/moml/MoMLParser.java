@@ -2294,7 +2294,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 //// link
             } else if (elementName.equals("link")) {
                 String portName = (String) _attributes.get("port");
-                _checkForNull(portName, "No port for element \"link\"");
+                // Port can be null if we are linking two vertices.
+                // _checkForNull(portName, "No port for element \"link\"");
 
                 // Relation attribute now optional
                 String relationName = (String) _attributes.get("relation");
@@ -2303,8 +2304,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         "insertInsideAt");
 
                 // Link is stored and processed last, but before deletions.
-                LinkRequest request = new LinkRequest(portName, relationName,
-                        insertAtSpec, insertInsideAtSpec);
+                LinkRequest request;
+                if (portName != null) {
+                	request = new LinkRequest(portName, relationName,
+                			insertAtSpec, insertInsideAtSpec);
+                } else {
+                    String relation1Name = (String) _attributes.get("relation1");
+                    String relation2Name = (String) _attributes.get("relation2");
+                	request = new LinkRequest(relation1Name, relation2Name);
+                }
 
                 if (_linkRequests != null) {
                     _linkRequests.add(request);
@@ -2757,15 +2765,23 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 //// unlink
             } else if (elementName.equals("unlink")) {
                 String portName = (String) _attributes.get("port");
-                _checkForNull(portName, "No port for element \"unlink\"");
+                // Port may not be specified if we are unlinking two vertices.
+                // _checkForNull(portName, "No port for element \"unlink\"");
 
                 String relationName = (String) _attributes.get("relation");
                 String indexSpec = (String) _attributes.get("index");
                 String insideIndexSpec = (String) _attributes.get("insideIndex");
 
                 // Unlink is stored and processed last.
-                UnlinkRequest request = new UnlinkRequest(portName,
-                        relationName, indexSpec, insideIndexSpec);
+                UnlinkRequest request;
+                if (portName != null) {
+                	request = new UnlinkRequest(portName,
+                            relationName, indexSpec, insideIndexSpec);
+                } else {
+                    String relation1Name = (String) _attributes.get("relation1");
+                    String relation2Name = (String) _attributes.get("relation2");
+                    request = new UnlinkRequest(relation1Name, relation2Name);
+                }
 
                 if (_linkRequests != null) {
                     _linkRequests.add(request);
@@ -4180,7 +4196,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // NOTE: cannot use the relationlist as returned as it is
         // unmodifiable and we need to add in the relation being deleted.
-        ArrayList filter = new ArrayList(toDelete.linkedPortList());
+        ArrayList filter = new ArrayList(toDelete.linkedObjectsList());
         filter.add(toDelete);
 
         // The parent container can do the filtering and generate the
@@ -4648,6 +4664,22 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         || (relation.getDerivedLevel() < Integer.MAX_VALUE)));
     }
 
+    /** Return true if the link between the specified relations
+     *  is part of the class definition. It is part of the
+     *  class definition if both are derived objects.
+     *  NOTE: This is not perfect, since a link could have been
+     *  created between these elements in a subclass.
+     *  @param context The context containing the link.
+     *  @param relation1 The first relation.
+     *  @param relation2 The second relation.
+     *  @return True if the link is part of the class definition.
+     */
+    private boolean _isLinkInClass(NamedObj context, Relation relation1,
+            Relation relation2) {
+        return (relation1.getDerivedLevel() < Integer.MAX_VALUE
+                && relation2.getDerivedLevel() < Integer.MAX_VALUE);
+    }
+
     /** Return whether or not the given element name is undoable. NOTE: we need
      *  this method as the list of actions on namespaces and _current does not
      *  apply to elements such as "link"
@@ -4841,7 +4873,69 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
-    /** Process a link command.
+    /** Process a link command between two relations.
+     *  @param relation1Name The first relation name.
+     *  @param relation2Name The second relation name.
+     *  @exception XmlException
+     *  @exception IllegalActionException
+     */
+    private void _processLink(String relation1Name, String relation2Name)
+            throws XmlException, IllegalActionException {
+        _checkClass(_current, CompositeEntity.class,
+                "Element \"link\" found inside an element that "
+                + "is not a CompositeEntity. It is: " + _current);
+        // Check that required arguments are given
+        if (relation1Name == null || relation2Name == null) {
+            throw new XmlException("Element link requires two relations.",
+                    _currentExternalEntity(), _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
+        CompositeEntity context = (CompositeEntity) _current;
+        
+        // Get relations.
+        ComponentRelation relation1 = context.getRelation(relation1Name);
+        _checkForNull(relation1,
+                    "No relation named \"" + relation1Name + "\" in "
+                    + context.getFullName());
+        // Get relations.
+        ComponentRelation relation2 = context.getRelation(relation2Name);
+        _checkForNull(relation2,
+                    "No relation named \"" + relation2Name + "\" in "
+                    + context.getFullName());
+
+        // Ensure that derived objects aren't changed.
+        // We have to prohit adding links between class
+        // elements because this operation cannot be undone, and
+        // it will not be persistent.
+        if (_isLinkInClass(context, relation1, relation2)) {
+            throw new IllegalActionException(relation1, relation2,
+                    "Cannot link relations when both"
+                    + " are part of the class definition.");
+        }
+        relation1.link(relation2);
+
+        // Propagate. Get the derived list for relation1,
+        // then use its container as the context in which to
+        // find relation2.
+        Iterator derivedObjects = relation1.getDerivedList().iterator();
+
+        while (derivedObjects.hasNext()) {
+            ComponentRelation derivedRelation1 = (ComponentRelation) derivedObjects
+                .next();
+            CompositeEntity derivedContext = (CompositeEntity) derivedRelation1
+                .getContainer();
+            ComponentRelation derivedRelation2 = derivedContext.getRelation(relation2Name);
+            derivedRelation1.link(derivedRelation2);
+        }
+
+        // Handle the undo aspect.
+        if (_undoEnabled && _undoContext.isUndoable()) {
+            _undoContext.appendUndoMoML("<unlink relation1=\"" + relation1Name
+            		+ "\" relation2=\"" + relation2Name + "\" />\n");
+        }
+    }
+
+    /** Process a link command between a port and a relation.
      *  @param portName The port name.
      *  @param relationName The relation name.
      *  @param insertAtSpec The place to insert.
@@ -5104,7 +5198,67 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
-    /** Process an unlink request.
+    /** Process an unlink request between two relations.
+     *  @param relation1Name The first relation name.
+     *  @param relation2Name The second relation name.
+     *  @exception XmlException If something goes wrong.
+     *  @exception IllegalActionException If the link is part of a class definition.
+     */
+    private void _processUnlink(String relation1Name, String relation2Name)
+            throws XmlException, IllegalActionException {
+        
+        // Check that required arguments are given
+        if (relation1Name == null || relation2Name == null) {
+            throw new XmlException("Element unlink requires two relations.",
+                    _currentExternalEntity(), _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
+        CompositeEntity context = (CompositeEntity) _current;
+        
+        // Get relations.
+        ComponentRelation relation1 = context.getRelation(relation1Name);
+        _checkForNull(relation1,
+                    "No relation named \"" + relation1Name + "\" in "
+                    + context.getFullName());
+        // Get relations.
+        ComponentRelation relation2 = context.getRelation(relation2Name);
+        _checkForNull(relation2,
+                    "No relation named \"" + relation2Name + "\" in "
+                    + context.getFullName());
+
+        // Ensure that derived objects aren't changed.
+        // We have to prohit adding links between class
+        // elements because this operation cannot be undone, and
+        // it will not be persistent.
+        if (_isLinkInClass(context, relation1, relation2)) {
+            throw new IllegalActionException(relation1, relation2,
+                    "Cannot unlink relations when both"
+                    + " are part of the class definition.");
+        }
+        relation1.unlink(relation2);
+
+        // Propagate. Get the derived list for relation1,
+        // then use its container as the context in which to
+        // find relation2.
+        Iterator derivedObjects = relation1.getDerivedList().iterator();
+
+        while (derivedObjects.hasNext()) {
+            ComponentRelation derivedRelation1 = (ComponentRelation) derivedObjects
+                .next();
+            CompositeEntity derivedContext = (CompositeEntity) derivedRelation1
+                .getContainer();
+            ComponentRelation derivedRelation2 = derivedContext.getRelation(relation2Name);
+            derivedRelation1.unlink(derivedRelation2);
+        }
+
+        // Handle the undo aspect.
+        if (_undoEnabled && _undoContext.isUndoable()) {
+            _undoContext.appendUndoMoML("<link relation1=\"" + relation1Name
+                    + "\" relation2=\"" + relation2Name + "\" />\n");
+        }
+    }
+
+    /** Process an unlink request between a port and relation.
      *  @param portName The port name.
      *  @param relationName The relation name.
      *  @param indexSpec The index of the channel.
@@ -5799,6 +5953,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // Class that records a link request.
     private class LinkRequest {
+        // This constructor is used to link two relations into
+        // the same relation group.
+        public LinkRequest(String relation1Name, String relation2Name) {
+        	_relationName = relation1Name;
+            _relation2Name = relation2Name;
+        }
+        
+        // This constructor is used to link a port and a relation.
         public LinkRequest(String portName, String relationName,
                 String insertAtSpec, String insertInsideAtSpec) {
             _portName = portName;
@@ -5808,15 +5970,24 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         public void execute() throws IllegalActionException, XmlException {
-            _processLink(_portName, _relationName, _indexSpec, _insideIndexSpec);
+            if (_portName != null) {
+            	_processLink(_portName, _relationName, _indexSpec, _insideIndexSpec);
+            } else {
+            	_processLink(_relationName, _relation2Name);
+            }
         }
 
         public String toString() {
-            return "link " + _portName + " to " + _relationName;
+            if (_portName != null) {
+            	return "link " + _portName + " to " + _relationName;
+            } else {
+                return "link " + _relationName + " to " + _relation2Name;                
+            }
         }
 
         protected String _portName;
         protected String _relationName;
+        protected String _relation2Name;
         protected String _indexSpec;
         protected String _insideIndexSpec;
     }
@@ -5827,10 +5998,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 String indexSpec, String insideIndexSpec) {
             super(portName, relationName, indexSpec, insideIndexSpec);
         }
+        // This constructor is used to link two relations into
+        // the same relation group.
+        public UnlinkRequest(String relation1Name, String relation2Name) {
+            super(relation1Name, relation2Name);
+        }
 
         public void execute() throws IllegalActionException, XmlException {
-            _processUnlink(_portName, _relationName, _indexSpec,
-                    _insideIndexSpec);
+            if (_portName != null) {
+                _processUnlink(_portName, _relationName, _indexSpec, _insideIndexSpec);
+            } else {
+                _processUnlink(_relationName, _relation2Name);
+            }
         }
 
         public String toString() {

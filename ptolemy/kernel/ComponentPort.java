@@ -318,10 +318,10 @@ public class ComponentPort extends Port {
 
                 if (_isInsideLinkable(relation.getContainer())) {
                     // An inside link
-                    _insideLinks.insertLink(index, relation._getPortList());
+                    _insideLinks.insertLink(index, relation._linkList);
                 } else {
                     // An outside link
-                    _relationsList.insertLink(index, relation._getPortList());
+                    _relationsList.insertLink(index, relation._linkList);
                 }
             }
 
@@ -1076,10 +1076,10 @@ public class ComponentPort extends Port {
             } else {
                 if (_isInsideLinkable(relation.getContainer())) {
                     // An inside link
-                    _insideLinks.link(relation._getPortList());
+                    _insideLinks.link(relation._linkList);
                 } else {
                     // An outside link
-                    _relationsList.link(relation._getPortList());
+                    _relationsList.link(relation._linkList);
                 }
             }
 

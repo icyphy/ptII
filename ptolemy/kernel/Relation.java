@@ -48,21 +48,38 @@ import ptolemy.kernel.util.Workspace;
    in the Port class.  To remove a link, use the unlink() method in the
    Port class.
    <p>
+   Relations can also be linked to other Relations.
+   To create such a link, use the link() method of this class.
+   To remove such a link, use the unlink() method. A group of linked
+   relations behaves exactly as if it were one relation directly linked
+   to all the ports linked to by each relation.
+   <p>
    Derived classes may wish to disallow links under certain circumstances,
    for example if the proposed port is not an instance of an appropriate
    subclass of Port, or if the relation cannot support any more links.
    Such derived classes should override the protected method _checkPort()
-   to throw an exception.
+   or _checkRelation() to throw an exception.
 
    @author Edward A. Lee, Neil Smyth
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (johnr)
+   @Pt.AcceptedRating Red (eal)
    @see Port
    @see Entity
 */
 public class Relation extends NamedObj {
+    
+    // FIXME: Needing review:
+    //  relation group concept and methods:
+    //  getRelationGroup()
+    //  linkedObjectsList()
+    //  linkedPortList()
+    //  linkedPortList(Port)
+    //  _checkRelation(Relation)
+    //  _relationGroup(List)
+    //  _linkedPortList(Port, List)
+    
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.
@@ -125,28 +142,115 @@ public class Relation extends NamedObj {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Relation newObject = (Relation) super.clone(workspace);
-        newObject._portList = new CrossRefList(newObject);
+        newObject._linkList = new CrossRefList(newObject);
         return newObject;
     }
+    
+    /** Return the list of relations in the relation group containing
+     *  this relation.
+     *  The relation group includes this relation, all relations
+     *  directly linked to it, all relations directly linked to
+     *  those, etc.
+     *  @retrun The relation group.
+     */
+    public List getRelationGroup() {
+        LinkedList result = new LinkedList();
+        _relationGroup(result);
+        return result;
+    }
 
+    /** Link this relation with another relation.  The relation is required
+     *  to be at the same level of the hierarchy as this relation.
+     *  That is, level-crossing links are not allowed.
+     *  If the specified relation is already linked to this one,
+     *  do nothing.
+     *  In derived classes, the relation may be required to be an
+     *  instance of a particular subclass of Relation (this is checked
+     *  by the _checkRelation() protected method).
+     *  This method is write-synchronized on the workspace and increments
+     *  its version number.
+     *  @param relation The relation to link to this relation.
+     *  @exception IllegalActionException If the link would cross levels of
+     *   the hierarchy, or the relation is incompatible,
+     *   or this relation has no container, or this relation is not in the
+     *   same workspace as the relation.
+     */
+    public void link(Relation relation) throws IllegalActionException {
+        if ((relation != null) && (_workspace != relation.workspace())) {
+            throw new IllegalActionException(this, relation,
+                    "Cannot link because workspaces are different.");
+        }
+
+        try {
+            _workspace.getWriteAccess();
+
+            if (relation != null) {
+                _checkRelation(relation, true);
+                if (!_linkList.isLinked(relation)) {
+                	_linkList.link(relation._linkList);
+                }
+            } else {
+                _linkList.link(null);
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+    /** Return an enumeration over the linked objects (ports and relations).
+     *  Note that a port or relation may appear more than
+     *  once if more than one link to it has been established.
+     *  The caller is expected to be read-synchronized on the workspace.
+     *  @return A list of Port objects.
+     */
+    public List linkedObjectsList() {
+        try {
+            _workspace.getReadAccess();
+            
+            // Unfortunately, CrossRefList returns an enumeration only.
+            // Use it to construct a list.
+            LinkedList result = new LinkedList();
+            Enumeration links = _linkList.getContainers();
+
+            while (links.hasMoreElements()) {
+                Object next = links.nextElement();
+                result.add(next);
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+        
     /** List the linked ports.  Note that a port may appear more than
      *  once if more than one link to it has been established.
+     *  The returned list includes ports that are linked via
+     *  one or more other relations.
      *  This method is read-synchronized on the workspace.
      *  @return A list of Port objects.
      */
     public List linkedPortList() {
         try {
             _workspace.getReadAccess();
-
+            
             // Unfortunately, CrossRefList returns an enumeration only.
             // Use it to construct a list.
             LinkedList result = new LinkedList();
-            Enumeration ports = _portList.getContainers();
+            Enumeration links = _linkList.getContainers();
 
-            while (ports.hasMoreElements()) {
-                result.add(ports.nextElement());
+            List exceptRelations = new LinkedList();
+            exceptRelations.add(this);
+
+            while (links.hasMoreElements()) {
+                Object next = links.nextElement();
+                if (next instanceof Port) {
+                	result.add(next);
+                } else {
+                	// Must be another relation.
+                    result.addAll(((Relation)next)
+                            ._linkedPortList(null, exceptRelations));
+                }
             }
-
             return result;
         } finally {
             _workspace.doneReading();
@@ -165,18 +269,26 @@ public class Relation extends NamedObj {
         try {
             _workspace.getReadAccess();
 
-            LinkedList storedPorts = new LinkedList();
-            Enumeration ports = _portList.getContainers();
+            LinkedList result = new LinkedList();
+            Enumeration links = _linkList.getContainers();
 
-            while (ports.hasMoreElements()) {
-                Port p = (Port) ports.nextElement();
+            List exceptRelations = new LinkedList();
+            exceptRelations.add(this);
 
-                if (p != except) {
-                    storedPorts.add(p);
+            while (links.hasMoreElements()) {
+                Object link = links.nextElement();
+
+                if (link instanceof Port) {
+                	if (link!= except) {
+                		result.add(link);
+                    }
+                } else {
+                	// Must be another relation.
+                    result.addAll(((Relation)link)
+                            ._linkedPortList(except, exceptRelations));
                 }
             }
-
-            return storedPorts;
+            return result;
         } finally {
             _workspace.doneReading();
         }
@@ -185,18 +297,11 @@ public class Relation extends NamedObj {
     /** Enumerate the linked ports.  Note that a port may appear more than
      *  once if more than one link to it has been established.
      *  This method is read-synchronized on the workspace.
+     *  @deprecated Use linkedPortList() instead.
      *  @return An Enumeration of Port objects.
      */
     public Enumeration linkedPorts() {
-        // NOTE: There is no reason to deprecate this because it does not
-        // depend on Doug Lea's collections, and it is more efficient than
-        // the list version.
-        try {
-            _workspace.getReadAccess();
-            return _portList.getContainers();
-        } finally {
-            _workspace.doneReading();
-        }
+        return Collections.enumeration(linkedPortList());
     }
 
     /** Enumerate the linked ports except the specified port.
@@ -205,26 +310,42 @@ public class Relation extends NamedObj {
      *  This method is read-synchronized on the workspace.
      *  @param except Port to exclude from the enumeration.
      *  @return An Enumeration of Port objects.
-     *  @deprecated Use linkedPortList() instead.
+     *  @deprecated Use linkedPortList(Port) instead.
      */
     public Enumeration linkedPorts(Port except) {
         return Collections.enumeration(linkedPortList(except));
     }
 
-    /** Return the number of links to ports.
+    /** Return the number of links to ports, either directly
+     *  or indirectly via other relations. This is the size
+     *  of the list returned by linkedPortList().
      *  This method is read-synchronized on the workspace.
      *  @return The number of links.
+     *  @see #linkedPortList()
      */
     public int numLinks() {
+        return linkedPortList().size();
+    }
+    
+    /** Unlink the specified Relation. If the Relation
+     *  is not linked to this relation, do nothing.
+     *  If the relation is linked
+     *  more than once, then unlink all occurrences.
+     *  This method is write-synchronized on the
+     *  workspace and increments its version number.
+     *  @param relation The relation to unlink.
+     */
+    public void unlink(Relation relation) {
         try {
-            _workspace.getReadAccess();
-            return _portList.size();
+            _workspace.getWriteAccess();
+            _linkList.unlink(relation);
         } finally {
-            _workspace.doneReading();
+            _workspace.doneWriting();
         }
     }
 
-    /** Unlink all ports.
+    /** Unlink all ports and relations that are directly linked
+     *  to this relation.
      *  This method is write-synchronized on the workspace and increments
      *  its version number.
      */
@@ -236,18 +357,22 @@ public class Relation extends NamedObj {
             // containers of the ports are not notified of the change.
             // Also, have to first copy the ports references, then remove
             // them, to avoid a corrupted enumeration exception.
-            int size = _portList.size();
-            Port[] portArray = new Port[size];
+            int size = _linkList.size();
+            Object[] linkArray = new Object[size];
             int i = 0;
-            Enumeration ports = _portList.getContainers();
+            Enumeration links = _linkList.getContainers();
 
-            while (ports.hasMoreElements()) {
-                Port p = (Port) ports.nextElement();
-                portArray[i++] = p;
+            while (links.hasMoreElements()) {
+                Object link = links.nextElement();
+                linkArray[i++] = link;
             }
 
             for (i = 0; i < size; i++) {
-                portArray[i].unlink(this);
+                if (linkArray[i] instanceof Port) {
+                	((Port)linkArray[i]).unlink(this);
+                } else {
+                    ((Relation)linkArray[i]).unlink(this);                    
+                }
             }
         } finally {
             _workspace.doneWriting();
@@ -266,6 +391,25 @@ public class Relation extends NamedObj {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _checkPort(Port port) throws IllegalActionException {
+    }
+
+    /** Check that this relation is compatible with the specified relation.
+     *  In this base class, this method calls the corresponding check method
+     *  of the specified relation, and if that returns, then it returns.
+     *  @param relation The relation to link to.
+     *  @param symmetric If true, the call _checkRelation on the specified
+     *   relation with this as an argument.
+     *  @exception IllegalActionException If this relation has no container,
+     *   or if this relation is not an acceptable relation for the specified
+     *   relation.
+     */
+    protected void _checkRelation(Relation relation, boolean symmetric)
+            throws IllegalActionException {
+        if (relation != null && symmetric) {
+            // Throw an exception if this relation is not of an acceptable
+            // class for the specified relation.
+            relation._checkRelation(this, false);
+        }
     }
 
     /** Return a description of the object.  The level of detail depends
@@ -305,11 +449,15 @@ public class Relation extends NamedObj {
                 detail &= ~LINKS;
                 result += "links {\n";
 
-                Enumeration linkedPorts = linkedPorts();
+                Enumeration links = _linkList.getContainers();
 
-                while (linkedPorts.hasMoreElements()) {
-                    Port port = (Port) linkedPorts.nextElement();
-                    result += (port._description(detail, indent + 1, 2) + "\n");
+                while (links.hasMoreElements()) {
+                    Object object = links.nextElement();
+                    if (object instanceof Port) {
+                    	result += (((Port)object)._description(detail, indent + 1, 2) + "\n");
+                    } else {
+                        result += (((Relation)object)._description(detail, indent + 1, 2) + "\n");   
+                    }
                 }
 
                 result += (_getIndentPrefix(indent) + "}");
@@ -357,22 +505,81 @@ public class Relation extends NamedObj {
 
         return candidate;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
-    /** Return a reference to the local port list.
-     *  NOTE : This method has been made protected only for the purpose
-     *  of connecting Ports to Relations (see Port.link(Relation)).
-     *  @see Port
-     *  @return The link list.
-     */
-    protected CrossRefList _getPortList() {
-        return _portList;
-    }
+    /** The list of Ports and Relations that are linked to this Relation. */
+    protected CrossRefList _linkList = new CrossRefList(this);
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         private methods                   ////
 
-    /** @serial The CrossRefList of Ports which are connected
-     *  to this Relation.
+    /** List the linked ports except the <i>exceptPort</i> and
+     *  those linked via the relations in the <i>exceptRelations</i>
+     *  list. This relation is
+     *  added to the <i>exceptRelations</i> list before returning.
+     *  Note that a port may appear more than
+     *  once if more than on link to it has been established.
+     *  This method is read-synchronized on the workspace.
+     *  @param exceptPort A port to exclude, or null to not
+     *   specify one.
+     *  @param exceptRelations List of relations to exclude.
+     *  @return A list of Port objects.
      */
-    private CrossRefList _portList = new CrossRefList(this);
+    private List _linkedPortList(Port exceptPort, List exceptRelations) {
+        // This works by constructing a linked list and then returning it.
+        try {
+            _workspace.getReadAccess();
+
+            LinkedList result = new LinkedList();
+
+            if (exceptRelations.contains(this)) {
+            	return result;
+            }
+            // Prevent listing the ports connected to this relation again.
+            exceptRelations.add(this);
+            
+            Enumeration links = _linkList.getContainers();
+
+            while (links.hasMoreElements()) {
+                Object link = links.nextElement();
+
+                if (link instanceof Port) {
+                	if (link != exceptPort) {
+                        result.add(link);
+                	}
+                } else {
+                	// Link must be to a relation.
+                    Relation relation = (Relation)link;
+                    if (!exceptRelations.contains(relation)) {
+                        result.addAll(relation._linkedPortList(exceptPort, exceptRelations));
+                    }
+                }
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    /** Append to the specified list all relations in the relation
+     *  group with this one that are not already on the list.
+     *  The relation group includes this relation, all relations
+     *  directly linked to it, all relations directly linked to
+     *  those, etc.
+     *  @param list The list to append to.
+     */
+    private void _relationGroup(List list) {
+        if (!list.contains(this)) {
+            list.add(this);
+            Enumeration links = _linkList.getContainers();
+            while (links.hasMoreElements()) {
+                Object link = links.nextElement();
+                if (link instanceof Relation) {
+                    ((Relation)link)._relationGroup(list);
+                }
+            }
+        }
+    }
 }

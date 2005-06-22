@@ -35,9 +35,10 @@ import ptolemy.kernel.ComponentRelation;
 
 /**
    Instances of this class represent a link between a port and a
-   relation, OR a binary connection between two ports.  In the first
-   case, the relation is represented by an explicit node in the graph.  In the
-   second case, there is no explicit node representing the relation and
+   relation, between two relations,
+   or a between two ports.  In the first two cases,
+   the relations are represented by an explicit node in the graph.  In the
+   third case, there is no explicit node representing the relation and
    the edge runs directly from one port to the other.  Connections are made
    and broken by the graph model depending on
    which of the above contexts the link is being used in.

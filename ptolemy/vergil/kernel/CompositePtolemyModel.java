@@ -161,7 +161,7 @@ public class CompositePtolemyModel implements CompositeModel {
     /** Return a list of all the nodes in the graph corresponding to
      *  the specified Ptolemy II model.  The model can be any NamedObj,
      *  and the returned list will include any entities, ports,
-     *  relations, and attributes that it contains, in that order.
+     *  vertexes, and attributes that it contains, in that order.
      *  Note that this method creates a new list, and should therefore
      *  only be called if the object has changed.
      *  @param composite The composite entity.

@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.actor;
 
-import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
@@ -200,11 +199,11 @@ public class LinkController extends BasicEdgeController {
     }
 
     public static class LinkRenderer implements EdgeRenderer {
-        /**
-         * Render a visual representation of the given edge. If the
-         * StringAttribute _color of the edgs is set then use that color to
-         * highlight the node. If the StringAttribute _explanation of the edge
-         * is set then use it to set the tooltip.
+        
+        /** Render a visual representation of the given edge. If the
+         *  StringAttribute _color of the edge is set then use that color to
+         *  highlight the node. If the StringAttribute _explanation of the edge
+         *  is set then use it to set the tooltip.
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             ManhattanConnector c = new ManhattanConnector(tailSite, headSite);
@@ -225,21 +224,19 @@ public class LinkController extends BasicEdgeController {
             if (relation != null) {
                 c.setToolTipText(relation.getName());
 
-                if (relation instanceof TypedIORelation) {
-                    StringAttribute _colorAttr = (StringAttribute) (relation
-                            .getAttribute("_color"));
+                StringAttribute _colorAttr = (StringAttribute) (relation
+                        .getAttribute("_color"));
 
-                    if (_colorAttr != null) {
-                        String _color = _colorAttr.getExpression();
-                        c.setStrokePaint(SVGUtilities.getColor(_color));
-                    }
+                if (_colorAttr != null) {
+                    String _color = _colorAttr.getExpression();
+                    c.setStrokePaint(SVGUtilities.getColor(_color));
+                }
 
-                    StringAttribute _explAttr = (StringAttribute) (relation
-                            .getAttribute("_explanation"));
+                StringAttribute _explAttr = (StringAttribute) (relation
+                        .getAttribute("_explanation"));
 
-                    if (_explAttr != null) {
-                        c.setToolTipText(_explAttr.getExpression());
-                    }
+                if (_explAttr != null) {
+                    c.setToolTipText(_explAttr.getExpression());
                 }
             }
 

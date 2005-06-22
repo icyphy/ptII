@@ -438,8 +438,6 @@ public class ComponentRelation extends Relation {
             } else {
                 // We have successfully set a new container for this
                 // object. Mark it modified to ensure MoML export.
-                // FIXME: Inappropriate?
-                // setOverrideDepth(0);
                 // Transfer any queued change requests to the
                 // new container.  There could be queued change
                 // requests if this component is deferring change
@@ -507,19 +505,18 @@ public class ComponentRelation extends Relation {
 
             // Next, remove the links that are inside links of ports.
             _workspace.getWriteAccess();
-
-            int size = numLinks();
-            ComponentPort[] portArray = new ComponentPort[size];
-            int i = 0;
-            Enumeration ports = linkedPorts();
-
-            while (ports.hasMoreElements()) {
-                ComponentPort p = (ComponentPort) ports.nextElement();
-                portArray[i++] = p;
+            
+            LinkedList ports = new LinkedList();
+            Enumeration links = _linkList.getContainers();
+            while (links.hasMoreElements()) {
+                Object link = links.nextElement();
+                if (link instanceof ComponentPort) {
+                	ports.add(link);
+                }
             }
-
-            for (i = 0; i < size; i++) {
-                portArray[i].unlinkInside(this);
+            Iterator portsIterator = ports.iterator();
+            while (portsIterator.hasNext()) {
+                ((ComponentPort)(portsIterator.next())).unlinkInside(this);
             }
         } finally {
             _workspace.doneWriting();
@@ -550,6 +547,24 @@ public class ComponentRelation extends Relation {
             throw new IllegalActionException(this, port,
                     "ComponentRelation can only link to a ComponentPort.");
         }
+    }
+    
+    /** Throw an exception if the specified relation is not an instance
+     *  of ComponentRelation.
+     *  @param relation The relation to link to.
+     *  @param symmetric If true, the call _checkRelation on the specified
+     *   relation with this as an argument.
+     *  @exception IllegalActionException If this port has no container,
+     *   or if this port is not an acceptable port for the specified
+     *   relation.
+     */
+    protected void _checkRelation(Relation relation, boolean symmetric)
+            throws IllegalActionException {
+        if (!(relation instanceof ComponentRelation)) {
+            throw new IllegalActionException(this, relation,
+                    "ComponentRelation can only link to a ComponentRelation.");
+        }
+        super._checkRelation(relation, symmetric);
     }
 
     /** Propagate existence of this object to the
