@@ -1,11 +1,11 @@
-/***preinitBlock*/
+/***preinitBlock***/
 int $actorSymbol(currentIndex) = 0;
 int $actorSymbol(outputProduced) = 0;
 /**/
 
 
 
-/***codeBlock1*/
+/***codeBlock1***/
 if ($actorSymbol(currentIndex) < $size(values)) {
     $ref(output) = $ref(values, $actorSymbol(currentIndex));
     $actorSymbol(outputProduced) = 1;
@@ -13,7 +13,7 @@ if ($actorSymbol(currentIndex) < $size(values)) {
 /**/
 
 
-/***codeBlock2*/
+/***codeBlock2***/
 if ($ref(enable) != 0 && $actorSymbol(currentIndex) < $size(values)) {
     $ref(output) = $ref(values, $actorSymbol(currentIndex));
     $actorSymbol(outputProduced) = 1;
@@ -22,7 +22,7 @@ if ($ref(enable) != 0 && $actorSymbol(currentIndex) < $size(values)) {
 
 
 
-/***codeBlock3*/
+/***codeBlock3***/
 if ($actorSymbol(outputProduced) != 0) {
     $actorSymbol(outputProduced) = 0;
     $actorSymbol(currentIndex) += 1;

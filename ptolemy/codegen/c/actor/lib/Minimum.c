@@ -1,12 +1,12 @@
-/*** initMin */
+/*** initMin ***/
     $ref(minimumValue) = $ref(input#0);
 /**/
 
-/*** initChannelNum */
+/*** initChannelNum ***/
     $ref(channelNumber) = -1;
 /**/
 
-/*** compareBlock(i) */
+/*** compareBlock(i) ***/
     $ref(minimumValue) = $ref(input#i) < $ref(minimumValue) ? $ref(input#i) : $ref(minimumValue);
 /**/
 

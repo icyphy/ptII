@@ -1,4 +1,4 @@
-/***preinitBlock*/
+/***preinitBlock***/
     FILE* $actorSymbol(filePtr);
     char $actorSymbol(tmpChar)[4];
     unsigned int $actorSymbol(numChannel);
@@ -9,7 +9,7 @@
     int $actorSymbol(i);
 /**/
 
-/*** initBlock */
+/*** initBlock ***/
     if (!($actorSymbol(filePtr) = fopen ($ref(fileOrURL),"r"))) {
         fprintf(stderr,"ERROR: cannot open file for AudioReader actor.\n");
         exit(1);
@@ -88,7 +88,7 @@ printf("\nlengthOfData = %u\n", $actorSymbol(lengthOfData));
 /**/
 
 // FIXME: do we need to check for EOF??
-/*** readSoundFile */
+/*** readSoundFile ***/
     //fscanf($actorSymbol(filePtr),"%c", &$actorSymbol(tmpChar)[0]);
     //$ref(output#0) = $actorSymbol(tmpChar)[0];
     for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(bytesPerSample); $actorSymbol(i) += 1) {
@@ -102,7 +102,7 @@ printf("\nlengthOfData = %u\n", $actorSymbol(lengthOfData));
     $ref(output#0) = ((double) $actorSymbol(result) * $actorSymbol(maxSampleReciprocal));
 /**/
 
-/*** wrapupBlock */
+/*** wrapupBlock ***/
     fclose($actorSymbol(filePtr));
 /**/
 

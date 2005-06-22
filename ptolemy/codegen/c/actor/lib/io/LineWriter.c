@@ -1,34 +1,34 @@
-/***preinitBlock*/
+/***preinitBlock***/
     int $actorSymbol(overwriteOK) = 1;       // default: overwrite OK
     FILE * $actorSymbol(filePtr);
     int $actorSymbol(index);    
     int $actorSymbol(charToWrite);
 /**/
     
-/***confirmOverwrite*/
+/***confirmOverwrite***/
     printf("overwrite $val(fileName) [1 = Yes, 0 = No]? ");
     scanf ("%d",&$actorSymbol(overwriteOK));
 /**/
 
-/***openForStdout*/
+/***openForStdout***/
     $actorSymbol(filePtr) = stdout;
 /**/
     
-/***openForAppend*/
+/***openForAppend***/
     if (!($actorSymbol(filePtr) = fopen ($val(fileName),"a"))) {
         fprintf(stderr,"ERROR: cannot open output file for LineWriter actor.\n");
         exit(1);
     }
 /**/
 
-/***openForWrite*/
+/***openForWrite***/
     if (!($actorSymbol(filePtr) = fopen ($val(fileName),"w"))) {
         fprintf(stderr,"ERROR: cannot open output file for LineWriter actor.\n");
         exit(1);
     }
 /**/
 
-/***writeLine*/
+/***writeLine***/
     $actorSymbol(index) = 0;
     while ( ($actorSymbol(charToWrite) = $ref(input)[$actorSymbol(index)++]) != '\n' ) { 
         fputc($actorSymbol(charToWrite), $actorSymbol(filePtr));
@@ -36,6 +36,6 @@
     fputc('\n', $actorSymbol(filePtr));
 /**/
 
-/***wrapUpBlock*/
+/***wrapUpBlock***/
     fclose($actorSymbol(filePtr));
 /**/

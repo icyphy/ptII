@@ -1,8 +1,8 @@
-/***initBlock*/
+/***initBlock***/
     $ref(output) = $val(init);
 /**/
 
-/***codeBlock1*/
+/***codeBlock1***/
     if ($ref(reset)) {
     	$ref(output) = $val(init);
     } else {

@@ -1,34 +1,34 @@
-/***preinitBlock*/
+/***preinitBlock***/
     FILE * $actorSymbol(filePtr);
     int $actorSymbol(charRead);
     int $actorSymbol(index);
     int $actorSymbol(length) = 80;
 /**/
 
-/***initBlock*/
+/***initBlock***/
 	$ref(output) = (char*) malloc($actorSymbol(length) * sizeof(char));
 /**/
     
 
-/***openForStdin*/
+/***openForStdin***/
     $actorSymbol(filePtr) = stdin;
 /**/
          
-/***skipLine*/
+/***skipLine***/
     // use fgetc() to readLine
     //$actorSymbol(charReturned) = fscanf($actorSymbol(filePtr), "%s", $actorSymbol(line));
     while ( ($actorSymbol(charRead) = fgetc($actorSymbol(filePtr))) != '\n' && $actorSymbol(charRead) != EOF );
     $ref(endOfFile) = feof($actorSymbol(filePtr) );    
 /**/
 
-/***openForRead*/
+/***openForRead***/
     if (!($actorSymbol(filePtr) = fopen ($ref(fileOrURL),"r"))) {
         fprintf(stderr,"ERROR: cannot open file for LineReader actor.\n");
         exit(1);
     }
 /**/
 
-/***readLine*/
+/***readLine***/
     //$actorSymbol(charReturned) = fscanf($actorSymbol(filePtr), "%s", $ref(output));
     $actorSymbol(index) = 0;
     do {
@@ -42,6 +42,6 @@
     $ref(endOfFile) = feof($actorSymbol(filePtr) );
 /**/
 
-/***wrapUpBlock*/
+/***wrapUpBlock***/
     fclose($actorSymbol(filePtr));
 /**/

@@ -1,4 +1,4 @@
-/***codeBlock1*/
+/***codeBlock1***/
     if ($ref(increment)) {
         $ref(output)++;
     } 

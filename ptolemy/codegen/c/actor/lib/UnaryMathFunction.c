@@ -1,24 +1,24 @@
-/***expBlock*/
+/***expBlock***/
     $ref(output) = exp($ref(input));
 /**/
 
 
-/***logBlock*/
+/***logBlock***/
     $ref(output) = log($ref(input));
 /**/
 
 
-/***signBlock*/
+/***signBlock***/
     $ref(output) = ( $ref(input) > 0.0 ) ? 1.0 : 
                    ( $ref(input) < 0.0 ) ? -1.0 : 0;
 /**/
 
 
-/***squareBlock*/
+/***squareBlock***/
     $ref(output) = $ref(input) * $ref(input);
 /**/
 
 
-/***sqrtBlock*/
+/***sqrtBlock***/
     $ref(output) = sqrt($ref(input));
 /**/
