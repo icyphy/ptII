@@ -239,10 +239,35 @@ public class Port extends NamedObj {
         }
     }
 
-    /** Return true if the given Relation is linked to this port.
+    /** Return true if the given relation or one in its relation
+     *  group is linked to this port.
+     *  @param r The relation.
+     *  @return True if the given relation is linked to this port.
+     *  @see #isLinked(Relation)
+     */
+    public boolean isGroupLinked(Relation r) {
+        try {
+            _workspace.getReadAccess();
+            Iterator relations = r.getRelationGroup().iterator();
+            while (relations.hasNext()) {
+            	Relation groupRelation = (Relation)relations.next();
+                if (_relationsList.isLinked(groupRelation)) {
+                	return true;
+                }
+            }
+            return false;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    /** Return true if the given relation is linked to this port.
+     *  Note that this returns true only if the relation is directly
+     *  linked to the port. There is no support here for relation groups.
      *  This method is read-synchronized on the workspace.
      *  @param r The relation.
      *  @return True if the given relation is linked to this port.
+     *  @see #isGroupLinked(Relation)
      */
     public boolean isLinked(Relation r) {
         try {

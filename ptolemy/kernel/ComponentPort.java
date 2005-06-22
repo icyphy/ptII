@@ -432,8 +432,32 @@ public class ComponentPort extends Port {
             _workspace.doneReading();
         }
     }
+    
+    /** Return true if the given relation or one in its relation
+     *  group is linked to this port on the inside.
+     *  @param r The relation.
+     *  @return True if the given relation is linked to this port.
+     *  @see #isLinked(Relation)
+     */
+    public boolean isInsideGroupLinked(Relation r) {
+        try {
+            _workspace.getReadAccess();
+            Iterator relations = r.getRelationGroup().iterator();
+            while (relations.hasNext()) {
+                Relation groupRelation = (Relation)relations.next();
+                if (_insideLinks.isLinked(groupRelation)) {
+                    return true;
+                }
+            }
+            return false;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
 
     /** Return true if the given relation is linked from inside.
+     *  Note that this returns true only if the relation is directly
+     *  linked to the port. There is no support here for relation groups.
      *  @param relation The relation that is checked.
      *  @return True if the given relation is linked from inside.
      */
