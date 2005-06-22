@@ -267,10 +267,9 @@ test IOPort-7.2 {Check getReceivers} {
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
-    catch {$p1 getReceivers $r1} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: getReceivers: Relation argument is not linked to me.
-  in .<Unnamed Object>.E1.P1 and .<Unnamed Object>.R1}}
+    set p1Rcvrs [$p1 getReceivers $r1]
+    expr { [$p1Rcvrs length] == 0 }
+} {1}
 
 ######################################################################
 ####
