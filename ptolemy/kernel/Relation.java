@@ -151,7 +151,7 @@ public class Relation extends NamedObj {
      *  The relation group includes this relation, all relations
      *  directly linked to it, all relations directly linked to
      *  those, etc.
-     *  @retrun The relation group.
+     *  @return The relation group.
      */
     public List getRelationGroup() {
         LinkedList result = new LinkedList();
