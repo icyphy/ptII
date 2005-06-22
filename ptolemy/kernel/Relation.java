@@ -431,43 +431,47 @@ public class Relation extends NamedObj {
         try {
             _workspace.getReadAccess();
 
-            String result;
+            StringBuffer result = new StringBuffer();
 
             if ((bracket == 1) || (bracket == 2)) {
-                result = super._description(detail, indent, 1);
+                result.append(super._description(detail, indent, 1));
             } else {
-                result = super._description(detail, indent, 0);
+                result.append(super._description(detail, indent, 0));
             }
 
             if ((detail & LINKS) != 0) {
                 if (result.trim().length() > 0) {
-                    result += " ";
+                    result.append(" ");
                 }
 
                 // To avoid infinite loop, turn off the LINKS flag
                 // when querying the Ports.
                 detail &= ~LINKS;
-                result += "links {\n";
+                result.append("links {\n");
 
                 Enumeration links = _linkList.getContainers();
 
                 while (links.hasMoreElements()) {
                     Object object = links.nextElement();
                     if (object instanceof Port) {
-                    	result += (((Port)object)._description(detail, indent + 1, 2) + "\n");
+                    	result.append((((Port)object)
+                                              ._description(detail,
+                                                      indent + 1, 2) + "\n"));
                     } else {
-                        result += (((Relation)object)._description(detail, indent + 1, 2) + "\n");   
+                        result.append((((Relation)object)
+                                              ._description(detail,
+                                                      indent + 1, 2) + "\n"));
                     }
                 }
 
-                result += (_getIndentPrefix(indent) + "}");
+                result.append((_getIndentPrefix(indent) + "}"));
             }
 
             if (bracket == 2) {
-                result += "}";
+                result.append("}");
             }
 
-            return result;
+            return result.toString();
         } finally {
             _workspace.doneReading();
         }
