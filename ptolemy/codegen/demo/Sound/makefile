@@ -101,17 +101,27 @@ demo_vergil:
 # or, try
 # gcc loopwave.c -o loopwave.exe `/usr/local/bin/sdl-config --cflags --libs`
 
+SDL_DIRECTORY=/usr/local
+SDL_INCLUDES=-I$(SDL_DIRECTORY)/include/SDL
+
+SDL_LIBS=-L$(SDL_DIRECTORY)/lib -lmingw32 -lSDLmain -lSDL -lSDLmain \
+		-mwindows -mno-cygwin
+
 # Our sample code
 audioPlayer.exe: audioPlayer.c
-	gcc -I/usr/local/include/SDL -mwindows $^ \
-		-L/usr/local/lib -lmingw32 -lSDLmain -lSDL -lSDLmain \
-		-mwindows -mno-cygwin -o audioPlayer.exe
+	$(PTCC) $(SDL_INCLUDES) $^ \
+		$(SDL_LIBS) \
+		-o $@
 
 # sample code from libsdl
 loopwave.exe: loopwave.c
-	gcc -I/usr/local/include/SDL -mwindows $^ \
-		-L/usr/local/lib -lmingw32 -lSDLmain -lSDL -lSDLmain \
-		-mwindows -mno-cygwin -o loopwave.exe
+	$(PTCC) $(SDL_INCLUDES) $^ \
+		$(SDL_LIBS) \
+		-o $@
+	@echo "To demo this code, run:     make loopwave_demo"
+
+loopwave_demo:
+	./loopwave.exe $(PTII)/ptolemy/actor/lib/javasound/voice.wav 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
