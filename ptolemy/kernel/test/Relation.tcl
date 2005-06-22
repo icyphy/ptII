@@ -60,7 +60,7 @@ test Relation-3.1 {Test linkedPorts on a Relation that has no ports} {
     set enum  [$r1 linkedPorts]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
-} {{java.util.NoSuchElementException: exhausted enumeration} 0}
+} {java.util.NoSuchElementException 0}
 
 ######################################################################
 ####
@@ -233,3 +233,66 @@ test Relation-16.0 {Test exportMoML} {
 } {<relation name="my relation" class="ptolemy.kernel.Relation">
 </relation>
 }
+
+######################################################################
+####
+#
+test Relation-17.0 {Test a linked relation} {
+    set r1 [java::new ptolemy.kernel.Relation]
+    set r2 [java::new ptolemy.kernel.Relation]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port $e1 P1]
+    set p2 [java::new ptolemy.kernel.Port $e1 P2]
+    $p1 link $r1
+    $p2 link $r1
+    $r1 link $r2
+    list [$r1 numLinks] [$r2 numLinks] [_testRelationLinkedPorts $r1] [_testRelationLinkedPorts $r2]
+} {2 2 {{P1 P2}} {{P1 P2}}}
+
+test Relation-17.2 {Test getRelationGroup} {
+	$r1 setName {R1}
+	$r2 setName {R2}
+	list [listToNames [$r1 getRelationGroup]] [listToNames [$r2 getRelationGroup]]
+} {{R1 R2} {R2 R1}}
+
+test Relation-17.3 {Test unlinkAll} {
+	$r2 unlinkAll
+    list [$r1 numLinks] [$r2 numLinks] [_testRelationLinkedPorts $r1] [_testRelationLinkedPorts $r2]
+} {2 0 {{P1 P2}} {{}}}
+
+######################################################################
+####
+#
+test Relation-18.0 {Test a linked relation} {
+    set r1 [java::new ptolemy.kernel.Relation]
+    set r2 [java::new ptolemy.kernel.Relation]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port $e1 P1]
+    set p2 [java::new ptolemy.kernel.Port $e1 P2]
+    $p1 link $r1
+    $p2 link $r2
+    $r1 link $r2
+    list [$r1 numLinks] [$r2 numLinks] [_testRelationLinkedPorts $r1] [_testRelationLinkedPorts $r2]
+} {2 2 {{P1 P2}} {{P2 P1}}}
+
+test Relation-18.1 {Test a unlink a relation} {
+    $r1 unlink $r2
+    list [$r1 numLinks] [$r2 numLinks] [_testRelationLinkedPorts $r1] [_testRelationLinkedPorts $r2]
+} {1 1 P1 P2}
+
+test Relation-18.1 {Test relink a relation} {
+    $r1 link $r2
+    list [$r1 numLinks] [$r2 numLinks] [_testRelationLinkedPorts $r1] [_testRelationLinkedPorts $r2]
+} {2 2 {{P1 P2}} {{P2 P1}}}
+
+test Relation-18.2 {Test multiple paths} {
+    set r3 [java::new ptolemy.kernel.Relation]
+    set r4 [java::new ptolemy.kernel.Relation]
+    $p2 unlink $r2
+    $r1 link $r3
+    $r3 link $r4
+    $r4 link $r2
+    $p2 link $r4
+    list [_testRelationLinkedPorts $r1] [_testRelationLinkedPorts $r2] [_testRelationLinkedPorts $r3] [_testRelationLinkedPorts $r4]
+} {{{P1 P2}} {{P1 P2}} {{P1 P2}} {{P1 P2}}}
+
