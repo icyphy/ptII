@@ -279,6 +279,7 @@ public class IORelation extends ComponentRelation {
      *  of zero, then return one.
      *
      *  @return The width, which is at least one.
+     *  @see setWidth(int)
      */
     public int getWidth() {
         if (_width == 0) {
@@ -546,6 +547,7 @@ public class IORelation extends ComponentRelation {
      *   the relation is linked on the inside to a port that is already
      *   linked on the inside to a relation with unspecified width.
      *  @see ptolemy.kernel.util.Workspace#getWriteAccess()
+     *  @see getWidth()
      */
     public void setWidth(int width) throws IllegalActionException {
         try {
