@@ -3671,7 +3671,7 @@ public class IOPort extends ComponentPort {
 
     /** To avoid creating this repeatedly, we use a single version. */
     private static final Receiver[][] _EMPTY_RECEIVER_ARRAY =
-        new Receiver[0][0];
+    new Receiver[0][0];
 
     /** Indicate whether the port is an input, an output, or both.
      * The value may be overridden in transparent ports, in that if

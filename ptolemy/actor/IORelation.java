@@ -584,7 +584,7 @@ public class IORelation extends ComponentRelation {
             // Set the width of all relations in the relation group.
             Iterator relations = getRelationGroup().iterator();
             while(relations.hasNext()) {
-                    IORelation relation = (IORelation)relations.next();
+                IORelation relation = (IORelation)relations.next();
                 relation._width = width;
             }
 
