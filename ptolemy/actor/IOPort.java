@@ -1187,7 +1187,15 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         try {
             _workspace.getReadAccess();
-            return _getReceivers(relation, occurrence);
+            // Allow inside relations also to support opaque,
+            // non-atomic entities.
+            boolean insideLink = isInsideLinked(relation);
+
+            if (!isLinked(relation) && !insideLink) {
+                throw new IllegalActionException(this, relation,
+                        "getReceivers: Relation argument is not linked to me.");
+            }
+            return _getReceivers(relation, occurrence, insideLink);
         } finally {
             _workspace.doneReading();
         }
@@ -3303,12 +3311,21 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         try {
             _workspace.getReadAccess();
+            
+            // Allow inside relations also to support opaque,
+            // non-atomic entities.
+            boolean insideLink = isInsideGroupLinked(relation);
+
+            if (!isGroupLinked(relation) && !insideLink) {
+                throw new IllegalActionException(this, relation,
+                        "getReceivers: Relation argument is not linked to me on the inside.");
+            }
 
             List groupRelationsList = relation.getRelationGroup();
             // For efficiency, if there is only one element, then just
             // return the results of the private method.
             if (groupRelationsList.size() == 1) {
-                return _getReceivers(relation, occurrence);
+                return _getReceivers(relation, occurrence, insideLink);
             }
             // Create a linked list of the results to be merged.
             Receiver[][][] results = new Receiver[groupRelationsList.size()][][];
@@ -3317,10 +3334,10 @@ public class IOPort extends ComponentPort {
             Iterator groupRelations = groupRelationsList.iterator();
             while (groupRelations.hasNext()) {
                 IORelation groupRelation = (IORelation)groupRelations.next();
-                Receiver[][] oneResult = _getReceivers(groupRelation, occurrence);
+                Receiver[][] oneResult = _getReceivers(groupRelation, occurrence, insideLink);
                 results[index] = oneResult;
                 index++;
-                if (oneResult.length > width) {
+                if (oneResult != null && oneResult.length > width) {
                     width = oneResult.length;
                 }
             }
@@ -3332,7 +3349,9 @@ public class IOPort extends ComponentPort {
                 // for each channel.
                 int numberOfReplicas = 0;
                 for (int j = 0; j < results.length; j++) {
-                    if (results[j] == null || i >= results[j].length) {
+                    if (results[j] == null
+                            || i >= results[j].length
+                            || results[j][i] == null) {
                         // This result has no more replicas to contribute.
                         continue;
                     }
@@ -3343,7 +3362,9 @@ public class IOPort extends ComponentPort {
                 // Next, copy the replicas into the result.
                 index = 0;
                 for (int j = 0; j < results.length; j++) {
-                    if (results[j] == null || i >= results[j].length) {
+                    if (results[j] == null
+                            || i >= results[j].length
+                            || results[j][i] == null) {
                         // This result has no more replicas to contribute.
                         continue;
                     }
@@ -3514,22 +3535,13 @@ public class IOPort extends ComponentPort {
      *  @param relation Relations that are linked on the outside or inside.
      *  @param occurrence The occurrence number that we are interested in,
      *   starting at 0.
+     *  @param insideLink True if this is an inside link.
      *  @return The local receivers, or an empty array if there are none.
      *  @exception IllegalActionException If the relation is not linked
      *   from the outside.
      */
-    private Receiver[][] _getReceivers(IORelation relation, int occurrence)
+    private Receiver[][] _getReceivers(IORelation relation, int occurrence, boolean insideLink)
             throws IllegalActionException {
-
-        // Allow inside relations also to support opaque,
-        // non-atomic entities.
-        boolean insideLink = isInsideLinked(relation);
-
-        if (!isLinked(relation) && !insideLink) {
-            // Used to throw an exception here, but that makes relation
-            // groups not work.
-            return _EMPTY_RECEIVER_ARRAY;
-        }
 
         boolean opaque = isOpaque();
 

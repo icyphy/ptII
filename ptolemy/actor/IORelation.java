@@ -225,7 +225,7 @@ public class IORelation extends ComponentRelation {
             while (inputs.hasNext()) {
                 IOPort p = (IOPort) inputs.next();
 
-                if (p.isInsideLinked(this) && !p.isOpaque()) {
+                if (p.isInsideGroupLinked(this) && !p.isOpaque()) {
                     // if p is a transparent port and this relation links
                     // from the inside, then get the Receivers outside p.
                     try {
@@ -333,7 +333,7 @@ public class IORelation extends ComponentRelation {
                 IOPort p = (IOPort) ports.next();
 
                 if (p != except) {
-                    if (p.isInsideLinked(this)) {
+                    if (p.isInsideGroupLinked(this)) {
                         // Linked from the inside
                         if (p.isOutput()) {
                             resultPorts.addLast(p);
@@ -419,7 +419,7 @@ public class IORelation extends ComponentRelation {
                 IOPort p = (IOPort) ports.next();
 
                 if (p != except) {
-                    if (p.isInsideLinked(this)) {
+                    if (p.isInsideGroupLinked(this)) {
                         // Linked from the inside
                         if (p.isInput()) {
                             resultPorts.addLast(p);
@@ -788,7 +788,7 @@ public class IORelation extends ComponentRelation {
             while (ports.hasNext()) {
                 IOPort p = (IOPort) ports.next();
 
-                if (p.isInsideLinked(this)) {
+                if (p.isInsideGroupLinked(this)) {
                     // I am linked on the inside...
                     int portInsideWidth = p._getInsideWidth(this);
                     int portOutsideWidth = p.getWidth();
