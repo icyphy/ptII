@@ -1,4 +1,6 @@
-/** NOT part of Ptolemy, from SDL */
+/** This code is from the libsdl distribution and thus LGPL'd
+    See COPYING-loopwave.txt
+*/
 
 /* Program to load a wave file and loop playing it using SDL sound */
 
