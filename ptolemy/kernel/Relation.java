@@ -69,7 +69,7 @@ import ptolemy.kernel.util.Workspace;
    @see Entity
 */
 public class Relation extends NamedObj {
-    
+
     // FIXME: Needing review:
     //  relation group concept and methods:
     //  getRelationGroup()
@@ -79,7 +79,7 @@ public class Relation extends NamedObj {
     //  _checkRelation(Relation)
     //  _relationGroup(List)
     //  _linkedPortList(Port, List)
-    
+
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.
@@ -145,7 +145,7 @@ public class Relation extends NamedObj {
         newObject._linkList = new CrossRefList(newObject);
         return newObject;
     }
-    
+
     /** Return the list of relations in the relation group containing
      *  this relation.
      *  The relation group includes this relation, all relations
@@ -206,7 +206,7 @@ public class Relation extends NamedObj {
     public List linkedObjectsList() {
         try {
             _workspace.getReadAccess();
-            
+
             // Unfortunately, CrossRefList returns an enumeration only.
             // Use it to construct a list.
             LinkedList result = new LinkedList();
@@ -221,7 +221,7 @@ public class Relation extends NamedObj {
             _workspace.doneReading();
         }
     }
-        
+
     /** List the linked ports.  Note that a port may appear more than
      *  once if more than one link to it has been established.
      *  The returned list includes ports that are linked via
@@ -232,7 +232,7 @@ public class Relation extends NamedObj {
     public List linkedPortList() {
         try {
             _workspace.getReadAccess();
-            
+
             // Unfortunately, CrossRefList returns an enumeration only.
             // Use it to construct a list.
             LinkedList result = new LinkedList();
@@ -326,7 +326,7 @@ public class Relation extends NamedObj {
     public int numLinks() {
         return linkedPortList().size();
     }
-    
+
     /** Unlink the specified Relation. If the Relation
      *  is not linked to this relation, do nothing.
      *  If the relation is linked
@@ -371,7 +371,7 @@ public class Relation extends NamedObj {
                 if (linkArray[i] instanceof Port) {
                         ((Port)linkArray[i]).unlink(this);
                 } else {
-                    ((Relation)linkArray[i]).unlink(this);                    
+                    ((Relation)linkArray[i]).unlink(this);
                 }
             }
         } finally {
@@ -509,7 +509,7 @@ public class Relation extends NamedObj {
 
         return candidate;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -543,7 +543,7 @@ public class Relation extends NamedObj {
             }
             // Prevent listing the ports connected to this relation again.
             exceptRelations.add(this);
-            
+
             Enumeration links = _linkList.getContainers();
 
             while (links.hasMoreElements()) {
