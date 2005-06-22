@@ -187,7 +187,7 @@ public class Relation extends NamedObj {
             if (relation != null) {
                 _checkRelation(relation, true);
                 if (!_linkList.isLinked(relation)) {
-                	_linkList.link(relation._linkList);
+                        _linkList.link(relation._linkList);
                 }
             } else {
                 _linkList.link(null);
@@ -244,9 +244,9 @@ public class Relation extends NamedObj {
             while (links.hasMoreElements()) {
                 Object next = links.nextElement();
                 if (next instanceof Port) {
-                	result.add(next);
+                        result.add(next);
                 } else {
-                	// Must be another relation.
+                        // Must be another relation.
                     result.addAll(((Relation)next)
                             ._linkedPortList(null, exceptRelations));
                 }
@@ -279,11 +279,11 @@ public class Relation extends NamedObj {
                 Object link = links.nextElement();
 
                 if (link instanceof Port) {
-                	if (link!= except) {
-                		result.add(link);
+                        if (link!= except) {
+                                result.add(link);
                     }
                 } else {
-                	// Must be another relation.
+                        // Must be another relation.
                     result.addAll(((Relation)link)
                             ._linkedPortList(except, exceptRelations));
                 }
@@ -369,7 +369,7 @@ public class Relation extends NamedObj {
 
             for (i = 0; i < size; i++) {
                 if (linkArray[i] instanceof Port) {
-                	((Port)linkArray[i]).unlink(this);
+                        ((Port)linkArray[i]).unlink(this);
                 } else {
                     ((Relation)linkArray[i]).unlink(this);                    
                 }
@@ -454,7 +454,7 @@ public class Relation extends NamedObj {
                 while (links.hasMoreElements()) {
                     Object object = links.nextElement();
                     if (object instanceof Port) {
-                    	result.append((((Port)object)
+                            result.append((((Port)object)
                                               ._description(detail,
                                                       indent + 1, 2) + "\n"));
                     } else {
@@ -539,7 +539,7 @@ public class Relation extends NamedObj {
             LinkedList result = new LinkedList();
 
             if (exceptRelations.contains(this)) {
-            	return result;
+                    return result;
             }
             // Prevent listing the ports connected to this relation again.
             exceptRelations.add(this);
@@ -550,11 +550,11 @@ public class Relation extends NamedObj {
                 Object link = links.nextElement();
 
                 if (link instanceof Port) {
-                	if (link != exceptPort) {
+                        if (link != exceptPort) {
                         result.add(link);
-                	}
+                        }
                 } else {
-                	// Link must be to a relation.
+                        // Link must be to a relation.
                     Relation relation = (Relation)link;
                     if (!exceptRelations.contains(relation)) {
                         result.addAll(relation._linkedPortList(exceptPort, exceptRelations));
