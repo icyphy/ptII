@@ -35,6 +35,7 @@ import java.util.List;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -49,7 +50,9 @@ import ptolemy.kernel.util.NamedObj;
    in the model (within the same top level) is shared if it has the
    same name and its container is of the class specified in the
    constructor (or of the container class, if no class is specified
-   in the constructor).
+   in the constructor). Note that two parameters with the same
+   expression do not necessarily have the same value, since the
+   expression may reference other parameters that are in scope.
    <p>
    One exception is that if this parameter is (deeply) within an
    instance of EntityLibrary, then the parameter is not shared.
@@ -64,19 +67,26 @@ import ptolemy.kernel.util.NamedObj;
    parameters shared with this one, then the value will be
    set to the last of those encountered.
    If the container is subsequently changed, it is up to the
-   user of this actor to use the inferValueFromContext()
+   code implementing the change to use the inferValueFromContext()
    method to reset the value to match the new context.
    Note that this really needs to be done if the container
    of the container, or its container, or any container
-   above this actor is changed.  It is recommended to use
+   above this parameter is changed.  It is recommended to use
    the four-argument constructor, so you can specify a default
    value to use if there are no shared parameters.
+   <p>
+   Note that it might be tempting to use a static parameter field
+   to achieve this effect, but this would be problematic for two
+   reasons. First, the parameter would only be able to have one
+   container. Second, the parameter would be shared across all
+   models in the same Java virtual machine, not just within a
+   single model.
 
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (acataldo)
 */
 public class SharedParameter extends Parameter {
     /** Construct a parameter with the given container and name.
@@ -143,7 +153,7 @@ public class SharedParameter extends Parameter {
     /** Return the top level of the containment hierarchy, unless
      *  one of the containers is an instance of EntityLibrary,
      *  in which case, return null.
-     *  @return The top level, or this if this has no container.
+     *  @return The top level, or null if this is within a library.
      */
     public NamedObj getRoot() {
         NamedObj result = this;
@@ -162,36 +172,50 @@ public class SharedParameter extends Parameter {
     /** Infer the value of this parameter from the container
      *  context. That is, search for parameters that are
      *  shared with this one, and set the value of this parameter
-     *  to match the last one encountered (hopefully, they all
-     *  have the same value, but this is not checked here).
+     *  to match the last one encountered.
      *  If there are no shared parameters, then assign the
      *  default value given as an argument.
      *  @param defaultValue The default parameter value to give.
+     *  @exception InternalErrorException If there are multiple
+     *   shared parameters in the model, but their values
+     *   do not match.
      */
     public void inferValueFromContext(String defaultValue) {
         NamedObj root = getRoot();
 
         if (root != null) {
             Iterator sharedParameters = sharedParameterList(root).iterator();
-
+            String value = null;
             while (sharedParameters.hasNext()) {
                 SharedParameter candidate = (SharedParameter) sharedParameters
                     .next();
 
                 if (candidate != this) {
                     defaultValue = candidate.getExpression();
+                    if (value != null) {
+                    	if (!defaultValue.equals(value)) {
+                    		throw new InternalErrorException(
+                                    "SharedParameter found with a value that is" +
+                                    " inconsistent with other instances of SharedParameter" +
+                                    " in the model: "
+                                    + candidate.getFullName());
+                        }
+                    }
                 }
             }
         }
 
         boolean previousSuppressing = _suppressingPropagation;
-        _suppressingPropagation = true;
-        setExpression(defaultValue);
-        _suppressingPropagation = previousSuppressing;
+        try {
+            _suppressingPropagation = true;
+            setExpression(defaultValue);
+        } finally {
+            _suppressingPropagation = previousSuppressing;
+        }
     }
 
     /** Return true if this instance is suppressing propagation.
-     *  Unless setSuppressingPropagation has been called, this
+     *  Unless setSuppressingPropagation() has been called, this
      *  returns false.
      *  @return Returns whether this instance is suppressing propagation.
      *  @see #setSuppressingPropagation(boolean)
@@ -202,6 +226,7 @@ public class SharedParameter extends Parameter {
 
     /** Override the base class to also set the expression of shared
      *  parameters.
+     *  @param expression The expression.
      */
     public void setExpression(String expression) {
         super.setExpression(expression);
@@ -236,9 +261,8 @@ public class SharedParameter extends Parameter {
 
     /** Specify whether this instance should be suppressing
      *  propagation. If this is called with value true, then
-     *  changes to the <i>seed</i> or <i>generatorClass</i> parameters of
-     *  this instance will not propagate to other instances
-     *  in the model.
+     *  changes to this parameter will not propagate to other
+     *  shared instances in the model.
      *  @param propagation True to suppress propagation.
      *  @see #isSuppressingPropagation()
      */
@@ -259,10 +283,11 @@ public class SharedParameter extends Parameter {
     public List sharedParameterList(NamedObj container) {
         LinkedList result = new LinkedList();
 
+        // First check all the attributes of the specified container.
         if (_containerClass.isInstance(container)) {
             // If the attribute is not of the right class, get an exception.
             try {
-                Attribute candidate = container.getAttribute(getName(),
+            	Attribute candidate = container.getAttribute(getName(),
                         SharedParameter.class);
 
                 if (candidate != null) {
@@ -290,7 +315,7 @@ public class SharedParameter extends Parameter {
      *   Also thrown if the change is not acceptable to the container.
      */
     public void validate() throws IllegalActionException {
-        super.validate();
+    	super.validate();
 
         // NOTE: This is called by setContainer(), which is called from
         // within a base class constructor. That call occurs before this
