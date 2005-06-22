@@ -440,7 +440,7 @@ public class Relation extends NamedObj {
             }
 
             if ((detail & LINKS) != 0) {
-                if (result.trim().length() > 0) {
+                if (result.toString().trim().length() > 0) {
                     result.append(" ");
                 }
 
