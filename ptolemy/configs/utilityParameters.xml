@@ -11,6 +11,7 @@
 <input source="ptolemy/configs/utilityFileParameter.xml"/>
 <input source="ptolemy/configs/utilityColorAttribute.xml"/>
 <input source="ptolemy/configs/utilityIntRangeParameter.xml"/>
+<input source="ptolemy/configs/utilitySharedParameter.xml"/>
 <input source="ptolemy/configs/utilityPortParameter.xml"/>
 <input source="ptolemy/configs/utilityRequireVersion.xml"/>
 <input source="ptolemy/configs/utilityScopeExtender.xml"/>

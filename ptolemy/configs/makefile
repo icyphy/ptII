@@ -92,6 +92,7 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityPortParameter.xml \
 	utilityRequireVersion.xml \
 	utilityScopeExtender.xml \
+	utilitySharedParameter.xml \
 	utilityStringParameter.xml
 
 # Include these jars in PTCLASSALLJAR
