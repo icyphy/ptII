@@ -91,11 +91,11 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (eal)
 */
 public class IORelation extends ComponentRelation {
-    
+
     // FIXME: Need to review support for relation groups.
     //  setWidth(int)
     //  _checkRelation(Relation)
-    
+
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Add the relation to the directory of the workspace.
      */
@@ -577,7 +577,7 @@ public class IORelation extends ComponentRelation {
                     }
                 }
             }
-            
+
             // Set the width of all relations in the relation group.
             Iterator relations = getRelationGroup().iterator();
             while(relations.hasNext()) {
@@ -636,7 +636,7 @@ public class IORelation extends ComponentRelation {
                     "IORelation can only link to a IOPort.");
         }
     }
-    
+
     /** Throw an exception if the specified relation is not an instance
      *  of IORelation or if it does not have the same width as this relation.
      *  @param relation The relation to link to.
@@ -725,7 +725,7 @@ public class IORelation extends ComponentRelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Cascade two Receiver arrays to form a new array. For each row, each
      *  element of the second array is appended behind the elements of the
      *  first array. This method is solely for deepReceivers.

@@ -3311,7 +3311,7 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         try {
             _workspace.getReadAccess();
-            
+
             // Allow inside relations also to support opaque,
             // non-atomic entities.
             boolean insideLink = isInsideGroupLinked(relation);
@@ -3341,7 +3341,7 @@ public class IOPort extends ComponentPort {
                     width = oneResult.length;
                 }
             }
-            
+
             Receiver[][] result = new Receiver[width][];
             // Now fill in the result for each channel i.
             for (int i = 0; i < width; i++) {
@@ -3358,7 +3358,7 @@ public class IOPort extends ComponentPort {
                     numberOfReplicas += results[j][i].length;
                 }
                 result[i] = new Receiver[numberOfReplicas];
-                
+
                 // Next, copy the replicas into the result.
                 index = 0;
                 for (int j = 0; j < results.length; j++) {
@@ -3515,7 +3515,7 @@ public class IOPort extends ComponentPort {
             }
         }
     }
-    
+
     /** If the port is an input, return receivers that handle incoming
      *  channels from the specified relation. If the port is an opaque output
      *  and the relation is inside linked, return the receivers that handle
