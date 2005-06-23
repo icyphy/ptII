@@ -1898,13 +1898,13 @@ if test ! -d "$JINI_USER_DIR"; then
     so we need not find Jini.])
     # We don't use JINI_VERSION here so that we don't expand PTII
     # in the makefile
-    JINI_DIR='$PTII/lib'
+    JINI_DIR='$PTII/ptolemy/distributed/jini'
 else
     AC_MSG_CHECKING([for jini directory])
     AC_ARG_WITH(jini, [  --with-jini=DIR       use Jini jars from DIR,
-                          defaults to \$PTII/lib],
+                          defaults to \$PTII/ptolemy/distributed/jini],
 	JINI_DIR=$withval,
-	JINI_DIR=$PTII/lib)
+	JINI_DIR=$PTII/ptolemy/distributed/jini)
 
     JINI_JARS="jini-core.jar jini-ext.jar sun-util.jar"
 
@@ -1916,7 +1916,7 @@ else
 	for jar in $JINI_JARS
 	do 
 	    echo $ECHO_N "$jar "
-	    jarpath="$JINI_DIR/$jar"
+	    jarpath=`find "$JINI_DIR" -name $jar | head -1`
    	    if test -f "$jarpath"; then
   	        jinijarpath="$jinijarpath$CLASSPATHSEPARATOR$jarpath"
 		# FIXME: we should not be adding to ECLIPSE_CLASSPATHENTRY_LIBS
@@ -1945,9 +1945,12 @@ else
 
     if test "$JINI_PRESENT" = "no"; then
         AC_MSG_WARN([Perhaps Jini is not installed?
-    You need not download Jini unless you plan on use ptolemy/distributed
+    You need not download Jini unless you plan on use the
+    distributed Ptolemy feature in ptolemy/distributed.
     Jini can be downloaded from http://www.jini.org, the
-    $JINI_JARS copied to \$PTII/lib and configure rerun.])
+    $JINI_JARS copied to 
+    \$PTII/ptolemy/distributed/jini/jars
+    and configure rerun.])
     fi
 
 fi
