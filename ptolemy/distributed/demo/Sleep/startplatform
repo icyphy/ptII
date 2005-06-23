@@ -27,7 +27,7 @@
 # ENHANCEMENTS, OR MODIFICATIONS.
 
 cd $PTII/ptolemy/distributed/jini/
-startjinilocal &
-startservers
+./startjinilocal &
+./startservers
 
 
