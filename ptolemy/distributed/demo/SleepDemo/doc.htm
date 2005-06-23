@@ -1,0 +1,70 @@
+<HTML>
+
+<HEAD>
+
+</HEAD>
+
+
+<BODY>
+
+<H1>The Distributed-SDF Domain</H1>
+
+This Demo illustrates the usage and advantages of the Distributed-SDF domain.
+<P>
+The model is an standard SDF Model with a Distributed-SDF Director. Any non hierarchical SDF model
+can be simulated in a distributed manner unless the actors have external dependencies. 
+<P>
+<B>(Note that actors that have GUI dependencies might generate errors!)</B>
+<P>
+So try your own SDF models, you just change the standard SDF director by the Distributed-SDF Director.
+<P>
+By configuring the Distributed-SDF Director, we can choose to run the model either
+sequential or parallel (default).
+</P>
+Make sure that the distributed platform is running before you start a distributed simulation. To do
+this we provide a script under:
+<UL>
+<LI><B>Windows:</B> <I>$PTII/ptolemy/distributed/demo/SleepDemo/startplatform.bat</I>
+<LI><B>Cygwin,Unix,Linux:</B> <I>$PTII/ptolemy/distributed/demo/SleepDemo/startplatform</I>
+</UL>
+This script starts the following services:
+<UL>
+<LI>Http daemon
+<LI>Reggie (a registration/lookup service using JINI)
+<LI>5 DistributedSeverRMIGeneric servers (one for each actor in this particular demo.)
+</UL>
+If you run the DOS batch file you will get 6 command windows, the first for the first 2 services and 
+the remaining 5 one for each server. This allows you to follow each server individually.
+<P>
+We provide 3 more scripts under <I>$PTII/ptolemy/distributed/jini</I>:
+<UL>
+<LI><B>startjinilocal(.bat):</B> launches a local http server (daemon) and the reggie service (registration and lookup
+ service).
+<LI><B>startserver(.bat):</B> launches a starts a DistributedServerRMIGeneric server.
+<LI><B>starttservers(.bat):</B> launches a given number of DistributedServerRMIGeneric 
+servers depending on the parameter. (e.g. startservers 5 launches 5 servers).
+</UL>
+In order to illustrate the distributed simulation advantages to users that have only access to a single
+machine this demo uses Sleep actors. For every fire of the Sleep actors, they will stall for 5 seconds.
+In a sequential simulation this means that a 10 seconds stall is performed since the Sleep actors are 
+executed one after the other. In the case of parallel simulation, those two actors can stall at the same
+time, reducing this time to 5 seconds for both.
+<P>
+On the standard output for the model, you can check the execution time for the simulation. Try to run both
+a sequential an a parallel simulation and compare the times.
+<P>
+<B>(Note that the more iterations and the bigger the sleep times, the more advantage you will get from
+using the distributed platform.)</B>
+<P>
+For a more realistic demo, please run the individual servers on different machines.
+<P>
+<B>(Note that if your network blocks broadcast packets you migh need to configure unicast locators.)
+</B>
+<P>
+Look at the documentation of the Distributed-SDF Director in particular and the classes and cofiguration
+files under ptolemy.distributed for further information.
+<P>
+You can also contact the author for further questions on kapokasa@kom.aau.dk.
+</BODY>
+
+</HTML>
