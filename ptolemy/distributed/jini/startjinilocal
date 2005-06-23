@@ -28,5 +28,5 @@
 
 cd $PTII/ptolemy/distributed/jini/ 
 java -Djava.security.policy=./config/jsk-all.policy \
-     -jar $PTII/lib/start.jar \
+     -jar ./jar/start.jar \
      ./config/start-transient-jeri-services.config

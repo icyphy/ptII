@@ -28,4 +28,4 @@ rem HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 rem ENHANCEMENTS, OR MODIFICATIONS.
 
 cd %PTII%/ptolemy/distributed/jini/ 
-java -Xmx256M -Dptolemy.ptII.dir=%PTII% -Djava.security.policy=./config/jsk-all.policy -classpath "%PTII%;%PTII%/lib/jini-core.jar;%PTII%/lib/jini-ext.jar;%PTII%/lib/sun-util.jar;" ptolemy.distributed.rmi.DistributedServerRMIGeneric "../config/generic_server.config"
+java -Xmx256M -Dptolemy.ptII.dir=%PTII% -Djava.security.policy=./config/jsk-all.policy -classpath "%PTII%;./jar/jini-core.jar;./jar/jini-ext.jar;./jar/sun-util.jar;" ptolemy.distributed.rmi.DistributedServerRMIGeneric "../config/generic_server.config"
