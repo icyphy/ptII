@@ -44,5 +44,5 @@ while [ ${count} -le ${limit} ]
 do
 	echo "count: $count"
 	count=`expr ${count} + 1` 
-	startserver &
+	./startserver &
 done
