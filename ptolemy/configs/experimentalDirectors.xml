@@ -24,7 +24,8 @@
       <property name="DDE Director" class="ptolemy.domains.dde.kernel.DDEDirector"/>
       <!-- FairDF is not shipping in 4.0 -->
       <!--property name="FairDF Director" class="ptolemy.domains.fairdf.kernel.FairDFDirector"/-->
-       </group>
+      <property name="Distributed SDF Director" class="ptolemy.distributed.domains.sdf.kernel.DistributedSDFDirector"/>
+      </group>
     ?>
   </configure>
 </entity>
