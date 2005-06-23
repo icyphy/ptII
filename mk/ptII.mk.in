@@ -265,8 +265,8 @@ IMAGEJ_JAR =	@IMAGEJ_JAR@
 # Jini home directory, see http://www.sun.com/jini/
 JINI_DIR =	@JINI_DIR@
 
-# lib/ directory of the Jini distribution
-JINI_LIB =	$(JINI_DIR)/lib
+# The directory of the Jini distribution that contains the jar files 
+JINI_LIB =	$(JINI_DIR)/jar
 
 # Do not include a trailng $(CLASSPATHSEPARATOR) here, or
 # we may run into problems compiling under Solaris8 with JavaScope
