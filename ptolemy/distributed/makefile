@@ -32,7 +32,7 @@
 ME =		ptolemy/distributed
 
 # Order matters here, go into util first, since mutation depends on it
-DIRS = 		actor client common config domains rmi util
+DIRS = 		actor client common config domains jini rmi util demo
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -65,7 +65,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	actor client common config domains jini rmi util #demo
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
