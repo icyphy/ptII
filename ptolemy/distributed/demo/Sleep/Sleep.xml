@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 5.0]">
         </property>
     </property>
-    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="D:\Ptolemy\ptII\ptolemy\distributed\demo\SleepDemo\doc.htm">
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="D:\Ptolemy\ptII\ptolemy\distributed\demo\Sleep\Sleep.htm">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
