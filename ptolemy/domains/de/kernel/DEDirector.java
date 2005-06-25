@@ -892,6 +892,26 @@ public class DEDirector extends Director implements TimedDirector {
             nextEventTime = _eventQueue.get().timeStamp();
         }
 
+        // The following check does not work with modal model. When a 
+        // refinement is reactivated after being inactive for a while, the
+        // events in the event queue are in the past. In this case, we need
+        // to catch up with the current model time by discarding the old
+        // events. 
+        
+        // The following check is commentted but not deleted because it is
+        // useful for debugging a DE model without modal model.
+        // If the model time is larger (later) than the first event
+        // in the queue, then there's a missing firing.
+//        if (modelTime.compareTo(nextEventTime) > 0) {
+//            throw new IllegalActionException(this,
+//                    "Missed a firing. This director is scheduled to fire at "
+//                    + nextEventTime + ", while" + " the outside time is already "
+//                    + modelTime + ".");
+//        }
+        
+        //If the model time is larger (later) than the first event
+        //in the queue, catch up with the current model time by discarding 
+        // the old events.
         while (modelTime.compareTo(nextEventTime) > 0) {
             _eventQueue.take();
 
@@ -900,15 +920,6 @@ public class DEDirector extends Director implements TimedDirector {
             } else {
                 nextEventTime = Time.POSITIVE_INFINITY;
             }
-        }
-
-        // If the model time is larger (later) than the first event
-        // in the queue, then there's a missing firing.
-        if (modelTime.compareTo(nextEventTime) > 0) {
-            throw new IllegalActionException(this,
-                    "Missed a firing. This director is scheduled to fire at "
-                    + nextEventTime + ", while" + " the outside time is already "
-                    + modelTime + ".");
         }
 
         // Now, the model time is either less than or equal to the
@@ -1671,9 +1682,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // An embedded director should process events
                     // that only happen at the current tag.
                     // If the event is in the past, that is an error.
-                    if ((nextEvent.timeStamp().compareTo(getModelTime()) < 0)
-                            || (nextEvent.timeStamp().equals(getModelTime())
-                                    && (nextEvent.microstep() < _microstep))) {
+                    if ((nextEvent.timeStamp().compareTo(getModelTime()) < 0)) {
                         // missed an event
                         throw new IllegalActionException(
                                 "Fire: Missed an event: the next event tag "
@@ -1886,13 +1895,6 @@ public class DEDirector extends Director implements TimedDirector {
                 // and depth. If so, the destination actor should be the same,
                 // and they are handled at the same time. For example, a pure
                 // event and a trigger event that go to the same actor.
-                // TESTIT: An actor has two inputs with different depths. If
-                // this actor requests to be fired again at some timestamp T.
-                // At time T, it receives a trigger sent to the port with a
-                // bigger depth, then the pure event happens before the trigger
-                // event. If the actor receivers a trigger from the port with a
-                // smaller depth at T, then the trigger event and pure event are
-                // dequeued together.
                 if (nextEvent.hasTheSameTagAndDepthAs(lastFoundEvent)) {
                     // Consume the event from the queue and discard it.
                     _eventQueue.take();
