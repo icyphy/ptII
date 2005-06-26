@@ -52,6 +52,7 @@ import net.jini.lookup.ServiceDiscoveryEvent;
 import net.jini.lookup.ServiceDiscoveryListener;
 import net.jini.lookup.ServiceDiscoveryManager;
 import ptolemy.distributed.common.DistributedActor;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 ////ClientServerInteractionManager
@@ -158,16 +159,19 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
         return aliveServices;
     }
 
-    /** Initializes the ClientServerInteractionManager. It loads the configuration
-     *  file and creates a ServiceDiscoveryManager in order to help locate the
-     *  service. It searches for the service specified in the configuration file and
-     *  it filters the dead services.
+    /** Initializes the ClientServerInteractionManager. It loads the
+     *  configuration file and creates a ServiceDiscoveryManager in
+     *  order to help locate the service. It searches for the service
+     *  specified in the configuration file and it filters the dead
+     *  services.
      *
      *  @param configFileName String containing the name and/or path of the
      *  configuration file to be loaded.
+     *  @param IllegalActionException If initialization of the 
+     *  ClientServerInteractionManager fails.
      */
-
-    public void init(String configFileName) {
+    public void init(String configFileName) 
+            throws IllegalActionException { 
         if (VERBOSE) {
             try {
                 System.out.println("Starting ClientServerInteractionManager in: ");
@@ -188,9 +192,10 @@ public class ClientServerInteractionManager implements DiscoveryListener, Servic
                     unicastLocators,  // unicast locators
                     this); // DiscoveryListener
             clientMgr = new ServiceDiscoveryManager(mgr, new LeaseRenewalManager());
-        } catch(Exception e) {
-            e.printStackTrace();
-            System.exit(1);
+        } catch(Exception ex) {
+            throw new RuntimeException("Failed to initialize "
+                    + "ClientServerInteractionManager using \""
+                    + configFileName + "\"", ex);
         }
 
         // This is the class of the service we are looking for...
