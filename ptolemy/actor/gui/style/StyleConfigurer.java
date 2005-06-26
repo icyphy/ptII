@@ -108,8 +108,6 @@ public class StyleConfigurer extends Query implements QueryListener {
             _parameterStyles[5].setName("FileChooser");
             _parameterStyles[6] = new NotEditableLineStyle();
             _parameterStyles[6].setName("Fixed");
-            _parameterStyles[7] = new PasswordStyle();
-            _parameterStyles[7].setName("Password");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
