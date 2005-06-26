@@ -48,8 +48,6 @@ import ptolemy.distributed.client.ClientThread;
 import ptolemy.distributed.client.ThreadSynchronizer;
 import ptolemy.distributed.common.DistributedActor;
 import ptolemy.distributed.util.DistributedUtilities;
-import ptolemy.distributed.domains.sdf.kernel.DistributedSDFReceiver;
-import ptolemy.distributed.domains.sdf.kernel.DistributedSDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -740,8 +738,8 @@ public class DistributedSDFDirector extends SDFDirector {
      *  ClientServerInteractionManager.  The name should be relative
      *  to $PTII and start with a "/".  
      */
-    protected String configFileName =
-    "/ptolemy/distributed/config/ClientServerInteractionManager.config";
+	protected String configFileName =
+	"/ptolemy/distributed/config/ClientServerInteractionManager.config";
 
     /** Encapsulates Jini functionality. */
     protected ClientServerInteractionManager clientServerInteractionManager = null;
