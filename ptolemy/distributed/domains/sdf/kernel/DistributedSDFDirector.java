@@ -57,6 +57,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 ////DistributedSDFDirector
@@ -545,39 +546,55 @@ public class DistributedSDFDirector extends SDFDirector {
      *  Set the required number of services to run the simulation, being the
      *  number of Actors in the model.
      *  This includes:
-     *  - Prepare for discovery
-     *  - Discover a Service Locator
-     *  - Looking up Services
-     *  - Filtering Services
+     *  <menu>
+     *  <li> Prepare for discovery
+     *  <li> Discover a Service Locator
+     *  <li> Looking up Services
+     *  <li> Filtering Services
+     *  </menu>
      *
      *  @see ptolemy.distributed.client.ClientServerInteractionManager
+     *  @exception IllegalActionException If Jini cannot be initialized.
      */
-
-    protected void initializeJini() {
-        if (VERBOSE) {
-            System.out.println("Initializing Jini");
-        }
-        clientServerInteractionManager = new ClientServerInteractionManager(VERBOSE);
-
-        // A linked list containing all the actors.
-        LinkedList allActorList = new LinkedList();
-        // Container of the Director (Composite Actor that holds the model).
-        CompositeEntity container = (CompositeEntity) getContainer();
-        // Populate it.
-        for (Iterator entities = container.deepEntityList().iterator();
-             entities.hasNext();) {
-            ComponentEntity entity = (ComponentEntity)entities.next();
-            // Fill allActorList with the list of things that we can schedule
-            // FIXME: What if other things can be scheduled than actors?
-            if (entity instanceof Actor) {
-                allActorList.addLast(entity);
+    protected void initializeJini() throws IllegalActionException {
+        try {
+            if (VERBOSE) {
+                System.out.println("Initializing Jini");
             }
+            clientServerInteractionManager =
+                new ClientServerInteractionManager(VERBOSE);
+
+            // A linked list containing all the actors.
+            LinkedList allActorList = new LinkedList();
+
+            // Container of the Director (Composite Actor that holds
+            // the model).
+            CompositeEntity container = (CompositeEntity) getContainer();
+            // Populate it.
+            for (Iterator entities = container.deepEntityList().iterator();
+                 entities.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)entities.next();
+                // Fill allActorList with the list of things that we
+                // can schedule.
+                // FIXME: What if other things can be scheduled than actors?
+                if (entity instanceof Actor) {
+                    allActorList.addLast(entity);
+                }
+            }
+            if (VERBOSE) {
+                System.out.println("Required services: "
+                        + allActorList.size());
+            }
+            clientServerInteractionManager.setRequiredServices(
+                    allActorList.size());
+        
+            clientServerInteractionManager.init(
+                    StringUtilities.getProperty("ptolemy.ptII.dir")
+                    + configFileName);
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable, 
+                    "Failed to initialize Jini");
         }
-        if (VERBOSE) {
-            System.out.println("Required services: " + allActorList.size());
-        }
-        clientServerInteractionManager.setRequiredServices(allActorList.size());
-        clientServerInteractionManager.init(configFileName);
     }
 
     /** Perform the dispatching of the schedule in parallel to the distributed
@@ -719,8 +736,12 @@ public class DistributedSDFDirector extends SDFDirector {
     /** It states whether debugging messages should be printed. */
     protected boolean VERBOSE = true;
 
-    /** Jini configuration file to be provided to the ClientServerInteracionManager. */
-    protected String configFileName = "D:/Ptolemy/ptII/ptolemy/distributed/config/ClientServerInteractionManager.config";
+    /** The name of the Jini configuration file to be provided to the 
+     *  ClientServerInteractionManager.  The name should be relative
+     *  to $PTII and start with a "/".  
+     */
+    protected String configFileName =
+    "/ptolemy/distributed/config/ClientServerInteractionManager.config";
 
     /** Encapsulates Jini functionality. */
     protected ClientServerInteractionManager clientServerInteractionManager = null;
