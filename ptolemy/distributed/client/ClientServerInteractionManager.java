@@ -114,9 +114,6 @@ public class ClientServerInteractionManager implements DiscoveryListener,
     public void discovered(DiscoveryEvent evt) {
 
         ServiceRegistrar[] serviceRegistrars = evt.getRegistrars();
-        Class [] classes = new Class[] {DistributedActor.class};
-
-        ServiceTemplate template = new ServiceTemplate(null, classes, null);
 
         for (int n = 0; n < serviceRegistrars.length; n++) {
             try {
@@ -408,7 +405,7 @@ public class ClientServerInteractionManager implements DiscoveryListener,
                         "using LookupDiscovery.ALL_GROUPS.");
             }
 
-        } catch(Exception e) {
+        } catch(ConfigurationException e) {
             KernelException.stackTraceToString(e);
         }
     }

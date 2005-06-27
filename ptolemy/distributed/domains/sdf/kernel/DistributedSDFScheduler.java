@@ -346,7 +346,6 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
         DistributedSDFDirector director =
             (DistributedSDFDirector)getContainer();
-        CompositeActor model = (CompositeActor)director.getContainer();
         if (director instanceof DistributedSDFDirector) {
             Token token =
                 ((DistributedSDFDirector)director).parallelSchedule.getToken();
@@ -782,8 +781,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
         // If there are any actors left when we're done, then report the
         // error.
         if (unscheduledActorList.size() > 0) {
-            String string =
-                new String("Actors remain that cannot be scheduled!\n");
+            String string = "Actors remain that cannot be scheduled!\n";
 
             string += "Scheduled actors:\n";
             List scheduledActorList = new LinkedList();

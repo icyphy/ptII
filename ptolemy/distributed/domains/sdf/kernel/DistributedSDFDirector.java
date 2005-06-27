@@ -569,6 +569,7 @@ public class DistributedSDFDirector extends SDFDirector {
      */
     private void init()
             throws IllegalActionException, NameDuplicationException {
+
         DistributedSDFScheduler scheduler =
             new DistributedSDFScheduler(this, uniqueName("Scheduler"));
 
@@ -767,6 +768,6 @@ public class DistributedSDFDirector extends SDFDirector {
     /** Performs synchronization of the ClientThreads and used to issue
      *  commandMaps.
      */
-    private  ThreadSynchronizer synchronizer = new ThreadSynchronizer();
+    private ThreadSynchronizer synchronizer = new ThreadSynchronizer();
 }
 
