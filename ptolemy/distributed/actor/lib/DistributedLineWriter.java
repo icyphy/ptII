@@ -1,5 +1,5 @@
 /* An actor that writes the value of string tokens to the standard output,
- * one per line.
+   one per line.
 
  @Copyright (c) 2005 The Regents of Aalborg University.
  All rights reserved.
@@ -68,7 +68,7 @@ public class DistributedLineWriter extends Sink {
     /** Read an input string token and write it to the standard output.
      *  If there is no input, do nothing.
      *
-     *  @exception IllegalActionException Not thrown in this class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {

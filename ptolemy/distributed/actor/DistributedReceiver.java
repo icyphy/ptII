@@ -1,5 +1,5 @@
 /* An implementation of the Receiver interface for distributed
- * environments.
+ environments.
 
  @Copyright (c) 2005 The Regents of Aalborg University.
  All rights reserved.
@@ -37,6 +37,7 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.distributed.common.DistributedActor;
+import ptolemy.kernel.util.KernelException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DistributedReceiver
@@ -104,11 +105,12 @@ public class DistributedReceiver extends AbstractReceiver {
             LinkedList ids = (LinkedList) servicesReceiversListMap.get(server);
             HashMap hashMap = new HashMap();
             hashMap.put(token, ids);
-            DistributedActor distributedActor = (DistributedActor) server.service;
+            DistributedActor distributedActor = (DistributedActor)
+                server.service;
             try {
                 distributedActor.put(hashMap);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                KernelException.stackTraceToString(e);
             }
         }
     }
@@ -120,7 +122,8 @@ public class DistributedReceiver extends AbstractReceiver {
      */
     public void setServicesReceiversListMap(HashMap servRecListMap) {
         if (VERBOSE) {
-            System.out.println("> DistributedReceiver.setServicesReceiversListMap()");
+            System.out.println("> DistributedReceiver." +
+                               "setServicesReceiversListMap()");
         }
         servicesReceiversListMap = servRecListMap;
     }
@@ -132,7 +135,7 @@ public class DistributedReceiver extends AbstractReceiver {
      *  those services where the tokens put in the receiver have to be
      *  forwarded to.
      */
-    protected HashMap servicesReceiversListMap = new HashMap();
+    private HashMap servicesReceiversListMap = new HashMap();
 
     /** When true shows debugging messages. */
     private boolean VERBOSE = false;

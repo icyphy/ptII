@@ -33,6 +33,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -41,10 +42,10 @@ import ptolemy.kernel.util.Workspace;
 
 /**
    Extension of TypedIORelation for distributed environments. It overrides the
-   deepReceivers method that returns the connected receivers to this relation. In this
-   case, the relation only contains (is connected to) one DistributedReceiver in charge
-   of forwarding tokens to the distributed services that are connected.
-
+   deepReceivers method that returns the connected receivers to this relation.
+   In this case, the relation only contains (is connected to) one
+   DistributedReceiver in charge of forwarding tokens to the distributed
+   services that are connected.
 
    @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
 
@@ -113,44 +114,48 @@ public class DistributedTypedIORelation extends TypedIORelation {
         return intermediateReceiver;
     }
 
-    /** Specify the servicesReceiversListMap for the internal DistributedReceiver.
+    /** Specify the servicesReceiversListMap for the internal
+     *  DistributedReceiver.
      *
      *  @param servicesReceiversListMap for the internal DistributedReceiver.
      */
     public void setServicesReceiversListMap(HashMap servicesReceiversListMap) {
         if (VERBOSE) {
-            System.out.println("> DistributedTypedIORelation.setRemoteReceivers()");
+            System.out.println("> DistributedTypedIORelation." +
+                               "setRemoteReceivers()");
         }
-        ((DistributedReceiver) intermediateReceiver[0][0]).setServicesReceiversListMap(servicesReceiversListMap);
+        ((DistributedReceiver)
+        intermediateReceiver[0][0])
+        .setServicesReceiversListMap(servicesReceiversListMap);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         private   methods                 ////
 
     /** Creates a DistributedReceiver and assigns it to the intermediateReceiver
      *  data structure. The container of the receiver is set to connectedPort.
      */
-    protected void init() {
+    private void init() {
         DistributedReceiver receiver = new DistributedReceiver();
 
         try {
             receiver.setContainer(connectedPort);
         } catch (IllegalActionException e) {
-            e.printStackTrace();
+            KernelException.stackTraceToString(e);
         }
 
         intermediateReceiver[0][0] = receiver;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private   variables               ////
 
     /** Activates debugging information. */
-    protected boolean VERBOSE = false;
+    private boolean VERBOSE = false;
 
     /** The port that the DistributedReceiver contained is connected to. */
-    protected TypedIOPort connectedPort = new TypedIOPort();
+    private TypedIOPort connectedPort = new TypedIOPort();
 
     /** Bidimensional array of Receiver to be returned by deepReceivers. */
-    protected Receiver[][] intermediateReceiver = new Receiver[1][1];
+    private Receiver[][] intermediateReceiver = new Receiver[1][1];
 }

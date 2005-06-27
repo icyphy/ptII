@@ -1,5 +1,5 @@
 /* A Director governs the execution of a CompositeActor in a Distributed
- * environment.
+ environment.
 
  @Copyright (c) 2005 The Regents of Aalborg University.
  All rights reserved.
@@ -119,7 +119,8 @@ public class DistributedDirector extends Director {
             receiver = new DistributedSDFReceiver(ID);
             idsReceiversMap.put(ID, receiver);
             if (VERBOSE) {
-                //                System.out.println("DistributedDirector.Created receiver: " + ID);
+                System.out.println("DistributedDirector.Created receiver: " +
+                                    ID);
             }
         } else {
             ID = new Integer(lastId);
@@ -135,25 +136,26 @@ public class DistributedDirector extends Director {
      */
     public void setListOfIds(LinkedList list) {
         if (VERBOSE) {
-            //            System.out.println("DistributedDirector.setListOfIds: " + list.toString());
+            System.out.println("DistributedDirector.setListOfIds: " +
+                               list.toString());
         }
         listOfIds = list;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                       private   variables                 ////
 
     /** List of IDs to assign no newly created receivers. */
-    protected LinkedList listOfIds = new LinkedList();
+    private LinkedList listOfIds = new LinkedList();
 
     /** Starting ID number for whenever a receiver is created and the list
      *  of IDs is empty. This should never happen and it is meant for
      *  debugging purposes. */
-    protected int lastId = 1000;
+    private int lastId = 1000;
 
     /** When true depicts debugging messages. */
-    protected boolean VERBOSE = true;
+    private boolean VERBOSE = true;
 
     /** Map from IDs to the receiver containing the ID. */
-    protected HashMap idsReceiversMap = new HashMap();
+    private HashMap idsReceiversMap = new HashMap();
 }

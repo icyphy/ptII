@@ -27,6 +27,8 @@ package ptolemy.distributed.client;
 
 import java.util.HashMap;
 
+import ptolemy.kernel.util.KernelException;
+
 //////////////////////////////////////////////////////////////////////////
 ////ThreadSynchronizer
 /**
@@ -60,6 +62,22 @@ public class ThreadSynchronizer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Waits until readyMap is empty.
+     */
+    public synchronized boolean commandsProcessed() {
+        while (!notReadyMap.isEmpty()) {
+            try {
+                System.out.println("commandsEmpty: waiting for readyMap to " +
+                                   "be empty");
+                wait();
+            } catch (InterruptedException e) {
+                KernelException.stackTraceToString(e);
+            }
+        }
+        System.out.println("commandsProcessed!");
+        return true;
+    }
+
     /** Synchronizes access to the commands by the ClientThreads. They will
      *  block waiting for commands to be issued. Everytime a command is
      *  fetched, it is removed from the commandsMap and all the waiting
@@ -74,7 +92,7 @@ public class ThreadSynchronizer {
                 System.out.println("getCommand waiting for " + key);
                 wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                KernelException.stackTraceToString(e);
             }
         }
         int auxCommand = ((Integer) commandsMap.get(key)).intValue();
@@ -84,9 +102,9 @@ public class ThreadSynchronizer {
     }
 
     /** Issues a new set of commands. All the commands are copied to readyMap
-     *  that keeps track of the completed commands.No new set of commands should
-     *  be issued before the previous set has been completed. When a new set
-     *  of commands is issued all the waiting threads are notified.
+     *  that keeps track of the completed commands.No new set of commands
+     *  should be issued before the previous set has been completed. When a
+     *  new set of commands is issued all the waiting threads are notified.
      *
      *  @param commands HashMap representing the commands.
      */
@@ -97,8 +115,8 @@ public class ThreadSynchronizer {
         notifyAll();
     }
 
-    /** Removes a given key from the readyMap. Wakes up all threads that are waiting
-     *  on this object's monitor.
+    /** Removes a given key from the readyMap. Wakes up all threads that are
+     *  waiting on this object's monitor.
      *
      *  @param key The key to be removed.
      */
@@ -107,26 +125,11 @@ public class ThreadSynchronizer {
         notifyAll();
     }
 
-    /** Waits until readyMap is empty.
-     */
-    public synchronized boolean commandsProcessed() {
-        while (!notReadyMap.isEmpty()) {
-            try {
-                System.out.println("commandsEmpty: waiting for readyMap to be empty");
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println("commandsProcessed!");
-        return true;
-    }
-
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private variables                 ////
 
     /** The Map containing the commands to be executed.*/
-    protected HashMap commandsMap = new HashMap();
+    private HashMap commandsMap = new HashMap();
     /** The Map containing the Threads that are not ready.*/
-    protected HashMap notReadyMap = new HashMap();
+    private HashMap notReadyMap = new HashMap();
 }

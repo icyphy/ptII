@@ -35,6 +35,8 @@ import java.rmi.RMISecurityManager;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import ptolemy.kernel.util.KernelException;
+
 import net.jini.config.Configuration;
 import net.jini.config.ConfigurationException;
 import net.jini.config.ConfigurationProvider;
@@ -72,30 +74,8 @@ import net.jini.lookup.ServiceIDListener;
    @Pt.AcceptedRating Red (cxh)
 */
 
-public class DistributedServerRMIGeneric implements ServiceIDListener, DiscoveryListener {
-
-    /** Create a new instance of this application, passing it the first
-     *  command-line argument (configuration file). It stays alive.
-     *  @param args The command-line arguments.
-     */
-
-    public static void main(String args[]) {
-        if (args.length == 0) {
-            System.err.println("No configuration specified");
-            System.exit(1);
-        }
-        new DistributedServerRMIGeneric(args[0]);
-
-        // stay around forever
-        Object keepAlive = new Object();
-        synchronized(keepAlive) {
-            try {
-                keepAlive.wait();
-            } catch(InterruptedException e) {
-                // do nothing
-            }
-        }
-    }
+public class DistributedServerRMIGeneric implements ServiceIDListener,
+                                                    DiscoveryListener {
 
     /** Construct a DistributedServerRMIGeneric with a configuration file.
      *  It performs the following tasks:
@@ -118,10 +98,13 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
 
         try {
             System.out.println("Starting server in: ");
-            System.out.println("    " + InetAddress.getLocalHost().getHostName() + " (" +
-                    InetAddress.getLocalHost().getHostAddress() + ")");
+            System.out.println("    " +
+                               InetAddress.getLocalHost().getHostName() +
+                               " (" +
+                               InetAddress.getLocalHost().getHostAddress() +
+                               ")");
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            KernelException.stackTraceToString(e);
         }
 
         getConfiguration(configFileName);
@@ -133,8 +116,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
         try {
             proxy = exporter.export(service);
         } catch(java.rmi.server.ExportException e) {
-            e.printStackTrace();
-            System.exit(1);
+            KernelException.stackTraceToString(e);
         }
 
         // install suitable security manager
@@ -161,116 +143,72 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
                         new LeaseRenewalManager());
             }
         } catch(Exception e) {
-            e.printStackTrace();
-            System.exit(1);
+            KernelException.stackTraceToString(e);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         public methods                    ////
 
-    /** Loads various settings from a configuration file.
-     *  This file contains information about:
-     *  - codebase: location of the code.
-     *  - exporter: export to be used.
-     *  - groups: groups to join.
-     *  - unicast locators: Know service locators can be specified here.
-     *  - entries: Other info e.g. name and comments
-     *  - service: The service to be located.
+    /** Called when one or more lookup service registrars has been discarded.
+     *  The method should return quickly; e.g., it should not make remote
+     *  calls.
      *
-     *  @param configFileName The configuration file.
+     *  @param evt The event that describes the discovered registrars.
      */
 
-    private void getConfiguration(String configFileName) {
-        System.out.println("Opening configuration file: " + configFileName);
-        Configuration configuration = null;
+    public void discarded(DiscoveryEvent evt) {
 
-        // We have to get a configuration file or we can't continue
-        try {
-            configuration = ConfigurationProvider.getInstance(new String[] {configFileName});
-        } catch(ConfigurationException e) {
-            System.err.println(e.toString());
-            e.printStackTrace();
+    }
+
+    /** Called when one or more lookup service registrars has been discovered.
+     *  The method should return quickly; e.g., it should not make remote
+     *  calls.
+     *
+     *  @param evt The event that describes the discovered registrars.
+     */
+
+    public void discovered(DiscoveryEvent evt) {
+        ServiceRegistrar[] registrars = evt.getRegistrars();
+
+        for (int n = 0; n < registrars.length; n++) {
+            ServiceRegistrar registrar = registrars[n];
+
+            try {
+                System.out.println("Found a service locator at " +
+                                   registrar.getLocator().getHost());
+            } catch(RemoteException e) {
+                KernelException.stackTraceToString(e);
+            }
+        }
+    }
+
+    /** Create a new instance of this application, passing it the first
+     *  command-line argument (configuration file). It stays alive.
+     *  @param args The command-line arguments.
+     */
+
+    public static void main(String args[]) {
+        if (args.length == 0) {
+            System.err.println("No configuration specified");
             System.exit(1);
         }
+        new DistributedServerRMIGeneric(args[0]);
 
-        // The config file must have an exporter, a service and a codebase
-        try {
-            System.out.print("Reading exporter: ");
-            exporter = (Exporter) configuration.getEntry(SERVER,
-                    "exporter",
-                    Exporter.class);
-            System.out.println(exporter);
-            System.out.print("Reading service: ");
-            service = (Remote) configuration.getEntry(SERVER,
-                    "service",
-                    Remote.class);
-            System.out.println(service);
-            System.out.print("Reading codebase: ");
-            codebase = (String) configuration.getEntry(SERVER,
-                    "codebase",
-                    String.class);
-            System.out.println(codebase);
-        } catch(NoSuchEntryException  e) {
-            System.err.println("No config entry for " + e);
-            System.exit(1);
-        } catch(Exception e) {
-            System.err.println(e.toString());
-            e.printStackTrace();
-            System.exit(2);
-        }
-
-        // These fields can fallback to a default value
-        try {
-            System.out.println("Reading unicastLocators: ");
-            unicastLocators = (LookupLocator[])
-                configuration.getEntry( SERVER,
-                        "unicastLocators",
-                        LookupLocator[].class,
-                        null); // default
-            for (int i=0; i<unicastLocators.length; i++) {
-                System.out.println("    " + unicastLocators[i]);
+        // stay around forever
+        Object keepAlive = new Object();
+        synchronized(keepAlive) {
+            try {
+                keepAlive.wait();
+            } catch(InterruptedException e) {
+                // do nothing
             }
-
-            System.out.println("Reading entries: ");
-            entries = (Entry[])
-                configuration.getEntry( SERVER,
-                        "entries",
-                        Entry[].class,
-                        null); // default
-            for (int i=0; i<entries.length; i++) {
-                System.out.println("    " + entries[i]);
-            }
-            System.out.print("Reading serviceIdFile: ");
-            serviceIdFile = (File)
-                configuration.getEntry( SERVER,
-                        "serviceIdFile",
-                        File.class,
-                        null); // default
-            System.out.println(serviceIdFile);
-            System.out.println("Reading groups: ");
-            groups = (String[]) configuration.getEntry( SERVER,
-                    "groups",
-                    String[].class,
-                    null); // default
-            if (groups.length != 0) {
-                for (int i=0; i<groups.length; i++) {
-                    System.out.println("    " + groups[i]);
-                }
-            } else {
-                groups = LookupDiscovery.ALL_GROUPS;
-                System.out.println("    No groups specified, using LookupDiscovery.ALL_GROUPS.");
-            }
-
-        } catch(Exception e) {
-            System.err.println(e.toString());
-            e.printStackTrace();
-            System.exit(2);
         }
     }
 
     /** Required by the ServiceIDListener interface.
-     *  Called when the JoinManager gets a valid ServiceID from a lookup service.
+     *  Called when the JoinManager gets a valid ServiceID from a lookup
+     *  service.
      *
      *  @param serviceID the service ID assigned by the lookup service.
      */
@@ -305,7 +243,8 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
      */
 
     public void tryRetrieveServiceId(File serviceIdFile) {
-        System.out.print("Trying to retrieve ServiceID from: " + serviceIdFile.getAbsolutePath() + "... ");
+        System.out.print("Trying to retrieve ServiceID from: " +
+                         serviceIdFile.getAbsolutePath() + "... ");
         DataInputStream din = null;
         try {
             din = new DataInputStream(new FileInputStream(serviceIdFile));
@@ -317,37 +256,104 @@ public class DistributedServerRMIGeneric implements ServiceIDListener, Discovery
         }
     }
 
-    /** Called when one or more lookup service registrars has been discovered.
-     *  The method should return quickly; e.g., it should not make remote calls.
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Loads various settings from a configuration file.
+     *  This file contains information about:
+     *  - codebase: location of the code.
+     *  - exporter: export to be used.
+     *  - groups: groups to join.
+     *  - unicast locators: Know service locators can be specified here.
+     *  - entries: Other info e.g. name and comments
+     *  - service: The service to be located.
      *
-     *  @param evt The event that describes the discovered registrars.
+     *  @param configFileName The configuration file.
      */
 
-    public void discovered(DiscoveryEvent evt) {
-        ServiceRegistrar[] registrars = evt.getRegistrars();
+    private void getConfiguration(String configFileName) {
+        System.out.println("Opening configuration file: " + configFileName);
+        Configuration configuration = null;
 
-        for (int n = 0; n < registrars.length; n++) {
-            ServiceRegistrar registrar = registrars[n];
-
-            try {
-                System.out.println("Found a service locator at " + registrar.getLocator().getHost());
-            } catch(RemoteException e) {
-                e.printStackTrace();
-                continue;
-            }
+        // We have to get a configuration file or we can't continue
+        try {
+            configuration = ConfigurationProvider.getInstance(
+                                new String[] {configFileName});
+        } catch(ConfigurationException e) {
+            System.err.println(e.toString());
+            KernelException.stackTraceToString(e);
         }
 
+        // The config file must have an exporter, a service and a codebase
+        try {
+            System.out.print("Reading exporter: ");
+            exporter = (Exporter) configuration.getEntry(SERVER,
+                    "exporter",
+                    Exporter.class);
+            System.out.println(exporter);
+            System.out.print("Reading service: ");
+            service = (Remote) configuration.getEntry(SERVER,
+                    "service",
+                    Remote.class);
+            System.out.println(service);
+            System.out.print("Reading codebase: ");
+            codebase = (String) configuration.getEntry(SERVER,
+                    "codebase",
+                    String.class);
+            System.out.println(codebase);
+        } catch(NoSuchEntryException  e) {
+            System.err.println("No config entry for " + e);
+        } catch(Exception e) {
+            System.err.println(e.toString());
+            KernelException.stackTraceToString(e);
+        }
 
-    }
+        // These fields can fallback to a default value
+        try {
+            System.out.println("Reading unicastLocators: ");
+            unicastLocators = (LookupLocator[])
+                configuration.getEntry( SERVER,
+                        "unicastLocators",
+                        LookupLocator[].class,
+                        null); // default
+            for (int i = 0; i < unicastLocators.length; i++) {
+                System.out.println("    " + unicastLocators[i]);
+            }
 
-    /** Called when one or more lookup service registrars has been discarded.
-     *  The method should return quickly; e.g., it should not make remote calls.
-     *
-     *  @param evt The event that describes the discovered registrars.
-     */
+            System.out.println("Reading entries: ");
+            entries = (Entry[])
+                configuration.getEntry( SERVER,
+                        "entries",
+                        Entry[].class,
+                        null); // default
+            for (int i = 0; i < entries.length; i++) {
+                System.out.println("    " + entries[i]);
+            }
+            System.out.print("Reading serviceIdFile: ");
+            serviceIdFile = (File)
+                configuration.getEntry( SERVER,
+                        "serviceIdFile",
+                        File.class,
+                        null); // default
+            System.out.println(serviceIdFile);
+            System.out.println("Reading groups: ");
+            groups = (String[]) configuration.getEntry( SERVER,
+                    "groups",
+                    String[].class,
+                    null); // default
+            if (groups.length != 0) {
+                for (int i = 0; i < groups.length; i++) {
+                    System.out.println("    " + groups[i]);
+                }
+            } else {
+                groups = LookupDiscovery.ALL_GROUPS;
+                System.out.println("    No groups specified, using" +
+                                   " LookupDiscovery.ALL_GROUPS.");
+            }
 
-    public void discarded(DiscoveryEvent evt) {
-
+        } catch(Exception e) {
+            KernelException.stackTraceToString(e);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
 /* Client thread created at the client side to allow issuing of parallel
- * commands to the servers.
+ commands to the servers.
 
  @Copyright (c) 2005 The Regents of Aalborg University.
  All rights reserved.
@@ -30,16 +30,17 @@ package ptolemy.distributed.client;
 import java.rmi.RemoteException;
 
 import ptolemy.distributed.common.DistributedActor;
+import ptolemy.kernel.util.KernelException;
 import net.jini.core.lookup.ServiceItem;
 
 //////////////////////////////////////////////////////////////////////////
 ////ClientThread
 /**
-   Thread that manages the interaction with the remote service. It is required to
-   allow commands to be issued to the remote services in parallel. This
-   threads prevent the main thread of execution to be blocked by the remote calls
-   to the remote services. A synchronization mechanism to issue and access
-   commands is provided by ThreadSynchronizer.
+   Thread that manages the interaction with the remote service. It is required
+   to allow commands to be issued to the remote services in parallel. This
+   threads prevent the main thread of execution to be blocked by the remote
+   calls    to the remote services. A synchronization mechanism to issue and
+   access commands is provided by ThreadSynchronizer.
 
    @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
 
@@ -51,11 +52,12 @@ import net.jini.core.lookup.ServiceItem;
 */
 public class ClientThread extends Thread {
 
-    /** Construct a ClientThread with a given ThreadSynchronizer and a given service.
+    /** Construct a ClientThread with a given ThreadSynchronizer and a given
+     *  service.
      *
      *  @param synchr A ThreadSynchronizer.
-     *  @param serv The service correponding to the remote service that the Client
-     *  Thread represents.
+     *  @param serv The service correponding to the remote service that the
+     *  Client Thread represents.
      */
     public ClientThread(ThreadSynchronizer synchr, ServiceItem serv) {
         super();
@@ -68,18 +70,19 @@ public class ClientThread extends Thread {
 
     /** Return the service that this ClientThread controls.
      *
-     *  @return A ServiceItem corresponding to the service this Client Thread is managing
-     *  remotely.
+     *  @return A ServiceItem corresponding to the service this Client Thread
+     *  is managing remotely.
      */
     public ServiceItem getService() {
         return service;
     }
 
 
-    /** Runs the thread. The thread blocks until it gets a command. When a command is
-     *  fetched, the service performs remotely the method corresponding to the given
-     *  command. Once the task is performed, the thread is set to ready in the
-     *  synchronizer. This is performed until de command is exit.
+    /** Runs the thread. The thread blocks until it gets a command. When a
+     *  command is fetched, the service performs remotely the method
+     *  corresponding to the given command. Once the task is performed, the
+     *  thread is set to ready in the synchronizer. This is performed until
+     *  de command is exit.
      */
 
     public void run() {
@@ -97,7 +100,7 @@ public class ClientThread extends Thread {
                 case ITERATE: distributedActor.iterate(iterationCount); break;
                 }
             } catch (RemoteException e) {
-                e.printStackTrace();
+                KernelException.stackTraceToString(e);
             }
             synchronizer.setReady(this);
         }
@@ -117,18 +120,6 @@ public class ClientThread extends Thread {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The ThreadSynchronizer that synchronizes access to the commands.*/
-    protected ThreadSynchronizer synchronizer;
-
-    /** The ServiceItem managed by this thread. */
-    protected ServiceItem service;
-
-    /** The number of times the iteration command is to be performed. */
-    protected int iterationCount = 0;
-
-    ///////////////////////////////////////////////////////////////////
     ////                       constants                           ////
 
     /** Exit command. */
@@ -142,4 +133,16 @@ public class ClientThread extends Thread {
 
     /** Iterate command. */
     public static final int ITERATE = 4;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables               ////
+
+    /** The ThreadSynchronizer that synchronizes access to the commands.*/
+    private ThreadSynchronizer synchronizer;
+
+    /** The ServiceItem managed by this thread. */
+    private ServiceItem service;
+
+    /** The number of times the iteration command is to be performed. */
+    private int iterationCount = 0;
 }

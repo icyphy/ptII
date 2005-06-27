@@ -107,12 +107,12 @@ public class DistributedSDFReceiver extends SDFReceiver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         private   methods                 ////
 
     /** Initialize the receiver with an ID of value lastID. lastID is
      *  increased by 1.
      */
-    protected void init() {
+    private void init() {
         ID = lastID;
         lastID = new Integer(lastID.intValue() + 1);
         if (VERBOSE) {
@@ -121,13 +121,10 @@ public class DistributedSDFReceiver extends SDFReceiver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private variables                 ////
 
     /** Enables debugging messages. */
-    protected boolean VERBOSE = false;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    private boolean VERBOSE = false;
 
     /** Static member that contains the next ID value to be assigned to
      * the next receiver constructed. */

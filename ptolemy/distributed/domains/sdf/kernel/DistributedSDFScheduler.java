@@ -68,28 +68,29 @@ From the topological sort a schedule is created containing subschedules that
 contain the actors in the different levels, indicating they can be executed
 in parallel.
 I.e.:
-<table border="0" cellpadding="0" cellspacing="0" width="300" align="center">
+<table border = "0" cellpadding = "0" cellspacing = "0" width = "300"
+ align = "center">
 <tr>
-<td width="20%" align="center">&nbsp;</td>
-<td width="20%" align="center">&nbsp;</td>
-<td width="20%" align="center">A</td>
-<td width="20%" align="center">&nbsp;</td>
-<td width="20%" align="center">&nbsp;</td>
+<td width = "20%" align = "center">&nbsp;</td>
+<td width = "20%" align = "center">&nbsp;</td>
+<td width = "20%" align = "center">A</td>
+<td width = "20%" align = "center">&nbsp;</td>
+<td width = "20%" align = "center">&nbsp;</td>
 </tr>
 <tr>
-<td width="20%" align="center">&nbsp;</td>
-<td width="20%" align="center">B</td>
-<td width="20%" align="center">&nbsp;</td>
-<td width="20%" align="center">C</td>
-<td width="20%" align="center">&nbsp;</td>
+<td width = "20%" align = "center">&nbsp;</td>
+<td width = "20%" align = "center">B</td>
+<td width = "20%" align = "center">&nbsp;</td>
+<td width = "20%" align = "center">C</td>
+<td width = "20%" align = "center">&nbsp;</td>
 </tr>
 <tr>
-<td width="20%" align="center">D</td>
-<td width="20%" align="center">&nbsp;</td>
-<td width="20%" align="center">E&nbsp;&nbsp;&nbsp;&nbsp;
+<td width = "20%" align = "center">D</td>
+<td width = "20%" align = "center">&nbsp;</td>
+<td width = "20%" align = "center">E&nbsp;&nbsp;&nbsp;&nbsp;
 F</td>
-<td width="20%" align="center">&nbsp;</td>
-<td width="20%" align="center">G</td>
+<td width = "20%" align = "center">&nbsp;</td>
+<td width = "20%" align = "center">G</td>
 </tr>
 </table>
 
@@ -160,44 +161,6 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Return the scheduling sequence. In case the parameter
-     *  parallelSchedule is true, it returns a parallel Schedule,
-     *  otherwise it calls the parent's _getSchedule() method returning
-     *  the given result.
-     *
-     *  @return A schedule of the deeply contained opaque entities
-     *  in the firing order, sequential or parallel depending of the
-     *  value of the parameter parallelSchedule.
-     *  @exception NotSchedulableException If the rates specified for
-     *  the model imply that the model is not statically schedulable.
-     *  @exception IllegalActionException If the rate parameters
-     *  of the model are not correct, or the computed rates for
-     *  external ports are not correct.
-     */
-
-    protected Schedule _getSchedule()
-            throws NotSchedulableException, IllegalActionException {
-
-        boolean parallelSchedule = false;
-        Schedule schedule = null;
-
-        DistributedSDFDirector director =
-            (DistributedSDFDirector)getContainer();
-        CompositeActor model = (CompositeActor)director.getContainer();
-        if (director instanceof DistributedSDFDirector) {
-            Token token =
-                ((DistributedSDFDirector)director).parallelSchedule.getToken();
-            parallelSchedule = ((BooleanToken)token).booleanValue();
-        }
-
-        if (parallelSchedule)
-            schedule = _getParallelSchedule();
-        else
-            schedule = super._getSchedule();
-
-        return schedule;
-    }
 
     /** Return a parallelSchedule result of performing a topological
      *  sort of the graph that can be constructed from the model's data
@@ -331,8 +294,9 @@ public class DistributedSDFScheduler extends SDFScheduler {
          **************************************************/
         // Schedule all the actors using the calculated firings.
         Schedule result =
-            _scheduleInParallelConnectedActors(minimumBufferSize, externalRates,
-                    liveActorList, container, allActorList);
+            _scheduleInParallelConnectedActors(minimumBufferSize,
+                    externalRates, liveActorList, container,
+                    allActorList);
         /**************************************************
          * < NEW!                                         *
          **************************************************/
@@ -359,6 +323,44 @@ public class DistributedSDFScheduler extends SDFScheduler {
         return result;
     }
 
+    /** Return the scheduling sequence. In case the parameter
+     *  parallelSchedule is true, it returns a parallel Schedule,
+     *  otherwise it calls the parent's _getSchedule() method returning
+     *  the given result.
+     *
+     *  @return A schedule of the deeply contained opaque entities
+     *  in the firing order, sequential or parallel depending of the
+     *  value of the parameter parallelSchedule.
+     *  @exception NotSchedulableException If the rates specified for
+     *  the model imply that the model is not statically schedulable.
+     *  @exception IllegalActionException If the rate parameters
+     *  of the model are not correct, or the computed rates for
+     *  external ports are not correct.
+     */
+
+    protected Schedule _getSchedule()
+            throws NotSchedulableException, IllegalActionException {
+
+        boolean parallelSchedule = false;
+        Schedule schedule = null;
+
+        DistributedSDFDirector director =
+            (DistributedSDFDirector)getContainer();
+        CompositeActor model = (CompositeActor)director.getContainer();
+        if (director instanceof DistributedSDFDirector) {
+            Token token =
+                ((DistributedSDFDirector)director).parallelSchedule.getToken();
+            parallelSchedule = ((BooleanToken)token).booleanValue();
+        }
+
+        if (parallelSchedule)
+            schedule = _getParallelSchedule();
+        else
+            schedule = super._getSchedule();
+
+        return schedule;
+    }
+
     /** Duplicate with modifications of the _scheduleConnectedActors
      *  method.
      *  Modifications are marked with NEW!.
@@ -383,7 +385,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *  scheduled.
      *
      */
-    protected Schedule _scheduleInParallelConnectedActors(Map minimumBufferSize,
+    protected Schedule _scheduleInParallelConnectedActors(
+            Map minimumBufferSize,
             Map externalRates, LinkedList actorList,
             CompositeActor container, LinkedList allActorList)
             throws NotSchedulableException {
@@ -547,7 +550,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
                 }
             }
 
-            //            System.out.println("readyToScheduleActorList:" + readyToScheduleActorList.toString());
+            // System.out.println("readyToScheduleActorList:" +
+            // readyToScheduleActorList.toString());
             /**************************************************
              * > NEW!                                         *
              **************************************************/
@@ -565,7 +569,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
              * > NEW!                                         *
              **************************************************/
 
-            //            System.out.println("parallelLevel:" + parallelLevel.toString());
+            // System.out.println("parallelLevel:" + parallelLevel.toString());
 
             // While we have actors left, pick one that is ready and fire it.
             while (readyToScheduleActorList.size() > 0) {
@@ -689,7 +693,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
                      * < NEW!                                         *
                      **************************************************/
                 }
-                //                System.out.println(parallelLevel.get(parallelLevel.size()-1));
+                // System.out.println(parallelLevel.get(parallelLevel.
+                // size()-1));
 
                 /**************************************************
                  * > NEW!                                         *
@@ -927,14 +932,14 @@ public class DistributedSDFScheduler extends SDFScheduler {
                         // the list when the
                         // actor is actually scheduled.
                         if ((inputCount < 1) && (firingsRemaining > 0)) {
-                            /**************************************************
-                             * > NEW!                                         *
-                             **************************************************/
-                            // NEW! Addlast in order to create a topological sort.
+                          /**************************************************
+                           * > NEW!                                         *
+                           **************************************************/
+                         // NEW! Addlast in order to create a topological sort.
                             readyToScheduleActorList.addLast(connectedActor);
-                            /**************************************************
-                             * < NEW!                                         *
-                             **************************************************/
+                          /**************************************************
+                           * < NEW!                                         *
+                           **************************************************/
                         }
                     }
                 }

@@ -50,36 +50,17 @@ public class DistributedUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Converts a bidimensional array of receivers into a bidimensional array
-     *  containing only the integer IDs of the receivers.
-     *
-     *  @param receivers A bidimensional array of receivers.
-     *  @return Integer[][] A bidimensional array of receivers IDs.
-     */
-
-    public static Integer[][] convertReceiversToIntegers(Receiver[][] receivers) {
-        Integer[][] receiversIntegers = new Integer[receivers.length][];
-        for (int i = 0; i < receivers.length; i++) {
-            receiversIntegers[i] = new Integer[receivers[i].length];
-            for (int j = 0; j < receivers[i].length; j++) {
-                if (receivers[i][j] != null) {
-                    receiversIntegers[i][j] = ((DistributedSDFReceiver)receivers[i][j]).getID();
-                } else {
-                    receiversIntegers[i][j] = null;
-                }
-            }
-        }
-        return receiversIntegers;
-    }
-
-    /** Converts a bidimensional array of Integer into a linked list of Integers.
+    /** Converts a bidimensional array of Integer into a linked list of
+     *  Integers.
      *
      *  @param receiversIntegers A bidimensional array of Integers.
      *  @return LinkedList A list.
      */
 
-    public static LinkedList convertIntegersToList(Integer[][] receiversIntegers) {
-        //        System.out.println("convertIntegersToList: \n" + integersArrayToString(receiversIntegers));
+    public static LinkedList convertIntegersToList(
+                                    Integer[][] receiversIntegers) {
+        // System.out.println("convertIntegersToList: \n" +
+        // integersArrayToString(receiversIntegers));
         LinkedList list = new LinkedList();
         for (int i = 0; i < receiversIntegers.length; i++) {
             for (int j = 0; j < receiversIntegers[i].length; j++) {
@@ -91,27 +72,32 @@ public class DistributedUtilities {
         return list;
     }
 
-    /** Converts a bidimensional array of Receivers into a String for printing purposes.
+    /** Converts a bidimensional array of receivers into a bidimensional array
+     *  containing only the integer IDs of the receivers.
      *
-     *  @param array A bidimensional array of Receiver.
-     *  @return String A string.
+     *  @param receivers A bidimensional array of receivers.
+     *  @return Integer[][] A bidimensional array of receivers IDs.
      */
 
-    public static String receiversArrayToString(Receiver[][] array) {
-        if (array == null) {
-            return "null";
-        }
-        String print = "";
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                print += ((DistributedSDFReceiver)array[i][j]).getID() + " ";
+    public static Integer[][] convertReceiversToIntegers(
+                                                Receiver[][] receivers) {
+        Integer[][] receiversIntegers = new Integer[receivers.length][];
+        for (int i = 0; i < receivers.length; i++) {
+            receiversIntegers[i] = new Integer[receivers[i].length];
+            for (int j = 0; j < receivers[i].length; j++) {
+                if (receivers[i][j] != null) {
+                    receiversIntegers[i][j] = ((DistributedSDFReceiver)
+                            receivers[i][j]).getID();
+                } else {
+                    receiversIntegers[i][j] = null;
+                }
             }
-            print += "\n";
         }
-        return print;
+        return receiversIntegers;
     }
 
-    /** Converts a bidimensional array of Integer a String for printing purposes.
+    /** Converts a bidimensional array of Integer a String for printing
+     *  purposes.
      *
      *  @param array A bidimensional array of Integer.
      *  @return String A string.
@@ -131,4 +117,24 @@ public class DistributedUtilities {
         return print;
     }
 
+    /** Converts a bidimensional array of Receivers into a String for printing
+     *  purposes.
+     *
+     *  @param array A bidimensional array of Receiver.
+     *  @return String A string.
+     */
+
+    public static String receiversArrayToString(Receiver[][] array) {
+        if (array == null) {
+            return "null";
+        }
+        String print = "";
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                print += ((DistributedSDFReceiver)array[i][j]).getID() + " ";
+            }
+            print += "\n";
+        }
+        return print;
+    }
 }

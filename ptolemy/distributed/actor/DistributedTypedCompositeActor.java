@@ -89,7 +89,8 @@ public class DistributedTypedCompositeActor extends TypedCompositeActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public DistributedTypedCompositeActor(CompositeEntity container, String name)
+    public DistributedTypedCompositeActor(CompositeEntity container,
+                                          String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -109,7 +110,8 @@ public class DistributedTypedCompositeActor extends TypedCompositeActor {
             throws NameDuplicationException {
         try {
             workspace().getWriteAccess();
-            DistributedTypedIORelation relation = new DistributedTypedIORelation(this, name);
+            DistributedTypedIORelation relation = new
+                DistributedTypedIORelation(this, name);
             return relation;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime

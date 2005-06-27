@@ -35,7 +35,8 @@ import ptolemy.distributed.common.DistributedActor;
 
 /**
    A DistributedActor is a distributed executable entity that is accessed
-   via RMI. This interface basically extends DistributedActor and java.rmi.Remote.
+   via RMI. This interface basically extends DistributedActor and
+   java.rmi.Remote.
    The Remote interface serves to identify interfaces whose methods may be
    invoked from a non-local virtual machine.
 

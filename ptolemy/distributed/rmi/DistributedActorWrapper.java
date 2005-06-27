@@ -44,6 +44,7 @@ import ptolemy.distributed.actor.DistributedTypedIORelation;
 import ptolemy.distributed.util.DistributedUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
@@ -53,10 +54,10 @@ import ptolemy.moml.MoMLParser;
 
 /**
    The DistributedActorWrapper implements the RemoteDistributedActor interface.
-   It is a remote distributed actor and wraps actors inside, making them believe
-   they are executed locally while they are distributed. It receives rmi calls.
-   The calls to methods that exist in the actor interface are forwarded to the
-   wrapped actor.
+   It is a remote distributed actor and wraps actors inside, making them
+   believe they are executed locally while they are distributed. It receives
+   rmi calls. The calls to methods that exist in the actor interface are
+   forwarded to the wrapped actor.
 
    @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
    @version $Id$
@@ -78,9 +79,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
 
     /** Fire the wrapped actor.
      *
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public void fire() throws java.rmi.RemoteException {
@@ -90,33 +90,32 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         try {
             actor.fire();
         } catch (IllegalActionException e) {
-            e.printStackTrace();
+            KernelException.stackTraceToString(e);
             throw new RemoteException(e.toString());
         }
     }
 
     /** Return the Internet Address where the wrapper is executing.
      *
-     *  @return InetAdress the Internet Address where the distributed actor is being executed.
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @return InetAdress the Internet Address where the distributed actor is
+     *  being executed.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public InetAddress getAddress() throws java.rmi.RemoteException {
         try {
             return InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            KernelException.stackTraceToString(e);
         }
         return null;
     }
 
     /** Begin execution of the wrapped actor.
      *
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public void initialize() throws java.rmi.RemoteException {
@@ -126,7 +125,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         try {
             actor.initialize();
         } catch (IllegalActionException e) {
-            e.printStackTrace();
+            KernelException.stackTraceToString(e);
             throw new RemoteException(e.toString());
         }
     }
@@ -135,9 +134,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *
      *  @param count The number of iterations to perform.
      *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public int iterate(int count) throws java.rmi.RemoteException {
@@ -147,7 +145,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         try {
             return actor.iterate(count);
         } catch (IllegalActionException e) {
-            e.printStackTrace();
+            KernelException.stackTraceToString(e);
             throw new RemoteException(e.toString());
         }
     }
@@ -157,9 +155,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *
      *  @param moml The moml code representing the actor to be loaded.
      *  @return True if the loading was successful.
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public boolean loadMoML(String moml) throws java.rmi.RemoteException {
@@ -173,10 +170,11 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         String processedMoML = processMoML(moml);
 
         try {
-            compositeActor = (DistributedTypedCompositeActor) momlParser.parse(processedMoML);
+            compositeActor = (DistributedTypedCompositeActor)
+                                momlParser.parse(processedMoML);
             actor = (Actor) compositeActor.entityList().get(0);
         } catch (Exception e) {
-            e.printStackTrace();
+            KernelException.stackTraceToString(e);
             throw new RemoteException("Remote Exception: " + e.getMessage());
         }
 
@@ -194,9 +192,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  invocation of fire() in that iteration.
      *
      *  @return True if the execution can continue.
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public boolean postfire() throws java.rmi.RemoteException {
@@ -204,7 +201,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         try {
             return actor.postfire();
         } catch (IllegalActionException e) {
-            e.printStackTrace();
+            KernelException.stackTraceToString(e);
             throw new RemoteException(e.toString());
         }
     }
@@ -214,9 +211,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  wrapped actor.
      *
      *  @return True if the iteration can proceed.
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public boolean prefire() throws java.rmi.RemoteException {
@@ -224,7 +220,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         try {
             return actor.prefire();
         } catch (IllegalActionException e) {
-            e.printStackTrace();
+            KernelException.stackTraceToString(e);
             throw new RemoteException(e.toString());
         }
     }
@@ -233,9 +229,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  of a model, before any of these other methods are invoked.
      *  The call is forwarded to the wrapped actor.
      *
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public void preinitialize() throws java.rmi.RemoteException {
@@ -243,18 +238,17 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         try {
             actor.preinitialize();
         } catch (IllegalActionException e) {
-            e.printStackTrace();
+            KernelException.stackTraceToString(e);
             throw new RemoteException(e.toString());
         }
     }
 
-    /** Puts copies of the token received into the Receivers included in the IDlist.
-     *  The data map contains a token and a list of IDs.
+    /** Puts copies of the token received into the Receivers included in the
+     *  IDlist. The data map contains a token and a list of IDs.
      *
      *  @param data contains a token and a list of IDs.
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public void put(HashMap data) throws RemoteException {
@@ -262,7 +256,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         Token token = (Token) data.keySet().iterator().next();
         LinkedList idsList = (LinkedList) data.get(token);
         if (VERBOSE) {
-            System.out.println("Received data. Token: " + token.toString() + " ids: " + idsList);
+            System.out.println("Received data. Token: " + token.toString() +
+                                " ids: " + idsList);
         }
         for (Iterator ids = idsList.iterator(); ids.hasNext();) {
             Integer id = (Integer) ids.next();
@@ -279,36 +274,40 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  of them a mapping depending on the type of port.
      *  - If the port is an input: a list of receiver IDs that are
      *  contained by the port.
-     *  i.e.: inputport,(IDa,...,IDn)
+     *  i.e.: inputport, (IDa, ..., IDn)
      *  - If it is an output port: a mapping of services to lists of
      *  receivers.
-     *  i.e.: outputport,(servicea,(IDi,...,IDk),
+     *  i.e.: outputport, (servicea, (IDi, ..., IDk),
      *                         ...
-     *                    servicen,(IDn,...,IDs))
+     *                    servicen, (IDn, ..., IDs))
      *
      *  For the input ports, a new relation of the type is created of the
      *  type DistributedTypepIORelation for every ID that is received. This
      *  is to force a Receiver to be created whenever createReceivers in the
      *  corresponding port is called.
      *
-     *  For the output ports, one only relation of the type DistributedTypepIORelation
-     *  is created and the mapping of services to IDs is set into the relation. The
-     *  relation sets that same structure in its internal DistributedReceiver that is
-     *  in charge of token forwarding whenever send is called on the port.
+     *  For the output ports, one only relation of the type
+     *  DistributedTypepIORelation is created and the mapping of services to
+     *  IDs is set into the relation. The relation sets that same structure in
+     *  its internal DistributedReceiver that is in charge of token forwarding
+     *  whenever send is called on the port.
      *
-     *  @param connections a mapping of ports, services and receiver IDs (see before).
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @param connections a mapping of ports, services and receiver IDs (see
+     *  before).
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
-    public void setConnections(HashMap connections) throws java.rmi.RemoteException {
+    public void setConnections(HashMap connections) throws
+                                                java.rmi.RemoteException {
         if (VERBOSE) {
-            System.out.println("Received Connections: " + connections.toString());
+            System.out.println("Received Connections: " +
+                                connections.toString());
         }
 
         int number = 0;
-        DistributedDirector director = (DistributedDirector) compositeActor.getDirector();
+        DistributedDirector director = (DistributedDirector)
+                                    compositeActor.getDirector();
 
         for (Iterator portsIterator = connections.keySet().iterator();
              portsIterator.hasNext();) {
@@ -318,67 +317,78 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
             DistributedTypedIORelation relation = null;
 
             if (port.isInput()) {
-                Integer[][] integerReceivers = (Integer[][]) connections.get(portName);
+                Integer[][] integerReceivers =
+                            (Integer[][]) connections.get(portName);
                 if (VERBOSE) {
-                    System.out.println("Receivers received for " + portName + "\n" +
-                            DistributedUtilities.integersArrayToString(integerReceivers));
+                    System.out.println("Receivers received for " +
+                            portName + "\n" +
+                            DistributedUtilities.
+                            integersArrayToString(integerReceivers));
                 }
                 for (int i = 0; i < integerReceivers.length; i++) {
 
                     try {
-                        relation = (DistributedTypedIORelation) compositeActor.newRelation(portName + number);
+                        relation = (DistributedTypedIORelation)
+                            compositeActor.newRelation(portName + number);
                         number += 1;
                         if (VERBOSE) {
-                            //                            System.out.println("> for Port : " + portName + " created Relation: " + relation.getName());
+                            System.out.println("> for Port : " + portName +
+                                               " created Relation: " +
+                                               relation.getName());
                         }
                         port.link(relation);
                     } catch (NameDuplicationException e) {
-                        e.printStackTrace();
+                        KernelException.stackTraceToString(e);
                     } catch (IllegalActionException e) {
-                        e.printStackTrace();
+                        KernelException.stackTraceToString(e);
                     }
                 }
-                director.setListOfIds(DistributedUtilities.convertIntegersToList(integerReceivers));
+                director.setListOfIds(DistributedUtilities.
+                                convertIntegersToList(integerReceivers));
                 try {
                     port.createReceivers();
                 } catch (IllegalActionException e) {
-                    e.printStackTrace();
+                    KernelException.stackTraceToString(e);
                 }
                 if (VERBOSE) {
-                    System.out.println("Receivers created for " + portName + "\n" +
-                            DistributedUtilities.receiversArrayToString(port.getReceivers()));
+                    System.out.println("Receivers created for " + portName +
+                            "\n" +
+                            DistributedUtilities.
+                                receiversArrayToString(port.getReceivers()));
                 }
-
-
             }
 
             if (port.isOutput()) {
                 try {
-                    relation = (DistributedTypedIORelation) compositeActor.newRelation(portName);
+                    relation = (DistributedTypedIORelation)
+                        compositeActor.newRelation(portName);
                     if (VERBOSE) {
-                        //                        System.out.println("> for Port : " + portName + " created Relation: " + relation.getName());
+                        System.out.println("> for Port : " + portName +
+                                           " created Relation: " +
+                                           relation.getName());
                     }
                     port.link(relation);
                 } catch (NameDuplicationException e) {
-                    e.printStackTrace();
+                    KernelException.stackTraceToString(e);
                 } catch (IllegalActionException e) {
-                    e.printStackTrace();
+                    KernelException.stackTraceToString(e);
                 }
-                relation.setServicesReceiversListMap((HashMap) connections.get(portName));
+                relation.setServicesReceiversListMap((HashMap)
+                                            connections.get(portName));
             }
         }
         idsReceiversMap = director.getIdsReceiversMap();
         if (VERBOSE) {
-            System.out.println("IDs Receivers Map: " + idsReceiversMap.keySet().toString());
+            System.out.println("IDs Receivers Map: " +
+                               idsReceiversMap.keySet().toString());
         }
     }
 
     /** Set the port types of the wrapped actor.
      *
      *  @param portTypes is a Map of ports to port types.
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public void setPortTypes(HashMap portTypes) throws RemoteException {
@@ -390,7 +400,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
              portsIterator.hasNext();) {
 
             String portName = (String) portsIterator.next();
-            TypedIOPort port = (TypedIOPort) ((ComponentEntity) actor).getPort(portName);
+            TypedIOPort port = (TypedIOPort) ((ComponentEntity) actor).
+                getPort(portName);
             Type type = (Type) portTypes.get(portName);
             port.setTypeEquals(type);
 
@@ -398,7 +409,9 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
             // these ports.
             /*
               if (port.isOutput()) {
-              DistributedTypedIORelation relation = (DistributedTypedIORelation) compositeActor.getRelation(portName);
+              DistributedTypedIORelation relation =
+                  (DistributedTypedIORelation)
+                  compositeActor.getRelation(portName);
               relation.connectedPort().setTypeEquals(type);
               }
             */
@@ -408,9 +421,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
     /** Request that execution of the wrapped actor to stop as
      *  soon as possible.
      *
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public void stop() throws java.rmi.RemoteException {
@@ -421,9 +433,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
     /** Request that execution of the current iteration of the
      *  wrapped actor complete.
      *
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public void stopFire() throws java.rmi.RemoteException {
@@ -433,9 +444,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
 
     /** Terminate any currently executing model with extreme prejudice.
      *
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public void terminate() throws java.rmi.RemoteException {
@@ -446,9 +456,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
     /** This method is invoked exactly once per execution
      *  of an application.
      *
-     *  @exception RemoteException is the common superclass for a number of
-     *  communication-related exceptions that may occur during the execution of a
-     *  remote method call.
+     *  @exception RemoteException If a communication-related exception may
+     *  occur during the execution of a remote method call.
      */
 
     public void wrapup() throws java.rmi.RemoteException {
@@ -456,26 +465,29 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         try {
             actor.wrapup();
         } catch (IllegalActionException e) {
-            e.printStackTrace();
+            KernelException.stackTraceToString(e);
             throw new RemoteException(e.toString());
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         private   methods                 ////
 
     /** Process a string of moml (corresponding to an actor description)
-     *  adding it some extra moml code that embeds it in a DistributedTypedCompositeActor
-     *  with a DistributedDirector.
+     *  adding it some extra moml code that embeds it in a
+     *  DistributedTypedCompositeActor with a DistributedDirector.
      *
      *  @param moml A String containing moml code that describes an actor.
      *  @return String Containing moml code.
      */
 
-    protected String processMoML (String moml) {
+    private String processMoML(String moml) {
 
-        String header = "<entity name=\"model\" class=\"ptolemy.distributed.actor.DistributedTypedCompositeActor\">\n";
-        String director = "<property name=\"Distributed Director\" class=\"ptolemy.distributed.actor.DistributedDirector\"/>";
+        String header = "<entity name=\"model\" class=\"ptolemy.distributed." +
+                        "actor.DistributedTypedCompositeActor\">\n";
+        String director = "<property name=\"Distributed Director\" class=" +
+                          "\"ptolemy.distributed.actor." +
+                          "DistributedDirector\"/>";
         String footer = "\n</entity>";
         moml = header + director + moml + footer;
 
@@ -483,20 +495,24 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         private  variables                ////
 
-    /** A distributedTypedCompositeActor that will embed the distributed actor. */
-    protected DistributedTypedCompositeActor compositeActor = null;
+    /** A distributedTypedCompositeActor that will embed the distributed
+     *  actor.
+     */
+    private DistributedTypedCompositeActor compositeActor = null;
 
     /** The distributed actor. */
-    protected Actor actor = null;
+    private Actor actor = null;
 
     /** A MoML parser. */
-    protected MoMLParser momlParser = null;
+    private MoMLParser momlParser = null;
 
-    /**  Map containing information about the ports, services and receiver IDs. */
-    protected HashMap idsReceiversMap = new HashMap();
+    /**  Map containing information about the ports, services and receiver
+     *  IDs.
+     */
+    private HashMap idsReceiversMap = new HashMap();
 
     /**  Turns debugging messages on when true. */
-    protected boolean VERBOSE = false;
+    private boolean VERBOSE = false;
 }
