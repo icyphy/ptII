@@ -3324,7 +3324,7 @@ public class IOPort extends ComponentPort {
                         + "to me on the inside.");
             }
 
-            List groupRelationsList = relation.getRelationGroup();
+            List groupRelationsList = relation.relationGroupList();
             // For efficiency, if there is only one element, then just
             // return the results of the private method.
             if (groupRelationsList.size() == 1) {
@@ -3497,11 +3497,13 @@ public class IOPort extends ComponentPort {
 
             if ((relation.getWidth() != 1) || !relation.isWidthFixed()) {
                 // Relation is a bus.
+                /* This is now allowed.
                 if (!isMultiport()) {
                     throw new IllegalActionException(this, relation,
                             "Attempt to link a bus relation "
                             + "to a single port.");
                 }
+                */
 
                 Iterator relations = linkedRelationList().iterator();
 

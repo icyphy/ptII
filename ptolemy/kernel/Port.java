@@ -248,7 +248,7 @@ public class Port extends NamedObj {
     public boolean isGroupLinked(Relation r) {
         try {
             _workspace.getReadAccess();
-            Iterator relations = r.getRelationGroup().iterator();
+            Iterator relations = r.relationGroupList().iterator();
             while (relations.hasNext()) {
             	Relation groupRelation = (Relation)relations.next();
                 if (_relationsList.isLinked(groupRelation)) {

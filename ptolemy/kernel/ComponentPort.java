@@ -442,7 +442,7 @@ public class ComponentPort extends Port {
     public boolean isInsideGroupLinked(Relation r) {
         try {
             _workspace.getReadAccess();
-            Iterator relations = r.getRelationGroup().iterator();
+            Iterator relations = r.relationGroupList().iterator();
             while (relations.hasNext()) {
                 Relation groupRelation = (Relation)relations.next();
                 if (_insideLinks.isLinked(groupRelation)) {
