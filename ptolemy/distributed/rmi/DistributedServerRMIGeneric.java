@@ -129,7 +129,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
             LookupDiscoveryManager mgr = new LookupDiscoveryManager(groups,
                     unicastLocators,  // unicast locators
                     this); // DiscoveryListener
-            
+
             if (serviceID != null) {
                 joinMgr = new JoinManager(proxy, // service proxy
                         entries,  // attr sets
@@ -143,7 +143,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
                         mgr,   // DiscoveryManager
                         new LeaseRenewalManager());
             }
-            
+
         } catch(Exception e) {
             KernelException.stackTraceToString(e);
         }
@@ -193,7 +193,6 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
     public static void main(String args[]) {
         if (args.length == 0) {
             System.err.println("No configuration specified");
-            System.exit(1);
         }
         new DistributedServerRMIGeneric(args[0]);
 
