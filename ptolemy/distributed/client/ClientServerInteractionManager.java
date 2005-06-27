@@ -52,7 +52,6 @@ import net.jini.lookup.ServiceDiscoveryEvent;
 import net.jini.lookup.ServiceDiscoveryListener;
 import net.jini.lookup.ServiceDiscoveryManager;
 import ptolemy.distributed.common.DistributedActor;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -150,11 +149,8 @@ public class ClientServerInteractionManager implements DiscoveryListener,
      *
      *  @param configFileName String containing the name and/or path of the
      *  configuration file to be loaded.
-     *  @param IllegalActionException If initialization of the
-     *  ClientServerInteractionManager fails.
      */
-    public void init(String configFileName)
-            throws IllegalActionException {
+    public void init(String configFileName) {
         if (VERBOSE) {
             try {
                 System.out.println("Starting ClientServerInteractionManager " +

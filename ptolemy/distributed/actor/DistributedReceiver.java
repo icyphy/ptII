@@ -33,7 +33,6 @@ import java.util.LinkedList;
 
 import net.jini.core.lookup.ServiceItem;
 import ptolemy.actor.AbstractReceiver;
-import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.distributed.common.DistributedActor;
@@ -94,7 +93,7 @@ public class DistributedReceiver extends AbstractReceiver {
      *  //TODO:This could be done in parallel. Is it worth the effort?
      *  @param token The token to be forwarded.
      */
-    public void put(Token token) throws NoRoomException {
+    public void put(Token token) {
         if (VERBOSE) {
             System.out.println("Forwarding token: " + token.toString());
         }

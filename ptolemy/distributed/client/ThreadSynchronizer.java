@@ -64,7 +64,7 @@ public class ThreadSynchronizer {
 
     /** Waits until readyMap is empty.
      */
-    public synchronized boolean commandsProcessed() {
+    public synchronized void commandsProcessed() {
         while (!notReadyMap.isEmpty()) {
             try {
                 System.out.println("commandsEmpty: waiting for readyMap to " +
@@ -75,7 +75,6 @@ public class ThreadSynchronizer {
             }
         }
         System.out.println("commandsProcessed!");
-        return true;
     }
 
     /** Synchronizes access to the commands by the ClientThreads. They will
