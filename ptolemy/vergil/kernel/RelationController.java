@@ -28,7 +28,12 @@ COPYRIGHTENDKEY
 package ptolemy.vergil.kernel;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.geom.Line2D;
 
+import javax.swing.SwingConstants;
+
+import ptolemy.actor.IORelation;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
@@ -38,6 +43,7 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.LabelFigure;
 import diva.canvas.toolbox.SVGUtilities;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
@@ -74,6 +80,11 @@ public class RelationController extends ParameterizedNodeController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+
+    private static Font _relationLabelFont = new Font("SansSerif", Font.PLAIN, 10);
+
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** The renderer for relation node.  This class creates a Figure that
@@ -93,9 +104,10 @@ public class RelationController extends ParameterizedNodeController {
 
             Figure figure = new BasicFigure(polygon, Color.black);
 
+            Relation relation = null;
             if (n != null) {
                 Vertex vertex = (Vertex) n;
-                Relation relation = (Relation) vertex.getContainer();
+                relation = (Relation) vertex.getContainer();
                 ActorGraphModel model = (ActorGraphModel) getController()
                     .getGraphModel();
                 figure.setToolTipText(relation.getName(model.getPtolemyModel()));
@@ -110,7 +122,24 @@ public class RelationController extends ParameterizedNodeController {
                 }
             }
 
-            return new CompositeFigure(figure);
+            CompositeFigure result = new CompositeFigure(figure);
+            
+            if (relation instanceof IORelation) {
+            	if (((IORelation)relation).getWidth() > 1) {
+            		Line2D.Double line = new Line2D.Double(-w / 2, h / 2, w / 2, -h / 2);
+                    Figure lineFigure = new BasicFigure(line, Color.black);
+                    result.add(lineFigure);
+                    
+                    LabelFigure label = new LabelFigure(
+                            "" + ((IORelation)relation).getWidth(),
+                            _relationLabelFont,
+                            0,
+							SwingConstants.SOUTH_WEST);
+                    label.translateTo(w / 2 + 1.0, -h / 2 - 1.0);
+                    result.add(label);
+                }
+            }
+            return result;
         }
     }
 }
