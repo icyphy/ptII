@@ -435,6 +435,8 @@ public class DistributedSDFDirector extends SDFDirector {
     /** Create a map containing the services and Receivers ID's corresponding
      *  to a given bidimensional array of Receiver.
      *  i.e. ((service1, (ID1, ..., IDi), ..., (servicen, (IDj, ..., IDr)).
+     *
+     *  @param receivers The bidimensional array of Receivers.
      *  @return A HashMap containing services and lists of Receiver IDs.
      */
 

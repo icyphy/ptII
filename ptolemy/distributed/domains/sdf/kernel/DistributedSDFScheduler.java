@@ -373,6 +373,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *  representing the number of tokens produced or consumed from
      *  that port during the course of an iteration.
      *  @param actorList The actors that need to be scheduled.
+     *  @param container The container.
      *  @param allActorList All the actors, including those that do
      *  not need to be scheduled.  These actors will still be
      *  initialized, which means we must take their initial tokens
@@ -829,6 +830,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *  representing the minimum size buffer necessary for the computed
      *  schedule.  The map will be populated during the execution of this
      *  method.
+     *  @exception IllegalActionException If the rate parameters are invalid.
      */
     protected void _simulateTokensCreatedLast(IOPort outputPort,
             int createdTokens,

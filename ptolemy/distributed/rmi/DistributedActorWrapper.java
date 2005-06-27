@@ -71,7 +71,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
     /** Construct an DistributedActorWrapper. This empty constructor
      *  is required by RMI.
      */
-    public DistributedActorWrapper() throws java.rmi.RemoteException {
+    public DistributedActorWrapper() {
     }
 
     ///////////////////////////////////////////////////////////////////
