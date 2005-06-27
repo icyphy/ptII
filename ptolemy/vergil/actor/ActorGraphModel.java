@@ -328,12 +328,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             Link link = (Link) links.next();
             Relation relation = link.getRelation();
 
-            if (relation == null) {
-                continue;
-            }
-
             // Undo needs this: Check that the relation hasn't been removed
-            if (relation.getContainer() == null) {
+            if (relation == null || relation.getContainer() == null) {
+                // NOTE: We used to not do the next three lines when
+                // relation == null, but this seems better.
+                // EAL 6/26/05.
                 link.setHead(null);
                 link.setTail(null);
                 links.remove();
@@ -427,17 +426,25 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         while (links.hasNext()) {
             Link link = (Link) links.next();
 
-            // Only consider links that are associated with this relation.
-            if (link.getRelation() != relation) {
-                continue;
-            }
-
             // If this link matches a link in the linkedObjects list,
             // then we remove that link from that list, since we don't
             // have to manufacture that link.
             Object tail = link.getTail();
             Object tailObj = getSemanticObject(tail);
+            Object head = link.getHead();
+            Object headObj = getSemanticObject(head);
 
+            if (tailObj != relation && headObj != relation) {
+            	// The link does not involve this relation. Skip it.
+                // NOTE: Used to skip it if the relation field of the link
+                // didn't match this relation. But we need to ignore
+                // that field for links between relations, since that
+                // field will be arbitrarily one of the relations,
+                // and we'll end up creating two links where there
+                // should be one.
+                // EAL 6/26/05
+                continue;
+            }
             if ((tailObj != null) && linkedObjects.contains(tailObj)) {
                 // The tail is an object in the list.
                 linkedObjects.remove(tailObj);
@@ -448,9 +455,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 link.setTail(null);
                 _linkSet.remove(link);
             }
-
-            Object head = link.getHead();
-            Object headObj = getSemanticObject(head);
 
             if ((headObj != null) && linkedObjects.contains(headObj)) {
                 // The head is an object in the list.
@@ -981,7 +985,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *   MoML to, to be used if the first MoML fails.
          *  @param linkHead The head vertex or port.
          *  @param linkTail The tail vertex or port.
-         *  @return FIXME, or null if no vertex is added.
+         *  @return The MoML to establish a link, or null if no vertex is added.
          */
         private String _linkMoML(NamedObj container, StringBuffer moml,
                 StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail)
@@ -1045,14 +1049,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 } else if (head instanceof ComponentPort
                         && linkTail instanceof Vertex) {
                     // Linking a port to an existing relation.
-                    // FIXME: There might be more than one vertex here.
                     moml.append("<link port=\"" + head.getName(container)
                             + "\" relation=\"" + tail.getName(container) + "\"/>\n");
                     return tail.getName(container);
                 } else if (tail instanceof ComponentPort
                         && linkHead instanceof Vertex) {
                     // Linking a port to an existing relation.
-                    // FIXME: There might be more than one vertex here.
                     moml.append("<link port=\"" + tail.getName(container)
                             + "\" relation=\"" + head.getName(container) + "\"/>\n");
                     return head.getName(container);
@@ -1467,8 +1469,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             ComponentRelation deleteObj = (ComponentRelation) ((Vertex) node)
                 .getContainer();
             NamedObj container = (NamedObj) deleteObj.getContainer();
-            ;
-
             String moml = "<deleteRelation name=\"" + deleteObj.getName()
                 + "\"/>\n";
             return moml;
@@ -1558,7 +1558,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             ComponentRelation relation = (ComponentRelation) ((Vertex) node)
                 .getContainer();
             NamedObj container = (NamedObj) relation.getContainer();
-            ;
 
             // Delete the relation.
             String moml = "<deleteRelation name=\"" + relation.getName()
