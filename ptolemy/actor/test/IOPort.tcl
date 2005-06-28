@@ -903,6 +903,7 @@ test IOPort-10.7 {Construct a simple system, then call description} {
         {ptolemy.actor.TypedIOPort {..source.output} attributes {
         } links {
             {ptolemy.actor.TypedIORelation {..edge0} attributes {
+                {ptolemy.data.expr.Parameter {..edge0.width} 1}
             } configuration {width 1 fixed}}
         } insidelinks {
         } configuration {output opaque {width 1}} receivers {
@@ -918,6 +919,7 @@ test IOPort-10.7 {Construct a simple system, then call description} {
         {ptolemy.actor.TypedIOPort {..dest.input} attributes {
         } links {
             {ptolemy.actor.TypedIORelation {..edge0} attributes {
+                {ptolemy.data.expr.Parameter {..edge0.width} 1}
             } configuration {width 1 fixed}}
         } insidelinks {
         } configuration {input opaque {width 1}} receivers {
@@ -928,6 +930,7 @@ test IOPort-10.7 {Construct a simple system, then call description} {
     }}
 } relations {
     {ptolemy.actor.TypedIORelation {..edge0} attributes {
+        {ptolemy.data.expr.Parameter {..edge0.width} 1}
     } links {
         {ptolemy.actor.TypedIOPort {..source.output} attributes {
         } configuration {output opaque {width 1}} receivers {
