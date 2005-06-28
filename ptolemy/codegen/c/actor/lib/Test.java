@@ -58,19 +58,6 @@ public class Test extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate preinitialization code.
-     *  This method reads the <code>preinitBlock</code> from Test.c,
-     *  replaces macros with their values and returns the results.
-     *  @return The processed <code>preinitBlock</code>.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-        return processCode(tmpStream.toString());
-    }
-
     /** Generate initialization code.
      *  This method reads the <code>codeBlock1</code> from Test.c,
      *  replaces macros with their values and returns the results.
@@ -90,6 +77,19 @@ public class Test extends CCodeGeneratorHelper {
         tmpStream.appendCodeBlock("codeBlock1");
 
         stream.append(processCode(tmpStream.toString()));
+    }
+    
+    /** Generate preinitialization code.
+     *  This method reads the <code>preinitBlock</code> from Test.c,
+     *  replaces macros with their values and returns the results.
+     *  @return The processed <code>preinitBlock</code>.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        super.generatePreinitializeCode();
+
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("preinitBlock");
+        return processCode(tmpStream.toString());
     }
 
     /** Get the files needed by the code generated for the

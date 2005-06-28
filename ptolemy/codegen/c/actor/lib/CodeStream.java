@@ -56,11 +56,17 @@ public class CodeStream {
      */
     public CodeStream(CCodeGeneratorHelper helper) {
         _actorHelper = helper;
-        _filePath = "$CLASSPATH/" + helper.getClass().getPackage().toString()
-            + ".";
-
-        _filePath = _filePath.replaceFirst("package ", "");
-        _filePath = _filePath.replace('.', '/');
+        if (_debug) {
+        	_filePath = _testingFilePath;
+        }
+        else {  
+            _filePath = "$CLASSPATH/" + helper.getClass().getPackage().toString()
+                + ".";
+    
+            // FIXME: There should be a more proper way to access the filepath
+            _filePath = _filePath.replaceFirst("package ", "");
+            _filePath = _filePath.replace('.', '/');
+        }        
     }
 
     /** To append the content of the CodeStream to this code stream
@@ -122,10 +128,13 @@ public class CodeStream {
      */
     public static void main(String[] arg)
             throws IOException, IllegalActionException {
+        _debug = true;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("----------Testing--------------------------------");
         System.out.print("please input class name: ");
         _testingClassName = in.readLine();
+        System.out.print("please input file path: ");
+        _testingFilePath = in.readLine();
         System.out.println("\n----------Result--------------------------------");
         System.out.println(CodeStream._testing());
     }
@@ -159,7 +168,7 @@ public class CodeStream {
         throws IllegalActionException {
         String className;
 
-        if (_actorHelper == null) {
+        if (_debug) {
             className = _testingClassName;
         } else {
             className = _actorHelper.getComponent().getClassName();
@@ -332,6 +341,49 @@ public class CodeStream {
     ///////////////////////////////////////////////////////////////////////
     // private variables declarations
     ///////////////////////////////////////////////////////////////////////
+    
+    /**
+     * String pattern which represents the end of a code block.
+     * Both _BLOCKSTART and _BLOCKEND cannot be the prefix of the other.
+     */
+    private static String _BLOCKEND = "/**/";
+
+    /**
+     * String pattern which represents the start of a code block.
+     */
+    private static String _BLOCKSTART = "/***";
+
+    /**
+     * String pattern which represents the end of a code block header.
+     */
+    private static String _HEADEREND = "***/";
+
+    /**
+     * The associated actor helper object.
+     */
+    private CCodeGeneratorHelper _actorHelper;
+
+    /**
+     * The code block table that stores the code blocks with
+     * code block names (String) as keys.
+     */
+    private Hashtable _codeBlockTable = null;
+
+    /**
+     * Debugging flag, which is turned on during debug mode
+     */
+    private static boolean _debug = false;
+    
+    /**
+     * File path to the .c files associated with this CodeStream's helper
+     */
+    private String _filePath;
+
+    /**
+     * The code block table that stores the code block parameter(s) 
+     * with code block names (String) as keys.
+     */
+    private Hashtable _parameterTable = null;
 
     /**
      * Index pointer that indicates the current location
@@ -345,45 +397,13 @@ public class CodeStream {
     private StringBuffer _stream = new StringBuffer();
 
     /**
-     * The code block table that stores the code blocks with
-     * code block names (String) as keys.
-     */
-    private Hashtable _codeBlockTable = null;
-
-    /**
-     * The code block table that stores the code block parameter(s) 
-     * with code block names (String) as keys.
-     */
-    private Hashtable _parameterTable = null;
-    
-    /**
-     * The associated actor helper object.
-     */
-    private CCodeGeneratorHelper _actorHelper;
-
-    /**
-     * File path to the .c files associated with this CodeStream's helper
-     */
-    private String _filePath;
-
-    /**
-     * String pattern which represents the start of a code block.
-     */
-    private static String _BLOCKSTART = "/***";
-
-    /**
-     * String pattern which represents the end of a code block.
-     * Both _BLOCKSTART and _BLOCKEND cannot be the prefix of the other.
-     */
-    private static String _BLOCKEND = "/**/";
-
-    /**
-     * String pattern which represents the end of a code block header.
-     */
-    private static String _HEADEREND = "*/";
-
-    /**
      * The class name used during testing.
      */
     private static String _testingClassName;
+
+    /**
+     * The file path used during testing.
+     */
+    private static String _testingFilePath;
+
 }
