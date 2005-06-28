@@ -170,7 +170,7 @@ public class IORelation extends ComponentRelation {
 
             if (t != null) {
                 int width = t.intValue();
-                setWidth(width);
+                _setWidth(width);
             }
         }
     }
@@ -557,7 +557,7 @@ public class IORelation extends ComponentRelation {
      *  have changed.
      *  This method write-synchronizes on the workspace.
      *
-     *  @param width The width of the relation.
+     *  @param widthValue The width of the relation.
      *  @exception IllegalActionException If the argument is greater than
      *   one and the relation is linked to a non-multiport, or it is zero and
      *   the relation is linked on the inside to a port that is already
@@ -565,90 +565,8 @@ public class IORelation extends ComponentRelation {
      *  @see ptolemy.kernel.util.Workspace#getWriteAccess()
      *  @see #getWidth()
      */
-    public void setWidth(int width) throws IllegalActionException {
-        try {
-            _workspace.getWriteAccess();
-
-            if (width <= 0) {
-                // Check legitimacy of the change.
-                try {
-                    _inferWidth();
-                } catch (InvalidStateException ex) {
-                    throw new IllegalActionException(this,
-                            "Cannot use unspecified width on this relation "
-                            + "because of its links.");
-                }
-            }
-
-            // Check for non-multiports on a link.
-            /* This is now allowed.
-            if (width != 1) {
-                Iterator ports = linkedPortList().iterator();
-
-                while (ports.hasNext()) {
-                    IOPort p = (IOPort) ports.next();
-
-                    // Check for non-multiports.
-                    if (!p.isMultiport()) {
-                        throw new IllegalActionException(this, p,
-                                "Cannot make bus because the "
-                                + "relation is linked to a non-multiport.");
-                    }
-                }
-            }
-            */
-
-            _width = width;
-            
-            // Set the width of all relations in the relation group.
-            Iterator relations = relationGroupList().iterator();
-            while(!_suppressWidthPropagation && relations.hasNext()) {
-                IORelation relation = (IORelation)relations.next();
-                if (relation == this) {
-                	continue;
-                }
-                // If the relation has a width parameter, set that
-                // value. Otherwise, just set its width directly.
-                // Have to disable back propagation.
-                try {
-                    relation._suppressWidthPropagation = true;
-                	relation.width.setToken(new IntToken(width));
-                } finally {
-                	relation._suppressWidthPropagation = false;
-                }
-            }
-
-            // Do this as a second pass so that it does not
-            // get executed if the change is aborted
-            // above by an exception.
-            // FIXME: Haven't completely dealt with this
-            // possibility since the above changes may have
-            // partially completed.
-            Iterator ports = linkedPortList().iterator();
-
-            while (ports.hasNext()) {
-                IOPort p = (IOPort) ports.next();
-                Entity portContainer = (Entity) p.getContainer();
-
-                if (portContainer != null) {
-                    portContainer.connectionsChanged(p);
-                }
-            }
-
-            // Invalidate schedule and type resolution.
-            Nameable container = getContainer();
-
-            if (container instanceof CompositeActor) {
-                Director director = ((CompositeActor) container).getDirector();
-
-                if (director != null) {
-                    director.invalidateSchedule();
-                    director.invalidateResolvedTypes();
-                }
-            }
-        } finally {
-            _workspace.doneWriting();
-        }
+    public void setWidth(int widthValue) throws IllegalActionException {
+        width.setToken(new IntToken(widthValue));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -853,6 +771,112 @@ public class IORelation extends ComponentRelation {
             width.setTypeEquals(BaseType.INT);
         } catch (KernelException ex) {
         	throw new InternalErrorException(ex);
+        }
+    }
+    
+    /** Set the width of this relation and all relations in its
+     *  relation group. The width is the number of
+     *  channels that the relation represents.  If the argument
+     *  is zero or less, then the relation becomes a bus with unspecified width,
+     *  and the width will be inferred from the way the relation is used
+     *  (but will never be less than one).
+     *  This method invalidates
+     *  the resolved types on the director of the container, if there is
+     *  one, and notifies each connected actor that its connections
+     *  have changed.
+     *  This method write-synchronizes on the workspace.
+     *
+     *  @param width The width of the relation.
+     *  @exception IllegalActionException If the argument is greater than
+     *   one and the relation is linked to a non-multiport, or it is zero and
+     *   the relation is linked on the inside to a port that is already
+     *   linked on the inside to a relation with unspecified width.
+     *  @see ptolemy.kernel.util.Workspace#getWriteAccess()
+     *  @see #getWidth()
+     */
+    private void _setWidth(int width) throws IllegalActionException {
+        try {
+            _workspace.getWriteAccess();
+
+            if (width <= 0) {
+                // Check legitimacy of the change.
+                try {
+                    _inferWidth();
+                } catch (InvalidStateException ex) {
+                    throw new IllegalActionException(this,
+                            "Cannot use unspecified width on this relation "
+                            + "because of its links.");
+                }
+            }
+
+            // Check for non-multiports on a link.
+            /* This is now allowed.
+            if (width != 1) {
+                Iterator ports = linkedPortList().iterator();
+
+                while (ports.hasNext()) {
+                    IOPort p = (IOPort) ports.next();
+
+                    // Check for non-multiports.
+                    if (!p.isMultiport()) {
+                        throw new IllegalActionException(this, p,
+                                "Cannot make bus because the "
+                                + "relation is linked to a non-multiport.");
+                    }
+                }
+            }
+            */
+
+            _width = width;
+            
+            // Set the width of all relations in the relation group.
+            Iterator relations = relationGroupList().iterator();
+            while(!_suppressWidthPropagation && relations.hasNext()) {
+                IORelation relation = (IORelation)relations.next();
+                if (relation == this) {
+                    continue;
+                }
+                // If the relation has a width parameter, set that
+                // value. Otherwise, just set its width directly.
+                // Have to disable back propagation.
+                try {
+                    relation._suppressWidthPropagation = true;
+                    relation.width.setToken(new IntToken(width));
+                } finally {
+                    relation._suppressWidthPropagation = false;
+                }
+            }
+
+            // Do this as a second pass so that it does not
+            // get executed if the change is aborted
+            // above by an exception.
+            // FIXME: Haven't completely dealt with this
+            // possibility since the above changes may have
+            // partially completed.
+            Iterator ports = linkedPortList().iterator();
+
+            while (ports.hasNext()) {
+                IOPort p = (IOPort) ports.next();
+                Entity portContainer = (Entity) p.getContainer();
+
+                if (portContainer != null) {
+                    portContainer.connectionsChanged(p);
+                }
+            }
+
+            // Invalidate schedule and type resolution.
+            Nameable container = getContainer();
+
+            if (container instanceof CompositeActor) {
+                Director director = ((CompositeActor) container).getDirector();
+
+                if (director != null) {
+                    director.invalidateSchedule();
+                    director.invalidateResolvedTypes();
+                }
+            }
+        } finally {
+            _workspace.doneWriting();
         }
     }
 
