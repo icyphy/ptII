@@ -498,6 +498,8 @@ test UndoRename-1.6a {Test a vertex rename is updated across MoML} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -509,6 +511,8 @@ test UndoRename-1.6a {Test a vertex rename is updated across MoML} {
         <relation name="r1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="R1" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
             <vertex name="something different" value="22,33">
             </vertex>
         </relation>
@@ -531,6 +535,8 @@ test UndoRename-1.6b {Test a vertex rename is updated across MoML} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    </property>
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
         <property name="test" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -542,6 +548,8 @@ test UndoRename-1.6b {Test a vertex rename is updated across MoML} {
         <relation name="r1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="R1" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
             <vertex name="any" value="22,33">
             </vertex>
         </relation>
