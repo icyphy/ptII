@@ -48,66 +48,6 @@ Uint16 convertSample(double sample) {
 }
 
 
-main(int argc, char *argv[])
-{
-    /*************** initialize ************************/   
-    int* data;
-    int i, j;
-    double _sample;
-    
-    if ((sem = SDL_CreateSemaphore(BUFFER_SIZE/2)) == NULL) {
-        fprintf(stderr, "Error creating semaphor: %s\n",SDL_GetError());
-        exit(1);
-    }
-
-    /* Set 16-bit stereo audio at 22Khz */
-    fmt.freq = 22050;
-    fmt.format = AUDIO_S16;
-    fmt.channels = 2;
-    fmt.samples = 512;        /* A good value for games */
-    fmt.callback = mixaudio;
-    fmt.userdata = NULL;
-
-    /* Open the audio device and start playing sound! */
-    if ( SDL_OpenAudio(&fmt, NULL) < 0 ) {
-        fprintf(stderr, "Unable to open audio: %s\n", SDL_GetError());
-        exit(1);
-    }
-    for ( i=0; i<NUM_SOUNDS; ++i ) {
-        sounds[i].data = (Uint8*) malloc(BUFFER_SIZE);
-        sounds[i].dpos = 0;
-        sounds[i].dlen = 0;
-    }
-
-
-    SDL_PauseAudio(0);
-
-
-    /*************** fire iterations *******************/
-    for (i=0; i<1000000; i++) {
-        // ** we can feed some other interesting samples, this is just for testing
-        for ( j=0; j<NUM_SOUNDS; ++j ) {
-            _sample = i/31.3*(j+1);
-            putSample (convertSample(_sample), j);
-        }
-    }
-
-        
-    /****************** wrap-up ************************/
-    fprintf(stdout, "close audio\n");
-    //SDL_PauseAudio(1);
-    SDL_CloseAudio();
-
-    fprintf(stdout, "kill semaphore\n");
-    if (sem != NULL) {
-        SDL_DestroySemaphore(sem);
-        sem = NULL;
-    }
-
-    fprintf(stdout, "done\n");
-}
-
-
 void mixaudio(void *unused, Uint8 *stream, int len)
 {
     int i;
@@ -181,4 +121,63 @@ putSample (Uint16 data, int channel) {
 
 
 
+
+main(int argc, char *argv[])
+{
+    /*************** initialize ************************/   
+    int* data;
+    int i, j;
+    double _sample;
+    
+    if ((sem = SDL_CreateSemaphore(BUFFER_SIZE/2)) == NULL) {
+        fprintf(stderr, "Error creating semaphor: %s\n",SDL_GetError());
+        exit(1);
+    }
+
+    /* Set 16-bit stereo audio at 22Khz */
+    fmt.freq = 22050;
+    fmt.format = AUDIO_S16;
+    fmt.channels = 2;
+    fmt.samples = 512;        /* A good value for games */
+    fmt.callback = mixaudio;
+    fmt.userdata = NULL;
+
+    /* Open the audio device and start playing sound! */
+    if ( SDL_OpenAudio(&fmt, NULL) < 0 ) {
+        fprintf(stderr, "Unable to open audio: %s\n", SDL_GetError());
+        exit(1);
+    }
+    for ( i=0; i<NUM_SOUNDS; ++i ) {
+        sounds[i].data = (Uint8*) malloc(BUFFER_SIZE);
+        sounds[i].dpos = 0;
+        sounds[i].dlen = 0;
+    }
+
+
+    SDL_PauseAudio(0);
+
+
+    /*************** fire iterations *******************/
+    for (i=0; i<1000000; i++) {
+        // ** we can feed some other interesting samples, this is just for testing
+        for ( j=0; j<NUM_SOUNDS; ++j ) {
+            _sample = i/31.3*(j+1);
+            putSample (convertSample(_sample), j);
+        }
+    }
+
+        
+    /****************** wrap-up ************************/
+    fprintf(stdout, "close audio\n");
+    //SDL_PauseAudio(1);
+    SDL_CloseAudio();
+
+    fprintf(stdout, "kill semaphore\n");
+    if (sem != NULL) {
+        SDL_DestroySemaphore(sem);
+        sem = NULL;
+    }
+
+    fprintf(stdout, "done\n");
+}
 
