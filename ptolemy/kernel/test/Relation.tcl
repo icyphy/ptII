@@ -249,10 +249,10 @@ test Relation-17.0 {Test a linked relation} {
     list [$r1 numLinks] [$r2 numLinks] [_testRelationLinkedPorts $r1] [_testRelationLinkedPorts $r2]
 } {2 2 {{P1 P2}} {{P1 P2}}}
 
-test Relation-17.2 {Test getRelationGroup} {
+test Relation-17.2 {Test relationGroupList} {
 	$r1 setName {R1}
 	$r2 setName {R2}
-	list [listToNames [$r1 getRelationGroup]] [listToNames [$r2 getRelationGroup]]
+	list [listToNames [$r1 relationGroupList]] [listToNames [$r2 relationGroupList]]
 } {{R1 R2} {R2 R1}}
 
 test Relation-17.3 {Test unlinkAll} {
