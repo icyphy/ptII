@@ -105,19 +105,20 @@ test IORelation-3.3 {Test getWidth} {
     $r1 getWidth
 } {1}
 
-test IORelation-3.4 {Test getWidth of a port} {
-    set e1 [java::new ptolemy.actor.CompositeActor]
-    $e1 setDirector $director
-    $e1 setManager $manager
-    $e1 setName E1
-    set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
-    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
-    set p1 [java::new ptolemy.actor.IOPort $e2 P1]
-    $p1 link $r1
-    catch {$r1 setWidth 4} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot make bus because the relation is linked to a non-multiport.
-  in .E1.R1 and .E1.E2.P1}}
+# NOTE: Links of this type are now allowed.
+#test IORelation-3.4 {Test getWidth of a port} {
+#    set e1 [java::new ptolemy.actor.CompositeActor]
+#    $e1 setDirector $director
+#    $e1 setManager $manager
+#    $e1 setName E1
+#    set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
+#    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
+#    set p1 [java::new ptolemy.actor.IOPort $e2 P1]
+#    $p1 link $r1
+#    catch {$r1 setWidth 4} msg
+#    list $msg
+#} {{ptolemy.kernel.util.IllegalActionException: Cannot make bus because the relation is linked to a non-multiport.
+#  in .E1.R1 and .E1.E2.P1}}
 
 test IORelation-3.4.1 {Test getWidth of a port} {
     set e1 [java::new ptolemy.actor.CompositeActor]
@@ -133,19 +134,20 @@ test IORelation-3.4.1 {Test getWidth of a port} {
     $p1 getWidth
 } {4}
 
-test IORelation-3.5 {Test getWidth of a port with unspecified relation width} {
-    set e1 [java::new ptolemy.actor.CompositeActor]
-    $e1 setDirector $director
-    $e1 setManager $manager
-    $e1 setName E1
-    set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
-    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
-    set p1 [java::new ptolemy.actor.IOPort $e2 P1]
-    $r1 setWidth 0
-    catch {$p1 link $r1} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Attempt to link a bus relation to a single port.
-  in .E1.E2.P1 and .E1.R1}}
+# NOTE: Links of this type are now allowed.
+#test IORelation-3.5 {Test getWidth of a port with unspecified relation width} {
+#    set e1 [java::new ptolemy.actor.CompositeActor]
+#    $e1 setDirector $director
+#    $e1 setManager $manager
+#    $e1 setName E1
+#    set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
+#    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
+#    set p1 [java::new ptolemy.actor.IOPort $e2 P1]
+#    $r1 setWidth 0
+#    catch {$p1 link $r1} msg
+#    list $msg
+#} {{ptolemy.kernel.util.IllegalActionException: Attempt to link a bus relation to a single port.
+#  in .E1.E2.P1 and .E1.R1}}
 
 test IORelation-3.6 {Test getWidth of a port with unspecified relation width} {
     set e1 [java::new ptolemy.actor.CompositeActor]
@@ -161,44 +163,45 @@ test IORelation-3.6 {Test getWidth of a port with unspecified relation width} {
     $p1 getWidth
 } {1}
 
-test IORelation-3.7 {Test getWidth of a port with inferred relation width} {
-    set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setDirector $director
-    $e0 setManager $manager
-    $e0 setName E0
-    set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
-    set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
-    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
-    set r2 [java::new ptolemy.actor.IORelation $e0 R2]
-    set p1 [java::new ptolemy.actor.IOPort $e2 P1]
-    set p2 [java::new ptolemy.actor.IOPort $e1 P2]
-    $p1 link $r1
-    $p2 link $r1
-    $p2 link $r2
-    catch {$r1 setWidth 0} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot make bus because the relation is linked to a non-multiport.
-  in .E0.E1.R1 and .E0.E1.E2.P1}}
+# NOTE: This kind of link is now allowed.
+# test IORelation-3.7 {Test getWidth of a port with inferred relation width} {
+#    set e0 [java::new ptolemy.actor.CompositeActor]
+#    $e0 setDirector $director
+#    $e0 setManager $manager
+#    $e0 setName E0
+#    set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
+#    set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
+#    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
+#    set r2 [java::new ptolemy.actor.IORelation $e0 R2]
+#    set p1 [java::new ptolemy.actor.IOPort $e2 P1]
+#    set p2 [java::new ptolemy.actor.IOPort $e1 P2]
+#    $p1 link $r1
+#    $p2 link $r1
+#    $p2 link $r2
+#    catch {$r1 setWidth 0} msg
+#    list $msg
+#} {{ptolemy.kernel.util.IllegalActionException: Cannot make bus because the relation is linked to a non-multiport.
+#  in .E0.E1.R1 and .E0.E1.E2.P1}}
 
-test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
-    set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setDirector $director
-    $e0 setManager $manager
-    $e0 setName E0
-    set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
-    set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
-    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
-    set r2 [java::new ptolemy.actor.IORelation $e0 R2]
-    set p1 [java::new ptolemy.actor.IOPort $e2 P1]
-    set p2 [java::new ptolemy.actor.IOPort $e1 P2]
-    $p1 link $r1
-    $p2 link $r1
-    $p2 link $r2
-    $p1 setMultiport true
-    catch {$r1 setWidth 0} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot make bus because the relation is linked to a non-multiport.
-  in .E0.E1.R1 and .E0.E1.P2}}
+#test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
+#    set e0 [java::new ptolemy.actor.CompositeActor]
+#    $e0 setDirector $director
+#    $e0 setManager $manager
+#    $e0 setName E0
+#    set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
+#    set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
+#    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
+#    set r2 [java::new ptolemy.actor.IORelation $e0 R2]
+#    set p1 [java::new ptolemy.actor.IOPort $e2 P1]
+#    set p2 [java::new ptolemy.actor.IOPort $e1 P2]
+#    $p1 link $r1
+#    $p2 link $r1
+#    $p2 link $r2
+#    $p1 setMultiport true
+#    catch {$r1 setWidth 0} msg
+#    list $msg
+#} {{ptolemy.kernel.util.IllegalActionException: Cannot make bus because the relation is linked to a non-multiport.
+#  in .E0.E1.R1 and .E0.E1.P2}}
 
 test IORelation-3.9 {Test getWidth of a port with inferred relation width} {
     set e0 [java::new ptolemy.actor.CompositeActor]
