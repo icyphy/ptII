@@ -797,6 +797,11 @@ public class IORelation extends ComponentRelation {
     private void _setWidth(int width) throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
+            
+            if (width == _width) {
+            	// No change.
+                return;
+            }
 
             if (width <= 0) {
                 // Check legitimacy of the change.
