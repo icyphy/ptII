@@ -2,17 +2,17 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="PoissonNetwork" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 140.0]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {154, 131, 815, 518}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 131, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{88.7850378787879, 22.9494949494949}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{59.0208333333333, 88.7111742424242}">
     </property>
     <port name="fromApplicationLayer" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
@@ -41,21 +41,29 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 105.0]">
         </property>
     </port>
-    <port name="fromMACAndLinkLayer" class="ptolemy.actor.TypedIOPort">
-        <property name="input"/>
-        <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{kind=201, Length=100, toMACAddr=3, payload=2}">
         </property>
-        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-160.0, -85.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 60.0]">
         </property>
-    </port>
+    </entity>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
-        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 5.0]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{3}">
+        </property>
+        <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-160.0, 60.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -71,45 +79,14 @@
             </property>
         </port>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{kind=201}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-155.0, 5.0">
-        </property>
-    </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{kind=201, Length=100, toMACAddr=1, payload=&quot;Listen to me!&quot;}">
-        </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 105.0}">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -4, 290, 227}, maximized = false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -85.0]">
-        </property>
-    </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-75.0, 60.0]">
+        </vertex>
     </relation>
     <link port="toMACAndLinkLayer" relation="relation3"/>
-    <link port="fromMACAndLinkLayer" relation="relation4"/>
-    <link port="PoissonClock.output" relation="relation"/>
-    <link port="PoissonClock.trigger" relation="relation2"/>
-    <link port="SingleEvent.output" relation="relation2"/>
     <link port="Const.output" relation="relation3"/>
-    <link port="Const.trigger" relation="relation"/>
-    <link port="Display.input" relation="relation4"/>
+    <link port="Const.trigger" relation="relation6"/>
+    <link port="PoissonClock.output" relation="relation6"/>
 </class>

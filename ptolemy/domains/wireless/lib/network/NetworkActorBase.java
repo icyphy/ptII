@@ -122,6 +122,27 @@ public class NetworkActorBase extends TypedAtomicActor {
         "Length"
     };
 
+    protected static final String[] DataPacket = {
+        "protocolVer", "Type", "Subtype", "toDs", "frDs", "moreFrag",
+        "retryBit", "pwrMgt", "moreData", "wepBit", "orderBit", "FCS",
+        "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4",
+        "payload", "Length"
+    };
+    
+    protected static final String[] RtsPacket = {
+        "protocolVer", "Type", "Subtype", "toDs", "frDs", "moreFrag",
+        "retryBit", "pwrMgt", "moreData", "wepBit", 
+        "orderBit", "FCS", "durId", "Addr1", "Addr2", "Length"
+    };
+    
+    // use Addr1 for RA, so FilterMpdu does not need to check packet type
+    // before checking Addr1 or RA filed
+    protected static final String[] AckPacket = {
+        "protocolVer", "Type", "Subtype", "toDs", "frDs", "moreFrag",
+        "retryBit", "pwrMgt", "moreData", "wepBit", 
+        "orderBit", "FCS", "durId", "Addr1", "Length"
+    };
+    
     // message types
     protected static final int RxStart = 30;
     protected static final int RxEnd = 31;
@@ -143,6 +164,11 @@ public class NetworkActorBase extends TypedAtomicActor {
     protected static final int appl_data_msg = 101;
     protected static final int netw_interest_msg = 200;
     protected static final int netw_data_msg = 201;
+    
+    protected static final int Cts = 12;
+    protected static final int Data = 0;
+    protected static final int Rts = 11;
+    protected static final int Ack = 13;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
