@@ -278,11 +278,11 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
         // Normalize the number of for each actor using the
         // vectorizationFactor.
-        _normalizeFirings(vectorizationFactor, entityToFiringsPerIteration,
+        _vectorizeFirings(vectorizationFactor, entityToFiringsPerIteration,
                 externalRates);
 
         // Set the firing vector.
-        _setFiringVector(entityToFiringsPerIteration);
+        _firingVector = entityToFiringsPerIteration;
 
         if (_debugging) {
             _debug("Normalized Firing Counts:");
@@ -309,10 +309,6 @@ public class DistributedSDFScheduler extends SDFScheduler {
         // Set parameters on each actor that contain the number
         // of firings in an iteration.
         _saveFiringCounts(entityToFiringsPerIteration);
-
-        // Set parameters on each relation that contain the maximum
-        // buffer sizes necessary during execution.
-        _saveBufferSizes(minimumBufferSize);
 
         // Set the rate parameters of any external ports.
         _saveContainerRates(externalRates);
