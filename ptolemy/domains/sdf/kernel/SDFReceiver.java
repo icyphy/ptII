@@ -106,7 +106,6 @@ public class SDFReceiver extends AbstractReceiver {
      */
     public void clear() {
         _queue.clear();
-        _bufferSize = 0;
         _waitingTokens = 0;
     }
 
@@ -295,7 +294,9 @@ public class SDFReceiver extends AbstractReceiver {
     public void put(Token token) {
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
-                    "Queue is at capacity. Cannot put a token.");
+                    "Queue is at capacity of "
+                    + _queue.getCapacity()
+                    + ". Cannot put a token.");
         }
     }
 
@@ -382,13 +383,6 @@ public class SDFReceiver extends AbstractReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
-    
-    // These are protected so that they can be accessed directly by the
-    // scheduler.
-    // FIXME: Should these be stored in the queue object?
-    
-    /** The buffer size as determined during scheduling. */
-    protected int _bufferSize = 0;
     
     /** The number of tokens waiting to be consumed during scheduling. */
     protected int _waitingTokens = 0;

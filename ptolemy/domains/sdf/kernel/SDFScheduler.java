@@ -232,6 +232,57 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Populate the given set with the dynamic rate variables in the model.
+     *  @param model The model.
+     *  @param rateVariables A list of rate variables.  Each element
+     *  is a Variable.
+     */
+    protected void _checkDynamicRateVariables(CompositeActor model,
+            List rateVariables) throws IllegalActionException {
+        // Check for rate parameters which are dynamic.
+        ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
+            .getAnalysis((SDFDirector) getContainer());
+        Entity scheduleChangeContext = (Entity) toplevel();
+
+        for (Iterator entities = model.deepEntityList().iterator();
+             entities.hasNext();) {
+            Entity entity = (Entity) entities.next();
+
+            for (Iterator ports = entity.portList().iterator();
+                 ports.hasNext();) {
+                Port port = (Port) ports.next();
+                Set set = analysis.getNotConstVariables(port);
+                Variable variable;
+                variable = DFUtilities.getRateVariable(port,
+                        "tokenInitProduction");
+                _listenToRateVariable(variable, rateVariables);
+
+                if (set.contains(variable)) {
+                    _assertDynamicRateVariable(model, variable, rateVariables,
+                            analysis);
+                }
+
+                variable = DFUtilities.getRateVariable(port,
+                        "tokenConsumptionRate");
+                _listenToRateVariable(variable, rateVariables);
+
+                if (set.contains(variable)) {
+                    _assertDynamicRateVariable(model, variable, rateVariables,
+                            analysis);
+                }
+
+                variable = DFUtilities.getRateVariable(port,
+                        "tokenProductionRate");
+                _listenToRateVariable(variable, rateVariables);
+
+                if (set.contains(variable)) {
+                    _assertDynamicRateVariable(model, variable, rateVariables,
+                            analysis);
+                }
+            }
+        }
+    }
+
     /** Return the scheduling sequence.  An exception will be thrown if the
      *  graph is not schedulable.  This occurs in the following circumstances:
      *  <ul>
@@ -582,6 +633,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
     private void _assertDynamicRateVariable(CompositeActor model,
             Variable variable, List rateVariables,
             ConstVariableModelAnalysis analysis) throws IllegalActionException {
@@ -608,64 +660,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         }
     }
 
-    /** Populate the given set with the dynamic rate variables in the model.
-     *  @param model The model.
-     *  @param rateVariables A list of rate variables.  Each element
-     *  is a Variable.
-     */
-    protected void _checkDynamicRateVariables(CompositeActor model,
-            List rateVariables) throws IllegalActionException {
-        // Check for rate parameters which are dynamic.
-        ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
-            .getAnalysis((SDFDirector) getContainer());
-        Entity scheduleChangeContext = (Entity) toplevel();
-
-        for (Iterator entities = model.deepEntityList().iterator();
-             entities.hasNext();) {
-            Entity entity = (Entity) entities.next();
-
-            for (Iterator ports = entity.portList().iterator();
-                 ports.hasNext();) {
-                Port port = (Port) ports.next();
-                Set set = analysis.getNotConstVariables(port);
-                Variable variable;
-                variable = DFUtilities.getRateVariable(port,
-                        "tokenInitProduction");
-                _listenToRateVariable(variable, rateVariables);
-
-                if (set.contains(variable)) {
-                    _assertDynamicRateVariable(model, variable, rateVariables,
-                            analysis);
-                }
-
-                variable = DFUtilities.getRateVariable(port,
-                        "tokenConsumptionRate");
-                _listenToRateVariable(variable, rateVariables);
-
-                if (set.contains(variable)) {
-                    _assertDynamicRateVariable(model, variable, rateVariables,
-                            analysis);
-                }
-
-                variable = DFUtilities.getRateVariable(port,
-                        "tokenProductionRate");
-                _listenToRateVariable(variable, rateVariables);
-
-                if (set.contains(variable)) {
-                    _assertDynamicRateVariable(model, variable, rateVariables,
-                            analysis);
-                }
-            }
-        }
-    }
-
     /** Determine the number of times the given actor can fire, based on
      *  the number of tokens that are present on its inputs.
      *  @param currentActor The actor.
      *  @return The number of times the actor can fire.
      *  @exception IllegalActionException If the rate parameters are invalid.
      */
-    protected int _computeMaximumFirings(Actor currentActor)
+    private int _computeMaximumFirings(Actor currentActor)
             throws IllegalActionException {
         
         int result = Integer.MAX_VALUE;
@@ -715,10 +716,12 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  unfulfilled.
      *  @param actor The actor.
      *  @param actorList The list of actors that we are scheduling.
+     *  @param resetCapacity If true, then reset the capacity of each
+     *   receiver (do this during initialization).
      *  @return The number of unfulfilled input ports of the given actor.
      *  @exception IllegalActionException If any called method throws it.
      */
-    protected int _countUnfulfilledInputs(Actor actor, List actorList)
+    private int _countUnfulfilledInputs(Actor actor, List actorList, boolean resetCapacity)
             throws IllegalActionException {
         if (_debugging && VERBOSE) {
             _debug("Counting unfulfilled inputs for " + actor.getFullName());
@@ -743,22 +746,27 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             Receiver[][] receivers = inputPort.getReceivers();
             boolean isFulfilled = true;
             for (int channel = 0; channel < receivers.length; channel++) {
-            	if (receivers[channel] == null) {
-            		continue;
+                if (receivers[channel] == null) {
+                    continue;
                 }
                 for (int copy = 0; copy < receivers[channel].length; copy++) {
-                	if (!(receivers[channel][copy] instanceof SDFReceiver)) {
-                		// This should only occur if it is null.
+                    if (!(receivers[channel][copy] instanceof SDFReceiver)) {
+                        // This should only occur if it is null.
                         continue;
                     }
                     SDFReceiver receiver = (SDFReceiver)receivers[channel][copy];
+                    if (resetCapacity) {
+                    	receiver.setCapacity(SDFReceiver.INFINITE_CAPACITY);
+                    }
                     if (receiver._waitingTokens < threshold) {
-                    	isFulfilled = false;
-                        break;
+                        isFulfilled = false;
+                        if (!resetCapacity) {
+                            break;
+                        }
                     }
                 }
                 if (!isFulfilled) {
-                	// No point in continuing.
+                    // No point in continuing.
                     break;
                 }
             }
@@ -777,7 +785,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     protected int _getFiringCount(Entity entity) {
         return ((Integer) _firingVector.get(entity)).intValue();
     }
-
+    
     /** Add this scheduler as a value listener to the given variable
      * and add the variable to the given list.  If the list already
      * includes the variable, or the variable is null, then do
@@ -1180,7 +1188,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     continue;
                 }
 
-                int inputCount = _countUnfulfilledInputs(actor, actorList);
+                int inputCount = _countUnfulfilledInputs(actor, actorList, true);
 
                 if (inputCount == 0) {
                     readyToScheduleActorList.addFirst((ComponentEntity) actor);
@@ -1339,7 +1347,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         // Otherwise the actor still has firings left.
                         // Count the number of unfulfilled inputs.
                         int inputCount = _countUnfulfilledInputs(currentActor,
-                                unscheduledActorList);
+                                unscheduledActorList, false);
 
                         // We've already removed currentActor from
                         // readyToSchedule actors, and presumably
@@ -1435,15 +1443,19 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 ComponentEntity connectedActor = (ComponentEntity) connectedPort.getContainer();
 
                 receiver._waitingTokens = count;
-                if (receiver._waitingTokens > receiver._bufferSize) {
-                    receiver._bufferSize = count;
+                
+                // Update the buffer size, if necessary.
+                int capacity = receiver.getCapacity();
+                if (capacity == SDFReceiver.INFINITE_CAPACITY
+                        || receiver._waitingTokens > capacity) {
+                    receiver.setCapacity(count);
                 }
                 // Determine whether the connectedActor can now be scheduled.
                 // Only proceed if the connected actor is something we are
                 // scheduling.  The most notable time when this will not be
                 // true is when a connection is made to the inside of an opaque port.
                 if (actorList.contains(connectedActor)) {
-                    int inputCount = _countUnfulfilledInputs((Actor) connectedActor, actorList);
+                    int inputCount = _countUnfulfilledInputs((Actor) connectedActor, actorList, false);
                     int firingsRemaining = _getFiringCount(connectedActor);
 
                     // If so, then add it to the proper list.
@@ -1544,8 +1556,10 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 // Increment the number of waiting tokens.
                 receiver._waitingTokens += createdTokens;
                 // Update the buffer size, if necessary.
-                if (receiver._waitingTokens > receiver._bufferSize) {
-                	receiver._bufferSize = receiver._waitingTokens;
+                int capacity = receiver.getCapacity();
+                if (capacity == SDFReceiver.INFINITE_CAPACITY
+                        || receiver._waitingTokens > capacity) {
+                	receiver.setCapacity(receiver._waitingTokens);
                 }
 
                 // Only proceed if the connected actor is
@@ -1556,7 +1570,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (actorList.contains(connectedActor)) {
                     // Check and see whether the connectedActor
                     // can be scheduled.
-                    int inputCount = _countUnfulfilledInputs((Actor) connectedActor, actorList);
+                    int inputCount = _countUnfulfilledInputs((Actor) connectedActor, actorList, false);
                     int firingsRemaining = _getFiringCount(connectedActor);
 
                     // If so, then add it to the proper list.

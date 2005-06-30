@@ -413,5 +413,5 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *  is set to false.  To enable verbose messages, edit the source file
      *  and recompile.
      */
-    protected static final boolean VERBOSE = true;
+    protected static final boolean VERBOSE = false;
 }
