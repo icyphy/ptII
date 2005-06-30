@@ -4,9 +4,9 @@
 <entity name="EvaderAndPursuer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, -1, 933, 735}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 202, 973, 667}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 617]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[758, 549]">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -48,13 +48,13 @@
         </property>
     </property>
     <property name="model ID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
-        <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Apr 12, 2005 12:01:09 AM">
+        <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 8, 2005 11:30:44 PM">
         </property>
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 26, 2005 4:11:07 PM">
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 12, 2005 3:04:19 PM">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Yang Zhao">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 555.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 690.0]">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -88,9 +88,17 @@ sensors.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 95.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1280526651094">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{359.0, 308.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.9772213855422, 257.4647025602425}">
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Yang Zhao">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 340.0]">
+        </property>
     </property>
     <entity name="RadioChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=200}">
@@ -101,6 +109,8 @@ sensors.</text></svg></configure>
         </property>
     </entity>
     <entity name="SoundChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
+        <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="341">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 45.0">
         </property>
     </entity>
@@ -485,7 +495,7 @@ sensors.</text></svg></configure>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="radioRange">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 135.0]">
         </property>
     </entity>
     <entity name="Sensor33" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
@@ -889,14 +899,60 @@ sensors.</text></svg></configure>
     </entity>
     <entity name="Evader" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="box1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[8.0, -15.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="14.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+            </property>
+            <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[2.0, -3.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="54.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="26.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+                </property>
+                <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 50.0, 0.0, 60.0, 20.0, 60.0, 35.0, 0.0, 35.0}">
+                </property>
+            </property>
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[13.0, 7.0]">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="15.0">
                 </property>
                 <property name="height" class="ptolemy.data.expr.Parameter" value="15.0">
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 0.7}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-12.0, 7.0]">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="15.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="15.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
         </property>
@@ -916,13 +972,11 @@ sensors.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 40.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 450.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[193, 285]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 200, 928, 518}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 200, 928, 518}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[713, 400]">
-        </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="speed" class="ptolemy.data.expr.Parameter" value="12">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -952,6 +1006,8 @@ sensors.</text></svg></configure>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="580.0120086669922, 345.37550354003906">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -1326,14 +1382,46 @@ to another. Then delete this annotation.</text>
     </entity>
     <entity name="Pursuer" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="box1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="25.0">
+            <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -4.0]">
                 </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="18.0">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="34.0">
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.1, 0.7}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.0,1.0}">
+                </property>
+                <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 50.0, 0.0, 60.0, 20.0, 60.0, 35.0, 0.0, 35.0}">
+                </property>
+            </property>
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 12.0]">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="15.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="15.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 12.0]">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="15.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="15.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
         </property>
@@ -1353,13 +1441,11 @@ to another. Then delete this annotation.</text>
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 425.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[218.4735648516995, 290.709919436883]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-        </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <port name="radio" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
@@ -1371,6 +1457,8 @@ to another. Then delete this annotation.</text>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 185.0">
             </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
         <port name="signal" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -1381,6 +1469,8 @@ to another. Then delete this annotation.</text>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 250.0">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
@@ -1406,7 +1496,7 @@ to another. Then delete this annotation.</text>
             </property>
         </entity>
         <entity name="Pursuer" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Pursuer">
-            <property name="speed" class="ptolemy.data.expr.Parameter" value="10.0">
+            <property name="speed" class="ptolemy.data.expr.Parameter" value="12.0">
             </property>
             <property name="workRange" class="ptolemy.data.expr.Parameter" value="{{160.0, 500.0}, {185.0, 500.0}}">
             </property>
@@ -1481,7 +1571,7 @@ to another. Then delete this annotation.</text>
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={323, 796, 290, 227}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={323, 796, 290, 227}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 110.0">
             </property>
