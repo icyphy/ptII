@@ -106,6 +106,8 @@ public class SDFReceiver extends AbstractReceiver {
      */
     public void clear() {
         _queue.clear();
+        _bufferSize = 0;
+        _waitingTokens = 0;
     }
 
     /** Remove the first token (the oldest one) from the receiver and
@@ -379,7 +381,21 @@ public class SDFReceiver extends AbstractReceiver {
     public static final int INFINITE_CAPACITY = ArrayFIFOQueue.INFINITE_CAPACITY;
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+    
+    // These are protected so that they can be accessed directly by the
+    // scheduler.
+    // FIXME: Should these be stored in the queue object?
+    
+    /** The buffer size as determined during scheduling. */
+    protected int _bufferSize = 0;
+    
+    /** The number of tokens waiting to be consumed during scheduling. */
+    protected int _waitingTokens = 0;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
     // The queue containing the receiver data.
     private ArrayFIFOQueue _queue;
 

@@ -228,6 +228,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
     protected void _saveBufferSizes(final Map minimumBufferSizes) {
         Director director = (Director) getContainer();
         final CompositeActor container = (CompositeActor) director.getContainer();
+        // FIXME: These buffer sizes should be properties of input ports,
+        // not properties of relations.
         ChangeRequest request = new ChangeRequest(this, "Record buffer sizes") {
                 protected void _execute() throws KernelException {
                     Iterator relations = container.relationList().iterator();
@@ -411,5 +413,5 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *  is set to false.  To enable verbose messages, edit the source file
      *  and recompile.
      */
-    protected static final boolean VERBOSE = false;
+    protected static final boolean VERBOSE = true;
 }
