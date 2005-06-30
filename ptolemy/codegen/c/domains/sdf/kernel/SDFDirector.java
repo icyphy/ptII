@@ -37,6 +37,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.StaticSchedulingDirector;
@@ -45,6 +46,7 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -250,37 +252,26 @@ public class SDFDirector extends Director {
      *  @param port The given port.
      *  @param channelNumber The given channel number.
      *  @return The buffer size of the given channel.
-     *  @exception IllegalActionException if more than one relation is
-     *   connected to the given channel, or if the bufferSize variable
-     *   does not contain a token.
+     *  @exception IllegalActionException If the channel number is
+     *   out of range.
      */
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
-        int bufferSize = 1;
-        List connectedRelations = getConnectedRelations(port, channelNumber);
-
-        if (connectedRelations.size() > 1) {
-            throw new IllegalActionException(getComponent(),
-                    "more than one relation is connected to " + port.getFullName()
-                    + ", " + channelNumber);
+        
+        Receiver[][] receivers = port.getReceivers();
+        try {
+        	int size = 0;
+            for (int copy = 0; copy < receivers[channelNumber].length; copy++) {
+            	int copySize = ((SDFReceiver)receivers[channelNumber][copy]).getCapacity();
+                if (copySize > size) {
+                	size = copySize;
+                }
+            }
+            return size;
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            throw new IllegalActionException(port,
+                    "Channel out of bounds: " + channelNumber);
         }
-
-        // Paranoid coding.
-        // This if clause is never true as this method is only called
-        // if the port width is greater than zero, which means the
-        // there is always a connected relation.
-        if (connectedRelations.size() == 0) {
-            return bufferSize;
-        }
-
-        IORelation relation = (IORelation) connectedRelations.get(0);
-        Attribute buffer = relation.getAttribute("bufferSize");
-
-        if (buffer != null) {
-            bufferSize = ((IntToken) ((Variable) buffer).getToken()).intValue();
-        }
-
-        return bufferSize;
     }
 
     /** Get the set of relations connected to the given channel (i.e., given
