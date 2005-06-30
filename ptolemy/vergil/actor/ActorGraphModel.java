@@ -434,7 +434,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             Object head = link.getHead();
             Object headObj = getSemanticObject(head);
 
-            if (tailObj != relation && headObj != relation) {
+            if (tailObj != relation && headObj != relation && link.getRelation() != relation) {
             	// The link does not involve this relation. Skip it.
                 // NOTE: Used to skip it if the relation field of the link
                 // didn't match this relation. But we need to ignore
