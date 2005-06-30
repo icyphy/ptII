@@ -174,9 +174,21 @@ public class Ramp extends SequenceSource {
             _resultArray = new Token[count];
         }
 
+        // Consume any trigger inputs.
+        // NOTE: It might seem that using trigger.numberOfSources() is
+        // correct here, but it is not. It is possible for channels
+        // to be connected, for example, to other output ports or
+        // even back to this same trigger port, in which case higher
+        // numbered channels will not have their inputs read.
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.hasToken(i, count)) {
+                trigger.get(i, count);
+            }
+        }
+
         for (int i = 0; i < count; i++) {
             _resultArray[i] = _stateToken;
-
+            
             try {
                 step.update();
                 _stateToken = _stateToken.add(step.getToken());
