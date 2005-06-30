@@ -81,7 +81,7 @@ public class ValidateMpdu extends MACActorBase {
 
         // create ports
         fromPHYLayer = new TypedIOPort(this, "fromPHYLayer", true, false);
-//        fromPHYLayer.setTypeEquals(BaseType.GENERAL);
+        // fromPHYLayer.setTypeEquals(BaseType.GENERAL);
 
         toChannelState = new TypedIOPort(this, "toChannelState", false, true);
         toChannelState.setTypeEquals(BaseType.GENERAL);
@@ -124,13 +124,14 @@ public class ValidateMpdu extends MACActorBase {
                 // send RtsTimeout message to ChannelState process
 
                 Token[] values = { new IntToken(RtsTimeout) };
-                RecordToken msgout = new RecordToken(RtsTimeoutMsgFields, values);
+                RecordToken msgout = new RecordToken(RtsTimeoutMsgFields,
+                                                     values);
                 toChannelState.send(0, msgout);
             } else if (fromPHYLayer.hasToken(0)) {
-                //RecordToken msg = (RecordToken) fromPHYLayer.get(0);
+                // RecordToken msg = (RecordToken) fromPHYLayer.get(0);
                 UnionToken inputToken = (UnionToken)fromPHYLayer.get(0);
                 RecordToken msg = (RecordToken) inputToken.value();
-                
+
                 if (((IntToken) msg.get("kind")).intValue() == RxStart) {
                     if (_debugging) {
                         _debug("the msg token received from PHY is : "
@@ -152,7 +153,6 @@ public class ValidateMpdu extends MACActorBase {
 
             if (fromPHYLayer.hasToken(0)) {
                 //RecordToken msg = (RecordToken) fromPHYLayer.get(0);
-
                 UnionToken inputToken = (UnionToken)fromPHYLayer.get(0);
                 RecordToken msg = (RecordToken) inputToken.value();
                 switch (((IntToken) msg.get("kind")).intValue()) {
