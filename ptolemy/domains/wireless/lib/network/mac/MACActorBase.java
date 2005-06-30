@@ -400,137 +400,51 @@ public class MACActorBase extends NetworkActorBase {
 
     // message formats
     protected static final String[] TxStartMsgFields = {
-        "kind",
-        "length",
-        "rate"
+        "kind", 
+        "length", 
+        "rate" 
     };
-    protected static final String[] TxDataMsgFields = {
-        "kind",
-        "pdu"
+    protected static final String[] TxDataMsgFields = { 
+        "kind", 
+        "pdu" 
     };
     protected static final String[] RtsTimeoutMsgFields = {
-        "kind"
+        "kind" 
     };
     protected static final String[] RxMpduMsgFields = {
-        "kind",
-        "pdu",
-        "endRx",
-        "rxRate"
+        "kind", "pdu", "endRx", "rxRate"
     };
-    protected static final String[] UseIfsMsgFields = {
-        "kind",
-        "tRxEnd"
+    protected static final String[] UseIfsMsgFields = { 
+        "kind", "tRxEnd" 
     };
     protected static final String[] RxIndicateMessageFields = {
-        "kind",
-        "pdu",
-        "endRx",
-        "rxRate"
+        "kind", "pdu", "endRx", "rxRate"
     };
     protected static final String[] NeedAckMessageFields = {
-        "kind",
-        "ackto",
-        "endRx",
-        "rxRate",
-        "dAck"
+        "kind", "ackto", "endRx", "rxRate", "dAck"
     };
     protected static final String[] SetNavMessageFields = {
-        "kind",
-        "tRef",
-        "dNav",
-        "src"
+        "kind", "tRef", "dNav", "src"
     };
-    protected static final String[] CSMsgFields = {
-        "kind"
-    };
+    protected static final String[] CSMsgFields = {"kind" };
 
     // the value for the pdu field is a record with fields
     // as DataPacket's fields.
-    protected static final String[] TxRequestMsgFields = {
-        "kind",
-        "pdu",
-        "rate"
+    protected static final String[] TxRequestMsgFields = { 
+        "kind", "pdu", "rate" 
     };
-    protected static final String[] TxConfirmMsgFields = {
+    protected static final String[] TxConfirmMsgFields = { 
         "kind"
     };
-    protected static final String[] DataPacket = {
-        "protocolVer",
-        "Type",
-        "Subtype",
-        "toDs",
-        "frDs",
-        "moreFrag",
-        "retryBit",
-        "pwrMgt",
-        "moreData",
-        "wepBit",
-        "orderBit",
-        "FCS",
-        "durId",
-        "Addr1",
-        "Addr2",
-        "Addr3",
-        "SeqNum",
-        "FragNum",
-        "Addr4",
-        "payload",
-        "Length"
-    };
 
-    // use Addr1 for RA, so FilterMpdu does not need to check packet type
-    // before checking Addr1 or RA filed
-    protected static final String[] AckPacket = {
-        "protocolVer",
-        "Type",
-        "Subtype",
-        "toDs",
-        "frDs",
-        "moreFrag",
-        "retryBit",
-        "pwrMgt",
-        "moreData",
-        "wepBit",
-
-        //"orderBit", "FCS", "durId", "RA","Length"};
-        "orderBit",
-        "FCS",
-        "durId",
-        "Addr1",
-        "Length"
+    protected static final String[] BackoffDoneMsgFields = { 
+        "kind", "cnt" 
     };
-    protected static final String[] RtsPacket = {
-        "protocolVer",
-        "Type",
-        "Subtype",
-        "toDs",
-        "frDs",
-        "moreFrag",
-        "retryBit",
-        "pwrMgt",
-        "moreData",
-        "wepBit",
-
-        //     "orderBit", "FCS", "durId", "RA", "TA","Length"};
-        "orderBit",
-        "FCS",
-        "durId",
-        "Addr1",
-        "Addr2",
-        "Length"
-    };
-    protected static final String[] BackoffDoneMsgFields = {
-        "kind",
-        "cnt"
-    };
-    protected static final String[] getBackoffMsgFields = {
-        "kind",
-        "ccw",
-        "cnt"
+    protected static final String[] getBackoffMsgFields = { 
+        "kind", "ccw", "cnt" 
     };
     protected static final String[] GotCtsMsgFields = {
-        "kind",
-        "endRx"
+        "kind", "endRx"
     };
 
     // message types
@@ -559,10 +473,8 @@ public class MACActorBase extends NetworkActorBase {
     protected static final int PCremove2 = 48;
     protected static final int PCmax = 48;
     protected static final int PCmin = 44;
-    protected static final int Ack = 13;
-    protected static final int Cts = 12;
-    protected static final int Data = 0;
-    protected static final int Rts = 11;
+   
+
     protected static final int ControlType = 1;
     protected static final int DataType = 2;
     protected static final int GotAckMsg = 1;

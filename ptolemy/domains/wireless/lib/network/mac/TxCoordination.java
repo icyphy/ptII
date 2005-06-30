@@ -115,6 +115,9 @@ public class TxCoordination extends MACActorBase {
 
         TXTXRequest = new TypedIOPort(this, "TXTXRequest", false, true);
         TXTXRequest.setTypeEquals(BaseType.GENERAL);
+        
+        overhead = new TypedIOPort(this, "overhead", false, true);
+        overhead.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -148,6 +151,10 @@ public class TxCoordination extends MACActorBase {
     /** Port sending the TX request to the Transmission block
      */
     public TypedIOPort TXTXRequest;
+    
+    /** Port sending overhead of handling a pdu request.
+     */
+    public TypedIOPort overhead;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -161,7 +168,6 @@ public class TxCoordination extends MACActorBase {
 
         if (PduRequest.hasToken(0)) {
             isNetData = true;
-
             RecordToken msg = (RecordToken) PduRequest.get(0);
 
             if (_txQueue.size() >= QueueSize) {
@@ -170,6 +176,7 @@ public class TxCoordination extends MACActorBase {
                 }
             } else {
                 _txQueue.add(msg);
+                _pduTime.add(currentTime);
             }
         }
 
@@ -185,7 +192,7 @@ public class TxCoordination extends MACActorBase {
 
             if (isNetData && !backoff) {
                 _handleData();
-            } else if (BkDone.hasToken(0)) {
+            } else if (BkDone.hasToken(0)) {             
                 BkDone.get(0);
                 _checkQueue();
             }
@@ -198,6 +205,7 @@ public class TxCoordination extends MACActorBase {
                 RecordToken BkDoneMsg = (RecordToken) BkDone.get(0);
 
                 if (((IntToken) BkDoneMsg.get("cnt")).intValue() == -2) {
+
                     TXTXRequest.send(0, _rtsdu);
                     _currentState = Wait_Rts_Sent;
                 } else // channel is busy, need to backoff
@@ -225,6 +233,8 @@ public class TxCoordination extends MACActorBase {
         case Wait_Cts:
 
             if (kind == Timeout) {
+
+                
                 if (_ccw != _aCWmax) {
                     _ccw = (2 * _ccw) + 1;
                 }
@@ -241,12 +251,14 @@ public class TxCoordination extends MACActorBase {
                     // modified standard here
                     _slrc = 0;
                     _cont = false;
-                } else {
+                }
+                else {
                     _cont = true;
                 }
 
                 _currentState = TxC_Backoff;
             } else if (GotAck.hasToken(0)) {
+                      
                 RecordToken GotCtsMsg = (RecordToken) GotAck.get(0);
 
                 if (((IntToken) GotCtsMsg.get("kind")).intValue() == GotCts) {
@@ -380,6 +392,7 @@ public class TxCoordination extends MACActorBase {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _txQueue = new LinkedList();
+        _pduTime = new LinkedList();
         _currentState = 0;
         _dSifsDly = _aSifsTime - _aRxTxTurnaroundTime;
         _ssrc = 0;
@@ -524,9 +537,7 @@ public class TxCoordination extends MACActorBase {
 
     private void _backoff(int ccw, int cnt) throws IllegalActionException {
         Token[] getBackoffMsgValues = {
-            new IntToken(Backoff),
-            new IntToken(ccw),
-            new IntToken(cnt)
+            new IntToken(Backoff), new IntToken(ccw), new IntToken(cnt)
         };
         RecordToken event = new RecordToken(getBackoffMsgFields,
                 getBackoffMsgValues);
@@ -535,14 +546,16 @@ public class TxCoordination extends MACActorBase {
 
     private void _sendTxRequest() throws IllegalActionException {
         Token[] TxRequestMsgValues = {
-            new IntToken(TxRequest),
-            _tpdu,
+            new IntToken(TxRequest), _tpdu,
             new IntToken(_mBrate * (int) 1e6)
         };
 
         RecordToken copyTpdu = new RecordToken(TxRequestMsgFields,
                 TxRequestMsgValues);
         TXTXRequest.send(0, copyTpdu);
+        
+        Time delay = getDirector().getModelTime().subtract(_time);
+        overhead.send(0, new DoubleToken(delay.getDoubleValue() * 1e6));
         _currentState = Wait_Pdu_Sent;
     }
 
@@ -565,6 +578,7 @@ public class TxCoordination extends MACActorBase {
 
     private void _handleData() throws IllegalActionException {
         int dest_addr;
+        _time = (Time) _pduTime.removeFirst();
         RecordToken msg = (RecordToken) _txQueue.removeFirst();
         int msg_kind = ((IntToken) msg.get("kind")).intValue();
 
@@ -572,7 +586,6 @@ public class TxCoordination extends MACActorBase {
         case netw_interest_msg:
         case netw_data_msg:
             dest_addr = ((IntToken) msg.get("toMACAddr")).intValue();
-            ;
             break;
 
         default: // everything else is broadcast
@@ -580,6 +593,7 @@ public class TxCoordination extends MACActorBase {
         }
 
         _tpdu = _createDataPacket(msg, dest_addr);
+        
 
         int length = ((IntToken) _tpdu.get("Length")).intValue();
         int Addr1 = ((IntToken) _tpdu.get("Addr1")).intValue();
@@ -598,8 +612,7 @@ public class TxCoordination extends MACActorBase {
         } else {
             RecordToken pdu = _createPacket(Rts, durId, dest_addr, getID());
             Token[] TxRequestMsgValues = {
-                new IntToken(TxRequest),
-                pdu,
+                new IntToken(TxRequest), pdu,
                 new IntToken(_mBrate * (int) 1e6)
             };
             _rtsdu = new RecordToken(TxRequestMsgFields, TxRequestMsgValues);
@@ -644,6 +657,11 @@ public class TxCoordination extends MACActorBase {
     private RecordToken _tpdu;
     private LinkedList _txQueue;
     private Timer _Trsp;
+    
+    //This list saves the time when each pdu request is generated. It is used
+    //to calculate the overheah for statistic perpose. Yang 
+    private LinkedList _pduTime;
+    private Time _time;
 
     // define states in FSM
     private static final int TxC_Idle = 0;

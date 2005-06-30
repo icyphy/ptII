@@ -33,6 +33,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.data.UnionToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -80,7 +81,7 @@ public class ValidateMpdu extends MACActorBase {
 
         // create ports
         fromPHYLayer = new TypedIOPort(this, "fromPHYLayer", true, false);
-        fromPHYLayer.setTypeEquals(BaseType.GENERAL);
+//        fromPHYLayer.setTypeEquals(BaseType.GENERAL);
 
         toChannelState = new TypedIOPort(this, "toChannelState", false, true);
         toChannelState.setTypeEquals(BaseType.GENERAL);
@@ -119,16 +120,17 @@ public class ValidateMpdu extends MACActorBase {
         switch (_currentState) {
         case Rx_Idle:
 
-            if (kind == RtsTimeout) { // send RtsTimeout message to ChannelState process
+            if (kind == RtsTimeout) { 
+                // send RtsTimeout message to ChannelState process
 
-                Token[] values = {
-                    new IntToken(RtsTimeout)
-                };
+                Token[] values = { new IntToken(RtsTimeout) };
                 RecordToken msgout = new RecordToken(RtsTimeoutMsgFields, values);
                 toChannelState.send(0, msgout);
             } else if (fromPHYLayer.hasToken(0)) {
-                RecordToken msg = (RecordToken) fromPHYLayer.get(0);
-
+                //RecordToken msg = (RecordToken) fromPHYLayer.get(0);
+                UnionToken inputToken = (UnionToken)fromPHYLayer.get(0);
+                RecordToken msg = (RecordToken) inputToken.value();
+                
                 if (((IntToken) msg.get("kind")).intValue() == RxStart) {
                     if (_debugging) {
                         _debug("the msg token received from PHY is : "
@@ -149,8 +151,10 @@ public class ValidateMpdu extends MACActorBase {
         case Rx_Frame:
 
             if (fromPHYLayer.hasToken(0)) {
-                RecordToken msg = (RecordToken) fromPHYLayer.get(0);
+                //RecordToken msg = (RecordToken) fromPHYLayer.get(0);
 
+                UnionToken inputToken = (UnionToken)fromPHYLayer.get(0);
+                RecordToken msg = (RecordToken) inputToken.value();
                 switch (((IntToken) msg.get("kind")).intValue()) {
                 case RxEnd:
                     _endRx = currentTime.subtract(_D1 * 1e-6);
@@ -158,8 +162,7 @@ public class ValidateMpdu extends MACActorBase {
                     if (((IntToken) msg.get("status")).intValue() == NoError) {
                         // if the received message is RTS, set RtsTimeout timer
                         if ((((IntToken) _pdu.get("Type")).intValue() == ControlType)
-                                && (((IntToken) _pdu.get("Subtype"))
-                                        .intValue() == Rts)) {
+                                && (((IntToken) _pdu.get("Subtype")).intValue() == Rts)) {
                             _dRts = (2 * _aSifsTime) + (2 * _aSlotTime)
                                 + (_sAckCtsLng / _rxRate) + _aPreambleLength
                                 + _aPlcpHeaderLength;
@@ -169,8 +172,7 @@ public class ValidateMpdu extends MACActorBase {
 
                         // working with record tokens to represent messages
                         Token[] RxMpduvalues = {
-                            new IntToken(RxMpdu),
-                            _pdu,
+                            new IntToken(RxMpdu), _pdu,
                             new DoubleToken(_endRx.getDoubleValue()),
                             new IntToken(_rxRate)
                         };
