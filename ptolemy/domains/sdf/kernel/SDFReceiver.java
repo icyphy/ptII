@@ -381,9 +381,6 @@ public class SDFReceiver extends AbstractReceiver {
      */
     public static final int INFINITE_CAPACITY = ArrayFIFOQueue.INFINITE_CAPACITY;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
-    
     /** The number of tokens waiting to be consumed during scheduling. */
     public int _waitingTokens = 0;
 
