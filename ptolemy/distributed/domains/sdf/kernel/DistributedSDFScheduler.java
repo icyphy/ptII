@@ -35,15 +35,16 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.IORelation;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
@@ -53,7 +54,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.Fraction;
-import ptolemy.actor.util.DFUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 ////DistributedSDFScheduler
@@ -389,7 +389,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
         // A linked list containing all the actors that have no inputs.
         LinkedList readyToScheduleActorList = new LinkedList();
-        // A linked list that will contain our new schedule.
+
         Schedule newSchedule = new Schedule();
 
 
@@ -424,109 +424,31 @@ public class DistributedSDFScheduler extends SDFScheduler {
          * < NEW!                                          *
          **************************************************/
 
-        // An association between all the input ports in a simulation and an
-        // array of the number of tokens waiting on each relation of that port.
-        Map waitingTokens =
-            new TreeMap(new DFUtilities.NamedObjComparator());
         try {
-            // Initialize waitingTokens
-            // at all the input ports to zero
-            for (Iterator actors = allActorList.iterator();
-                 actors.hasNext();) {
-                Actor actor = (Actor)actors.next();
-
-                for (Iterator inputPorts = actor.inputPortList().iterator();
-                     inputPorts.hasNext();) {
-                    IOPort inputPort = (IOPort) inputPorts.next();
-                    int[] tokenCount = new int[inputPort.getWidth()];
-                    for (int channel = 0;
-                         channel < tokenCount.length;
-                         channel++) {
-                        tokenCount[channel] = 0;
-                    }
-                    waitingTokens.put(inputPort, tokenCount);
-
-                }
-            }
-
-            // Initiailize waitingTokens at
-            // all output ports of the model to zero.
-            for (Iterator outputPorts = container.outputPortList().iterator();
-                 outputPorts.hasNext();) {
-                IOPort outputPort = (IOPort) outputPorts.next();
-
-                // Compute the width of relations connected to the inside.
-                // Wouldn't it be nice if IOPort did this?
-                Iterator relations =
-                    outputPort.insideRelationList().iterator();
-                int portInsideWidth = 0;
-                while (relations.hasNext()) {
-                    IORelation relation = (IORelation)relations.next();
-                    portInsideWidth += relation.getWidth();
-                }
-
-                int[] tokenCount = new int[portInsideWidth];
-                for (int channel = 0;
-                     channel < tokenCount.length;
-                     channel++) {
-                    tokenCount[channel] = 0;
-                }
-                waitingTokens.put(outputPort, tokenCount);
-            }
-
-            // simulate the creation of initialization tokens (delays).
-            for (Iterator actors = allActorList.iterator();
-                 actors.hasNext();) {
-                Actor actor = (Actor)actors.next();
-
-                Iterator outputPorts = actor.outputPortList().iterator();
-                while (outputPorts.hasNext()) {
-                    IOPort outputPort = (IOPort) outputPorts.next();
-                    int count =
-                        DFUtilities.getTokenInitProduction(outputPort);
-                    if (_debugging && VERBOSE) {
-                        _debug("Simulating " + count
-                                + " tokens created on " + outputPort);
-                    }
-                    if (count > 0) {
-                        /**************************************************
-                         * > NEW!                                         *
-                         **************************************************/
-                        _simulateTokensCreatedLast(outputPort,
-                                count,
-                                allActorList,
-                                readyToScheduleActorList,
-                                waitingTokens,
-                                minimumBufferSize);
-                        /**************************************************
-                         * < NEW!                                         *
-                         **************************************************/
-
-                    }
-                }
-            }
-
-            // Simulate a number of tokens initially present on each
-            // external input port.
-            for (Iterator inputPorts = container.inputPortList().iterator();
-                 inputPorts.hasNext();) {
-                IOPort port = (IOPort)inputPorts.next();
-                int count = ((Integer)externalRates.get(port)).intValue();
-                _simulateExternalInputs(port,
-                        count,
-                        actorList,
-                        waitingTokens,
-                        minimumBufferSize);
-            }
+            // Initializing waitingTokens at all the input ports of actors and
+            // output ports of the model to zero is not necessary because
+            // SDFReceiver.clear() does it.
+            // Simulate the creation of initialization tokens (delays).
 
             // Fill readyToScheduleActorList with all the actors that have
             // no unfulfilled input ports, and are thus ready to fire.
-            for (Iterator actors = actorList.iterator();
-                 actors.hasNext();) {
-                Actor actor = (Actor)actors.next();
+            // This includes actors with no input ports and those
+            // whose input ports have consumption rates of zero.
+
+            Iterator actors = actorList.iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                int firingsRemaining = ((Integer)
+                        firingsRemainingVector.get(actor)).intValue();
+
+                if (firingsRemaining == 0) {
+                    unscheduledActorList.remove(actor);
+                    continue;
+                }
 
                 int inputCount = _countUnfulfilledInputs(actor, actorList,
-                        waitingTokens);
+                                                         true);
+
                 if (inputCount == 0) {
                     /**************************************************
                      * > NEW!                                         *
@@ -536,25 +458,65 @@ public class DistributedSDFScheduler extends SDFScheduler {
                     // no input requirements to be fired.
                     readyToScheduleActorList.addLast((ComponentEntity) actor);
                     /**************************************************
-                     * < NEW!                                         *
+                     * > NEW!                                         *
                      **************************************************/
                 }
 
                 if (_debugging && VERBOSE) {
-                    _debug("Actor " + ((ComponentEntity) actor).getName() +
-                            " has " + inputCount + " unfulfilledInputs.");
+                    _debug("Actor " + ((ComponentEntity) actor).getName()
+                            + " has " + inputCount + " unfulfilledInputs.");
                 }
             }
 
-            // System.out.println("readyToScheduleActorList:" +
-            // readyToScheduleActorList.toString());
+            // Simulate production of initial tokens.
+            actors = actorList.iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                Iterator outputPorts = actor.outputPortList().iterator();
+
+                while (outputPorts.hasNext()) {
+                    IOPort outputPort = (IOPort) outputPorts.next();
+                    int count = DFUtilities.getTokenInitProduction(outputPort);
+
+                    if (_debugging && VERBOSE) {
+                        _debug("Simulating " + count + " initial tokens " +
+                                "created on " + outputPort);
+                    }
+
+                    if (count > 0) {
+                        /**************************************************
+                         * > NEW!                                         *
+                         **************************************************/
+                        _simulateTokensCreatedLast(outputPort, count,
+                                                   actorList,
+                                                   readyToScheduleActorList);
+                        /**************************************************
+                         * < NEW!                                         *
+                         **************************************************/
+                    }
+                }
+            }
+
+            // Simulate a number of tokens initially present on each
+            // external input port.
+            for (Iterator inputPorts = container.inputPortList().iterator();
+                 inputPorts.hasNext();) {
+                IOPort port = (IOPort) inputPorts.next();
+                int count = ((Integer) externalRates.get(port)).intValue();
+                if (count > 0) {
+                    _simulateExternalInputs(port, count, actorList,
+                                            readyToScheduleActorList);
+                }
+            }
+
+
             /**************************************************
              * > NEW!                                         *
              **************************************************/
             // We copy all the initial ready actors into the parallelLevel
             // to keep track of when we finalize processing every level.
-            for (Iterator actors = readyToScheduleActorList.iterator();
-                 actors.hasNext();)
+            for (actors = readyToScheduleActorList.iterator();
+                actors.hasNext();)
                 {
                     // Changed from addFirst to addLast, this does not really
                     // matter since this is are all the sources that have
@@ -565,48 +527,30 @@ public class DistributedSDFScheduler extends SDFScheduler {
              * > NEW!                                         *
              **************************************************/
 
-            // System.out.println("parallelLevel:" + parallelLevel.toString());
-
             // While we have actors left, pick one that is ready and fire it.
             while (readyToScheduleActorList.size() > 0) {
                 if (_debugging && VERBOSE) {
-                    _debug("\nwaitingTokens: ");
-                    for (Iterator ports = waitingTokens.keySet().iterator();
-                         ports.hasNext();) {
-                        IOPort port = (IOPort)ports.next();
-                        int tokenCount[] = (int[])waitingTokens.get(port);
-                        _debug("Port " + port.getFullName());
-                        _debug("Number of channels = " +
-                                tokenCount.length);
-                        for (int channel = 0;
-                             channel < tokenCount.length;
-                             channel++) {
-                            _debug("Channel " + channel + " has " +
-                                    tokenCount[channel] + " tokens.");
-                        }
-                    }
                     _debug("Actors that can be scheduled:");
-                    for (Iterator readyActors =
-                             readyToScheduleActorList.iterator();
-                         readyActors.hasNext();) {
-                        Entity readyActor = (Entity)readyActors.next();
+                    for (Iterator readyActors = readyToScheduleActorList
+                             .iterator(); readyActors.hasNext();) {
+                        Entity readyActor = (Entity) readyActors.next();
                         _debug(readyActor.getFullName());
                     }
                     _debug("Actors with firings left:");
-                    for (Iterator remainingActors =
-                             unscheduledActorList.iterator();
-                         remainingActors.hasNext();) {
-                        Entity remainingActor = (Entity)remainingActors.next();
+                    for (Iterator remainingActors = unscheduledActorList
+                             .iterator(); remainingActors.hasNext();) {
+                        Entity remainingActor = (Entity)
+                                                 remainingActors.next();
                         _debug(remainingActor.getFullName());
                     }
                 }
 
                 // Pick an actor that is ready to fire.
-                ComponentEntity currentActor
-                    = (ComponentEntity) readyToScheduleActorList.getFirst();
+                Actor currentActor = (Actor)
+                                     readyToScheduleActorList.getFirst();
 
                 // Remove it from the list of actors we are waiting to fire.
-                while (readyToScheduleActorList.remove(currentActor));
+                while (readyToScheduleActorList.remove(currentActor)) { }
 
                 /**************************************************
                  * > NEW!                                         *
@@ -618,23 +562,23 @@ public class DistributedSDFScheduler extends SDFScheduler {
                  **************************************************/
 
                 // Determine the number of times currentActor can fire.
-                int numberOfFirings =
-                    _computeMaximumFirings(currentActor, waitingTokens);
+                int numberOfFirings = _computeMaximumFirings(currentActor);
 
                 // We should never schedule something more than the number
                 // of times expected by the balance equations.  This might
                 // happen because we assume an infinite number of tokens
                 // are waiting on external ports.
-                int firingsRemaining =
-                    ((Integer) firingsRemainingVector.get(currentActor)).
-                    intValue();
+                int firingsRemaining = ((Integer)
+                                    firingsRemainingVector.get(currentActor))
+                                    .intValue();
+
                 if (numberOfFirings > firingsRemaining) {
                     numberOfFirings = firingsRemaining;
                 }
 
                 if (_debugging && VERBOSE) {
-                    _debug("Scheduling actor " + currentActor.getName() +
-                            " " + numberOfFirings + " times.");
+                    _debug("Scheduling actor " + currentActor.getName() + " "
+                            + numberOfFirings + " times.");
                 }
 
                 // Update the firingsRemainingVector for this actor.
@@ -643,14 +587,12 @@ public class DistributedSDFScheduler extends SDFScheduler {
                         new Integer(firingsRemaining));
 
                 if (_debugging && VERBOSE) {
-                    _debug(currentActor.getName() + " should fire " +
-                            firingsRemaining + " more times.");
+                    _debug(currentActor.getName() + " should fire "
+                            + firingsRemaining + " more times.");
                 }
-
                 // Simulate the tokens that are consumed by the actors
                 // input ports.
-                _simulateInputConsumption(currentActor,
-                        waitingTokens, numberOfFirings);
+                _simulateInputConsumption(currentActor, numberOfFirings);
 
                 // Add it to the schedule numberOfFirings times.
                 Firing firing = new Firing();
@@ -670,7 +612,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                 // and simulate the proper production of tokens.
                 for (Iterator outputPorts =
                          ((Actor) currentActor).outputPortList().iterator();
-                     outputPorts.hasNext();) {
+                    outputPorts.hasNext();) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
                     int count =
@@ -682,9 +624,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                     _simulateTokensCreatedLast(outputPort,
                             count * numberOfFirings,
                             unscheduledActorList,
-                            readyToScheduleActorList,
-                            waitingTokens,
-                            minimumBufferSize);
+                            readyToScheduleActorList);
                     /**************************************************
                      * < NEW!                                         *
                      **************************************************/
@@ -743,8 +683,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                         // Count the number of unfulfilled inputs.
                         int inputCount =
                             _countUnfulfilledInputs((Actor)currentActor,
-                                    unscheduledActorList,
-                                    waitingTokens);
+                                    unscheduledActorList, false);
                         // We've already removed currentActor from
                         // readyToSchedule actors, and presumably
                         // fired it until it can be fired no more.
@@ -829,9 +768,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
     protected void _simulateTokensCreatedLast(IOPort outputPort,
             int createdTokens,
             LinkedList actorList,
-            LinkedList readyToScheduleActorList,
-            Map waitingTokens,
-            Map minimumBufferSize)
+            LinkedList readyToScheduleActorList)
             throws IllegalActionException {
 
         Receiver[][] receivers = outputPort.getRemoteReceivers();
@@ -843,105 +780,62 @@ public class DistributedSDFScheduler extends SDFScheduler {
             _debug("width = " + outputPort.getWidth());
         }
 
-        int sourceChannel = 0;
-        Iterator relations = outputPort.linkedRelationList().iterator();
-        while (relations.hasNext()) {
-            IORelation relation = (IORelation) relations.next();
-            // A null link (supported since indexed links) might
-            // yield a null relation here.
-            // FIXME: tests for null links.
-            if (relation == null) {
+        for (int channel = 0; channel < receivers.length; channel++) {
+            if (receivers[channel] == null) {
                 continue;
             }
-
-            // The bufferSize for the current relation.  This is
-            // put back into the buffer at the end after (possibly)
-            // being updated.
-            Integer bufferSize = (Integer) minimumBufferSize.get(relation);
-
-            int width = relation.getWidth();
-            // loop through all of the channels of that relation.
-            for (int i = 0; i < width; i++, sourceChannel++) {
-                if (receivers[sourceChannel] == null) {
-                    // There is nothing connected on the other side of
-                    // transparent hierarchy... just ignore.
+            for (int copy = 0; copy < receivers[channel].length; copy++) {
+                if (!(receivers[channel][copy] instanceof SDFReceiver)) {
+                    // NOTE: This should only occur if it is null.
                     continue;
                 }
-
-                if (_debugging && VERBOSE) {
-                    _debug("destination receivers for relation "
-                            + relation.getName() + " channel "
-                            + sourceChannel + ": "
-                            + receivers[sourceChannel].length);
+                SDFReceiver receiver = (SDFReceiver)receivers[channel][copy];
+                IOPort connectedPort = (IOPort)
+                                       receivers[channel][copy].getContainer();
+                ComponentEntity connectedActor = (ComponentEntity)
+                                                connectedPort.getContainer();
+                // Increment the number of waiting tokens.
+                receiver._waitingTokens += createdTokens;
+                // Update the buffer size, if necessary.
+                int capacity = receiver.getCapacity();
+                if (capacity == SDFReceiver.INFINITE_CAPACITY
+                        || receiver._waitingTokens > capacity) {
+                    receiver.setCapacity(receiver._waitingTokens);
                 }
 
-                for (int destinationIndex = 0;
-                     destinationIndex < receivers[sourceChannel].length;
-                     destinationIndex++) {
-                    IOPort connectedPort = (IOPort)
-                        receivers[sourceChannel][destinationIndex].
-                        getContainer();
-                    ComponentEntity connectedActor =
-                        (ComponentEntity) connectedPort.getContainer();
+                // Only proceed if the connected actor is
+                // something we are scheduling.
+                // The most notable time when this will not be
+                // true is when a connection is made to the
+                // inside of an opaque port.
+                if (actorList.contains(connectedActor)) {
+                    // Check and see whether the connectedActor
+                    // can be scheduled.
+                    int inputCount = _countUnfulfilledInputs((Actor)
+                                        connectedActor, actorList, false);
+                    int firingsRemaining = _getFiringCount(connectedActor);
 
-                    // The channel of the destination port that is
-                    // connected to sourceChannel.
-                    int destinationChannel = _getChannel(connectedPort,
-                            receivers[sourceChannel][destinationIndex]);
-
-                    // Increment the number of waiting tokens.
-                    int[] tokens = (int[]) waitingTokens.get(connectedPort);
-                    tokens[destinationChannel] += createdTokens;
-
-                    // Update the buffer size, if necessary.
-                    // if bufferSize is null, then ignore, since we don't
-                    // care about that relation.
-                    if (bufferSize != null &&
-                            tokens[destinationChannel] >
-                            bufferSize.intValue()) {
-                        bufferSize = new Integer(tokens[destinationChannel]);
-                    }
-                    if (_debugging && VERBOSE) {
-                        _debug("Channel "
-                                + destinationChannel
-                                + " of "
-                                + connectedPort.getName());
-                    }
-                    // Only proceed if the connected actor is
-                    // something we are scheduling.
-                    // The most notable time when this will not be
-                    // true is when a connection is made to the
-                    // inside of an opaque port.
-                    if (actorList.contains(connectedActor)) {
-                        // Check and see whether the connectedActor
-                        // can be scheduled.
-                        int inputCount = _countUnfulfilledInputs(
-                                (Actor)connectedActor,
-                                actorList,
-                                waitingTokens);
-                        int firingsRemaining = _getFiringCount(connectedActor);
-                        // If so, then add it to the proper list.
-                        // Note that the
-                        // actor may appear more than once.
-                        // This is OK, since we
-                        // remove all of the appearances from
-                        // the list when the
-                        // actor is actually scheduled.
-                        if ((inputCount < 1) && (firingsRemaining > 0)) {
-                          /**************************************************
-                           * > NEW!                                         *
-                           **************************************************/
-                         // NEW! Addlast in order to create a topological sort.
-                            readyToScheduleActorList.addLast(connectedActor);
-                          /**************************************************
-                           * < NEW!                                         *
-                           **************************************************/
-                        }
+                    // If so, then add it to the proper list.
+                    // Note that the actor may appear more than once.
+                    // This is OK, since we remove all of the appearances from
+                    // the list when the actor is actually scheduled.
+                    if ((inputCount < 1) && (firingsRemaining > 0)) {
+                        // Ned Stoffel suggested changing this from
+                        // addLast() to addFirst() so as to minimize
+                        // the number of tokens in transit.  "This leads
+                        // to a markedly more serial schedule, as can
+                        // be demonstrated by animating the simulations"
+                        /**************************************************
+                         * > NEW!                                         *
+                         **************************************************/
+                        // NEW! Addlast in order to create a topological sort.
+                        readyToScheduleActorList.addLast(connectedActor);
+                        /**************************************************
+                         * < NEW!                                         *
+                         **************************************************/
                     }
                 }
             }
-            // update the map of buffer sizes.
-            minimumBufferSize.put(relation, bufferSize);
         }
     }
 }
