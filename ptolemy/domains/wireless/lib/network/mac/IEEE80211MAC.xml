@@ -267,8 +267,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 475.0]">
         </property>
     </port>
+    <port name="statistics" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 315.0]">
+        </property>
+    </port>
     <entity name="PowerControl" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 235.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -947,6 +952,11 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 120.0]">
             </property>
         </port>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, -115.0]">
+            </property>
+        </port>
         <entity name="TXCoordinationSTA" class="ptolemy.domains.wireless.lib.network.mac.TxCoordination">
             <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 35.0">
             </property>
@@ -1046,20 +1056,6 @@
                 </property>
             </port>
         </entity>
-        <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
-            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={717, 167, 508, 355}, maximized=false}">
-            </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-            </property>
-            <property name="binWidth" class="ptolemy.data.expr.Parameter" value="0.1">
-            </property>
-            <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.05">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{195, -35}">
-            </property>
-        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -1090,7 +1086,7 @@
             <vertex name="vertex1" value="[345.0, 155.0]">
             </vertex>
         </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="TXTXRequest" relation="relation4"/>
         <link port="TXTXConfirm" relation="relation2"/>
@@ -1103,6 +1099,7 @@
         <link port="PduRequest" relation="relation10"/>
         <link port="SinkRequest" relation="relation11"/>
         <link port="fromReception" relation="relation12"/>
+        <link port="port" relation="relation14"/>
         <link port="TXCoordinationSTA.PduRequest" relation="relation10"/>
         <link port="TXCoordinationSTA.TXTXConfirm" relation="relation2"/>
         <link port="TXCoordinationSTA.BkDone" relation="relation7"/>
@@ -1110,14 +1107,13 @@
         <link port="TXCoordinationSTA.fromPowerControl" relation="relation"/>
         <link port="TXCoordinationSTA.getBackoff" relation="relation8"/>
         <link port="TXCoordinationSTA.TXTXRequest" relation="relation4"/>
-        <link port="TXCoordinationSTA.overhead" relation="relation5"/>
+        <link port="TXCoordinationSTA.overhead" relation="relation14"/>
         <link port="RXCoordination.fromReception" relation="relation12"/>
         <link port="RXCoordination.RXTXConfirm" relation="relation6"/>
         <link port="RXCoordination.SinkRequest" relation="relation11"/>
         <link port="RXCoordination.toPowerControl" relation="relation13"/>
         <link port="RXCoordination.GotAck" relation="relation3"/>
         <link port="RXCoordination.RXTXRequest" relation="relation9"/>
-        <link port="HistogramPlotter.input" relation="relation5"/>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -1151,12 +1147,15 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="toPHY" relation="relation10"/>
     <link port="fromPHY" relation="relation9"/>
     <link port="fromPacketGenerator" relation="relation13"/>
     <link port="toPacketGenerator" relation="relation14"/>
     <link port="ChannelStatus" relation="relation12"/>
     <link port="PHYConfirm" relation="relation11"/>
+    <link port="statistics" relation="relation17"/>
     <link port="PowerControl.in" relation="relation3"/>
     <link port="PowerControl.out" relation="relation"/>
     <link port="Reception.toProtocolControl" relation="relation2"/>
@@ -1183,4 +1182,5 @@
     <link port="ProtocolControlSTA.PduRequest" relation="relation13"/>
     <link port="ProtocolControlSTA.SinkRequest" relation="relation14"/>
     <link port="ProtocolControlSTA.fromReception" relation="relation2"/>
+    <link port="ProtocolControlSTA.port" relation="relation17"/>
 </class>
