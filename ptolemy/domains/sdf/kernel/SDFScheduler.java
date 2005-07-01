@@ -666,7 +666,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @return The number of times the actor can fire.
      *  @exception IllegalActionException If the rate parameters are invalid.
      */
-    private int _computeMaximumFirings(Actor currentActor)
+    protected int _computeMaximumFirings(Actor currentActor)
             throws IllegalActionException {
         
         int result = Integer.MAX_VALUE;
@@ -721,7 +721,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @return The number of unfulfilled input ports of the given actor.
      *  @exception IllegalActionException If any called method throws it.
      */
-    private int _countUnfulfilledInputs(Actor actor, List actorList, boolean resetCapacity)
+    protected int _countUnfulfilledInputs(Actor actor, List actorList, boolean resetCapacity)
             throws IllegalActionException {
         if (_debugging && VERBOSE) {
             _debug("Counting unfulfilled inputs for " + actor.getFullName());

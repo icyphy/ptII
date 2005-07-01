@@ -385,7 +385,7 @@ public class SDFReceiver extends AbstractReceiver {
     ////                       protected variables                 ////
     
     /** The number of tokens waiting to be consumed during scheduling. */
-    protected int _waitingTokens = 0;
+    public int _waitingTokens = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
