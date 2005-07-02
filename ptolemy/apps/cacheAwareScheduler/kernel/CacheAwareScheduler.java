@@ -2221,7 +2221,7 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         // Normalize the number of for each actor using the
         // vectorizationFactor.
-        _normalizeFirings(_vectorizationFactor, entityToFiringsPerIteration,
+        _vectorizeFirings(_vectorizationFactor, entityToFiringsPerIteration,
                 externalRates);
 
         _firingVector = entityToFiringsPerIteration;
