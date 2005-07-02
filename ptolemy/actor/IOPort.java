@@ -422,6 +422,9 @@ public class IOPort extends ComponentPort {
 
         if (input) {
             Iterator outsideRelations = linkedRelationList().iterator();
+            
+            int myWidth = getWidth();
+            boolean madeOne = false;
 
             while (outsideRelations.hasNext()) {
                 IORelation relation = (IORelation) outsideRelations.next();
@@ -430,12 +433,17 @@ public class IOPort extends ComponentPort {
                 // with an index might result in an null relation.
                 if (relation != null) {
                     int width = relation.getWidth();
+                    
+                    if (!madeOne && myWidth == 1 && width > 1) {
+                    	width = 1;
+                    }
 
                     Receiver[][] result = new Receiver[width][1];
 
                     for (int i = 0; i < width; i++) {
                         // This throws an exception if there is no director.
                         result[i][0] = _newReceiver();
+                        madeOne = true;
                     }
 
                     // Save it.  If we have previously seen this relation,
@@ -451,6 +459,10 @@ public class IOPort extends ComponentPort {
                         List occurrences = new LinkedList();
                         occurrences.add(result);
                         _localReceiversTable.put(relation, occurrences);
+                    }
+                    if (myWidth == 1 && madeOne) {
+                    	// Made the one receiver we need. Nothing more to do.
+                        break;
                     }
                 }
             }
@@ -1372,7 +1384,8 @@ public class IOPort extends ComponentPort {
 
             if (_widthVersion != version) {
                 _widthVersion = version;
-
+                
+                // If this is not a multiport, the width is always zero or one.
                 int sum = 0;
                 Iterator relations = linkedRelationList().iterator();
 
@@ -1385,8 +1398,15 @@ public class IOPort extends ComponentPort {
                         sum += relation.getWidth();
                     }
                 }
-
-                _width = sum;
+                if (!isMultiport()) {
+                    if (sum > 0) {
+                    	_width = 1;
+                    } else {
+                    	_width = 0;
+                    }
+                } else {
+                    _width = sum;
+                }
             }
             return _width;
         } finally {
@@ -3558,6 +3578,12 @@ public class IOPort extends ComponentPort {
         }
 
         int width = relation.getWidth();
+        
+        if (getWidth() == 1 && width > 1) {
+            // This can occur if we have a wide relation driving a narrower
+            // port.
+        	width = 1;
+        }
 
         if (width <= 0) {
             return _EMPTY_RECEIVER_ARRAY;
