@@ -114,7 +114,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{675.0, 705.0}">
         </property>
     </property>
-    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="D:\Ptolemy\ptII\ptolemy\domains\wireless\demo\CooperativeTerminals\Cooperative Terminals.htm">
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/wireless/demo/CooperativeTerminals/CooperativeTerminals.htm">
     </property>
     <class name="Terminal" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
