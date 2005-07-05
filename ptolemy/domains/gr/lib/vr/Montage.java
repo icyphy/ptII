@@ -1,6 +1,6 @@
 /* An actor that reads an array of images.   */
- 
-  
+
+
 package ptolemy.domains.gr.lib.vr;
 
 
@@ -43,13 +43,13 @@ import ptolemy.graph.InequalityTerm;
 //////////////////////////////////////////////////////////////////////////
 ////Slicer
 /**
- An actor that reads an array of images. 
+ An actor that reads an array of images.
 
 @see ptolemy.actor.lib.medicalimaging
 
 @author T. Crawford
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red
 @Pt.AcceptedRating Red
 
@@ -62,80 +62,80 @@ import ptolemy.graph.InequalityTerm;
          * @exception NameDuplicationException If the container already has an
          *   actor with this name.
          */
-    
+
         public Montage(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
          super(container, name);
-        
-        
+
+
          input.setTypeEquals(BaseType.OBJECT);
-         
+
          //output = new TypedIOPort(this, "output", false, true);
          //output.setTypeEquals(BaseType.OBJECT);
-        
-        
+
+
         xResolution = new Parameter(this, "xResolution");
         xResolution.setExpression("256");
         xResolution.setTypeEquals(BaseType.INT);
-        
+
         yResolution = new Parameter(this, "yResolution");
         yResolution.setExpression("256");
         yResolution.setTypeEquals(BaseType.INT);
-        
+
         stackSize = new Parameter(this, "stackSize");
         stackSize.setExpression("50");
         stackSize.setTypeEquals(BaseType.INT);
-        
-        
-              
+
+
+
     }
 
     ////////////////////////////////////////////////////////////////////
-    ////////               ports and parameters                  ////////     
-    
+    ////////               ports and parameters                  ////////
+
     //public FilePortParameter input;
-    
+
     public Parameter xResolution;
     public Parameter yResolution;
     public Parameter stackSize;
-    
-       
-    ////////////////////////////////////////////////////////////////////
-    ////////                public methods                     ////////     
 
-    
+
+    ////////////////////////////////////////////////////////////////////
+    ////////                public methods                     ////////
+
+
     /** Output the data read in the prefire.
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
-        super.fire();   
+        super.fire();
         ObjectToken objectToken = (ObjectToken) input.get(0);
-        ImagePlus  imagePlus = (ImagePlus)objectToken.getValue(); 
+        ImagePlus  imagePlus = (ImagePlus)objectToken.getValue();
         MontageMaker montageMaker = new MontageMaker();
         montageMaker.makeMontage(imagePlus);
         //output.broadcast(new ObjectToken(_imagePlus));
     }
-    
-    
+
+
     public void initialize() throws IllegalActionException
     {
-    
+
       _xResolution = ((IntToken)xResolution.getToken()).intValue();
       _yResolution = ((IntToken)yResolution.getToken()).intValue();
       _stackSize = ((IntToken)stackSize.getToken()).intValue();
-      
+
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     //Image that is readin
-    private ImagePlus _imagePlus;  
-    
+    private ImagePlus _imagePlus;
+
     private int _stackSize;
-    
+
     private int _xResolution;
-    
+
     private int _yResolution;
  }

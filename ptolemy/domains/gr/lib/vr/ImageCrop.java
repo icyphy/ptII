@@ -1,4 +1,4 @@
-/* An actor that crops images.  
+/* An actor that crops images.
 
 Copyright (c) 1999-2005 The Regents of the University of California.
 All rights reserved.
@@ -88,9 +88,9 @@ public class ImageCrop extends TypedAtomicActor{
      *  @exception ExceptionClass If ... (describe what
      *   causes the exception to be thrown).
      */
-    public ImageCrop(CompositeEntity container, String name) throws IllegalActionException, 
+    public ImageCrop(CompositeEntity container, String name) throws IllegalActionException,
         NameDuplicationException{
-         
+
         super(container, name);
         imageInput = new TypedIOPort(this,"imageInput");
         imageInput.setInput(true);
@@ -99,11 +99,11 @@ public class ImageCrop extends TypedAtomicActor{
         roi = new TypedIOPort(this,"roi");
         roi.setInput(true);
         roi.setTypeEquals(BaseType.OBJECT);
-        
+
         output = new TypedIOPort(this,"output");
         output.setOutput(true);
         output.setTypeEquals(BaseType.OBJECT);
-        
+
         stack = new Parameter(this, "stack");
         stack.setExpression("true");
         stack.setTypeEquals(BaseType.BOOLEAN_MATRIX);
@@ -117,7 +117,7 @@ public class ImageCrop extends TypedAtomicActor{
     public TypedIOPort roi;
     public TypedIOPort output;
     public Parameter stack;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -131,7 +131,7 @@ public class ImageCrop extends TypedAtomicActor{
      *   causes the exception to be thrown).
      */
     public void fire()throws IllegalActionException {
-            //Do cropping 
+            //Do cropping
         ObjectToken objectToken = (ObjectToken)roi.get(0);
         Roi roi = (Roi)objectToken.getValue();
         ImageProcessor imageProcessor = _imagePlus.getProcessor();
@@ -139,20 +139,20 @@ public class ImageCrop extends TypedAtomicActor{
         ImageProcessor croppedProcessor = imageProcessor.crop();
         _imagePlus = new ImagePlus("Cropped Image", croppedProcessor);
     }
-    
+
     public void initialize()throws IllegalActionException {
             _stack = ((BooleanToken)stack.getToken()).booleanValue();
-         
-        
+
+
     }
-    
+
     public boolean prefire()throws IllegalActionException {
         //Do the listening in this section, and when approrpiate tokens
         //are receieved return true.
             if (imageInput.hasToken(0)){
                     ObjectToken objectToken = (ObjectToken)imageInput.get(0);
                     _imagePlus = (ImagePlus)objectToken.getValue();
-        
+
                     //Check to see if stack of image and show user proper frame
                     if (_stack){
                             _stackWindow = new StackWindow(_imagePlus);
@@ -176,24 +176,24 @@ public class ImageCrop extends TypedAtomicActor{
 
         //Send ROI to input to be used in firing
         output.broadcast(new ObjectToken(_roi));
-        
+
         //Always returns true
         return true;
-        
+
     }
 
-    
+
     public boolean postfire()throws IllegalActionException {
             //   check for to see if user is finished if not return true
             //if so return false, and broadcast new ImagePlus
-        
+
         //Show user cropped image and listen for keyboard to return true of false
         //FIXME Is this safe?  Will image wait for keyboard input
         if (_stack){
-            
+
             _stackWindow = new StackWindow(_imagePlus);
             _stackWindow.addKeyListener(new keyPressHandler());
-               
+
         }else{
             _imageWindow = new ImageWindow(_imagePlus);
             _imageWindow.addKeyListener(new keyPressHandler());
@@ -204,7 +204,7 @@ public class ImageCrop extends TypedAtomicActor{
                 output.broadcast(new ObjectToken(_imagePlus));
         }
         return !_cropFinish;
-        
+
     }
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -270,8 +270,8 @@ public class ImageCrop extends TypedAtomicActor{
                 _currentX = x;
                 _currentY = y;
         }
-        System.out.println("press currentX= "+x+"   currentY="+y+"   button="+button); 
-        
+        System.out.println("press currentX= "+x+"   currentY="+y+"   button="+button);
+
             if (_stack){
                 _stackWindow.requestFocus();
                 _stackWindow.repaint();
@@ -279,10 +279,10 @@ public class ImageCrop extends TypedAtomicActor{
                 _imageWindow.requestFocus();
                 _imageWindow.repaint();
             }
-        
+
       }
     }
-    
+
     class mouseReleaseHandler extends MouseAdapter
     {
       public void mouseReleased (MouseEvent finishRoi)
@@ -293,7 +293,7 @@ public class ImageCrop extends TypedAtomicActor{
         button = finishRoi.getButton();
         _finalX = finishRoi.getX();
         _finalY = finishRoi.getY();
-        System.out.println("press finalX= "+_finalX+"   finalY="+_finalY+"   button="+button); 
+        System.out.println("press finalX= "+_finalX+"   finalY="+_finalY+"   button="+button);
         if (button == 1){
             if (_stack){
                 _stackWindow.requestFocus();
@@ -305,7 +305,7 @@ public class ImageCrop extends TypedAtomicActor{
         }
       }
     }
-    
+
     class keyPressHandler extends KeyAdapter
     {
       public void keyPressed (KeyEvent finishKey)
@@ -315,20 +315,20 @@ public class ImageCrop extends TypedAtomicActor{
         if (z == 10){
           _cropFinish = true;
         }else if (z == 32){
-         _cropFinish = false;   
+         _cropFinish = false;
         }
-      
+
       }
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Private variables need not have Javadoc comments, although it can
     // be more convenient if they do, since they may at some point
     // become protected variables.
-    
+
     private ImagePlus _croppedImage;
     private ImagePlus _imagePlus;
     private Roi _roi;

@@ -148,11 +148,11 @@ public class StackDisplay extends Sink {
 
                 if (input.hasToken(0)) {
                         ObjectToken objectToken = (ObjectToken) input.get(0);
-           
+
                         //ImageToken imageToken;
                         ImagePlus imagePlus;
                         imagePlus = (ImagePlus)objectToken.getValue();
-           
+
                         //FIXME What type of catch do I need?
                         /*   try {
                          imageToken = (ImageToken) token;
@@ -161,7 +161,7 @@ public class StackDisplay extends Sink {
                         "Failed to cast " + token.getClass()
                         + " to an ImageToken.\nToken was: " + token);
                   }*/
-           
+
 
                         //FIXME Do I need a container and a frame?
                         //_container = _frame = new StackWindow(imagePlus);
@@ -169,9 +169,9 @@ public class StackDisplay extends Sink {
                         //_frame.showSlice(i);
         //                System.out.println("Slice shown = slice " + i );
                 //}
-        
+
         }
-      
+
    }
 
     /** Get the background */
@@ -202,7 +202,7 @@ public class StackDisplay extends Sink {
         }*/
     }
 
-  
+
 
     /** Set the background */
     public void setBackground(Color background) {
@@ -239,5 +239,5 @@ public class StackDisplay extends Sink {
     private WindowPropertiesAttribute _windowProperties;
 
     private int _index = 0;
-   
+
 }

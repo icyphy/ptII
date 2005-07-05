@@ -1,6 +1,6 @@
 /* An actor that reads an array of images.   */
- 
-  
+
+
 package ptolemy.domains.gr.lib.vr;
 
 
@@ -43,13 +43,13 @@ import ptolemy.graph.InequalityTerm;
 //////////////////////////////////////////////////////////////////////////
 ////StackReader
 /**
- An actor that reads an array of images. 
+ An actor that reads an array of images.
 
 @see ptolemy.actor.lib.medicalimaging
 
 @author T. Crawford
-@version 
-@since 
+@version
+@since
 @Pt.ProposedRating Red
 @Pt.AcceptedRating Red
 
@@ -62,47 +62,47 @@ import ptolemy.graph.InequalityTerm;
          * @exception NameDuplicationException If the container already has an
          *   actor with this name.
          */
-    
+
         public StackToImage(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
          super(container, name);
-        
-                   
-        
+
+
+
         input_tokenConsumptionRate.setExpression("1");
         output_tokenProductionRate.setExpression("50");
-        
-        
-        
+
+
+
         xResolution = new Parameter(this, "xResolution");
         xResolution.setExpression("256");
         xResolution.setTypeEquals(BaseType.INT);
-        
+
         yResolution = new Parameter(this, "yResolution");
         yResolution.setExpression("256");
         yResolution.setTypeEquals(BaseType.INT);
-        
+
        stackSize = new Parameter(this, "stackSize");
        stackSize.setExpression("50");
        stackSize.setTypeEquals(BaseType.INT);
-        
-        
-              
+
+
+
     }
 
     ////////////////////////////////////////////////////////////////////
-    ////////               ports and parameters                  ////////     
-    
+    ////////               ports and parameters                  ////////
+
     //public FilePortParameter input;
     public Parameter xResolution;
     public Parameter yResolution;
     public Parameter stackSize;
-    
-       
-    ////////////////////////////////////////////////////////////////////
-    ////////                public methods                     ////////     
 
-    
+
+    ////////////////////////////////////////////////////////////////////
+    ////////                public methods                     ////////
+
+
     /** Output the data read in the prefire.
      *  @exception IllegalActionException If there's no director.
      */
@@ -117,23 +117,23 @@ import ptolemy.graph.InequalityTerm;
                 //System.out.println("Output Slice " + _index);
             System.out.println("Output Slice " + i);
                 _image = _currentImagePlus.getImage();
-                // _imagePlus = new ImagePlus("Image Stack", _imageStack); 
+                // _imagePlus = new ImagePlus("Image Stack", _imageStack);
                 // System.out.println("stackSize = " + _imageStack.getSize());
-       
+
                 output.broadcast(new AWTImageToken(_image));
         }
       }
-    
-    
+
+
     public void initialize() throws IllegalActionException
     {
      // _parameterPort =  input.getPort();
       _xResolution = ((IntToken)xResolution.getToken()).intValue();
       _yResolution = ((IntToken)yResolution.getToken()).intValue();
       _stackSize = ((IntToken)stackSize.getToken()).intValue();
-      
+
     }
-    
+
     /*public boolean prefire() throws IllegalActionException {
           ObjectToken objectToken = (ObjectToken)input.get(0);
           _currentImagePlus = (ImagePlus)objectToken.getValue();
@@ -152,47 +152,47 @@ import ptolemy.graph.InequalityTerm;
           }
 
           return super.prefire();
-        
+
     }*/
-    
+
     public boolean postfire() throws IllegalActionException{
         if (!_stopRequested && _index < _stackSize){
             if (_debugging) {
                 _debug("Called postfire(), which returns true");
-            } 
-            return true;   
+            }
+            return true;
         }else{
             if (_debugging) {
                 _debug("Called postfire(), which returns false");
-            } 
+            }
                 return false;
         }
     }
-    
+
      ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     //Image that is readin
     private ImagePlus _imagePlus;
-    
+
     private ImagePlus _currentImagePlus;
-    
+
     //Image that is readin
     private ColorProcessor _colorProcessor;
-    
-    
+
+
     //Image that is readin
     private ImageStack _imageStack;
-    
-    
+
+
     // Image that is read in.
     private Image _image;
 
     private int _stackSize;
-    
+
     private int _xResolution;
-    
+
     private int _yResolution;
-    
+
     private int _index = 0;
  }
