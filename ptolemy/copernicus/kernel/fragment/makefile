@@ -57,21 +57,24 @@ EXTRA_SRCS =    JavaFragmentParser.jj $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS)
 
-DERIVED_JSRCS = \
-	JavaFragmentParser.java \
+OPTIONAL_JSRCS = \
 	JavaCharStream.java \
 	JavaFragmentParserConstants.java \
-	JavaFragmentParser.java \
 	JavaFragmentParserTokenManager.java \
 	ParseException.java \
 	Token.java \
 	TokenMgrError.java
 
+# OPTIONAL_JSRCS depends on JavaFragmentParser.java, but we want javadoc
+# to generate docs for JavaFragment, so we modify the javadoc
+# rule to also operate on DERIVED_JSRCS
+DERIVED_JSRCS =	JavaFragmentParser.java
+
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(DERIVED_JSRCS)
+	$(OPTIONAL_JSRCS)
 
 JCLASS = $(JSRCS:%.java=%.class) \
 	JavaFragmentParser.class
@@ -90,6 +93,12 @@ JavaFragmentParser.java: JavaFragmentParser.jj
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch JavaFragmentParser.jj JavaFragmentParser.java"
 	CLASSPATH="$(CLASSPATH)" $(JAVACC) JavaFragmentParser.jj
+
+# This rule is useful for cvs committing the derived files
+# For example:
+# cvs commit -m "Updated MatrixParser." `make echo_OPTIONAL_JSRCS`
+echo_OPTIONAL_JSRCS:
+	@echo $(OPTIONAL_JSRCS) JavaFragmentParser.jj JavaFragmentParser.java
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
