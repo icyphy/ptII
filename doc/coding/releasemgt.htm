@@ -146,21 +146,40 @@ c:/Program: not found
 # Check out a clean tree
 # Make sure empty directories are removed
 cvs update -P -d
-cd ptII
+# Run configure
+cd $PTII
+./configure
+# Remove files created by JavaCC 
+cd $PTIIptolemy/data/expr
+rm `make echo_OPTIONAL_JSRCS`
+cd $PTII/ptolemy/data/unit
+rm `make echo_OPTIONAL_JSRCS`
+cd $PTII/ptolemy/copernicus/kernel/fragment
+rm `make echo_OPTIONAL_JSRCS`
+# Create a file that contains the names of the java files to include
+cd $PTII
 adm/bin/ptIItxtfiles > /tmp/f
 egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
-# Edit /tmp/j and removed the derived files created by the parser
-#   in data/expr
-# Remove:
+# Edit /tmp/j and remove:
 #   Everything in ct/demo/corba/util
-#   ./ptolemy/data/unit/UParserConstants.java
-#   ./ptolemy/data/unit/UParser.java
-#   ./ptolemy/data/unit/UParserTokenManager.java
+
 </pre>
 
 <li> Add trailing newlines to files with
 <code>$PTII/adm/bin/addtrailingnl</code>
-
+<pre>
+cd $PTII
+# Run addtrailingnl without actually doing anything:
+cat /tmp/j | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
+# Run addtrailingnl with adding the new lines:
+cat /tmp/j | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl
+# Run with -n and then without:
+cat /tmp/f | egrep '*.[ch]$' | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep README | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep '*.htm' | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep '*.tcl' | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep '*.xml' | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
+</pre>
 <li> On a Unix box, check for files with control-Ms:
 <pre>
 cat /tmp/f | xargs $PTII/util/testsuite/controlm
@@ -182,7 +201,7 @@ class body indented.  If the class comment contains the word
 "extends" or "implements" then emacs sometimes indents the 
 "public class" and the rest of the body.  Search the output
 for "public class" and carefully examine any files where public class
-has leanding spaces. 
+has leading spaces. 
 </blockquote>
 
 
