@@ -378,7 +378,7 @@ public class VergilApplication extends MoMLApplication {
             }
 
             if (libraryName != null) {
-                System.out.print("Opening user library "
+                System.out.println("Opening user library "
                         + libraryName + "...");
 
                 File file = new File(libraryName);
