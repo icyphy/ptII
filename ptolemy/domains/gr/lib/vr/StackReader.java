@@ -54,7 +54,7 @@ import ptolemy.graph.InequalityTerm;
 @Pt.AcceptedRating Red
 
 */public class StackReader extends SDFTransformer{
-	    /**Construct an actor with the given container and name.
+            /**Construct an actor with the given container and name.
          * @param container The container
          * @param name The name of this actor
          * @exception IllegalActionException If the actor cannot be contained
@@ -63,7 +63,7 @@ import ptolemy.graph.InequalityTerm;
          *   actor with this name.
          */
     
-	public StackReader(CompositeEntity container, String name)
+        public StackReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
          super(container, name);
         
@@ -150,14 +150,14 @@ import ptolemy.graph.InequalityTerm;
         _imageStack = new ImageStack(_xResolution, _yResolution);
         Token[] token = input.get(0, _stackSize); 
         for(int i = 0; i< _stackSize; i++){
-       	    _fileRoot = new String[_stackSize];
-        	_fileRoot[i] = ((StringToken)token[i]).stringValue();
+                   _fileRoot = new String[_stackSize];
+                _fileRoot[i] = ((StringToken)token[i]).stringValue();
             System.out.println("_fileRoot = " + _fileRoot[i]);
         
-        	if (_fileRoot[i] == null) {
-        		throw new IllegalActionException("sourceURL was null");
-        	}
-        	//_fileRoot = _url.getFile();
+                if (_fileRoot[i] == null) {
+                        throw new IllegalActionException("sourceURL was null");
+                }
+                //_fileRoot = _url.getFile();
         
             
            

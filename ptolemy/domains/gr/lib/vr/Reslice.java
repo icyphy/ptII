@@ -54,7 +54,7 @@ import ptolemy.graph.InequalityTerm;
 @Pt.AcceptedRating Red
 
 */public class Reslice extends TypedAtomicActor{
-	    /**Construct an actor with the given container and name.
+            /**Construct an actor with the given container and name.
          * @param container The container
          * @param name The name of this actor
          * @exception IllegalActionException If the actor cannot be contained
@@ -63,7 +63,7 @@ import ptolemy.graph.InequalityTerm;
          *   actor with this name.
          */
     
-	public Reslice(CompositeEntity container, String name)
+        public Reslice(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
          super(container, name);
         

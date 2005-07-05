@@ -54,7 +54,7 @@ import ptolemy.graph.InequalityTerm;
 @Pt.AcceptedRating Red
 
 */public class StackToImage extends SDFTransformer{
-	    /**Construct an actor with the given container and name.
+            /**Construct an actor with the given container and name.
          * @param container The container
          * @param name The name of this actor
          * @exception IllegalActionException If the actor cannot be contained
@@ -63,7 +63,7 @@ import ptolemy.graph.InequalityTerm;
          *   actor with this name.
          */
     
-	public StackToImage(CompositeEntity container, String name)
+        public StackToImage(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
          super(container, name);
         
@@ -112,15 +112,15 @@ import ptolemy.graph.InequalityTerm;
         ObjectToken objectToken = (ObjectToken)input.get(0);
         _currentImagePlus = (ImagePlus)objectToken.getValue();
         for(int i = 0; i< _stackSize; i++){
-        	//_currentImagePlus.setSlice(_index);
+                //_currentImagePlus.setSlice(_index);
             _currentImagePlus.setSlice(i);
-        	//System.out.println("Output Slice " + _index);
+                //System.out.println("Output Slice " + _index);
             System.out.println("Output Slice " + i);
-        	_image = _currentImagePlus.getImage();
-        	// _imagePlus = new ImagePlus("Image Stack", _imageStack); 
-        	// System.out.println("stackSize = " + _imageStack.getSize());
+                _image = _currentImagePlus.getImage();
+                // _imagePlus = new ImagePlus("Image Stack", _imageStack); 
+                // System.out.println("stackSize = " + _imageStack.getSize());
        
-        	output.broadcast(new AWTImageToken(_image));
+                output.broadcast(new AWTImageToken(_image));
         }
       }
     
@@ -165,7 +165,7 @@ import ptolemy.graph.InequalityTerm;
             if (_debugging) {
                 _debug("Called postfire(), which returns false");
             } 
-        	return false;
+                return false;
         }
     }
     
