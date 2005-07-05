@@ -1,11 +1,19 @@
 #!/bin/sh
 # $Id$
 # Add a trailing newline
-# Usage: addtrailingnl file [file2 . . .]
+# Usage: addtrailingnl [-n] file [file2 . . .]
+# If -n is present, then don't modify the file, only print
+
 tmpfile=/tmp/addtrailingnl.$$ 
 
 nlfile=/tmp/addtrailingnl_nlfile.$$
 echo "foo" | awk '{printf("\n")}' > $nlfile
+
+printonly=no
+if [ "$1" = "-n" ]; then
+    shift
+    printonly=yes
+fi
 
 files=$@
 for file in $files
@@ -13,10 +21,20 @@ do
     #echo "$0: $file"
     results=`tail -1 $file | od -bv | tail -2 |head -1 | grep '012$'`
     if [ "x$results" = "x" ]; then
-	#echo "$file: does not have a trailing newline, adding one now."
-	#cvs annotate $file | tail -1
-	cat  $file $nlfile > $tmpfile
-        cp $tmpfile $file
+	if [ "$printonly" = "no" ]; then
+	    echo "$file: does not have a trailing newline, adding one now."
+	    #cvs annotate $file | tail -1
+	else    
+	    echo "$file: does not have a trailing newline, would add one."
+        fi
+        cat  $file $nlfile > $tmpfile
+	if [ "$printonly" = "no" ]; then
+            cp $tmpfile $file
+	    cvs commit -m "Added trailing newline" $file
+	else    
+	    echo "$file: would commit"
+	    diff $file $tmpfile
+        fi
     fi
 done
 rm -f $tmpfile $nlfile
