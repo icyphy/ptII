@@ -43,29 +43,29 @@ import ptolemy.graph.InequalityTerm;
 //////////////////////////////////////////////////////////////////////////
 ////StackReader
 /**
- An actor that reads an array of images.
+   An actor that reads an array of images.
 
-@see ptolemy.actor.lib.medicalimaging
+   @see ptolemy.actor.lib.medicalimaging
 
-@author T. Crawford
-@version
-@since
-@Pt.ProposedRating Red
-@Pt.AcceptedRating Red
+   @author T. Crawford
+   @version
+   @since
+   @Pt.ProposedRating Red
+   @Pt.AcceptedRating Red
 
 */public class StackReader extends SDFTransformer{
-            /**Construct an actor with the given container and name.
-         * @param container The container
-         * @param name The name of this actor
-         * @exception IllegalActionException If the actor cannot be contained
-         *   by the proposed container.
-         * @exception NameDuplicationException If the container already has an
-         *   actor with this name.
-         */
+    /**Construct an actor with the given container and name.
+     * @param container The container
+     * @param name The name of this actor
+     * @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
 
-        public StackReader(CompositeEntity container, String name)
+    public StackReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(container, name);
+        super(container, name);
 
 
 
@@ -81,9 +81,9 @@ import ptolemy.graph.InequalityTerm;
         yResolution.setExpression("256");
         yResolution.setTypeEquals(BaseType.INT);
 
-       stackSize = new Parameter(this, "stackSize");
-       stackSize.setExpression("50");
-       stackSize.setTypeEquals(BaseType.INT);
+        stackSize = new Parameter(this, "stackSize");
+        stackSize.setExpression("50");
+        stackSize.setTypeEquals(BaseType.INT);
 
 
 
@@ -110,70 +110,70 @@ import ptolemy.graph.InequalityTerm;
         _readStack();
         _imagePlus = new ImagePlus("Image Stack", _imageStack);
         System.out.println("stackSize = " + _imageStack.getSize());
-       // output.broadcast(new AWTImageToken(_image));
+        // output.broadcast(new AWTImageToken(_image));
         output.broadcast(new ObjectToken(_imagePlus));
     }
 
 
     public void initialize() throws IllegalActionException
     {
-     // _parameterPort =  input.getPort();
-      _xResolution = ((IntToken)xResolution.getToken()).intValue();
-      _yResolution = ((IntToken)yResolution.getToken()).intValue();
-      _stackSize = ((IntToken)stackSize.getToken()).intValue();
+        // _parameterPort =  input.getPort();
+        _xResolution = ((IntToken)xResolution.getToken()).intValue();
+        _yResolution = ((IntToken)yResolution.getToken()).intValue();
+        _stackSize = ((IntToken)stackSize.getToken()).intValue();
 
     }
 
 
-  /*  public boolean prefire() throws IllegalActionException {
-       public boolean prefire() throws IllegalActionException {
+    /*  public boolean prefire() throws IllegalActionException {
+        public boolean prefire() throws IllegalActionException {
         Token rateToken = input_tokenConsumptionRate.getToken();
         int required = ((IntToken) rateToken).intValue();
 
         // Derived classes may convert the input port to a multiport.
         for (int i = 0; i < input.getWidth(); i++) {
-            if (!input.hasToken(i, required)) {
-                if (_debugging) {
-                    _debug("Called prefire(), which returns false");
-                }
+        if (!input.hasToken(i, required)) {
+        if (_debugging) {
+        _debug("Called prefire(), which returns false");
+        }
 
-                return false;
-            }
+        return false;
+        }
         }
 
         return super.prefire();
-    }
-    }*/
+        }
+        }*/
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _readStack() throws IllegalActionException {
         _imageStack = new ImageStack(_xResolution, _yResolution);
         Token[] token = input.get(0, _stackSize);
         for(int i = 0; i< _stackSize; i++){
-                   _fileRoot = new String[_stackSize];
-                _fileRoot[i] = ((StringToken)token[i]).stringValue();
+            _fileRoot = new String[_stackSize];
+            _fileRoot[i] = ((StringToken)token[i]).stringValue();
             System.out.println("_fileRoot = " + _fileRoot[i]);
 
-                if (_fileRoot[i] == null) {
-                        throw new IllegalActionException("sourceURL was null");
-                }
-                //_fileRoot = _url.getFile();
+            if (_fileRoot[i] == null) {
+                throw new IllegalActionException("sourceURL was null");
+            }
+            //_fileRoot = _url.getFile();
 
 
 
-        //if (imagePlus == null) {
+            //if (imagePlus == null) {
             //FIXME Should check each image to see if valid
             ImagePlus imagePlus = new ImagePlus(_fileRoot[i]);
-           if (imagePlus != null){
-            _image = imagePlus.getImage();
+            if (imagePlus != null){
+                _image = imagePlus.getImage();
 
-            _colorProcessor = new ColorProcessor(_image);
-            _imageStack.addSlice(_fileRoot[i], _colorProcessor);
-            imagePlus = null;
-            System.out.println("stackSize = " + _imageStack.getSize());
-        }else{
-         throw new IllegalActionException("_image is null");
-        }
+                _colorProcessor = new ColorProcessor(_image);
+                _imageStack.addSlice(_fileRoot[i], _colorProcessor);
+                imagePlus = null;
+                System.out.println("stackSize = " + _imageStack.getSize());
+            }else{
+                throw new IllegalActionException("_image is null");
+            }
         }
 
     }
@@ -183,14 +183,14 @@ import ptolemy.graph.InequalityTerm;
      *  @return A list of inequalities.
      */
     /*public List typeConstraintList() {
-        BaseType outType = (BaseType) output.getType();
-        InequalityTerm elementTerm = outType.getTypeTerm();
-        Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
+      BaseType outType = (BaseType) output.getType();
+      InequalityTerm elementTerm = outType.getTypeTerm();
+      Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
 
-        List result = new LinkedList();
-        result.add(ineq);
-        return result;
-    }*/
+      List result = new LinkedList();
+      result.add(ineq);
+      return result;
+      }*/
 
 
     ///////////////////////////////////////////////////////////////////
@@ -207,7 +207,7 @@ import ptolemy.graph.InequalityTerm;
     private ImageStack _imageStack;
 
 
-//  The URL as a string.
+    //  The URL as a string.
     private String _fileRoot[];
 
     // Image that is read in.
@@ -222,4 +222,4 @@ import ptolemy.graph.InequalityTerm;
     private int _xResolution;
 
     private int _yResolution;
- }
+}

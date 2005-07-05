@@ -89,7 +89,7 @@ public class ImageCrop extends TypedAtomicActor{
      *   causes the exception to be thrown).
      */
     public ImageCrop(CompositeEntity container, String name) throws IllegalActionException,
-        NameDuplicationException{
+            NameDuplicationException{
 
         super(container, name);
         imageInput = new TypedIOPort(this,"imageInput");
@@ -131,7 +131,7 @@ public class ImageCrop extends TypedAtomicActor{
      *   causes the exception to be thrown).
      */
     public void fire()throws IllegalActionException {
-            //Do cropping
+        //Do cropping
         ObjectToken objectToken = (ObjectToken)roi.get(0);
         Roi roi = (Roi)objectToken.getValue();
         ImageProcessor imageProcessor = _imagePlus.getProcessor();
@@ -141,7 +141,7 @@ public class ImageCrop extends TypedAtomicActor{
     }
 
     public void initialize()throws IllegalActionException {
-            _stack = ((BooleanToken)stack.getToken()).booleanValue();
+        _stack = ((BooleanToken)stack.getToken()).booleanValue();
 
 
     }
@@ -149,15 +149,15 @@ public class ImageCrop extends TypedAtomicActor{
     public boolean prefire()throws IllegalActionException {
         //Do the listening in this section, and when approrpiate tokens
         //are receieved return true.
-            if (imageInput.hasToken(0)){
-                    ObjectToken objectToken = (ObjectToken)imageInput.get(0);
-                    _imagePlus = (ImagePlus)objectToken.getValue();
+        if (imageInput.hasToken(0)){
+            ObjectToken objectToken = (ObjectToken)imageInput.get(0);
+            _imagePlus = (ImagePlus)objectToken.getValue();
 
-                    //Check to see if stack of image and show user proper frame
-                    if (_stack){
-                            _stackWindow = new StackWindow(_imagePlus);
-                    }else{
-                            _imageWindow = new ImageWindow(_imagePlus);
+            //Check to see if stack of image and show user proper frame
+            if (_stack){
+                _stackWindow = new StackWindow(_imagePlus);
+            }else{
+                _imageWindow = new ImageWindow(_imagePlus);
             }
         }
         if (_stack){
@@ -172,7 +172,7 @@ public class ImageCrop extends TypedAtomicActor{
         //Create roi
         int height = _finalY - _startY;
         int width = _finalX = _startX;
-            _roi = new Roi(_startX, _startY, width, height);
+        _roi = new Roi(_startX, _startY, width, height);
 
         //Send ROI to input to be used in firing
         output.broadcast(new ObjectToken(_roi));
@@ -184,8 +184,8 @@ public class ImageCrop extends TypedAtomicActor{
 
 
     public boolean postfire()throws IllegalActionException {
-            //   check for to see if user is finished if not return true
-            //if so return false, and broadcast new ImagePlus
+        //   check for to see if user is finished if not return true
+        //if so return false, and broadcast new ImagePlus
 
         //Show user cropped image and listen for keyboard to return true of false
         //FIXME Is this safe?  Will image wait for keyboard input
@@ -201,7 +201,7 @@ public class ImageCrop extends TypedAtomicActor{
 
         //Send the new _imagePlus to output
         if(_cropFinish){
-                output.broadcast(new ObjectToken(_imagePlus));
+            output.broadcast(new ObjectToken(_imagePlus));
         }
         return !_cropFinish;
 
@@ -234,43 +234,43 @@ public class ImageCrop extends TypedAtomicActor{
     // become protected methods.
     //MouseEvent buttonPressed;
     class mousePressHandler extends MouseAdapter
-      {
+    {
         public void mousePressed (MouseEvent startRoi)
         {
-          int button;
-          //double startX, startY;
-          _tracking = true;
-          button = startRoi.getButton();
-          _startX = startRoi.getX();
-          _startY = startRoi.getY();
-          System.out.println("press startX="+_startX+"   startY="+_startY+"   button="+button);
-          if (button == 1){
-                  if (_stack){
-                          _stackWindow.requestFocus();
-                          _stackWindow.repaint();
-                  }else{
-                          _imageWindow.requestFocus();
-                          _imageWindow.repaint();
-                  }
-          }
+            int button;
+            //double startX, startY;
+            _tracking = true;
+            button = startRoi.getButton();
+            _startX = startRoi.getX();
+            _startY = startRoi.getY();
+            System.out.println("press startX="+_startX+"   startY="+_startY+"   button="+button);
+            if (button == 1){
+                if (_stack){
+                    _stackWindow.requestFocus();
+                    _stackWindow.repaint();
+                }else{
+                    _imageWindow.requestFocus();
+                    _imageWindow.repaint();
+                }
+            }
         }
-      }
+    }
     class mouseMotionHandler extends MouseMotionAdapter
     {
-      public void mouseDragged (MouseEvent drawRoi)
-      {
-        int button;
-        int x, y;
-        //double currentX, currentY, x, y;
+        public void mouseDragged (MouseEvent drawRoi)
+        {
+            int button;
+            int x, y;
+            //double currentX, currentY, x, y;
 
-        button = drawRoi.getButton();
-        x = drawRoi.getX();
-        y = drawRoi.getY();
-        if (_tracking){
+            button = drawRoi.getButton();
+            x = drawRoi.getX();
+            y = drawRoi.getY();
+            if (_tracking){
                 _currentX = x;
                 _currentY = y;
-        }
-        System.out.println("press currentX= "+x+"   currentY="+y+"   button="+button);
+            }
+            System.out.println("press currentX= "+x+"   currentY="+y+"   button="+button);
 
             if (_stack){
                 _stackWindow.requestFocus();
@@ -280,45 +280,45 @@ public class ImageCrop extends TypedAtomicActor{
                 _imageWindow.repaint();
             }
 
-      }
+        }
     }
 
     class mouseReleaseHandler extends MouseAdapter
     {
-      public void mouseReleased (MouseEvent finishRoi)
-      {
-        int button;
-        //double finalX, finalY;
-        _tracking = false;
-        button = finishRoi.getButton();
-        _finalX = finishRoi.getX();
-        _finalY = finishRoi.getY();
-        System.out.println("press finalX= "+_finalX+"   finalY="+_finalY+"   button="+button);
-        if (button == 1){
-            if (_stack){
-                _stackWindow.requestFocus();
-                _stackWindow.repaint();
-            }else{
-                _imageWindow.requestFocus();
-                _imageWindow.repaint();
+        public void mouseReleased (MouseEvent finishRoi)
+        {
+            int button;
+            //double finalX, finalY;
+            _tracking = false;
+            button = finishRoi.getButton();
+            _finalX = finishRoi.getX();
+            _finalY = finishRoi.getY();
+            System.out.println("press finalX= "+_finalX+"   finalY="+_finalY+"   button="+button);
+            if (button == 1){
+                if (_stack){
+                    _stackWindow.requestFocus();
+                    _stackWindow.repaint();
+                }else{
+                    _imageWindow.requestFocus();
+                    _imageWindow.repaint();
+                }
             }
         }
-      }
     }
 
     class keyPressHandler extends KeyAdapter
     {
-      public void keyPressed (KeyEvent finishKey)
-      {
-        int z = finishKey.getKeyCode();
-        //Press enter key to end session or space bar to continue
-        if (z == 10){
-          _cropFinish = true;
-        }else if (z == 32){
-         _cropFinish = false;
-        }
+        public void keyPressed (KeyEvent finishKey)
+        {
+            int z = finishKey.getKeyCode();
+            //Press enter key to end session or space bar to continue
+            if (z == 10){
+                _cropFinish = true;
+            }else if (z == 32){
+                _cropFinish = false;
+            }
 
-      }
+        }
     }
 
 

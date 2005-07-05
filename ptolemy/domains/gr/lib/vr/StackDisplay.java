@@ -141,38 +141,38 @@ public class StackDisplay extends Sink {
      *   or if a token is received that contains a null image.
      */
     public void fire() throws IllegalActionException {
-      //  for(int i =0; i<50; i++){
-                if (_debugging) {
-                        _debug("StackDisplay actor firing");
-                }
+        //  for(int i =0; i<50; i++){
+        if (_debugging) {
+            _debug("StackDisplay actor firing");
+        }
 
-                if (input.hasToken(0)) {
-                        ObjectToken objectToken = (ObjectToken) input.get(0);
+        if (input.hasToken(0)) {
+            ObjectToken objectToken = (ObjectToken) input.get(0);
 
-                        //ImageToken imageToken;
-                        ImagePlus imagePlus;
-                        imagePlus = (ImagePlus)objectToken.getValue();
+            //ImageToken imageToken;
+            ImagePlus imagePlus;
+            imagePlus = (ImagePlus)objectToken.getValue();
 
-                        //FIXME What type of catch do I need?
-                        /*   try {
-                         imageToken = (ImageToken) token;
-                         } catch (ClassCastException ex) {
-                             throw new IllegalActionException(this, ex,
-                        "Failed to cast " + token.getClass()
-                        + " to an ImageToken.\nToken was: " + token);
-                  }*/
+            //FIXME What type of catch do I need?
+            /*   try {
+                 imageToken = (ImageToken) token;
+                 } catch (ClassCastException ex) {
+                 throw new IllegalActionException(this, ex,
+                 "Failed to cast " + token.getClass()
+                 + " to an ImageToken.\nToken was: " + token);
+                 }*/
 
 
-                        //FIXME Do I need a container and a frame?
-                        //_container = _frame = new StackWindow(imagePlus);
-                        _frame = new StackWindow(imagePlus);
-                        //_frame.showSlice(i);
-        //                System.out.println("Slice shown = slice " + i );
-                //}
+            //FIXME Do I need a container and a frame?
+            //_container = _frame = new StackWindow(imagePlus);
+            _frame = new StackWindow(imagePlus);
+            //_frame.showSlice(i);
+            //                System.out.println("Slice shown = slice " + i );
+            //}
 
         }
 
-   }
+    }
 
     /** Get the background */
     public Color getBackground() {
@@ -191,15 +191,15 @@ public class StackDisplay extends Sink {
         _oldysize = 0;
 
         //FIXME Do I need a container and a frame?
-       /*   if (_container == null) {
-                  _container = _frame = new StackWindow(null);
-            //_container = _frame.getContentPane();
-        }
+        /*   if (_container == null) {
+             _container = _frame = new StackWindow(null);
+             //_container = _frame.getContentPane();
+             }
 
-          if (_frame != null) {
-            _frame.setVisible(true);
-            _frame.toFront();
-        }*/
+             if (_frame != null) {
+             _frame.setVisible(true);
+             _frame.toFront();
+             }*/
     }
 
 

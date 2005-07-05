@@ -43,35 +43,35 @@ import ptolemy.graph.InequalityTerm;
 //////////////////////////////////////////////////////////////////////////
 ////Slicer
 /**
- An actor that reads an array of images.
+   An actor that reads an array of images.
 
-@see ptolemy.actor.lib.medicalimaging
+   @see ptolemy.actor.lib.medicalimaging
 
-@author T. Crawford
-@version
-@since
-@Pt.ProposedRating Red
-@Pt.AcceptedRating Red
+   @author T. Crawford
+   @version
+   @since
+   @Pt.ProposedRating Red
+   @Pt.AcceptedRating Red
 
 */public class Montage extends Sink{
-            /**Construct an actor with the given container and name.
-         * @param container The container
-         * @param name The name of this actor
-         * @exception IllegalActionException If the actor cannot be contained
-         *   by the proposed container.
-         * @exception NameDuplicationException If the container already has an
-         *   actor with this name.
-         */
+    /**Construct an actor with the given container and name.
+     * @param container The container
+     * @param name The name of this actor
+     * @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
 
-        public Montage(CompositeEntity container, String name)
+    public Montage(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(container, name);
+        super(container, name);
 
 
-         input.setTypeEquals(BaseType.OBJECT);
+        input.setTypeEquals(BaseType.OBJECT);
 
-         //output = new TypedIOPort(this, "output", false, true);
-         //output.setTypeEquals(BaseType.OBJECT);
+        //output = new TypedIOPort(this, "output", false, true);
+        //output.setTypeEquals(BaseType.OBJECT);
 
 
         xResolution = new Parameter(this, "xResolution");
@@ -120,9 +120,9 @@ import ptolemy.graph.InequalityTerm;
     public void initialize() throws IllegalActionException
     {
 
-      _xResolution = ((IntToken)xResolution.getToken()).intValue();
-      _yResolution = ((IntToken)yResolution.getToken()).intValue();
-      _stackSize = ((IntToken)stackSize.getToken()).intValue();
+        _xResolution = ((IntToken)xResolution.getToken()).intValue();
+        _yResolution = ((IntToken)yResolution.getToken()).intValue();
+        _stackSize = ((IntToken)stackSize.getToken()).intValue();
 
     }
 
@@ -138,4 +138,4 @@ import ptolemy.graph.InequalityTerm;
     private int _xResolution;
 
     private int _yResolution;
- }
+}
