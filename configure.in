@@ -1027,11 +1027,19 @@ else
 	    echo $ECHO_N "$jar "
 	    jarpath=`find "$ECLIPSE_DIR/plugins" -name $jar | head -1`
    	    if test -f "$jarpath"; then
+	        # Keep track of the jars so we can use them while building
+		# with make.
   	        eclipsejarpath="$eclipsejarpath$CLASSPATHSEPARATOR$jarpath"
+
 		# FIXME: we should not be adding to ECLIPSE_CLASSPATHENTRY_LIBS
 		# unless we are sure that we can find all the jars
-		ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                <classpathentry kind=\"lib\" path=\"$jarpath\"/>"
+
+		# NOTE: Eclipse 3.0 has problems if we include these
+		# jars in the .classpath, instead, .classpath.in includes:
+		#  <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+		#
+		#ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                #<classpathentry kind=\"lib\" path=\"$jarpath\"/>"
  	    else   
 		AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
 	        eclipsejarpath=
@@ -1925,7 +1933,7 @@ else
                 <classpathentry kind=\"lib\" path=\"$jarpath\"/>"
  	    else   
 		AC_MSG_WARN([Failed to find $jar in $JINI_DIR: $jarpath])
-	        eclipsejarpath=
+	        jinijarpath=
 		break
 	    fi
         done 
