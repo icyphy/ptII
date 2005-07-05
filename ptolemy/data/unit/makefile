@@ -138,5 +138,11 @@ UParser.java: UParser.jj
 	CLASSPATH="$(CLASSPATH)" 
 	$(JAVACC) UParser.jj
 
+# This rule is useful for cvs committing the derived files
+# For example:
+# cvs commit -m "Updated MatrixParser." `make echo_OPTIONAL_JSRCS`
+echo_OPTIONAL_JSRCS:
+	@echo $(OPTIONAL_JSRCS) UParser.jj UParser.java
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
