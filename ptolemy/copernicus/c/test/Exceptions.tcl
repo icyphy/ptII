@@ -69,7 +69,8 @@ test Exceptions-1.1 {Generate all required files for Exceptions.java} {
 
     # Turn newlines into spaces.
     regsub -all "\n" $output " " output
-    regsub -all "" $output "" output
+    regsub -all "
+" $output "" output
     
     # Check if the output is correct.
     set template "0 10 20 1 2 3 4 0 10 20 Caught First Exception. Caught Second Exception."
