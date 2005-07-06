@@ -66,8 +66,8 @@ import ptolemy.plot.PlotBox;
    <code>pxgraph -help</code>.
    <p>
    The <code>pxgraph</code> program draws a graph on a display given data
-   read from either data files or from standard input if no
-   files are specified. It can display up to 64 independent
+   read from either data files or from standard input if one of the
+   arguments is a dash. It can display up to 64 independent
    data sets using different colors and/or line styles for each
    set. It annotates the graph with a title, axis labels,
    grid lines or tick marks, grid labels, and a legend. There
@@ -376,6 +376,9 @@ import ptolemy.plot.PlotBox;
    <li>The original <code>xgraph</code> program allowed many formatting
    directives inside the file.  This version only supports
    <code>draw</code> and <code>move</code>.
+   <li>To read from standard input, specify a dash on the command line.
+   Note that mixing reading from standard in and from files is not
+   well supported.
    <li>This original <code>xgraph</code> program allowed blank lines
    to separate datasets.  This version does not.  Instead, use the
    <code>move <i>X</i> <i>Y</i></code> directive.
@@ -461,6 +464,9 @@ public class PxgraphParser {
             "-zg",
             "-zw"
         };
+
+        // True if we saw an - arg, which means read from stdin
+        boolean sawDash = false;    
 
         while ((args != null) && (i < args.length)
                 && (args[i].startsWith("-") || args[i].startsWith("="))) {
@@ -717,17 +723,26 @@ public class PxgraphParser {
                 }
             }
 
-            // If we got to here, then we failed to parse the arg
-            throw new CmdLineArgException("Failed to parse `" + arg + "'");
+            if (arg.equals("-")) {
+                sawDash = true; 
+            } else {
+                // If we got to here, then we failed to parse the arg
+                throw new CmdLineArgException("Failed to parse `" + arg + "'");
+            }
         }
 
         argumentsRead = i++;
 
         _plot.setSize(width, height);
 
+        InputStream instream;
+
+        if (sawDash) {
+            instream = System.in;
+            read(instream);
+        }
         for (i = argumentsRead; i < args.length; i++) {
             // Have a filename.  First attempt to open it as a URL.
-            InputStream instream;
 
             try {
                 URL inurl = new URL(base, args[i]);
@@ -735,7 +750,6 @@ public class PxgraphParser {
             } catch (MalformedURLException ex) {
                 instream = new FileInputStream(args[i]);
             }
-
             read(instream);
         }
 

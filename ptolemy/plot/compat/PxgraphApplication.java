@@ -143,7 +143,7 @@ public class PxgraphApplication extends PlotApplication {
     protected void _about() {
         JOptionPane.showMessageDialog(this,
                 "               pxgraph\n" + "        A Java Plotting Tool\n\n"
-                + "By: Edward A. Lee and\n" + "    Christopher Hylands\n"
+                + "By: Edward A. Lee and\n" + "    Christopher Brooks\n"
                 + "Version " + PlotBox.PTPLOT_RELEASE
                 + ", Build: $Id$\n\n"
                 + "For help, type 'pxgraph -help', or see \n"
@@ -407,6 +407,12 @@ public class PxgraphApplication extends PlotApplication {
         };
 
         String[][] commandFlags = {
+            // - is not in the original xgraph.
+            {
+                "-",
+                "",
+                "(read from standard in)"
+            },
             {
                 "-bar",
                 "BarGraph",
