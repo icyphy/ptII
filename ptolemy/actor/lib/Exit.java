@@ -64,6 +64,17 @@ public class Exit extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Consume and discard at most one token from each input channel.
+     *  @exception IllegalActionException If accessing the input throws it.
+     */
+    public void fire() throws IllegalActionException {
+    	for(int i = 0; i < input.getWidth(); i++) {
+    		if (input.hasToken(i)) {
+    			input.get(i);
+    		}
+    	}
+    }
+    
     /** Exit the Java process by calling System.exit() after all the
      *  wrapup() methods have been called.
      *  If the ptolemy.ptII.exitAfterWrapup property is <b>not</b>

@@ -443,6 +443,19 @@ public class ModelReference extends TypedAtomicActor
                     + "on the previous firing.");
         }
 
+        // Read the inputs. This should be done even if there is
+        // no model.
+        // Derived classes may need to read inputs earlier in their
+        // fire() method, before calling this class, in which case
+        // they are expected to set this flag to true.
+        if (!_alreadyReadInputs) {
+            // Iterate over input ports and read any available values into
+            // the referenced model parameters.
+            _readInputs();
+        }
+        // Set the flag to false for the next firing.
+        _alreadyReadInputs = false;
+
         if (_model instanceof CompositeActor) {
             CompositeActor executable = (CompositeActor) _model;
 
@@ -496,17 +509,6 @@ public class ModelReference extends TypedAtomicActor
                     }
                 }
             }
-
-            // Derived classes may need to read inputs earlier in their
-            // fire() method, before calling this class, in which case
-            // they are expected to set this flag to true.
-            if (!_alreadyReadInputs) {
-                // Iterate over input ports and read any available values into
-                // the referenced model parameters.
-                _readInputs();
-            }
-
-            _alreadyReadInputs = false;
 
             if (_executionOnFiringValue == _RUN_IN_CALLING_THREAD) {
                 if (_debugging) {
@@ -735,23 +737,25 @@ public class ModelReference extends TypedAtomicActor
 
             if ((port.getWidth() > 0) && port.hasToken(0)) {
                 Token token = port.get(0);
-                Attribute attribute = _model.getAttribute(port.getName());
+                if (_model != null) {
+                    Attribute attribute = _model.getAttribute(port.getName());
 
-                // Use the token directly rather than a string if possible.
-                if (attribute instanceof Variable) {
-                    if (_debugging) {
-                        _debug("** Transferring input to parameter: "
-                                + port.getName());
-                    }
+                    // Use the token directly rather than a string if possible.
+                    if (attribute instanceof Variable) {
+                        if (_debugging) {
+                            _debug("** Transferring input to parameter: "
+                                    + port.getName());
+                        }
 
-                    ((Variable) attribute).setToken(token);
-                } else if (attribute instanceof Settable) {
-                    if (_debugging) {
-                        _debug("** Transferring input as string to parameter: "
-                                + port.getName());
-                    }
+                        ((Variable) attribute).setToken(token);
+                    } else if (attribute instanceof Settable) {
+                        if (_debugging) {
+                            _debug("** Transferring input as string to parameter: "
+                                    + port.getName());
+                        }
 
-                    ((Settable) attribute).setExpression(token.toString());
+                        ((Settable) attribute).setExpression(token.toString());
+                    }                	
                 }
             }
         }
