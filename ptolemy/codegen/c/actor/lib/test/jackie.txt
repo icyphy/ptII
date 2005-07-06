@@ -1,0 +1,634 @@
+CLASSPATH="../../../../../..;c:/Program Files/eclipse/workspace/ptII/lib/ptjacl.jar" "/cygdrive/c/j2sdk1.4.2_08/bin/java"  "-Dptolemy.ptII.dir=c:/Program Files/eclipse/workspace/ptII"  tcl.lang.Shell ../../../../../../util/testsuite/auto.tcl
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Butterfly.xml
+310 ms. Memory: 4664K Free: 1676K (36%)
+140 ms. Memory: 4664K Free: 1865K (40%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Ramp.xml
+20 ms. Memory: 4664K Free: 1376K (30%)
+21 ms. Memory: 4664K Free: 1338K (29%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Ramp1.xml
+10 ms. Memory: 4664K Free: 1393K (30%)
+10 ms. Memory: 4664K Free: 1403K (30%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Ramp2.xml
+20 ms. Memory: 4664K Free: 734K (16%)
+20 ms. Memory: 4664K Free: 994K (21%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Repeat.xml
+10 ms. Memory: 4664K Free: 530K (11%)
+20 ms. Memory: 4664K Free: 448K (10%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Repeat2.xml
+10 ms. Memory: 4664K Free: 437K (9%)
+70 ms. Memory: 4664K Free: 3782K (81%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Repeat3.xml
+20 ms. Memory: 4664K Free: 3293K (71%)
+10 ms. Memory: 4664K Free: 3213K (69%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Repeat4.xml
+20 ms. Memory: 4664K Free: 2903K (62%)
+20 ms. Memory: 4664K Free: 3195K (69%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay.xml
+10 ms. Memory: 4664K Free: 2744K (59%)
+0 ms. Memory: 4664K Free: 3027K (65%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay1.xml
+21 ms. Memory: 4664K Free: 2728K (58%)
+10 ms. Memory: 4664K Free: 2435K (52%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay2.xml
+10 ms. Memory: 4664K Free: 2641K (57%)
+0 ms. Memory: 4664K Free: 2410K (52%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay3.xml
+10 ms. Memory: 4664K Free: 2128K (46%)
+10 ms. Memory: 4664K Free: 2325K (50%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay4.xml
+10 ms. Memory: 4664K Free: 2048K (44%)
+10 ms. Memory: 4664K Free: 1819K (39%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Sequence.xml
+10 ms. Memory: 4664K Free: 1810K (39%)
+10 ms. Memory: 4664K Free: 1880K (40%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Sequence1.xml
+0 ms. Memory: 4664K Free: 1411K (30%)
+10 ms. Memory: 4664K Free: 1477K (32%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Sequence2.xml
+0 ms. Memory: 4664K Free: 1371K (29%)
+0 ms. Memory: 4664K Free: 1392K (30%)
+------------------ testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Test.xml
+0 ms. Memory: 4664K Free: 1016K (22%)
+0 ms. Memory: 4664K Free: 1075K (23%)
+Failed: 0  Total Tests: 34  ((Passed: 34, Newly Passed: 0)  Known Failed: 0) c:/Program Files/eclipse/workspace/ptII/ptolemy/codegen/c/actor/lib/test
+CLASSPATH="../../../../../..;c:/Program Files/eclipse/workspace/ptII/lib/ptjacl.jar" "/cygdrive/c/j2sdk1.4.2_08/bin/java"  "-Dptolemy.ptII.dir=c:/Program Files/eclipse/workspace/ptII"  tcl.lang.Shell alljtests.tcl
+CGC.tcl
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Butterfly.xml
+321 ms. Memory: 5104K Free: 1979K (39%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.Butterfly.StaticSchedulingCodeGenerator}
+140 ms. Memory: 5104K Free: 600K (12%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Ramp.xml
+20 ms. Memory: 5104K Free: 520K (10%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.Ramp.StaticSchedulingCodeGenerator}
+20 ms. Memory: 5104K Free: 548K (11%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Ramp1.xml
+10 ms. Memory: 5104K Free: 3929K (77%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.Ramp1.StaticSchedulingCodeGenerator}
+10 ms. Memory: 5104K Free: 3703K (73%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Ramp2.xml
+10 ms. Memory: 5104K Free: 3451K (68%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.Ramp2.StaticSchedulingCodeGenerator}
+10 ms. Memory: 5104K Free: 3298K (65%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Repeat.xml
+10 ms. Memory: 5104K Free: 3251K (64%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.Repeat.StaticSchedulingCodeGenerator}
+0 ms. Memory: 5104K Free: 3113K (61%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Repeat2.xml
+30 ms. Memory: 5104K Free: 3042K (60%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.Repeat2.StaticSchedulingCodeGenerator}
+20 ms. Memory: 5104K Free: 2919K (57%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Repeat3.xml
+10 ms. Memory: 5104K Free: 2432K (48%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.Repeat3.StaticSchedulingCodeGenerator}
+10 ms. Memory: 5104K Free: 2698K (53%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Repeat4.xml
+10 ms. Memory: 5104K Free: 2339K (46%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.Repeat4.StaticSchedulingCodeGenerator}
+10 ms. Memory: 5104K Free: 2159K (42%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay.xml
+10 ms. Memory: 5104K Free: 2166K (42%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.SampleDelay.StaticSchedulingCodeGenerator}
+
+
+==== Auto Automatic CGC test in file $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+        set application [createAndExecute $file]
+	set args [java::new {String[]} 1  [list $file]]
+
+	java::call ptolemy.codegen.kernel.CodeGenerator main $args
+        list {}
+    
+==== Test generated error:
+    while executing
+java.lang.Exception: Failed to generate code for "auto/SampleDelay.xml"
+	at ptolemy.codegen.kernel.CodeGenerator.main(CodeGenerator.java:441)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callStaticMethod(JavaInvoke.java:169)
+	at tcl.lang.JavaCallCmd.cmdProc(JavaCallCmd.java:74)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:75)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.IfCmd.cmdProc(IfCmd.java:57)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.IfCmd.cmdProc(IfCmd.java:57)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at tcl.lang.Shell.main(Shell.java:110)
+Caused by: ptolemy.kernel.util.IllegalActionException: Missing code block close header
+	at ptolemy.codegen.c.actor.lib.CodeStream._parseHeader(CodeStream.java:298)
+	at ptolemy.codegen.c.actor.lib.CodeStream._parseCodeBlock(CodeStream.java:265)
+	at ptolemy.codegen.c.actor.lib.CodeStream._constructCodeTable(CodeStream.java:188)
+	at ptolemy.codegen.c.actor.lib.CodeStream.appendCodeBlock(CodeStream.java:96)
+	at ptolemy.codegen.c.domains.sdf.lib.SampleDelay.generateFireCode(SampleDelay.java:71)
+	at ptolemy.codegen.c.domains.sdf.kernel.SDFDirector.generateFireCode(SDFDirector.java:120)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateFireCode(StaticSchedulingCodeGenerator.java:132)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateBodyCode(StaticSchedulingCodeGenerator.java:77)
+	at ptolemy.codegen.kernel.CodeGenerator.generateCode(CodeGenerator.java:196)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateCode(StaticSchedulingCodeGenerator.java:100)
+	at ptolemy.codegen.kernel.CodeGenerator.generateCode(CodeGenerator.java:158)
+	at ptolemy.codegen.kernel.CodeGenerator.main(CodeGenerator.java:439)
+	... 62 more
+
+    while executing
+java.lang.Exception: Failed to generate code for "auto/SampleDelay.xml"
+    while executing
+"java::call ptolemy.codegen.kernel.CodeGenerator main $args"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+10 ms. Memory: 5104K Free: 1769K (35%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay1.xml
+10 ms. Memory: 5104K Free: 1885K (37%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.SampleDelay1.StaticSchedulingCodeGenerator}
+
+
+==== Auto Automatic CGC test in file $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay1.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+        set application [createAndExecute $file]
+	set args [java::new {String[]} 1  [list $file]]
+
+	java::call ptolemy.codegen.kernel.CodeGenerator main $args
+        list {}
+    
+==== Test generated error:
+    while executing
+java.lang.Exception: Failed to generate code for "auto/SampleDelay1.xml"
+	at ptolemy.codegen.kernel.CodeGenerator.main(CodeGenerator.java:441)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callStaticMethod(JavaInvoke.java:169)
+	at tcl.lang.JavaCallCmd.cmdProc(JavaCallCmd.java:74)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:75)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.IfCmd.cmdProc(IfCmd.java:57)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.IfCmd.cmdProc(IfCmd.java:57)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at tcl.lang.Shell.main(Shell.java:110)
+Caused by: ptolemy.kernel.util.IllegalActionException: Missing code block close header
+	at ptolemy.codegen.c.actor.lib.CodeStream._parseHeader(CodeStream.java:298)
+	at ptolemy.codegen.c.actor.lib.CodeStream._parseCodeBlock(CodeStream.java:265)
+	at ptolemy.codegen.c.actor.lib.CodeStream._constructCodeTable(CodeStream.java:188)
+	at ptolemy.codegen.c.actor.lib.CodeStream.appendCodeBlock(CodeStream.java:96)
+	at ptolemy.codegen.c.domains.sdf.lib.SampleDelay.generateFireCode(SampleDelay.java:71)
+	at ptolemy.codegen.c.domains.sdf.kernel.SDFDirector.generateFireCode(SDFDirector.java:120)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateFireCode(StaticSchedulingCodeGenerator.java:132)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateBodyCode(StaticSchedulingCodeGenerator.java:77)
+	at ptolemy.codegen.kernel.CodeGenerator.generateCode(CodeGenerator.java:196)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateCode(StaticSchedulingCodeGenerator.java:100)
+	at ptolemy.codegen.kernel.CodeGenerator.generateCode(CodeGenerator.java:158)
+	at ptolemy.codegen.kernel.CodeGenerator.main(CodeGenerator.java:439)
+	... 62 more
+
+    while executing
+java.lang.Exception: Failed to generate code for "auto/SampleDelay1.xml"
+    while executing
+"java::call ptolemy.codegen.kernel.CodeGenerator main $args"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+0 ms. Memory: 5104K Free: 1881K (37%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay2.xml
+0 ms. Memory: 5104K Free: 1618K (32%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.SampleDelay2.StaticSchedulingCodeGenerator}
+
+
+==== Auto Automatic CGC test in file $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay2.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+        set application [createAndExecute $file]
+	set args [java::new {String[]} 1  [list $file]]
+
+	java::call ptolemy.codegen.kernel.CodeGenerator main $args
+        list {}
+    
+==== Test generated error:
+    while executing
+java.lang.Exception: Failed to generate code for "auto/SampleDelay2.xml"
+	at ptolemy.codegen.kernel.CodeGenerator.main(CodeGenerator.java:441)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callStaticMethod(JavaInvoke.java:169)
+	at tcl.lang.JavaCallCmd.cmdProc(JavaCallCmd.java:74)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:75)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.IfCmd.cmdProc(IfCmd.java:57)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.IfCmd.cmdProc(IfCmd.java:57)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at tcl.lang.Shell.main(Shell.java:110)
+Caused by: ptolemy.kernel.util.IllegalActionException: Missing code block close header
+	at ptolemy.codegen.c.actor.lib.CodeStream._parseHeader(CodeStream.java:298)
+	at ptolemy.codegen.c.actor.lib.CodeStream._parseCodeBlock(CodeStream.java:265)
+	at ptolemy.codegen.c.actor.lib.CodeStream._constructCodeTable(CodeStream.java:188)
+	at ptolemy.codegen.c.actor.lib.CodeStream.appendCodeBlock(CodeStream.java:96)
+	at ptolemy.codegen.c.domains.sdf.lib.SampleDelay.generateFireCode(SampleDelay.java:71)
+	at ptolemy.codegen.c.domains.sdf.kernel.SDFDirector.generateFireCode(SDFDirector.java:120)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateFireCode(StaticSchedulingCodeGenerator.java:132)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateBodyCode(StaticSchedulingCodeGenerator.java:77)
+	at ptolemy.codegen.kernel.CodeGenerator.generateCode(CodeGenerator.java:196)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateCode(StaticSchedulingCodeGenerator.java:100)
+	at ptolemy.codegen.kernel.CodeGenerator.generateCode(CodeGenerator.java:158)
+	at ptolemy.codegen.kernel.CodeGenerator.main(CodeGenerator.java:439)
+	... 62 more
+
+    while executing
+java.lang.Exception: Failed to generate code for "auto/SampleDelay2.xml"
+    while executing
+"java::call ptolemy.codegen.kernel.CodeGenerator main $args"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+10 ms. Memory: 5104K Free: 1275K (25%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay3.xml
+10 ms. Memory: 5104K Free: 1428K (28%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.SampleDelay3.StaticSchedulingCodeGenerator}
+
+
+==== Auto Automatic CGC test in file $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay3.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+        set application [createAndExecute $file]
+	set args [java::new {String[]} 1  [list $file]]
+
+	java::call ptolemy.codegen.kernel.CodeGenerator main $args
+        list {}
+    
+==== Test generated error:
+    while executing
+java.lang.Exception: Failed to generate code for "auto/SampleDelay3.xml"
+	at ptolemy.codegen.kernel.CodeGenerator.main(CodeGenerator.java:441)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callStaticMethod(JavaInvoke.java:169)
+	at tcl.lang.JavaCallCmd.cmdProc(JavaCallCmd.java:74)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:75)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.IfCmd.cmdProc(IfCmd.java:57)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.IfCmd.cmdProc(IfCmd.java:57)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at tcl.lang.Shell.main(Shell.java:110)
+Caused by: ptolemy.kernel.util.IllegalActionException: Missing code block close header
+	at ptolemy.codegen.c.actor.lib.CodeStream._parseHeader(CodeStream.java:298)
+	at ptolemy.codegen.c.actor.lib.CodeStream._parseCodeBlock(CodeStream.java:265)
+	at ptolemy.codegen.c.actor.lib.CodeStream._constructCodeTable(CodeStream.java:188)
+	at ptolemy.codegen.c.actor.lib.CodeStream.appendCodeBlock(CodeStream.java:96)
+	at ptolemy.codegen.c.domains.sdf.lib.SampleDelay.generateFireCode(SampleDelay.java:71)
+	at ptolemy.codegen.c.domains.sdf.kernel.SDFDirector.generateFireCode(SDFDirector.java:120)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateFireCode(StaticSchedulingCodeGenerator.java:132)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateBodyCode(StaticSchedulingCodeGenerator.java:77)
+	at ptolemy.codegen.kernel.CodeGenerator.generateCode(CodeGenerator.java:196)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateCode(StaticSchedulingCodeGenerator.java:100)
+	at ptolemy.codegen.kernel.CodeGenerator.generateCode(CodeGenerator.java:158)
+	at ptolemy.codegen.kernel.CodeGenerator.main(CodeGenerator.java:439)
+	... 62 more
+
+    while executing
+java.lang.Exception: Failed to generate code for "auto/SampleDelay3.xml"
+    while executing
+"java::call ptolemy.codegen.kernel.CodeGenerator main $args"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+10 ms. Memory: 5104K Free: 1430K (28%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay4.xml
+10 ms. Memory: 5104K Free: 1179K (23%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.SampleDelay4.StaticSchedulingCodeGenerator}
+
+
+==== Auto Automatic CGC test in file $PTII\ptolemy\codegen\c\actor\lib\test\auto\SampleDelay4.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+        set application [createAndExecute $file]
+	set args [java::new {String[]} 1  [list $file]]
+
+	java::call ptolemy.codegen.kernel.CodeGenerator main $args
+        list {}
+    
+==== Test generated error:
+    while executing
+java.lang.Exception: Failed to generate code for "auto/SampleDelay4.xml"
+	at ptolemy.codegen.kernel.CodeGenerator.main(CodeGenerator.java:441)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callStaticMethod(JavaInvoke.java:169)
+	at tcl.lang.JavaCallCmd.cmdProc(JavaCallCmd.java:74)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at tcl.lang.SourceCmd.cmdProc(SourceCmd.java:75)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.IfCmd.cmdProc(IfCmd.java:57)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.IfCmd.cmdProc(IfCmd.java:57)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at tcl.lang.Shell.main(Shell.java:110)
+Caused by: ptolemy.kernel.util.IllegalActionException: Missing code block close header
+	at ptolemy.codegen.c.actor.lib.CodeStream._parseHeader(CodeStream.java:298)
+	at ptolemy.codegen.c.actor.lib.CodeStream._parseCodeBlock(CodeStream.java:265)
+	at ptolemy.codegen.c.actor.lib.CodeStream._constructCodeTable(CodeStream.java:188)
+	at ptolemy.codegen.c.actor.lib.CodeStream.appendCodeBlock(CodeStream.java:96)
+	at ptolemy.codegen.c.domains.sdf.lib.SampleDelay.generateFireCode(SampleDelay.java:71)
+	at ptolemy.codegen.c.domains.sdf.kernel.SDFDirector.generateFireCode(SDFDirector.java:120)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateFireCode(StaticSchedulingCodeGenerator.java:132)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateBodyCode(StaticSchedulingCodeGenerator.java:77)
+	at ptolemy.codegen.kernel.CodeGenerator.generateCode(CodeGenerator.java:196)
+	at ptolemy.codegen.kernel.StaticSchedulingCodeGenerator.generateCode(StaticSchedulingCodeGenerator.java:100)
+	at ptolemy.codegen.kernel.CodeGenerator.generateCode(CodeGenerator.java:158)
+	at ptolemy.codegen.kernel.CodeGenerator.main(CodeGenerator.java:439)
+	... 62 more
+
+    while executing
+java.lang.Exception: Failed to generate code for "auto/SampleDelay4.xml"
+    while executing
+"java::call ptolemy.codegen.kernel.CodeGenerator main $args"
+    ("uplevel" body line 8)
+    invoked from within
+"uplevel $contents_of_test"
+10 ms. Memory: 5104K Free: 1179K (23%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Sequence.xml
+10 ms. Memory: 5104K Free: 692K (14%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.Sequence.StaticSchedulingCodeGenerator}
+0 ms. Memory: 5104K Free: 990K (19%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Sequence1.xml
+0 ms. Memory: 5104K Free: 513K (10%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.Sequence1.StaticSchedulingCodeGenerator}
+0 ms. Memory: 5104K Free: 351K (7%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Sequence2.xml
+60 ms. Memory: 5104K Free: 3606K (71%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.Sequence2.StaticSchedulingCodeGenerator}
+0 ms. Memory: 5104K Free: 3788K (74%)
+------------------ CGC testing $PTII\ptolemy\codegen\c\actor\lib\test\auto\Test.xml
+0 ms. Memory: 5104K Free: 3365K (66%)
+CodeGenerator: ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.Test.StaticSchedulingCodeGenerator}
+0 ms. Memory: 5104K Free: 3258K (64%)
+Failed: 5  Total Tests: 34  ((Passed: 29, Newly Passed: 0)  Known Failed: 0) C:/Program Files/eclipse/workspace/ptII/ptolemy/codegen/c/actor/lib/test
