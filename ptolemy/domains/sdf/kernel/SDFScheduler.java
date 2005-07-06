@@ -51,12 +51,15 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -79,7 +82,6 @@ tokens created on each channel of each relation is equal to the number
 of tokens consumed.  In some cases, no solution exists.  Such graphs
 are not executable under SDF.
 <p>
-
 Then the actors are ordered such that each actor only fires when the
 scheduler has determined that enough tokens will be present on its
 input ports to allow it to fire.  In cases where the dataflow graph is
@@ -122,7 +124,6 @@ is somewhat conservative in this respect.
 
 
 @see ptolemy.actor.sched.Scheduler
-@see ptolemy.domains.sdf.kernel.SDFIOPort
 @see ptolemy.domains.sdf.lib.SampleDelay
 
 @author Stephen Neuendorffer and Brian Vogel
@@ -138,6 +139,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      */
     public SDFScheduler() {
         super();
+        _init();
     }
 
     /** Construct a scheduler in the given workspace with the name
@@ -150,6 +152,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      */
     public SDFScheduler(Workspace workspace) {
         super(workspace);
+        _init();
     }
 
     /** Construct a scheduler in the given container with the given name.
@@ -168,8 +171,20 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     public SDFScheduler(Director container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _init();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** If true, then buffer sizes are fixed according to the schedule,
+     *  and attempts to write to the buffer that cause the buffer to
+     *  exceed the schedule size result in an exception. This method
+     *  works by setting the capacity of the receivers if the value is
+     *  true. This parameter is a boolean that defaults to true.
+     */
+    public Parameter constrainBufferSizes;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -283,6 +298,132 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         }
     }
 
+    /** Determine the number of times the given actor can fire, based on
+     *  the number of tokens that are present on its inputs.
+     *  @param currentActor The actor.
+     *  @return The number of times the actor can fire.
+     *  @exception IllegalActionException If the rate parameters are invalid.
+     */
+    protected int _computeMaximumFirings(Actor currentActor)
+            throws IllegalActionException {
+        
+        int result = Integer.MAX_VALUE;
+
+        // Update the number of tokens waiting on the actor's input ports.
+        Iterator inputPorts = currentActor.inputPortList().iterator();
+
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            int tokenRate = DFUtilities.getTokenConsumptionRate(inputPort);
+
+            // Ignore zero rate ports.. they don't limit the number of times
+            // we can fire their actors.
+            if (tokenRate == 0) {
+                continue;
+            }
+
+            Receiver[][] receivers = inputPort.getReceivers();
+            for (int channel = 0; channel < receivers.length; channel++) {
+                if (receivers[channel] == null) {
+                    continue;
+                }
+                for (int copy = 0; copy < receivers[channel].length; copy++) {
+                    if (!(receivers[channel][copy] instanceof SDFReceiver)) {
+                        // This should only occur if it is null.
+                        continue;
+                    }
+                    SDFReceiver receiver = (SDFReceiver)receivers[channel][copy];
+                    
+                    int firings = receiver._waitingTokens / tokenRate;
+                    // Keep track of whether or not this actor can fire again immediately.
+                    if (firings < result) {
+                        result = firings;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /** Count the number of input ports in the given actor that must be
+     *  fulfilled before the actor can fire.  Ports that are connected
+     *  to actors that we are not scheduling right now are assumed to
+     *  be fulfilled.  Ports that have more tokens waiting on each of
+     *  their channels than their input consumption rate are also
+     *  already fulfilled.  All other ports are considered to be
+     *  unfulfilled.
+     *  @param actor The actor.
+     *  @param actorList The list of actors that we are scheduling.
+     *  @param resetCapacity If true, then reset the capacity of each
+     *   receiver to infinite capacity (do this during initialization).
+     *  @return The number of unfulfilled input ports of the given actor.
+     *  @exception IllegalActionException If any called method throws it.
+     */
+    protected int _countUnfulfilledInputs(Actor actor, List actorList, boolean resetCapacity)
+            throws IllegalActionException {
+        if (_debugging && VERBOSE) {
+            _debug("Counting unfulfilled inputs for " + actor.getFullName());
+        }
+
+        int count = 0;
+
+        Iterator inputPorts = actor.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+
+            if (_debugging && VERBOSE) {
+                _debug("Checking input " + inputPort.getFullName());
+            }
+
+            int threshold = DFUtilities.getTokenConsumptionRate(inputPort);
+
+            if (_debugging && VERBOSE) {
+                _debug("Threshold = " + threshold);
+            }
+            
+            Receiver[][] receivers = inputPort.getReceivers();
+            boolean isFulfilled = true;
+            for (int channel = 0; channel < receivers.length; channel++) {
+                if (receivers[channel] == null) {
+                    continue;
+                }
+                for (int copy = 0; copy < receivers[channel].length; copy++) {
+                    if (!(receivers[channel][copy] instanceof SDFReceiver)) {
+                        // This should only occur if it is null.
+                        continue;
+                    }
+                    SDFReceiver receiver = (SDFReceiver)receivers[channel][copy];
+                    if (resetCapacity) {
+                    	receiver.setCapacity(SDFReceiver.INFINITE_CAPACITY);
+                    }
+                    if (receiver._waitingTokens < threshold) {
+                        isFulfilled = false;
+                        if (!resetCapacity) {
+                            break;
+                        }
+                    }
+                }
+                if (!isFulfilled) {
+                    // No point in continuing.
+                    break;
+                }
+            }
+            if (!isFulfilled) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /** Return the number of firings associated with the given entity. The
+     *  number of firings is stored in the _firingVector map, indexed
+     *  by the entity.
+     *  @param entity One of the actors we are scheduling.
+     */
+    protected int _getFiringCount(Entity entity) {
+        return ((Integer) _firingVector.get(entity)).intValue();
+    }
+    
     /** Return the scheduling sequence.  An exception will be thrown if the
      *  graph is not schedulable.  This occurs in the following circumstances:
      *  <ul>
@@ -659,133 +800,21 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     + "execution of the schedule!");
         }
     }
-
-    /** Determine the number of times the given actor can fire, based on
-     *  the number of tokens that are present on its inputs.
-     *  @param currentActor The actor.
-     *  @return The number of times the actor can fire.
-     *  @exception IllegalActionException If the rate parameters are invalid.
-     */
-    protected int _computeMaximumFirings(Actor currentActor)
-            throws IllegalActionException {
-        
-        int result = Integer.MAX_VALUE;
-
-        // Update the number of tokens waiting on the actor's input ports.
-        Iterator inputPorts = currentActor.inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-            int tokenRate = DFUtilities.getTokenConsumptionRate(inputPort);
-
-            // Ignore zero rate ports.. they don't limit the number of times
-            // we can fire their actors.
-            if (tokenRate == 0) {
-                continue;
-            }
-
-            Receiver[][] receivers = inputPort.getReceivers();
-            for (int channel = 0; channel < receivers.length; channel++) {
-                if (receivers[channel] == null) {
-                    continue;
-                }
-                for (int copy = 0; copy < receivers[channel].length; copy++) {
-                    if (!(receivers[channel][copy] instanceof SDFReceiver)) {
-                        // This should only occur if it is null.
-                        continue;
-                    }
-                    SDFReceiver receiver = (SDFReceiver)receivers[channel][copy];
-                    
-                    int firings = receiver._waitingTokens / tokenRate;
-                    // Keep track of whether or not this actor can fire again immediately.
-                    if (firings < result) {
-                        result = firings;
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    /** Count the number of input ports in the given actor that must be
-     *  fulfilled before the actor can fire.  Ports that are connected
-     *  to actors that we are not scheduling right now are assumed to
-     *  be fulfilled.  Ports that have more tokens waiting on each of
-     *  their channels than their input consumption rate are also
-     *  already fulfilled.  All other ports are considered to be
-     *  unfulfilled.
-     *  @param actor The actor.
-     *  @param actorList The list of actors that we are scheduling.
-     *  @param resetCapacity If true, then reset the capacity of each
-     *   receiver (do this during initialization).
-     *  @return The number of unfulfilled input ports of the given actor.
-     *  @exception IllegalActionException If any called method throws it.
-     */
-    protected int _countUnfulfilledInputs(Actor actor, List actorList, boolean resetCapacity)
-            throws IllegalActionException {
-        if (_debugging && VERBOSE) {
-            _debug("Counting unfulfilled inputs for " + actor.getFullName());
-        }
-
-        int count = 0;
-
-        Iterator inputPorts = actor.inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-
-            if (_debugging && VERBOSE) {
-                _debug("Checking input " + inputPort.getFullName());
-            }
-
-            int threshold = DFUtilities.getTokenConsumptionRate(inputPort);
-
-            if (_debugging && VERBOSE) {
-                _debug("Threshold = " + threshold);
-            }
-            
-            Receiver[][] receivers = inputPort.getReceivers();
-            boolean isFulfilled = true;
-            for (int channel = 0; channel < receivers.length; channel++) {
-                if (receivers[channel] == null) {
-                    continue;
-                }
-                for (int copy = 0; copy < receivers[channel].length; copy++) {
-                    if (!(receivers[channel][copy] instanceof SDFReceiver)) {
-                        // This should only occur if it is null.
-                        continue;
-                    }
-                    SDFReceiver receiver = (SDFReceiver)receivers[channel][copy];
-                    if (resetCapacity) {
-                    	receiver.setCapacity(SDFReceiver.INFINITE_CAPACITY);
-                    }
-                    if (receiver._waitingTokens < threshold) {
-                        isFulfilled = false;
-                        if (!resetCapacity) {
-                            break;
-                        }
-                    }
-                }
-                if (!isFulfilled) {
-                    // No point in continuing.
-                    break;
-                }
-            }
-            if (!isFulfilled) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    /** Return the number of firings associated with the given entity. The
-     *  number of firings is stored in the _firingVector map, indexed
-     *  by the entity.
-     *  @param entity One of the actors we are scheduling.
-     */
-    protected int _getFiringCount(Entity entity) {
-        return ((Integer) _firingVector.get(entity)).intValue();
-    }
     
+    /** Create the parameter constrainBufferSizes and set its default
+     *  value and type constraints.
+     */
+    private void _init() {
+    	try {
+			constrainBufferSizes = new Parameter(this, "constrainBufferSizes");
+			constrainBufferSizes.setTypeEquals(BaseType.BOOLEAN);
+			constrainBufferSizes.setExpression("true");
+		} catch (KernelException e) {
+			throw new InternalErrorException(e);
+		}
+    	
+    }
+
     /** Add this scheduler as a value listener to the given variable
      * and add the variable to the given list.  If the list already
      * includes the variable, or the variable is null, then do
@@ -1445,10 +1474,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 receiver._waitingTokens = count;
                 
                 // Update the buffer size, if necessary.
-                int capacity = receiver.getCapacity();
-                if (capacity == SDFReceiver.INFINITE_CAPACITY
-                        || receiver._waitingTokens > capacity) {
-                    receiver.setCapacity(count);
+                boolean enforce = ((BooleanToken)constrainBufferSizes.getToken()).booleanValue();
+                if (enforce) {
+                	int capacity = receiver.getCapacity();
+                	if (capacity == SDFReceiver.INFINITE_CAPACITY
+                			|| receiver._waitingTokens > capacity) {
+                		receiver.setCapacity(count);
+                	}
                 }
                 // Determine whether the connectedActor can now be scheduled.
                 // Only proceed if the connected actor is something we are
@@ -1556,10 +1588,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 // Increment the number of waiting tokens.
                 receiver._waitingTokens += createdTokens;
                 // Update the buffer size, if necessary.
-                int capacity = receiver.getCapacity();
-                if (capacity == SDFReceiver.INFINITE_CAPACITY
-                        || receiver._waitingTokens > capacity) {
-                	receiver.setCapacity(receiver._waitingTokens);
+                boolean enforce = ((BooleanToken)constrainBufferSizes.getToken()).booleanValue();
+                if (enforce) {
+                	int capacity = receiver.getCapacity();
+                	if (capacity == SDFReceiver.INFINITE_CAPACITY
+                			|| receiver._waitingTokens > capacity) {
+                		receiver.setCapacity(receiver._waitingTokens);
+                	}
                 }
 
                 // Only proceed if the connected actor is

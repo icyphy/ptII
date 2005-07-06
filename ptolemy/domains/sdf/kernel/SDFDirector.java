@@ -198,15 +198,23 @@ public class SDFDirector extends StaticSchedulingDirector {
     /** A parameter representing whether dynamic rate changes are
      *  permitted.  An SDF model may constructed such that the values
      *  of rate parameters are modified during the execution of the
-     *  system.  If this parameter is false, then such models are
+     *  system.  If this parameter is true, then such models are
      *  valid and this class dynamically computes a new schedule at
-     *  runtime.  If this parameter is true, then the SDF domain
+     *  runtime.  If this parameter is false, then the SDF domain
      *  performs a static check to disallow such models.  Note that in
      *  order to generate code from an SDF model, this parameter must
-     *  be set to true.  The default value is a BooleanToken with the
-     *  value true.
+     *  be set to false.  This is a boolean with default
+     *  value false.
      */
     public Parameter allowRateChanges;
+
+    /** If true, then buffer sizes are fixed according to the schedule,
+     *  and attempts to write to the buffer that cause the buffer to
+     *  exceed the schedule size result in an exception. This method
+     *  works by setting the capacity of the receivers if the value is
+     *  true. This parameter is a boolean that defaults to true.
+     */
+    public Parameter constrainBufferSizes;
 
     /** A Parameter representing the number of times that postfire may be
      *  called before it returns false.  If the value is less than or
@@ -582,8 +590,6 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     private void _init()
             throws IllegalActionException, NameDuplicationException {
-        SDFScheduler scheduler = new SDFScheduler(this, uniqueName("Scheduler"));
-
         allowDisconnectedGraphs = new Parameter(this, "allowDisconnectedGraphs");
         allowDisconnectedGraphs.setTypeEquals(BaseType.BOOLEAN);
         allowDisconnectedGraphs.setExpression("false");
@@ -591,6 +597,10 @@ public class SDFDirector extends StaticSchedulingDirector {
         allowRateChanges = new Parameter(this, "allowRateChanges");
         allowRateChanges.setTypeEquals(BaseType.BOOLEAN);
         allowRateChanges.setExpression("false");
+        
+		constrainBufferSizes = new Parameter(this, "constrainBufferSizes");
+		constrainBufferSizes.setTypeEquals(BaseType.BOOLEAN);
+		constrainBufferSizes.setExpression("true");
 
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
@@ -599,6 +609,10 @@ public class SDFDirector extends StaticSchedulingDirector {
         vectorizationFactor = new Parameter(this, "vectorizationFactor");
         vectorizationFactor.setTypeEquals(BaseType.INT);
         vectorizationFactor.setExpression("1");
+
+        SDFScheduler scheduler = new SDFScheduler(this, uniqueName("Scheduler"));
+        scheduler.constrainBufferSizes.setExpression("constrainBufferSizes");
+        setScheduler(scheduler);
     }
 
     ///////////////////////////////////////////////////////////////////

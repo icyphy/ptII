@@ -291,7 +291,8 @@ public final class ArrayFIFOQueue implements Cloneable {
      */
     public boolean put(Object element) {
         if ((_queueArray.length - _queueSize) >= 1) {
-            _queueArray[_queueFront++] = element;
+            _queueArray[_queueFront] = element;
+            _queueFront += 1;
 
             if (_queueFront >= _queueArray.length) {
                 _queueFront = _queueFront % _queueArray.length;
@@ -584,17 +585,16 @@ public final class ArrayFIFOQueue implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /**
-     * Resize the internal circular array to have the given size.
-     * @exception InternalErrorException If the proposed size is greater than
+    /** Resize the internal circular array to have the given size.
+     *  @exception InternalErrorException If the proposed size is greater than
      *   the declared maximum size, or if the queue contains more
      *   objects than the proposed size or the proposed size
-     *   is illegal. .
+     *   is illegal.
      */
     private void _resizeArray(int newSize) {
         if (newSize < 0) {
             throw new InternalErrorException("Buffer size of " + newSize
-                    + " is not greater than zero.");
+                    + " is less than zero.");
         }
 
         if (size() > newSize) {
@@ -609,17 +609,26 @@ public final class ArrayFIFOQueue implements Cloneable {
         }
 
         Object[] newArray = new Object[newSize];
-
-        if ((_queueFront < _queueBack) || isFull()) {
+        
+        if (newSize == 0) {
+        	_queueFront = 0;
+        } else if ((_queueFront < _queueBack) || isFull()) {
             System.arraycopy(_queueArray, _queueBack, newArray, 0,
                     _queueArray.length - _queueBack);
             System.arraycopy(_queueArray, 0, newArray,
                     _queueArray.length - _queueBack, _queueFront);
             _queueFront = _queueArray.length - _queueBack + _queueFront;
+            // NOTE: The following is probably not needed, but paranoid programming.
+            if (_queueFront >= newArray.length) {
+                _queueFront = _queueFront % newArray.length;
+            }
         } else {
             System.arraycopy(_queueArray, _queueBack, newArray, 0,
                     _queueFront - _queueBack);
             _queueFront = _queueFront - _queueBack;
+            if (_queueFront >= newArray.length) {
+                _queueFront = _queueFront % newArray.length;
+            }
         }
 
         _queueArray = newArray;
@@ -628,27 +637,28 @@ public final class ArrayFIFOQueue implements Cloneable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The container, if there is one.
+    
+    /** The container, if there is one. */
     private Nameable _container = null;
 
-    // The maximum capacity of the queue
+    /** The maximum capacity of the queue. */
     private int _queueMaxCapacity = INFINITE_CAPACITY;
 
-    // The list of objects currently in the queue.
+    /** The list of objects currently in the queue. */
     private Object[] _queueArray;
 
-    // The location of the next place to insert in _queueArray
+    /** The location of the next place to insert in _queueArray. */
     private int _queueFront = 0;
 
-    // The location of the next place to remove from _queueArray
+    /** The location of the next place to remove from _queueArray. */
     private int _queueBack = 0;
 
-    // The number of elements in the queue.
+    /** The number of elements in the queue. */
     private int _queueSize = 0;
 
-    // The capacity of the history queue, defaulting to zero.
+    /** The capacity of the history queue, defaulting to zero. */
     private int _historyCapacity = DEFAULT_HISTORY_CAPACITY;
 
-    // The list of objects recently removed from the queue.
+    /** The list of objects recently removed from the queue. */
     private LinkedList _historyList = null;
 }
