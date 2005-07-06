@@ -196,6 +196,26 @@ CYGWIN*)
 	;;
 esac
 
+#--------------------------------------------------------------------
+#       Look for the "find" command
+#--------------------------------------------------------------------
+AC_ARG_WITH(find, [  --with-find=PATH         use the find command from PATH,
+                           PTJAVA_DIR environment variable],
+    FIND=$withval,
+    FIND=/bin/find)
+AC_PATH_PROG(FIND, find)
+if test `echo "$FIND" | grep system32`; then
+    AC_MSG_WARN(["Your path is probably messed up, you have a system32
+    directory in your path before /bin"])
+    FIND=/bin/find
+fi
+
+if test ! -f "$FIND"; then
+    AC_MSG_WARN(["Could not find the "find" command,
+    looked in \"$FIND\"])
+fi    
+
+
 # Substitute %20 for any spaces.
 PTII_LOCALURL=`echo "file:///$PTII_DIR" | sed 's/ /%20/g'`
 #--------------------------------------------------------------------
@@ -1025,19 +1045,15 @@ else
 	for jar in $jars
 	do
 	    echo $ECHO_N "$jar "
-	    jarpath=`find "$ECLIPSE_DIR/plugins" -name $jar | head -1`
+	    jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name $jar | head -1`
    	    if test -f "$jarpath"; then
 	        # Keep track of the jars so we can use them while building
 		# with make.
   	        eclipsejarpath="$eclipsejarpath$CLASSPATHSEPARATOR$jarpath"
 
-		# FIXME: we should not be adding to ECLIPSE_CLASSPATHENTRY_LIBS
-		# unless we are sure that we can find all the jars
-
 		# NOTE: Eclipse 3.0 has problems if we include these
 		# jars in the .classpath, instead, .classpath.in includes:
 		#  <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-		#
 		#ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
                 #<classpathentry kind=\"lib\" path=\"$jarpath\"/>"
  	    else   
@@ -1924,7 +1940,7 @@ else
 	for jar in $JINI_JARS
 	do 
 	    echo $ECHO_N "$jar "
-	    jarpath=`find "$JINI_DIR" -name $jar | head -1`
+	    jarpath=`$FIND "$JINI_DIR" -name $jar | head -1`
    	    if test -f "$jarpath"; then
   	        jinijarpath="$jinijarpath$CLASSPATHSEPARATOR$jarpath"
 		# FIXME: we should not be adding to ECLIPSE_CLASSPATHENTRY_LIBS
