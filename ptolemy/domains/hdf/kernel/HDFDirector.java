@@ -27,11 +27,13 @@ COPYRIGHTENDKEY
 package ptolemy.domains.hdf.kernel;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.sched.Scheduler;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.CachedSDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
@@ -204,6 +206,25 @@ public class HDFDirector extends SDFDirector {
     public void preinitialize() throws IllegalActionException {
         ((CachedSDFScheduler)getScheduler()).clearCaches();
         super.preinitialize();
+    }
+
+    /** Override the base class to ensure that the scheduler is an
+     *  SDFScheduler and that its <i>constrainBufferSizes</i>
+     *  parameter is set to false.
+     *  @param scheduler The scheduler that this director will use.
+     *  @exception IllegalActionException If the scheduler is not
+     *   an instance of SDFScheduler.
+     *  @exception NameDuplicationException Not thrown in this base class,
+     *   but derived classes may throw it if the scheduler is not compatible.
+     */
+    public void setScheduler(Scheduler scheduler)
+            throws IllegalActionException, NameDuplicationException {
+        if (!(scheduler instanceof SDFScheduler)) {
+        	throw new IllegalActionException(this,
+        			"Scheduler is required to be an instance of SDFScheduler");
+        }
+        // FIXME: Instead, should fix the buffer sizes calculation.
+        ((SDFScheduler)scheduler).constrainBufferSizes.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////

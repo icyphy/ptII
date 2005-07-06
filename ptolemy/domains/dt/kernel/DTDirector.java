@@ -43,6 +43,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -641,6 +642,25 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     public void setModelTime(Time newTime) {
         // _currentTime is inherited from base Director
         _currentTime = newTime;
+    }
+
+    /** Override the base class to ensure that the scheduler is an
+     *  SDFScheduler and that its <i>constrainBufferSizes</i>
+     *  parameter is set to false.
+     *  @param scheduler The scheduler that this director will use.
+     *  @exception IllegalActionException If the scheduler is not
+     *   an instance of SDFScheduler.
+     *  @exception NameDuplicationException Not thrown in this base class,
+     *   but derived classes may throw it if the scheduler is not compatible.
+     */
+    public void setScheduler(Scheduler scheduler)
+            throws IllegalActionException, NameDuplicationException {
+        if (!(scheduler instanceof SDFScheduler)) {
+        	throw new IllegalActionException(this,
+        			"Scheduler is required to be an instance of SDFScheduler");
+        }
+        // FIXME: Instead, should fix the buffer sizes calculation.
+        ((SDFScheduler)scheduler).constrainBufferSizes.setExpression("false");
     }
 
     /** Override the base class method to make sure that enough tokens
