@@ -738,6 +738,9 @@ public class PxgraphParser {
         InputStream instream;
 
         if (sawDash) {
+            // FIXME: Reading from both standard in and files is
+            // not well supported.  We always read from standard in first
+            // then from any files.
             instream = System.in;
             read(instream);
         }
