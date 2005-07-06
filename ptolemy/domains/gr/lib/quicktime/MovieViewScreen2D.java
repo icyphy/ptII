@@ -211,8 +211,6 @@ public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants,
                     null, //cTab,
                     0);
 
-            ImageDescription desc = _videoSequence.getDescription();
-
             _imageDrawer.setRedrawing(true);
 
             //redraw first...

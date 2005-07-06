@@ -294,7 +294,7 @@ public class MoMLApplication implements ExecutionListener {
      */
     public static void main(String[] args) {
         try {
-            MoMLApplication application = new MoMLApplication(args);
+            new MoMLApplication(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
             System.exit(0);

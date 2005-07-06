@@ -185,9 +185,6 @@ public class Entity extends InstantiableNamedObj {
             for (int i = 0; i < fields.length; i++) {
                 try {
                     if (fields[i].get(newEntity) instanceof Port) {
-                        // Get the field name.
-                        String fieldName = fields[i].getName();
-
                         // Get the port name. Note that by convention,
                         // this is the same as the field name. But it might
                         // not be.

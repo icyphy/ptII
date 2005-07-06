@@ -299,7 +299,7 @@ public class BluetoothNode extends TypedAtomicActor {
 
         if (input.hasToken(0)) {
             //receive message for updating the spanning tree.
-            RecordToken inputToken = (RecordToken) input.get(0);
+            /* RecordToken inputToken = (RecordToken) */ input.get(0);
 
             if (_debugging) {
                 _debug("message token received: ");

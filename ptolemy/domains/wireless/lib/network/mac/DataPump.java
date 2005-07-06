@@ -168,8 +168,6 @@ public class DataPump extends MACActorBase {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        Director director = getDirector();
-
         if (TXTXRequest.hasToken(0)) {
             _inputMessage = (RecordToken) TXTXRequest.get(0);
             _source = FromProtocolTx;

@@ -114,7 +114,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         controller.setNewIteration(_sendRequest);
         _readInputs();
 
-        Transition transition;
         State currentState = controller.currentState();
 
         Actor[] actors = currentState.getRefinement();
@@ -176,7 +175,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  @exception IllegalActionException If the base class throws it.
      */
     public void initialize() throws IllegalActionException {
-        State currentState;
         FSMActor controller = getController();
         _sendRequest = true;
         controller.setNewIteration(_sendRequest);

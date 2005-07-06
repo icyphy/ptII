@@ -216,7 +216,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
             if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) {
                 limit = ((IntConstant) Evaluator.getConstantValueOf(limitValue)).value;
-                System.out.println("limit = " + increment);
+                System.out.println("limit = " + limit + " " + increment);
             } else {
                 continue;
             }

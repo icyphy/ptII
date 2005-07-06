@@ -61,9 +61,6 @@ public class AudioReader extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.javasound.AudioReader actor = 
-            (ptolemy.actor.lib.javasound.AudioReader) getComponent();
-       
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("readSoundFile");
 
@@ -107,9 +104,6 @@ public class AudioReader extends CCodeGeneratorHelper {
      */
     public void generateWrapupCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.javasound.AudioReader actor = 
-            (ptolemy.actor.lib.javasound.AudioReader) getComponent();
-
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("wrapupBlock");
 

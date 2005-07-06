@@ -336,9 +336,6 @@ public class LevelCrossingDetector extends TypedAtomicActor
         boolean inputIsIncreasing = _thisTrigger > _lastTrigger;
 
         if (((_lastTrigger - _level) * (_thisTrigger - _level)) < 0.0) {
-            // Preinitialize method ensures the cast to be safe.
-            CTDirector director = (CTDirector) getDirector();
-
             if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
                 if ((_detectFallingCrossing && !inputIsIncreasing)
                         || (_detectRisingCrossing && inputIsIncreasing)) {
@@ -413,7 +410,6 @@ public class LevelCrossingDetector extends TypedAtomicActor
     public boolean postfire() throws IllegalActionException {
         _lastTrigger = _thisTrigger;
 
-        CTDirector director = (CTDirector) getDirector();
         return super.postfire();
     }
 

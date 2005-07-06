@@ -301,12 +301,6 @@ public abstract class ActorController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private BreakpointDialogFactory _breakpointDialogFactory;
-
-    // Error message used when we can't find the inside definition.
-    private static String _CANNOT_FIND_MESSAGE = "Cannot find inside definition. "
-    + "Perhaps source code is not installed? "
-    + "You can obtain source code for Berkeley actors at: "
-    + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
     private ListenToActorAction _listenToActorAction;
     private PortDialogFactory _portDialogFactory;
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
@@ -368,8 +362,6 @@ public abstract class ActorController extends AttributeController {
                         southPorts.add(port);
                     } else {
                         String value = cardinal.getExpression();
-                        IOPort ioport = (IOPort) port;
-
                         if (value.equalsIgnoreCase("SOUTH")) {
                             southPorts.add(port);
                         } else if (value.equalsIgnoreCase("WEST")) {

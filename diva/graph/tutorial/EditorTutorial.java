@@ -195,7 +195,7 @@ public class EditorTutorial {
 
         private class SelectionListener implements java.awt.event.ActionListener {
             public void actionPerformed(ActionEvent e) {
-                String name = (String) _layoutList.getSelectedItem();
+                /* String name = (String) */ _layoutList.getSelectedItem();
             }
         }
 

@@ -127,8 +127,6 @@ public abstract class JPseudoFrame extends JComponent {
         setLayout(null);
 
         Hashtable ui = UIManager.getLookAndFeelDefaults();
-        JButton b;
-
         _iconifyButton = new JButton((Icon) ui.get("InternalFrame.iconifyIcon"));
         _iconifyButton.setBounds(0, 2, 16, 14);
         _iconifyButton.setRequestFocusEnabled(false);

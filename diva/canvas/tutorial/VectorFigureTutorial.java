@@ -130,7 +130,7 @@ public class VectorFigureTutorial {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    VectorFigureTutorial ex = new VectorFigureTutorial();
+                    new VectorFigureTutorial();
                 }
             });
     }

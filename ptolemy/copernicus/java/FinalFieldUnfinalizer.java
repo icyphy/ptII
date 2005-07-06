@@ -85,8 +85,6 @@ public class FinalFieldUnfinalizer extends SceneTransformer
         System.out.println("FinalFieldUnfinalizer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        boolean debug = PhaseOptions.getBoolean(options, "debug");
-
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
              i.hasNext();) {

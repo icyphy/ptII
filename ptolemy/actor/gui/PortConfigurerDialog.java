@@ -591,12 +591,6 @@ public class PortConfigurerDialog extends PtolemyDialog
                 }
 
                 if (havePortUpdate) {
-                    // The context for the MoML should be the first
-                    // container above this port in the hierarchy that
-                    // defers its MoML definition, or the immediate
-                    // parent if there is none.
-                    NamedObj parent = (NamedObj) actualPort.getContainer();
-
                     String currentPortName = ((Port) portInfo.get(ColumnNames.COL_ACTUAL_PORT))
                         .getName();
                     String newPortName = (String) portInfo.get(ColumnNames.COL_NAME);
@@ -1986,10 +1980,8 @@ public class PortConfigurerDialog extends PtolemyDialog
                     /////////////////////////////////////////
                     //////////// inner class/////////////////
                     public boolean isValid(String cellValue) {
-                        UnitExpr uExpr;
-
                         try {
-                            uExpr = UnitLibrary.getParser().parseUnitExpr(cellValue);
+                            UnitLibrary.getParser().parseUnitExpr(cellValue);
                         } catch (ParseException e) {
                             setMessage(e.getMessage());
                             return false;

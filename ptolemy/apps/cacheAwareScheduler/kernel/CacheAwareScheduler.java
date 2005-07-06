@@ -2237,7 +2237,6 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         // Temporary variable
         int tempCodeSize = 0;
-        int tokenRate;
         int tempTotalTokensProduced = 0;
 
         // Populating the _firingCount and _actorsRecord.

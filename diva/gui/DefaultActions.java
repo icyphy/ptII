@@ -187,7 +187,7 @@ public class DefaultActions {
                         }
                     } else if ((view != null) && view instanceof Pageable) {
                         PrinterJob job = PrinterJob.getPrinterJob();
-                        PageFormat format = job.pageDialog(job.defaultPage());
+                        job.pageDialog(job.defaultPage());
                         job.setPageable((Pageable) view);
 
                         if (job.printDialog()) {

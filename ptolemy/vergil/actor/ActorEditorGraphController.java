@@ -419,8 +419,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         public NewRelationAction() {
             super("New Relation");
 
-            String dflt = "";
-
             // Standard toolbar icons are 25x25 pixels.
             NodeRenderer renderer = _relationController.getNodeRenderer();
             Figure figure = renderer.render(null);

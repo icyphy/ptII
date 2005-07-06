@@ -326,8 +326,6 @@ public class ThreeDFunction implements Serializable {
         int yIndex;
         int thetaIndex;
         double point;
-        double weight;
-
         // Get the proper value of theta
         theta = _angleWrap(theta);
 
@@ -557,9 +555,6 @@ public class ThreeDFunction implements Serializable {
      *  @return double value read from the file
      **/
     private double _readDouble(BufferedReader reader) throws IOException {
-        String line;
-        String token;
-
         if (_tokenizer.hasMoreTokens()) {
             return (new Double(_tokenizer.nextToken())).doubleValue();
         } else {
@@ -577,9 +572,6 @@ public class ThreeDFunction implements Serializable {
      *  @return double value read from the file
      **/
     private int _readInteger(BufferedReader reader) throws IOException {
-        String line;
-        String token;
-
         if (_tokenizer.hasMoreTokens()) {
             return (new Integer(_tokenizer.nextToken())).intValue();
         } else {

@@ -1296,8 +1296,6 @@ public class LiveSound {
     /** Start audio capture.
      */
     private static void _startCapture() throws IOException {
-        int frameSizeInBits = _bitsPerSample;
-        double frameRate = _sampleRate;
         boolean signed = true;
         boolean bigEndian = true;
         AudioFormat format = new AudioFormat(_sampleRate, _bitsPerSample,
@@ -1320,7 +1318,7 @@ public class LiveSound {
                     + "real-time audio capture: " + ex);
         }
 
-        int targetBufferLengthInBytes = _transferSize * _frameSizeInBytes;
+        //int targetBufferLengthInBytes = _transferSize * _frameSizeInBytes;
 
         // Array of audio samples in byte format.
         _captureData = new byte[_transferSize * _frameSizeInBytes];

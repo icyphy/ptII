@@ -626,8 +626,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         public String getDeleteNodeMoML(Object node) {
             Locatable location = (Locatable) node;
             ComponentPort port = (ComponentPort) location.getContainer();
-            NamedObj container = (NamedObj) port.getContainer();
-
             StringBuffer moml = new StringBuffer();
             moml.append("<deletePort name=\"" + port.getName() + "\"/>\n");
             return moml.toString();
@@ -739,9 +737,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          */
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
-            NamedObj container = (NamedObj) deleteObj.getContainer();
-            ;
-
             String moml = "<deleteEntity name=\"" + deleteObj.getName()
                 + "\"/>\n";
             return moml;
@@ -1468,7 +1463,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         public String getDeleteNodeMoML(Object node) {
             ComponentRelation deleteObj = (ComponentRelation) ((Vertex) node)
                 .getContainer();
-            NamedObj container = (NamedObj) deleteObj.getContainer();
             String moml = "<deleteRelation name=\"" + deleteObj.getName()
                 + "\"/>\n";
             return moml;

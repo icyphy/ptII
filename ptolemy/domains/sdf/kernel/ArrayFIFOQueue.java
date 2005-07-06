@@ -333,8 +333,6 @@ public final class ArrayFIFOQueue implements Cloneable {
      */
     public boolean putArray(Object[] element, int count) {
         if ((_queueArray.length - _queueSize) >= count) {
-            int i;
-
             if (count <= (_queueArray.length - _queueFront)) {
                 System.arraycopy(element, 0, _queueArray, _queueFront, count);
                 _queueFront += count;

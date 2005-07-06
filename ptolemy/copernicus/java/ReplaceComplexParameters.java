@@ -123,8 +123,6 @@ public class ReplaceComplexParameters extends SceneTransformer
     // starting at the bottom of the hierarchy...
     private void _replaceComplexParametersIn(SootClass modelClass,
             CompositeActor model) {
-        Director director = model.getDirector();
-
         copyAttributesOtherThanVariable(model);
 
         // Reinitialize the hierarchy, since we've added classes.

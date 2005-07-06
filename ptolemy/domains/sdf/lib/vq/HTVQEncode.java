@@ -248,7 +248,6 @@ public class HTVQEncode extends Transformer {
 
             int i;
             int j;
-            int y;
             int x;
             int size = 1;
             byte[] temp;

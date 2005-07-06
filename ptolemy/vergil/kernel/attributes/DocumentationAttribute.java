@@ -169,6 +169,7 @@ public class DocumentationAttribute extends Attribute {
                     }
 
                     if (fileDialog.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+                        // FIXME: why is this ignored?
                         _directory = fileDialog.getCurrentDirectory();
 
                         String fileName = fileDialog.getSelectedFile()

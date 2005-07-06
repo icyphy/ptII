@@ -135,10 +135,6 @@ public class JavaToC {
         String classPath = args[0];
         String className = "";
 
-        // Default flags.
-        //String compileMode = "full";
-        boolean verbose = false;
-
         // Actual flags.
         for (int i = 1; i < args.length; i++) {
             if (args[i].startsWith("-")) {

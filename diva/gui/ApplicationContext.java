@@ -58,16 +58,6 @@ public class ApplicationContext extends JFrame implements AppContext {
     private transient Action _exitAction;
 
     /**
-     * The application that owns this frame
-     */
-    private transient Application _application;
-
-    /**
-     * The window listener for this frame.
-     */
-    private transient WindowListener _windowListener;
-
-    /**
      * Create a new ApplicationContext.  Add a hook to the frame that will
      * cause the exit action to be fired when a user attempts to close the
      * window.  Set the default close operation of the frame to be
@@ -78,6 +68,7 @@ public class ApplicationContext extends JFrame implements AppContext {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
+            // Ignored
         }
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);

@@ -285,13 +285,6 @@ public class GeneratorTableau extends Tableau {
             goButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         try {
-                            // True if we should run jode, jad or javap.
-                            boolean decompile = false;
-                            boolean compile = options.getParameter("compile")
-                                .equals("true");
-                            boolean show = options.getParameter("show").equals("true");
-                            boolean run = options.getParameter("run").equals("true");
-
                             // The code generator to run.  The value of this
                             // parameter should name a subdirectory of
                             // ptolemy/copernicus such as "java" or "shallow".

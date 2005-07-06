@@ -123,20 +123,19 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
 
         tryRetrieveServiceId(serviceIdFile);
 
-        JoinManager joinMgr = null;
         try {
             LookupDiscoveryManager mgr = new LookupDiscoveryManager(groups,
                     unicastLocators,  // unicast locators
                     this); // DiscoveryListener
 
             if (serviceID != null) {
-                joinMgr = new JoinManager(proxy, // service proxy
+                new JoinManager(proxy, // service proxy
                         entries,  // attr sets
                         serviceID,  // ServiceID
                         mgr,   // DiscoveryManager
                         new LeaseRenewalManager());
             } else {
-                joinMgr = new JoinManager(proxy, // service proxy
+                new JoinManager(proxy, // service proxy
                         entries,  // attr sets
                         this,  // ServiceIDListener
                         mgr,   // DiscoveryManager

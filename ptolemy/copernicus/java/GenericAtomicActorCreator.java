@@ -182,7 +182,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             // initializes the attributes.
             SootMethod method = theClass.getMethodByName("preinitialize");
             JimpleBody body = (JimpleBody) method.getActiveBody();
-            Stmt insertPoint = body.getFirstNonIdentityStmt();
+            /* Stmt insertPoint = */ body.getFirstNonIdentityStmt();
 
             // Do we initialize parameters in preinitialize or in the
             // constructor?

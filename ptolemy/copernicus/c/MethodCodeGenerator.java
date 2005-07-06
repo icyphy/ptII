@@ -70,8 +70,6 @@ public class MethodCodeGenerator {
      *  @return The code.
      */
     public String generate(SootMethod method) {
-        byte indentLevel = 0;
-
         if (method.isConcrete() && !method.isNative()
                 && !OverriddenMethodGenerator.isOverridden(method)) {
             StringBuffer code = new StringBuffer();

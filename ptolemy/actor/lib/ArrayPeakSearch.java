@@ -283,8 +283,6 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             boolean searchPeak = true;
 
             int localMaxIndex = start;
-            int localMinIndex = start;
-
             double localMax = ((DoubleToken) inputArray.getElement(start))
                 .doubleValue();
             double localMin = localMax;
@@ -369,8 +367,6 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                             riseThreshold = localMin + dipValue;
                             break;
                         }
-
-                        localMinIndex = i;
                     }
 
                     if (_debugging) {
@@ -458,7 +454,6 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                             break;
                         }
 
-                        localMinIndex = i;
                         searchValley = true;
                         searchPeak = false;
                     }

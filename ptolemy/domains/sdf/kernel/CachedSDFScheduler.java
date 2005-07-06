@@ -179,7 +179,7 @@ public class CachedSDFScheduler extends SDFScheduler {
             int rate = DFUtilities.getTokenProductionRate(outputPort);
             rates.append(rate);
             
-            int initRate = DFUtilities.getTokenInitProduction(outputPort);
+            /*int initRate = */ DFUtilities.getTokenInitProduction(outputPort);
             rates.append(rate);
         }
 

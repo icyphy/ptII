@@ -391,11 +391,6 @@ public class IterateOverArray extends TypedCompositeActor
                                 return;
                             }
 
-                            // Set up the inside connections.
-                            // First, create all the ports.
-                            // The above execute() will have deleted all ports
-                            // (in _removeEntity()).
-                            int count = 1;
                             Iterator entityPorts = entity.portList().iterator();
 
                             while (entityPorts.hasNext()) {

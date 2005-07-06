@@ -254,8 +254,6 @@ public class VisualModelReference extends ModelReference
         _alreadyReadInputs = true;
 
         if (_model instanceof CompositeActor) {
-            CompositeActor executable = (CompositeActor) _model;
-
             // Will need the effigy for the model this actor is in.
             NamedObj toplevel = toplevel();
             final Effigy myEffigy = Configuration.findEffigy(toplevel);

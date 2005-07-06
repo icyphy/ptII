@@ -58,9 +58,6 @@ public class Minimum extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.Minimum actor = 
-            (ptolemy.actor.lib.Minimum) getComponent();
-        
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("compareBlock");
 

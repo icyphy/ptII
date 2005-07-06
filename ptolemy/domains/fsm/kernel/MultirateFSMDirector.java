@@ -155,7 +155,6 @@ public class MultirateFSMDirector extends FSMDirector {
      *   preemptive transitions, or if a transition has refinement.
      */
     public State chooseTransition(State state) throws IllegalActionException {
-        FSMActor controller = getController();
         State destinationState;
         Transition transition = null;
 
@@ -209,11 +208,9 @@ public class MultirateFSMDirector extends FSMDirector {
      *   the current state has no or more than one refinement.
      */
     public void fire() throws IllegalActionException {
-        CompositeActor container = (CompositeActor) getContainer();
         FSMActor controller = getController();
         _readInputs();
 
-        Transition transition;
         State currentState = controller.currentState();
 
         Actor[] actors = currentState.getRefinement();
@@ -329,10 +326,10 @@ public class MultirateFSMDirector extends FSMDirector {
             if (refinementDir instanceof MultirateFSMDirector) {
                 refinementDir.initialize();
             }
-            boolean inputRateChanged
-                = _updateInputTokenConsumptionRates(currentRefinement);
-            boolean outputRateChanged
-                = _updateOutputTokenProductionRates(currentRefinement);
+            /*boolean inputRateChanged = */
+            _updateInputTokenConsumptionRates(currentRefinement);
+            /* boolean outputRateChanged = */
+            _updateOutputTokenProductionRates(currentRefinement);
 
             // Tell the upper level scheduler that the current schedule
             // is no longer valid.
@@ -395,8 +392,10 @@ public class MultirateFSMDirector extends FSMDirector {
         // current state, rate signatures may change. This occurs
         // in cases of multi-level MultirateFSM model. The upper level state
         // remains the same but the lower level state has changed.
-        boolean inputRateChanged = _updateInputTokenConsumptionRates(actor);
-        boolean outputRateChanged = _updateOutputTokenProductionRates(actor);
+        /* boolean inputRateChanged = */
+        _updateInputTokenConsumptionRates(actor);
+        /* boolean outputRateChanged = */
+        _updateOutputTokenProductionRates(actor);
         /*
         if (inputRateChanged || outputRateChanged) {
             CompositeActor compositeActor = _getEnclosingDomainActor();
@@ -763,7 +762,6 @@ public class MultirateFSMDirector extends FSMDirector {
      */
     protected boolean _updateInputTokenConsumptionRates(
             TypedCompositeActor actor) throws IllegalActionException {
-        FSMActor ctrl = getController();
         boolean inputRateChanged = false;
 
         // Get the current refinement's container.

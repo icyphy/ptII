@@ -1079,8 +1079,6 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          */
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
-            NamedObj container = (NamedObj) deleteObj.getContainer();
-
             String moml = "<deletePort name=\"" + deleteObj.getName()
                 + "\"/>\n";
             return moml;
@@ -1300,8 +1298,6 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          */
         public Iterator inEdges(Object node) {
             Locatable icon = (Locatable) node;
-            Entity entity = (Entity) icon.getContainer();
-
             // Go through all the links, creating a list of
             // those we are connected to.
             List stateLinkList = new LinkedList();
@@ -1329,8 +1325,6 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          */
         public Iterator outEdges(Object node) {
             Locatable icon = (Locatable) node;
-            Entity entity = (Entity) icon.getContainer();
-
             // Go through all the links, creating a list of
             // those we are connected to.
             List stateLinkList = new LinkedList();

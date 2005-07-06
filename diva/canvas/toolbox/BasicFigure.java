@@ -189,8 +189,6 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  @return The origin of the figure.
      */
     public Point2D getOrigin() {
-        Rectangle2D bounds = getBounds();
-
         if (_centered) {
             return super.getOrigin();
         } else {

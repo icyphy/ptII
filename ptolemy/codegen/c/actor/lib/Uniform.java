@@ -60,9 +60,6 @@ public class Uniform extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.Uniform actor = 
-            (ptolemy.actor.lib.Uniform) getComponent();
-        
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
 

@@ -59,10 +59,6 @@ public class StringToIntArray extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.conversions.StringToIntArray actor = 
-            (ptolemy.actor.lib.conversions.StringToIntArray) getComponent();
-      
-       
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
 

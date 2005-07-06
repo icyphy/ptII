@@ -731,12 +731,12 @@ public class ShallowModelTransformer extends SceneTransformer
     private static NamedObj _findDeferredInstance(NamedObj object) {
         // System.out.println("findDeferred = " + object.getFullName());
         NamedObj deferredObject = null;
-        boolean isClass = false;
+        // boolean isClass = false;
 
         if (object instanceof InstantiableNamedObj) {
             deferredObject = (InstantiableNamedObj) ((InstantiableNamedObj) object)
                 .getParent();
-            isClass = ((InstantiableNamedObj) object).isClassDefinition();
+            /* isClass = */ ((InstantiableNamedObj) object).isClassDefinition();
         }
 
         if ((deferredObject == null) && (object.getClassName() != null)) {

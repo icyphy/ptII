@@ -292,7 +292,8 @@ public class JTreePane extends JSplitPane {
      * Remove the entry at the given index.
      */
     public void removeEntry(String title) {
-        Entry entry = _findEntry(title);
+        // FIXME: this find the entry and then does nothing?
+        /* Entry entry = */ _findEntry(title);
 
         refresh();
     }
@@ -301,7 +302,7 @@ public class JTreePane extends JSplitPane {
      * Set the disabled icon for the button at the given index.
      */
     public void setDisabledIconAt(String title, Icon icon) {
-        Entry p = _findEntry(title);
+        /* Entry p = */ _findEntry(title);
 
         //        p._button.setDisabledIcon(icon);
     }

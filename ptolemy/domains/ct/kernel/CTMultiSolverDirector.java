@@ -1380,7 +1380,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // During this method, no step size refinement is needed.
         // Two important facts: states can always be resolved;
         // outputs are always correct.
-        CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
+        getScheduler().getSchedule();
 
         ODESolver solver = getCurrentODESolver();
 

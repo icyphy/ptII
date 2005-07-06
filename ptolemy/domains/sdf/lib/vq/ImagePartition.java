@@ -146,7 +146,6 @@ public class ImagePartition extends Transformer {
     public void fire() throws IllegalActionException {
         int i;
         int j;
-        int x;
         int y;
         int partitionNumber;
         IntMatrixToken message;

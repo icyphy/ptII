@@ -732,10 +732,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
 
             assgtStmtString = "";
 
-            Map driverIOMap = new LinkedHashMap();
             boolean firstParameter = true;
-            boolean firstArray = true;
-
             for (Iterator inPorts = actor.inputPortList().iterator();
                  inPorts.hasNext();) {
                 TypedIOPort inPort = (TypedIOPort) inPorts.next();

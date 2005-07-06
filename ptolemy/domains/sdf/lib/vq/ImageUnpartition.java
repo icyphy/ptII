@@ -144,7 +144,6 @@ public class ImageUnpartition extends Transformer {
     public void fire() throws IllegalActionException {
         int i;
         int j;
-        int x;
         int y;
         int partitionNumber;
 

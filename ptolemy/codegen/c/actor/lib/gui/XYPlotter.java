@@ -62,8 +62,6 @@ public class XYPlotter extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
-        ptolemy.actor.lib.gui.XYPlotter actor = (ptolemy.actor.lib.gui.XYPlotter) getComponent();
-
         // FIXME: how do we add legend to the file??
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("writeFile");

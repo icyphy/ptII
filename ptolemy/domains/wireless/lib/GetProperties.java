@@ -123,7 +123,7 @@ public class GetProperties extends TypedAtomicActor {
 
         // Read and discard the input token.
         if (trigger.hasToken(0)) {
-            Token inputValue = trigger.get(0);
+            /* Token inputValue = */ trigger.get(0);
         }
 
         Iterator connectedPorts = trigger.sourcePortList().iterator();

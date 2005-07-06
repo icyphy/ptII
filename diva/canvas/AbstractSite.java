@@ -48,11 +48,6 @@ public abstract class AbstractSite implements Site {
      */
     private boolean _hasNormal = false;
 
-    /** True if the site has a fixed normal.
-     *  Default is false;
-     */
-    private boolean _isFixed = false;
-
     /** Get the figure to which this site is attached.
      */
     public abstract Figure getFigure();

@@ -98,8 +98,6 @@ public class GiottoDirectorInliner implements DirectorInliner {
         // them here.
         portInliner.createBuffers();
 
-        GiottoDirector director = (GiottoDirector) model.getDirector();
-
         System.out.println("Inlining director for " + model.getFullName());
 
         Type actorType = RefType.v(PtolemyUtilities.actorClass);

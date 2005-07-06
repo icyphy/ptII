@@ -61,9 +61,6 @@ public class AudioPlayer extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.javasound.AudioPlayer actor = 
-            (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
-        
         //actor.channels.getExpression() 
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
@@ -111,9 +108,6 @@ public class AudioPlayer extends CCodeGeneratorHelper {
      */
     public void generateWrapupCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.javasound.AudioPlayer actor = 
-            (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
-
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("wrapupBlock");
 

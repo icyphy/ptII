@@ -203,13 +203,6 @@ public class CommandLineTemplate {
      *  @see ptolemy.actor.Manager#startRun()
      */
     public synchronized void startRun(CompositeActor model) {
-        // This method is synchronized so that it can atomically modify
-        // the count of executing processes.
-        // NOTE: If you modify this method, please be sure that it
-        // will work for non-graphical models in the nightly test suite.
-        // Iterate through the model, looking for something that is Placeable.
-        boolean hasPlaceable = false;
-
         /* Iterator atomicEntities = model.allAtomicEntityList().iterator();
            while (atomicEntities.hasNext()) {
            Object object = atomicEntities.next();

@@ -284,7 +284,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
 
         try {
             if (trigQuery.hasToken(0)) {
-                Token token = trigQuery.get(0);
+                trigQuery.get(0);
 
                 System.out.println("Send peer discovery message...");
 

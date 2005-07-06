@@ -138,7 +138,7 @@ public class Merge extends DETransformer {
                         // in this firing, consume and discard all tokens
                         // from the input channel
                         while (input.hasToken(i)) {
-                            Token token = input.get(i);
+                            input.get(i);
                         }
                     } else {
                         // Refiring the actor to handle the other tokens

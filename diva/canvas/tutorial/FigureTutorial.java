@@ -264,7 +264,7 @@ public class FigureTutorial {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    FigureTutorial ex = new FigureTutorial();
+                    new FigureTutorial();
                 }
             });
     }

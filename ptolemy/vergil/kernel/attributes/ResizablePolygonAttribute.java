@@ -157,10 +157,6 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
             double yMax = Double.NEGATIVE_INFINITY;
             double yMin = Double.POSITIVE_INFINITY;
 
-            // Scaling.
-            double width = _widthValue;
-            double height = _heightValue;
-
             // First, read vertex values and find the bounds.
             for (int j = 0; j < (length / 2); j++) {
                 xPoints[j] = ((DoubleToken) verticesValue.getElement(2 * j))

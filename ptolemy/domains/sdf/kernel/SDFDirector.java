@@ -279,8 +279,6 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             // Create external initial production.
             int rate = DFUtilities.getTokenInitProduction(port);
-            boolean wasTransferred = false;
-
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
                     for (int k = 0; k < rate; k++) {
@@ -294,7 +292,6 @@ public class SDFDirector extends StaticSchedulingDirector {
                             }
 
                             port.send(i, t);
-                            wasTransferred = true;
                         } else {
                             throw new IllegalActionException(this, port,
                                     "Port should produce " + rate
@@ -332,8 +329,6 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         TypedCompositeActor container = ((TypedCompositeActor) getContainer());
         Iterator inputPorts = container.inputPortList().iterator();
-        int inputCount = 0;
-
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
 
@@ -397,7 +392,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
 
         try {
-            Schedule sched = scheduler.getSchedule();
+            scheduler.getSchedule();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to compute schedule:");

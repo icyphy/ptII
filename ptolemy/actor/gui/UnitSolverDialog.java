@@ -197,7 +197,7 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent aEvent) {
-        String command = aEvent.getActionCommand();
+        //String command = aEvent.getActionCommand();
 
         if (aEvent.getSource() == _runMinimalSpanSolverButton) {
             try {

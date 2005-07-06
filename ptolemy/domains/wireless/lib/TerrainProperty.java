@@ -273,6 +273,7 @@ public class TerrainProperty extends TypedAtomicActor
         } //for i.
 
         if (cross) {
+            // FIXME: transmitPower is never read?
             Token transmitPower = properties.get("power");
 
             // Create a record token with the receive power.

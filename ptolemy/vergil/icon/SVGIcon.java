@@ -462,8 +462,8 @@ public class SVGIcon extends EditorIcon implements ValueListener {
             while (t.hasMoreTokens()) {
                 String string = t.nextToken().trim();
                 int index = string.indexOf(":");
-                String name = string.substring(0, index);
-                String value = string.substring(index + 1);
+                // String name = string.substring(0, index);
+                // String value = string.substring(index + 1);
 
                 /* FIXME: Figure out how to do this. See SVGParser.
                    if (name.equals("fill")) {
@@ -494,8 +494,8 @@ public class SVGIcon extends EditorIcon implements ValueListener {
             while (t.hasMoreTokens()) {
                 String string = t.nextToken().trim();
                 int index = string.indexOf(":");
-                String name = string.substring(0, index);
-                String value = string.substring(index + 1);
+                // String name = string.substring(0, index);
+                // String value = string.substring(index + 1);
 
                 /* FIXME: Figure out how to do this. See SVGParser.
                    if (name.equals("fill")) {

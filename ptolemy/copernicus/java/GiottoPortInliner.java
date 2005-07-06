@@ -161,8 +161,6 @@ public class GiottoPortInliner implements PortInliner {
                 PtolemyUtilities.tokenType);
         body.getLocals().add(returnLocal);
 
-        Value bufferSizeValue = null;
-
         // Refer directly to the buffer in the _model
         int channel = 0;
 

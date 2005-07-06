@@ -1052,8 +1052,6 @@ public class TokenToNativeTransformer extends SceneTransformer
 
     public void createReplacementTokenFields(SootClass entityClass, int depth,
             Set unsafeLocalSet, boolean debug) {
-        boolean doneSomething = false;
-
         if (debug) {
             System.err.println("Creating Replacement token fields in "
                     + entityClass + " with depth " + depth);
@@ -1132,9 +1130,6 @@ public class TokenToNativeTransformer extends SceneTransformer
                 System.out.println("Creating replacement fields for field = "
                         + field);
             }
-
-            // We are going to make a modification
-            doneSomething = true;
 
             // Create a boolean value that tells us whether or
             // not the token is null.  Initialize it to true.

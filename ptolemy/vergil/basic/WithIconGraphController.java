@@ -165,8 +165,6 @@ public abstract class WithIconGraphController extends BasicGraphController {
             super(description);
             _prototype = prototype;
 
-            String dflt = "";
-
             // Creating the renderers this way is rather nasty..
             // Standard toolbar icons are 25x25 pixels.
             NodeRenderer renderer = _portController.getNodeRenderer();

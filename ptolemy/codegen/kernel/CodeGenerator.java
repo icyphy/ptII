@@ -272,9 +272,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(comment("Variable Declarations "
                             + getContainer().getFullName()));
 
-        ptolemy.actor.Director director = ((CompositeActor) getContainer())
-            .getDirector();
-        Director directorHelper = (Director) _getHelper((NamedObj) director);
         Iterator actors = ((CompositeActor) getContainer()).deepEntityList()
             .iterator();
 

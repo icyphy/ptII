@@ -60,10 +60,6 @@ public class Gaussian extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.Gaussian actor = 
-            (ptolemy.actor.lib.Gaussian) getComponent();
-
-        
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
 

@@ -285,7 +285,6 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                         }
                     }
                 } else if (delayNodes.length == 1) {
-                    Node endDelayNode = (Node) delayNodes[j];
                     Node predecessor = (Node) (predecessorMap.get(delayNode));
 
                     if (!(_delayNodeList.contains(predecessor))) {

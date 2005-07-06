@@ -103,7 +103,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
                 + "style=\"fill:red\"/>\n" + "</svg>\n");
 
-        PNDirector director = new MergeDirector(this, "director");
+        /*PNDirector director = */ new MergeDirector(this, "director");
     }
 
     ///////////////////////////////////////////////////////////////////

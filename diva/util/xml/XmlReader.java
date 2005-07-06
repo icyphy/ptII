@@ -290,7 +290,7 @@ public class XmlReader extends LoggableOp {
                     x = s;
                 }
 
-                logInfo("cdata", "[" + offset + "," + length + "] " + s);
+                logInfo("cdata", "[" + offset + "," + length + "] " + x);
             }
 
             _currentElement.appendPCData(s);

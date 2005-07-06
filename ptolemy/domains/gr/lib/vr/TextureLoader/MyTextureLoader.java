@@ -490,9 +490,7 @@ public class MyTextureLoader extends Object {
     private BufferedImage createBufferedImage(Image image,
                                               Component observer) {
         System.out.println("Inside of createBufferedImage");
-	int status;
-	
-        observer.prepareImage(image, null);
+	    observer.prepareImage(image, null);
        /* while(true) {
             System.out.println("Inside while loop of createBufferedImage");
 	    status = observer.checkImage(image, null);
@@ -591,8 +589,6 @@ public class MyTextureLoader extends Object {
                                          float xScale, float yScale) {
     	//      Some variables I need
         int arrayLength = origImage.getWidth()*origImage.getHeight();
-        double fraction = .003921568;
-        
         double[] pixelArray = new double[arrayLength];
         double[] alphaArray = new double[arrayLength];
         //pixelArray = null;

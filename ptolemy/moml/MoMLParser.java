@@ -1437,8 +1437,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     public static void purgeModelRecord(String filename)
             throws MalformedURLException {
-        URL base = null;
-
         // Use the current working directory as a base.
         String cwd = StringUtilities.getProperty("user.dir");
 
@@ -1523,6 +1521,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         URL sourceURL = null;
 
         if (source != null) {
+            // FIXME: sourceURL is set but never read?
             sourceURL = fileNameToURL(source, _base);
         }
 

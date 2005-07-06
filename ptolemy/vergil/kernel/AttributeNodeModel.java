@@ -56,8 +56,6 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      */
     public String getDeleteNodeMoML(Object node) {
         NamedObj attribute = (NamedObj) ((Locatable) node).getContainer();
-        NamedObj container = (NamedObj) attribute.getContainer();
-
         return "<deleteProperty name=\"" + attribute.getName() + "\"/>\n";
     }
 

@@ -520,8 +520,6 @@ public class SoundCapture {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _startCaptureRealTime() throws IOException {
-        int frameSizeInBits = _sampleSizeInBits;
-        double frameRate = _sampleRate;
         boolean signed = true;
         boolean bigEndian = true;
 

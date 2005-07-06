@@ -160,7 +160,6 @@ public class InlineTokenTransformer extends SceneTransformer
                 System.out.println("method = " + method);
             }
 
-            int count = 0;
             boolean doneSomething = true;
 
             while (doneSomething) {

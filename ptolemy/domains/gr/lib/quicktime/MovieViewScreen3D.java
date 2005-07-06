@@ -222,8 +222,6 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
                     null, //cTab,
                     0);
 
-            ImageDescription desc = _videoSequence.getDescription();
-
             _imageDrawer.setRedrawing(true);
 
             //redraw first...

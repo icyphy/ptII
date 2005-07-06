@@ -127,9 +127,6 @@ public class DICOMReader extends TypedAtomicActor{
         }
         _fileRoot = _url.getFile();
         if (_imagePlus == null) {
-            //_imagePlus = new ImagePlus(_fileRoot);
-            //_image = _imagePlus.getImage();
-            DICOM _dicom;
             _image = ((ImagePlus)IJ.runPlugIn("ij.plugin.DICOM", _fileRoot))
                 .getImage();
         }

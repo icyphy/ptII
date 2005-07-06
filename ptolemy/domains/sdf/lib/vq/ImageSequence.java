@@ -225,10 +225,6 @@ public class ImageSequence extends Source {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        int i;
-        int j;
-        int n;
-
         output.send(0, _images[_frameNumber]);
         _frameNumber++;
 

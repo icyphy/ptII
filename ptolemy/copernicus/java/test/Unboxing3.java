@@ -12,7 +12,6 @@ public class Unboxing3 {
     static Token token;
 
     public static void main(String[] strings) throws IllegalActionException {
-        boolean flag = true;
         token = intToken.add(doubleToken);
         System.out.println("token = " + token.toString());
     }

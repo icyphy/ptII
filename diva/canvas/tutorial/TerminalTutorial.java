@@ -100,7 +100,7 @@ public class TerminalTutorial {
         // Create a set of terminals, one by one
         // NORTH
         StraightTerminal north = new StraightTerminal(_geometry.getN());
-        Site connectNorth = north.getConnectSite();
+        //Site connectNorth = north.getConnectSite();
         Blob blobNorth = new Blob();
         blobNorth.setSizeUnit(5.0);
         north.setEnd(blobNorth);
@@ -108,7 +108,7 @@ public class TerminalTutorial {
 
         // SOUTH
         StraightTerminal south = new StraightTerminal(_geometry.getS());
-        Site connectSouth = south.getConnectSite();
+        //Site connectSouth = south.getConnectSite();
         Blob blobSouth = new Blob();
         blobSouth.setStyle(Blob.BLOB_DIAMOND);
         blobSouth.setSizeUnit(5.0);
@@ -118,14 +118,14 @@ public class TerminalTutorial {
 
         // WEST
         StraightTerminal west = new StraightTerminal(_geometry.getW());
-        Site connectWest = west.getConnectSite();
+        //Site connectWest = west.getConnectSite();
         Arrowhead arrowWest = new Arrowhead();
         west.setEnd(arrowWest);
         layer.add(west);
 
         // EAST
         StraightTerminal east = new StraightTerminal(_geometry.getE());
-        Site connectEast = east.getConnectSite();
+        //Site connectEast = east.getConnectSite();
         Arrowhead arrowEast = new Arrowhead();
         arrowEast.setFlipped(true);
         east.setEnd(arrowEast);

@@ -147,8 +147,7 @@ public class VergilApplication extends MoMLApplication {
             SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         try {
-                            VergilApplication application =
-                                new VergilApplication(args);
+                            new VergilApplication(args);
                         } catch (Throwable throwable) {
                             // If we get an Error or and Exception while
                             // configuring, we will end up here.
@@ -214,8 +213,6 @@ public class VergilApplication extends MoMLApplication {
         // the specified class to build the library instead of just reading
         // the moml.
         if (alternateLibraryBuilderAttribute != null) {
-            List alternatLibrarySubAttributes =
-                alternateLibraryBuilderAttribute.attributeList();
             // Get the class that will build the library from the plugins
             String libraryBuilderClassName =
               alternateLibraryBuilderAttribute.getExpression();

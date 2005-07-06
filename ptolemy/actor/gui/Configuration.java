@@ -470,9 +470,6 @@ public class Configuration extends CompositeEntity {
             isClass = ((InstantiableNamedObj) entity).isClassDefinition();
         }
 
-        String elementName = entity.getElementName();
-        List factoryList = entity.attributeList(TableauFactory.class);
-
         if ((deferredTo != null) && !isClass) {
             entity = deferredTo;
         }

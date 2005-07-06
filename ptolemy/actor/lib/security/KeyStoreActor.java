@@ -712,7 +712,7 @@ public class KeyStoreActor extends TypedAtomicActor {
             _outputGobbler.start();
 
             try {
-                int processReturnCode = _process.waitFor();
+                _process.waitFor();
 
                 synchronized (this) {
                     _process = null;

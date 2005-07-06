@@ -98,8 +98,6 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
      *  @return The origin of the figure.
      */
     public Point2D getOrigin() {
-        Rectangle2D bounds = getBounds();
-
         if (_centered) {
             return super.getOrigin();
 

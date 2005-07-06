@@ -61,9 +61,6 @@ public class AudioWriter extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.javasound.AudioWriter actor = 
-            (ptolemy.actor.lib.javasound.AudioWriter) getComponent();
-        
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("writeSoundFile");
 
@@ -106,15 +103,6 @@ public class AudioWriter extends CCodeGeneratorHelper {
      */
     public void generateWrapupCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.javasound.AudioWriter actor = 
-            (ptolemy.actor.lib.javasound.AudioWriter) getComponent();
-
-        //actor.bitsPerSample
-        //actor.channels
-        //actor.input
-        //actor.pathName
-        //actor.sampleRate 
-        
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("wrapupBlock");
 

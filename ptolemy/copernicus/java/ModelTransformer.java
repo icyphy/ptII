@@ -1342,7 +1342,6 @@ public class ModelTransformer extends SceneTransformer
             // If we are doing deep codegen, then use the actor
             // classes we created earlier.
             String className = getInstanceClassName(entity, options);
-            String entityName = entity.getName(container);
             String entityFieldName = getFieldNameForEntity(entity, container);
             Local local;
 
@@ -1589,7 +1588,6 @@ public class ModelTransformer extends SceneTransformer
                             + " that does not have a local variable!");
                 }
 
-                List connectedPortList = port.connectedPortList();
                 Iterator relations = port.linkedRelationList().iterator();
                 int index = -1;
 
@@ -1662,12 +1660,12 @@ public class ModelTransformer extends SceneTransformer
     public static NamedObj _findDeferredInstance(NamedObj object) {
         //  System.out.println("findDeferred =" + object.getFullName());
         NamedObj deferredObject = null;
-        boolean isClass = false;
+        // boolean isClass = false;
 
         if (object instanceof InstantiableNamedObj) {
             deferredObject = (InstantiableNamedObj) ((InstantiableNamedObj) object)
                 .getParent();
-            isClass = ((InstantiableNamedObj) object).isClassDefinition();
+            /* isClass = */ ((InstantiableNamedObj) object).isClassDefinition();
         }
 
         if ((deferredObject == null) && (object.getClassName() != null)) {

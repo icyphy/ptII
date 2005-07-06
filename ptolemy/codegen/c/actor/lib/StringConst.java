@@ -58,9 +58,6 @@ public class StringConst extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.StringConst actor = 
-            (ptolemy.actor.lib.StringConst) getComponent();
-        
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
 
