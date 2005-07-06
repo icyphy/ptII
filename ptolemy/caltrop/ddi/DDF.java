@@ -29,30 +29,18 @@
 */
 package ptolemy.caltrop.ddi;
 
-import caltrop.interpreter.Context;
-import caltrop.interpreter.ExprEvaluator;
-
-import caltrop.interpreter.ast.Action;
-import caltrop.interpreter.ast.Actor;
-import caltrop.interpreter.ast.AttributeKeys;
-import caltrop.interpreter.ast.Decl;
-import caltrop.interpreter.ast.Expression;
-import caltrop.interpreter.ast.InputPattern;
-import caltrop.interpreter.ast.OutputExpression;
-
-import caltrop.interpreter.environment.Environment;
-
-import caltrop.interpreter.util.PriorityUtil;
+import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.util.DFUtilities;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import caltrop.interpreter.Context;
+import caltrop.interpreter.ast.Action;
+import caltrop.interpreter.ast.Actor;
+import caltrop.interpreter.ast.AttributeKeys;
+import caltrop.interpreter.ast.Expression;
+import caltrop.interpreter.environment.Environment;
 
 
 //////////////////////////////////////////////////////////////////////////

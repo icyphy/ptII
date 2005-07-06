@@ -29,9 +29,9 @@ package ptolemy.distributed.client;
 
 import java.rmi.RemoteException;
 
+import net.jini.core.lookup.ServiceItem;
 import ptolemy.distributed.common.DistributedActor;
 import ptolemy.kernel.util.KernelException;
-import net.jini.core.lookup.ServiceItem;
 
 //////////////////////////////////////////////////////////////////////////
 ////ClientThread

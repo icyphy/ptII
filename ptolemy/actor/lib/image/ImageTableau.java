@@ -26,6 +26,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.image;
 
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Image;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.JFrame;
+
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
@@ -38,14 +46,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.media.Picture;
-
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Image;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.JFrame;
 
 
 //////////////////////////////////////////////////////////////////////////

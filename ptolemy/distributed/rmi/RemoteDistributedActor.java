@@ -28,6 +28,7 @@
 package ptolemy.distributed.rmi;
 
 import java.rmi.Remote;
+
 import ptolemy.distributed.common.DistributedActor;
 
 //////////////////////////////////////////////////////////////////////////

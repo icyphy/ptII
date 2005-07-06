@@ -27,13 +27,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.gui;
 
-import ptolemy.util.MessageHandler;
-
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 
 import javax.swing.JApplet;
+
+import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////

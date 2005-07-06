@@ -26,12 +26,9 @@
 
 package ptolemy.moml;
 
-import java.util.*;
-import java.io.*;
+import java.util.List;
 
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Workspace;
 
 /**

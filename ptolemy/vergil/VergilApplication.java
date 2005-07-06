@@ -27,26 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.JNLPUtilities;
-import ptolemy.actor.gui.MoMLApplication;
-import ptolemy.actor.gui.ModelDirectory;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.data.expr.Parameter;
-import ptolemy.gui.GraphicalMessageHandler;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.moml.MoMLParser;
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.moml.LibraryBuilder;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -55,6 +35,25 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
+
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.JNLPUtilities;
+import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ModelDirectory;
+import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.data.expr.Parameter;
+import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.moml.LibraryBuilder;
+import ptolemy.moml.MoMLParser;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.BasicGraphFrame;
 
 
 //////////////////////////////////////////////////////////////////////////

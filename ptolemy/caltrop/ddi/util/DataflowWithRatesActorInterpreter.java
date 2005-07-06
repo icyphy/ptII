@@ -29,29 +29,20 @@
 */
 package ptolemy.caltrop.ddi.util;
 
+import java.util.Map;
+
 import caltrop.interpreter.Context;
 import caltrop.interpreter.ExprEvaluator;
 import caltrop.interpreter.InputChannel;
 import caltrop.interpreter.InputPort;
 import caltrop.interpreter.InterpreterException;
-import caltrop.interpreter.OutputChannel;
-import caltrop.interpreter.OutputPort;
-import caltrop.interpreter.SimpleThunk;
 import caltrop.interpreter.StmtEvaluator;
-
 import caltrop.interpreter.ast.Action;
 import caltrop.interpreter.ast.Actor;
-import caltrop.interpreter.ast.Decl;
 import caltrop.interpreter.ast.Expression;
 import caltrop.interpreter.ast.InputPattern;
-import caltrop.interpreter.ast.OutputExpression;
 import caltrop.interpreter.ast.Statement;
-
 import caltrop.interpreter.environment.Environment;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

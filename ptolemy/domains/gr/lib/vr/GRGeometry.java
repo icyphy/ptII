@@ -27,64 +27,27 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.gr.lib.vr;
 
-import com.sun.j3d.utils.image.TextureLoader;
-
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.color.ColorSpace;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
-
-import java.io.IOException;
-import java.net.URL;
-
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.ColoringAttributes;
 import javax.media.j3d.Geometry;
-import javax.media.j3d.Group;
-import javax.media.j3d.ImageComponent;
-import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Material;
 import javax.media.j3d.Node;
-import javax.media.j3d.OrderedGroup;
 import javax.media.j3d.PolygonAttributes;
-import javax.media.j3d.QuadArray;
 import javax.media.j3d.RenderingAttributes;
 import javax.media.j3d.Shape3D;
-import javax.media.j3d.Switch;
-import javax.media.j3d.TexCoordGeneration;
-import javax.vecmath.TexCoord2f;
-import javax.media.j3d.Texture;
-import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.TransparencyAttributes;
-import javax.media.j3d.View;
-
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.parameters.DoubleRangeParameter;
-import ptolemy.actor.parameters.FilePortParameter;
-import ptolemy.actor.parameters.IntRangeParameter;
-import ptolemy.actor.parameters.ParameterPort;
-
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
-
-import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.gr.kernel.GRActor;
 import ptolemy.domains.gr.kernel.GRActor3D;
 import ptolemy.domains.gr.kernel.SceneGraphToken;
-import ptolemy.domains.gr.lib.GRShadedShape;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

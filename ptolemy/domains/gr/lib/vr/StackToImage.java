@@ -31,37 +31,21 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.gr.lib.vr;
 
 
-import java.awt.Image;
-import java.lang.String;
-import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
-
-
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.process.ColorProcessor;
-import ij.plugin.StackEditor;
 
-import ptolemy.actor.TypedIOPort;
+import java.awt.Image;
+
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.sdf.lib.SDFTransformer;
 import ptolemy.kernel.CompositeEntity;
-
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.domains.sdf.lib.SDFTransformer;
-import ptolemy.data.AWTImageToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.IntToken;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.actor.parameters.FilePortParameter;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.data.expr.Parameter;
-import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 
 //////////////////////////////////////////////////////////////////////////
 ////StackReader

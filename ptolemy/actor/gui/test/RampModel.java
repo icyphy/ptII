@@ -27,11 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui.test;
 
-import java.util.List;
-
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.lib.io.LineWriter;
 import ptolemy.actor.lib.Ramp;
+import ptolemy.actor.lib.io.LineWriter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.util.Workspace;
 

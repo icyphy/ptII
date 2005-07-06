@@ -30,23 +30,22 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.gr.lib.vr;
 
-import java.awt.Image;
-import java.lang.String;
-import java.net.URL;
-
-import ij.ImagePlus;
 import ij.IJ;
+import ij.ImagePlus;
 import ij.plugin.DICOM;
 
+import java.awt.Image;
+import java.net.URL;
+
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.FilePortParameter;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.data.AWTImageToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.actor.parameters.FilePortParameter;
-import ptolemy.actor.parameters.ParameterPort;
 
 //////////////////////////////////////////////////////////////////////////
 ////DICOMReader

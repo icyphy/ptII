@@ -27,44 +27,27 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.gr.lib.vr;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Image;
+import ij.ImagePlus;
+import ij.gui.ImageWindow;
+import ij.gui.Roi;
+import ij.gui.StackWindow;
+import ij.process.ImageProcessor;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.TableauFrame;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
-import ptolemy.actor.lib.Sink;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.data.ImageToken;
-import ptolemy.data.ObjectToken;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.media.Picture;
-import ptolemy.actor.TypedIOPort;
-
-import ij.gui.StackWindow;
-import ij.gui.ImageWindow;
-import ij.ImagePlus;
-import ij.gui.Roi;
-import ij.process.ImageProcessor;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageCrop
