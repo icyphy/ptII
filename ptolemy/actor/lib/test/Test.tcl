@@ -186,15 +186,19 @@ test Test-1.5 {Export} {
     <property name="" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-10">
         </property>
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
+            </property>
         </property>
     </property>
     <entity name="ramp" class="ptolemy.actor.lib.Ramp">
