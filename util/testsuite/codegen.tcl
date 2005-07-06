@@ -91,12 +91,12 @@ proc speedComparison  {xmlFile \
 	set separator [java::field java.io.File pathSeparator]
 
 	set codegenExecElapsed \
-		[time {exec java -classpath $relativePathToPTII/ptolemy/copernicus/java/cg/$modelName$separator$relativePathToPTII $modelName.Main} $repeat]
+		[time {exec java -classpath "$relativePathToPTII/ptolemy/copernicus/java/cg/$modelName$separator$relativePathToPTII" $modelName.Main} $repeat]
 
 	#puts "[expr {int([lindex $codegenExecElapsed 0] /1000.0)}] ms per run" 
         puts "Running exec $codeGenType codegen $repeat times on treeshake_codegen.jar"
 	set codegenJarExecElapsed \
-		[time {exec java -jar $relativePathToPTII/ptolemy/copernicus/java/cg/$modelName/treeshake_codegen.jar} $repeat]
+		[time {exec java -jar "$relativePathToPTII/ptolemy/copernicus/java/cg/$modelName/treeshake_codegen.jar"} $repeat]
 
     } else {
 	if {$codeGenType == "Actor" \
