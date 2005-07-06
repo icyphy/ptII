@@ -38,6 +38,7 @@ import ptolemy.actor.Manager;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -129,6 +130,13 @@ public abstract class KernelMain {
         // Create instance classes for the actors.
         initialize(toplevel);
 
+        if (attribute.getParameter("outputDirectory").indexOf(" ") != -1) {
+            throw new Exception("The outputDirectory contains one or more "
+                    + "spaces.  Unfortunately, the Soot option passing "
+                    + "mechanism does not handle spaces.  The value of "
+                    + "the outputDirectory parameter was: \"" 
+                    + attribute.getParameter("outputDirectory") + "\"");
+        }
         // Parse any copernicus args.
         String[] sootArgs = _parseArgs(attribute);
 
@@ -279,7 +287,7 @@ public abstract class KernelMain {
             throws Exception {
         return new String[0];
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
