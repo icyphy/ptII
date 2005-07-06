@@ -185,8 +185,11 @@ cat /tmp/f | egrep '*.xml' | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
 cat /tmp/f | xargs $PTII/util/testsuite/controlm
 </pre>
 Use dos2unix to fix the files.
- <br>Note that <CODE>ptolemy/copernicus/c/test/generateC.tcl</CODE>
-<B>should</B> have a control-M in it, so don't remove it. 
+
+ <br>Note many of the files in
+<CODE>ptolemy/copernicus/c/test/</CODE>
+<B>should</B> have a control-M in them, so don't remove them.
+
 <br>Also, check that text files that have control-ms are not
 checked in to cvs with -kb:
 <pre>
