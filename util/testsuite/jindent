@@ -22,7 +22,7 @@ if [ "$1" = "-n" ]; then
     shift
 fi
 
-emacs=emacs
+emacs=c:/Program\ Files/emacs-21.3/bin/emacs
 if [ "$PTII" = "" ]; then
     echo "$0: \$METRO is not set, exiting"
     exit 4
@@ -47,7 +47,7 @@ do
     cp $file $tmpfile
     chmod u+w $tmpfile
     echo "$file"
-    $emacs -q -batch -l $jindent_el $tmpfile -f jindent
+    "$emacs" -q -batch -l $jindent_el $tmpfile -f jindent
     diff $file $tmpfile
     status=$?
     if [ $status -eq 1 ]; then
@@ -61,12 +61,13 @@ do
 
 		if [ -d SCCS ]; then
 		    echo "$file is now writable, now reindenting"
-		    $emacs -q -batch -l $jindent_el $file -f jindent
+		    "$emacs" -q -batch -l $jindent_el $file -f jindent
 		    sccs delget -y"Reindented with jindent" $file
 		else
 		    if [ -d CVS ]; then
 			cp $tmpfile $file
-			cvs commit -m "Reindented with jindent" $file
+			echo "Would checkin"
+			#cvs commit -m "Reindented with jindent" $file
 		    fi
 		fi
 	    else
