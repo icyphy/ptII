@@ -58,6 +58,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.graph.DirectedGraph;
+import ptolemy.graph.Graph;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -1990,7 +1991,7 @@ public class ModelTransformer extends SceneTransformer
 
             try {
                 DirectedGraph graph = _constAnalysis.getDependencyGraph();
-                locallyModifiedAttributeList = Arrays.asList(graph.weightArray(
+                locallyModifiedAttributeList = Arrays.asList(Graph.weightArray(
                                                                      graph.topologicalSort(graph.nodes(
                                                                                                    locallyModifiedAttributeSet))));
             } catch (Exception ex) {

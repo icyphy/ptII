@@ -175,7 +175,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         }
 
         while (includeFiles.hasNext()) {
-            if (_context.getSingleClassMode()) {
+            if (Context.getSingleClassMode()) {
                 headerCode.append("/* ");
             }
 
@@ -203,7 +203,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         }
 
         while (requiredTypes.hasNext()) {
-            if (_context.getSingleClassMode()) {
+            if (Context.getSingleClassMode()) {
                 headerCode.append("/* ");
             }
 

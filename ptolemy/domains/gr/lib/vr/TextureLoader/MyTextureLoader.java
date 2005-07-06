@@ -449,7 +449,7 @@ public class MyTextureLoader extends Object {
 	    int level = Math.max(computeLog(width), computeLog(height)) + 1;
 	    scaledImageComponents = new ImageComponent2D[level];
 	    scaledBufferedImages = new BufferedImage[level];
-            tex = new Texture2D(tex.MULTI_LEVEL_MIPMAP, textureFormat,
+            tex = new Texture2D(Texture.MULTI_LEVEL_MIPMAP, textureFormat,
                 width, height);
 
             for (int i = 0; i < level; i++) {
@@ -475,12 +475,12 @@ public class MyTextureLoader extends Object {
 			imageComponentFormat, scaledBufferedImages[0],
 			byRef, yUp);
 
-            tex = new Texture2D(tex.BASE_LEVEL, textureFormat, width, height);
+            tex = new Texture2D(Texture.BASE_LEVEL, textureFormat, width, height);
 
             tex.setImage(0, scaledImageComponents[0]);
           }
-          tex.setMinFilter(tex.BASE_LEVEL_LINEAR);
-          tex.setMagFilter(tex.BASE_LEVEL_LINEAR);
+          tex.setMinFilter(Texture.BASE_LEVEL_LINEAR);
+          tex.setMagFilter(Texture.BASE_LEVEL_LINEAR);
         }
 
 	return tex;

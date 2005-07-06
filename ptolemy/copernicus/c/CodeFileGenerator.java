@@ -219,7 +219,7 @@ public class CodeFileGenerator extends CodeGenerator {
                 + CNames.classNameOf(source) + " " + argumentName + ") {\n");
 
         // Inherited Methods.
-        if (!_context.getSingleClassMode()) {
+        if (!Context.getSingleClassMode()) {
             code.append(_indent(1) + "/* Inherited Methods */\n");
             code.append(_generateMethodPointerInitialization(
                                 MethodListGenerator.getInheritedMethods(source),

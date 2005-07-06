@@ -44,6 +44,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
+import javax.swing.WindowConstants;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -228,7 +229,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
         _frames.put(pane, iframe);
 
         // We want to handle the closing ourselves.
-        iframe.setDefaultCloseOperation(iframe.DO_NOTHING_ON_CLOSE);
+        iframe.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         iframe.getContentPane().add(pane);
         iframe.setBounds(10, 10, 300, 200);

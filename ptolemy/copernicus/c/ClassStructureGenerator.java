@@ -97,7 +97,7 @@ public class ClassStructureGenerator extends CodeGenerator {
             + _generateMethodPointers(MethodListGenerator.getPrivateMethods(
                                               source), "Private methods");
 
-        if (((_context.getSingleClassMode()) || inheritedMethods.equals(""))
+        if ((Context.getSingleClassMode() || inheritedMethods.equals(""))
                 && introducedMethods.equals("")) {
             code.append(_comment("Empty method table"));
         } else {
