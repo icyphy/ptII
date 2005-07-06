@@ -756,13 +756,6 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *  @param readyToScheduleActorList The list of actors that are ready
      *  to be scheduled.  This will be updated if any actors that receive
      *  tokens from outputPort are now ready to fire.
-     *  @param waitingTokens A map from port to an array of integers
-     *  representing the number of tokens in each receiver of an input port.
-     *  This will be updated according to the tokens that are created.
-     *  @param minimumBufferSize A map from relation to an Integer
-     *  representing the minimum size buffer necessary for the computed
-     *  schedule.  The map will be populated during the execution of this
-     *  method.
      *  @exception IllegalActionException If the rate parameters are invalid.
      */
     protected void _simulateTokensCreatedLast(IOPort outputPort,
