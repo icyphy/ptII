@@ -66,11 +66,12 @@ test ClassUtilities-3.1 {lookupClassAsResource} {
     regsub {%20} $resource { } resource2
 
     # This might fail if ClassUtilities was found in a jar file
-    set resourceFile [java::new java.io.File $resource]
+    set resourceFile [java::new java.io.File $resource2]
     set resourceURL [$resourceFile toURL]
     set ptIIFile [java::new java.io.File $PTII]
     set ptIIURL [[$ptIIFile getCanonicalFile ] toURL]
 
+    #puts "ClassUtilities-3.1: [$resourceURL toString] [$ptIIURL toString]"
     $resourceURL sameFile $ptIIURL
 } {1}
 
