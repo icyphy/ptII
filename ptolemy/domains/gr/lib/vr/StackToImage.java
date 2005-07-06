@@ -1,9 +1,6 @@
-/*
-<<<<<<< copyright.txt
-@Copyright (c) 1998-2004 The Regents of the University of California.
-=======
+/* An actor that reads an array of images.
+
 @Copyright (c) 2005 The Regents of the University of California.
->>>>>>> 1.3
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -27,10 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION_2
 						COPYRIGHTENDKEY
-
-
 */
-/* An actor that reads an array of images.   */
+
 
 
 package ptolemy.domains.gr.lib.vr;
@@ -47,10 +42,6 @@ import ij.ImagePlus;
 import ij.ImageStack;
 import ij.process.ColorProcessor;
 import ij.plugin.StackEditor;
-
-
-
-
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
@@ -80,12 +71,13 @@ import ptolemy.graph.InequalityTerm;
    @see ptolemy.actor.lib.medicalimaging
 
    @author T. Crawford
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red
    @Pt.AcceptedRating Red
 
-*/public class StackToImage extends SDFTransformer{
+*/
+public class StackToImage extends SDFTransformer {
     /**Construct an actor with the given container and name.
      * @param container The container
      * @param name The name of this actor
@@ -99,12 +91,8 @@ import ptolemy.graph.InequalityTerm;
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-
-
         input_tokenConsumptionRate.setExpression("1");
         output_tokenProductionRate.setExpression("50");
-
-
 
         xResolution = new Parameter(this, "xResolution");
         xResolution.setExpression("256");
@@ -117,8 +105,6 @@ import ptolemy.graph.InequalityTerm;
         stackSize = new Parameter(this, "stackSize");
         stackSize.setExpression("50");
         stackSize.setTypeEquals(BaseType.INT);
-
-
 
     }
 

@@ -1,9 +1,6 @@
-/*
-<<<<<<< copyright.txt
-@Copyright (c) 1998-2004 The Regents of the University of California.
-=======
+/* An actor that reads an array of images. 
+
 @Copyright (c) 2005 The Regents of the University of California.
->>>>>>> 1.3
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -28,10 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION_2
 						COPYRIGHTENDKEY
 
-
 */
-/* An actor that reads an array of images.   */
-
 
 package ptolemy.domains.gr.lib.vr;
 
@@ -42,15 +36,10 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.process.ColorProcessor;
 import ij.plugin.Slicer;
-
-
-
-
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
@@ -80,12 +69,13 @@ import ptolemy.graph.InequalityTerm;
    @see ptolemy.actor.lib.medicalimaging
 
    @author T. Crawford
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red
    @Pt.AcceptedRating Red
 
-*/public class Reslice extends TypedAtomicActor{
+*/
+public class Reslice extends TypedAtomicActor{
     /**Construct an actor with the given container and name.
      * @param container The container
      * @param name The name of this actor
@@ -117,8 +107,6 @@ import ptolemy.graph.InequalityTerm;
         stackSize = new Parameter(this, "stackSize");
         stackSize.setExpression("50");
         stackSize.setTypeEquals(BaseType.INT);
-
-
 
     }
 

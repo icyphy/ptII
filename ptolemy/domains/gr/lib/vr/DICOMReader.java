@@ -1,9 +1,6 @@
-/*
-<<<<<<< copyright.txt
-@Copyright (c) 1998-2004 The Regents of the University of California.
-=======
+/* An actor that reads DICOM files.
+
 @Copyright (c) 2005 The Regents of the University of California.
->>>>>>> 1.3
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -28,30 +25,21 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION_2
 						COPYRIGHTENDKEY
 
-
 */
-/* An actor that reads DICOM files.    */
 
 
 package ptolemy.domains.gr.lib.vr;
-
 
 import java.awt.Image;
 import java.lang.String;
 import java.net.URL;
 
-
 import ij.ImagePlus;
 import ij.IJ;
 import ij.plugin.DICOM;
 
-
-
-
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
-
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.actor.TypedAtomicActor;
@@ -68,12 +56,13 @@ import ptolemy.actor.parameters.ParameterPort;
    @see ptolemy.actor.lib.medicalimaging
 
    @author T. Crawford
-   @version
-   @since
+   @version $Id$
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red
    @Pt.AcceptedRating Red
 
-*/public class DICOMReader extends TypedAtomicActor{
+*/
+public class DICOMReader extends TypedAtomicActor{
     /**Construct an actor with the given container and name.
      * @param container The container
      * @param name The name of this actor
@@ -114,8 +103,7 @@ import ptolemy.actor.parameters.ParameterPort;
     }
 
 
-    public void initialize() throws IllegalActionException
-    {
+    public void initialize() throws IllegalActionException {
         _parameterPort =  fileOrURL.getPort();
     }
 
@@ -143,19 +131,18 @@ import ptolemy.actor.parameters.ParameterPort;
             //_imagePlus = new ImagePlus(_fileRoot);
             //_image = _imagePlus.getImage();
             DICOM _dicom;
-            _image = ((ImagePlus)IJ.runPlugIn("ij.plugin.DICOM", _fileRoot)).getImage();
-
+            _image = ((ImagePlus)IJ.runPlugIn("ij.plugin.DICOM", _fileRoot))
+                .getImage();
         }
-
-
     }
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    //Image that is readin
+    /** Image that is read in. */
     private ImagePlus _imagePlus;
+
     //  The URL as a string.
     private String _fileRoot;
 
