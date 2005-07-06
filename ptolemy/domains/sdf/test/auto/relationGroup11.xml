@@ -36,14 +36,9 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0, 1}, {2, 3}, {4, 5}, {6, 7}, {8, 9}}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 190.0}">
-        </property>
-    </entity>
-    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
-        <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 265.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -62,6 +57,5 @@
     <link port="Distributor.output" relation="relation"/>
     <link port="Ramp.output" relation="relation3"/>
     <link port="Test.input" relation="relation2"/>
-    <link port="Ramp2.output" relation="relation"/>
     <link relation1="relation" relation2="relation2"/>
 </entity>
