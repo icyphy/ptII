@@ -34,9 +34,7 @@ ME =		ptolemy/domains/gr/lib/vr
 # Rule for index.xml uses this
 TITLE = 	"3D Volume Rendering"
 
-# $PTII/configure looks for Quicktime for Java  and sets PTQUICKTIME_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTQUICKTIME_DIR is empty.
-DIRS =	$(PTQUICKTIME_DIR)
+DIRS =		#TextureLoader
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -65,13 +63,18 @@ PTCLASSALLJARS =
 JSRCS = \
 	DICOMReader.java \
 	GRGeometry.java \
-	GRShadedShapea.java \
 	GRTexture2D.java \
-	GRTexture2Da.java \
 	GRTexture3D.java \
-	GRVolume.java
+	GRVolume.java \
+	ImageCrop.java \
+	Montage.java \
+	Reslice.java \
+	StackDisplay.java \
+	StackReader.java \
+	StackToImage.java
 
 OTHER_FILES_TO_BE_JARED = \
+	grvrentities.xml \
 	vr-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
