@@ -59,7 +59,8 @@ test InstanceOfTest-1.1 {Generate all required files for InstanceOfTest.java} {
     
     # Turn newlines into spaces.
     regsub -all "\n" $template " " template
-    regsub -all "" $template "" template
+    regsub -all "
+" $template "" template
 
     string first $template $output
     
