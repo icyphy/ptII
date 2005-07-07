@@ -7,7 +7,7 @@
 <body>
 <h1>Setting up Ptolemy II and Eclipse</h1>
 <p>
-These instructions assume you are using Eclipse 3.0 under Windows.
+These instructions assume you are using Eclipse 3.1 under Windows.
 Other ways of setting up and building Ptolemy II are described on the
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm">
 Ptolemy II install page</a>. Contents of this page:
@@ -43,10 +43,10 @@ because Ptolemy II is a big project.
 In Windows, create a shortcut to eclipse.exe on your desktop.
 Then right mouse click on the shortcut and select Properties and change
 the target to increase the memory allocated by default. E.g.,
-if you installed Eclipse in <CODE>C:\Program Files\eclipse3.0</CODE>,
+if you installed Eclipse in <CODE>C:\Program Files\eclipse</CODE>,
 then the Target should read:
 <pre>
-   "C:\Program Files\eclipse3.0\eclipse.exe" -vmargs -Xmx256M
+   "C:\Program Files\eclipse\eclipse.exe" -vmargs -Xmx256M
 </pre>
 The maximum memory size will now be 256 megabytes when you restart
 Eclipse.
@@ -70,7 +70,7 @@ of the pauses it creates. We suggest disabling this feature as
 follows:
 <ol>
 <li> Select Window -&gt; Preferences.
-<li> Highlight Workbench (probably already highlighted).
+<li> General -&;gt; Workspace
 <li> Deselect "Build automatically."
 </ol>
 <p>
@@ -78,14 +78,15 @@ follows:
 Ptolemy II source files are worked on by many people with different editors.
 Unfortunately, different text editors interpret tab characters differently,
 so it is best to use spaces rather than tabs. 
-In Eclipse-3.1, you need not You can specify for Eclipse-3.0
-to always do this as follows:
  <ol>
   <li> Select Window-&gt;Preferences in the menu.
-  <li> Expand the Java tree, select "Editor" and then click on the "Typing"
-       tab at the right. 
-  <li> Check "Insert spaces for tabs (see Code Formatter preference page)".
+  <li> Expand the Java tree, select "Code Style" -&gt; "Formatter" and then 
+       Click on "Show"
+  <li> Under "General settings", change the Tab policy to "Spaces only"
   <li> Click OK.
+
+  <li> You will be prompted to save the style with a new name, we
+suggest "Ptolemy II", but you can select any name. 
  </ol>
 
 <li> By default, Eclipse checks in <CODE>makefile</CODE>s and 
@@ -95,8 +96,16 @@ has a different line ending.
  <br>The solution: set your file associations properly:
  <ol>
   <li> Select Window-&gt;Preferences in the menu.
-  <li> Expand Workbench-&gt;Team-&gt;CVS-&gt;File Content
-  <li> Add "makefile" and "tcl" as ASCII Contents.
+  <li> Expand Team-&gt;File Content
+  <li> Click on "Add Extension" and enter "*.tcl" in the "Enter
+  File Extension" window, then click "OK" in the "Enter File Extension"  
+  
+  <li> Select "*.tcl" in the "File Content" window and then hit
+	the "Change" button to change the Content to "ASCII Text"
+
+  <li> Click on "Add Name" and add "makefile", select
+	"makefile" and click on the "Change" button to
+	change the Content to "ASCII Text"
  </ol>
 
 <h2><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h2>
@@ -174,8 +183,7 @@ for details.
 <li> If you are connecting via a DSL connection, you may
 want to use compression to transfer files:
 In Window -&gt; Preferences -&gt; Team -&gt; CVS, change Compression Level
-to 3. Under Eclipse 2.1, compression level 9 might not work, see
-<a href="#cvsCompression">Problems with CVS compression</a> for details.
+to 9. 
 <p>
 <li> In the CVS Repositories View window, click + sign to the left of the repository and then on the + sign to the left of HEAD until you see the <CODE>ptII</CODE> Head.
 
