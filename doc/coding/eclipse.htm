@@ -78,11 +78,15 @@ follows:
 Ptolemy II source files are worked on by many people with different editors.
 Unfortunately, different text editors interpret tab characters differently,
 so it is best to use spaces rather than tabs. 
+<br>Also, it is best if files end with new line characters, so
+that we can run line oriented scripts on them.
+<br>We handle the tabs and trailing new lines together:
  <ol>
   <li> Select Window-&gt;Preferences in the menu.
   <li> Expand the Java tree, select "Code Style" -&gt; "Formatter" and then 
        Click on "Show"
-  <li> Under "General settings", change the Tab policy to "Spaces only"
+  <li> Under the "Indentation" tab, change the Tab policy to "Spaces only"
+  <li> Under the "New Lines" tab, select "at end of file"
   <li> Click OK.
 
   <li> You will be prompted to save the style with a new name, we
@@ -182,7 +186,7 @@ for details.
 <p>
 <li> If you are connecting via a DSL connection, you may
 want to use compression to transfer files:
-In Window -&gt; Preferences -&gt; Team -&gt; CVS, change Compression Level
+In Window -&gt; Preferences -&gt; Team -&gt; CVS -&gt; Connection change Compression Level
 to 9. 
 <p>
 <li> In the CVS Repositories View window, click + sign to the left of the repository and then on the + sign to the left of HEAD until you see the <CODE>ptII</CODE> Head.
