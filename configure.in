@@ -212,7 +212,7 @@ fi
 
 if test ! -f "$FIND"; then
     AC_MSG_WARN(["Could not find the "find" command,
-    looked in \"$FIND\"])
+    looked in \"$FIND\""])
 fi    
 
 
