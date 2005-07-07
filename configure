@@ -1651,9 +1651,9 @@ fi
 
 if test ! -f "$FIND"; then
     { echo "$as_me:$LINENO: WARNING: "Could not find the "find" command,
-    looked in \"$FIND\"" >&5
+    looked in \"$FIND\""" >&5
 echo "$as_me: WARNING: "Could not find the "find" command,
-    looked in \"$FIND\"" >&2;}
+    looked in \"$FIND\""" >&2;}
 fi
 
 
