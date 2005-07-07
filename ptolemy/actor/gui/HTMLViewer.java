@@ -152,13 +152,14 @@ public class HTMLViewer extends TableauFrame implements Printable,
                 if (ref != null) {
                     useBrowser = ref.equals("in_browser");
                 }
-                
+
                 String protocol = newURL.getProtocol();
 
                 if (protocol != null) {
                     // Suggested mailto: extension from Paul Lieverse
                     useBrowser |= protocol.equals("mailto");
                 }
+            }
 
             if (!useBrowser && event instanceof HTMLFrameHyperlinkEvent) {
                 // For some bizarre reason, when a link is within a frame,
