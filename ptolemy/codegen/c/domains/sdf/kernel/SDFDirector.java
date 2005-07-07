@@ -248,17 +248,29 @@ public class SDFDirector extends Director {
     }
     
     /** Return the buffer size of a given channel (i.e, a given port
-     *  and a given channel number). The default value is 1.
+     *  and a given channel number). The default value is 1. If the
+     *  port is an output port, then the buffer size is obtained
+     *  from the remote receiver. If it is an input port, then it
+     *  is obtained from the specified port.
      *  @param port The given port.
      *  @param channelNumber The given channel number.
      *  @return The buffer size of the given channel.
      *  @exception IllegalActionException If the channel number is
-     *   out of range.
+     *   out of range or if the port is neither an input nor an
+     *   output.
      */
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
         
-        Receiver[][] receivers = port.getReceivers();
+        Receiver[][] receivers = null;
+        if (port.isInput()) {
+        	receivers = port.getReceivers();
+        } else if (port.isOutput()) {
+        	receivers = port.getRemoteReceivers();
+        } else {
+        	throw new IllegalActionException(port,
+                    "Port is neither an input nor an output.");
+        }
         try {
         	int size = 0;
             for (int copy = 0; copy < receivers[channelNumber].length; copy++) {
