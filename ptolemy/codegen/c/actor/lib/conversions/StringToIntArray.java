@@ -33,9 +33,7 @@ COPYRIGHTENDKEY
 package ptolemy.codegen.c.actor.lib.conversions;
 
 
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Man-Kit Leung
@@ -49,48 +47,5 @@ public class StringToIntArray extends CCodeGeneratorHelper {
      */
     public StringToIntArray(ptolemy.actor.lib.conversions.StringToIntArray actor) {
         super(actor);
-    }
-
-    /**
-     * Generate fire code
-     * The method reads in <code>codeBlock1</code> from StringToIntArray.c 
-     * and puts into the given stream buffer
-     * @param stream the given buffer to append the code to
-     */
-    public void  generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("codeBlock1");
-
-        stream.append(processCode(tmpStream.toString()));
-    }
-
-    /** Generate initialization code.
-     *  This method reads the <code>initBlock</code> from StringToIntArray.c,
-     *  replaces macros with their values and returns the results.
-     *  @return The processed code block.
-     */
-    public String generateInitializeCode()
-        throws IllegalActionException {
-        super.generateInitializeCode();
-
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("initBlock");
-
-        return processCode(tmpStream.toString());
-    }
-    
-    /** Generate preinitialization code.
-     *  This method reads the <code>preinitBlock</code> from StringToIntArray.c,
-     *  replaces macros with their values and returns the results.
-     *  @return The processed code block.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-
-        return processCode(tmpStream.toString());
     }
 }

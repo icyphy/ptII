@@ -68,19 +68,6 @@ public class XYPlotter extends CCodeGeneratorHelper {
         stream.append(processCode(tmpStream.toString()));
     }
 
-    /** Generate initialization code.
-     *  This method reads the <code>initBlock</code> from XYPlotter.c,
-     *  replaces macros with their values and returns the results.
-     *  @return The processed <code>initBlock</code>.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("initBlock");
-        return processCode(tmpStream.toString());
-    }
-
     /** Generate preinitialization code.
      *  This method reads the <code>preinitBlock</code> from XYPlotter.c,
      *  replaces macros with their values and returns the results.

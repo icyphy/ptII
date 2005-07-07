@@ -3,7 +3,7 @@
 int $actorSymbol(count) = 0; 
 /**/
 
-/***codeBlock1***/
+/***fireBlock***/
 // Test
 // FIXME: Need to handle all channels in the multiport input.
 if ($actorSymbol(count) < $size(correctValues) && fabs($ref(input#0) - $ref(correctValues, $actorSymbol(count))) > $ref(tolerance)) {
@@ -13,3 +13,7 @@ if ($actorSymbol(count) < $size(correctValues) && fabs($ref(input#0) - $ref(corr
 }
 $actorSymbol(count) ++;
 /**/
+
+/*** initBlock ***//**/
+
+/*** wrapupBlock ***//**/

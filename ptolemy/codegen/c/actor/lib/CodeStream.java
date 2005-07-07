@@ -123,21 +123,23 @@ public class CodeStream {
 
         if (codeBlock == null) {
             throw new IllegalActionException("Cannot find code block: "
-                    + blockName);
+                    + blockName + " in " + _filePath);
         }
         
         String parameter = (String) _parameterTable.get(blockName);
         if (parameter != null) {    
             if (argument == null) {
                 throw new IllegalActionException(
-                        "Incorrect number of arguments: " + blockName);
+                        "Incorrect number of arguments: " + blockName 
+                        + " in " + _filePath);
             }
             // We need to do some substitution
             codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
                     "parameter", argument.toString()));
         } else if (argument != null) {
             throw new IllegalActionException(
-                    "Incorrect number of arguments: " + blockName);            
+                    "Incorrect number of arguments: " + blockName
+                    + " in " + _filePath);            
         }
         
         _stream.append(codeBlock);
@@ -261,21 +263,22 @@ public class CodeStream {
         }
 
         if (endIndex == -1) {
-            throw new IllegalActionException("Missing close block");
+            throw new IllegalActionException(
+                    "Missing close block in " + _filePath);
         }
 
-        StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex,
+        StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex, 
                                                      endIndex));
 
         // Recursively parsing for nested code blocks
-        for (String subBlockKey = _parseCodeBlock(codeInFile);
+        for (String subBlockKey = _parseCodeBlock(body);
              subBlockKey != null;) {
             // FIXME: do we include the nested code block into 
             // the current block??
             //body.append((StringBuffer) _codeBlockTable.get(subBlockKey));
             // FIXME: take away the nested code block from 
             // the current code block
-            subBlockKey = _parseCodeBlock(codeInFile);
+            subBlockKey = _parseCodeBlock(body);
         }
 
         _parseIndex = _BLOCKEND.length() + endIndex;
@@ -298,6 +301,12 @@ public class CodeStream {
         String name = _parseHeader(codeInFile);
 
         if (name != null) {
+            if (_codeBlockTable.containsKey(name)) {
+                throw new IllegalActionException(
+                        "Multiple code blocks have the same name: " + name 
+                        + " in " + _filePath);
+            }
+
             StringBuffer body = _parseBody(codeInFile);
             _codeBlockTable.put(name, body);
         }
@@ -327,7 +336,8 @@ public class CodeStream {
 
         int endIndex = codeInFile.indexOf(_HEADEREND, _parseIndex);
         if (endIndex == -1) {
-            throw new IllegalActionException("Missing code block close header");
+            throw new IllegalActionException("Missing code block close header"
+                    + " in " + _filePath);
         }
 
         int parameterIndex = codeInFile.indexOf("(", _parseIndex);

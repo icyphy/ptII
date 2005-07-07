@@ -3,3 +3,9 @@
                      ( $ref(input) > $val(top) )? $val(top) :
                      $ref(input);
 /**/
+
+/*** preinitBlock ***//**/
+
+/*** initBlock ***//**/
+
+/*** wrapupBlock ***//**/

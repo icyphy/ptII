@@ -2,11 +2,8 @@
     $ref(output) = $val(factor) * $ref(input);
 /**/
 
-/*** preinitBlock ***/
-/**/
+/*** preinitBlock ***//**/
 
-/*** initBlock ***/
-/**/
+/*** initBlock ***//**/
 
-/*** wrapupBlock ***/
-/**/
+/*** wrapupBlock ***//**/

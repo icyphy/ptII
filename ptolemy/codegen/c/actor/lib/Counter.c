@@ -7,11 +7,8 @@
     }
 /**/
 
-/*** preinitBlock ***/
-/**/
+/*** preinitBlock ***//**/
 
-/*** initBlock ***/
-/**/
+/*** initBlock ***//**/
 
-/*** wrapupBlock ***/
-/**/
+/*** wrapupBlock ***//**/

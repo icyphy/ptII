@@ -9,3 +9,7 @@
     	$ref(output) += $ref(input);
     }
 /**/
+
+/*** preinitBlock ***//**/
+
+/*** wrapupBlock ***//**/

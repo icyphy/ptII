@@ -74,7 +74,7 @@ public class Test extends CCodeGeneratorHelper {
         }
 
         CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("codeBlock1");
+        tmpStream.appendCodeBlock("fireBlock");
 
         stream.append(processCode(tmpStream.toString()));
     }

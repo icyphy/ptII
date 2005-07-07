@@ -54,20 +54,6 @@ public class CartesianToPolar extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    /**
-     * Generate fire code
-     * The method reads in <code>codeBlock1</code> and
-     * append the processed <code>codeBlock1</code> to the
-     * given stream buffer.
-     * @param stream the given buffer to append the code to
-     */
-    public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("codeBlock1");
-        stream.append(processCode(tmpStream.toString()));
-    }
-
     /** Get the files needed by the code generated for the
      *  CartesianToPolar actor.
      *  @return A set of strings that are names of the files

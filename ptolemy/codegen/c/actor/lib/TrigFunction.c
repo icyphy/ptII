@@ -27,3 +27,12 @@
 /***atanBlock***/
     $ref(output) = atan($ref(input));
 /**/
+
+
+/***preinitBlock***//**/
+
+/***fireBlock***//**/
+
+/*** initBlock ***//**/
+
+/*** wrapupBlock ***//**/
