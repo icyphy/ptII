@@ -6,3 +6,12 @@
         $ref(output)--;
     }
 /**/
+
+/*** preinitBlock ***/
+/**/
+
+/*** initBlock ***/
+/**/
+
+/*** wrapupBlock ***/
+/**/
