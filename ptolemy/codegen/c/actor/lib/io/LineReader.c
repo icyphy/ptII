@@ -21,8 +21,8 @@
     $ref(endOfFile) = feof($actorSymbol(filePtr) );    
 /**/
 
-/***openForRead***/
-    if (!($actorSymbol(filePtr) = fopen ($ref(fileOrURL),"r"))) {
+/***openForRead(<arg>)***/
+    if (!($actorSymbol(filePtr) = fopen ("<arg>","r"))) {
         fprintf(stderr,"ERROR: cannot open file for LineReader actor.\n");
         exit(1);
     }
