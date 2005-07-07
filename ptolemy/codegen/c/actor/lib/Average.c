@@ -3,7 +3,7 @@ double $actorSymbol(sum) = 0;
 int $actorSymbol(count) = 0; 
 /**/
 
-/***codeBlock1***/
+/***fireBlock***/
 if ($ref(reset)) {
     $actorSymbol(sum) = 0;
     $actorSymbol(count) = 0;

@@ -53,19 +53,6 @@ public class AbsoluteValue extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    /**
-     * Generate fire code
-     * The method reads in codeBlock1 and puts into the
-     * given stream buffer
-     * @param stream the given buffer to append the code to
-     */
-    public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("codeBlock1");
-        stream.append(processCode(tmpStream.toString()));
-    }
-
     /** Get the files needed by the code generated for the
      *  AbsoluteValue actor.
      *  @return A set of strings that are names of the files

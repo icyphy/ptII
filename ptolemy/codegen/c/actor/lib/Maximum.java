@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.Minimum
+/* A helper class for ptolemy.actor.lib.Maximum
 @Copyright (c) 2005 The Regents of the University of California.
 
 All rights reserved.
@@ -39,26 +39,26 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  * @version $Id$
  */
-public class Minimum extends CCodeGeneratorHelper {
+public class Maximum extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Minimum helper
+     * Constructor method for the Maximum helper
      * @param actor the associated actor
      */
-    public Minimum(ptolemy.actor.lib.Minimum actor) {
+    public Maximum(ptolemy.actor.lib.Maximum actor) {
         super(actor);
     }
 
     /**
      * Generate fire code
      * The method passes the port width as an argument, reads in 
-     * <code>fireBlock</code> from Minimum.c and puts into the given 
+     * <code>fireBlock</code> from Maximum.c and puts into the given 
      * stream buffer.
      * @param stream the given buffer to append the code to
      */
     public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.Minimum actor = 
-            (ptolemy.actor.lib.Minimum) getComponent();
+        ptolemy.actor.lib.Maximum actor = 
+            (ptolemy.actor.lib.Maximum) getComponent();
         CodeStream tmpStream = new CodeStream(this);
         
         // FIXME: we need to resolve the token type in the future
@@ -69,20 +69,21 @@ public class Minimum extends CCodeGeneratorHelper {
     }
 
     /** Generate initialization code.
-     *  This method reads the <code>initMin</code>, <code>initChannelNum</code> from Minimum.c,
-     *  replaces macros with their values and returns the results.
+     *  This method reads the <code>initMax</code>, 
+     *  <code>initChannelNum</code> from Maximum.c, replaces macros with 
+     *  their values and returns the results.
      *  @return The processed code block.
      */
     public String generateInitializeCode()
         throws IllegalActionException {
         super.generateInitializeCode();
        
-        ptolemy.actor.lib.Minimum actor = 
-            (ptolemy.actor.lib.Minimum) getComponent();
+        ptolemy.actor.lib.Maximum actor = 
+            (ptolemy.actor.lib.Maximum) getComponent();
         
         CodeStream tmpStream = new CodeStream(this);
         if (actor.input.getWidth() > 0) {
-        	tmpStream.appendCodeBlock("initMin");
+        	tmpStream.appendCodeBlock("initMax");
         }
         tmpStream.appendCodeBlock("initChannelNum");
 

@@ -22,7 +22,7 @@
     }
 /**/
 
-/*** codeBlock1 ***/
+/*** fireBlock ***/
     if ($actorSymbol(haveNextNextGaussian)) {
         $actorSymbol(haveNextNextGaussian) = 0;   // false
         $ref(output) = $actorSymbol(nextNextGaussian);

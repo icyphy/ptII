@@ -17,7 +17,7 @@
     }
 /**/
 
-/*** codeBlock1 ***/
+/*** fireBlock ***/
     $ref(output) = ($actorSymbol(nextDouble)() * ($val(upperValue) - $val(lowerValue))) + $val(lowerValue);
 /**/
 

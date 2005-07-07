@@ -2,6 +2,6 @@
     double $actorSymbol(previousInput) = 0;
 /**/
 
-/***codeBlock1***/
+/***fireBlock***/
     $ref(output) = $ref(input) - $actorSymbol(previousInput);
 /**/

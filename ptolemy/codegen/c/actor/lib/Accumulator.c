@@ -2,7 +2,7 @@
     $ref(output) = $val(init);
 /**/
 
-/***codeBlock1***/
+/***fireBlock***/
     if ($ref(reset)) {
     	$ref(output) = $val(init);
     } else {

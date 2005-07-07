@@ -83,6 +83,8 @@ public class LineReader extends CCodeGeneratorHelper {
                 .getExpression());
 
         // FIXME: How do we fix the file path parameter of the actor?? 
+        //String fileNameString = actor.fileOrURL.asFile().getCanonicalPath();
+        
         String fileNameString = actor.fileOrURL.getExpression();
         fileNameString = fileNameString.replaceFirst("file:/", "");
         fileNameString = fileNameString.replaceAll("%20", " ");

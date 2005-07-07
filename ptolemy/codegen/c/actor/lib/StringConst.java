@@ -33,7 +33,6 @@ COPYRIGHTENDKEY
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Man-Kit Leung
@@ -49,19 +48,4 @@ public class StringConst extends CCodeGeneratorHelper {
     public StringConst(ptolemy.actor.lib.StringConst actor) {
         super(actor);
     }
-
-    /**
-     * Generate fire code
-     * The method reads in <code>codeBlock1</code> from StringConst.c 
-     * and puts into the given stream buffer
-     * @param stream the given buffer to append the code to
-     */
-    public void  generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("codeBlock1");
-
-        stream.append(processCode(tmpStream.toString()));
-    }
-
 }

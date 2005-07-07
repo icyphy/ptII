@@ -1,4 +1,4 @@
-/*** codeBlock1 ***/
+/*** fireBlock ***/
     $ref(output) = $val(value);
 /**/
 

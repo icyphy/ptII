@@ -50,31 +50,4 @@ public class Accumulator extends CCodeGeneratorHelper {
     public Accumulator(ptolemy.actor.lib.Accumulator actor) {
         super(actor);
     }
-
-    /**
-     * Generate fire code
-     * The method reads in codeBlock1 and puts into the
-     * given stream buffer
-     * @param stream the given buffer to append the code to
-     */
-    public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("codeBlock1");
-        stream.append(processCode(tmpStream.toString()));
-    }
-
-    /**
-     * Generate initialization code
-     * The method reads in codeBlock1 and returns the code
-     * @return the initialization code
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("initBlock");
-
-        return processCode(tmpStream.toString());
-    }
 }

@@ -33,7 +33,6 @@
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 
 /**
@@ -48,18 +47,5 @@ public class Remainder extends CCodeGeneratorHelper {
      */
     public Remainder(ptolemy.actor.lib.Remainder actor) {
         super(actor);
-    }
-
-    /**
-     * Generate fire code
-     * The method reads in codeBlock1 and puts into the
-     * given stream buffer
-     * @param stream the given buffer to append the code to
-     */
-    public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("codeBlock1");
-        stream.append(processCode(tmpStream.toString()));
     }
 }

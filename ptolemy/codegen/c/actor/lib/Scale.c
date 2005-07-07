@@ -1,3 +1,3 @@
-/***codeBlock1***/
+/***fireBlock***/
     $ref(output) = $val(factor) * $ref(input);
 /**/
