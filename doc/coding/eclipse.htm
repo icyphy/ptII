@@ -93,10 +93,11 @@ that we can run line oriented scripts on them.
 suggest "Ptolemy II", but you can select any name. 
  </ol>
 
-<li> By default, Eclipse checks in <CODE>makefile</CODE>s and 
-<CODE>*.tcl</CODE> files with <CODE>-kb</CODE>.  This causes no end
-of problems when the tree is checked out on a platform that
-has a different line ending.
+<li> By default, Eclipse checks in <CODE>makefile</CODE>s,
+<CODE>*.c</CODE> files and <CODE>*.tcl</CODE> files with
+<CODE>-kb</CODE>.  This causes no end of problems when the tree is
+checked out on a platform that has a different line ending.
+
  <br>The solution: set your file associations properly:
  <ol>
   <li> Select Window-&gt;Preferences in the menu.
@@ -106,6 +107,8 @@ has a different line ending.
   
   <li> Select "*.tcl" in the "File Content" window and then hit
 	the "Change" button to change the Content to "ASCII Text"
+
+  <li> Do the same steps for the "*.c" files.
 
   <li> Click on "Add Name" and add "makefile", select
 	"makefile" and click on the "Change" button to
