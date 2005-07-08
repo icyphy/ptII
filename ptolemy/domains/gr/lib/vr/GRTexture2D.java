@@ -136,7 +136,6 @@ public class GRTexture2D extends GRGeometry {
      *  volume to be rendered.
      */
     // public FilePortParameter voxelFile;
-
     public void initialize() throws IllegalActionException {
         super.initialize();
         /** Initialize some variables */
