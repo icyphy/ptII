@@ -1,30 +1,30 @@
 /* The node controller for Ptolemy objects.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.basic;
 
 import java.awt.event.ActionEvent;
@@ -36,24 +36,23 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.graph.GraphController;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjController
 
 /**
-   This class extends LocatableNodeController with an association
-   with a configuration. The configuration is central to a Ptolemy GUI,
-   and is used by derived classes to perform various functions such as
-   opening models or their documentation. The class also contains an
-   inner class the specifically supports accessing the documentation for
-   a Ptolemy II object.
+ This class extends LocatableNodeController with an association
+ with a configuration. The configuration is central to a Ptolemy GUI,
+ and is used by derived classes to perform various functions such as
+ opening models or their documentation. The class also contains an
+ inner class the specifically supports accessing the documentation for
+ a Ptolemy II object.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class NamedObjController extends LocatableNodeController {
     /** Create a node controller associated with the specified graph
      *  controller.
@@ -105,13 +104,13 @@ public class NamedObjController extends LocatableNodeController {
             String docName = "doc.codeDoc." + className;
 
             try {
-                URL toRead = getClass().getClassLoader().getResource(docName
-                        .replace('.', '/') + ".html");
+                URL toRead = getClass().getClassLoader().getResource(
+                        docName.replace('.', '/') + ".html");
 
                 if (toRead != null) {
                     if (_configuration != null) {
-                        _configuration.openModel(null, toRead,
-                                toRead.toExternalForm());
+                        _configuration.openModel(null, toRead, toRead
+                                .toExternalForm());
                     } else {
                         MessageHandler.error("Cannot open documentation for "
                                 + className + " without a configuration.");

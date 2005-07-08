@@ -1,34 +1,33 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.canvas.event;
 
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-
 
 /** A class that accepts mouse events. Instances of this class
  * are used by event-handling code to decide whether they are
@@ -52,8 +51,8 @@ public class ExtendedMouseFilter extends MouseFilter {
 
     /** The alternate selection filter -- accepts button 1 with shift.
      */
-    public static final MouseFilter alternateSelectionFilter = new ExtendedMouseFilter(1,
-            InputEvent.SHIFT_DOWN_MASK);
+    public static final MouseFilter alternateSelectionFilter = new ExtendedMouseFilter(
+            1, InputEvent.SHIFT_DOWN_MASK);
 
     /** The mouse button mask
      */
@@ -94,11 +93,9 @@ public class ExtendedMouseFilter extends MouseFilter {
      * filter will accept modifier sets that exactly match modifiers.
      */
     public ExtendedMouseFilter(int button, int extendedModifiers) {
-        this(button, extendedModifiers,
-                InputEvent.SHIFT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK
-                | InputEvent.ALT_DOWN_MASK
-                | InputEvent.ALT_GRAPH_DOWN_MASK
-                | InputEvent.META_DOWN_MASK);
+        this(button, extendedModifiers, InputEvent.SHIFT_DOWN_MASK
+                | InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK
+                | InputEvent.ALT_GRAPH_DOWN_MASK | InputEvent.META_DOWN_MASK);
     }
 
     /**
@@ -149,7 +146,7 @@ public class ExtendedMouseFilter extends MouseFilter {
 
         int m = event.getModifiersEx();
         boolean val = (event.getButton() == _button)
-            && (_modifierFlags == (m & _modifierMask));
+                && (_modifierFlags == (m & _modifierMask));
 
         //         System.out.println("event = " + event);
         //         System.out.println("FILTER = " + this);
@@ -162,8 +159,10 @@ public class ExtendedMouseFilter extends MouseFilter {
     public String toString() {
         StringBuffer result = new StringBuffer();
         result.append(getClass().toString() + "; Button " + _button
-                + "; Modifiers " + InputEvent.getModifiersExText(_modifierFlags)
-                + "; Modifier mask " + InputEvent.getModifiersExText(_modifierMask)
+                + "; Modifiers "
+                + InputEvent.getModifiersExText(_modifierFlags)
+                + "; Modifier mask "
+                + InputEvent.getModifiersExText(_modifierMask)
                 + "; Press Number " + _pressNumber);
         return result.toString();
     }

@@ -1,29 +1,29 @@
 /* Utility methods to handle HTML Viewer about: calls
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.io.BufferedReader;
@@ -44,23 +44,22 @@ import ptolemy.actor.Manager;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.FileUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// HTMLAbout
 
 /**
-   This class contains static methods that are called
-   by when HTMLViewer.hyperlinkUpdate() is invoked on a hyperlink
-   that starts with <code>about:</code>.  This facility is primarily
-   used for testing.
+ This class contains static methods that are called
+ by when HTMLViewer.hyperlinkUpdate() is invoked on a hyperlink
+ that starts with <code>about:</code>.  This facility is primarily
+ used for testing.
 
-   @author Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-   @see HTMLViewer#hyperlinkUpdate(HyperlinkEvent)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ @see HTMLViewer#hyperlinkUpdate(HyperlinkEvent)
+ */
 public class HTMLAbout {
     // This class is separate from HTMLViewer because this class
     // import lots of Ptolemy specify classes that HTMLViewer does
@@ -88,8 +87,7 @@ public class HTMLAbout {
 
         try {
             StringAttribute applicationNameAttribute = (StringAttribute) configuration
-                .getAttribute("_applicationName",
-                        StringAttribute.class);
+                    .getAttribute("_applicationName", StringAttribute.class);
 
             if (applicationNameAttribute != null) {
                 applicationName = applicationNameAttribute.getExpression();
@@ -114,33 +112,34 @@ public class HTMLAbout {
         htmlBuffer.append("</ul>\n<table>\n");
 
         if (_configurationExists("full")) {
-            htmlBuffer.append(
-                    "<tr rowspan=4><center><b>Full</b></center></tr>\n"
-                    + _aboutHTML("ptolemy/configs/doc/completeDemos.htm")
-                    + _aboutHTML("ptolemy/configs/doc/demos.htm")
-                    + _aboutHTML("ptolemy/configs/doc/whatsNew" + version + ".htm")
-                    + _aboutHTML("ptolemy/configs/doc/whatsNew4.0.htm")
-                    + _aboutHTML("ptolemy/configs/doc/whatsNew3.0.2.htm"));
+            htmlBuffer
+                    .append("<tr rowspan=4><center><b>Full</b></center></tr>\n"
+                            + _aboutHTML("ptolemy/configs/doc/completeDemos.htm")
+                            + _aboutHTML("ptolemy/configs/doc/demos.htm")
+                            + _aboutHTML("ptolemy/configs/doc/whatsNew"
+                                    + version + ".htm")
+                            + _aboutHTML("ptolemy/configs/doc/whatsNew4.0.htm")
+                            + _aboutHTML("ptolemy/configs/doc/whatsNew3.0.2.htm"));
         }
 
         // Don't include DSP here, it uses the Ptiny demos anyway.
         if (_configurationExists("hyvisual")) {
-            htmlBuffer.append(
-                    "<tr rowspan=4><center><b>HyVisual</b></center></tr>\n"
-                    + _aboutHTML("ptolemy/configs/hyvisual/intro.htm"));
+            htmlBuffer
+                    .append("<tr rowspan=4><center><b>HyVisual</b></center></tr>\n"
+                            + _aboutHTML("ptolemy/configs/hyvisual/intro.htm"));
         }
 
         if (_configurationExists("ptiny")) {
-            htmlBuffer.append(
-                    "<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
-                    + _aboutHTML("ptolemy/configs/doc/completeDemosPtiny.htm")
-                    + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm"));
+            htmlBuffer
+                    .append("<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
+                            + _aboutHTML("ptolemy/configs/doc/completeDemosPtiny.htm")
+                            + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm"));
         }
 
         if (_configurationExists("visualsense")) {
-            htmlBuffer.append(
-                    "<tr rowspan=4><center><b>VisualSense</b></center></tr>\n"
-                    + _aboutHTML("ptolemy/configs/visualsense/intro.htm"));
+            htmlBuffer
+                    .append("<tr rowspan=4><center><b>VisualSense</b></center></tr>\n"
+                            + _aboutHTML("ptolemy/configs/visualsense/intro.htm"));
         }
 
         htmlBuffer.append("</table>\n");
@@ -171,8 +170,8 @@ public class HTMLAbout {
             URL modelURL = new URL(demosURL, model);
 
             try {
-                configuration.openModel(demosURL, modelURL,
-                        modelURL.toExternalForm());
+                configuration.openModel(demosURL, modelURL, modelURL
+                        .toExternalForm());
             } catch (Throwable throwable) {
                 throw new Exception("Failed to open '" + modelURL + "'",
                         throwable);
@@ -208,8 +207,8 @@ public class HTMLAbout {
                 // Could be that we were running with -sandbox and
                 // cannot write the temporary file.
                 newURL = FileUtilities.nameToURL(
-                        "$CLASSPATH/ptolemy/configs/doc/copyright.htm",
-                        null, null);
+                        "$CLASSPATH/ptolemy/configs/doc/copyright.htm", null,
+                        null);
             }
         } else if (event.getDescription().equals("about:configuration")) {
             // about:expandConfiguration will expand the configuration
@@ -218,8 +217,8 @@ public class HTMLAbout {
             // we open it up as a .xml file, we get a graphical browser
             // that does not tell us much.  If we open it up as a .htm,
             // then the output is confusing.
-            newURL = _temporaryHTMLFile("configuration", ".txt",
-                    configuration.exportMoML());
+            newURL = _temporaryHTMLFile("configuration", ".txt", configuration
+                    .exportMoML());
         } else if (event.getDescription().startsWith("about:demos")) {
             // Expand all the local .xml files in the fragment
             // and return a URL pointing to the fragment.
@@ -293,20 +292,24 @@ public class HTMLAbout {
     // Return a string containing HTML with links the the about:demos
     // and about:links pages
     private static String _aboutHTML(String fileName) {
-        return "  <tr>\n" + "    <code>" + fileName + "</code>\n"
-            + "    <td><a href=\"about:demos#" + fileName
-            + "\">&nbsp;Open the .xml&nbsp;</a></td>\n"
-            + "    <td><a href=\"about:links#" + fileName
-            + "\">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
-            // RunAllDemos does not work, it runs in the wrong thread?
-            // + "    <td><a href=\"about:runAllDemos#" + fileName
-            // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
-            + "  </tr>\n";
+        return "  <tr>\n"
+                + "    <code>"
+                + fileName
+                + "</code>\n"
+                + "    <td><a href=\"about:demos#"
+                + fileName
+                + "\">&nbsp;Open the .xml&nbsp;</a></td>\n"
+                + "    <td><a href=\"about:links#"
+                + fileName
+                + "\">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
+                // RunAllDemos does not work, it runs in the wrong thread?
+                // + "    <td><a href=\"about:runAllDemos#" + fileName
+                // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
+                + "  </tr>\n";
     }
 
     // Return the URL of the file that contains links to .xml files
-    private static URL _getDemoURL(String demosFileName)
-            throws IOException {
+    private static URL _getDemoURL(String demosFileName) throws IOException {
         // Open the completeDemos.htm file and read the contents into
         // a String
         if ((demosFileName == null) || (demosFileName.length() == 0)) {
@@ -322,7 +325,8 @@ public class HTMLAbout {
         BufferedReader in = null;
 
         try {
-            in = new BufferedReader(new InputStreamReader(demosURL.openStream()));
+            in = new BufferedReader(
+                    new InputStreamReader(demosURL.openStream()));
 
             String inputLine;
 
@@ -378,8 +382,9 @@ public class HTMLAbout {
 
         try {
             URL url = Thread.currentThread().getContextClassLoader()
-                .getResource("ptolemy/configs/"
-                        + configurationName + "/configuration.xml");
+                    .getResource(
+                            "ptolemy/configs/" + configurationName
+                                    + "/configuration.xml");
 
             if (url != null) {
                 configurationExists = true;

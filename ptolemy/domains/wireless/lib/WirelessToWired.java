@@ -1,30 +1,30 @@
 /* An actor with a wireless input port and wired output ports.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -43,34 +43,33 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// WirelessToWired
 
 /**
-   On each firing, this actor reads at most one token from the input
-   port and output the payload on the <i>payload</i> port and the properties
-   on the <i>properties</i> port.  If there are no properties, then
-   output a token only on the <i>payload</i> port.
-   <p>
-   NOTE: The type of the properties port is inferred from the
-   <i>defaultProperties</i> field of the channel at preinitialize()
-   time. If the channel is changed during execution, or this
-   field is changed, then the type of the port will not be updated,
-   and a run-time type error could occur.
-   Thus, this actor assumes that these types do not change.
-   If the channel has no default properties (as in the base class
-   AtomicWirelessChannel), then the type of the properties port will
-   be undefined. If it is left disconnected, then this is fine,
-   but if it is connected, then its type will need to be declared
-   explicitly.
+ On each firing, this actor reads at most one token from the input
+ port and output the payload on the <i>payload</i> port and the properties
+ on the <i>properties</i> port.  If there are no properties, then
+ output a token only on the <i>payload</i> port.
+ <p>
+ NOTE: The type of the properties port is inferred from the
+ <i>defaultProperties</i> field of the channel at preinitialize()
+ time. If the channel is changed during execution, or this
+ field is changed, then the type of the port will not be updated,
+ and a run-time type error could occur.
+ Thus, this actor assumes that these types do not change.
+ If the channel has no default properties (as in the base class
+ AtomicWirelessChannel), then the type of the properties port will
+ be undefined. If it is left disconnected, then this is fine,
+ but if it is connected, then its type will need to be declared
+ explicitly.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class WirelessToWired extends TypedAtomicActor {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -85,7 +84,8 @@ public class WirelessToWired extends TypedAtomicActor {
         super(container, name);
 
         properties = new TypedIOPort(this, "properties", false, true);
-        (new SingletonParameter(properties, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(properties, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         // Create and configure the parameters.
         inputChannelName = new StringParameter(this, "inputChannelName");
@@ -97,10 +97,11 @@ public class WirelessToWired extends TypedAtomicActor {
 
         payload = new TypedIOPort(this, "payload", false, true);
         payload.setTypeSameAs(input);
-        (new SingletonParameter(payload, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(payload, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
@@ -186,7 +187,8 @@ public class WirelessToWired extends TypedAtomicActor {
         CompositeEntity container = (CompositeEntity) getContainer();
 
         if (container != null) {
-            Entity channel = container.getEntity(inputChannelName.stringValue());
+            Entity channel = container
+                    .getEntity(inputChannelName.stringValue());
 
             if (channel instanceof AtomicWirelessChannel) {
                 Parameter channelProperties = ((AtomicWirelessChannel) channel).defaultProperties;

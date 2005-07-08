@@ -1,30 +1,30 @@
 /* An attribute whose value can be set via the MoML configure tag.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.kernel.util;
 
 import java.io.BufferedReader;
@@ -37,31 +37,30 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ConfigurableAttribute
 
 /**
-   This class provides a simple way to get a long string into an attribute.
-   It implements Configurable, so its value can be set using a configure MoML
-   element.  For example,
-   <pre>
-   &lt;property name="x" class="ptolemy.moml.ConfigurableAttribute"&gt;
-   &lt;configure source="url"&gt;xxx&lt;/configure&gt;
-   &lt;/property&gt;
-   </pre>
-   The value of this property, obtained via the value() method,
-   will be whatever text is contained by the referenced URL (which
-   is optional), followed by the text "xxx".
+ This class provides a simple way to get a long string into an attribute.
+ It implements Configurable, so its value can be set using a configure MoML
+ element.  For example,
+ <pre>
+ &lt;property name="x" class="ptolemy.moml.ConfigurableAttribute"&gt;
+ &lt;configure source="url"&gt;xxx&lt;/configure&gt;
+ &lt;/property&gt;
+ </pre>
+ The value of this property, obtained via the value() method,
+ will be whatever text is contained by the referenced URL (which
+ is optional), followed by the text "xxx".
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (janneck)
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (janneck)
+ */
 public class ConfigurableAttribute extends Attribute implements Configurable,
-                                                                Settable {
+        Settable {
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
      *  default workspace directory.
@@ -121,7 +120,8 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @return The cloned attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ConfigurableAttribute newObject = (ConfigurableAttribute) super.clone(workspace);
+        ConfigurableAttribute newObject = (ConfigurableAttribute) super
+                .clone(workspace);
 
         // The clone has new value listeners.
         newObject._valueListeners = null;

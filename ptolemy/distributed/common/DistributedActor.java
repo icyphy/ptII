@@ -1,28 +1,28 @@
 /* Interface for distributed actors.
 
-@Copyright (c) 2005 The Regents of Aalborg University.
-All rights reserved.
+ @Copyright (c) 2005 The Regents of Aalborg University.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
-HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
+ HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 
 package ptolemy.distributed.common;
 
@@ -34,21 +34,21 @@ import java.util.HashMap;
 //// DistributedActor
 
 /**
-   An DistributedActor is a distributed executable entity. This interface
-   defines the common functionality in DistributedActorWrapper and further
-   implementations of distributed Actors. It defines the <i>action methods</i>,
-   which determine how an distributed object can be invoked. It should be
-   implemented by distributed actors.
+ An DistributedActor is a distributed executable entity. This interface
+ defines the common functionality in DistributedActorWrapper and further
+ implementations of distributed Actors. It defines the <i>action methods</i>,
+ which determine how an distributed object can be invoked. It should be
+ implemented by distributed actors.
 
-   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.distributed.rmi.DistributedActorWrapper
-   @see ptolemy.actor.Actor
-   @see ptolemy.actor.Executable
-*/
+ @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (kapokasa)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.distributed.rmi.DistributedActorWrapper
+ @see ptolemy.actor.Actor
+ @see ptolemy.actor.Executable
+ */
 
 public interface DistributedActor {
 
@@ -168,8 +168,8 @@ public interface DistributedActor {
      *  occur during the execution of a remote method call.
      */
 
-    public void setConnections(HashMap connections) throws
-                                                    java.rmi.RemoteException;
+    public void setConnections(HashMap connections)
+            throws java.rmi.RemoteException;
 
     /** Set the port types of the wrapped actor.
      *
@@ -215,5 +215,3 @@ public interface DistributedActor {
 
     public void wrapup() throws java.rmi.RemoteException;
 }
-
-

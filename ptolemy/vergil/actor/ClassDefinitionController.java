@@ -1,30 +1,30 @@
 /* The node controller for class definitions.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
@@ -56,29 +56,28 @@ import diva.graph.layout.IncrementalLayoutListener;
 import diva.gui.GUIUtilities;
 import diva.util.Filter;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ClassDefinitionController
 
 /**
-   This class provides interaction with nodes that represent Ptolemy II
-   classes.  This extends the base class by providing mechanisms in the
-   context menu for creating an instance, creating a subclass,
-   and converting to an instance.
-   <p>
-   NOTE: There should be only one instance of this class associated with
-   a given GraphController. This is because this controller listens for
-   changes to the graph and re-renders the ports of any actor instance
-   in the graph when the graph changes. If there is more than one instance,
-   this rendering will be done twice, which can result in bugs like port
-   labels appearing twice.
+ This class provides interaction with nodes that represent Ptolemy II
+ classes.  This extends the base class by providing mechanisms in the
+ context menu for creating an instance, creating a subclass,
+ and converting to an instance.
+ <p>
+ NOTE: There should be only one instance of this class associated with
+ a given GraphController. This is because this controller listens for
+ changes to the graph and re-renders the ports of any actor instance
+ in the graph when the graph changes. If there is more than one instance,
+ this rendering will be done twice, which can result in bugs like port
+ labels appearing twice.
 
-   @author Edward A. Lee and Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Edward A. Lee and Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class ClassDefinitionController extends ActorController {
     /** Create an actor instance controller associated with the
      *  specified graph controller with full access.
@@ -99,13 +98,13 @@ public class ClassDefinitionController extends ActorController {
         if (access == FULL) {
             // The following do not require a configuration.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _createInstanceAction));
+                    _createInstanceAction));
 
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _createSubclassAction));
+                    _createSubclassAction));
 
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _convertToInstanceAction));
+                    _convertToInstanceAction));
         }
 
         // Set up a listener to lay out the ports when graph changes.
@@ -120,30 +119,29 @@ public class ClassDefinitionController extends ActorController {
         // an instance of Locatable and the semantic object associated
         // with it is an instance of Entity.
         Filter portFilter = new Filter() {
-                public boolean accept(Object candidate) {
-                    GraphModel model = getController().getGraphModel();
-                    Object semanticObject = model.getSemanticObject(candidate);
+            public boolean accept(Object candidate) {
+                GraphModel model = getController().getGraphModel();
+                Object semanticObject = model.getSemanticObject(candidate);
 
-                    if (candidate instanceof Locatable
-                            && semanticObject instanceof Entity
-                            && ((Entity) semanticObject)
-                            .isClassDefinition()) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                if (candidate instanceof Locatable
+                        && semanticObject instanceof Entity
+                        && ((Entity) semanticObject).isClassDefinition()) {
+                    return true;
+                } else {
+                    return false;
                 }
-            };
+            }
+        };
 
         // Anytime we add a port to an entity, we want to layout all the
         // ports within that entity.
         GlobalLayout layout = new EntityLayout();
         controller.addGraphViewListener(new IncrementalLayoutListener(
-                                                new IncrLayoutAdapter(layout) {
-                                                    public void nodeDrawn(Object node) {
-                                                        layout(node);
-                                                    }
-                                                }, portFilter));
+                new IncrLayoutAdapter(layout) {
+                    public void nodeDrawn(Object node) {
+                        layout(node);
+                    }
+                }, portFilter));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -314,9 +312,9 @@ public class ClassDefinitionController extends ActorController {
     private class CreateInstanceAction extends FigureAction {
         public CreateInstanceAction(String commandName) {
             super(commandName);
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_N,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_N, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -339,9 +337,9 @@ public class ClassDefinitionController extends ActorController {
     private class CreateSubclassAction extends FigureAction {
         public CreateSubclassAction(String commandName) {
             super(commandName);
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_U,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_U, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {

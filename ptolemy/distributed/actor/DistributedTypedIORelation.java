@@ -1,28 +1,28 @@
 /* Extension of TypedIORelation for distributed environments.
 
-@Copyright (c) 2005 The Regents of Aalborg University.
-All rights reserved.
+ @Copyright (c) 2005 The Regents of Aalborg University.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
-HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
+ HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package ptolemy.distributed.actor;
 
 import java.util.HashMap;
@@ -41,20 +41,20 @@ import ptolemy.kernel.util.Workspace;
 //// DistributedTypedIORelation
 
 /**
-   Extension of TypedIORelation for distributed environments. It overrides the
-   deepReceivers method that returns the connected receivers to this relation.
-   In this case, the relation only contains (is connected to) one
-   DistributedReceiver in charge of forwarding tokens to the distributed
-   services that are connected.
+ Extension of TypedIORelation for distributed environments. It overrides the
+ deepReceivers method that returns the connected receivers to this relation.
+ In this case, the relation only contains (is connected to) one
+ DistributedReceiver in charge of forwarding tokens to the distributed
+ services that are connected.
 
-   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+ @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
 
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.distributed.actor.DistributedReceiver
-*/
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (kapokasa)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.distributed.actor.DistributedReceiver
+ */
 
 public class DistributedTypedIORelation extends TypedIORelation {
 
@@ -121,12 +121,11 @@ public class DistributedTypedIORelation extends TypedIORelation {
      */
     public void setServicesReceiversListMap(HashMap servicesReceiversListMap) {
         if (VERBOSE) {
-            System.out.println("> DistributedTypedIORelation." +
-                               "setRemoteReceivers()");
+            System.out.println("> DistributedTypedIORelation."
+                    + "setRemoteReceivers()");
         }
-        ((DistributedReceiver)
-        intermediateReceiver[0][0])
-        .setServicesReceiversListMap(servicesReceiversListMap);
+        ((DistributedReceiver) intermediateReceiver[0][0])
+                .setServicesReceiversListMap(servicesReceiversListMap);
     }
 
     ///////////////////////////////////////////////////////////////////

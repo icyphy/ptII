@@ -1,30 +1,30 @@
 /* A simple graph view for Ptolemy models
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-2
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ 2
+ */
 package ptolemy.vergil.basic;
 
 import ptolemy.actor.IOPort;
@@ -143,23 +143,22 @@ import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// BasicGraphFrame
 
 /**
-   A simple graph view for ptolemy models.  This represents a level of
-   the hierarchy of a ptolemy model as a diva graph.  Cut, copy and
-   paste operations are supported using MoML.
+ A simple graph view for ptolemy models.  This represents a level of
+ the hierarchy of a ptolemy model as a diva graph.  Cut, copy and
+ paste operations are supported using MoML.
 
-   @author  Steve Neuendorffer, Edward A. Lee, Contributor: Chad Berkeley (Kepler)
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (johnr)
-*/
-public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
-                                                                      ClipboardOwner, ChangeListener {
+ @author  Steve Neuendorffer, Edward A. Lee, Contributor: Chad Berkeley (Kepler)
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (johnr)
+ */
+public abstract class BasicGraphFrame extends PtolemyFrame implements
+        Printable, ClipboardOwner, ChangeListener {
     /** Construct a frame associated with the specified Ptolemy II model
      *  or object. After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -205,37 +204,37 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         _dropTarget = new EditorDropTarget(_jgraph);
 
         ActionListener deletionListener = new ActionListener() {
-                /** Delete any nodes or edges from the graph that are
-                 *  currently selected.  In addition, delete any edges
-                 *  that are connected to any deleted nodes.
-                 */
-                public void actionPerformed(ActionEvent e) {
-                    delete();
-                }
-            };
+            /** Delete any nodes or edges from the graph that are
+             *  currently selected.  In addition, delete any edges
+             *  that are connected to any deleted nodes.
+             */
+            public void actionPerformed(ActionEvent e) {
+                delete();
+            }
+        };
 
-        _jgraph.registerKeyboardAction(deletionListener, "Delete",
-                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+        _jgraph.registerKeyboardAction(deletionListener, "Delete", KeyStroke
+                .getKeyStroke(KeyEvent.VK_DELETE, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
-        _jgraph.registerKeyboardAction(deletionListener, "BackSpace",
-                KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
+        _jgraph.registerKeyboardAction(deletionListener, "BackSpace", KeyStroke
+                .getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         _jgraph.setRequestFocusEnabled(true);
         pane.getForegroundEventLayer().setConsuming(false);
         pane.getForegroundEventLayer().setEnabled(true);
         pane.getForegroundEventLayer().addLayerListener(new LayerAdapter() {
-                /** Invoked when the mouse is pressed on a layer
-                 * or figure.
-                 */
-                public void mousePressed(LayerEvent event) {
-                    Component component = event.getComponent();
+            /** Invoked when the mouse is pressed on a layer
+             * or figure.
+             */
+            public void mousePressed(LayerEvent event) {
+                Component component = event.getComponent();
 
-                    if (!component.hasFocus()) {
-                        component.requestFocus();
-                    }
+                if (!component.hasFocus()) {
+                    component.requestFocus();
                 }
-            });
+            }
+        });
 
         // We used to do this, but it would result in context menus
         // getting lost on the mac.
@@ -251,8 +250,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // there appears to be no way to control the size of the
             // JGraph from the size of the Frame, which is specified
             // by the WindowPropertiesAttribute.
-            SizeAttribute size = (SizeAttribute) getModel().getAttribute("_vergilSize",
-                    SizeAttribute.class);
+            SizeAttribute size = (SizeAttribute) getModel().getAttribute(
+                    "_vergilSize", SizeAttribute.class);
 
             if (size != null) {
                 size.setSize(_jgraph);
@@ -266,8 +265,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             }
 
             // Set the zoom factor.
-            Parameter zoom = (Parameter) getModel().getAttribute("_vergilZoomFactor",
-                    Parameter.class);
+            Parameter zoom = (Parameter) getModel().getAttribute(
+                    "_vergilZoomFactor", Parameter.class);
 
             if (zoom != null) {
                 zoom(((DoubleToken) zoom.getToken()).doubleValue());
@@ -277,14 +276,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             }
 
             // Set the pan position.
-            Parameter pan = (Parameter) getModel().getAttribute("_vergilCenter",
-                    Parameter.class);
+            Parameter pan = (Parameter) getModel().getAttribute(
+                    "_vergilCenter", Parameter.class);
 
             if (pan != null) {
                 ArrayToken panToken = (ArrayToken) pan.getToken();
                 Point2D center = new Point2D.Double(((DoubleToken) panToken
-                                                            .getElement(0)).doubleValue(),
-                        ((DoubleToken) panToken.getElement(1)).doubleValue());
+                        .getElement(0)).doubleValue(), ((DoubleToken) panToken
+                        .getElement(1)).doubleValue());
                 setCenter(center);
 
                 // Make sure the visibility is only expert.
@@ -310,7 +309,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
         try {
             LibraryAttribute libraryAttribute = (LibraryAttribute) entity
-                .getAttribute("_library", LibraryAttribute.class);
+                    .getAttribute("_library", LibraryAttribute.class);
 
             if (libraryAttribute != null) {
                 // The model contains a library.
@@ -342,8 +341,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                 // We already printed a message, why print it again?
             } catch (Exception ex) {
                 try {
-                    MessageHandler.warning("Invalid default library for the frame.",
-                            ex);
+                    MessageHandler.warning(
+                            "Invalid default library for the frame.", ex);
                 } catch (CancelException e) {
                 }
             }
@@ -362,16 +361,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
         // If you want to expand the top-level libraries, uncomment this.
         /*
-          Object[] path = new Object[2];
-          path[0] = topLibrary;
-          Iterator libraries = topLibrary.entityList().iterator();
-          while (libraries.hasNext()) {
-          path[1] = libraries.next();
-          _library.expandPath(new TreePath(path));
-          }
-        */
+         Object[] path = new Object[2];
+         path[0] = topLibrary;
+         Iterator libraries = topLibrary.entityList().iterator();
+         while (libraries.hasNext()) {
+         path[1] = libraries.next();
+         _library.expandPath(new TreePath(path));
+         }
+         */
         _libraryContextMenuCreator = new PTreeMenuCreator();
-        _libraryContextMenuCreator.addMenuItemFactory(new OpenLibraryMenuItemFactory());
+        _libraryContextMenuCreator
+                .addMenuItemFactory(new OpenLibraryMenuItemFactory());
         _library.addMouseListener(_libraryContextMenuCreator);
 
         _libraryScrollPane = new JScrollPane(_library);
@@ -463,7 +463,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
             // NOTE: The order in the model must be respected.
             Iterator elements = container.sortContainedObjects(namedObjSet)
-                .iterator();
+                    .iterator();
 
             while (elements.hasNext()) {
                 NamedObj element = (NamedObj) elements.next();
@@ -475,11 +475,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
             if (container instanceof CompositeEntity) {
                 buffer.write(((CompositeEntity) container).exportLinks(1,
-                                     namedObjSet));
+                        namedObjSet));
             }
 
             Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
-                .getSystemClipboard();
+                    .getSystemClipboard();
 
             // The code below does not use a PtolemyTransferable,
             // to work around
@@ -526,8 +526,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             }
 
             final String name = container.uniqueName("CompositeActor");
-            final TypedCompositeActor compositeActor = new TypedCompositeActor((CompositeEntity) container,
-                    name);
+            final TypedCompositeActor compositeActor = new TypedCompositeActor(
+                    (CompositeEntity) container, name);
 
             double[] location = new double[2];
             boolean gotLocation = false;
@@ -536,9 +536,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                 if (selection[i] instanceof Figure) {
                     if (!gotLocation) {
                         location[0] = ((Figure) selection[i]).getBounds()
-                            .getCenterX();
+                                .getCenterX();
                         location[1] = ((Figure) selection[i]).getBounds()
-                            .getCenterY();
+                                .getCenterY();
                         gotLocation = true;
                     }
 
@@ -548,7 +548,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                         nodeSet.add(userObject);
 
                         NamedObj actual = (NamedObj) graphModel
-                            .getSemanticObject(userObject);
+                                .getSemanticObject(userObject);
                         namedObjSet.add(actual);
                     }
                 }
@@ -575,14 +575,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                             Object object = objects.next();
 
                             if (!headOK
-                                    && GraphUtilities.isContainedNode(
-                                            head, object, graphModel)) {
+                                    && GraphUtilities.isContainedNode(head,
+                                            object, graphModel)) {
                                 headOK = true;
                             }
 
                             if (!tailOK
-                                    && GraphUtilities.isContainedNode(
-                                            tail, object, graphModel)) {
+                                    && GraphUtilities.isContainedNode(tail,
+                                            object, graphModel)) {
                                 tailOK = true;
                             }
                         }
@@ -598,40 +598,42 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
                                 if (tail instanceof IOPort) {
                                     relation = (IORelation) graphModel
-                                        .getSemanticObject(userObject);
+                                            .getSemanticObject(userObject);
                                     duplicateRelation = true;
                                 } else {
                                     relation = (IORelation) graphModel
-                                        .getSemanticObject(tail);
+                                            .getSemanticObject(tail);
                                 }
                             } else if (tail instanceof IOPort) {
                                 port = (IOPort) tail;
                                 relation = (IORelation) graphModel
-                                    .getSemanticObject(head);
+                                        .getSemanticObject(head);
                             }
 
                             if (port != null) {
                                 ComponentEntity entity = (ComponentEntity) ((IOPort) port)
-                                    .getContainer();
+                                        .getContainer();
                                 String portName = "port_" + i;
                                 boolean isInput = ((IOPort) port).isInput();
                                 boolean isOutput = ((IOPort) port).isOutput();
-                                newPorts.append("<port name=\"" + portName
-                                        + "\" class=\"ptolemy.actor.TypedIOPort"
-                                        + "\">\n");
+                                newPorts
+                                        .append("<port name=\""
+                                                + portName
+                                                + "\" class=\"ptolemy.actor.TypedIOPort"
+                                                + "\">\n");
 
                                 if (namedObjSet.contains(entity)) {
                                     // The port is inside the hierarchy.
                                     // The relation must be outside.
                                     // Create composite port.
                                     if (isInput) {
-                                        newPorts.append(
-                                                "<property name=\"input\"/>");
+                                        newPorts
+                                                .append("<property name=\"input\"/>");
                                     }
 
                                     if (isOutput) {
-                                        newPorts.append(
-                                                "<property name=\"output\"/>");
+                                        newPorts
+                                                .append("<property name=\"output\"/>");
                                     }
 
                                     newPorts.append("\n</port>\n");
@@ -641,10 +643,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                                     // the relation name, one original relation
                                     // can be two internal relations.
                                     String relationName = relation.getName()
-                                        + "_" + i;
-                                    intRelations.append("<relation name=\""
-                                            + relationName + "\" class=\""
-                                            + "ptolemy.actor.TypedIORelation\"/>\n");
+                                            + "_" + i;
+                                    intRelations
+                                            .append("<relation name=\""
+                                                    + relationName
+                                                    + "\" class=\""
+                                                    + "ptolemy.actor.TypedIORelation\"/>\n");
                                     intConnections.append("<link port=\""
                                             + entity.getName() + "."
                                             + port.getName() + "\" relation=\""
@@ -655,29 +659,38 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
                                     // Create external links.
                                     if (duplicateRelation) {
-                                        extRelations.append("<relation name=\""
-                                                + relation.getName()
-                                                + "\" class=\""
-                                                + "ptolemy.actor.TypedIORelation\"/>\n");
+                                        extRelations
+                                                .append("<relation name=\""
+                                                        + relation.getName()
+                                                        + "\" class=\""
+                                                        + "ptolemy.actor.TypedIORelation\"/>\n");
 
                                         IOPort otherPort = (IOPort) tail;
                                         ComponentEntity otherEntity = (ComponentEntity) otherPort
-                                            .getContainer();
+                                                .getContainer();
 
                                         if (otherEntity == container) {
                                             // This is a boundy port at a higher level.
-                                            extConnections.append(
-                                                    "<link port=\""
-                                                    + otherPort.getName()
-                                                    + "\" relation=\""
-                                                    + relation.getName() + "\"/>\n");
+                                            extConnections
+                                                    .append("<link port=\""
+                                                            + otherPort
+                                                                    .getName()
+                                                            + "\" relation=\""
+                                                            + relation
+                                                                    .getName()
+                                                            + "\"/>\n");
                                         } else {
-                                            extConnections.append(
-                                                    "<link port=\""
-                                                    + otherEntity.getName() + "."
-                                                    + otherPort.getName()
-                                                    + "\" relation=\""
-                                                    + relation.getName() + "\"/>\n");
+                                            extConnections
+                                                    .append("<link port=\""
+                                                            + otherEntity
+                                                                    .getName()
+                                                            + "."
+                                                            + otherPort
+                                                                    .getName()
+                                                            + "\" relation=\""
+                                                            + relation
+                                                                    .getName()
+                                                            + "\"/>\n");
                                         }
                                     }
 
@@ -689,22 +702,24 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                                     // The port is outside the hierarchy.
                                     // The relation must be inside.
                                     if (isInput) {
-                                        newPorts.append(
-                                                "<property name=\"output\"/>");
+                                        newPorts
+                                                .append("<property name=\"output\"/>");
                                     }
 
                                     if (isOutput) {
-                                        newPorts.append(
-                                                "<property name=\"input\"/>");
+                                        newPorts
+                                                .append("<property name=\"input\"/>");
                                     }
 
                                     newPorts.append("\n</port>\n");
 
                                     String relationName = relation.getName()
-                                        + "_" + i;
-                                    extRelations.append("<relation name=\""
-                                            + relationName + "\" class=\""
-                                            + "ptolemy.actor.TypedIORelation\"/>\n");
+                                            + "_" + i;
+                                    extRelations
+                                            .append("<relation name=\""
+                                                    + relationName
+                                                    + "\" class=\""
+                                                    + "ptolemy.actor.TypedIORelation\"/>\n");
                                     extConnections.append("<link port=\""
                                             + entity.getName() + "."
                                             + port.getName() + "\" relation=\""
@@ -716,19 +731,23 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
                                     // Create external links.
                                     if (duplicateRelation) {
-                                        intRelations.append("<relation name=\""
-                                                + relation.getName()
-                                                + "\" class=\""
-                                                + "ptolemy.actor.TypedIORelation\"/>\n");
+                                        intRelations
+                                                .append("<relation name=\""
+                                                        + relation.getName()
+                                                        + "\" class=\""
+                                                        + "ptolemy.actor.TypedIORelation\"/>\n");
 
                                         IOPort otherPort = (IOPort) tail;
                                         ComponentEntity otherEntity = (ComponentEntity) otherPort
-                                            .getContainer();
-                                        intConnections.append("<link port=\""
-                                                + otherEntity.getName() + "."
-                                                + otherPort.getName()
-                                                + "\" relation=\""
-                                                + relation.getName() + "\"/>\n");
+                                                .getContainer();
+                                        intConnections
+                                                .append("<link port=\""
+                                                        + otherEntity.getName()
+                                                        + "."
+                                                        + otherPort.getName()
+                                                        + "\" relation=\""
+                                                        + relation.getName()
+                                                        + "\"/>\n");
                                     }
 
                                     intConnections.append("<link port=\""
@@ -771,14 +790,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
             // additional ports.
             Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
-                .getSystemClipboard();
+                    .getSystemClipboard();
             Transferable transferable = clipboard.getContents(this);
 
             try {
-                moml.append((String) transferable.getTransferData(
-                                    DataFlavor.stringFlavor));
+                moml.append((String) transferable
+                        .getTransferData(DataFlavor.stringFlavor));
             } catch (Exception ex) {
-                MessageHandler.error("Paste within Create Hierarchy failed", ex);
+                MessageHandler
+                        .error("Paste within Create Hierarchy failed", ex);
             }
 
             // internal connections
@@ -797,15 +817,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             ChangeRequest request = null;
 
             request = new MoMLChangeRequest(this, container, moml.toString()) {
-                    protected void _execute() throws Exception {
-                        super._execute();
+                protected void _execute() throws Exception {
+                    super._execute();
 
-                        NamedObj newObject = ((CompositeEntity) container)
+                    NamedObj newObject = ((CompositeEntity) container)
                             .getEntity(name);
 
-                        //_setLocation(compositeActor, point);
-                    }
-                };
+                    //_setLocation(compositeActor, point);
+                }
+            };
 
             container.requestChange(request);
         } catch (Throwable throwable) {
@@ -831,7 +851,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         SelectionModel model = controller.getSelectionModel();
 
         AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) controller
-            .getGraphModel();
+                .getGraphModel();
         Object[] selection = model.getSelectionAsArray();
 
         // First collect selected objects into the userObjects array
@@ -857,7 +877,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             Object userObject = userObjects[i];
 
             if (graphModel.isEdge(userObject)) {
-                NamedObj actual = (NamedObj) graphModel.getSemanticObject(userObject);
+                NamedObj actual = (NamedObj) graphModel
+                        .getSemanticObject(userObject);
 
                 // If there is no semantic object, then this edge is
                 // not fully connected, so we can't go through MoML.
@@ -913,11 +934,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             change.setUndoable(true);
             container.requestChange(change);
         } catch (Exception ex) {
-            MessageHandler.error("Delete failed, changeRequest was:" + moml, ex);
+            MessageHandler
+                    .error("Delete failed, changeRequest was:" + moml, ex);
         }
 
         graphModel.dispatchGraphEvent(new GraphEvent(this,
-                                              GraphEvent.STRUCTURE_CHANGED, graphModel.getRoot()));
+                GraphEvent.STRUCTURE_CHANGED, graphModel.getRoot()));
     }
 
     /** Override the dispose method to unattach any listeners that may keep
@@ -953,7 +975,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
      */
     public Rectangle2D getVisibleCanvasRectangle() {
         AffineTransform current = _jgraph.getCanvasPane().getTransformContext()
-            .getTransform();
+                .getTransform();
         AffineTransform inverse;
 
         try {
@@ -1028,9 +1050,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             moml.append("</group>\n");
 
             // Push the undo entry onto the stack
-            MoMLUndoEntry undoEntry = new MoMLUndoEntry(composite,
-                    moml.toString());
-            UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(composite);
+            MoMLUndoEntry undoEntry = new MoMLUndoEntry(composite, moml
+                    .toString());
+            UndoStackAttribute undoInfo = UndoStackAttribute
+                    .getUndoInfo(composite);
             undoInfo.push(undoEntry);
         } catch (Throwable throwable) {
             // operation not undoable
@@ -1052,7 +1075,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
      */
     public void paste() {
         Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
-            .getSystemClipboard();
+                .getSystemClipboard();
         Transferable transferable = clipboard.getContents(this);
         GraphModel model = _getGraphModel();
 
@@ -1070,9 +1093,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             moml.append("<group name=\"auto\">\n");
 
             // Pasted items no longer line up on top of each other.
-            moml.append(offsetPastedMomlLocation(
-                                (String) transferable.getTransferData(
-                                        DataFlavor.stringFlavor), 10, 10));
+            moml.append(offsetPastedMomlLocation((String) transferable
+                    .getTransferData(DataFlavor.stringFlavor), 10, 10));
 
             moml.append("</group>\n");
 
@@ -1138,16 +1160,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // typically not what we want.
             // So we use the current directory instead.
             // This will fail with a security exception in applets.
-            String currentWorkingDirectory = StringUtilities.getProperty(
-                    "user.dir");
+            String currentWorkingDirectory = StringUtilities
+                    .getProperty("user.dir");
 
             if (currentWorkingDirectory != null) {
-                fileDialog.setCurrentDirectory(new File(currentWorkingDirectory));
+                fileDialog
+                        .setCurrentDirectory(new File(currentWorkingDirectory));
             }
         }
 
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                                           entity.getName() + ".xml"));
+                entity.getName() + ".xml"));
 
         // Show the dialog.
         int returnVal = fileDialog.showSaveDialog(this);
@@ -1202,8 +1225,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {
         try {
-            CompositeEntity library = (CompositeEntity) configuration.getEntity(
-                    "actor library." + VERGIL_USER_LIBRARY_NAME);
+            CompositeEntity library = (CompositeEntity) configuration
+                    .getEntity("actor library." + VERGIL_USER_LIBRARY_NAME);
 
             if (library == null) {
                 MessageHandler.error("Save In Library failed: "
@@ -1220,8 +1243,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // user library with this name.
             if (library.getEntity(entity.getName()) != null) {
                 MessageHandler.error("Save In Library failed: An object"
-                        + " already exists in the user library with name " + "\""
-                        + entity.getName() + "\".");
+                        + " already exists in the user library with name "
+                        + "\"" + entity.getName() + "\".");
                 return;
             }
 
@@ -1245,8 +1268,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
     public void setCenter(Point2D center) {
         Rectangle2D visibleRect = getVisibleCanvasRectangle();
         AffineTransform newTransform = _jgraph.getCanvasPane()
-            .getTransformContext()
-            .getTransform();
+                .getTransformContext().getTransform();
 
         newTransform.translate(visibleRect.getCenterX() - center.getX(),
                 visibleRect.getCenterY() - center.getY());
@@ -1275,7 +1297,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
     public void zoom(double factor) {
         JCanvas canvas = _jgraph.getGraphPane().getCanvas();
         AffineTransform current = canvas.getCanvasPane().getTransformContext()
-            .getTransform();
+                .getTransform();
 
         // Save the center, so we remember what we were looking at.
         Point2D center = getCenter();
@@ -1302,8 +1324,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         }
 
         Rectangle2D viewSize = getVisibleRectangle();
-        AffineTransform newTransform = CanvasUtilities.computeFitTransform(bounds,
-                viewSize);
+        AffineTransform newTransform = CanvasUtilities.computeFitTransform(
+                bounds, viewSize);
         JCanvas canvas = pane.getCanvas();
         canvas.getCanvasPane().setTransform(newTransform);
 
@@ -1317,7 +1339,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
     public void zoomReset() {
         JCanvas canvas = _jgraph.getGraphPane().getCanvas();
         AffineTransform current = canvas.getCanvasPane().getTransformContext()
-            .getTransform();
+                .getTransform();
         current.setToIdentity();
         canvas.getCanvasPane().setTransform(current);
 
@@ -1447,8 +1469,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         Configuration configuration = getConfiguration();
 
         if (configuration != null) {
-            CompositeEntity result = (CompositeEntity) configuration.getEntity(
-                    "actor library");
+            CompositeEntity result = (CompositeEntity) configuration
+                    .getEntity("actor library");
 
             if (result == null) {
                 // Create an empty library by default.
@@ -1534,7 +1556,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                 if (graphModel.isNode(userObject)) {
                     nodeSet.add(userObject);
 
-                    NamedObj actual = (NamedObj) graphModel.getSemanticObject(userObject);
+                    NamedObj actual = (NamedObj) graphModel
+                            .getSemanticObject(userObject);
                     namedObjSet.add(actual);
                 }
             }
@@ -1557,14 +1580,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                         Object object = objects.next();
 
                         if (!headOK
-                                && GraphUtilities.isContainedNode(
-                                        head, object, graphModel)) {
+                                && GraphUtilities.isContainedNode(head, object,
+                                        graphModel)) {
                             headOK = true;
                         }
 
                         if (!tailOK
-                                && GraphUtilities.isContainedNode(
-                                        tail, object, graphModel)) {
+                                && GraphUtilities.isContainedNode(tail, object,
+                                        graphModel)) {
                             tailOK = true;
                         }
                     }
@@ -1572,7 +1595,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                     if (headOK && tailOK) {
                         // Add the relation.
                         NamedObj actual = (NamedObj) graphModel
-                            .getSemanticObject(userObject);
+                                .getSemanticObject(userObject);
                         namedObjSet.add(actual);
                     }
                 }
@@ -1616,8 +1639,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // If there is no parent that is a Frame, do nothing.
             if (parent instanceof Frame) {
                 WindowPropertiesAttribute properties = (WindowPropertiesAttribute) getModel()
-                    .getAttribute("_windowProperties",
-                            WindowPropertiesAttribute.class);
+                        .getAttribute("_windowProperties",
+                                WindowPropertiesAttribute.class);
 
                 if (properties == null) {
                     properties = new WindowPropertiesAttribute(getModel(),
@@ -1630,8 +1653,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // Have to also record the size of the JGraph because
             // setting the size of the frame is ignored if we don't
             // also set the size of the JGraph. Why? Who knows. Swing.
-            SizeAttribute size = (SizeAttribute) getModel().getAttribute("_vergilSize",
-                    SizeAttribute.class);
+            SizeAttribute size = (SizeAttribute) getModel().getAttribute(
+                    "_vergilSize", SizeAttribute.class);
 
             if (size == null) {
                 size = new SizeAttribute(getModel(), "_vergilSize");
@@ -1642,13 +1665,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // Also record zoom and pan state.
             JCanvas canvas = _jgraph.getGraphPane().getCanvas();
             AffineTransform current = canvas.getCanvasPane()
-                .getTransformContext()
-                .getTransform();
+                    .getTransformContext().getTransform();
 
             // We assume the scaling in the X and Y directions are the same.
             double scale = current.getScaleX();
-            Parameter zoom = (Parameter) getModel().getAttribute("_vergilZoomFactor",
-                    Parameter.class);
+            Parameter zoom = (Parameter) getModel().getAttribute(
+                    "_vergilZoomFactor", Parameter.class);
 
             if (zoom == null) {
                 // NOTE: This will not propagate.
@@ -1662,8 +1684,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
             // Save the center, to record the pan state.
             Point2D center = getCenter();
-            Parameter pan = (Parameter) getModel().getAttribute("_vergilCenter",
-                    Parameter.class);
+            Parameter pan = (Parameter) getModel().getAttribute(
+                    "_vergilCenter", Parameter.class);
 
             if (pan == null) {
                 // NOTE: This will not propagate.
@@ -1790,7 +1812,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         } finally {
             graphModel.setDispatchEnabled(true);
             graphModel.dispatchGraphEvent(new GraphEvent(this,
-                                                  GraphEvent.STRUCTURE_CHANGED, graphModel.getRoot()));
+                    GraphEvent.STRUCTURE_CHANGED, graphModel.getRoot()));
         }
     }
 
@@ -1825,10 +1847,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         /** Create a new action to copy the current selection. */
         public CopyAction() {
             super("Copy");
-            putValue("tooltip", "Copy the current selection onto the clipboard.");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_C,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue("tooltip",
+                    "Copy the current selection onto the clipboard.");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_C, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_C));
         }
 
@@ -1847,9 +1870,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         public CutAction() {
             super("Cut");
             putValue("tooltip", "Cut the current selection onto the clipboard.");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_X,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_X, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_T));
         }
 
@@ -1868,9 +1891,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         public ExecuteSystemAction() {
             super("Go");
             putValue("tooltip", "Execute The Model");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_G,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_G, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_G));
         }
 
@@ -1878,7 +1901,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         public void actionPerformed(ActionEvent e) {
             try {
                 PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
-                    .getContainer();
+                        .getContainer();
                 new RunTableau(effigy, effigy.uniqueName("tableau"));
             } catch (Exception ex) {
                 MessageHandler.error("Execution Failed", ex);
@@ -1896,9 +1919,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         public MoveToBackAction() {
             super("Send to Back");
             putValue("tooltip", "Send to back of like objects");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_B,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_B, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_B));
         }
 
@@ -1917,10 +1940,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
             // Issue a change request, since this requires write access.
             ChangeRequest request = new ChangeRequest(container, "Send to back") {
-                    protected void _execute() throws IllegalActionException {
-                        MoveAction.move(elements, MoveAction.TO_FIRST, container);
-                    }
-                };
+                protected void _execute() throws IllegalActionException {
+                    MoveAction.move(elements, MoveAction.TO_FIRST, container);
+                }
+            };
 
             container.requestChange(request);
         }
@@ -1936,9 +1959,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         public MoveToFrontAction() {
             super("Bring to Front");
             putValue("tooltip", "Bring to front of like objects");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_F,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_F, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_F));
         }
 
@@ -1958,10 +1981,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // Issue a change request, since this requires write access.
             ChangeRequest request = new ChangeRequest(container,
                     "Bring to front") {
-                    protected void _execute() throws IllegalActionException {
-                        MoveAction.move(elements, MoveAction.TO_LAST, container);
-                    }
-                };
+                protected void _execute() throws IllegalActionException {
+                    MoveAction.move(elements, MoveAction.TO_LAST, container);
+                }
+            };
 
             container.requestChange(request);
         }
@@ -1978,9 +2001,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         public PasteAction() {
             super("Paste");
             putValue("tooltip", "Paste the contents of the clipboard.");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_V,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_V, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_P));
         }
 
@@ -2051,8 +2074,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                 Object origHead = model.getHead(origEdge);
 
                 if ((origHead != null) && (origTail != null)) {
-                    Figure tailFigure = (Figure) target.getVisualObject(origTail);
-                    Figure headFigure = (Figure) target.getVisualObject(origHead);
+                    Figure tailFigure = (Figure) target
+                            .getVisualObject(origTail);
+                    Figure headFigure = (Figure) target
+                            .getVisualObject(origHead);
 
                     // Swap the head and the tail if it will improve the
                     // layout, since LevelLayout only uses directed edges.
@@ -2062,7 +2087,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
                         if (site instanceof FixedNormalSite) {
                             double normal = site.getNormal();
-                            int direction = CanvasUtilities.getDirection(normal);
+                            int direction = CanvasUtilities
+                                    .getDirection(normal);
 
                             if (direction == SwingUtilities.WEST) {
                                 Object temp = origTail;
@@ -2076,7 +2102,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
                         if (site instanceof FixedNormalSite) {
                             double normal = site.getNormal();
-                            int direction = CanvasUtilities.getDirection(normal);
+                            int direction = CanvasUtilities
+                                    .getDirection(normal);
 
                             if (direction == SwingUtilities.EAST) {
                                 Object temp = origTail;
@@ -2201,18 +2228,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
          */
         public JMenuItem create(final JContextMenu menu, final NamedObj object) {
             Action action = new AbstractAction("Open for Editing") {
-                    public void actionPerformed(ActionEvent e) {
-                        try {
-                            getConfiguration().openModel(object);
-                        } catch (KernelException ex) {
-                            MessageHandler.error("Open failed.", ex);
-                        }
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        getConfiguration().openModel(object);
+                    } catch (KernelException ex) {
+                        MessageHandler.error("Open failed.", ex);
                     }
-                };
+                }
+            };
 
             action.putValue("tooltip", "Open library for editing.");
-            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_O));
+            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+                    KeyEvent.VK_O));
             return menu.add(action, (String) action.getValue(Action.NAME));
         }
     }
@@ -2231,11 +2258,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         public RedoAction() {
             super("Redo");
             putValue("tooltip", "Redo the last change undone.");
-            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_Y,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_R));
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, KeyStroke
+                    .getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+                    KeyEvent.VK_R));
         }
 
         /**
@@ -2262,11 +2289,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
         public UndoAction() {
             super("Undo");
             putValue("tooltip", "Undo the last change.");
-            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_U));
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, KeyStroke
+                    .getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+                    KeyEvent.VK_U));
         }
 
         /**
@@ -2291,7 +2318,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource("/ptolemy/vergil/basic/img/zoomin.gif");
+            URL img = getClass().getResource(
+                    "/ptolemy/vergil/basic/img/zoomin.gif");
 
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
@@ -2303,9 +2331,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // NOTE: The following assumes that the + key is the same
             // as the = key.  Unfortunately, the VK_PLUS key event doesn't
             // work, so we have to do it this way.
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_EQUALS, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()
                             | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_Z));
         }
@@ -2327,7 +2355,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource("/ptolemy/vergil/basic/img/zoomreset.gif");
+            URL img = getClass().getResource(
+                    "/ptolemy/vergil/basic/img/zoomreset.gif");
 
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
@@ -2335,9 +2364,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             }
 
             putValue("tooltip", description + " (Ctrl+=)");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_EQUALS, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_M));
         }
 
@@ -2358,7 +2387,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource("/ptolemy/vergil/basic/img/zoomfit.gif");
+            URL img = getClass().getResource(
+                    "/ptolemy/vergil/basic/img/zoomfit.gif");
 
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
@@ -2366,9 +2396,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             }
 
             putValue("tooltip", description + " (Ctrl+Shift+-)");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()
                             | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_F));
         }
@@ -2390,7 +2420,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource("/ptolemy/vergil/basic/img/zoomout.gif");
+            URL img = getClass().getResource(
+                    "/ptolemy/vergil/basic/img/zoomout.gif");
 
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
@@ -2398,9 +2429,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             }
 
             putValue("tooltip", description + " (Ctrl+-)");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_U));
         }
 
@@ -2438,13 +2469,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
             int valStartIndex = moml.indexOf("value=\"", index);
             int valEndIndex = moml.indexOf("\"", valStartIndex + 8);
-            String position = moml.substring(valStartIndex + 8, valEndIndex - 1);
+            String position = moml
+                    .substring(valStartIndex + 8, valEndIndex - 1);
 
             // Get the int representation of the numbers
             float xpos = new Float(position.substring(0, position.indexOf(","))
                     .trim()).floatValue();
-            float ypos = new Float(position.substring(position.indexOf(",") + 1,
-                                           position.length()).trim()).floatValue();
+            float ypos = new Float(position.substring(
+                    position.indexOf(",") + 1, position.length()).trim())
+                    .floatValue();
             xpos += xOffset;
             ypos += yOffset;
 

@@ -1,30 +1,30 @@
 /* The base class of communication channels in the wireless domain.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.kernel;
 
 import java.util.HashMap;
@@ -50,48 +50,47 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AtomicWirelessChannel
 
 /**
 
-The base class for communication channels in the wireless domain.
+ The base class for communication channels in the wireless domain.
 
-<p>To use this class, place it in a wireless model that contains
-a wireless director and wireless actors (actors whose ports are
-instances of WirelessIOPort).  Then set the <i>outsideChannel</i>
-parameter of those ports to match the name of this channel.  The
-model can also itself contain ports that are instances of
-WirelessIOPort, in which case their <i>insideChannel</i> parameter
-should contain the name of this channel if they should use this
-channel.
+ <p>To use this class, place it in a wireless model that contains
+ a wireless director and wireless actors (actors whose ports are
+ instances of WirelessIOPort).  Then set the <i>outsideChannel</i>
+ parameter of those ports to match the name of this channel.  The
+ model can also itself contain ports that are instances of
+ WirelessIOPort, in which case their <i>insideChannel</i> parameter
+ should contain the name of this channel if they should use this
+ channel.
 
-<p>
-In this base class, transmission on a channel reaches all ports
-at the same level of the hierarchy that are instances of
-WirelessIOPort and that specify that they use this channel. These
-ports include those contained by entities that have the container
-as this channel and that have their <i>outsideChannel</i>
-parameter set to the name of this channel.  They also include
-those ports whose containers are the same as the container of
-this channel and whose <i>insideChannel</i> parameter matches
-this channel name.
-<p>
-Derived classes will typically limit the range of the transmission,
-using for example location information from the ports. They
-may also introduce random losses or corruption of data.  To do this,
-derived classes can override the _isInRange() protected method,
-or the transmit() public method.
+ <p>
+ In this base class, transmission on a channel reaches all ports
+ at the same level of the hierarchy that are instances of
+ WirelessIOPort and that specify that they use this channel. These
+ ports include those contained by entities that have the container
+ as this channel and that have their <i>outsideChannel</i>
+ parameter set to the name of this channel.  They also include
+ those ports whose containers are the same as the container of
+ this channel and whose <i>insideChannel</i> parameter matches
+ this channel name.
+ <p>
+ Derived classes will typically limit the range of the transmission,
+ using for example location information from the ports. They
+ may also introduce random losses or corruption of data.  To do this,
+ derived classes can override the _isInRange() protected method,
+ or the transmit() public method.
 
-@author Xiaojun Liu, Edward A. Lee and Yang Zhao
-@version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Green (cxh)
-@Pt.AcceptedRating Yellow (cxh)
-*/
-public class AtomicWirelessChannel extends TypedAtomicActor
-    implements WirelessChannel, ValueListener {
+ @author Xiaojun Liu, Edward A. Lee and Yang Zhao
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
+public class AtomicWirelessChannel extends TypedAtomicActor implements
+        WirelessChannel, ValueListener {
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This relation will use the
@@ -119,8 +118,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         //      new RecordType(new String[0], new Type[0]));
         _channelPort = new ChannelPort(this, "_channelPort");
 
-        _attachText("_iconDescription",
-                "<svg>\n"
+        _attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-25,0 8,-8 2,2 25,0 -8,8 -2,-2 -25,0\" "
                 + "style=\"fill:red\"/>\n" + "</svg>\n");
     }
@@ -154,7 +152,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
             if ((value != null) && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
-                        "Expected a record for defaultProperties but got: " + value);
+                        "Expected a record for defaultProperties but got: "
+                                + value);
             }
         } else {
             super.attributeChanged(attribute);
@@ -209,7 +208,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
                         if (castPort.isInput()) {
                             String channelName = castPort.outsideChannel
-                                .stringValue();
+                                    .stringValue();
 
                             if (channelName.equals(getName())) {
                                 result.add(port);
@@ -259,7 +258,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                     WirelessIOPort castPort = (WirelessIOPort) port;
 
                     if (castPort.isOutput()) {
-                        String channelName = castPort.insideChannel.stringValue();
+                        String channelName = castPort.insideChannel
+                                .stringValue();
 
                         if (channelName.equals(getName())) {
                             result.add(port);
@@ -352,7 +352,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                     WirelessIOPort castPort = (WirelessIOPort) port;
 
                     if (castPort.isInput()) {
-                        String channelName = castPort.insideChannel.stringValue();
+                        String channelName = castPort.insideChannel
+                                .stringValue();
 
                         if (channelName.equals(getName())) {
                             result.add(port);
@@ -406,7 +407,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
                         if (castPort.isOutput()) {
                             String channelName = castPort.outsideChannel
-                                .stringValue();
+                                    .stringValue();
 
                             if (channelName.equals(getName())) {
                                 result.add(port);
@@ -463,7 +464,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
                 while (iterator.hasNext()) {
                     PropertyTransformer transformer = (PropertyTransformer) iterator
-                        .next();
+                            .next();
                     result = transformer.transformProperties(result, source,
                             destination);
                 }
@@ -477,7 +478,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
                 while (iterator.hasNext()) {
                     PropertyTransformer transformer = (PropertyTransformer) iterator
-                        .next();
+                            .next();
                     result = transformer.transformProperties(result, source,
                             destination);
                 }
@@ -489,7 +490,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
             while (iterator.hasNext()) {
                 PropertyTransformer transformer = (PropertyTransformer) iterator
-                    .next();
+                        .next();
                 result = transformer.transformProperties(result, source,
                         destination);
             }
@@ -532,7 +533,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
             if (!(getDirector() instanceof WirelessDirector)) {
                 throw new IllegalActionException(this,
                         "AtomicWirelessChannel can only work "
-                        + "with a WirelessDirector.");
+                                + "with a WirelessDirector.");
             }
 
             Iterator receivers = _receiversInRange(port, properties).iterator();
@@ -669,13 +670,14 @@ public class AtomicWirelessChannel extends TypedAtomicActor
             location = (Locatable) port.getAttribute(LOCATION_ATTRIBUTE_NAME,
                     Locatable.class);
         } else {
-            location = (Locatable) container.getAttribute(LOCATION_ATTRIBUTE_NAME,
-                    Locatable.class);
+            location = (Locatable) container.getAttribute(
+                    LOCATION_ATTRIBUTE_NAME, Locatable.class);
         }
 
         if (location == null) {
             throw new IllegalActionException(
-                    "Cannot determine location for port " + port.getName() + ".");
+                    "Cannot determine location for port " + port.getName()
+                            + ".");
         }
 
         // NOTE: We assume here that the implementation
@@ -719,8 +721,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         //  this helps.
         if ((_receiversInRangeCache != null)
                 && _receiversInRangeCache.containsKey(sourcePort)
-                && (((Long) _receiversInRangeCacheVersion.get(
-                             sourcePort)).longValue() == workspace().getVersion())
+                && (((Long) _receiversInRangeCacheVersion.get(sourcePort))
+                        .longValue() == workspace().getVersion())
                 && _receiversInRangeCacheValid) {
             // Cached list is valid. Return that.
             return (List) _receiversInRangeCache.get(sourcePort);
@@ -770,8 +772,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         }
 
         _receiversInRangeCache.put(sourcePort, receiversInRangeList);
-        _receiversInRangeCacheVersion.put(sourcePort,
-                new Long(workspace().getVersion()));
+        _receiversInRangeCacheVersion.put(sourcePort, new Long(workspace()
+                .getVersion()));
         _receiversInRangeCacheValid = true;
         return receiversInRangeList;
     }
@@ -799,7 +801,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         if (token != null) {
             if (receiver.hasRoom()) {
                 WirelessIOPort destination = (WirelessIOPort) receiver
-                    .getContainer();
+                        .getContainer();
                 Token newToken = destination.convert(token);
 
                 // Transform the properties.
@@ -830,8 +832,11 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     ////                         private variables                 ////
     // Caches of port lists.
     private List _listeningInputPorts;
+
     private long _listeningInputPortsVersion = -1L;
+
     private List _listeningOutputPorts;
+
     private long _listeningOutputPortsVersion = -1L;
 
     /** The property transformers that have been registered without
@@ -844,11 +849,17 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *  indexed by port.
      */
     private HashMap _propertyTransformersByPort;
+
     private HashMap _receiversInRangeCache;
+
     private HashMap _receiversInRangeCacheVersion;
+
     private List _sendingInputPorts;
+
     private long _sendingInputPortsVersion = -1L;
+
     private List _sendingOutputPorts;
+
     private long _sendingOutputPortsVersion = -1L;
 
     // Name of the location attribute.

@@ -1,30 +1,30 @@
 /* Director for the dynamic dataflow model of computation.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ddf.kernel;
 
 import java.util.Arrays;
@@ -64,95 +64,94 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DDFDirector
 
 /**
-   The dynamic dataflow (DDF) domain is a superset of the synchronous
-   dataflow(SDF) and Boolean dataflow(BDF) domains. In the SDF domain,
-   an actor consumes and produces a fixed number of tokens per firing.
-   This static information makes possible compile-time scheduling. In the
-   DDF domain, there are few constraints on the production and consumption
-   behavior of actors, and the schedulers make no attempt to construct a
-   compile-time schedule. Instead, each actor has a set of firing rules
-   (patterns) and can be fired if one of them is satisfied, i.e., one
-   particular firing pattern forms a prefix of sequences of unconsumed
-   tokens at input ports. The canonical actors in the DDF domain include
-   Select and Switch, which consume or produce tokens on different channels
-   based on the token received from the control port. (In practice, use
-   DDFSelect and DDFBooleanSelect in the DDF-specific library instead of 
-   Select and BooleanSelect in the regular FlowControl library; however,
-   Switch and BooleanSwitch in the regular FlowControl library can be 
-   used in DDF domain.)
-   <p>
-   The dynamic scheduler implemented in this director fires all enabled
-   and non-deferrable actors once in a basic iteration. A deferrable
-   actor is one that will not help one of the downstream actors become
-   enabled because that downstream actor either already has enough tokens on
-   the channel connecting those two actors or is waiting for tokens on
-   another channel. If no actor fires so far, which means there is no
-   enabled and non-deferrable actor, then among all enabled and deferrable
-   actors, this director fires those which have the smallest maximum number
-   of tokens on their output channels which satisfy the demand of destination
-   actors. If still no actor fires, then there is no enabled actor. A user
-   can treat several such basic iterations as a single iteration by adding
-   a parameter with name <i>requiredFiringsPerIteration</i> to an actor
-   (which is often a sink actor or an actor directly connected to output port
-   of the composite actor) and specifying the number of times this actor must
-   be fired in a single iteration. If the value of the parameter
-   <i>runUntilDeadlockInOneIteration</i> is a BooleanToken with value true,
-   one single iteration consists of repeating the basic iteration until
-   deadlock is reached (thus overriding the previous definition of one
-   iteration), which is the status of the model where all active
-   actors under the control of this director are unable to fire because
-   their firing rules are not satisfied. However, they may be able to fire
-   again during next iteration when tokens are transferred in from an outside
-   domain. Note <i>runUntilDeadlockInOneIteration</i> can be set to true
-   only when this director is not on the top level.
-   <p>
-   The algorithm implementing one basic iteration goes like this:
-   <pre>
-   E = set of enabled actors
-   D = set of deferrable enabled actors
-   </pre>
-   One basic(default) iteration consists of:
-   <pre>
-   if (E\D != empty set) {
-   fire (E\D)
-   } else if (D != empty set) {
-   fire minimax(D)
-   } else {
-   declare deadlock
-   }
-   </pre>
-   The function "minimax(D)" returns a subset of D with the smallest
-   maximum number of tokens on their output channels which satisfy the
-   demand of destination actors.
-   <p>
-   Note that any SDF model can be run with a DDF Director. However, the
-   notion of iteration is different. One could try to imitate the SDF
-   iteration in the DDF domain by controlling the number of firings in one
-   iteration for some actors, such as requiring a plotter to plot a fixed
-   number of points in each iteration.
-   <p>
-   In the DDF domain, the firing rule of any actor is specified by the token
-   consumption rates of its input ports. A general DDF actor could change
-   the consumption rates of its input ports after each firing of this actor.
-   For multiports, an array token could be used to specify different rates
-   for different channels connected to the same multiport. Note that in SDF,
-   all channels connected to the same multiport have the same rate.
-   <p>
-   Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee.
-   See E. A. Lee et al., "The Almagest," documentation for Ptolemy Classic,
-   Vol. 1, Chapter 7, 1997.
+ The dynamic dataflow (DDF) domain is a superset of the synchronous
+ dataflow(SDF) and Boolean dataflow(BDF) domains. In the SDF domain,
+ an actor consumes and produces a fixed number of tokens per firing.
+ This static information makes possible compile-time scheduling. In the
+ DDF domain, there are few constraints on the production and consumption
+ behavior of actors, and the schedulers make no attempt to construct a
+ compile-time schedule. Instead, each actor has a set of firing rules
+ (patterns) and can be fired if one of them is satisfied, i.e., one
+ particular firing pattern forms a prefix of sequences of unconsumed
+ tokens at input ports. The canonical actors in the DDF domain include
+ Select and Switch, which consume or produce tokens on different channels
+ based on the token received from the control port. (In practice, use
+ DDFSelect and DDFBooleanSelect in the DDF-specific library instead of 
+ Select and BooleanSelect in the regular FlowControl library; however,
+ Switch and BooleanSwitch in the regular FlowControl library can be 
+ used in DDF domain.)
+ <p>
+ The dynamic scheduler implemented in this director fires all enabled
+ and non-deferrable actors once in a basic iteration. A deferrable
+ actor is one that will not help one of the downstream actors become
+ enabled because that downstream actor either already has enough tokens on
+ the channel connecting those two actors or is waiting for tokens on
+ another channel. If no actor fires so far, which means there is no
+ enabled and non-deferrable actor, then among all enabled and deferrable
+ actors, this director fires those which have the smallest maximum number
+ of tokens on their output channels which satisfy the demand of destination
+ actors. If still no actor fires, then there is no enabled actor. A user
+ can treat several such basic iterations as a single iteration by adding
+ a parameter with name <i>requiredFiringsPerIteration</i> to an actor
+ (which is often a sink actor or an actor directly connected to output port
+ of the composite actor) and specifying the number of times this actor must
+ be fired in a single iteration. If the value of the parameter
+ <i>runUntilDeadlockInOneIteration</i> is a BooleanToken with value true,
+ one single iteration consists of repeating the basic iteration until
+ deadlock is reached (thus overriding the previous definition of one
+ iteration), which is the status of the model where all active
+ actors under the control of this director are unable to fire because
+ their firing rules are not satisfied. However, they may be able to fire
+ again during next iteration when tokens are transferred in from an outside
+ domain. Note <i>runUntilDeadlockInOneIteration</i> can be set to true
+ only when this director is not on the top level.
+ <p>
+ The algorithm implementing one basic iteration goes like this:
+ <pre>
+ E = set of enabled actors
+ D = set of deferrable enabled actors
+ </pre>
+ One basic(default) iteration consists of:
+ <pre>
+ if (E\D != empty set) {
+ fire (E\D)
+ } else if (D != empty set) {
+ fire minimax(D)
+ } else {
+ declare deadlock
+ }
+ </pre>
+ The function "minimax(D)" returns a subset of D with the smallest
+ maximum number of tokens on their output channels which satisfy the
+ demand of destination actors.
+ <p>
+ Note that any SDF model can be run with a DDF Director. However, the
+ notion of iteration is different. One could try to imitate the SDF
+ iteration in the DDF domain by controlling the number of firings in one
+ iteration for some actors, such as requiring a plotter to plot a fixed
+ number of points in each iteration.
+ <p>
+ In the DDF domain, the firing rule of any actor is specified by the token
+ consumption rates of its input ports. A general DDF actor could change
+ the consumption rates of its input ports after each firing of this actor.
+ For multiports, an array token could be used to specify different rates
+ for different channels connected to the same multiport. Note that in SDF,
+ all channels connected to the same multiport have the same rate.
+ <p>
+ Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee.
+ See E. A. Lee et al., "The Almagest," documentation for Ptolemy Classic,
+ Vol. 1, Chapter 7, 1997.
 
-   @author Gang Zhou
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (zgang)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Gang Zhou
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (zgang)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class DDFDirector extends Director {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -162,8 +161,8 @@ public class DDFDirector extends Director {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public DDFDirector()
-            throws IllegalActionException, NameDuplicationException {
+    public DDFDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
         _init();
     }
@@ -177,8 +176,8 @@ public class DDFDirector extends Director {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public DDFDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public DDFDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -251,11 +250,12 @@ public class DDFDirector extends Director {
                 // pause the model easily if the whole execution is in
                 // one iteration. And the same effect can be achieved
                 // by setting the parameter iterations to zero anyway.
-                throw new IllegalActionException(this,
+                throw new IllegalActionException(
+                        this,
                         "Cannot set runUntilDeadlockInOneIteration to be "
-                        + "true if this DDFDirector is at top level. "
-                        + "Instead you should set the parameter iterations "
-                        + "to be zero to achieve the same effect.");
+                                + "true if this DDFDirector is at top level. "
+                                + "Instead you should set the parameter iterations "
+                                + "to be zero to achieve the same effect.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -301,8 +301,8 @@ public class DDFDirector extends Director {
             List minimaxActors = new LinkedList();
             int minimaxSize = Integer.MAX_VALUE;
 
-            Iterator actors = ((TypedCompositeActor) getContainer()).deepEntityList()
-                .iterator();
+            Iterator actors = ((TypedCompositeActor) getContainer())
+                    .deepEntityList().iterator();
 
             while (actors.hasNext()) {
                 // Scan all actors to find all enabled and not
@@ -418,7 +418,7 @@ public class DDFDirector extends Director {
         super.initialize();
 
         Iterator outputPorts = ((Actor) getContainer()).outputPortList()
-            .iterator();
+                .iterator();
 
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
@@ -465,7 +465,7 @@ public class DDFDirector extends Director {
         actorInfo.requiredFiringsPerIteration = 0;
 
         Variable requiredFiringsPerIteration = (Variable) ((Entity) actor)
-            .getAttribute("requiredFiringsPerIteration");
+                .getAttribute("requiredFiringsPerIteration");
 
         if (requiredFiringsPerIteration != null) {
             Token token = requiredFiringsPerIteration.getToken();
@@ -481,8 +481,8 @@ public class DDFDirector extends Director {
             } else {
                 throw new IllegalActionException(this, (ComponentEntity) actor,
                         "The variable "
-                        + "requiredFiringsPerIteration must contain "
-                        + "an IntToken.");
+                                + "requiredFiringsPerIteration must contain "
+                                + "an IntToken.");
             }
         }
     }
@@ -511,7 +511,8 @@ public class DDFDirector extends Director {
      */
     public void merge(DDFDirector insideDirector) {
         _disabledActors.addAll(insideDirector._disabledActors);
-        _actorsToCheckNumberOfFirings.addAll(insideDirector._actorsToCheckNumberOfFirings);
+        _actorsToCheckNumberOfFirings
+                .addAll(insideDirector._actorsToCheckNumberOfFirings);
         _actorsInfo.putAll(insideDirector._actorsInfo);
     }
 
@@ -525,7 +526,7 @@ public class DDFDirector extends Director {
 
         try {
             int capacity = ((IntToken) maximumReceiverCapacity.getToken())
-                .intValue();
+                    .intValue();
 
             if (capacity > 0) {
                 receiver.setCapacity(capacity);
@@ -564,13 +565,12 @@ public class DDFDirector extends Director {
 
         if (isDeadlocked && _isEmbedded()) {
             Iterator inputPorts = ((Actor) getContainer()).inputPortList()
-                .iterator();
+                    .iterator();
 
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
                 Receiver[][] deepReceivers = inputPort.deepGetReceivers();
-                foundNotSatisfiedReceiver:
-                for (int i = 0; i < deepReceivers.length; i++) {
+                foundNotSatisfiedReceiver: for (int i = 0; i < deepReceivers.length; i++) {
                     for (int j = 0; j < deepReceivers[i].length; j++) {
                         QueueReceiver deepReceiver = (QueueReceiver) deepReceivers[i][j];
                         IOPort port = deepReceiver.getContainer();
@@ -663,11 +663,10 @@ public class DDFDirector extends Director {
      */
     public String[] suggestedModalModelDirectors() {
         String[] defaultSuggestions = {
-            "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
-            "ptolemy.domains.hdf.kernel.HDFFSMDirector",
-            "ptolemy.domains.fsm.kernel.FSMDirector",
-            "ptolemy.domains.fsm.kernel.NonStrictFSMDirector"
-        };
+                "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
+                "ptolemy.domains.hdf.kernel.HDFFSMDirector",
+                "ptolemy.domains.fsm.kernel.FSMDirector",
+                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector" };
         return defaultSuggestions;
     }
 
@@ -690,7 +689,7 @@ public class DDFDirector extends Director {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "Attempted to transferInputs on a port is not an "
-                    + "opaque input port.");
+                            + "opaque input port.");
         }
 
         boolean wasTransferred = false;
@@ -710,17 +709,24 @@ public class DDFDirector extends Director {
                             if (_debugging) {
                                 _debug(getName(),
                                         "transferring input from channel " + i
-                                        + " of input port " + port.getName());
+                                                + " of input port "
+                                                + port.getName());
                             }
 
                             port.sendInside(i, t);
                             wasTransferred = true;
                         } else {
-                            throw new IllegalActionException(this, port,
-                                    "Channel " + i + "should consume " + rate[i]
-                                    + " tokens, but there were only " + k
-                                    + " tokens available. Maybe the rate"
-                                    + " is set wrong?");
+                            throw new IllegalActionException(
+                                    this,
+                                    port,
+                                    "Channel "
+                                            + i
+                                            + "should consume "
+                                            + rate[i]
+                                            + " tokens, but there were only "
+                                            + k
+                                            + " tokens available. Maybe the rate"
+                                            + " is set wrong?");
                         }
                     }
 
@@ -734,7 +740,7 @@ public class DDFDirector extends Director {
                         if (_debugging) {
                             _debug(getName(),
                                     "transferring input from channel " + i
-                                    + " of port " + port.getName());
+                                            + " of port " + port.getName());
                         }
 
                         port.sendInside(i, token);
@@ -786,7 +792,7 @@ public class DDFDirector extends Director {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "Attempted to transferOutputs on a port that "
-                    + "is not an opaque output port.");
+                            + "is not an opaque output port.");
         }
 
         boolean wasTransferred = false;
@@ -806,17 +812,23 @@ public class DDFDirector extends Director {
                             if (_debugging) {
                                 _debug(getName(),
                                         "transferring output from channel " + i
-                                        + " of port " + port.getName());
+                                                + " of port " + port.getName());
                             }
 
                             port.send(i, token);
                             wasTransferred = true;
                         } else {
-                            throw new IllegalActionException(this, port,
-                                    "Channel " + i + " should produce " + rate[i]
-                                    + " tokens, but there were only " + k
-                                    + " tokens available. Maybe the rate"
-                                    + " is set wrong?");
+                            throw new IllegalActionException(
+                                    this,
+                                    port,
+                                    "Channel "
+                                            + i
+                                            + " should produce "
+                                            + rate[i]
+                                            + " tokens, but there were only "
+                                            + k
+                                            + " tokens available. Maybe the rate"
+                                            + " is set wrong?");
                         }
                     }
 
@@ -830,7 +842,7 @@ public class DDFDirector extends Director {
                         if (_debugging) {
                             _debug(getName(),
                                     "transferring output from channel " + i
-                                    + " of port " + port.getName());
+                                            + " of port " + port.getName());
                         }
 
                         port.send(i, token);
@@ -1042,7 +1054,8 @@ public class DDFDirector extends Director {
 
         while (ports.hasNext()) {
             ComponentPort port = (ComponentPort) ports.next();
-            Iterator deepConnectedPorts = port.deepConnectedPortList().iterator();
+            Iterator deepConnectedPorts = port.deepConnectedPortList()
+                    .iterator();
 
             while (deepConnectedPorts.hasNext()) {
                 Port deepConnectedPort = (Port) deepConnectedPorts.next();
@@ -1123,7 +1136,7 @@ public class DDFDirector extends Director {
                         }
                     }
                 } else { // All the channels in the port have same
-                         // tokenConsumptionRate.
+                    // tokenConsumptionRate.
                     Arrays.fill(rate, ((IntToken) token).intValue());
                 }
             }
@@ -1197,8 +1210,7 @@ public class DDFDirector extends Director {
             // Scan the contained receivers of the port to find
             // out channel index.
             int channelIndex = 0;
-            foundChannelIndex:
-            for (int m = 0; m < portReceivers.length; m++) {
+            foundChannelIndex: for (int m = 0; m < portReceivers.length; m++) {
                 for (int n = 0; n < portReceivers[m].length; n++) {
                     if (receiver == portReceivers[m][n]) {
                         channelIndex = m;
@@ -1232,8 +1244,7 @@ public class DDFDirector extends Director {
     private int[] _getTokenProductionRate(IOPort port)
             throws IllegalActionException {
         if (port.getContainer() != getContainer()) {
-            throw new IllegalActionException(this,
-                    "The port in the "
+            throw new IllegalActionException(this, "The port in the "
                     + "argument is not an output port of the container of "
                     + getName());
         }
@@ -1254,8 +1265,7 @@ public class DDFDirector extends Director {
                     Token[] tokens = ((ArrayToken) token).arrayValue();
 
                     if (tokens.length < port.getWidthInside()) {
-                        throw new IllegalActionException(this,
-                                "The length of "
+                        throw new IllegalActionException(this, "The length of "
                                 + "tokenProductionRate array is less than "
                                 + "the port inside width.");
                     }
@@ -1266,7 +1276,7 @@ public class DDFDirector extends Director {
                         }
                     }
                 } else { // All the channels in the port has same
-                         // tokenProductionRate.
+                    // tokenProductionRate.
                     Arrays.fill(rate, ((IntToken) token).intValue());
                 }
             }
@@ -1281,8 +1291,8 @@ public class DDFDirector extends Director {
      *  and a <i>runUntilDeadlockInOneIteration</i> parameter with default
      *  value false.
      */
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
         iterations.setToken(new IntToken(0));

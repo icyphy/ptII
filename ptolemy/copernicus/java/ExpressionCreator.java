@@ -1,29 +1,29 @@
 /* An interface for classes that replaces port methods.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.Collections;
@@ -58,18 +58,17 @@ import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.toolkits.scalar.LocalSplitter;
 import soot.util.Chain;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AtomicActorCreator
 
 /**
 
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
-@Pt.ProposedRating Red (cxh)
-@Pt.AcceptedRating Red (cxh)
-*/
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class ExpressionCreator implements AtomicActorCreator {
     /** Generate a new class with the given name that can take the
      *  place of the given actor.  Use the given options when
@@ -131,8 +130,9 @@ public class ExpressionCreator implements AtomicActorCreator {
                 Type type = PtolemyUtilities.tokenType;
                 nameToType.put(name, port.getType());
 
-                SootField field = new SootField(StringUtilities.sanitizeName(
-                                                        name) + "Token", type);
+                SootField field = new SootField(StringUtilities
+                        .sanitizeName(name)
+                        + "Token", type);
                 entityInstanceClass.addField(field);
                 nameToField.put(name, field);
             }
@@ -173,33 +173,40 @@ public class ExpressionCreator implements AtomicActorCreator {
                             PtolemyUtilities.componentPortType);
                     body.getLocals().add(portLocal);
 
-                    SootField portField = entityInstanceClass.getFieldByName(StringUtilities
-                            .sanitizeName(name));
-                    units.add(Jimple.v().newAssignStmt(portLocal,
-                                      Jimple.v().newInstanceFieldRef(thisLocal, portField)));
-                    units.add(Jimple.v().newAssignStmt(hasTokenLocal,
-                                      Jimple.v().newVirtualInvokeExpr(portLocal,
-                                              PtolemyUtilities.hasTokenMethod,
-                                              IntConstant.v(0))));
+                    SootField portField = entityInstanceClass
+                            .getFieldByName(StringUtilities.sanitizeName(name));
+                    units
+                            .add(Jimple.v().newAssignStmt(
+                                    portLocal,
+                                    Jimple.v().newInstanceFieldRef(thisLocal,
+                                            portField)));
+                    units.add(Jimple.v().newAssignStmt(
+                            hasTokenLocal,
+                            Jimple.v().newVirtualInvokeExpr(portLocal,
+                                    PtolemyUtilities.hasTokenMethod,
+                                    IntConstant.v(0))));
 
                     Stmt target = Jimple.v().newNopStmt();
-                    units.add(Jimple.v().newIfStmt(Jimple.v().newEqExpr(hasTokenLocal,
-                                                           IntConstant.v(0)), target));
-                    units.add(Jimple.v().newAssignStmt(tokenLocal,
-                                      Jimple.v().newVirtualInvokeExpr(portLocal,
-                                              PtolemyUtilities.getMethod, IntConstant.v(0))));
+                    units.add(Jimple.v().newIfStmt(
+                            Jimple.v().newEqExpr(hasTokenLocal,
+                                    IntConstant.v(0)), target));
+                    units.add(Jimple.v().newAssignStmt(
+                            tokenLocal,
+                            Jimple.v().newVirtualInvokeExpr(portLocal,
+                                    PtolemyUtilities.getMethod,
+                                    IntConstant.v(0))));
 
-                    SootField tokenField = entityInstanceClass.getFieldByName(name
-                            + "Token");
-                    units.add(Jimple.v().newAssignStmt(Jimple.v()
-                                      .newInstanceFieldRef(thisLocal,
-                                              tokenField), tokenLocal));
+                    SootField tokenField = entityInstanceClass
+                            .getFieldByName(name + "Token");
+                    units.add(Jimple.v().newAssignStmt(
+                            Jimple.v().newInstanceFieldRef(thisLocal,
+                                    tokenField), tokenLocal));
                     units.add(target);
                 }
             }
 
             StringAttribute expressionAttribute = (StringAttribute) entity
-                .getAttribute("expression");
+                    .getAttribute("expression");
             String expression = expressionAttribute.getExpression();
 
             Local local = DataUtilities.generateExpressionCode(entity,
@@ -215,9 +222,11 @@ public class ExpressionCreator implements AtomicActorCreator {
             SootField portField = entityInstanceClass.getFieldByName(name);
 
             units.add(Jimple.v().newAssignStmt(portLocal,
-                              Jimple.v().newInstanceFieldRef(thisLocal, portField)));
-            units.add(Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(portLocal,
-                                                       PtolemyUtilities.sendMethod, IntConstant.v(0), local)));
+                    Jimple.v().newInstanceFieldRef(thisLocal, portField)));
+            units.add(Jimple.v().newInvokeStmt(
+                    Jimple.v().newVirtualInvokeExpr(portLocal,
+                            PtolemyUtilities.sendMethod, IntConstant.v(0),
+                            local)));
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());

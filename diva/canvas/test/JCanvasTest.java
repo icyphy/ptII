@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.canvas.test;
 
 import javax.swing.JFrame;
@@ -34,7 +34,6 @@ import diva.util.jester.TestCase;
 import diva.util.jester.TestFailedException;
 import diva.util.jester.TestHarness;
 import diva.util.jester.TestSuite;
-
 
 /**
  * A test suite for JCanvas. This is fairly basic, and is
@@ -71,39 +70,40 @@ public class JCanvasTest extends TestSuite {
      */
     public void testConstructor1() {
         runTestCase(new TestCase("JCanvas constructor 1") {
-                JCanvas canvas;
+            JCanvas canvas;
 
-                public void run() throws Exception {
-                    canvas = factory.createJCanvas();
-                }
+            public void run() throws Exception {
+                canvas = factory.createJCanvas();
+            }
 
-                public void check() throws TestFailedException {
-                    CanvasPane pane = canvas.getCanvasPane();
-                    assertExpr(pane != null, "pane != null");
-                    assertExpr(pane.getClass().getName().equals("diva.canvas.GraphicsPane"),
-                            pane.getClass().getName()
-                            + " != diva.canvas.GraphicsPane");
-                }
-            });
+            public void check() throws TestFailedException {
+                CanvasPane pane = canvas.getCanvasPane();
+                assertExpr(pane != null, "pane != null");
+                assertExpr(pane.getClass().getName().equals(
+                        "diva.canvas.GraphicsPane"), pane.getClass().getName()
+                        + " != diva.canvas.GraphicsPane");
+            }
+        });
     }
 
     /** Test the constructor that takes a pane
      */
     public void testConstructor2() {
         runTestCase(new TestCase("JCanvas constructor 2") {
-                JCanvas canvas;
-                CanvasPane pane = new BasicCanvasPane();
+            JCanvas canvas;
 
-                public void run() throws Exception {
-                    canvas = factory.createJCanvas(pane);
-                }
+            CanvasPane pane = new BasicCanvasPane();
 
-                public void check() throws TestFailedException {
-                    CanvasPane pane = canvas.getCanvasPane();
-                    assertExpr(pane != null, "pane != null");
-                    assertEquals(pane, this.pane, "pane == this.pane");
-                }
-            });
+            public void run() throws Exception {
+                canvas = factory.createJCanvas(pane);
+            }
+
+            public void check() throws TestFailedException {
+                CanvasPane pane = canvas.getCanvasPane();
+                assertExpr(pane != null, "pane != null");
+                assertEquals(pane, this.pane, "pane == this.pane");
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -1,29 +1,29 @@
 /* A tableau representing a dialog window.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.awt.Frame;
@@ -39,33 +39,32 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DialogTableau
 
 /**
-   A tableau representing a Dialog in a toplevel window.
-   <p>
-   DialogTableau is just like all the other XXXTableau classes except that the
-   Frame associated with DialogTableau is not an extension of TableauFrame, and,
-   ultimately, the Top class. The reason being that Top adorns the GUI
-   manifestation with the normal status bar which isn't appropriate for a
-   dialog.
-   In addition, the created dialog is not a JDialog, but a JFrame. And, the
-   created dialog is non-modal.
-   <p>
-   There can be any number of instances of this class in an effigy, however,
-   there
-   can only be one each for the model represented by the effigy, and one each of
-   the actors that are part of the model.
+ A tableau representing a Dialog in a toplevel window.
+ <p>
+ DialogTableau is just like all the other XXXTableau classes except that the
+ Frame associated with DialogTableau is not an extension of TableauFrame, and,
+ ultimately, the Top class. The reason being that Top adorns the GUI
+ manifestation with the normal status bar which isn't appropriate for a
+ dialog.
+ In addition, the created dialog is not a JDialog, but a JFrame. And, the
+ created dialog is non-modal.
+ <p>
+ There can be any number of instances of this class in an effigy, however,
+ there
+ can only be one each for the model represented by the effigy, and one each of
+ the actors that are part of the model.
 
-   @author  Rowland R Johnson
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (rowland)
-   @Pt.AcceptedRating Red (cxh)
-   @see Effigy
-*/
+ @author  Rowland R Johnson
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (rowland)
+ @Pt.AcceptedRating Red (cxh)
+ @see Effigy
+ */
 public class DialogTableau extends Tableau {
     /** Construct a new tableau for the model represented by the given effigy.
      *  Use setFrame() to specify the Dialog after construction.
@@ -104,12 +103,13 @@ public class DialogTableau extends Tableau {
             // dialogClas on this entity.
             if (effigy instanceof Effigy) {
                 Iterator dialogs = effigy.entityList(DialogTableau.class)
-                    .iterator();
+                        .iterator();
 
                 while (dialogs.hasNext()) {
-                    DialogTableau dialogTableau = (DialogTableau) dialogs.next();
+                    DialogTableau dialogTableau = (DialogTableau) dialogs
+                            .next();
                     PtolemyDialog existingDialog = ((PtolemyDialog) (dialogTableau
-                                                            .getFrame()));
+                            .getFrame()));
 
                     if ((existingDialog != null)
                             && (existingDialog.getClass() == dialogClass)
@@ -123,13 +123,14 @@ public class DialogTableau extends Tableau {
             NamedObj container = (NamedObj) (effigy.getContainer());
 
             if ((container != null) && (container instanceof PtolemyEffigy)) {
-                Iterator dialogs = ((PtolemyEffigy) container).entityList(DialogTableau.class)
-                    .iterator();
+                Iterator dialogs = ((PtolemyEffigy) container).entityList(
+                        DialogTableau.class).iterator();
 
                 while (dialogs.hasNext()) {
-                    DialogTableau dialogTableau = (DialogTableau) dialogs.next();
+                    DialogTableau dialogTableau = (DialogTableau) dialogs
+                            .next();
                     PtolemyDialog existingDialog = ((PtolemyDialog) (dialogTableau
-                                                            .getFrame()));
+                            .getFrame()));
 
                     if ((existingDialog.getClass() == dialogClass)
                             && (dialogTableau.hasTarget(target))) {
@@ -143,8 +144,8 @@ public class DialogTableau extends Tableau {
         DialogTableau newDialogTableau;
 
         try {
-            newDialogTableau = new DialogTableau(effigy,
-                    effigy.uniqueName("dialog"));
+            newDialogTableau = new DialogTableau(effigy, effigy
+                    .uniqueName("dialog"));
 
             PtolemyDialog dialog = null;
             Constructor[] constructors = dialogClass.getConstructors();
@@ -172,8 +173,8 @@ public class DialogTableau extends Tableau {
             }
 
             if (dialog == null) {
-                throw new KernelException(target, null,
-                        "Can't create a " + dialogClass);
+                throw new KernelException(target, null, "Can't create a "
+                        + dialogClass);
             }
 
             newDialogTableau.setFrame(dialog);

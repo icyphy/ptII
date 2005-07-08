@@ -1,32 +1,32 @@
 /* An actor that produces a JAIImageToken with constant bands.
 
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -47,19 +47,18 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// JAIConstant
 
 /**
-   Produce an image with a uniform color.
+ Produce an image with a uniform color.
 
-   @author James Yeh, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author James Yeh, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class JAIConstant extends Source {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -75,8 +74,8 @@ public class JAIConstant extends Source {
         output.setTypeEquals(BaseType.OBJECT);
         width = new Parameter(this, "width", new IntToken(0));
         height = new Parameter(this, "height", new IntToken(0));
-        bandValues = new Parameter(this, "bandValues",
-                new ArrayToken(_defaultValues));
+        bandValues = new Parameter(this, "bandValues", new ArrayToken(
+                _defaultValues));
         dataFormat = new StringAttribute(this, "dataFormat");
         dataFormat.setExpression("byte");
         _dataFormat = _BYTE;
@@ -157,7 +156,7 @@ public class JAIConstant extends Source {
 
             for (int i = 0; i < values.length; i++) {
                 byteValues[i] = new Byte((byte) (((ScalarToken) values[i])
-                                                 .intValue()));
+                        .intValue()));
             }
 
             parameters.add(byteValues);
@@ -175,7 +174,7 @@ public class JAIConstant extends Source {
 
             for (int i = 0; i < values.length; i++) {
                 floatValues[i] = new Float((float) (((ScalarToken) values[i])
-                                                   .doubleValue()));
+                        .doubleValue()));
             }
 
             parameters.add(floatValues);
@@ -192,7 +191,7 @@ public class JAIConstant extends Source {
 
             for (int i = 0; i < values.length; i++) {
                 shortValues[i] = new Short((short) (((ScalarToken) values[i])
-                                                   .intValue()));
+                        .intValue()));
             }
 
             parameters.add(shortValues);
@@ -205,19 +204,27 @@ public class JAIConstant extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IntToken _zero = new IntToken(0);
-    private IntToken[] _defaultValues = {
-        _zero
-    };
+
+    private IntToken[] _defaultValues = { _zero };
+
     private Double[] _bandValues;
+
     private int _height;
+
     private int _width;
+
     private Token[] values;
+
     private int _dataFormat;
 
     // Constants used for more efficient execution.
     private static final int _BYTE = 0;
+
     private static final int _DOUBLE = 1;
+
     private static final int _FLOAT = 2;
+
     private static final int _INT = 3;
+
     private static final int _SHORT = 4;
 }

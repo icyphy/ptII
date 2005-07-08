@@ -1,30 +1,30 @@
 /* An icon stored in XML.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.icon;
 
 import java.io.Reader;
@@ -49,34 +49,33 @@ import diva.util.xml.XmlDocument;
 import diva.util.xml.XmlElement;
 import diva.util.xml.XmlReader;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// XMLIcon
 
 /**
-   An icon is a visual representation of an entity. Three such visual
-   representations are supported here.  A background figure is returned
-   by the createBackgroundFigure() method.  This figure is specified by
-   an attribute named "_iconDescription" of the container, if there is one.
-   If there is no such attribute, then a default icon is used.
-   The createFigure() method returns this same background figure, but
-   decorated with a label giving the name of the container, unless the
-   container contains a parameter named "_hideName" with value true.
-   The createIcon() method returns a Swing icon given by an attribute named
-   "_smallIconDescription", if there is one.  If there is no such
-   attribute, then the icon is simply a small representation of the
-   background figure.
-   <p>
-   The XML schema used in the "_iconDescription" and "_smallIconDescription"
-   attributes is SVG (scalable vector graphics), although currently Diva
-   only supports a small subset of SVG.
+ An icon is a visual representation of an entity. Three such visual
+ representations are supported here.  A background figure is returned
+ by the createBackgroundFigure() method.  This figure is specified by
+ an attribute named "_iconDescription" of the container, if there is one.
+ If there is no such attribute, then a default icon is used.
+ The createFigure() method returns this same background figure, but
+ decorated with a label giving the name of the container, unless the
+ container contains a parameter named "_hideName" with value true.
+ The createIcon() method returns a Swing icon given by an attribute named
+ "_smallIconDescription", if there is one.  If there is no such
+ attribute, then the icon is simply a small representation of the
+ background figure.
+ <p>
+ The XML schema used in the "_iconDescription" and "_smallIconDescription"
+ attributes is SVG (scalable vector graphics), although currently Diva
+ only supports a small subset of SVG.
 
-   @author Steve Neuendorffer, John Reekie, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer, John Reekie, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class XMLIcon extends DynamicEditorIcon implements ValueListener {
     /** Construct an icon in the specified workspace and name.
      *  This constructor is typically used in conjunction with
@@ -141,7 +140,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
         // Get the description.
         NamedObj container = (NamedObj) getContainerOrContainerToBe();
         ConfigurableAttribute description = (ConfigurableAttribute) container
-            .getAttribute("_iconDescription");
+                .getAttribute("_iconDescription");
 
         // If the description has changed...
         if (_description != description) {
@@ -192,7 +191,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
         // Get the description.
         NamedObj container = (NamedObj) getContainerOrContainerToBe();
         ConfigurableAttribute description = (ConfigurableAttribute) container
-            .getAttribute("_smallIconDescription");
+                .getAttribute("_smallIconDescription");
 
         // If there is no separate small icon description, return
         // a scaled version of the background figure, as done by the base

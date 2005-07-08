@@ -1,30 +1,30 @@
 /* A token that contains a javax.media.jai.RenderedOp.
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.jai;
 
 import java.awt.Image;
@@ -40,21 +40,20 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// JAIImageToken
 
 /**
-   A token that contains a javax.media.jai.RenderedOp.  This token is used
-   when dealing with images in the Java Advanced Imaging (JAI) library.
-   Because it extends ImageToken, it can be used with the standard image
-   processing tools by simply calling asAWTImage().
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ A token that contains a javax.media.jai.RenderedOp.  This token is used
+ when dealing with images in the Java Advanced Imaging (JAI) library.
+ Because it extends ImageToken, it can be used with the standard image
+ processing tools by simply calling asAWTImage().
+ @author James Yeh
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class JAIImageToken extends ImageToken {
     /** Construct a token with a specified RenderedOp.
      *  @param value The RenderedOp with which to construct the JAIImageToken.
@@ -187,10 +186,10 @@ public class JAIImageToken extends ImageToken {
         // FIXME: return a value that can be parsed by the expression language.
         _bufferedImage = _renderedOp.getRendering().getAsBufferedImage();
         return "{type=\"" + getClass() + "\" width=\""
-            + _bufferedImage.getWidth(null) + "\" height=\""
-            + _bufferedImage.getHeight(null) + "\" bands=\""
-            + _renderedOp.getNumBands() + "\" toString=\"" + _renderedOp.toString()
-            + "\"}";
+                + _bufferedImage.getWidth(null) + "\" height=\""
+                + _bufferedImage.getHeight(null) + "\" bands=\""
+                + _renderedOp.getNumBands() + "\" toString=\""
+                + _renderedOp.toString() + "\"}";
     }
 
     ///////////////////////////////////////////////////////////////////

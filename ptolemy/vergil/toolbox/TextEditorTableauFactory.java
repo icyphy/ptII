@@ -1,32 +1,32 @@
 /* An attribute that causes look inside to open a text editor to
-   edit a string attribute in the container.
+ edit a string attribute in the container.
 
-   Copyright (c) 2003-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.vergil.toolbox;
 
 import java.util.Iterator;
@@ -46,25 +46,24 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TextEditorTableauFactory
 
 /**
-   This class is an attribute that creates a text editor to edit a specified
-   string attribute in the container of this attribute.  It is similar to
-   TextEditorConfigureFactory, but instead of opening when the actor is configured,
-   it is opened when the user looks inside the actor.
+ This class is an attribute that creates a text editor to edit a specified
+ string attribute in the container of this attribute.  It is similar to
+ TextEditorConfigureFactory, but instead of opening when the actor is configured,
+ it is opened when the user looks inside the actor.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (ptolemy)
-   @see TextEditorConfigureFactory
-*/
-public class TextEditorTableauFactory extends TableauFactory
-    implements TextEditorFactory {
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (ptolemy)
+ @see TextEditorConfigureFactory
+ */
+public class TextEditorTableauFactory extends TableauFactory implements
+        TextEditorFactory {
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -130,11 +129,12 @@ public class TextEditorTableauFactory extends TableauFactory
         }
 
         NamedObj object = ((PtolemyEffigy) effigy).getModel();
-        Attribute attribute = object.getAttribute(attributeName.getExpression());
+        Attribute attribute = object
+                .getAttribute(attributeName.getExpression());
 
         if (!(attribute instanceof StringAttribute)) {
-            throw new IllegalActionException(object,
-                    "Expected " + object.getFullName()
+            throw new IllegalActionException(object, "Expected "
+                    + object.getFullName()
                     + " to contain a StringAttribute named "
                     + attributeName.getExpression() + ", but it does not.");
         }
@@ -154,7 +154,7 @@ public class TextEditorTableauFactory extends TableauFactory
 
         // textEffigy may already have a tableau.
         Iterator tableaux = textEffigy.entityList(TextEditorTableau.class)
-            .iterator();
+                .iterator();
 
         if (tableaux.hasNext()) {
             return (TextEditorTableau) tableaux.next();
@@ -164,11 +164,11 @@ public class TextEditorTableauFactory extends TableauFactory
         if (_editor == null) {
             int numberOfRows = ((IntToken) rowsDisplayed.getToken()).intValue();
             int numberOfColumns = ((IntToken) columnsDisplayed.getToken())
-                .intValue();
+                    .intValue();
             _editor = new TextEditorForStringAttributes(this,
                     (StringAttribute) attribute, numberOfRows, numberOfColumns,
                     "Editor for " + attributeName.getExpression() + " of "
-                    + getContainer().getFullName());
+                            + getContainer().getFullName());
         }
 
         TextEditorTableau tableau = new TextEditorTableau(textEffigy,

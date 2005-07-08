@@ -1,30 +1,30 @@
 /* An actor that outputs strings read from a text file or URL.
 
-@Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.io;
 
 import java.io.BufferedReader;
@@ -44,50 +44,49 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LineReader
 
 /**
-   This actor reads a file or URL, one line at a time, and outputs each line
-   as a string.  The file or URL is specified using any form acceptable
-   to FileParameter. Before an end of file is reached, the <i>endOfFile</i>
-   output produces <i>false</i>.  In the iteration where the last line
-   of the file is read and produced on the <i>output</i> port, this actor
-   produces <i>true</i> on the <i>endOfFile</i> port. In that iteration,
-   postfire() returns false.  If the actor is iterated again, after the end
-   of file, then prefire() and postfire() will both return false, <i>output</i>
-   will produce the string "EOF", and <i>endOfFile</i> will produce <i>true</i>.
-   <p>
-   In some domains (such as SDF), returning false in postfire()
-   causes the model to cease executing.
-   In other domains (such as DE), this causes the director to avoid
-   further firings of this actor.  So usually, the actor will not be
-   invoked again after the end of file is reached.
-   <p>
-   This actor reads ahead in the file so that it can produce an output
-   <i>true</i> on <i>endOfFile</i> in the same iteration where it outputs
-   the last line.  It reads the first line in preinitialize(), and
-   subsequently reads a new line in each invocation of postfire().  The
-   line read is produced on the <i>output</i> in the next iteration
-   after it is read.
-   <p>
-   This actor can skip some lines at the beginning of the file or URL, with
-   the number specified by the <i>numberOfLinesToSkip</i> parameter. The
-   default value of this parameter is 0.
-   <p>
-   If you need to reset this line reader to start again at the beginning
-   of the file, the way to do this is to call initialize() during the run
-   of the model.  This can be done, for example, using a modal model
-   with a transition where reset is enabled.
+ This actor reads a file or URL, one line at a time, and outputs each line
+ as a string.  The file or URL is specified using any form acceptable
+ to FileParameter. Before an end of file is reached, the <i>endOfFile</i>
+ output produces <i>false</i>.  In the iteration where the last line
+ of the file is read and produced on the <i>output</i> port, this actor
+ produces <i>true</i> on the <i>endOfFile</i> port. In that iteration,
+ postfire() returns false.  If the actor is iterated again, after the end
+ of file, then prefire() and postfire() will both return false, <i>output</i>
+ will produce the string "EOF", and <i>endOfFile</i> will produce <i>true</i>.
+ <p>
+ In some domains (such as SDF), returning false in postfire()
+ causes the model to cease executing.
+ In other domains (such as DE), this causes the director to avoid
+ further firings of this actor.  So usually, the actor will not be
+ invoked again after the end of file is reached.
+ <p>
+ This actor reads ahead in the file so that it can produce an output
+ <i>true</i> on <i>endOfFile</i> in the same iteration where it outputs
+ the last line.  It reads the first line in preinitialize(), and
+ subsequently reads a new line in each invocation of postfire().  The
+ line read is produced on the <i>output</i> in the next iteration
+ after it is read.
+ <p>
+ This actor can skip some lines at the beginning of the file or URL, with
+ the number specified by the <i>numberOfLinesToSkip</i> parameter. The
+ default value of this parameter is 0.
+ <p>
+ If you need to reset this line reader to start again at the beginning
+ of the file, the way to do this is to call initialize() during the run
+ of the model.  This can be done, for example, using a modal model
+ with a transition where reset is enabled.
 
-   @see FileParameter
-   @author  Edward A. Lee, Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 2.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @see FileParameter
+ @author  Edward A. Lee, Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 2.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class LineReader extends Source {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -112,9 +111,9 @@ public class LineReader extends Source {
         numberOfLinesToSkip.setExpression("0");
         numberOfLinesToSkip.setTypeEquals(BaseType.INT);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
-                + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
                 + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
                 + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
                 + "</svg>\n");
@@ -163,7 +162,7 @@ public class LineReader extends Source {
             // has not in fact changed.  We check this by just comparing
             // name, which is not perfect...
             String newFileOrURL = ((StringToken) fileOrURL.getToken())
-                .stringValue();
+                    .stringValue();
 
             if ((_previousFileOrURL != null)
                     && !newFileOrURL.equals(_previousFileOrURL)) {
@@ -181,11 +180,11 @@ public class LineReader extends Source {
             }
         } else if (attribute == numberOfLinesToSkip) {
             int linesToSkip = ((IntToken) numberOfLinesToSkip.getToken())
-                .intValue();
+                    .intValue();
 
             if (linesToSkip < 0) {
-                throw new IllegalActionException(this,
-                        "The number of lines " + "to skip cannot be negative.");
+                throw new IllegalActionException(this, "The number of lines "
+                        + "to skip cannot be negative.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -328,14 +327,14 @@ public class LineReader extends Source {
         try {
             // Read (numberOfLinesToSkip + 1) lines
             int numberOfLines = ((IntToken) numberOfLinesToSkip.getToken())
-                .intValue();
+                    .intValue();
 
             for (int i = 0; i <= numberOfLines; i++) {
                 _currentLine = _reader.readLine();
 
                 if (_currentLine == null) {
-                    throw new IllegalActionException(this,
-                            "The file '" + fileOrURL.stringValue() + "' does not "
+                    throw new IllegalActionException(this, "The file '"
+                            + fileOrURL.stringValue() + "' does not "
                             + "have enough lines.");
                 }
             }

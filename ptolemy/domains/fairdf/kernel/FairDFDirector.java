@@ -1,29 +1,29 @@
 /* Director implementing dataflow with a notion of fairness.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fairdf.kernel;
 
 import java.util.ArrayList;
@@ -51,41 +51,40 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FairDFDirector
 
 /**
 
-This director implements a variant of dataflow that guarantees a
-degree of fairness in selecting actors to fire.
+ This director implements a variant of dataflow that guarantees a
+ degree of fairness in selecting actors to fire.
 
-Actors are fired in an unspecified order, subject to the following constraints.
+ Actors are fired in an unspecified order, subject to the following constraints.
 
-<ol>
-<li> In one iteration of the model, each actor is fired at most once.
-<li>The iteration ends when all remaining actors (i.e. those that did
-not fire during the current iteration) cannot fire (i.e. they return
-false on <tt>prefire()</tt>).
-</ol>
-<p>
-This implementation allows proper rollback, i.e. it may be repeatedly fired without intervening <tt>postfire()</tt>
-and it restores the queues to their original state.
+ <ol>
+ <li> In one iteration of the model, each actor is fired at most once.
+ <li>The iteration ends when all remaining actors (i.e. those that did
+ not fire during the current iteration) cannot fire (i.e. they return
+ false on <tt>prefire()</tt>).
+ </ol>
+ <p>
+ This implementation allows proper rollback, i.e. it may be repeatedly fired without intervening <tt>postfire()</tt>
+ and it restores the queues to their original state.
 
-@author J&#246;rn W. Janneck
-@version $Id$
-@ProposedRating Red (janneck)
-@AcceptedRating Red (reviewmoderator)
-*/
+ @author J&#246;rn W. Janneck
+ @version $Id$
+ @ProposedRating Red (janneck)
+ @AcceptedRating Red (reviewmoderator)
+ */
 public class FairDFDirector extends Director {
-    public FairDFDirector()
-            throws IllegalActionException, NameDuplicationException {
+    public FairDFDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
         init();
     }
 
-    public FairDFDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public FairDFDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         init();
     }
@@ -238,9 +237,13 @@ public class FairDFDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
     private Set modifiedReceivers = new HashSet();
+
     private List actors = null;
+
     private Collection firedActors = null;
+
     private boolean reFire = false;
+
     private int iterationCount;
 
     ///////////////////////////////////////////////////////////////////
@@ -325,7 +328,9 @@ public class FairDFDirector extends Director {
         }
 
         private List queue = new ArrayList();
+
         private int next = 0;
+
         private int added = 0;
     }
 

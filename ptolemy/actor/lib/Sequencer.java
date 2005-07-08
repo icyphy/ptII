@@ -1,30 +1,30 @@
 /* An actor to put tokens in order.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import java.util.TreeMap;
@@ -38,30 +38,29 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Sequencer
 
 /**
-   This actor takes a sequence of inputs tagged with a sequence number
-   and produces them on the output port in the order given by the
-   sequence number.  The sequence numbers are integers starting
-   with zero.  On each firing, this actor consumes one token
-   from the <i>input</i> port and one token from the
-   <i>sequenceNumber</i> port. If the sequence number is the
-   next one in the sequence, then the token read from the <i>input</i>
-   port is produced on the <i>output</i> port.  Otherwise,
-   it is saved until its sequence number is the next one
-   in the sequence.  If an output is produced, then it may
-   be immediately followed by tokens that were previously
-   saved, if their sequence numbers are next.
+ This actor takes a sequence of inputs tagged with a sequence number
+ and produces them on the output port in the order given by the
+ sequence number.  The sequence numbers are integers starting
+ with zero.  On each firing, this actor consumes one token
+ from the <i>input</i> port and one token from the
+ <i>sequenceNumber</i> port. If the sequence number is the
+ next one in the sequence, then the token read from the <i>input</i>
+ port is produced on the <i>output</i> port.  Otherwise,
+ it is saved until its sequence number is the next one
+ in the sequence.  If an output is produced, then it may
+ be immediately followed by tokens that were previously
+ saved, if their sequence numbers are next.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (ctsay)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Yellow (ctsay)
+ */
 public class Sequencer extends Transformer implements SequenceActor {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -122,7 +121,7 @@ public class Sequencer extends Transformer implements SequenceActor {
     public void initialize() throws IllegalActionException {
         _fireProducedOutput = false;
         _nextSequenceNumber = ((IntToken) startingSequenceNumber.getToken())
-            .intValue();
+                .intValue();
     }
 
     /** If the fire() method produced the input token then check to

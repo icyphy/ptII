@@ -1,86 +1,85 @@
 /* A library of audio operations.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.media;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Audio
 
 /**
-   Instances of this class represent audio data equivalent to that
-   contained by a Sun/NeXT audio file (.au file).  The class also
-   includes a set of utility static methods for manipulating audio
-   signals.
-   Currently, only an 8kHz sample rate, mu-law encoded, monophonic
-   audio format is supported.
-   <p>
-   The format of an audio file is:
-   <CENTER>
-   <TABLE BORDER = 1>
-   <TR BGCOLOR = #DFDFA0><TD>byte</TD><TD>type</TD>
-   <TD>field name   </TD><TD> field value                      </TD></TR>
-   <TR><TD>0x00</TD><TD>byte </TD><TD>magic[4]        </TD>
-   <TD> 0x2E736E64 '.snd' in ASCII     </TD></TR>
-   <TR><TD>0x04</TD><TD>int </TD><TD>offset </TD>
-   <TD> offset of audio data relative to the start of the stream </TD></TR>
-   <TR><TD>0x08</TD><TD>int </TD><TD>size     </TD>
-   <TD> number of bytes of data        </TD></TR>
-   <TR><TD>0x0C</TD><TD>int </TD><TD>format   </TD>
-   <TD> format code: 1 for 8-bit u-law </TD></TR>
-   <TR><TD>0x10</TD><TD>int </TD><TD>samplingRate </TD>
-   <TD> the sampling rate              </TD></TR>
-   <TR><TD>0x14</TD><TD>int </TD><TD>numChannels </TD>
-   <TD> the number of channels         </TD></TR>
-   <TR><TD>0x18</TD><TD>byte</TD><TD>info[]      </TD>
-   <TD> optional text information      </TD></TR>
-   </TABLE>
-   </CENTER>
-   <p>
-   The design of this class is based on the web page of
-   <a href=mailto:donahu@cooper.edu>Billy Donahue</a>.
-   <a href=http://www.cooper.edu/~donahu/auformat/auFormat.html>
-   http://www.cooper.edu/~donahu/auformat/auFormat.html</a>.
-   Note that this class serves the same role as
-   the class by the same name in the sun.audio package, but is much
-   more public about its information.  For example, the Sun version
-   does not give any access to the audio data itself.
+ Instances of this class represent audio data equivalent to that
+ contained by a Sun/NeXT audio file (.au file).  The class also
+ includes a set of utility static methods for manipulating audio
+ signals.
+ Currently, only an 8kHz sample rate, mu-law encoded, monophonic
+ audio format is supported.
+ <p>
+ The format of an audio file is:
+ <CENTER>
+ <TABLE BORDER = 1>
+ <TR BGCOLOR = #DFDFA0><TD>byte</TD><TD>type</TD>
+ <TD>field name   </TD><TD> field value                      </TD></TR>
+ <TR><TD>0x00</TD><TD>byte </TD><TD>magic[4]        </TD>
+ <TD> 0x2E736E64 '.snd' in ASCII     </TD></TR>
+ <TR><TD>0x04</TD><TD>int </TD><TD>offset </TD>
+ <TD> offset of audio data relative to the start of the stream </TD></TR>
+ <TR><TD>0x08</TD><TD>int </TD><TD>size     </TD>
+ <TD> number of bytes of data        </TD></TR>
+ <TR><TD>0x0C</TD><TD>int </TD><TD>format   </TD>
+ <TD> format code: 1 for 8-bit u-law </TD></TR>
+ <TR><TD>0x10</TD><TD>int </TD><TD>samplingRate </TD>
+ <TD> the sampling rate              </TD></TR>
+ <TR><TD>0x14</TD><TD>int </TD><TD>numChannels </TD>
+ <TD> the number of channels         </TD></TR>
+ <TR><TD>0x18</TD><TD>byte</TD><TD>info[]      </TD>
+ <TD> optional text information      </TD></TR>
+ </TABLE>
+ </CENTER>
+ <p>
+ The design of this class is based on the web page of
+ <a href=mailto:donahu@cooper.edu>Billy Donahue</a>.
+ <a href=http://www.cooper.edu/~donahu/auformat/auFormat.html>
+ http://www.cooper.edu/~donahu/auformat/auFormat.html</a>.
+ Note that this class serves the same role as
+ the class by the same name in the sun.audio package, but is much
+ more public about its information.  For example, the Sun version
+ does not give any access to the audio data itself.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class Audio {
     /** Construct an instance initialized with the audio
      *  signal given by the argument.  The argument is an array
@@ -142,7 +141,7 @@ public class Audio {
                 || (magic[3] != 0x64)) {
             throw new IllegalArgumentException(
                     "ptolemy.media.Audio: bad magic number in "
-                    + "stream header.  Not an audio file?");
+                            + "stream header.  Not an audio file?");
         }
 
         offset = input.readInt();
@@ -178,12 +177,7 @@ public class Audio {
     ////                      public members                         ////
 
     /** The file type identifier, 0x2E736E64 or '.snd' in ASCII. */
-    public byte[] magic = {
-        (byte) '.',
-        (byte) 's',
-        (byte) 'n',
-        (byte) 'd'
-    };
+    public byte[] magic = { (byte) '.', (byte) 's', (byte) 'n', (byte) 'd' };
 
     /** Offset of audio data relative to the start of the stream. */
     public int offset;
@@ -339,8 +333,7 @@ public class Audio {
      *  @return The audio data as an array of doubles.
      *  @exception IOException If an I/O error occurs reading the stream.
      */
-    public static double[] readAudio(DataInputStream input)
-            throws IOException {
+    public static double[] readAudio(DataInputStream input) throws IOException {
         Audio audio = new Audio(input);
         return audio.toDouble(0);
     }
@@ -404,9 +397,10 @@ public class Audio {
     /** Return a readable representation of the header data. */
     public String toString() {
         return "file ID tag = " + new String(magic) + "\n" + "offset = "
-            + offset + "\n" + "size = " + size + "\n" + "format code = " + format
-            + "\n" + "sampleRate = " + sampleRate + "\n" + "number of channels = "
-            + numChannels + "\n" + "info field = " + new String(info).trim();
+                + offset + "\n" + "size = " + size + "\n" + "format code = "
+                + format + "\n" + "sampleRate = " + sampleRate + "\n"
+                + "number of channels = " + numChannels + "\n"
+                + "info field = " + new String(info).trim();
     }
 
     /** Write the audio data to an output stream in the Sun audio format.
@@ -484,262 +478,17 @@ public class Audio {
     private static final int CLIP = 32635;
 
     // lookup table for the exponent.
-    private static final byte[] exp_lut = {
-        0,
-        0,
-        1,
-        1,
-        2,
-        2,
-        2,
-        2,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        3,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        4,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7,
-        7
-    };
+    private static final byte[] exp_lut = { 0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3,
+            3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5,
+            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+            5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+            6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7 };
 }

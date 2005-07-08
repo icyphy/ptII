@@ -1,30 +1,30 @@
 /* Check the input streams against a parameter value, ignoring absent values.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.copernicus.java.test;
 
 import ptolemy.actor.lib.Sink;
@@ -45,23 +45,22 @@ import ptolemy.util.StringUtilities;
 import java.util.ArrayList;
 import java.util.List;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CGNonStrictTest
 
 /**
-   NonStrictTest actor suitable for use with Copernicus.
+ NonStrictTest actor suitable for use with Copernicus.
 
-   This actor differs from actor.lib.NonStrictTest in that
-   the trainingMode parameter is a Parameter, not a SharedParameter.
+ This actor differs from actor.lib.NonStrictTest in that
+ the trainingMode parameter is a Parameter, not a SharedParameter.
 
-   @see Test
-   @author Christopher Brooks
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Redw (cxh)
-*/
+ @see Test
+ @author Christopher Brooks
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Redw (cxh)
+ */
 public class CGNonStrictTest extends Sink {
     // FIXME: we can't extend actor.lib.NonStrictTest here because
     // Copernicus deep codegen barfs:
@@ -130,7 +129,7 @@ public class CGNonStrictTest extends Sink {
      *  that changing it for any one instance in a model will change
      *  it for all instances in the model.
      */
-    public /*Shared*/ Parameter trainingMode;
+    public/*Shared*/Parameter trainingMode;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -216,13 +215,13 @@ public class CGNonStrictTest extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         if (input.getWidth() != 1) {
-            throw new IllegalActionException(this,
-                    "Width of input is " + input.getWidth()
+            throw new IllegalActionException(this, "Width of input is "
+                    + input.getWidth()
                     + " but NonStrictTest only supports a width of 1.");
         }
 
         boolean training = ((BooleanToken) trainingMode.getToken())
-            .booleanValue();
+                .booleanValue();
 
         if (training) {
             if (_trainingTokens == null) {
@@ -248,7 +247,7 @@ public class CGNonStrictTest extends Sink {
         }
 
         Token referenceToken = ((ArrayToken) (correctValues.getToken()))
-            .getElement(_numberOfInputTokensSeen);
+                .getElement(_numberOfInputTokensSeen);
 
         if (input.hasToken(0)) {
             Token token = input.get(0);
@@ -257,8 +256,8 @@ public class CGNonStrictTest extends Sink {
             if (token.isCloseTo(referenceToken, _tolerance).booleanValue() == false) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _iteration + ".\n"
-                        + "Value was: " + token + ". Should have been: "
-                        + referenceToken);
+                                + "Value was: " + token
+                                + ". Should have been: " + referenceToken);
             }
         }
 
@@ -277,14 +276,13 @@ public class CGNonStrictTest extends Sink {
         super.wrapup();
 
         boolean training = ((BooleanToken) trainingMode.getToken())
-            .booleanValue();
+                .booleanValue();
 
         if (!training && _initialized) {
             if (!_firedOnce) {
-                String errorMessage =
-                    "The fire() method of this actor was never called. "
-                    + "Usually, this is an error indicating that "
-                    + "starvation is occurring.";
+                String errorMessage = "The fire() method of this actor was never called. "
+                        + "Usually, this is an error indicating that "
+                        + "starvation is occurring.";
                 String fireCompatProperty = "ptolemy.actor.lib.NonStrictTest.fire.compat";
 
                 if (StringUtilities.getProperty(fireCompatProperty).length() > 0) {
@@ -298,13 +296,13 @@ public class CGNonStrictTest extends Sink {
             }
 
             if (_numberOfInputTokensSeen < ((ArrayToken) (correctValues
-                                                    .getToken())).length()) {
+                    .getToken())).length()) {
                 String errorMessage = "The test produced only "
-                    + _numberOfInputTokensSeen
-                    + " tokens, yet the correctValues parameter was "
-                    + "expecting "
-                    + ((ArrayToken) (correctValues.getToken())).length()
-                    + " tokens.";
+                        + _numberOfInputTokensSeen
+                        + " tokens, yet the correctValues parameter was "
+                        + "expecting "
+                        + ((ArrayToken) (correctValues.getToken())).length()
+                        + " tokens.";
 
                 System.err.println("Warning: '" + getFullName() + "' "
                         + errorMessage);
@@ -346,8 +344,7 @@ public class CGNonStrictTest extends Sink {
         }
 
         if (training
-                && ((_trainingTokens == null)
-                        || (_trainingTokens.size() == 0))) {
+                && ((_trainingTokens == null) || (_trainingTokens.size() == 0))) {
             System.err.println("Warning: '" + getFullName()
                     + "' The test produced 0 tokens.");
         }
@@ -359,13 +356,13 @@ public class CGNonStrictTest extends Sink {
     /** Exception message that is used if we are running under
      *  the nightly build and the trainingMode parameter is true.
      */
-    public static final String TRAINING_MODE_ERROR_MESSAGE =
-    "Training Mode set for test actor and isRunningNightlyBuild()\n"
-    + "  returned true, indicating that the\n"
-    + "  ptolemy.ptII.isRunningNightlyBuild property is set.\n"
-    + "  The trainingMode parameter should not be set in files\n"
-    + "  that are checked into the nightly build!"
-    + "  To run the tests in nightly build mode, use" + "     make nightly";
+    public static final String TRAINING_MODE_ERROR_MESSAGE = "Training Mode set for test actor and isRunningNightlyBuild()\n"
+            + "  returned true, indicating that the\n"
+            + "  ptolemy.ptII.isRunningNightlyBuild property is set.\n"
+            + "  The trainingMode parameter should not be set in files\n"
+            + "  that are checked into the nightly build!"
+            + "  To run the tests in nightly build mode, use"
+            + "     make nightly";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

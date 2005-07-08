@@ -1,30 +1,30 @@
 /* An actor that looks for a color in a Buffer.
 
-@Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.jmf;
 
 import javax.media.Buffer;
@@ -41,19 +41,18 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ColorFinder
 
 /**
-   An actor that searches for a color in a Buffer.
+ An actor that searches for a color in a Buffer.
 
-   @author Paul Yang, David Lee, James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Paul Yang, David Lee, James Yeh
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class ColorFinder extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -137,9 +136,9 @@ public class ColorFinder extends TypedAtomicActor {
             try {
                 yuvFormat = (YUVFormat) videoFormat;
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(this, ex,
-                        "Failed to cast " + videoFormat.getClass() + ":\n"
-                        + videoFormat + "\nto YUVFormat\n" + "in.getFormat() was: "
+                throw new IllegalActionException(this, ex, "Failed to cast "
+                        + videoFormat.getClass() + ":\n" + videoFormat
+                        + "\nto YUVFormat\n" + "in.getFormat() was: "
                         + in.getFormat().getClass()
                         + "\nPerhaps the video source is not generating YUV?");
             }
@@ -161,7 +160,7 @@ public class ColorFinder extends TypedAtomicActor {
                         int vComp = _getVComponent(x, y);
 
                         int compInClass = _yClass[yComp] & _uClass[uComp]
-                            & _vClass[vComp];
+                                & _vClass[vComp];
 
                         if (compInClass == 1) {
                             _sumX += x;
@@ -173,8 +172,7 @@ public class ColorFinder extends TypedAtomicActor {
 
                 if (_inCount > 0) {
                     double xLocation = (double) _sumX / _inCount;
-                    double yLocation = (double) (_frameHeight
-                            - (_sumY / _inCount));
+                    double yLocation = (double) (_frameHeight - (_sumY / _inCount));
                     outputX.send(0, new DoubleToken(xLocation));
                     outputY.send(0, new DoubleToken(yLocation));
 
@@ -267,24 +265,40 @@ public class ColorFinder extends TypedAtomicActor {
     ////                         private variables                 ////
     // FIXME should be parameters and moved to initialize.
     private int _frameWidth = 320;
+
     private int _frameHeight = 240;
 
     //public YUVFormat videoFormat = new YUVFormat();
     // FIXME This also should be moved to initialize.
     private byte[] YArray = new byte[_frameWidth * _frameHeight];
+
     private byte[] UArray = new byte[(_frameWidth / 2 * _frameHeight) / 2];
+
     private byte[] VArray = new byte[(_frameWidth / 2 * _frameHeight) / 2];
+
     private int _histSize = 256;
+
     private int _inCount = 0;
+
     private int _sumX = 0;
+
     private int _sumY = 0;
+
     private int _yLow;
+
     private int _yHigh;
+
     private int _uLow;
+
     private int _uHigh;
+
     private int _vLow;
+
     private int _vHigh;
+
     private int[] _yClass = new int[_histSize];
+
     private int[] _uClass = new int[_histSize];
+
     private int[] _vClass = new int[_histSize];
 }

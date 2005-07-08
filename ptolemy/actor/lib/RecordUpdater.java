@@ -1,30 +1,30 @@
 /* An actor that updates fields in a RecordToken.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import java.util.HashMap;
@@ -51,32 +51,31 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// RecordUpdater
 
 /**
-   On each firing, read one token from each input port and assemble them
-   into a RecordToken that contains the union of the original input record
-   and each of the update ports.  To use this class, instantiate it, and
-   then add input ports (instances of TypedIOPort).  This actor is polymorphic.
-   The type constraint is that the output record contains all the labels in
-   the input record plus the names of added input ports. The type of a field
-   in the output is the same as the type of the added input port, if that field
-   is updated by an added input port. If a field in the output is not updated
-   by an input port, its type is the same as the corresponding field in the
-   input record. For example, if the input record has type
-   {item: string, value: int}, and this actor has two added input ports with
-   name/type: value/double and id/int, then the output record will have type
-   {item: string, value: double, id: int}
+ On each firing, read one token from each input port and assemble them
+ into a RecordToken that contains the union of the original input record
+ and each of the update ports.  To use this class, instantiate it, and
+ then add input ports (instances of TypedIOPort).  This actor is polymorphic.
+ The type constraint is that the output record contains all the labels in
+ the input record plus the names of added input ports. The type of a field
+ in the output is the same as the type of the added input port, if that field
+ is updated by an added input port. If a field in the output is not updated
+ by an input port, its type is the same as the corresponding field in the
+ input record. For example, if the input record has type
+ {item: string, value: int}, and this actor has two added input ports with
+ name/type: value/double and id/int, then the output record will have type
+ {item: string, value: double, id: int}
 
-   @author Michael Shilman, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (yuhong)
-   @Pt.AcceptedRating Red (cxh)
-   @see RecordAssembler
-*/
+ @author Michael Shilman, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (yuhong)
+ @Pt.AcceptedRating Red (cxh)
+ @see RecordAssembler
+ */
 public class RecordUpdater extends TypedAtomicActor {
     /** Construct a RecordUpdater with the given container and name.
      *  @param container The container.
@@ -93,8 +92,8 @@ public class RecordUpdater extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         input = new TypedIOPort(this, "input", true, false);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"0\" y=\"0\" width=\"6\" "
                 + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
     }
 
@@ -215,8 +214,8 @@ public class RecordUpdater extends TypedAtomicActor {
 
         // Since the input port has a clone of the above RecordType, need to
         // get the type from the input port.
-        Inequality inequality = new Inequality(new FunctionTerm(),
-                output.getTypeTerm());
+        Inequality inequality = new Inequality(new FunctionTerm(), output
+                .getTypeTerm());
         constraints.add(inequality);
 
         return constraints;

@@ -1,30 +1,30 @@
 /* Linear state space model in the CT domain.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.lib;
 
 import java.util.Iterator;
@@ -46,45 +46,44 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LinearStateSpace
 
 /**
-   Linear state space model in the CT domain.
+ Linear state space model in the CT domain.
 
-   <p>The State-Space model implements a system whose behavior is defined by:
-   <pre>
-   dx/dt = Ax + Bu
-   y = Cx + Du
-   x(0) = x0
-   </pre>
-   where x is the state vector, u is the input vector, and y is the output
-   vector. The matrix coefficients must have the following characteristics:
-   <pre>
-   A must be an n-by-n matrix, where n is the number of states.
-   B must be an n-by-m matrix, where m is the number of inputs.
-   C must be an r-by-n matrix, where r is the number of outputs.
-   D must be an r-by-m matrix.
-   </pre>
-   The actor accepts <i>m</i> inputs and generates <i>r</i> outputs
-   through a multi-input port and a multi-output port. The widths of the
-   ports must match the number of rows and columns in corresponding
-   matrices, otherwise, an exception will be thrown.
-   <P>
-   This actor works like a higher-order function. It is opaque after
-   construction or the change of parameters. Upon preinitialization,
-   the actor will create a subsystem using integrators, adders, and
-   scales. After that, the actor becomes transparent, and the director
-   takes over the control of the actors contained by this actor.
+ <p>The State-Space model implements a system whose behavior is defined by:
+ <pre>
+ dx/dt = Ax + Bu
+ y = Cx + Du
+ x(0) = x0
+ </pre>
+ where x is the state vector, u is the input vector, and y is the output
+ vector. The matrix coefficients must have the following characteristics:
+ <pre>
+ A must be an n-by-n matrix, where n is the number of states.
+ B must be an n-by-m matrix, where m is the number of inputs.
+ C must be an r-by-n matrix, where r is the number of outputs.
+ D must be an r-by-m matrix.
+ </pre>
+ The actor accepts <i>m</i> inputs and generates <i>r</i> outputs
+ through a multi-input port and a multi-output port. The widths of the
+ ports must match the number of rows and columns in corresponding
+ matrices, otherwise, an exception will be thrown.
+ <P>
+ This actor works like a higher-order function. It is opaque after
+ construction or the change of parameters. Upon preinitialization,
+ the actor will create a subsystem using integrators, adders, and
+ scales. After that, the actor becomes transparent, and the director
+ takes over the control of the actors contained by this actor.
 
-   @author Jie Liu
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.domains.ct.kernel.CTBaseIntegrator
-*/
+ @author Jie Liu
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.domains.ct.kernel.CTBaseIntegrator
+ */
 public class LinearStateSpace extends TypedCompositeActor {
     /** Construct the composite actor with a name and a container.
      *  This constructor creates the ports, parameters, and the icon.
@@ -106,16 +105,8 @@ public class LinearStateSpace extends TypedCompositeActor {
         _opaque = true;
         _requestInitialization = true;
 
-        double[][] one = {
-            {
-                1.0
-            }
-        };
-        double[][] zero = {
-            {
-                0.0
-            }
-        };
+        double[][] one = { { 1.0 } };
+        double[][] zero = { { 0.0 } };
 
         A = new Parameter(this, "A", new DoubleMatrixToken(one));
         A.setTypeEquals(BaseType.DOUBLE_MATRIX);
@@ -135,13 +126,12 @@ public class LinearStateSpace extends TypedCompositeActor {
         setClassName("ptolemy.domains.ct.lib.LinearStateSpace");
 
         // icon
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-50\" y=\"-30\" "
-                + "width=\"100\" height=\"60\" " + "style=\"fill:white\"/>\n"
-                + "<text x=\"-45\" y=\"-10\" " + "style=\"font-size:14\">\n"
-                + "dx/dt=Ax+Bu " + "</text>\n" + "<text x=\"-45\" y=\"10\" "
-                + "style=\"font-size:14\">\n" + "    y=Cx+Du" + "</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-50\" y=\"-30\" " + "width=\"100\" height=\"60\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-45\" y=\"-10\" "
+                + "style=\"font-size:14\">\n" + "dx/dt=Ax+Bu " + "</text>\n"
+                + "<text x=\"-45\" y=\"10\" " + "style=\"font-size:14\">\n"
+                + "    y=Cx+Du" + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -250,7 +240,7 @@ public class LinearStateSpace extends TypedCompositeActor {
         } else if (attribute == initialStates) {
             // The initialStates parameter should be a row vector.
             DoubleMatrixToken token = (DoubleMatrixToken) initialStates
-                .getToken();
+                    .getToken();
 
             if ((token.getRowCount() != 1) || (token.getColumnCount() < 1)) {
                 throw new IllegalActionException(this,
@@ -317,9 +307,10 @@ public class LinearStateSpace extends TypedCompositeActor {
         DoubleMatrixToken c = (DoubleMatrixToken) C.getToken();
         int r = c.getRowCount();
 
-        /* DoubleMatrixToken d = (DoubleMatrixToken)*/ D.getToken();
+        /* DoubleMatrixToken d = (DoubleMatrixToken)*/D.getToken();
 
-        /* DoubleMatrixToken x0 = (DoubleMatrixToken)*/ initialStates.getToken();
+        /* DoubleMatrixToken x0 = (DoubleMatrixToken)*/initialStates
+                .getToken();
 
         try {
             _workspace.getWriteAccess();
@@ -396,8 +387,8 @@ public class LinearStateSpace extends TypedCompositeActor {
                 // Create the output scales only if the corresponding
                 // 'c' element is not 0.
                 for (int i = 0; i < n; i++) {
-                    outputScales[l][i] = new Scale(this,
-                            "outputScale_" + l + "_" + i);
+                    outputScales[l][i] = new Scale(this, "outputScale_" + l
+                            + "_" + i);
                     outputScales[l][i].factor.setExpression("C(" + l + ", " + i
                             + ")");
                     outputScales[l][i].input.link(states[i]);
@@ -411,8 +402,8 @@ public class LinearStateSpace extends TypedCompositeActor {
             for (int l = 0; l < r; l++) {
                 for (int j = 0; j < m; j++) {
                     // Create the scale only if the element is not 0.
-                    feedThrough[l][j] = new Scale(this,
-                            "feedThrough_" + l + "_" + j);
+                    feedThrough[l][j] = new Scale(this, "feedThrough_" + l
+                            + "_" + j);
                     feedThrough[l][j].factor.setExpression("D(" + l + ", " + j
                             + ")");
                     feedThrough[l][j].input.link(inputs[j]);
@@ -471,26 +462,27 @@ public class LinearStateSpace extends TypedCompositeActor {
         if (b.getRowCount() != n) {
             throw new IllegalActionException(this,
                     "The number of rows of the B matrix (" + b.getRowCount()
-                    + ") should be equal to "
-                    + "the number of rows of the A matrix (" + n + ").");
+                            + ") should be equal to "
+                            + "the number of rows of the A matrix (" + n + ").");
         }
 
         int m = b.getColumnCount();
 
         if (input.getWidth() != m) {
             throw new IllegalActionException(this,
-                    "The number of columns of the B matrix (" + b.getColumnCount()
-                    + ") should be equal to " + "the width of the input port ("
-                    + input.getWidth() + ").");
+                    "The number of columns of the B matrix ("
+                            + b.getColumnCount() + ") should be equal to "
+                            + "the width of the input port ("
+                            + input.getWidth() + ").");
         }
 
         DoubleMatrixToken c = (DoubleMatrixToken) C.getToken();
 
         if (c.getColumnCount() != n) {
             throw new IllegalActionException(this,
-                    "The number of columns of the C matrix (" + c.getColumnCount()
-                    + ") should be equal to "
-                    + "the number of rows of the A matrix (" + n + ").");
+                    "The number of columns of the C matrix ("
+                            + c.getColumnCount() + ") should be equal to "
+                            + "the number of rows of the A matrix (" + n + ").");
         }
 
         // The output width is not checked, since we may only want
@@ -500,16 +492,17 @@ public class LinearStateSpace extends TypedCompositeActor {
         if (c.getRowCount() != d.getRowCount()) {
             throw new IllegalActionException(this,
                     "The number of rows of the D matrix (" + d.getRowCount()
-                    + ") should be equal to "
-                    + "the number of rows of the C matrix (" + c.getRowCount()
-                    + ").");
+                            + ") should be equal to "
+                            + "the number of rows of the C matrix ("
+                            + c.getRowCount() + ").");
         }
 
         if (d.getColumnCount() != input.getWidth()) {
             throw new IllegalActionException(this,
-                    "The number of columns of the D matrix (" + d.getColumnCount()
-                    + ") should be equal to " + "the width of the input port ("
-                    + input.getWidth() + ").");
+                    "The number of columns of the D matrix ("
+                            + d.getColumnCount() + ") should be equal to "
+                            + "the width of the input port ("
+                            + input.getWidth() + ").");
         }
 
         DoubleMatrixToken x0 = (DoubleMatrixToken) initialStates.getToken();
@@ -517,8 +510,9 @@ public class LinearStateSpace extends TypedCompositeActor {
         if (x0.getColumnCount() != n) {
             throw new IllegalActionException(this,
                     "The number of initial states (" + x0.getColumnCount()
-                    + ") should equal to "
-                    + "the number of columns of the A matrix (" + n + ").");
+                            + ") should equal to "
+                            + "the number of columns of the A matrix (" + n
+                            + ").");
         }
     }
 

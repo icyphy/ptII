@@ -1,35 +1,35 @@
 /*
-  @Copyright (c) 1998-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-
-
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
 
 
-*/
+
+
+ */
 package diva.graph.tutorial;
 
 import java.awt.GridLayout;
@@ -53,7 +53,6 @@ import diva.graph.layout.RandomLayout;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
 
-
 /**
  * This tutorial expands on the simple tutorial and turns it into
  * a more complete graph editor.  Along with the editing window,
@@ -67,8 +66,11 @@ import diva.gui.BasicFrame;
  */
 public class EditorTutorial {
     LayoutTarget _target;
+
     GlobalLayout _layout;
+
     JGraph _editor;
+
     BasicGraphModel _model;
 
     /**
@@ -79,11 +81,11 @@ public class EditorTutorial {
         context.setSize(800, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    new EditorTutorial(context);
-                    context.setVisible(true);
-                }
-            });
+            public void run() {
+                new EditorTutorial(context);
+                context.setVisible(true);
+            }
+        });
     }
 
     public EditorTutorial(AppContext context) {
@@ -193,14 +195,15 @@ public class EditorTutorial {
             _applyBtn.setEnabled(true);
         }
 
-        private class SelectionListener implements java.awt.event.ActionListener {
+        private class SelectionListener implements
+                java.awt.event.ActionListener {
             public void actionPerformed(ActionEvent e) {
-                /* String name = (String) */ _layoutList.getSelectedItem();
+                /* String name = (String) */_layoutList.getSelectedItem();
             }
         }
 
-        private class LayoutActionListener
-            implements java.awt.event.ActionListener {
+        private class LayoutActionListener implements
+                java.awt.event.ActionListener {
             public void actionPerformed(ActionEvent e) {
                 String name = (String) _layoutList.getSelectedItem();
                 GlobalLayout l = (GlobalLayout) _nameMap.get(name);

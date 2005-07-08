@@ -1,29 +1,29 @@
 /* Replace method calls on parameter objects.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.HashMap;
@@ -96,30 +96,29 @@ import soot.toolkits.scalar.SimpleLocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
 import soot.toolkits.scalar.UnusedLocalEliminator;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// InlineParameterTransformer
 
 /**
-   A Transformer that is responsible for inlining the values of
-   parameters and settable attributes.  The values of the parameters are
-   taken from the model specified for this transformer.  This transformer
-   replaces a parameter with a field that points to a properly
-   initialized token that contains the value of the parameter.  Settable
-   attributes other than parameters are handled similarly and are
-   replaces with their expression.  This transformer also properly
-   inlines code from the attribute changed method that handles the change
-   of any parameter values.
+ A Transformer that is responsible for inlining the values of
+ parameters and settable attributes.  The values of the parameters are
+ taken from the model specified for this transformer.  This transformer
+ replaces a parameter with a field that points to a properly
+ initialized token that contains the value of the parameter.  Settable
+ attributes other than parameters are handled similarly and are
+ replaces with their expression.  This transformer also properly
+ inlines code from the attribute changed method that handles the change
+ of any parameter values.
 
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
-public class InlineParameterTransformer extends SceneTransformer
-    implements HasPhaseOptions {
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class InlineParameterTransformer extends SceneTransformer implements
+        HasPhaseOptions {
     /** Construct a new transformer
      */
     private InlineParameterTransformer(CompositeActor model) {
@@ -172,21 +171,22 @@ public class InlineParameterTransformer extends SceneTransformer
         // and tag the generated field with that value.  This will be used
         // later by the token inliner...
         _createTokenAndExpressionFields(ModelTransformer.getModelClass(),
-                _model, _model, attributeToValueFieldMap, constantAnalysis, debug);
+                _model, _model, attributeToValueFieldMap, constantAnalysis,
+                debug);
 
         // Replace the token calls... on ALL the classes.
-        for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-             classes.hasNext();) {
+        for (Iterator classes = Scene.v().getApplicationClasses().iterator(); classes
+                .hasNext();) {
             SootClass theClass = (SootClass) classes.next();
 
             if (SootUtilities.derivesFrom(theClass,
-                        PtolemyUtilities.inequalityTermClass)) {
+                    PtolemyUtilities.inequalityTermClass)) {
                 continue;
             }
 
             // Inline calls to parameter.getToken and getExpression
-            for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
+            for (Iterator methods = theClass.getMethods().iterator(); methods
+                    .hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
 
                 // What about static methods?  They don't have a this
@@ -213,8 +213,8 @@ public class InlineParameterTransformer extends SceneTransformer
                     // control flow to avoid infinite recursion...
                     LocalNameStandardizer.v().transform(body,
                             _phaseName + ".lns");
-                    NamedObjEqualityEliminator.eliminateNamedObjComparisons(method,
-                            debug);
+                    NamedObjEqualityEliminator.eliminateNamedObjComparisons(
+                            method, debug);
                     LocalSplitter.v().transform(body, _phaseName + ".ls");
                     LocalNameStandardizer.v().transform(body,
                             _phaseName + ".lns");
@@ -256,8 +256,8 @@ public class InlineParameterTransformer extends SceneTransformer
         NamedObjAnalysis namedObjAnalysis = new NamedObjAnalysis(method,
                 referredObject);
 
-        for (Iterator units = body.getUnits().snapshotIterator();
-             units.hasNext();) {
+        for (Iterator units = body.getUnits().snapshotIterator(); units
+                .hasNext();) {
             Stmt stmt = (Stmt) units.next();
 
             if (!stmt.containsInvokeExpr()) {
@@ -289,8 +289,9 @@ public class InlineParameterTransformer extends SceneTransformer
                         // Inline calls to attribute changed that do
                         // not occur from within another
                         // attributeChanged method.
-                        if (r.getMethod().getSubSignature().equals(PtolemyUtilities.attributeChangedMethod
-                                    .getSubSignature())) {
+                        if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.attributeChangedMethod
+                                        .getSubSignature())) {
                             // If we are calling attribute changed on
                             // one of the classes we are generating
                             // code for, then inline it.
@@ -299,23 +300,26 @@ public class InlineParameterTransformer extends SceneTransformer
 
                                 if (r instanceof VirtualInvokeExpr) {
                                     inlinee = SootUtilities
-                                        .resolveVirtualInvokationForInlining(type
-                                                .getSootClass(),
-                                                PtolemyUtilities.attributeChangedMethod);
+                                            .resolveVirtualInvokationForInlining(
+                                                    type.getSootClass(),
+                                                    PtolemyUtilities.attributeChangedMethod);
                                 } else if (r instanceof SpecialInvokeExpr) {
                                     inlinee = SootUtilities
-                                        .resolveSpecialInvokationForInlining((SpecialInvokeExpr) r,
-                                                method);
+                                            .resolveSpecialInvokationForInlining(
+                                                    (SpecialInvokeExpr) r,
+                                                    method);
                                 }
 
                                 if (inlinee.equals(method)) {
-                                    System.out.println("Skipping inline at "
-                                            + r
-                                            + " because we can't inline methods into themselves.");
+                                    System.out
+                                            .println("Skipping inline at "
+                                                    + r
+                                                    + " because we can't inline methods into themselves.");
                                 } else {
                                     if (debug) {
-                                        System.out.println(
-                                                "Inlining method call: " + r);
+                                        System.out
+                                                .println("Inlining method call: "
+                                                        + r);
                                     }
 
                                     if (debug) {
@@ -323,7 +327,8 @@ public class InlineParameterTransformer extends SceneTransformer
                                                 + inlinee);
                                     }
 
-                                    SiteInliner.inlineSite(inlinee, stmt, method);
+                                    SiteInliner.inlineSite(inlinee, stmt,
+                                            method);
 
                                     doneSomething = true;
                                 }
@@ -345,14 +350,13 @@ public class InlineParameterTransformer extends SceneTransformer
                     Value[] argValues = new Value[r.getArgCount()];
                     int argCount = 0;
 
-                    for (Iterator args = r.getArgs().iterator();
-                         args.hasNext();) {
+                    for (Iterator args = r.getArgs().iterator(); args.hasNext();) {
                         Value arg = (Value) args.next();
 
                         //  if (debug) System.out.println("arg = " + arg);
                         if (Evaluator.isValueConstantValued(arg)) {
                             argValues[argCount++] = Evaluator
-                                .getConstantValueOf(arg);
+                                    .getConstantValueOf(arg);
 
                             if (debug) {
                                 System.out.println("argument = "
@@ -364,12 +368,12 @@ public class InlineParameterTransformer extends SceneTransformer
                     }
 
                     if (SootUtilities.derivesFrom(type.getSootClass(),
-                                PtolemyUtilities.settableClass)) {
+                            PtolemyUtilities.settableClass)) {
                         // If we are invoking a method on a
                         // variable class, then attempt to get the
                         // constant value of the variable.
                         Attribute attribute = (Attribute) namedObjAnalysis
-                            .getObject((Local) r.getBase());
+                                .getObject((Local) r.getBase());
 
                         if (debug) {
                             System.out.println("Settable base = " + attribute);
@@ -395,22 +399,23 @@ public class InlineParameterTransformer extends SceneTransformer
                         // Inline getType, setTypeEquals, etc...
                         if (attribute instanceof Typeable) {
                             if (PtolemyUtilities.inlineTypeableMethods(body,
-                                        stmt, box, r,
-                                        (Typeable) attribute)) {
+                                    stmt, box, r, (Typeable) attribute)) {
                                 continue;
                             }
                         }
 
                         // Inline namedObj methods on the attribute.
-                        if (r.getMethod().getSubSignature().equals(PtolemyUtilities.getFullNameMethod
-                                    .getSubSignature())) {
-                            box.setValue(StringConstant.v(
-                                                 attribute.getFullName()));
+                        if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.getFullNameMethod
+                                        .getSubSignature())) {
+                            box.setValue(StringConstant.v(attribute
+                                    .getFullName()));
                             continue;
                         }
 
-                        if (r.getMethod().getSubSignature().equals(PtolemyUtilities.getNameMethod
-                                    .getSubSignature())) {
+                        if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.getNameMethod
+                                        .getSubSignature())) {
                             box.setValue(StringConstant.v(attribute.getName()));
                             continue;
                         }
@@ -424,16 +429,17 @@ public class InlineParameterTransformer extends SceneTransformer
                         if (attribute == null) {
                             throw new InternalErrorException(
                                     "Attribute == null?, "
-                                    + "this should not be happening: " + r);
+                                            + "this should not be happening: "
+                                            + r);
                         }
 
                         Entity container = FieldsForEntitiesTransformer
-                            .getEntityContainerOfObject(attribute);
+                                .getEntityContainerOfObject(attribute);
                         Local thisLocal = body.getThisLocal();
 
-                        Local containerLocal = getAttributeContainerRef(container,
-                                method, (Local) r.getBase(), stmt, localDefs,
-                                localUses, stmt);
+                        Local containerLocal = getAttributeContainerRef(
+                                container, method, (Local) r.getBase(), stmt,
+                                localDefs, localUses, stmt);
 
                         // FieldsForEntitiesTransformer.getLocalReferenceForEntity(
                         //                                 container, theClass, thisLocal, body, stmt, _options);
@@ -444,13 +450,17 @@ public class InlineParameterTransformer extends SceneTransformer
                             // Deal with tricky methods separately.
                             // Match the subsignature so we catch
                             // isomorphic subclasses as well...
-                            if (r.getMethod().getSubSignature().equals(PtolemyUtilities.variableConstructorWithToken
-                                        .getSubSignature())) {
+                            if (r
+                                    .getMethod()
+                                    .getSubSignature()
+                                    .equals(
+                                            PtolemyUtilities.variableConstructorWithToken
+                                                    .getSubSignature())) {
                                 SootClass variableClass = r.getMethod()
-                                    .getDeclaringClass();
+                                        .getDeclaringClass();
                                 SootMethod constructorWithoutToken = variableClass
-                                    .getMethod(PtolemyUtilities.variableConstructorWithoutToken
-                                            .getSubSignature());
+                                        .getMethod(PtolemyUtilities.variableConstructorWithoutToken
+                                                .getSubSignature());
 
                                 // Replace the three-argument
                                 // constructor with a two-argument
@@ -469,10 +479,10 @@ public class InlineParameterTransformer extends SceneTransformer
                                 // constructor.  It is easier to
                                 // just deal with it now...
                                 // Create a new two-argument constructor.
-                                box.setValue(Jimple.v().newSpecialInvokeExpr((Local) r
-                                                     .getBase(),
-                                                     constructorWithoutToken, r.getArg(0),
-                                                     r.getArg(1)));
+                                box.setValue(Jimple.v().newSpecialInvokeExpr(
+                                        (Local) r.getBase(),
+                                        constructorWithoutToken, r.getArg(0),
+                                        r.getArg(1)));
 
                                 // Call setToken with the actual value of the parameter
                                 Token token;
@@ -485,107 +495,140 @@ public class InlineParameterTransformer extends SceneTransformer
                                 } catch (Exception ex) {
                                     throw new RuntimeException(
                                             "Illegal parameter value = "
-                                            + argValues[0]);
+                                                    + argValues[0]);
                                 }
 
                                 String localName = "_CGTokenLocal";
                                 Local tokenLocal = PtolemyUtilities
-                                    .buildConstantTokenLocal(body,
-                                            stmt, token, localName);
+                                        .buildConstantTokenLocal(body, stmt,
+                                                token, localName);
 
-                                body.getUnits().insertAfter(Jimple.v()
-                                        .newInvokeStmt(Jimple.v()
-                                                .newVirtualInvokeExpr((Local) r
-                                                        .getBase(),
-                                                        PtolemyUtilities.variableSetTokenMethod,
-                                                        tokenLocal)), stmt);
+                                body
+                                        .getUnits()
+                                        .insertAfter(
+                                                Jimple
+                                                        .v()
+                                                        .newInvokeStmt(
+                                                                Jimple
+                                                                        .v()
+                                                                        .newVirtualInvokeExpr(
+                                                                                (Local) r
+                                                                                        .getBase(),
+                                                                                PtolemyUtilities.variableSetTokenMethod,
+                                                                                tokenLocal)),
+                                                stmt);
                                 doneSomething = true;
-                            } else if (r.getMethod().getName().equals("getToken")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "getToken")) {
                                 if (debug) {
-                                    System.out.println(
-                                            "Replacing getToken on Variable");
+                                    System.out
+                                            .println("Replacing getToken on Variable");
                                 }
 
                                 // replace the method call with a field ref.
                                 SootField tokenField = (SootField) attributeToValueFieldMap
-                                    .get(attribute);
+                                        .get(attribute);
 
                                 if (tokenField == null) {
                                     throw new RuntimeException(
                                             "No tokenField found for attribute "
-                                            + attribute);
+                                                    + attribute);
                                 }
 
                                 if (stmt instanceof InvokeStmt) {
                                     body.getUnits().remove(stmt);
                                 } else {
-                                    box.setValue(Jimple.v().newInstanceFieldRef(containerLocal,
-                                                         tokenField));
+                                    box
+                                            .setValue(Jimple.v()
+                                                    .newInstanceFieldRef(
+                                                            containerLocal,
+                                                            tokenField));
                                 }
 
                                 doneSomething = true;
-                            } else if (r.getMethod().getName().equals("setToken")
-                                    || r.getMethod().getName().equals("_setTokenAndNotify")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "setToken")
+                                    || r.getMethod().getName().equals(
+                                            "_setTokenAndNotify")) {
                                 if (debug) {
-                                    System.out.println(
-                                            "Replacing setToken on Variable");
+                                    System.out
+                                            .println("Replacing setToken on Variable");
                                 }
 
                                 // replace the entire statement
                                 // (which must be an invokeStmt anyway)
                                 // with an assignment to the field of the first argument.
                                 SootField tokenField = (SootField) attributeToValueFieldMap
-                                    .get(attribute);
+                                        .get(attribute);
 
                                 if (tokenField == null) {
                                     throw new RuntimeException(
                                             "No tokenField found for attribute "
-                                            + attribute);
+                                                    + attribute);
                                 }
 
-                                Local tokenLocal = Jimple.v().newLocal("convertedToken",
-                                        tokenField.getType());
+                                Local tokenLocal = Jimple.v().newLocal(
+                                        "convertedToken", tokenField.getType());
                                 body.getLocals().add(tokenLocal);
 
                                 // Convert the token to the type of the variable.
                                 Local typeLocal = PtolemyUtilities
-                                    .buildConstantTypeLocal(body,
-                                            stmt,
-                                            ((Variable) attribute)
-                                            .getType());
-                                body.getUnits().insertBefore(Jimple.v()
-                                        .newAssignStmt(tokenLocal,
-                                                Jimple.v()
-                                                .newInterfaceInvokeExpr(typeLocal,
-                                                        PtolemyUtilities.typeConvertMethod,
-                                                        r.getArg(0))), stmt);
-                                body.getUnits().insertBefore(Jimple.v()
-                                        .newAssignStmt(tokenLocal,
-                                                Jimple.v().newCastExpr(tokenLocal,
+                                        .buildConstantTypeLocal(body, stmt,
+                                                ((Variable) attribute)
+                                                        .getType());
+                                body
+                                        .getUnits()
+                                        .insertBefore(
+                                                Jimple
+                                                        .v()
+                                                        .newAssignStmt(
+                                                                tokenLocal,
+                                                                Jimple
+                                                                        .v()
+                                                                        .newInterfaceInvokeExpr(
+                                                                                typeLocal,
+                                                                                PtolemyUtilities.typeConvertMethod,
+                                                                                r
+                                                                                        .getArg(0))),
+                                                stmt);
+                                body.getUnits().insertBefore(
+                                        Jimple.v().newAssignStmt(
+                                                tokenLocal,
+                                                Jimple.v().newCastExpr(
+                                                        tokenLocal,
                                                         tokenField.getType())),
                                         stmt);
 
                                 // Assign the value field for the variable.
-                                body.getUnits().insertBefore(Jimple.v()
-                                        .newAssignStmt(Jimple.v()
-                                                .newInstanceFieldRef(containerLocal,
-                                                        tokenField), tokenLocal),
-                                        stmt);
+                                body
+                                        .getUnits()
+                                        .insertBefore(
+                                                Jimple
+                                                        .v()
+                                                        .newAssignStmt(
+                                                                Jimple
+                                                                        .v()
+                                                                        .newInstanceFieldRef(
+                                                                                containerLocal,
+                                                                                tokenField),
+                                                                tokenLocal),
+                                                stmt);
 
                                 // Invoke attributeChanged on the
                                 // container of the variable.
-                                PtolemyUtilities.callAttributeChanged(containerLocal,
-                                        (Local) r.getBase(), theClass, method,
-                                        body, stmt);
+                                PtolemyUtilities.callAttributeChanged(
+                                        containerLocal, (Local) r.getBase(),
+                                        theClass, method, body, stmt);
 
                                 // remove the old call.
                                 body.getUnits().remove(stmt);
                                 doneSomething = true;
-                            } else if (r.getMethod().getSubSignature().equals(PtolemyUtilities.getExpressionMethod
-                                               .getSubSignature())) {
+                            } else if (r.getMethod().getSubSignature().equals(
+                                    PtolemyUtilities.getExpressionMethod
+                                            .getSubSignature())) {
                                 if (debug) {
-                                    System.out.println(
-                                            "Replacing getExpression on Variable");
+                                    System.out
+                                            .println("Replacing getExpression on Variable");
                                 }
 
                                 // First get the token out of the
@@ -593,26 +636,28 @@ public class InlineParameterTransformer extends SceneTransformer
                                 // its toString method to get the
                                 // expression.
                                 SootField tokenField = (SootField) attributeToValueFieldMap
-                                    .get(attribute);
+                                        .get(attribute);
 
                                 if (tokenField == null) {
                                     throw new RuntimeException(
                                             "No tokenField found for attribute "
-                                            + attribute);
+                                                    + attribute);
                                 }
 
                                 String localName = "_CGTokenLocal";
-                                Local tokenLocal = Jimple.v().newLocal(localName,
-                                        tokenField.getType());
+                                Local tokenLocal = Jimple.v().newLocal(
+                                        localName, tokenField.getType());
                                 body.getLocals().add(tokenLocal);
 
-                                body.getUnits().insertBefore(Jimple.v()
-                                        .newAssignStmt(tokenLocal,
-                                                Jimple.v()
-                                                .newInstanceFieldRef(containerLocal,
+                                body.getUnits().insertBefore(
+                                        Jimple.v().newAssignStmt(
+                                                tokenLocal,
+                                                Jimple.v().newInstanceFieldRef(
+                                                        containerLocal,
                                                         tokenField)), stmt);
-                                box.setValue(Jimple.v().newVirtualInvokeExpr(tokenLocal,
-                                                     PtolemyUtilities.toStringMethod));
+                                box.setValue(Jimple.v().newVirtualInvokeExpr(
+                                        tokenLocal,
+                                        PtolemyUtilities.toStringMethod));
                                 doneSomething = true;
 
                                 // FIXME null result => ""
@@ -627,14 +672,15 @@ public class InlineParameterTransformer extends SceneTransformer
                                 // early on.  Beware variables used to
                                 // evaluate expressions!
                                 if (debug) {
-                                    System.out.println(
-                                            "Replacing setExpression on Variable");
+                                    System.out
+                                            .println("Replacing setExpression on Variable");
                                 }
 
                                 // Call attribute changed AFTER we set the token.
-                                PtolemyUtilities.callAttributeChanged(containerLocal,
-                                        (Local) r.getBase(), theClass, method,
-                                        body, body.getUnits().getSuccOf(stmt));
+                                PtolemyUtilities.callAttributeChanged(
+                                        containerLocal, (Local) r.getBase(),
+                                        theClass, method, body, body.getUnits()
+                                                .getSuccOf(stmt));
 
                                 Token token;
 
@@ -646,28 +692,37 @@ public class InlineParameterTransformer extends SceneTransformer
                                 } catch (Exception ex) {
                                     throw new RuntimeException(
                                             "Illegal parameter value = "
-                                            + argValues[0]);
+                                                    + argValues[0]);
                                 }
 
                                 // Create code to instantiate the token
                                 SootField tokenField = (SootField) attributeToValueFieldMap
-                                    .get(attribute);
+                                        .get(attribute);
 
                                 if (tokenField == null) {
                                     throw new RuntimeException(
                                             "No tokenField found for attribute "
-                                            + attribute);
+                                                    + attribute);
                                 }
 
                                 String localName = "_CGTokenLocal";
                                 Local tokenLocal = PtolemyUtilities
-                                    .buildConstantTokenLocal(body,
-                                            stmt, token, localName);
+                                        .buildConstantTokenLocal(body, stmt,
+                                                token, localName);
 
-                                body.getUnits().swapWith(stmt,
-                                        Jimple.v().newAssignStmt(Jimple.v()
-                                                .newInstanceFieldRef(containerLocal,
-                                                        tokenField), tokenLocal));
+                                body
+                                        .getUnits()
+                                        .swapWith(
+                                                stmt,
+                                                Jimple
+                                                        .v()
+                                                        .newAssignStmt(
+                                                                Jimple
+                                                                        .v()
+                                                                        .newInstanceFieldRef(
+                                                                                containerLocal,
+                                                                                tokenField),
+                                                                tokenLocal));
                                 doneSomething = true;
                             } else if (r.getMethod().getName().equals("update")) {
                                 // FIXME: for PortParameters.
@@ -676,21 +731,24 @@ public class InlineParameterTransformer extends SceneTransformer
 
                                 if (r instanceof VirtualInvokeExpr) {
                                     inlinee = SootUtilities
-                                        .resolveVirtualInvokationForInlining(type
-                                                .getSootClass(),
-                                                PtolemyUtilities.portParameterUpdateMethod);
+                                            .resolveVirtualInvokationForInlining(
+                                                    type.getSootClass(),
+                                                    PtolemyUtilities.portParameterUpdateMethod);
                                 } else if (r instanceof SpecialInvokeExpr) {
                                     inlinee = SootUtilities
-                                        .resolveSpecialInvokationForInlining((SpecialInvokeExpr) r,
-                                                method);
+                                            .resolveSpecialInvokationForInlining(
+                                                    (SpecialInvokeExpr) r,
+                                                    method);
                                 }
 
                                 SiteInliner.inlineSite(inlinee, stmt, method);
-                            } else if (r.getMethod().getName().equals("setUnknown")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "setUnknown")) {
                                 // FIXME: for PortParameters.
                                 body.getUnits().remove(stmt);
-                            } else if (r.getMethod().getSubSignature().equals(PtolemyUtilities.portParameterGetPortMethod
-                                               .getSubSignature())) {
+                            } else if (r.getMethod().getSubSignature().equals(
+                                    PtolemyUtilities.portParameterGetPortMethod
+                                            .getSubSignature())) {
                                 //   PortParameter parameter =
                                 //                                     (PortParameter)attribute;
                                 //                                 ParameterPort port = parameter.getPort();
@@ -699,104 +757,128 @@ public class InlineParameterTransformer extends SceneTransformer
                                 //                                             port);
                                 //                                 box.setValue(Jimple.v().newInstanceFieldRef(
                                 //                                                      body.getThisLocal(), field));
-                            } else if (r.getMethod().getName().equals("addChoice")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "addChoice")) {
                                 // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
                             } else if (r.getMethod().getName().equals("_debug")) {
                                 // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
-                            } else if (r.getMethod().getName().equals("setStringMode")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "setStringMode")) {
                                 // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
-                            } else if (r.getMethod().getName().equals("setPersistent")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "setPersistent")) {
                                 // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
-                            } else if (r.getMethod().getName().equals("setVisibility")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "setVisibility")) {
                                 // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
-                            } else if (r.getMethod().getName().equals("validate")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "validate")) {
                                 // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
-                            } else if (r.getMethod().getName().equals("getClass")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "getClass")) {
                                 // Don't remove. Token unboxing might
                                 // deal with this.
                             } else {
                                 if (!r.getMethod().getDeclaringClass()
                                         .isApplicationClass()) {
-                                    throw new RuntimeException("Found unknown "
-                                            + "variable method invocation of method "
-                                            + r.getMethod()
-                                            + " that cannot be removed!");
+                                    throw new RuntimeException(
+                                            "Found unknown "
+                                                    + "variable method invocation of method "
+                                                    + r.getMethod()
+                                                    + " that cannot be removed!");
                                 }
                             }
                         } else { // if (false) { //FIXME
-                                 // It's just settable, so handle get/setExpression
+                            // It's just settable, so handle get/setExpression
 
-                            if (r.getMethod().getSubSignature().equals(PtolemyUtilities.getExpressionMethod
-                                        .getSubSignature())) {
+                            if (r.getMethod().getSubSignature().equals(
+                                    PtolemyUtilities.getExpressionMethod
+                                            .getSubSignature())) {
                                 if (debug) {
-                                    System.out.println(
-                                            "Replacing getExpression on Settable");
+                                    System.out
+                                            .println("Replacing getExpression on Settable");
                                 }
 
-                                box.setValue(Jimple.v().newInstanceFieldRef(containerLocal,
-                                                     (SootField) attributeToValueFieldMap
-                                                     .get(attribute)));
+                                box.setValue(Jimple.v().newInstanceFieldRef(
+                                        containerLocal,
+                                        (SootField) attributeToValueFieldMap
+                                                .get(attribute)));
                                 doneSomething = true;
-                            } else if (r.getMethod().getSubSignature().equals(PtolemyUtilities.setExpressionMethod
-                                               .getSubSignature())) {
+                            } else if (r.getMethod().getSubSignature().equals(
+                                    PtolemyUtilities.setExpressionMethod
+                                            .getSubSignature())) {
                                 if (debug) {
-                                    System.out.println(
-                                            "Replacing setExpression on Settable");
+                                    System.out
+                                            .println("Replacing setExpression on Settable");
                                 }
 
                                 // Call attribute changed AFTER we set the token.
-                                PtolemyUtilities.callAttributeChanged(containerLocal,
-                                        (Local) r.getBase(), theClass, method,
-                                        body, body.getUnits().getSuccOf(stmt));
+                                PtolemyUtilities.callAttributeChanged(
+                                        containerLocal, (Local) r.getBase(),
+                                        theClass, method, body, body.getUnits()
+                                                .getSuccOf(stmt));
 
                                 // replace the entire statement (which must be an invokeStmt anyway)
                                 // with an assignment to the field of the first argument.
-                                body.getUnits().swapWith(stmt,
-                                        Jimple.v().newAssignStmt(Jimple.v()
-                                                .newInstanceFieldRef(containerLocal,
-                                                        (SootField) attributeToValueFieldMap
-                                                        .get(attribute)),
-                                                r.getArg(0)));
+                                body
+                                        .getUnits()
+                                        .swapWith(
+                                                stmt,
+                                                Jimple
+                                                        .v()
+                                                        .newAssignStmt(
+                                                                Jimple
+                                                                        .v()
+                                                                        .newInstanceFieldRef(
+                                                                                containerLocal,
+                                                                                (SootField) attributeToValueFieldMap
+                                                                                        .get(attribute)),
+                                                                r.getArg(0)));
                                 doneSomething = true;
-                            } else if (r.getMethod().getName().equals("setPersistent")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "setPersistent")) {
                                 // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
-                            } else if (r.getMethod().getName().equals("setVisibility")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "setVisibility")) {
                                 // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
-                            } else if (r.getMethod().getName().equals("validate")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "validate")) {
                                 // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
-                            } else if (r.getMethod().getName().equals("getClass")) {
+                            } else if (r.getMethod().getName().equals(
+                                    "getClass")) {
                                 // Don't remove. Token unboxing might
                                 // deal with this.
                             } else {
-                                throw new RuntimeException("Found unknown "
-                                        + "settable method invocation of method "
-                                        + r.getMethod()
-                                        + " that cannot be removed!");
+                                throw new RuntimeException(
+                                        "Found unknown "
+                                                + "settable method invocation of method "
+                                                + r.getMethod()
+                                                + " that cannot be removed!");
                             }
                         }
 
                         /*
-                        // FIXME what about all the other methods???
-                        // If we have a attribute and all the args are constant valued, then
-                        if (argCount == r.getArgCount()) {
-                        // reflect and invoke the same method on our token
-                        Constant constant = SootUtilities.reflectAndInvokeMethod(attribute,
-                        r.getMethod(), argValues);
-                        System.out.println("method result  = " + constant);
+                         // FIXME what about all the other methods???
+                         // If we have a attribute and all the args are constant valued, then
+                         if (argCount == r.getArgCount()) {
+                         // reflect and invoke the same method on our token
+                         Constant constant = SootUtilities.reflectAndInvokeMethod(attribute,
+                         r.getMethod(), argValues);
+                         System.out.println("method result  = " + constant);
 
-                        // replace the method invocation.
-                        box.setValue(constant);
-                        }
-                        */
+                         // replace the method invocation.
+                         box.setValue(constant);
+                         }
+                         */
                     }
                 }
             }
@@ -809,8 +891,8 @@ public class InlineParameterTransformer extends SceneTransformer
     // code to try to find a local that references the container of
     // the attribute.
     public Local getAttributeContainerRef(Entity container, SootMethod method,
-            Local local, Unit location, LocalDefs localDefs, LocalUses localUses,
-            Unit insertPoint) {
+            Local local, Unit location, LocalDefs localDefs,
+            LocalUses localUses, Unit insertPoint) {
         //if (method.getName().equals("<init>")) {
         //    //   System.out.println("
         //}
@@ -838,7 +920,8 @@ public class InlineParameterTransformer extends SceneTransformer
                     UnitValueBoxPair pair = (UnitValueBoxPair) pairs.next();
 
                     if (pair.getUnit() instanceof DefinitionStmt) {
-                        DefinitionStmt useStmt = (DefinitionStmt) pair.getUnit();
+                        DefinitionStmt useStmt = (DefinitionStmt) pair
+                                .getUnit();
 
                         if (useStmt.getLeftOp() instanceof InstanceFieldRef) {
                             InstanceFieldRef leftOp = ((InstanceFieldRef) useStmt
@@ -849,8 +932,8 @@ public class InlineParameterTransformer extends SceneTransformer
                 }
 
                 throw new RuntimeException(
-                        "Could not determine the static value of " + local + " in "
-                        + method);
+                        "Could not determine the static value of " + local
+                                + " in " + method);
             } else if (value instanceof NullConstant) {
                 // If we get to an assignment from null, then the
                 // attribute statically evaluates to null.
@@ -860,10 +943,9 @@ public class InlineParameterTransformer extends SceneTransformer
 
                 // Manufacture a reference.
                 Local newLocal = FieldsForEntitiesTransformer
-                    .getLocalReferenceForEntity(container,
-                            method.getDeclaringClass(),
-                            body.getThisLocal(), body, insertPoint,
-                            _options);
+                        .getLocalReferenceForEntity(container, method
+                                .getDeclaringClass(), body.getThisLocal(),
+                                body, insertPoint, _options);
                 return newLocal;
             } else {
                 throw new RuntimeException("Unknown type of value: " + value
@@ -899,9 +981,8 @@ public class InlineParameterTransformer extends SceneTransformer
                 return getAttributeValue(method, (Local) value, stmt,
                         localDefs, localUses);
             } else if (value instanceof CastExpr) {
-                return getAttributeValue(method,
-                        (Local) ((CastExpr) value).getOp(), stmt, localDefs,
-                        localUses);
+                return getAttributeValue(method, (Local) ((CastExpr) value)
+                        .getOp(), stmt, localDefs, localUses);
             } else if (value instanceof FieldRef) {
                 SootField field = ((FieldRef) value).getField();
                 ValueTag tag = (ValueTag) field.getTag("_CGValue");
@@ -910,7 +991,7 @@ public class InlineParameterTransformer extends SceneTransformer
                     // return null;
                     throw new RuntimeException(
                             "Could not determine the static value of " + local
-                            + " in " + method);
+                                    + " in " + method);
                 } else {
                     return (Attribute) tag.getObject();
                 }
@@ -924,11 +1005,12 @@ public class InlineParameterTransformer extends SceneTransformer
                     System.out.println("unit = " + pair.getUnit());
 
                     if (pair.getUnit() instanceof DefinitionStmt) {
-                        DefinitionStmt useStmt = (DefinitionStmt) pair.getUnit();
+                        DefinitionStmt useStmt = (DefinitionStmt) pair
+                                .getUnit();
 
                         if (useStmt.getLeftOp() instanceof FieldRef) {
                             SootField field = ((FieldRef) useStmt.getLeftOp())
-                                .getField();
+                                    .getField();
                             ValueTag tag = (ValueTag) field.getTag("_CGValue");
 
                             if (tag == null) {
@@ -951,8 +1033,8 @@ public class InlineParameterTransformer extends SceneTransformer
                 }
 
                 throw new RuntimeException(
-                        "Could not determine the static value of " + local + " in "
-                        + method);
+                        "Could not determine the static value of " + local
+                                + " in " + method);
             } else if (value instanceof NullConstant) {
                 // If we get to an assignment from null, then the
                 // attribute statically evaluates to null.
@@ -986,18 +1068,19 @@ public class InlineParameterTransformer extends SceneTransformer
             NamedObj context, NamedObj container, Map attributeToValueFieldMap,
             ConstVariableModelAnalysis constantAnalysis, boolean debug) {
         /*   SootClass tokenClass =
-             Scene.v().loadClassAndSupport("ptolemy.data.Token");
-             Type tokenType = RefType.v(tokenClass);*/
+         Scene.v().loadClassAndSupport("ptolemy.data.Token");
+         Type tokenType = RefType.v(tokenClass);*/
         if (debug) {
             System.out.println("creating field for " + container + " in class "
                     + theClass);
         }
 
-        SootClass stringClass = Scene.v().loadClassAndSupport("java.lang.String");
+        SootClass stringClass = Scene.v().loadClassAndSupport(
+                "java.lang.String");
         Type stringType = RefType.v(stringClass);
 
-        for (Iterator attributes = container.attributeList().iterator();
-             attributes.hasNext();) {
+        for (Iterator attributes = container.attributeList().iterator(); attributes
+                .hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
 
             if (attributeToValueFieldMap.get(attribute) != null) {
@@ -1020,10 +1103,11 @@ public class InlineParameterTransformer extends SceneTransformer
                 if (settable instanceof Variable) {
                     Variable variable = (Variable) settable;
                     ptolemy.data.type.Type type = variable.getType();
-                    Type tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
+                    Type tokenType = PtolemyUtilities
+                            .getSootTypeForTokenType(type);
 
-                    boolean isConstant = constantAnalysis.getConstVariables((Entity) context)
-                        .contains(attribute);
+                    boolean isConstant = constantAnalysis.getConstVariables(
+                            (Entity) context).contains(attribute);
 
                     int modifier;
 
@@ -1064,8 +1148,7 @@ public class InlineParameterTransformer extends SceneTransformer
         if (container instanceof ComponentEntity) {
             ComponentEntity entity = (ComponentEntity) container;
 
-            for (Iterator ports = entity.portList().iterator();
-                 ports.hasNext();) {
+            for (Iterator ports = entity.portList().iterator(); ports.hasNext();) {
                 Port port = (Port) ports.next();
                 _createTokenAndExpressionFields(theClass, context, port,
                         attributeToValueFieldMap, constantAnalysis, debug);
@@ -1077,12 +1160,13 @@ public class InlineParameterTransformer extends SceneTransformer
             CompositeEntity model = (CompositeEntity) container;
 
             // Loop over all the actor instance classes.
-            for (Iterator entities = model.deepEntityList().iterator();
-                 entities.hasNext();) {
+            for (Iterator entities = model.deepEntityList().iterator(); entities
+                    .hasNext();) {
                 ComponentEntity entity = (ComponentEntity) entities.next();
-                String className = ModelTransformer.getInstanceClassName(entity,
-                        _options);
-                SootClass entityClass = Scene.v().loadClassAndSupport(className);
+                String className = ModelTransformer.getInstanceClassName(
+                        entity, _options);
+                SootClass entityClass = Scene.v()
+                        .loadClassAndSupport(className);
 
                 _createTokenAndExpressionFields(entityClass, entity, entity,
                         attributeToValueFieldMap, constantAnalysis, debug);
@@ -1095,6 +1179,8 @@ public class InlineParameterTransformer extends SceneTransformer
     }
 
     private CompositeActor _model;
+
     private Map _options;
+
     private String _phaseName;
 }

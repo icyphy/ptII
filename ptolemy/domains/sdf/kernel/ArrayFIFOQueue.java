@@ -1,31 +1,31 @@
 /* A queue with constant capacity and optional history.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.sdf.kernel;
 
 import java.util.Collections;
@@ -38,30 +38,29 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ArrayFIFOQueue
 
 /**
-   A first-in, first-out (FIFO) queue with variable capacity and optional
-   history. Objects are appended to the queue with the put() method,
-   and removed from the queue with the take() method. The object
-   removed is the oldest one in the queue. By default, the capacity is
-   infinite, but it can be set to any nonnegative size. If the history
-   capacity is greater than zero (or infinite, by setting the capacity to
-   INFINITE_CAPACITY), then objects removed from the queue are transferred
-   to a history queue rather than simply removed. By default, the history
-   capacity is zero.
-   <p>
-   This queue is implemented as a circular array.  When the array becomes full,
-   it is transparently doubled in size.
+ A first-in, first-out (FIFO) queue with variable capacity and optional
+ history. Objects are appended to the queue with the put() method,
+ and removed from the queue with the take() method. The object
+ removed is the oldest one in the queue. By default, the capacity is
+ infinite, but it can be set to any nonnegative size. If the history
+ capacity is greater than zero (or infinite, by setting the capacity to
+ INFINITE_CAPACITY), then objects removed from the queue are transferred
+ to a history queue rather than simply removed. By default, the history
+ capacity is zero.
+ <p>
+ This queue is implemented as a circular array.  When the array becomes full,
+ it is transparently doubled in size.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Yellow (johnr)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Yellow (johnr)
+ */
 public final class ArrayFIFOQueue implements Cloneable {
     /** Construct an empty queue with no container, and an infinite capacity.
      */
@@ -346,7 +345,8 @@ public final class ArrayFIFOQueue implements Cloneable {
                 System.arraycopy(element, 0, _queueArray, _queueFront,
                         _queueArray.length - _queueFront);
                 System.arraycopy(element, _queueArray.length - _queueFront,
-                        _queueArray, 0, count - (_queueArray.length - _queueFront));
+                        _queueArray, 0, count
+                                - (_queueArray.length - _queueFront));
                 _queueFront += count;
 
                 if (_queueFront >= _queueArray.length) {
@@ -392,8 +392,8 @@ public final class ArrayFIFOQueue implements Cloneable {
         }
 
         if (size() > capacity) {
-            throw new IllegalActionException(_container,
-                    "Queue contains " + "more elements than the proposed capacity.");
+            throw new IllegalActionException(_container, "Queue contains "
+                    + "more elements than the proposed capacity.");
         }
 
         _queueMaxCapacity = capacity;
@@ -533,9 +533,8 @@ public final class ArrayFIFOQueue implements Cloneable {
         } else {
             System.arraycopy(_queueArray, _queueBack, objects, 0,
                     _queueArray.length - _queueBack);
-            System.arraycopy(_queueArray, 0, objects,
-                    _queueArray.length - _queueBack,
-                    count - (_queueArray.length - _queueBack));
+            System.arraycopy(_queueArray, 0, objects, _queueArray.length
+                    - _queueBack, count - (_queueArray.length - _queueBack));
         }
 
         _queueBack += count;
@@ -607,22 +606,22 @@ public final class ArrayFIFOQueue implements Cloneable {
         }
 
         Object[] newArray = new Object[newSize];
-        
+
         if (newSize == 0) {
-        	_queueFront = 0;
+            _queueFront = 0;
         } else if ((_queueFront < _queueBack) || isFull()) {
             System.arraycopy(_queueArray, _queueBack, newArray, 0,
                     _queueArray.length - _queueBack);
-            System.arraycopy(_queueArray, 0, newArray,
-                    _queueArray.length - _queueBack, _queueFront);
+            System.arraycopy(_queueArray, 0, newArray, _queueArray.length
+                    - _queueBack, _queueFront);
             _queueFront = _queueArray.length - _queueBack + _queueFront;
             // NOTE: The following is probably not needed, but paranoid programming.
             if (_queueFront >= newArray.length) {
                 _queueFront = _queueFront % newArray.length;
             }
         } else {
-            System.arraycopy(_queueArray, _queueBack, newArray, 0,
-                    _queueFront - _queueBack);
+            System.arraycopy(_queueArray, _queueBack, newArray, 0, _queueFront
+                    - _queueBack);
             _queueFront = _queueFront - _queueBack;
             if (_queueFront >= newArray.length) {
                 _queueFront = _queueFront % newArray.length;
@@ -635,7 +634,7 @@ public final class ArrayFIFOQueue implements Cloneable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The container, if there is one. */
     private Nameable _container = null;
 

@@ -1,34 +1,34 @@
 /* A TypedCompositeActor that creates multiple instances of itself
-   during the preinitialize phase of model execution.
+ during the preinitialize phase of model execution.
 
-   Copyright (c) 2003-2005 The Regents of the University of California and
-   Research in Motion Limited.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California and
+ Research in Motion Limited.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-   LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-   INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-   SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-   OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-   SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-   THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-   PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-   BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-   LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.hoc;
 
 import java.util.Iterator;
@@ -50,7 +50,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 
-
 // Note: the (at least) single-space is needed in the javadoc below to
 // protect emacs' comment text formatting from a "{@link..." appearing
 // at the start of a line and disabling paragraph reformatting and
@@ -59,60 +58,60 @@ import ptolemy.moml.MoMLChangeRequest;
 //// MultiInstanceComposite
 
 /**
-   A {@link ptolemy.actor.TypedCompositeActor} that creates multiple
-   instances of itself during the preinitialize phase of model execution.<p>
+ A {@link ptolemy.actor.TypedCompositeActor} that creates multiple
+ instances of itself during the preinitialize phase of model execution.<p>
 
-   A MultiInstanceComposite actor may be used to instantiate {@link
-   #nInstances} identical processing blocks within a model. This actor
-   (the "master") creates {@link #nInstances}&nbsp;-&nbsp;1 additional
-   instances (clones) of itself during the {@link #preinitialize()} phase
-   of model execution and destroys these additional instances during model
-   {@link #wrapup()}. MultiInstanceComposite <em>must be opaque</em> (have
-   a director), so that its Actor interface methods (preinitialize(), ...,
-   wrapup()) are invoked during model initialization. Each instance may
-   refer to its {@link #instance} [0..{@link #nInstances}-1] parameter
-   which is set automatically by the master if it needs to know its
-   instance number.<p>
+ A MultiInstanceComposite actor may be used to instantiate {@link
+ #nInstances} identical processing blocks within a model. This actor
+ (the "master") creates {@link #nInstances}&nbsp;-&nbsp;1 additional
+ instances (clones) of itself during the {@link #preinitialize()} phase
+ of model execution and destroys these additional instances during model
+ {@link #wrapup()}. MultiInstanceComposite <em>must be opaque</em> (have
+ a director), so that its Actor interface methods (preinitialize(), ...,
+ wrapup()) are invoked during model initialization. Each instance may
+ refer to its {@link #instance} [0..{@link #nInstances}-1] parameter
+ which is set automatically by the master if it needs to know its
+ instance number.<p>
 
-   MultiInstanceComposite <em>input</em> ports must not be multiports (for
-   now) and may be connected to multiports or regular ports.  During
-   preinitialize(), the master MultiInstanceComposite determines how its
-   input ports are connected, and creates additional relations in its
-   container (the model it is embedded in) to connect the input ports of
-   its clones (instances) to the same output port if that port is a
-   multiport.  If that output port is a regular port, the clone's input
-   port is linked to the already existing relation between that output
-   port and the master's input port.  MultiInstanceComposite
-   <em>output</em> ports must not be multiports (for now) and must be
-   connected to input multiports. The master MultiInstanceComposite
-   creates additional relations to connect the output ports of its clones
-   to the input port. Finally, after all these connections are made, the
-   master's preinitialize() calls preinitialize() of the clones.<p>
+ MultiInstanceComposite <em>input</em> ports must not be multiports (for
+ now) and may be connected to multiports or regular ports.  During
+ preinitialize(), the master MultiInstanceComposite determines how its
+ input ports are connected, and creates additional relations in its
+ container (the model it is embedded in) to connect the input ports of
+ its clones (instances) to the same output port if that port is a
+ multiport.  If that output port is a regular port, the clone's input
+ port is linked to the already existing relation between that output
+ port and the master's input port.  MultiInstanceComposite
+ <em>output</em> ports must not be multiports (for now) and must be
+ connected to input multiports. The master MultiInstanceComposite
+ creates additional relations to connect the output ports of its clones
+ to the input port. Finally, after all these connections are made, the
+ master's preinitialize() calls preinitialize() of the clones.<p>
 
-   From here on until wrapup(), nothing special happens. Type resolution
-   occurs on all instances in the modified model, so does initialize() and
-   the computation of schedules by directors of the master and clones.<p>
+ From here on until wrapup(), nothing special happens. Type resolution
+ occurs on all instances in the modified model, so does initialize() and
+ the computation of schedules by directors of the master and clones.<p>
 
-   During model wrapup(), the master MultiContextComposite deletes any
-   relations created, unlinks any ports if needed, and deletes the clones
-   it created. To re-synchronize vergil's model graph, an empty
-   ChangeRequest is also queued with the Manager.<p>
+ During model wrapup(), the master MultiContextComposite deletes any
+ relations created, unlinks any ports if needed, and deletes the clones
+ it created. To re-synchronize vergil's model graph, an empty
+ ChangeRequest is also queued with the Manager.<p>
 
-   Actor parameters inside MultiInstanceComposite may refer to parameters
-   of the container model. This presents a problem during cloning() and
-   wrapup() where the container model's parameters are not in scope during
-   the clone's validateSettables() (unless the MultiInstanceComposite is
-   built as a moml class having its own set of parameters). This problem
-   is for now solved by providing a temporary scope copy using a
-   ScopeExtendingAttribute for the cloning() and wrapup() phases of the
-   clones.<p>
+ Actor parameters inside MultiInstanceComposite may refer to parameters
+ of the container model. This presents a problem during cloning() and
+ wrapup() where the container model's parameters are not in scope during
+ the clone's validateSettables() (unless the MultiInstanceComposite is
+ built as a moml class having its own set of parameters). This problem
+ is for now solved by providing a temporary scope copy using a
+ ScopeExtendingAttribute for the cloning() and wrapup() phases of the
+ clones.<p>
 
-   @author Zoltan Kemenczy, Sean Simmons, Research In Motion Limited
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (zkemenczy)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Zoltan Kemenczy, Sean Simmons, Research In Motion Limited
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (zkemenczy)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class MultiInstanceComposite extends TypedCompositeActor {
     /** Construct a MultiInstanceComposite actor in the specified
      *  workspace with no container and an empty string as a name.
@@ -158,7 +157,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MultiInstanceComposite newObject = (MultiInstanceComposite) super.clone(workspace);
+        MultiInstanceComposite newObject = (MultiInstanceComposite) super
+                .clone(workspace);
         newObject._isMasterCopy = _isMasterCopy;
         return newObject;
     }
@@ -184,8 +184,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
 
         // Master only from here on
         if ((getDirector() == null) || (getDirector().getContainer() != this)) {
-            throw new IllegalActionException(this,
-                    getFullName() + "must have a director, see javadoc.");
+            throw new IllegalActionException(this, getFullName()
+                    + "must have a director, see javadoc.");
         }
 
         int N = ((IntToken) nInstances.getToken()).intValue();
@@ -204,7 +204,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         // Now instantiate the clones and connect them to the model
         for (int i = 1; i < N; i++) {
             MultiInstanceComposite clone = (MultiInstanceComposite) container
-                .getEntity(getName() + "_" + i);
+                    .getEntity(getName() + "_" + i);
 
             if (clone == null) {
                 try {
@@ -236,8 +236,9 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                         if (relations.size() > 1) {
                             throw new IllegalActionException(this,
                                     getFullName() + ".preinitialize(): port "
-                                    + port.getName() + " can be linked to "
-                                    + "one relation only");
+                                            + port.getName()
+                                            + " can be linked to "
+                                            + "one relation only");
                         }
 
                         if (relations.size() < 1) {
@@ -245,7 +246,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                         }
 
                         TypedIORelation relation = (TypedIORelation) relations
-                            .get(0);
+                                .get(0);
                         TypedIORelation oldRelation = relation;
 
                         // Iterate through other actors ports in the
@@ -255,7 +256,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                         // to that multiport. Otherwise, we use the
                         // relation above to link newPort.
                         Iterator otherPorts = relation.linkedPortList(port)
-                            .iterator();
+                                .iterator();
 
                         // Added by Gang Zhou. If a port is connected to
                         // multiple other ports (through a single relation),
@@ -265,35 +266,36 @@ public class MultiInstanceComposite extends TypedCompositeActor {
 
                         while (otherPorts.hasNext()) {
                             TypedIOPort otherPort = (TypedIOPort) otherPorts
-                                .next();
+                                    .next();
 
                             if (port.isOutput() && !otherPort.isMultiport()) {
-                                throw new IllegalActionException(this,
-                                        getFullName() + ".preinitialize(): "
-                                        + "output port " + port.getName()
-                                        + "must be connected to a multi-port");
+                                throw new IllegalActionException(
+                                        this,
+                                        getFullName()
+                                                + ".preinitialize(): "
+                                                + "output port "
+                                                + port.getName()
+                                                + "must be connected to a multi-port");
                             }
 
                             // Modified by Gang Zhou so that the port can
                             // be connected to the otherPort either from inside
                             // or from outside.
-                            boolean isInsideLinked = otherPort.isInsideGroupLinked(oldRelation);
+                            boolean isInsideLinked = otherPort
+                                    .isInsideGroupLinked(oldRelation);
 
-                            if ((port.isInput()
-                                        && ((!isInsideLinked
-                                                    && otherPort.isOutput())
-                                                || (isInsideLinked
-                                                        && otherPort.isInput())))
-                                    || (port.isOutput()
-                                            && ((!isInsideLinked
-                                                        && otherPort.isInput())
-                                                    || (isInsideLinked
-                                                            && otherPort.isOutput())))) {
+                            if ((port.isInput() && ((!isInsideLinked && otherPort
+                                    .isOutput()) || (isInsideLinked && otherPort
+                                    .isInput())))
+                                    || (port.isOutput() && ((!isInsideLinked && otherPort
+                                            .isInput()) || (isInsideLinked && otherPort
+                                            .isOutput())))) {
                                 if (otherPort.isMultiport()) {
                                     if (!isRelationCreated) {
-                                        relation = new TypedIORelation(container,
-                                                "r_" + getName() + "_" + i
-                                                + "_" + port.getName());
+                                        relation = new TypedIORelation(
+                                                container, "r_" + getName()
+                                                        + "_" + i + "_"
+                                                        + port.getName());
                                         isRelationCreated = true;
 
                                         if (_debugging) {
@@ -373,7 +375,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
 
         int i = 1;
         MultiInstanceComposite clone = (MultiInstanceComposite) container
-            .getEntity(getName() + "_" + i);
+                .getEntity(getName() + "_" + i);
 
         while (clone != null) {
             Iterator ports = clone.portList().iterator();
@@ -383,12 +385,14 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                 Iterator relations = port.linkedRelationList().iterator();
 
                 while (relations.hasNext()) {
-                    TypedIORelation relation = (TypedIORelation) relations.next();
+                    TypedIORelation relation = (TypedIORelation) relations
+                            .next();
 
                     // Use a different criterion to delete relation
                     // since the old one wouldn't work any more.
                     // Added by Gang Zhou.
-                    TypedIOPort mirrorPort = (TypedIOPort) getPort(port.getName());
+                    TypedIOPort mirrorPort = (TypedIOPort) getPort(port
+                            .getName());
 
                     if (!port.isDeeplyConnected(mirrorPort)) {
                         //if (relation.linkedPortList().size() <= 2) {
@@ -462,12 +466,12 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                     _scopeExtendingAttributeName);
 
             Iterator scopeVariables = nInstances.getScope().elementList()
-                .iterator();
+                    .iterator();
 
             while (scopeVariables.hasNext()) {
                 Variable variable = (Variable) scopeVariables.next();
-                new Variable(scopeExtender, variable.getName(),
-                        variable.getToken());
+                new Variable(scopeExtender, variable.getName(), variable
+                        .getToken());
             }
         } catch (NameDuplicationException ex) {
             throw new IllegalActionException(this, ex,
@@ -478,7 +482,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     /** Clone to create a copy of the master copy. */
     private Object _cloneClone(Workspace workspace)
             throws CloneNotSupportedException {
-        MultiInstanceComposite newObject = (MultiInstanceComposite) super.clone(workspace);
+        MultiInstanceComposite newObject = (MultiInstanceComposite) super
+                .clone(workspace);
         newObject._isMasterCopy = false;
 
         try {
@@ -506,8 +511,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         }
 
         _isMasterCopy = true;
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-10\" width=\"60\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-20\" y=\"-10\" width=\"60\" "
                 + "height=\"40\" style=\"fill:red\"/>\n"
                 + "<rect x=\"-18\" y=\"-8\" width=\"56\" "
                 + "height=\"36\" style=\"fill:lightgrey\"/>\n"
@@ -547,5 +552,6 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private boolean _isMasterCopy = false;
+
     private String _scopeExtendingAttributeName = "_micScopeExtender";
 }

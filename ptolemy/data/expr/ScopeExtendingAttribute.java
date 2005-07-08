@@ -1,33 +1,33 @@
 /* An attribute that extends its container's scope.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-@ProposedRating Red (liuxj)
-@AcceptedRating Red (liuxj)
+ @ProposedRating Red (liuxj)
+ @AcceptedRating Red (liuxj)
 
-*/
+ */
 package ptolemy.data.expr;
 
 import java.util.Iterator;
@@ -38,19 +38,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ScopeExtendingAttribute
 
 /**
-   A attribute that extends its container's scope. Any
-   parameter contained by such an attribute has the same
-   visibility as parameters of the container of the attribute.
+ A attribute that extends its container's scope. Any
+ parameter contained by such an attribute has the same
+ visibility as parameters of the container of the attribute.
 
-   @author Xiaojun Liu
-   @version $Id$
-   @see ptolemy.data.expr.Variable
-*/
+ @author Xiaojun Liu
+ @version $Id$
+ @see ptolemy.data.expr.Variable
+ */
 public class ScopeExtendingAttribute extends Attribute implements ScopeExtender {
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -91,8 +90,8 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         Nameable oldContainer = getContainer();
         super.setContainer(container);
 
@@ -102,7 +101,8 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
             // This does not include variables inside the container itself,
             // which take precedence.
             if (container != null) {
-                _invalidateShadowedSettables((NamedObj) container.getContainer());
+                _invalidateShadowedSettables((NamedObj) container
+                        .getContainer());
             }
 
             // Every variable inside this attribute, and anything that
@@ -125,8 +125,8 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
             return;
         }
 
-        for (Iterator variables = object.attributeList(Variable.class).iterator();
-             variables.hasNext();) {
+        for (Iterator variables = object.attributeList(Variable.class)
+                .iterator(); variables.hasNext();) {
             Variable variable = (Variable) variables.next();
 
             if (getAttribute(variable.getName()) != null) {
@@ -136,14 +136,14 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
 
         // Also invalidate the variables inside any
         // scopeExtendingAttributes.
-        Iterator scopeAttributes = object.attributeList(ScopeExtendingAttribute.class)
-            .iterator();
+        Iterator scopeAttributes = object.attributeList(
+                ScopeExtendingAttribute.class).iterator();
 
         while (scopeAttributes.hasNext()) {
             ScopeExtendingAttribute attribute = (ScopeExtendingAttribute) scopeAttributes
-                .next();
+                    .next();
             Iterator variables = attribute.attributeList(Variable.class)
-                .iterator();
+                    .iterator();
 
             while (variables.hasNext()) {
                 Variable variable = (Variable) variables.next();

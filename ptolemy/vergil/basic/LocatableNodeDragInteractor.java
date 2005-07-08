@@ -1,30 +1,30 @@
 /* A drag interactor for locatable nodes
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.basic;
 
 import java.util.HashSet;
@@ -44,27 +44,26 @@ import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.SelectionModel;
 import diva.graph.NodeDragInteractor;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeDragInteractor
 
 /**
-   An interaction role that drags nodes that have locatable objects
-   as semantic objects.  When the node is dragged, this interactor
-   updates the location in the locatable object with the new location of the
-   figure.
-   <p>
-   The dragging of a selection is undoable, and is based on the difference
-   between the point where the mouse was pressed and where the mouse was
-   released. This information is used to create MoML to undo the move if
-   requested.
+ An interaction role that drags nodes that have locatable objects
+ as semantic objects.  When the node is dragged, this interactor
+ updates the location in the locatable object with the new location of the
+ figure.
+ <p>
+ The dragging of a selection is undoable, and is based on the difference
+ between the point where the mouse was pressed and where the mouse was
+ released. This information is used to create MoML to undo the move if
+ requested.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class LocatableNodeDragInteractor extends NodeDragInteractor {
     /** Create a new interactor contained within the given controller.
      */
@@ -109,12 +108,12 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         }
 
         BasicGraphController graphController = (BasicGraphController) _controller
-            .getController();
+                .getController();
         BasicGraphFrame frame = graphController.getFrame();
 
         SelectionModel model = graphController.getSelectionModel();
         AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) graphController
-            .getGraphModel();
+                .getGraphModel();
         Object[] selection = model.getSelectionAsArray();
         Object[] userObjects = new Object[selection.length];
 
@@ -133,7 +132,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
                 if (graphModel.isEdge(userObject)
                         || graphModel.isNode(userObject)) {
-                    NamedObj actual = (NamedObj) graphModel.getSemanticObject(userObject);
+                    NamedObj actual = (NamedObj) graphModel
+                            .getSemanticObject(userObject);
 
                     if (actual != null) {
                         namedObjSet.add(actual);
@@ -141,9 +141,9 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                         // Special case, may need to handle by not going to
                         // MoML and which may not be undoable.
                         // FIXME: This is no way to handle it...
-                        System.out.println(
-                                "Object with no semantic object , class: "
-                                + userObject.getClass().getName());
+                        System.out
+                                .println("Object with no semantic object , class: "
+                                        + userObject.getClass().getName());
                     }
                 }
             }
@@ -178,10 +178,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
             // Give default values in case the previous locations value
             // has not yet been set
-            double[] newLocation = new double[] {
-                0,
-                0
-            };
+            double[] newLocation = new double[] { 0, 0 };
 
             if (locatable.getLocation() != null) {
                 newLocation = locatable.getLocation();
@@ -197,7 +194,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             // in an element refering to the container
             String containingElementName = element.getElementName();
             String elementToMove = "<" + containingElementName + " name=\""
-                + element.getName() + "\" >\n";
+                    + element.getName() + "\" >\n";
             moml.append(elementToMove);
             undoMoml.append(elementToMove);
 
@@ -220,28 +217,28 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         final String finalUndoMoML = undoMoml.toString();
 
         // Request the change.
-        MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel,
-                moml.toString()) {
-                protected void _execute() throws Exception {
-                    super._execute();
+        MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel, moml
+                .toString()) {
+            protected void _execute() throws Exception {
+                super._execute();
 
-                    // Next create and register the undo entry;
-                    // The MoML by itself will not cause an undo
-                    // to register because the value is not changing.
-                    // Note that this must be done inside the change
-                    // request because write permission on the
-                    // workspace is required to push an entry
-                    // on the undo stack. If this is done outside
-                    // the change request, there is a race condition
-                    // on the undo, and a deadlock could result if
-                    // the model is running.
-                    MoMLUndoEntry newEntry = new MoMLUndoEntry(toplevel,
-                            finalUndoMoML.toString());
-                    UndoStackAttribute undoInfo = UndoStackAttribute
+                // Next create and register the undo entry;
+                // The MoML by itself will not cause an undo
+                // to register because the value is not changing.
+                // Note that this must be done inside the change
+                // request because write permission on the
+                // workspace is required to push an entry
+                // on the undo stack. If this is done outside
+                // the change request, there is a race condition
+                // on the undo, and a deadlock could result if
+                // the model is running.
+                MoMLUndoEntry newEntry = new MoMLUndoEntry(toplevel,
+                        finalUndoMoML.toString());
+                UndoStackAttribute undoInfo = UndoStackAttribute
                         .getUndoInfo(toplevel);
-                    undoInfo.push(newEntry);
-                }
-            };
+                undoInfo.push(newEntry);
+            }
+        };
 
         toplevel.requestChange(request);
 

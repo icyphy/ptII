@@ -1,30 +1,30 @@
 /* An Object for changing the style of parameters.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui.style;
 
 import java.util.ArrayList;
@@ -48,30 +48,29 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// StyleConfigurer
 
 /**
-   This class is an editor for the styles of the parameters of an object.
-   It allows a user to graphically change the ParameterEditorStyles contained
-   within the user settable attributes of a named object.
-   It is very similar in spirit and style to Configurer, which edits the actual
-   values of the attributes.
-   <p>
-   The restore() method restores the values of the parameters of the
-   object to their values when this object was created.  This can be used
-   in a modal dialog to implement a cancel button, which restores
-   the styles to those before the dialog was opened.
+ This class is an editor for the styles of the parameters of an object.
+ It allows a user to graphically change the ParameterEditorStyles contained
+ within the user settable attributes of a named object.
+ It is very similar in spirit and style to Configurer, which edits the actual
+ values of the attributes.
+ <p>
+ The restore() method restores the values of the parameters of the
+ object to their values when this object was created.  This can be used
+ in a modal dialog to implement a cancel button, which restores
+ the styles to those before the dialog was opened.
 
-   @see ptolemy.actor.gui.Configurer
-   @see ParameterEditorStyle
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
+ @see ptolemy.actor.gui.Configurer
+ @see ParameterEditorStyle
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
 public class StyleConfigurer extends Query implements QueryListener {
     /** Construct a configurer for the specified object.
      *  @param object The object to configure.
@@ -124,8 +123,8 @@ public class StyleConfigurer extends Query implements QueryListener {
 
             // Get the current style.
             boolean foundOne = false;
-            Iterator styles = ((NamedObj) param).attributeList(ParameterEditorStyle.class)
-                .iterator();
+            Iterator styles = ((NamedObj) param).attributeList(
+                    ParameterEditorStyle.class).iterator();
             ParameterEditorStyle foundStyle = null;
 
             while (styles.hasNext()) {
@@ -164,8 +163,8 @@ public class StyleConfigurer extends Query implements QueryListener {
                 }
             }
 
-            String[] styleArray = (String[]) styleList.toArray(new String[styleList
-                                                                       .size()]);
+            String[] styleArray = (String[]) styleList
+                    .toArray(new String[styleList.size()]);
 
             addChoice(param.getName(), param.getName(), styleArray,
                     styleArray[defaultIndex]);
@@ -197,8 +196,9 @@ public class StyleConfigurer extends Query implements QueryListener {
                 if (isExpert) {
                     moml.append("<deleteProperty name=\"_expertMode\"/>");
                 } else {
-                    moml.append("<property name=\"_expertMode\" "
-                            + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                    moml
+                            .append("<property name=\"_expertMode\" "
+                                    + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
                 }
             }
         } else {
@@ -206,8 +206,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             // Figure out which style is being requested.
             ParameterEditorStyle found = null;
 
-            for (int i = 0; (i < _parameterStyles.length) && (found == null);
-                 i++) {
+            for (int i = 0; (i < _parameterStyles.length) && (found == null); i++) {
                 if (getStringValue(name).equals(_parameterStyles[i].getName())) {
                     found = _parameterStyles[i];
                 }
@@ -220,13 +219,14 @@ public class StyleConfigurer extends Query implements QueryListener {
             moml.append("<property name=\"" + param.getName() + "\">");
 
             Iterator styles = param.attributeList(ParameterEditorStyle.class)
-                .iterator();
+                    .iterator();
             boolean foundOne = false;
 
             while (styles.hasNext()) {
                 foundOne = true;
 
-                ParameterEditorStyle style = (ParameterEditorStyle) styles.next();
+                ParameterEditorStyle style = (ParameterEditorStyle) styles
+                        .next();
                 moml.append("<deleteProperty name=\"" + style.getName()
                         + "\"/>\n");
             }
@@ -243,8 +243,8 @@ public class StyleConfigurer extends Query implements QueryListener {
             moml.append("</group></property></group>");
         }
 
-        MoMLChangeRequest change = new MoMLChangeRequest(this, _object,
-                moml.toString());
+        MoMLChangeRequest change = new MoMLChangeRequest(this, _object, moml
+                .toString());
         _object.requestChange(change);
     }
 
@@ -265,44 +265,43 @@ public class StyleConfigurer extends Query implements QueryListener {
         // That notification occurs some time after the
         // window is destroyed.
         Top.deferIfNecessary(new Runnable() {
-                public void run() {
-                    // Treat the expertMode entry specially.
-                    Attribute currentExpert = _object.getAttribute(
-                            "_expertMode");
-                    boolean isExpert = currentExpert != null;
+            public void run() {
+                // Treat the expertMode entry specially.
+                Attribute currentExpert = _object.getAttribute("_expertMode");
+                boolean isExpert = currentExpert != null;
 
-                    if (isExpert != _originalExpertMode) {
-                        try {
-                            if (isExpert) {
-                                currentExpert.setContainer(null);
-                            } else {
-                                // FIXME: This won't propagate.
-                                new Attribute(_object, "_expertMode");
-                            }
-                        } catch (KernelException e) {
-                            // This should not occur.
-                            throw new InternalErrorException(e);
+                if (isExpert != _originalExpertMode) {
+                    try {
+                        if (isExpert) {
+                            currentExpert.setContainer(null);
+                        } else {
+                            // FIXME: This won't propagate.
+                            new Attribute(_object, "_expertMode");
                         }
-                    }
-
-                    // FIXME: This code is nonsensical... _originalValues never
-                    // gets anything added to it!
-                    Iterator entries = _originalValues.entrySet().iterator();
-
-                    while (entries.hasNext()) {
-                        Map.Entry entry = (Map.Entry) entries.next();
-                        Settable param = (Settable) _object.getAttribute((String) entry
-                                .getKey());
-
-                        try {
-                            param.setExpression((String) entry.getValue());
-                        } catch (IllegalActionException ex) {
-                            throw new InternalErrorException(
-                                    "Cannot restore style value!");
-                        }
+                    } catch (KernelException e) {
+                        // This should not occur.
+                        throw new InternalErrorException(e);
                     }
                 }
-            });
+
+                // FIXME: This code is nonsensical... _originalValues never
+                // gets anything added to it!
+                Iterator entries = _originalValues.entrySet().iterator();
+
+                while (entries.hasNext()) {
+                    Map.Entry entry = (Map.Entry) entries.next();
+                    Settable param = (Settable) _object
+                            .getAttribute((String) entry.getKey());
+
+                    try {
+                        param.setExpression((String) entry.getValue());
+                    } catch (IllegalActionException ex) {
+                        throw new InternalErrorException(
+                                "Cannot restore style value!");
+                    }
+                }
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////

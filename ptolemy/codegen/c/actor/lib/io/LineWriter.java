@@ -1,31 +1,31 @@
 /*
-  @Copyright (c) 2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 /*
  * Created on Apr 5, 2005
  *
@@ -39,7 +39,6 @@ import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
-
 
 /**
  * @author Jackie
@@ -80,7 +79,6 @@ public class LineWriter extends CCodeGeneratorHelper {
 
         //tmpStream.appendCodeBlock("initBlock");
 
-        
         if (actor.fileName.getExpression().equals("System.out")) {
             _fileOpen = false;
             tmpStream.appendCodeBlock("openForStdout");
@@ -93,9 +91,9 @@ public class LineWriter extends CCodeGeneratorHelper {
             fileNameString = fileNameString.replaceAll("%20", " ");
 
             boolean fileExist = FileUtilities.nameToFile(fileNameString, null)
-                .exists();
+                    .exists();
             boolean askForOverwrite = actor.confirmOverwrite.getExpression()
-                .equals("true");
+                    .equals("true");
 
             if (fileExist && askForOverwrite) {
                 tmpStream.appendCodeBlock("confirmOverwrite");
@@ -110,7 +108,7 @@ public class LineWriter extends CCodeGeneratorHelper {
 
         return processCode(tmpStream.toString());
     }
-    
+
     /** Get the files needed by the code generated for the
      *  LineWriter actor.
      *  @return A set of strings that are names of the files

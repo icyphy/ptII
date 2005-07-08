@@ -1,66 +1,65 @@
 /* A base class for cached analyzers on graphs.
 
-Copyright (c) 2003-2005 The University of Maryland. All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The University of Maryland. All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package ptolemy.graph.analysis.strategy;
 
 import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CachedStrategy
 
 /**
-   A base class for cached analyzers on graphs. To facilitate demand-driven
-   and incremental recomputation (e.g., see [1]) of analyzers, analyzer results
-   are cached internally (see {@link #getCachedResult()}), and are recomputed only
-   when the graph has changed since the last request (via {@link #_result()}) for
-   the strategy result.
-   The status of the cache content can be queried with the {@link #obsolete()}
-   method to determine if a subsequent invocation of {@link #_result()} by the
-   derived classes will trigger recomputation of the analysis.
-   <p>
-   The graph changes tracked by an analyzer are restricted to changes in the
-   graph topology (the set of nodes and edges). For example, changes to edge/node
-   weights that may affect the result of an analysis are not tracked, since
-   analyzers have no specific knowledge of weights.  In such cases, it is the
-   responsibility of the client (or derived analyzer class) to invalidate the
-   cached result (see {@link #reset()}) when changes to graph weights or other
-   non-topology information render the cached result obsolete.  For this reason,
-   some caution is generally required when using analyzers whose results depend on
-   more than just the graph topology.<p>
-   In these cases the client should check for data consistency
-   (through the {@link #valid()} method) as well as changes in them and
-   calling the {@link #reset()} method in case of data changes.
+ A base class for cached analyzers on graphs. To facilitate demand-driven
+ and incremental recomputation (e.g., see [1]) of analyzers, analyzer results
+ are cached internally (see {@link #getCachedResult()}), and are recomputed only
+ when the graph has changed since the last request (via {@link #_result()}) for
+ the strategy result.
+ The status of the cache content can be queried with the {@link #obsolete()}
+ method to determine if a subsequent invocation of {@link #_result()} by the
+ derived classes will trigger recomputation of the analysis.
+ <p>
+ The graph changes tracked by an analyzer are restricted to changes in the
+ graph topology (the set of nodes and edges). For example, changes to edge/node
+ weights that may affect the result of an analysis are not tracked, since
+ analyzers have no specific knowledge of weights.  In such cases, it is the
+ responsibility of the client (or derived analyzer class) to invalidate the
+ cached result (see {@link #reset()}) when changes to graph weights or other
+ non-topology information render the cached result obsolete.  For this reason,
+ some caution is generally required when using analyzers whose results depend on
+ more than just the graph topology.<p>
+ In these cases the client should check for data consistency
+ (through the {@link #valid()} method) as well as changes in them and
+ calling the {@link #reset()} method in case of data changes.
 
-   <p> [1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis,
-   University of Wisconsin at Madison, August 1993.
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-   @author Shuvra S. Bhattacharyya, Ming Yung Ko and Shahrooz Shahparnia
-   @version $Id$
-*/
+ <p> [1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis,
+ University of Wisconsin at Madison, August 1993.
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ @author Shuvra S. Bhattacharyya, Ming Yung Ko and Shahrooz Shahparnia
+ @version $Id$
+ */
 abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
     /** No instance of this object can be created as it is abstract.
      *  The derived classes will use it to initialize its internal data
@@ -239,5 +238,6 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
     // The change count of the associated graph that was in effect when the
     // the analysis was last performed.
     private long _lastComputation;
+
     private boolean _cachingEnabled = true;
 }

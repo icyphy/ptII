@@ -1,29 +1,29 @@
 /* A CT Director that handles the interaction with event based domains.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.ct.kernel;
 
 import java.util.Iterator;
@@ -44,48 +44,47 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CTMixedSignalDirector
 
 /**
-   A CTDirector that supports the interaction of the continuous-time
-   simulation with event-based domains. This director can both serve as
-   a top-level director and an inside director that is contained by
-   a composite actor in an event-based domain. If it is a top-level
-   director, it behaves exactly like a CTMultiSolverDirector. If it is
-   embedded in an event-based domain, it will run ahead of the global
-   time and prepare to roll back if necessary.
-   <P>
-   This director has an extra parameter compared to the CTMultiSolverDirector,
-   the maximum run ahead of time length (<code>runAheadLength</code>).
-   Its default value is 1.0.
-   <P>
-   The running ahead of time is achieved by the following mechanism.<br>
-   <UL>
-   <LI> At the initialize stage of an execution, the director requests
-   a firing at the global current time.
-   <LI> At each prefire stage of the execution, the end time the the firing is
-   computed based on the current time of the executive director, t1, the next
-   iteration time of the executive director, t2, and the value of the parameter
-   <code>runAheadLength</code>, t3. The fire end time is t1 + min(t2, t3)
-   <LI> At the fire stage, the director will stop at the first of the
-   following two times, the fire end time and the time of the first detected
-   event.
-   </ul>
-   At the prefire stage, the local current time is compared with the
-   current time of the executive director. If the local time is later than
-   the executive director time, then the directed system will rollback to a
-   "known good" state. The "known good" state is the state of the system at
-   the time when local time is equal to the current time of the executive
-   director.
+ A CTDirector that supports the interaction of the continuous-time
+ simulation with event-based domains. This director can both serve as
+ a top-level director and an inside director that is contained by
+ a composite actor in an event-based domain. If it is a top-level
+ director, it behaves exactly like a CTMultiSolverDirector. If it is
+ embedded in an event-based domain, it will run ahead of the global
+ time and prepare to roll back if necessary.
+ <P>
+ This director has an extra parameter compared to the CTMultiSolverDirector,
+ the maximum run ahead of time length (<code>runAheadLength</code>).
+ Its default value is 1.0.
+ <P>
+ The running ahead of time is achieved by the following mechanism.<br>
+ <UL>
+ <LI> At the initialize stage of an execution, the director requests
+ a firing at the global current time.
+ <LI> At each prefire stage of the execution, the end time the the firing is
+ computed based on the current time of the executive director, t1, the next
+ iteration time of the executive director, t2, and the value of the parameter
+ <code>runAheadLength</code>, t3. The fire end time is t1 + min(t2, t3)
+ <LI> At the fire stage, the director will stop at the first of the
+ following two times, the fire end time and the time of the first detected
+ event.
+ </ul>
+ At the prefire stage, the local current time is compared with the
+ current time of the executive director. If the local time is later than
+ the executive director time, then the directed system will rollback to a
+ "known good" state. The "known good" state is the state of the system at
+ the time when local time is equal to the current time of the executive
+ director.
 
-   @author  Jie Liu, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
-*/
+ @author  Jie Liu, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (hyzheng)
+ @Pt.AcceptedRating Red (hyzheng)
+ */
 public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -149,7 +148,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             }
 
             double value = ((DoubleToken) runAheadLength.getToken())
-                .doubleValue();
+                    .doubleValue();
 
             if (value < 0) {
                 throw new IllegalActionException(this,
@@ -283,12 +282,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             Time localTime = getModelTime();
             Time outsideNextIterationTime = executiveDirector
-                .getModelNextIterationTime();
+                    .getModelNextIterationTime();
 
             if (_debugging) {
                 _debug("The current time of outside model is " + _outsideTime,
                         " and its next iteration time is "
-                        + outsideNextIterationTime,
+                                + outsideNextIterationTime,
                         "\nThe current time of this director is " + localTime);
             }
 
@@ -296,8 +295,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             if (outsideNextIterationTime.compareTo(_outsideTime) < 0) {
                 // NOTE: This check is redundant. The outside director should
                 // guarantee that this never happen.
-                throw new IllegalActionException(this,
-                        "Outside domain" + " time is going backward."
+                throw new IllegalActionException(this, "Outside domain"
+                        + " time is going backward."
                         + " Current outside time = " + _outsideTime
                         + ", but the next iteration time = "
                         + outsideNextIterationTime);
@@ -310,7 +309,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             if (_outsideTime.compareTo(localTime) > 0) {
                 throw new IllegalActionException(this, executiveDirector,
                         "Outside time is later than the local time. "
-                        + "This should never happen.");
+                                + "This should never happen.");
             } else if (_outsideTime.compareTo(localTime) < 0) {
                 // FIXME: get a concrete example that illustrates how this
                 // can happen.
@@ -354,14 +353,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // time.
             _setIterationBeginTime(getModelTime());
 
-            double aheadLength = outsideNextIterationTime.subtract(_outsideTime)
-                .getDoubleValue();
+            double aheadLength = outsideNextIterationTime
+                    .subtract(_outsideTime).getDoubleValue();
 
             if (_debugging) {
                 _debug(getName(), " local time = " + localTime,
                         " Outside Time = " + _outsideTime,
                         " NextIterationTime = " + outsideNextIterationTime
-                        + " Inferred run length = " + aheadLength);
+                                + " Inferred run length = " + aheadLength);
             }
 
             double timeResolution = getTimeResolution();
@@ -384,9 +383,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             // Now it is safe to execute the continuous part.
             if (_debugging) {
-                _debug(getName(),
-                        "Iteration end time = " + getIterationEndTime(),
-                        " <-- end of prefire.");
+                _debug(getName(), "Iteration end time = "
+                        + getIterationEndTime(), " <-- end of prefire.");
             }
 
             return true;
@@ -494,7 +492,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     protected void _markStates() throws IllegalActionException {
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator actors = schedule.get(CTSchedule.STATEFUL_ACTORS)
-            .actorIterator();
+                .actorIterator();
 
         while (actors.hasNext()) {
             CTStatefulActor actor = (CTStatefulActor) actors.next();
@@ -521,7 +519,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator actors = schedule.get(CTSchedule.STATEFUL_ACTORS)
-            .actorIterator();
+                .actorIterator();
 
         while (actors.hasNext()) {
             CTStatefulActor actor = (CTStatefulActor) actors.next();

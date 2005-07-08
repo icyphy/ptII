@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.canvas;
 
 import java.awt.AWTEvent;
@@ -36,7 +36,6 @@ import diva.canvas.event.EventAcceptor;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.Interactor;
 import diva.util.Filter;
-
 
 /** A figure layer is a layer on which Figures can be drawn.  It
  * contains a z-list in which all the contained figures are held, and
@@ -55,7 +54,7 @@ import diva.util.Filter;
  * @Pt.AcceptedRating Yellow
  */
 public class FigureLayer extends CanvasLayer implements FigureContainer,
-                                                        EventAcceptor {
+        EventAcceptor {
     /** The figures contained in this layer.
      */
     private ZList _zlist = null;
@@ -422,8 +421,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      */
     public Figure pick(Rectangle2D region) {
         return CanvasUtilities.pick(_zlist.getIntersectedFigures(region)
-                .figuresFromFront(),
-                region);
+                .figuresFromFront(), region);
     }
 
     /** Get the picked figure. This method recursively traverses the
@@ -434,7 +432,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      */
     public Figure pick(Rectangle2D region, Filter filter) {
         Iterator iterator = _zlist.getIntersectedFigures(region)
-            .figuresFromFront();
+                .figuresFromFront();
         return CanvasUtilities.pick(iterator, region, filter);
     }
 
@@ -724,11 +722,11 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
             _pointerGrabber = null;
             break;
 
-            // Process a click event only. This code ignores the
-            // grab, as it should have already been cleared by a
-            // preceding MOUSE_RELEASED event. I'm not entirely
-            // sure if this is actually correct or not.
-            //
+        // Process a click event only. This code ignores the
+        // grab, as it should have already been cleared by a
+        // preceding MOUSE_RELEASED event. I'm not entirely
+        // sure if this is actually correct or not.
+        //
         case MouseEvent.MOUSE_CLICKED:
 
             // Get the figure that the mouse hit, if any

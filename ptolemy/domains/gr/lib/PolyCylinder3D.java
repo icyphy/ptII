@@ -1,30 +1,30 @@
 /* A GR Shape consisting of an extrusion of a polygon base.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.lib;
 
 import javax.media.j3d.GeometryArray;
@@ -46,28 +46,27 @@ import com.sun.j3d.utils.geometry.NormalGenerator;
 import com.sun.j3d.utils.geometry.Stripifier;
 import com.sun.j3d.utils.geometry.Triangulator;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PolyCylinder3D
 
 /**
 
-This actor produces a generalized cylindrical shape in the GR domain.
-The output port is used to connect this actor to the Java3D scene
-graph. This actor will only have meaning in the GR domain.
+ This actor produces a generalized cylindrical shape in the GR domain.
+ The output port is used to connect this actor to the Java3D scene
+ graph. This actor will only have meaning in the GR domain.
 
-The parameter <i>polygon</i> determines the polygonal shape of the base
-of this generalized cylinder. One will need to enter an array of coordinates
-in the X-Y plane to specify the polygonal shape for the base. The parameter
-<i>thickness</i> determines the thickness of the generalized cylinder.
+ The parameter <i>polygon</i> determines the polygonal shape of the base
+ of this generalized cylinder. One will need to enter an array of coordinates
+ in the X-Y plane to specify the polygonal shape for the base. The parameter
+ <i>thickness</i> determines the thickness of the generalized cylinder.
 
-@author C. Fong and Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+ @author C. Fong and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
 
-@Pt.ProposedRating Green (eal)
-@Pt.AcceptedRating Yellow (liuxj)
-*/
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (liuxj)
+ */
 public class PolyCylinder3D extends GRShadedShape {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -175,7 +174,7 @@ public class PolyCylinder3D extends GRShadedShape {
         }
 
         float thicknessValue = (float) ((DoubleToken) thickness.getToken())
-            .doubleValue();
+                .doubleValue();
 
         data[numberOfVertices * 3] = data[0];
         data[(numberOfVertices * 3) + 1] = data[1];
@@ -258,9 +257,9 @@ public class PolyCylinder3D extends GRShadedShape {
 
         for (int i = 0; i < (numberOfElements * 2); i = i + 2) {
             data[j++] = (float) ((DoubleToken) polygonToken.getElement(i))
-                .doubleValue();
+                    .doubleValue();
             data[j++] = (float) ((DoubleToken) polygonToken.getElement(i + 1))
-                .doubleValue();
+                    .doubleValue();
             data[j++] = 0.0f;
         }
 

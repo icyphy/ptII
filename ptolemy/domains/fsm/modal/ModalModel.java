@@ -1,29 +1,29 @@
 /* Modal models.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fsm.modal;
 
 import java.lang.reflect.Constructor;
@@ -47,68 +47,67 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ModalModel
 
 /**
-   This is a typed composite actor designed to be a modal model.
-   Inside the modal model is a finite-state machine controller, and
-   inside each state in the FSM is a refinement model. To use this
-   actor, just drag it into a model, and look inside to start constructing
-   the controller.  You may add ports to get inputs and outputs, and
-   add states to the controller.  You may add one or more refinements
-   to a state (each of these refinements will be executed when this
-   actor is executed).  Each refinement is required to have its own
-   director, so you will need to choose a director.
-   <p>
-   The controller is a finite-state machine (FSM), which consists of
-   states and transitions.  One of the states is an initial state.
-   When this actor executes, if the current state has a refinement,
-   then that refinement is executed.  Then the guards on all the outgoing
-   transitions of the current state are evaluated, and if one of those
-   guards is true, then the transition is taken.  Taking the transition
-   means that the actions associated with the transition are executed
-   (which can result in producing outputs), and the new current state is
-   the state at the destination of the transition.  It is an error if
-   more than one of the guards evaluates to true.
-   <p>
-   To add a state, click on a state button in the toolbar, or drag
-   in a state from the library at the left.  To add a transition,
-   position the mouse over the source state, hold the control button,
-   and drag to the destination state.  The destination state may be
-   the same state, in which case the transition is used simply to
-   execute its actions.
-   <p>
-   Adding or removing ports in this actor results in the same ports appearing
-   or disappearing in the FSM controller and in each of the refinements.
-   Similarly, adding or removing ports in the controller or in the
-   refinements results in this actor and the other refinements
-   reflecting the same change to the ports.  That is, this actor,
-   the controller, and the refinments all contain the same ports.
-   <p>
-   There is one subtlety regarding ports however.  If you add an
-   output port to a refinement, then the corresponding port in the
-   controller will be both an input and an output.  The reason for
-   this is that the controller can access the results of executing
-   a refinement in order to choose a transition.
-   <p>
-   This class is designed to work closely with ModalController and
-   Refinement, since changes to ports can be initiated in this class
-   or in those. It works with continuous-time as well as discrete-time
-   models.
-   <p>
-   This class also fulfills the CTEventGenerator interfact so that
-   it can report events generated inside.
+ This is a typed composite actor designed to be a modal model.
+ Inside the modal model is a finite-state machine controller, and
+ inside each state in the FSM is a refinement model. To use this
+ actor, just drag it into a model, and look inside to start constructing
+ the controller.  You may add ports to get inputs and outputs, and
+ add states to the controller.  You may add one or more refinements
+ to a state (each of these refinements will be executed when this
+ actor is executed).  Each refinement is required to have its own
+ director, so you will need to choose a director.
+ <p>
+ The controller is a finite-state machine (FSM), which consists of
+ states and transitions.  One of the states is an initial state.
+ When this actor executes, if the current state has a refinement,
+ then that refinement is executed.  Then the guards on all the outgoing
+ transitions of the current state are evaluated, and if one of those
+ guards is true, then the transition is taken.  Taking the transition
+ means that the actions associated with the transition are executed
+ (which can result in producing outputs), and the new current state is
+ the state at the destination of the transition.  It is an error if
+ more than one of the guards evaluates to true.
+ <p>
+ To add a state, click on a state button in the toolbar, or drag
+ in a state from the library at the left.  To add a transition,
+ position the mouse over the source state, hold the control button,
+ and drag to the destination state.  The destination state may be
+ the same state, in which case the transition is used simply to
+ execute its actions.
+ <p>
+ Adding or removing ports in this actor results in the same ports appearing
+ or disappearing in the FSM controller and in each of the refinements.
+ Similarly, adding or removing ports in the controller or in the
+ refinements results in this actor and the other refinements
+ reflecting the same change to the ports.  That is, this actor,
+ the controller, and the refinments all contain the same ports.
+ <p>
+ There is one subtlety regarding ports however.  If you add an
+ output port to a refinement, then the corresponding port in the
+ controller will be both an input and an output.  The reason for
+ this is that the controller can access the results of executing
+ a refinement in order to choose a transition.
+ <p>
+ This class is designed to work closely with ModalController and
+ Refinement, since changes to ports can be initiated in this class
+ or in those. It works with continuous-time as well as discrete-time
+ models.
+ <p>
+ This class also fulfills the CTEventGenerator interfact so that
+ it can report events generated inside.
 
-   @see ModalController
-   @see Refinement
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ @see ModalController
+ @see Refinement
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class ModalModel extends CTCompositeActor implements ChangeListener {
     /** Construct a modal model in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -120,8 +119,8 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public ModalModel(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public ModalModel(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -179,33 +178,28 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                 // change request.
                 ChangeRequest request = new ChangeRequest(this,
                         "Create a new director") {
-                        protected void _execute() throws Exception {
-                            Director director = getDirector();
-                            Class newDirectorClass = Class.forName(directorClass
-                                    .stringValue());
-                            Constructor newDirectorConstructor = newDirectorClass
+                    protected void _execute() throws Exception {
+                        Director director = getDirector();
+                        Class newDirectorClass = Class.forName(directorClass
+                                .stringValue());
+                        Constructor newDirectorConstructor = newDirectorClass
                                 .getConstructor(new Class[] {
-                                    CompositeEntity.class,
-                                    String.class
-                                });
-                            FSMDirector newDirector = (FSMDirector) newDirectorConstructor
-                                .newInstance(new Object[] {
-                                    ModalModel.this,
-                                    uniqueName("_Director")
-                                });
+                                        CompositeEntity.class, String.class });
+                        FSMDirector newDirector = (FSMDirector) newDirectorConstructor
+                                .newInstance(new Object[] { ModalModel.this,
+                                        uniqueName("_Director") });
 
-                            // The director should not be persistent.
-                            newDirector.setPersistent(false);
-                            newDirector.controllerName.setExpression(
-                                    "_Controller");
+                        // The director should not be persistent.
+                        newDirector.setPersistent(false);
+                        newDirector.controllerName.setExpression("_Controller");
 
-                            if ((director != null)
-                                    && (director.getContainer() == ModalModel.this)) {
-                                // Delete the old director.
-                                director.setContainer(null);
-                            }
+                        if ((director != null)
+                                && (director.getContainer() == ModalModel.this)) {
+                            // Delete the old director.
+                            director.setContainer(null);
                         }
-                    };
+                    }
+                };
 
                 requestChange(request);
             }
@@ -254,7 +248,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         } catch (IllegalActionException e) {
             throw new CloneNotSupportedException(
                     "Failed to validate the director of the clone of "
-                    + getFullName());
+                            + getFullName());
         }
 
         return newModel;
@@ -323,14 +317,14 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                         try {
                             ((ModalController) entity)._mirrorDisable = true;
 
-                            /*Port newPort = */ entity.newPort(name);
+                            /*Port newPort = */entity.newPort(name);
 
                             /* No longer needed since Yuhong modified
                              * the type system to allow UNKNOWN. EAL
                              if (newPort instanceof TypedIOPort) {
                              ((TypedIOPort)newPort).setTypeSameAs(port);
                              }
-                            */
+                             */
                         } finally {
                             ((ModalController) entity)._mirrorDisable = false;
                         }
@@ -340,14 +334,14 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                         try {
                             ((Refinement) entity)._mirrorDisable = true;
 
-                            /*Port newPort = */ entity.newPort(name);
+                            /*Port newPort = */entity.newPort(name);
 
                             /* No longer needed since Yuhong modified
                              * the type system to allow UNKNOWN. EAL
                              if (newPort instanceof TypedIOPort) {
                              ((TypedIOPort)newPort).setTypeSameAs(port);
                              }
-                            */
+                             */
                         } finally {
                             ((Refinement) entity)._mirrorDisable = false;
                         }
@@ -375,8 +369,8 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     // Initialize the model.
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         // Mark this composite actor as a strict actor. This will be used for
         // scheduling analysis, for example in the DE domain.
         new Attribute(this, "_strictMarker");
@@ -414,7 +408,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             // FIXME: Better solution is to override the returned
             // list of choices in the parameter class.
             String[] suggestions = executiveDirector
-                .suggestedModalModelDirectors();
+                    .suggestedModalModelDirectors();
 
             for (int i = 0; i < suggestions.length; i++) {
                 directorClass.addChoice(suggestions[i]);
@@ -428,13 +422,13 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             // This happens when vergil starts, and when a modal model is
             // dropped into a blank editor. Model designers need to configure
             // it if FSMDirector is not the desired director.
-            directorClass.setExpression(
-                    "ptolemy.domains.fsm.kernel.FSMDirector");
+            directorClass
+                    .setExpression("ptolemy.domains.fsm.kernel.FSMDirector");
         }
 
         // Create a more reasonable default icon.
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
                 + "height=\"40\" style=\"fill:red\"/>\n"
                 + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
                 + "height=\"36\" style=\"fill:lightgrey\"/>\n"

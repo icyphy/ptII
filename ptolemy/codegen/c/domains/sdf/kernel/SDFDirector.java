@@ -1,30 +1,30 @@
 /* Code generator helper class associated with the SDFDirector class.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.codegen.c.domains.sdf.kernel;
 
 import java.util.HashSet;
@@ -51,21 +51,20 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////
 //// SDFDirector
 
 /**
-   Code generator helper associated with the SDFDirector class. This class
-   is also associated with a code generator.
-   FIXME: Should associated with a static scheduling code generator.
+ Code generator helper associated with the SDFDirector class. This class
+ is also associated with a code generator.
+ FIXME: Should associated with a static scheduling code generator.
 
-   @author Ye Zhou
-   @version $Id$
-   @since Ptolemy II 5.0
-   @Pt.ProposedRating Red (zhouye)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author Ye Zhou
+ @version $Id$
+ @since Ptolemy II 5.0
+ @Pt.ProposedRating Red (zhouye)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class SDFDirector extends Director {
     /** Construct the code generator helper associated with the given
      *  SDFDirector.
@@ -91,7 +90,7 @@ public class SDFDirector extends Director {
 
         if (iterations != null) {
             int iterationCount = ((IntToken) ((Variable) iterations).getToken())
-                .intValue();
+                    .intValue();
 
             if (iterationCount <= 0) {
                 code.append("while (true) {\n");
@@ -104,8 +103,8 @@ public class SDFDirector extends Director {
             }
 
             // Generate code for one iteration.
-            Schedule schedule = ((StaticSchedulingDirector) getComponent()).getScheduler()
-                .getSchedule();
+            Schedule schedule = ((StaticSchedulingDirector) getComponent())
+                    .getScheduler().getSchedule();
 
             Iterator actorsToFire = schedule.iterator();
 
@@ -126,7 +125,7 @@ public class SDFDirector extends Director {
                     inputAndOutputPortsSet.addAll(actor.outputPortList());
 
                     Iterator inputAndOutputPorts = inputAndOutputPortsSet
-                        .iterator();
+                            .iterator();
 
                     while (inputAndOutputPorts.hasNext()) {
                         IOPort port = (IOPort) inputAndOutputPorts.next();
@@ -134,17 +133,19 @@ public class SDFDirector extends Director {
                         for (int j = 0; j < port.getWidth(); j++) {
                             // Update the offset for each channel.
                             if (helperObject.getOffset(port, j) instanceof Integer) {
-                                int offset = ((Integer) helperObject.getOffset(port,
-                                                      j)).intValue();
-                                offset = (offset + DFUtilities.getRate(port)) % helperObject
-                                    .getBufferSize(port, j);
-                                helperObject.setOffset(port, j,
-                                        new Integer(offset));
+                                int offset = ((Integer) helperObject.getOffset(
+                                        port, j)).intValue();
+                                offset = (offset + DFUtilities.getRate(port))
+                                        % helperObject.getBufferSize(port, j);
+                                helperObject.setOffset(port, j, new Integer(
+                                        offset));
                             } else {
                                 // FIXME: didn't write "% portBufferSize" here.
-                                String temp = (String) helperObject.getOffset(port,
-                                        j) + " += " + DFUtilities.getRate(port)
-                                    + ";\n";
+                                String temp = (String) helperObject.getOffset(
+                                        port, j)
+                                        + " += "
+                                        + DFUtilities.getRate(port)
+                                        + ";\n";
                                 code.append(temp);
                             }
                         }
@@ -155,7 +156,8 @@ public class SDFDirector extends Director {
             code.append("}\n");
         } else {
             throw new IllegalActionException(getComponent(),
-                    "The SDF Director does not have an attribute" + "iterations");
+                    "The SDF Director does not have an attribute"
+                            + "iterations");
         }
     }
 
@@ -167,15 +169,16 @@ public class SDFDirector extends Director {
         StringBuffer initializeCode = new StringBuffer();
         initializeCode.append(super.generateInitializeCode());
 
-        Iterator actors = ((CompositeActor) _codeGenerator.getContainer()).deepEntityList()
-            .iterator();
+        Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            Variable firings = (Variable) ((NamedObj) actor).getAttribute(
-                    "firingsPerIteration");
-            int firingsPerIteration = ((IntToken) firings.getToken()).intValue();
+            Variable firings = (Variable) ((NamedObj) actor)
+                    .getAttribute("firingsPerIteration");
+            int firingsPerIteration = ((IntToken) firings.getToken())
+                    .intValue();
             Set ioPortsSet = new HashSet();
             ioPortsSet.addAll(actor.inputPortList());
             ioPortsSet.addAll(actor.outputPortList());
@@ -184,7 +187,8 @@ public class SDFDirector extends Director {
 
             while (ioPorts.hasNext()) {
                 IOPort port = (IOPort) ioPorts.next();
-                int totalTokens = DFUtilities.getRate(port) * firingsPerIteration;
+                int totalTokens = DFUtilities.getRate(port)
+                        * firingsPerIteration;
 
                 for (int channel = 0; channel < port.getWidth(); channel++) {
                     int portOffset = totalTokens % getBufferSize(port, channel);
@@ -193,12 +197,13 @@ public class SDFDirector extends Director {
                         // Increase the buffer size of that channel to the
                         // power of two.
                         int bufferSize = _ceilToPowerOfTwo(getBufferSize(port,
-                                                                   channel));
+                                channel));
                         actorHelper.setBufferSize(port, channel, bufferSize);
 
                         // Declare the channel offset variables.
                         StringBuffer channelOffset = new StringBuffer();
-                        channelOffset.append(port.getFullName().replace('.', '_'));
+                        channelOffset.append(port.getFullName().replace('.',
+                                '_'));
 
                         if (port.getWidth() > 1) {
                             channelOffset.append("_" + channel);
@@ -235,7 +240,7 @@ public class SDFDirector extends Director {
         Attribute iterations = getComponent().getAttribute("iterations");
         if (iterations != null) {
             int iterationCount = ((IntToken) ((Variable) iterations).getToken())
-                .intValue();
+                    .intValue();
             if (iterationCount > 0) {
                 // Since there is only one director, we can declare this
                 // "iteration" variable. Alternatively, we can use $actorSymbol
@@ -246,7 +251,7 @@ public class SDFDirector extends Director {
         }
         return code.toString();
     }
-    
+
     /** Return the buffer size of a given channel (i.e, a given port
      *  and a given channel number). The default value is 1. If the
      *  port is an output port, then the buffer size is obtained
@@ -261,28 +266,29 @@ public class SDFDirector extends Director {
      */
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
-        
+
         Receiver[][] receivers = null;
         if (port.isInput()) {
-        	receivers = port.getReceivers();
+            receivers = port.getReceivers();
         } else if (port.isOutput()) {
-        	receivers = port.getRemoteReceivers();
+            receivers = port.getRemoteReceivers();
         } else {
-        	throw new IllegalActionException(port,
+            throw new IllegalActionException(port,
                     "Port is neither an input nor an output.");
         }
         try {
-        	int size = 0;
+            int size = 0;
             for (int copy = 0; copy < receivers[channelNumber].length; copy++) {
-            	int copySize = ((SDFReceiver)receivers[channelNumber][copy]).getCapacity();
+                int copySize = ((SDFReceiver) receivers[channelNumber][copy])
+                        .getCapacity();
                 if (copySize > size) {
-                	size = copySize;
+                    size = copySize;
                 }
             }
             return size;
         } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new IllegalActionException(port,
-                    "Channel out of bounds: " + channelNumber);
+            throw new IllegalActionException(port, "Channel out of bounds: "
+                    + channelNumber);
         }
     }
 

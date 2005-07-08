@@ -1,30 +1,30 @@
 /* A base class for actors that encrypt and decrypt data.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.security;
 
 import javax.crypto.Cipher;
@@ -37,46 +37,45 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CipherActor
 
 /**
-   A base class for actors that encrypt and decrypt data.
+ A base class for actors that encrypt and decrypt data.
 
-   <p>Cipher actors are any actors which perform encryption or
-   decryption based on the Java Cryptography Extension (JCE).
-   See the
-   {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
-   resources about JCA and JCE.
+ <p>Cipher actors are any actors which perform encryption or
+ decryption based on the Java Cryptography Extension (JCE).
+ See the
+ {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
+ resources about JCA and JCE.
 
-   <p> Actors extending this class take in an unsigned byte array at the
-   <i>input</i>, process the data based on the <i>algorithm</i> parameter
-   and send a unsigned byte array to the <i>output</i>.  The algorithms
-   that may be implemented are limited to those that are implemented
-   by "providers" following the JCE specifications and installed in the
-   machine being run. The mode and padding of the algorithm can also be
-   specified in the <i>mode</i> and <i>padding</i> parameters.
-   In case a provider specific instance of an algorithm is needed,
-   the provider may also be specified in the <i>provider</i> parameter.
-   The <i>keySize</i> parameter allows implementations of algorithms
-   using various key sizes.
+ <p> Actors extending this class take in an unsigned byte array at the
+ <i>input</i>, process the data based on the <i>algorithm</i> parameter
+ and send a unsigned byte array to the <i>output</i>.  The algorithms
+ that may be implemented are limited to those that are implemented
+ by "providers" following the JCE specifications and installed in the
+ machine being run. The mode and padding of the algorithm can also be
+ specified in the <i>mode</i> and <i>padding</i> parameters.
+ In case a provider specific instance of an algorithm is needed,
+ the provider may also be specified in the <i>provider</i> parameter.
+ The <i>keySize</i> parameter allows implementations of algorithms
+ using various key sizes.
 
-   <p>Concrete actors derived from this base class must implement the
-   {@link ptolemy.actor.lib.security.CryptographyActor#_process(byte[])} method.
-   The initialize() method of this actor sets _cipher to the
-   value of javax.crypt.Cipher.getInstance() with an argument that is
-   created from the values of the <i>algorithm</i>, <i>padding</i> and
-   <i>keySize</i> parameters. Derived classes should call _cipher.init()
-   with the value of the key in their fire() method.  The_process() method
-   in a derived class usually calls _cipher.doFinal().
+ <p>Concrete actors derived from this base class must implement the
+ {@link ptolemy.actor.lib.security.CryptographyActor#_process(byte[])} method.
+ The initialize() method of this actor sets _cipher to the
+ value of javax.crypt.Cipher.getInstance() with an argument that is
+ created from the values of the <i>algorithm</i>, <i>padding</i> and
+ <i>keySize</i> parameters. Derived classes should call _cipher.init()
+ with the value of the key in their fire() method.  The_process() method
+ in a derived class usually calls _cipher.doFinal().
 
-   @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 abstract public class CipherActor extends CryptographyActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -292,8 +291,8 @@ abstract public class CipherActor extends CryptographyActor {
                 // string, then we use the default for the algorithm
                 // If they are not empty
                 String modeArgument = (_mode.length() > 0) ? ("/" + _mode) : "";
-                String paddingArgument = (_padding.length() > 0)
-                    ? ("/" + _padding) : "";
+                String paddingArgument = (_padding.length() > 0) ? ("/" + _padding)
+                        : "";
 
                 if ((_mode.length() == 0) && (_padding.length() > 0)) {
                     modeArgument = "/";
@@ -309,8 +308,8 @@ abstract public class CipherActor extends CryptographyActor {
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to initialize Cipher with " + "algorithm: '"
-                        + _algorithm + "', padding: '" + _padding
-                        + "', provider: '" + _provider + "'");
+                                + _algorithm + "', padding: '" + _padding
+                                + "', provider: '" + _provider + "'");
             }
 
             _updateCipherNeeded = false;

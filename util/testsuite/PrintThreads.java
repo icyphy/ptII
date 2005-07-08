@@ -1,64 +1,63 @@
 /* Print Information about all the threads
 
-@Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 /* This code was originally found at
-   http://www.fsg.com/tech/threadmon.htm
-   and is
-   Copyright (c) 1997-2005 Fusion Systems Group, a division of Context Integration, Inc. All rights reserved.
+ http://www.fsg.com/tech/threadmon.htm
+ and is
+ Copyright (c) 1997-2005 Fusion Systems Group, a division of Context Integration, Inc. All rights reserved.
 
-   Fusion Systems Group
-   One Wall Street Court, New York, NY, 10005
-   Phone: +1-212-376-6300
-   Fax: +1-212-376-6320
-   E-mail: threadmon@fsg.com
-*/
+ Fusion Systems Group
+ One Wall Street Court, New York, NY, 10005
+ Phone: +1-212-376-6300
+ Fax: +1-212-376-6320
+ E-mail: threadmon@fsg.com
+ */
 package util.testsuite;
 
 import javax.swing.SwingUtilities;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// PrintThreads
 
 /** PrintThreads prints all the Threads in the current JVM.
-    This class will work in both applications and applets.
-    When run in an applet, this class attempts to gracefully handle
-    the various security restrictions concerning getting the parent
-    of a ThreadGroup.
-    The output includes the number of threads and whether the current thread
-    is the Swing Event Dispatch Thread.
+ This class will work in both applications and applets.
+ When run in an applet, this class attempts to gracefully handle
+ the various security restrictions concerning getting the parent
+ of a ThreadGroup.
+ The output includes the number of threads and whether the current thread
+ is the Swing Event Dispatch Thread.
 
-    @author Christopher Hylands, based on code from Fusion Systems Group
-    @version $Id$
-    @since Ptolemy II 1.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands, based on code from Fusion Systems Group
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class PrintThreads {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -94,7 +93,8 @@ public class PrintThreads {
 
         results.append(rootGroup.toString());
 
-        ThreadGroup[] threadGroups = new ThreadGroup[rootGroup.activeGroupCount()];
+        ThreadGroup[] threadGroups = new ThreadGroup[rootGroup
+                .activeGroupCount()];
         rootGroup.enumerate(threadGroups);
 
         for (int i = 0; i < threadGroups.length; i++) {
@@ -127,7 +127,8 @@ public class PrintThreads {
 
         if (indicateEventDispatchThread) {
             results.append("Current Thread (*) "
-                    + (SwingUtilities.isEventDispatchThread() ? "_is_" : "_is not_")
+                    + (SwingUtilities.isEventDispatchThread() ? "_is_"
+                            : "_is not_")
                     + " the Swing Event Dispatch Thread\n");
         }
 
@@ -156,9 +157,9 @@ public class PrintThreads {
         try {
             if (thread == null) {
                 return "PrintThreads.toThreadDescription(): "
-                    + "thread argument == null\n   "
-                    + "This can happen if the thread was "
-                    + "killed while PrintThreads was called";
+                        + "thread argument == null\n   "
+                        + "This can happen if the thread was "
+                        + "killed while PrintThreads was called";
             }
 
             if (thread.getName() != null) {
@@ -170,16 +171,22 @@ public class PrintThreads {
                 group = thread.getThreadGroup().getName();
             }
 
-            return _stringFormat(name, 35) + " " + _stringFormat(group, 20)
-                + " " + _stringFormat(Integer.toString(thread.getPriority()), 3)
-                + " "
-                + _stringFormat(Boolean.valueOf(thread.isDaemon()).toString(), 6)
-                + " "
-                + _stringFormat(Boolean.valueOf(thread.isAlive()).toString(), 5)
-                + (Thread.currentThread().equals(thread) ? " *" : "  ");
+            return _stringFormat(name, 35)
+                    + " "
+                    + _stringFormat(group, 20)
+                    + " "
+                    + _stringFormat(Integer.toString(thread.getPriority()), 3)
+                    + " "
+                    + _stringFormat(Boolean.valueOf(thread.isDaemon())
+                            .toString(), 6)
+                    + " "
+                    + _stringFormat(Boolean.valueOf(thread.isAlive())
+                            .toString(), 5)
+                    + (Thread.currentThread().equals(thread) ? " *" : "  ");
         } catch (Exception e) {
             return _stringFormat(name, 35) + " " + _stringFormat(group, 20)
-                + " " + "PrintThread.toThreadDescription(): Bad State!: " + e;
+                    + " " + "PrintThread.toThreadDescription(): Bad State!: "
+                    + e;
         }
     }
 
@@ -191,7 +198,7 @@ public class PrintThreads {
      */
     private final static String _getHeader() {
         return _stringFormat("Name", 35) + " " + _stringFormat("Group", 20)
-            + " Pri Daemon Alive Curr\n";
+                + " Pri Daemon Alive Curr\n";
     }
 
     /* Pads inputString out with spaces to width length.

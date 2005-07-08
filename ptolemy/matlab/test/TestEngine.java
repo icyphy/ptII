@@ -1,32 +1,32 @@
 /* Matlab engine interface test (demo)
 
-Copyright (c) 1998-2005 The Regents of the University of California and
-Research in Motion Limited.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California and
+ Research in Motion Limited.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.matlab.test;
 
 import ptolemy.data.ArrayToken;
@@ -40,20 +40,19 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
 import ptolemy.matlab.Engine;
 
-
 ///////////////////////////////////////////////////////////////////////////
 //// TestEngine
 
 /** Provides a simple demo of capabilities.<p>
-    Use: "ptinvoke ptolemy.matlab.test.TestEngine"
-    in this directory to execute, output goes to stdout.<p>
-    TODO: automate regression test (python?, jtcl?)
-    @author Zoltan Kemenczy, Research in Motion Limited
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ Use: "ptinvoke ptolemy.matlab.test.TestEngine"
+ in this directory to execute, output goes to stdout.<p>
+ TODO: automate regression test (python?, jtcl?)
+ @author Zoltan Kemenczy, Research in Motion Limited
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class TestEngine {
     public static void main(String[] args) throws IllegalActionException {
         Engine eng = new Engine();
@@ -62,13 +61,8 @@ public class TestEngine {
         long[] engineHandle = eng.open();
         eng.evalString(engineHandle, "clear");
 
-        DoubleMatrixToken tx = new DoubleMatrixToken(new double[][] {
-            {
-                1,
-                2,
-                3
-            }
-        });
+        DoubleMatrixToken tx = new DoubleMatrixToken(
+                new double[][] { { 1, 2, 3 } });
         System.out.println("\nNote: All data output is via "
                 + "Token.toString() on tokens");
         System.out.println("that are put/get from the matlab engineHandle.");
@@ -82,18 +76,7 @@ public class TestEngine {
         System.out.println("y = " + ty.toString());
 
         System.out.println("\nCreate 2x3 double matrix x:");
-        tx = new DoubleMatrixToken(new double[][] {
-            {
-                1,
-                2,
-                3
-            },
-            {
-                4,
-                5,
-                6
-            }
-        });
+        tx = new DoubleMatrixToken(new double[][] { { 1, 2, 3 }, { 4, 5, 6 } });
         eng.put(engineHandle, "x", tx);
         System.out.println("x = " + tx.toString());
         System.out.println("Eval: y = x.*x;");
@@ -125,10 +108,8 @@ public class TestEngine {
         System.out.println("rc = " + ta.toString());
 
         System.out.println("\nCreate 2xn string s:");
-        ta = new ArrayToken(new Token[] {
-            new StringToken("str one"),
-            new StringToken("str two")
-        });
+        ta = new ArrayToken(new Token[] { new StringToken("str one"),
+                new StringToken("str two") });
         System.out.println("s = " + ta.toString());
         eng.put(engineHandle, "s", ta);
         System.out.println("\nEval: rr = [s,s];");
@@ -138,20 +119,11 @@ public class TestEngine {
 
         System.out.println("\nCreate 1x1 struct r (RecordToken):");
 
-        RecordToken tr = new RecordToken(new String[] {
-            "x",
-            "r",
-            "s"
-        },
+        RecordToken tr = new RecordToken(new String[] { "x", "r", "s" },
                 new Token[] {
-                    tx,
-                    new RecordToken(new String[] {
-                        "a"
-                    }, new Token[] {
-                        new IntToken()
-                    }),
-                    ts
-                });
+                        tx,
+                        new RecordToken(new String[] { "a" },
+                                new Token[] { new IntToken() }), ts });
         System.out.println("r = " + tr.toString());
         eng.put(engineHandle, "r", tr);
 
@@ -169,44 +141,16 @@ public class TestEngine {
         System.out.println("\nCreate 1x3 cell array from ta, "
                 + "an ArrayToken of RecordTokens:");
 
-        RecordToken r1 = new RecordToken(new String[] {
-            "a"
-        },
-                new Token[] {
-                    new ComplexMatrixToken(new Complex[][] {
-                        {
-                            new Complex(1.0, 1.0),
-                            new Complex(2.0, 2.0)
-                        }
-                    })
-                });
-        RecordToken r2 = new RecordToken(new String[] {
-            "a"
-        },
-                new Token[] {
-                    new ComplexMatrixToken(new Complex[][] {
-                        {
-                            new Complex(3.0, 3.0),
-                            new Complex(4.0, 4.0)
-                        }
-                    })
-                });
-        RecordToken r3 = new RecordToken(new String[] {
-            "a"
-        },
-                new Token[] {
-                    new ComplexMatrixToken(new Complex[][] {
-                        {
-                            new Complex(5.0, 5.0),
-                            new Complex(6.0, 6.0)
-                        }
-                    })
-                });
-        ta = new ArrayToken(new Token[] {
-            r1,
-            r2,
-            r3
-        });
+        RecordToken r1 = new RecordToken(new String[] { "a" },
+                new Token[] { new ComplexMatrixToken(new Complex[][] { {
+                        new Complex(1.0, 1.0), new Complex(2.0, 2.0) } }) });
+        RecordToken r2 = new RecordToken(new String[] { "a" },
+                new Token[] { new ComplexMatrixToken(new Complex[][] { {
+                        new Complex(3.0, 3.0), new Complex(4.0, 4.0) } }) });
+        RecordToken r3 = new RecordToken(new String[] { "a" },
+                new Token[] { new ComplexMatrixToken(new Complex[][] { {
+                        new Complex(5.0, 5.0), new Complex(6.0, 6.0) } }) });
+        ta = new ArrayToken(new Token[] { r1, r2, r3 });
         System.out.println("ta = " + ta.toString());
         eng.put(engineHandle, "ta", ta);
         eng.evalString(engineHandle, "tb = ta;");

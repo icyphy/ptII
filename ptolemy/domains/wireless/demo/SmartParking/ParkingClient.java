@@ -1,31 +1,31 @@
 /*
-  @Copyright (c) 2004-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.wireless.demo.SmartParking;
 
 import java.util.HashSet;
@@ -40,20 +40,19 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 ///ParkingClient
 
 /**
-   This class contact with the ParkingManager to check the available
-   parking spots and randomly choose one to park.
+ This class contact with the ParkingManager to check the available
+ parking spots and randomly choose one to park.
 
-   @author Yang Zhao
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Yellow (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Yang Zhao
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class ParkingClient extends TypedAtomicActor {
     public ParkingClient(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -99,7 +98,8 @@ public class ParkingClient extends TypedAtomicActor {
                 if (lots.size() > 0) {
                     Object[] lotsArray = lots.toArray();
                     int index = _getRandom(lots.size());
-                    parkingTo.send(0, new StringToken((String) lotsArray[index]));
+                    parkingTo.send(0,
+                            new StringToken((String) lotsArray[index]));
                 } else {
                     leave.send(0, new IntToken(_LEAVE));
                 }
@@ -141,6 +141,8 @@ public class ParkingClient extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private ParkingManager _parkingManager;
+
     private Random _random;
+
     private static int _LEAVE = 1;
 }

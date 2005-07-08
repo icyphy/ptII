@@ -1,30 +1,30 @@
 /* A merge actor for the DE domain.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.de.lib;
 
 import ptolemy.data.BooleanToken;
@@ -35,38 +35,37 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Merge
 
 /**
-   A timed merge actor for the DE domain. It merges a set of input signals
-   into a single output signal based on the order of the tags
-   associated with the events of signals. A tag is a tuple of a timestamp
-   (as double) and a microstep or index (as non-negative integer). Tags have a
-   lexicographic order.
-   <p>
-   This actor has an input port (a multiport) and an output port
-   (a single port). The types of the ports are undeclared and will be
-   resolved by the type resolution mechanism, with the constraint that
-   the output type must be greater than or equal to the input type.
-   <p>
-   There is a boolean parameter <i>discardEvents</i> associated
-   with this actor, which decides how to handle simultaneously
-   available inputs.  Each time this actor fires, it reads the first
-   available tokens from an input channel and sends them to the output
-   port. If the <i>discardEvents</i> parameter is configured to true,
-   then this actor discards all the remaining inputs in the rest of
-   channels. Otherwise, this actor requests refirings at the current
-   time until no more events are left in the channels. By default,
-   the discardEvents parameter is false.
+ A timed merge actor for the DE domain. It merges a set of input signals
+ into a single output signal based on the order of the tags
+ associated with the events of signals. A tag is a tuple of a timestamp
+ (as double) and a microstep or index (as non-negative integer). Tags have a
+ lexicographic order.
+ <p>
+ This actor has an input port (a multiport) and an output port
+ (a single port). The types of the ports are undeclared and will be
+ resolved by the type resolution mechanism, with the constraint that
+ the output type must be greater than or equal to the input type.
+ <p>
+ There is a boolean parameter <i>discardEvents</i> associated
+ with this actor, which decides how to handle simultaneously
+ available inputs.  Each time this actor fires, it reads the first
+ available tokens from an input channel and sends them to the output
+ port. If the <i>discardEvents</i> parameter is configured to true,
+ then this actor discards all the remaining inputs in the rest of
+ channels. Otherwise, this actor requests refirings at the current
+ time until no more events are left in the channels. By default,
+ the discardEvents parameter is false.
 
-   @author Edward A. Lee, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (hyzheng)
-   @Pt.AcceptedRating Green (hyzheng)
-*/
+ @author Edward A. Lee, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Green (hyzheng)
+ */
 public class Merge extends DETransformer {
     /** Construct an actor in the specified container with the specified
      *  name. Create ports and make the input port a multiport.
@@ -86,8 +85,8 @@ public class Merge extends DETransformer {
         discardEvents.setExpression("false");
         discardEvents.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
                 + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
@@ -112,7 +111,7 @@ public class Merge extends DETransformer {
      */
     public void fire() throws IllegalActionException {
         boolean discard = ((BooleanToken) discardEvents.getToken())
-            .booleanValue();
+                .booleanValue();
         Token firstAvailableToken = null;
 
         // If tokens can be discarded, this actor sends

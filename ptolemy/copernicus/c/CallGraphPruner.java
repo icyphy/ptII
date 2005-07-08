@@ -1,28 +1,28 @@
 /* Class that uses the Soot Framework to find out which methods/classes
-   are really needed for code generation.
+ are really needed for code generation.
 
-   Copyright (c) 2003-2005 The University of Maryland.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2003-2005 The University of Maryland.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.Collection;
@@ -52,20 +52,19 @@ import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Edge;
 import soot.options.SparkOptions;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CallGraphPruner
 
 /**
-   Class that uses the Soot Framework to find out which methods/classes
-   are really needed for code generation.
+ Class that uses the Soot Framework to find out which methods/classes
+ are really needed for code generation.
 
-   @author Ankush Varma
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (ankush)
-   @Pt.AcceptedRating Red (ssb)
-*/
+ @author Ankush Varma
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (ankush)
+ @Pt.AcceptedRating Red (ssb)
+ */
 public class CallGraphPruner {
     /** Dummy constructor to allow inheritance.*/
     public CallGraphPruner() {
@@ -92,15 +91,15 @@ public class CallGraphPruner {
         sootOptions.put("double-set-new", "hybrid");
 
         //CHATransformer.v().transform("cg.cha", sootOptions);
-        /*SparkOptions sparkOptions = */ new SparkOptions(sootOptions);
+        /*SparkOptions sparkOptions = */new SparkOptions(sootOptions);
 
         /*
-          PAG analyzer = new PAG(sparkOptions);
+         PAG analyzer = new PAG(sparkOptions);
 
-          CallGraphBuilder builder = new CallGraphBuilder(analyzer);
-          CallGraph callGraph = builder.getCallGraph();
-          Scene.v().setCallGraph(callGraph);
-        */
+         CallGraphBuilder builder = new CallGraphBuilder(analyzer);
+         CallGraph callGraph = builder.getCallGraph();
+         Scene.v().setCallGraph(callGraph);
+         */
         // Set entry points for call graph. The default entry points lead to
         // excessive code size.
         Scene.v().setEntryPoints(_getCallGraphEntryPoints(source));
@@ -111,9 +110,11 @@ public class CallGraphPruner {
         if (Options.v().getBoolean("reportEntities")) {
             System.out.println("\nReporting Entities ...");
 
-            System.out.println(_reachableClasses.size() + " classes generated.");
+            System.out
+                    .println(_reachableClasses.size() + " classes generated.");
 
-            System.out.println(_reachableMethods.size() + " methods generated.");
+            System.out
+                    .println(_reachableMethods.size() + " methods generated.");
 
             System.out.println(_reachableFields.size() + " fields generated.");
         }
@@ -217,8 +218,7 @@ public class CallGraphPruner {
                 SootMethod method = (SootMethod) node;
 
                 if (method.isConcrete()
-                        && !OverriddenMethodGenerator.isOverridden(
-                                method)) {
+                        && !OverriddenMethodGenerator.isOverridden(method)) {
                     entryPoints.add(method);
                 }
             }
@@ -313,7 +313,8 @@ public class CallGraphPruner {
 
             // Candidates for I. All superclasses and all implemented
             // interfaces.
-            Collection allParents = AnalysisUtilities.getAllInterfacesOf(source);
+            Collection allParents = AnalysisUtilities
+                    .getAllInterfacesOf(source);
 
             if (!source.isInterface()) {
                 allParents.addAll(hierarchy.getSuperclassesOf(source));
@@ -324,8 +325,7 @@ public class CallGraphPruner {
                 String subSignature = method.getSubSignature();
 
                 if (source.declaresMethod(subSignature)
-                        && allParents.contains(
-                                method.getDeclaringClass())) {
+                        && allParents.contains(method.getDeclaringClass())) {
                     requiredMethodSet.add(source.getMethod(subSignature));
                 }
             }
@@ -374,7 +374,7 @@ public class CallGraphPruner {
                     // Add directly called methods.
                     if (!leaf && stmt.containsInvokeExpr()) {
                         SootMethod m = ((InvokeExpr) stmt.getInvokeExpr())
-                            .getMethod();
+                                .getMethod();
                         nodes.add(m);
                         nodes.add(m.getDeclaringClass());
                     }
@@ -461,8 +461,8 @@ public class CallGraphPruner {
      * @return True if the method is a leaf.
      */
     protected boolean _isLeaf(SootMethod method) {
-        return (method.isNative()
-                || OverriddenMethodGenerator.isOverridden(method));
+        return (method.isNative() || OverriddenMethodGenerator
+                .isOverridden(method));
     }
 
     /** Performs the appropriate operations for the discovery of a new
@@ -540,7 +540,7 @@ public class CallGraphPruner {
             if (method.isConcrete()
                     && !OverriddenMethodGenerator.isOverridden(method)) {
                 Iterator traps = method.retrieveActiveBody().getTraps()
-                    .iterator();
+                        .iterator();
 
                 while (traps.hasNext()) {
                     Trap trap = (Trap) traps.next();
@@ -556,10 +556,10 @@ public class CallGraphPruner {
         _add(AnalysisUtilities.getArgumentClasses(method));
 
         /*
-          if (_gray.size() - oldSize >20) {
-          System.out.println(method);
-          }
-        */
+         if (_gray.size() - oldSize >20) {
+         System.out.println(method);
+         }
+         */
         // Remove the method from the queue.
         _done(method);
     }
@@ -610,7 +610,7 @@ public class CallGraphPruner {
             int classNameEndIndex = names[i].lastIndexOf('.', parenthesisIndex);
 
             subSignature = names[i].substring(0, spaceIndex) + " "
-                + names[i].substring(classNameEndIndex + 1);
+                    + names[i].substring(classNameEndIndex + 1);
 
             className = names[i].substring(spaceIndex + 1, classNameEndIndex);
 
@@ -637,12 +637,12 @@ public class CallGraphPruner {
     }
 
     /** Set all classes in the Scene that are not overridden as library
-        classes.
-    */
+     classes.
+     */
     private void _setUnOverriddenClassesAsLibrary() {
         if (_verbose) {
-            System.out.println(
-                    "Setting all un-overridden classes to library classes ...");
+            System.out
+                    .println("Setting all un-overridden classes to library classes ...");
         }
 
         Iterator classes = Scene.v().getClasses().iterator();

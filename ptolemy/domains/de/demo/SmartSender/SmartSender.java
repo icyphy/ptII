@@ -1,31 +1,31 @@
 /* An actor that finds a destination to send data to.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.de.demo.SmartSender;
 
 import java.util.Iterator;
@@ -46,41 +46,40 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SmartSender
 
 /**
-   This actor adaptively establishes connections by searching for an
-   unused input port in the model and connecting to it. If the output
-   is connected to something (the width of the output port is greater
-   than zero), then the actor sends an integer on the output port and
-   requests a refiring at a time in the future determined by the
-   <i>firingPeriod</i> parameter. The value of the output is simply
-   the count of the firing, starting at 1.
-   <p>
-   If the output is not connected to anything, then the actor will
-   attempt to connect it. It does this by issuing a change request
-   that, when executed, will search for an unused input port (any
-   unused input port) in and actor in the same container as this actor,
-   and then will connect to it.
-   <p>
-   Note that getWidth() is used rather than numberOfSinks() to determine
-   whether the output is connected. This way, this actors search for an
-   input port can be silenced by just connecting it to a relation.
-   <p>
-   This actor is an illustration of the capability actors can have to affect
-   their environment, to detect faults (in this case, missing connections),
-   and to repair the model.  It is designed to be used in the DE domain,
-   or any domain that respects fireAt() calls.
+ This actor adaptively establishes connections by searching for an
+ unused input port in the model and connecting to it. If the output
+ is connected to something (the width of the output port is greater
+ than zero), then the actor sends an integer on the output port and
+ requests a refiring at a time in the future determined by the
+ <i>firingPeriod</i> parameter. The value of the output is simply
+ the count of the firing, starting at 1.
+ <p>
+ If the output is not connected to anything, then the actor will
+ attempt to connect it. It does this by issuing a change request
+ that, when executed, will search for an unused input port (any
+ unused input port) in and actor in the same container as this actor,
+ and then will connect to it.
+ <p>
+ Note that getWidth() is used rather than numberOfSinks() to determine
+ whether the output is connected. This way, this actors search for an
+ input port can be silenced by just connecting it to a relation.
+ <p>
+ This actor is an illustration of the capability actors can have to affect
+ their environment, to detect faults (in this case, missing connections),
+ and to repair the model.  It is designed to be used in the DE domain,
+ or any domain that respects fireAt() calls.
 
-   @author Edward A. Lee
-   @see IOPort#getWidth()
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author Edward A. Lee
+ @see IOPort#getWidth()
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class SmartSender extends TypedAtomicActor {
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -130,36 +129,37 @@ public class SmartSender extends TypedAtomicActor {
         super.fire();
 
         double firingPeriodValue = ((DoubleToken) firingPeriod.getToken())
-            .doubleValue();
+                .doubleValue();
         Director director = getDirector();
         director.fireAt(this, director.getModelTime().add(firingPeriodValue));
 
         if (output.getWidth() > 0) {
             output.send(0, new IntToken(_count++));
         } else {
-            ChangeRequest request = new ChangeRequest(this, "Find a destination") {
-                    protected void _execute() throws IllegalActionException {
-                        CompositeEntity container = (CompositeEntity) getContainer();
-                        List entityList = container.entityList();
-                        Iterator entities = entityList.iterator();
+            ChangeRequest request = new ChangeRequest(this,
+                    "Find a destination") {
+                protected void _execute() throws IllegalActionException {
+                    CompositeEntity container = (CompositeEntity) getContainer();
+                    List entityList = container.entityList();
+                    Iterator entities = entityList.iterator();
 
-                        while (entities.hasNext()) {
-                            Entity entity = (Entity) entities.next();
-                            Iterator ports = entity.portList().iterator();
+                    while (entities.hasNext()) {
+                        Entity entity = (Entity) entities.next();
+                        Iterator ports = entity.portList().iterator();
 
-                            while (ports.hasNext()) {
-                                Port port = (Port) ports.next();
+                        while (ports.hasNext()) {
+                            Port port = (Port) ports.next();
 
-                                if (port instanceof IOPort
-                                        && ((IOPort) port).isInput()
-                                        && (((IOPort) port).getWidth() == 0)) {
-                                    container.connect(output, (IOPort) port);
-                                    return;
-                                }
+                            if (port instanceof IOPort
+                                    && ((IOPort) port).isInput()
+                                    && (((IOPort) port).getWidth() == 0)) {
+                                container.connect(output, (IOPort) port);
+                                return;
                             }
                         }
                     }
-                };
+                }
+            };
 
             requestChange(request);
         }

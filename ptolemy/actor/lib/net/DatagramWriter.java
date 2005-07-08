@@ -1,30 +1,30 @@
 /* An actor that sends its <i>data</i> input as a UDP datagram packet.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.net;
 
 import java.io.IOException;
@@ -49,39 +49,38 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DatagramWriter
 
 /**
-   This actor sends its input as a Datagram over the network using the
-   UDP protocol.  Before being sent, the data is optionally encoded as a
-   text string representing the value being sent.  When this option is
-   selected, any Ptolemy data type may be represented.
-   See the <i>encoding</i> parameter.
+ This actor sends its input as a Datagram over the network using the
+ UDP protocol.  Before being sent, the data is optionally encoded as a
+ text string representing the value being sent.  When this option is
+ selected, any Ptolemy data type may be represented.
+ See the <i>encoding</i> parameter.
 
-   <p>The address and socket number towards which the datagram is sent
-   are given by the optional inputs <i>remoteAddress</i> and
-   <i>remoteSocketNumber</i>.  However, unless/until token(s) arrive at
-   these inputs, default values, given by <i>defaultRemoteAddress</i> and
-   <i>defaultRemoteSocketNumber</i> are used.  Note that some IP
-   addresses are special broadcast addresses.  An address such as
-   "128.32.239.255" broadcasts to any IP addresses on the "128.23.239.X"
-   subnet.  This only works on your own subnet.
+ <p>The address and socket number towards which the datagram is sent
+ are given by the optional inputs <i>remoteAddress</i> and
+ <i>remoteSocketNumber</i>.  However, unless/until token(s) arrive at
+ these inputs, default values, given by <i>defaultRemoteAddress</i> and
+ <i>defaultRemoteSocketNumber</i> are used.  Note that some IP
+ addresses are special broadcast addresses.  An address such as
+ "128.32.239.255" broadcasts to any IP addresses on the "128.23.239.X"
+ subnet.  This only works on your own subnet.
 
-   <p>Each instance of this actor needs to allocate a local socket from
-   which to transmit datagrams.  Initially, the local socket number is
-   set to 4003, just to pick a number.  The socket is not allocated
-   until the model is run.
+ <p>Each instance of this actor needs to allocate a local socket from
+ which to transmit datagrams.  Initially, the local socket number is
+ set to 4003, just to pick a number.  The socket is not allocated
+ until the model is run.
 
-   @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
-   (Based on TiltSensor actor written by
-   Chamberlain Fong, Xiaojun Liu, Edward Lee)
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (winthrop)
-   @Pt.AcceptedRating Yellow (winthrop)
-*/
+ @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
+ (Based on TiltSensor actor written by
+ Chamberlain Fong, Xiaojun Liu, Edward Lee)
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Yellow (winthrop)
+ @Pt.AcceptedRating Yellow (winthrop)
+ */
 public class DatagramWriter extends TypedAtomicActor {
     /** Construct a DatagramWriter actor with given name in the given
      *  container.  Set up ports, parameters and default values.  Two
@@ -231,7 +230,7 @@ public class DatagramWriter extends TypedAtomicActor {
                     }
 
                     _localSocketNumber = ((IntToken) (localSocketNumber
-                                                  .getToken())).intValue();
+                            .getToken())).intValue();
 
                     if (_debugging) {
                         _debug("Socket number is " + _localSocketNumber);
@@ -243,7 +242,8 @@ public class DatagramWriter extends TypedAtomicActor {
                                     + _localSocketNumber);
                         }
 
-                        DatagramSocket newSocket = new DatagramSocket(_localSocketNumber);
+                        DatagramSocket newSocket = new DatagramSocket(
+                                _localSocketNumber);
 
                         if (_debugging) {
                             _debug("A socket is created!!");
@@ -254,19 +254,20 @@ public class DatagramWriter extends TypedAtomicActor {
                     } catch (SocketException ex) {
                         throw new IllegalActionException(this, ex,
                                 "Cannot create socket on the given "
-                                + "local socket number.");
+                                        + "local socket number.");
                     }
                 }
             }
         } else if (attribute == defaultRemoteAddress) {
             String address = ((StringToken) defaultRemoteAddress.getToken())
-                .stringValue();
+                    .stringValue();
 
             try {
                 _address = InetAddress.getByName(address);
             } catch (UnknownHostException ex) {
                 throw new IllegalActionException(this, ex,
-                        "The default remote " + "address specifies an unknown host");
+                        "The default remote "
+                                + "address specifies an unknown host");
             }
         } else if (attribute == defaultRemoteSocketNumber) {
             _remoteSocketNumber = ((IntToken) defaultRemoteSocketNumber
@@ -296,8 +297,8 @@ public class DatagramWriter extends TypedAtomicActor {
             try {
                 _address = InetAddress.getByName(address);
             } catch (UnknownHostException ex) {
-                throw new IllegalActionException(this, ex,
-                        "The input remote " + "address specifies an unknown host");
+                throw new IllegalActionException(this, ex, "The input remote "
+                        + "address specifies an unknown host");
             }
         }
 
@@ -305,9 +306,8 @@ public class DatagramWriter extends TypedAtomicActor {
             if (remoteSocketNumber.hasToken(jj)) {
                 // Valid socket numbers are 0..65535,
                 // so keep only lower 16 bits.
-                _remoteSocketNumber = 65535
-                    & ((IntToken) remoteSocketNumber.get(jj))
-                    .intValue();
+                _remoteSocketNumber = 65535 & ((IntToken) remoteSocketNumber
+                        .get(jj)).intValue();
             }
         }
 
@@ -318,7 +318,7 @@ public class DatagramWriter extends TypedAtomicActor {
 
             for (int j = 0; j < dataArrayToken.length(); j++) {
                 UnsignedByteToken token = (UnsignedByteToken) dataArrayToken
-                    .getElement(j);
+                        .getElement(j);
                 dataBytes[j] = (byte) token.byteValue();
             }
 
@@ -356,12 +356,11 @@ public class DatagramWriter extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _localSocketNumber = ((IntToken) (localSocketNumber.getToken()))
-            .intValue();
+                .intValue();
 
         if ((_localSocketNumber < 0) || (_localSocketNumber > 65535)) {
-            throw new IllegalActionException(this,
-                    "Local socket number " + _localSocketNumber
-                    + " must be between 0 and 65535.");
+            throw new IllegalActionException(this, "Local socket number "
+                    + _localSocketNumber + " must be between 0 and 65535.");
         }
 
         try {
@@ -377,26 +376,26 @@ public class DatagramWriter extends TypedAtomicActor {
         } catch (SocketException ex) {
             throw new IllegalActionException(this, ex,
                     "Cannot create socket on "
-                    + "the specified local socket number");
+                            + "the specified local socket number");
         }
 
         String address = ((StringToken) defaultRemoteAddress.getToken())
-            .stringValue();
+                .stringValue();
 
         try {
             _address = InetAddress.getByName(address);
         } catch (UnknownHostException ex) {
-            throw new IllegalActionException(this, ex,
-                    "The default remote " + "address specifies an unknown host");
+            throw new IllegalActionException(this, ex, "The default remote "
+                    + "address specifies an unknown host");
         }
 
         _remoteSocketNumber = ((IntToken) defaultRemoteSocketNumber.getToken())
-            .intValue();
+                .intValue();
 
         if ((_remoteSocketNumber < 0) || (_remoteSocketNumber > 65535)) {
             _remoteSocketNumber &= 65535; // Truncate to 16 bits.
-            throw new IllegalActionException(this,
-                    "defaultRemoteSocketNumber" + _remoteSocketNumber
+            throw new IllegalActionException(this, "defaultRemoteSocketNumber"
+                    + _remoteSocketNumber
                     + " is out of range, must be between 0 and 65535.");
         }
     }
@@ -432,9 +431,11 @@ public class DatagramWriter extends TypedAtomicActor {
     ////                         private variables                 ////
     // Remote Address and socket number for construction of packet.
     private InetAddress _address;
+
     private int _remoteSocketNumber;
 
     // The socket (& socket number) from which to transmit datagram packets.
     private DatagramSocket _socket;
+
     private int _localSocketNumber;
 }

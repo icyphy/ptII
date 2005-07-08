@@ -1,30 +1,30 @@
 /* Ptolemy II Version identifiers
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.kernel.attributes;
 
 import java.util.Iterator;
@@ -39,44 +39,43 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// VersionAttribute
 
 /**
-   A nonpersistent attribute that identifies the version of an object.
-   This attribute does not export MoML
-   The value of the attribute contains a String version-id that represents
-   the version.
-   A version-id is a string with substrings separated by one of '.', '-' or '_'.
-   The substrings may consist of any characters except space.  Version-ids can
-   be compared against each other other with the compareTo() method.
+ A nonpersistent attribute that identifies the version of an object.
+ This attribute does not export MoML
+ The value of the attribute contains a String version-id that represents
+ the version.
+ A version-id is a string with substrings separated by one of '.', '-' or '_'.
+ The substrings may consist of any characters except space.  Version-ids can
+ be compared against each other other with the compareTo() method.
 
-   <p>The JNLP specification at
-   <a href="http://jcp.org/jsr/detail/056.jsp"><code>http://jcp.org/jsr/detail/056.jsp</code></a>
-   gives the following syntax for version-ids:
-   <pre>
-   version-id ::= string ( separator string ) *
-   string ::= char ( char ) *
-   char ::= Any ASCII character except a space, a separator or a
-   modifier
-   separator ::= "." | "-" | "_"
-   </pre>
-   Valid version-id include "1.3", "1.3.1", "1.3-beta_01".
+ <p>The JNLP specification at
+ <a href="http://jcp.org/jsr/detail/056.jsp"><code>http://jcp.org/jsr/detail/056.jsp</code></a>
+ gives the following syntax for version-ids:
+ <pre>
+ version-id ::= string ( separator string ) *
+ string ::= char ( char ) *
+ char ::= Any ASCII character except a space, a separator or a
+ modifier
+ separator ::= "." | "-" | "_"
+ </pre>
+ Valid version-id include "1.3", "1.3.1", "1.3-beta_01".
 
-   <p>The JNLP specification includes version-strings, which are used for
-   matching one or more version-ids in a fashion similar to wildcard
-   matches within a regular expression.  At this time, this class does
-   not implement version-strings.
+ <p>The JNLP specification includes version-strings, which are used for
+ matching one or more version-ids in a fashion similar to wildcard
+ matches within a regular expression.  At this time, this class does
+ not implement version-strings.
 
-   <p>
-   @see ptolemy.kernel.util.TransientSingletonConfigurableAttribute
-   @author Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ <p>
+ @see ptolemy.kernel.util.TransientSingletonConfigurableAttribute
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class VersionAttribute extends StringAttribute implements Comparable {
     /** Construct an object in the default workspace with the empty string
      *  as its name. The object is added to the list of objects in the
@@ -292,7 +291,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
         } catch (Exception ex) {
             throw new ExceptionInInitializerError(
                     "Failed to create CURRENT_VERSION: "
-                    + KernelException.stackTraceToString(ex));
+                            + KernelException.stackTraceToString(ex));
         }
     }
 

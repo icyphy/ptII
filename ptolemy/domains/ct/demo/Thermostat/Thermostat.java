@@ -1,30 +1,30 @@
 /* A thermostat control demo that uses Ptolemy II CT and FSM domains.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.demo.Thermostat;
 
 import ptolemy.actor.IOPort;
@@ -53,39 +53,38 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Thermostat
 
 /**
-   This applet shows a simple thermostat system. The temperature of the room
-   is expected to be controlled between Tl and Th
-   <p>
-   The system has two states, heating and cooling. In the heating state,
-   the temperature of the room is increased linearly, in terms of a differential
-   equation:
-   <pre>
-   <CODE>    dx/dt = 1</CODE>
-   </pre>
-   In the cooling state, the temperature is dropped linearly, i.e.
-   <pre>
-   <CODE>    dx/dt = -1</CODE>
-   </pre>
-   The control rule is that if the temperature reaches Th degree, then switch
-   the controller to the cooling state; if the temperature decreases to Tl degree
-   then switch the controller to the heating state.
-   <p>
-   We use this demo to illustrate the accuracy of detecting events, and the
-   ability of simulating hybrid system in Ptolemy II.
-   @author Jie Liu
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ This applet shows a simple thermostat system. The temperature of the room
+ is expected to be controlled between Tl and Th
+ <p>
+ The system has two states, heating and cooling. In the heating state,
+ the temperature of the room is increased linearly, in terms of a differential
+ equation:
+ <pre>
+ <CODE>    dx/dt = 1</CODE>
+ </pre>
+ In the cooling state, the temperature is dropped linearly, i.e.
+ <pre>
+ <CODE>    dx/dt = -1</CODE>
+ </pre>
+ The control rule is that if the temperature reaches Th degree, then switch
+ the controller to the cooling state; if the temperature decreases to Tl degree
+ then switch the controller to the heating state.
+ <p>
+ We use this demo to illustrate the accuracy of detecting events, and the
+ ability of simulating hybrid system in Ptolemy II.
+ @author Jie Liu
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class Thermostat extends TypedCompositeActor {
-    public Thermostat(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public Thermostat(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         setName("Thermostat");
 
@@ -142,16 +141,16 @@ public class Thermostat extends TypedCompositeActor {
         ctrlInc.outgoingPort.link(ctrlTr1);
         ctrlDec.incomingPort.link(ctrlTr1);
         ctrlTr1.setGuardExpression("output_isPresent");
-        ctrlTr1.setActions.setExpression(
-                "Decreasing.Integrator.initialState = state");
+        ctrlTr1.setActions
+                .setExpression("Decreasing.Integrator.initialState = state");
         ctrlTr1.reset.setExpression("true");
 
         Transition ctrlTr2 = new Transition(ctrl, "ctrlTr2");
         ctrlDec.outgoingPort.link(ctrlTr2);
         ctrlInc.incomingPort.link(ctrlTr2);
         ctrlTr2.setGuardExpression("output_isPresent");
-        ctrlTr2.setActions.setExpression(
-                "Increasing.Integrator.initialState = state");
+        ctrlTr2.setActions
+                .setExpression("Increasing.Integrator.initialState = state");
         ctrlTr2.reset.setExpression("true");
 
         IOPort ctrlIn = new TypedIOPort(ctrl, "output");
@@ -213,7 +212,8 @@ public class Thermostat extends TypedCompositeActor {
         ctInc.connect(ctIncD.output, ctIncOut);
 
         //ctInc.connect(ctIncS.output, ctIncSt);
-        TypedIORelation ctIncR1 = (TypedIORelation) ctInc.newRelation("CTIncR1");
+        TypedIORelation ctIncR1 = (TypedIORelation) ctInc
+                .newRelation("CTIncR1");
         ctIncI.output.link(ctIncR1);
 
         //ctIncS.input.link(ctIncR1);
@@ -268,7 +268,8 @@ public class Thermostat extends TypedCompositeActor {
         ctDec.connect(ctDecD.output, ctDecOut);
 
         //ctDec.connect(ctDecS.output, ctDecSt);
-        TypedIORelation ctDecR1 = (TypedIORelation) ctDec.newRelation("CTDecR1");
+        TypedIORelation ctDecR1 = (TypedIORelation) ctDec
+                .newRelation("CTDecR1");
         ctDecI.output.link(ctDecR1);
 
         //ctDecS.input.link(ctDecR1);

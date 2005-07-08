@@ -1,31 +1,31 @@
 /* An actor that displays matrix inputs.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.lib.gui;
 
 import java.awt.BorderLayout;
@@ -63,23 +63,22 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MatrixViewer
 
 /**
-   An actor that displays the contents of a matrix input. This
-   actor has a single input port, which only accepts MatrixTokens. One
-   token is consumed per firing (in postfire()).  The data in the MatrixToken is
-   displayed in a table format with scrollbars, using the swing JTable
-   class.
+ An actor that displays the contents of a matrix input. This
+ actor has a single input port, which only accepts MatrixTokens. One
+ token is consumed per firing (in postfire()).  The data in the MatrixToken is
+ displayed in a table format with scrollbars, using the swing JTable
+ class.
 
-   @author Bart Kienhuis and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (kienhuis)
-   @Pt.AcceptedRating Red (kienhuis)
-*/
+ @author Bart Kienhuis and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (kienhuis)
+ @Pt.AcceptedRating Red (kienhuis)
+ */
 public class MatrixViewer extends Sink implements Placeable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -181,12 +180,12 @@ public class MatrixViewer extends Sink implements Placeable {
                 if (containerEffigy == null) {
                     throw new IllegalActionException(this,
                             "Cannot find effigy for top level: "
-                            + toplevel().getFullName());
+                                    + toplevel().getFullName());
                 }
 
                 try {
-                    _effigy = new TokenEffigy(containerEffigy,
-                            containerEffigy.uniqueName("tokenEffigy"));
+                    _effigy = new TokenEffigy(containerEffigy, containerEffigy
+                            .uniqueName("tokenEffigy"));
 
                     // The default identifier is "Unnamed", which is
                     // no good for two reasons: Wrong title bar label,
@@ -203,7 +202,7 @@ public class MatrixViewer extends Sink implements Placeable {
                     // set the size of the frame, we have to also set the
                     // size of the internal component.
                     Component[] components = _frame.getContentPane()
-                        .getComponents();
+                            .getComponents();
 
                     if (components.length > 0) {
                         _paneSize.setSize(components[0]);
@@ -365,18 +364,18 @@ public class MatrixViewer extends Sink implements Placeable {
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    if ((_container != null) && (_pane != null)) {
-                        _container.remove(_pane);
-                        _container = null;
-                    }
-
-                    if (_frame != null) {
-                        _frame.dispose();
-                        _frame = null;
-                    }
+            public void run() {
+                if ((_container != null) && (_pane != null)) {
+                    _container.remove(_pane);
+                    _container = null;
                 }
-            });
+
+                if (_frame != null) {
+                    _frame.dispose();
+                    _frame = null;
+                }
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////

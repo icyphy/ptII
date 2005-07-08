@@ -1,30 +1,30 @@
 /* An actor that clones a composite actor containing itself into itself.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ddf.lib;
 
 import java.io.IOException;
@@ -57,31 +57,30 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 /**
-   This actor performs actor recursion dynamically during execution.
-   Upon firing, it clones the composite actor which contains itself and
-   is referred to by the StringParameter <i>recursionActor</i>. It then
-   places the clone inside itself and connects the corresponding ports of
-   both actors. It uses a local DDFDirector to preinitialize the clone and
-   then transfers all tokens contained by input ports of this actor to the
-   connected opaque ports inside. It again uses the local DDFDirector to
-   initialize all actors contained by this actor and classifies each of them
-   such as their enabling and deferrable status. It then transfers all
-   tokens contained by output ports of this actor to the connected opaque
-   ports outside. It finally merges the local DDFDirector with its executive
-   DDFDirector and then removes the local DDFDirector. Thus during execution
-   this actor is fired at most once, after which the executive director
-   directly controls all actors inside. Since there is no type constraint
-   between input ports and output ports of this actor, users have to
-   manually configure types for all outputs of this actor.
+ This actor performs actor recursion dynamically during execution.
+ Upon firing, it clones the composite actor which contains itself and
+ is referred to by the StringParameter <i>recursionActor</i>. It then
+ places the clone inside itself and connects the corresponding ports of
+ both actors. It uses a local DDFDirector to preinitialize the clone and
+ then transfers all tokens contained by input ports of this actor to the
+ connected opaque ports inside. It again uses the local DDFDirector to
+ initialize all actors contained by this actor and classifies each of them
+ such as their enabling and deferrable status. It then transfers all
+ tokens contained by output ports of this actor to the connected opaque
+ ports outside. It finally merges the local DDFDirector with its executive
+ DDFDirector and then removes the local DDFDirector. Thus during execution
+ this actor is fired at most once, after which the executive director
+ directly controls all actors inside. Since there is no type constraint
+ between input ports and output ports of this actor, users have to
+ manually configure types for all outputs of this actor.
 
-   @author Gang Zhou
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (zgang)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Gang Zhou
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (zgang)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class ActorRecursion extends TypedCompositeActor {
     /** Create an ActorRecursion with a name and a container.
      *  The container argument must not be null, or a NullPointerException
@@ -147,9 +146,8 @@ public class ActorRecursion extends TypedCompositeActor {
             try {
                 _cloneRecursionActor();
             } catch (CloneNotSupportedException ex) {
-                throw new IllegalActionException(this, ex,
-                        "The actor " + recursionActor.stringValue()
-                        + " cannot be cloned.");
+                throw new IllegalActionException(this, ex, "The actor "
+                        + recursionActor.stringValue() + " cannot be cloned.");
             }
 
             getDirector().preinitialize();
@@ -157,7 +155,8 @@ public class ActorRecursion extends TypedCompositeActor {
             _setOutputPortRate();
             getDirector().initialize();
             _transferOutputs();
-            ((DDFDirector) getExecutiveDirector()).merge((DDFDirector) getDirector());
+            ((DDFDirector) getExecutiveDirector())
+                    .merge((DDFDirector) getDirector());
 
             try {
                 // get rid of the local director.
@@ -252,8 +251,8 @@ public class ActorRecursion extends TypedCompositeActor {
         if ((_recursionActor.inputPortList().size() != inputPortList().size())
                 || (_recursionActor.outputPortList().size() != outputPortList()
                         .size())) {
-            throw new IllegalActionException(this,
-                    "The recursionActor " + recursionActor.stringValue()
+            throw new IllegalActionException(this, "The recursionActor "
+                    + recursionActor.stringValue()
                     + " must have the same number of input ports and "
                     + "same number of output ports as this actor.");
         }
@@ -267,24 +266,26 @@ public class ActorRecursion extends TypedCompositeActor {
             if (matching == null) {
                 throw new IllegalActionException(this,
                         "Each port of this actor must have the same name as "
-                        + "the matching port of the recursionActor "
-                        + recursionActor.stringValue() + ". However, the port "
-                        + port.getFullName() + " does not have a matching "
-                        + "port with the same name.");
+                                + "the matching port of the recursionActor "
+                                + recursionActor.stringValue()
+                                + ". However, the port " + port.getFullName()
+                                + " does not have a matching "
+                                + "port with the same name.");
             }
 
             TypedIOPort matchingPort = (TypedIOPort) matching;
 
             if (port.getWidth() != matchingPort.getWidth()) {
-                throw new IllegalActionException(this,
-                        "The matching ports: " + port.getFullName() + " and "
-                        + matchingPort.getFullName() + " must have the same width.");
+                throw new IllegalActionException(this, "The matching ports: "
+                        + port.getFullName() + " and "
+                        + matchingPort.getFullName()
+                        + " must have the same width.");
             }
 
             if ((port.isInput() && !matchingPort.isInput())
                     || (port.isOutput() && !matchingPort.isOutput())) {
-                throw new IllegalActionException(this,
-                        "The matching ports: " + port.getFullName() + " and "
+                throw new IllegalActionException(this, "The matching ports: "
+                        + port.getFullName() + " and "
                         + matchingPort.getFullName()
                         + " must be both input ports or output ports.");
             }
@@ -293,16 +294,16 @@ public class ActorRecursion extends TypedCompositeActor {
             Type matchingPortType = matchingPort.getType();
 
             if (port.isInput() && !matchingPortType.isCompatible(portType)) {
-                throw new IllegalActionException(this,
-                        "The type of the port " + port.getName() + " of the actor "
-                        + getName() + " must be equal to or less than "
+                throw new IllegalActionException(this, "The type of the port "
+                        + port.getName() + " of the actor " + getName()
+                        + " must be equal to or less than "
                         + "that of the matching port.");
             }
 
             if (port.isOutput() && !portType.isCompatible(matchingPortType)) {
-                throw new IllegalActionException(this,
-                        "The type of the port " + port.getName() + " of the actor "
-                        + getName() + " must be euqal to or greater than "
+                throw new IllegalActionException(this, "The type of the port "
+                        + port.getName() + " of the actor " + getName()
+                        + " must be euqal to or greater than "
                         + "that of the matching port.");
             }
         }
@@ -320,11 +321,12 @@ public class ActorRecursion extends TypedCompositeActor {
      *  @exception CloneNotSupportedException If the CompositeActor cannot
      *   be cloned.
      */
-    private void _cloneRecursionActor()
-            throws IllegalActionException, CloneNotSupportedException {
+    private void _cloneRecursionActor() throws IllegalActionException,
+            CloneNotSupportedException {
         try {
             // Clone the composite actor.
-            CompositeActor clone = (CompositeActor) _recursionActor.clone(workspace());
+            CompositeActor clone = (CompositeActor) _recursionActor
+                    .clone(workspace());
 
             // Place the clone inside this actor.
             clone.setContainer(this);
@@ -347,7 +349,8 @@ public class ActorRecursion extends TypedCompositeActor {
                     Token[][] tokens = new Token[width][0];
 
                     for (int channel = 0; channel < width; channel++) {
-                        int size = ((QueueReceiver) receivers[channel][0]).size();
+                        int size = ((QueueReceiver) receivers[channel][0])
+                                .size();
                         tokens[channel] = new Token[size];
 
                         for (int count = 0; count < size; count++) {
@@ -433,8 +436,7 @@ public class ActorRecursion extends TypedCompositeActor {
             // Scan the contained receivers of the port to find
             // out channel index.
             int channelIndex = 0;
-            foundChannelIndex:
-            for (int m = 0; m < portReceivers.length; m++) {
+            foundChannelIndex: for (int m = 0; m < portReceivers.length; m++) {
                 for (int n = 0; n < portReceivers[m].length; n++) {
                     if (receiver == portReceivers[m][n]) {
                         channelIndex = m;

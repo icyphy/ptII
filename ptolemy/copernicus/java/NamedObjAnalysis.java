@@ -1,29 +1,29 @@
 /* An analysis for extracting the constructors of named objects.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.HashMap;
@@ -44,22 +44,21 @@ import soot.jimple.DefinitionStmt;
 import soot.jimple.FieldRef;
 import soot.jimple.JimpleBody;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjAnalysis
 
 /**
-   An analysis that establishes a correspondence between each local
-   variable that refers to a named obj in a method an the named object
-   that it refers to.  This information is used to inline methods on
-   named object locals.
+ An analysis that establishes a correspondence between each local
+ variable that refers to a named obj in a method an the named object
+ that it refers to.  This information is used to inline methods on
+ named object locals.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class NamedObjAnalysis {
     public NamedObjAnalysis(SootMethod method, NamedObj thisBinding) {
         _errorObject = new NamedObj();
@@ -104,13 +103,14 @@ public class NamedObjAnalysis {
                                 _update(local, (Local) value);
                             }
                         } else if (rightValue instanceof FieldRef) {
-                            SootField field = ((FieldRef) rightValue).getField();
+                            SootField field = ((FieldRef) rightValue)
+                                    .getField();
                             _set(local, _getFieldObject(field));
                         }
                     } else if (stmt.getLeftOp() instanceof FieldRef) {
                         if (rightValue instanceof Local) {
                             SootField field = ((FieldRef) stmt.getLeftOp())
-                                .getField();
+                                    .getField();
                             _set((Local) rightValue, _getFieldObject(field));
                         }
                     } else {
@@ -139,9 +139,8 @@ public class NamedObjAnalysis {
      */
     private NamedObj _getFieldObject(SootField field) {
         if (field.getType() instanceof RefType
-                && SootUtilities.derivesFrom(
-                        ((RefType) field.getType()).getSootClass(),
-                        PtolemyUtilities.namedObjClass)) {
+                && SootUtilities.derivesFrom(((RefType) field.getType())
+                        .getSootClass(), PtolemyUtilities.namedObjClass)) {
             ValueTag tag = (ValueTag) field.getTag("_CGValue");
 
             if (tag == null) {
@@ -183,6 +182,8 @@ public class NamedObjAnalysis {
     }
 
     private NamedObj _errorObject;
+
     private Map _localToObject;
+
     private boolean _notDone;
 }

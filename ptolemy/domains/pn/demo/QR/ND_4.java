@@ -1,30 +1,30 @@
 /* A PN process actor object.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.pn.demo.QR;
 
 import java.util.Vector;
@@ -39,25 +39,24 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ND_4
 
 /**
 
-This class defines a PN actor object. This actor is automatically
-generated, as part of the <A
-HREF="http://www.gigascale.org/compaan">Compaan</A> project. Although
-most of the actor is generated automatically, some parts have been
-manually tuned for this demo especially when reading and writing of
-matrices is involved; they may change in future releases.
+ This class defines a PN actor object. This actor is automatically
+ generated, as part of the <A
+ HREF="http://www.gigascale.org/compaan">Compaan</A> project. Although
+ most of the actor is generated automatically, some parts have been
+ manually tuned for this demo especially when reading and writing of
+ matrices is involved; they may change in future releases.
 
-@author Bart Kienhuis
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Red (kienhuis)
-@Pt.AcceptedRating Red (kienhuis)
-*/
+ @author Bart Kienhuis
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (kienhuis)
+ @Pt.AcceptedRating Red (kienhuis)
+ */
 public class ND_4 extends TypedAtomicActor {
     /** Construct an actor that is an SBF object with the given container
      *  and name.
@@ -108,19 +107,30 @@ public class ND_4 extends TypedAtomicActor {
     ////                     ports and parameters                  ////
     // -- Part of the Actor
     public TypedIOPort RP_5;
+
     public TypedIOPort RP_6;
+
     public TypedIOPort RP_7;
+
     public TypedIOPort RP_8;
+
     public TypedIOPort RP_9;
+
     public TypedIOPort RP_10;
+
     public TypedIOPort WP_5;
+
     public TypedIOPort WP_12;
+
     public TypedIOPort WP_3;
+
     public TypedIOPort WP_7;
+
     public TypedIOPort WP_9;
 
     // -- Public interface of the Actor
     public Parameter parameter_N;
+
     public Parameter parameter_K;
 
     ///////////////////////////////////////////////////////////////////
@@ -146,38 +156,38 @@ public class ND_4 extends TypedAtomicActor {
             for (int j = 1; j <= ((1 * N) + -1); j += 1) {
                 for (int i = (1 * j) + 1; i <= (1 * N); i += 1) {
                     if ((k - 2) >= 0) {
-                        r_3.add(new Double(
-                                        ((DoubleToken) RP_5.get(0)).doubleValue()));
+                        r_3.add(new Double(((DoubleToken) RP_5.get(0))
+                                .doubleValue()));
                         in_0 = ((Double) r_3.elementAt(w_r_3++)).doubleValue();
                     }
 
                     if ((k - 1) == 0) {
-                        r_1.add(new Double(
-                                        ((DoubleToken) RP_6.get(0)).doubleValue()));
+                        r_1.add(new Double(((DoubleToken) RP_6.get(0))
+                                .doubleValue()));
                         in_0 = ((Double) r_1.elementAt(w_r_1++)).doubleValue();
                     }
 
                     if ((j - 2) >= 0) {
-                        x_3.add(new Double(
-                                        ((DoubleToken) RP_7.get(0)).doubleValue()));
+                        x_3.add(new Double(((DoubleToken) RP_7.get(0))
+                                .doubleValue()));
                         in_1 = ((Double) x_3.elementAt(w_x_3++)).doubleValue();
                     }
 
                     if ((j - 1) == 0) {
-                        x_1.add(new Double(
-                                        ((DoubleToken) RP_8.get(0)).doubleValue()));
+                        x_1.add(new Double(((DoubleToken) RP_8.get(0))
+                                .doubleValue()));
                         in_1 = ((Double) x_1.elementAt(w_x_1++)).doubleValue();
                     }
 
                     if ((i - j - 2) >= 0) {
-                        t_2.add(new Double(
-                                        ((DoubleToken) RP_9.get(0)).doubleValue()));
+                        t_2.add(new Double(((DoubleToken) RP_9.get(0))
+                                .doubleValue()));
                         in_2 = ((Double) t_2.elementAt(w_t_2++)).doubleValue();
                     }
 
                     if ((-i + j + 1) == 0) {
-                        t_1.add(new Double(
-                                        ((DoubleToken) RP_10.get(0)).doubleValue()));
+                        t_1.add(new Double(((DoubleToken) RP_10.get(0))
+                                .doubleValue()));
                         in_2 = ((Double) t_1.elementAt(w_t_1++)).doubleValue();
                     }
 
@@ -230,29 +240,51 @@ public class ND_4 extends TypedAtomicActor {
     ////                         private variables                 ////
     // -- Get private copies of the parameters
     private int N;
+
     private int K;
+
     private double in_0;
+
     private double in_1;
+
     private double in_2;
+
     private double out_0;
+
     private double out_1;
+
     private double out_2;
 
     // Needed to communicate results from the function
     private double _argOut0;
+
     private double _argOut1;
+
     private double _argOut2;
+
     private Vector r_3 = new Vector();
+
     private Vector r_1 = new Vector();
+
     private Vector x_3 = new Vector();
+
     private Vector x_1 = new Vector();
+
     private Vector t_2 = new Vector();
+
     private Vector t_1 = new Vector();
+
     private int w_r_3 = 0;
+
     private int w_r_1 = 0;
+
     private int w_x_3 = 0;
+
     private int w_x_1 = 0;
+
     private int w_t_2 = 0;
+
     private int w_t_1 = 0;
+
     private boolean _returnValue = true;
 }

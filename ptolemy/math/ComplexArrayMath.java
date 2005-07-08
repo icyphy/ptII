@@ -1,51 +1,50 @@
 /* A library for mathematical operations on arrays of complex numbers.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.math;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// ComplexArrayMath
 
 /**
-   This class a provides a library for mathematical operations on arrays of
-   complex numbers, in particular arrays of instances of class
-   ptolemy.math.Complex.
-   Unless explicitly noted otherwise, all array arguments are assumed to be
-   non-null. If a null array is passed to a method, a NullPointerException
-   will be thrown in the method or called methods.
+ This class a provides a library for mathematical operations on arrays of
+ complex numbers, in particular arrays of instances of class
+ ptolemy.math.Complex.
+ Unless explicitly noted otherwise, all array arguments are assumed to be
+ non-null. If a null array is passed to a method, a NullPointerException
+ will be thrown in the method or called methods.
 
-   @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (ctsay)
-   @Pt.AcceptedRating Yellow (ctsay)
-*/
+ @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Yellow (ctsay)
+ @Pt.AcceptedRating Yellow (ctsay)
+ */
 public class ComplexArrayMath {
     // Protected constructor prevents construction of this class.
     protected ComplexArrayMath() {
@@ -319,12 +318,13 @@ public class ComplexArrayMath {
      */
     public static final Complex dotProduct(final Complex[] array1,
             final Complex[] array2) {
-        int length = _commonLength(array1, array2, "ComplexArrayMath.dotProduct");
+        int length = _commonLength(array1, array2,
+                "ComplexArrayMath.dotProduct");
         Complex returnValue = Complex.ZERO;
 
         for (int i = 0; i < length; i++) {
-            returnValue = returnValue.add(array1[i].multiply(
-                                                  array2[i].conjugate()));
+            returnValue = returnValue.add(array1[i].multiply(array2[i]
+                    .conjugate()));
         }
 
         return returnValue;
@@ -470,7 +470,7 @@ public class ComplexArrayMath {
         if ((bottom.real > top.real) || (bottom.imag > top.imag)) {
             throw new IllegalArgumentException(
                     "Complex.limit requires that bottom lie below and "
-                    + "to the left of top.");
+                            + "to the left of top.");
         }
 
         for (int i = 0; i < array.length; i++) {
@@ -616,8 +616,8 @@ public class ComplexArrayMath {
 
         System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array, halfLengthFloor, returnValue,
-                newLength - halfLengthCeil, halfLengthCeil);
+        System.arraycopy(array, halfLengthFloor, returnValue, newLength
+                - halfLengthCeil, halfLengthCeil);
 
         for (int i = halfLengthCeil; i < (newLength - halfLengthCeil); i++) {
             returnValue[i] = Complex.ZERO;
@@ -664,9 +664,7 @@ public class ComplexArrayMath {
      */
     public static final Complex[] polynomial(final Complex[] roots) {
         if (roots.length <= 1) {
-            return new Complex[] {
-                Complex.ONE
-            };
+            return new Complex[] { Complex.ONE };
         }
 
         Complex[] result = new Complex[2];
@@ -677,10 +675,7 @@ public class ComplexArrayMath {
 
             if (roots.length > 1) {
                 for (int i = 1; i < roots.length; i++) {
-                    Complex[] factor = {
-                        new Complex(1),
-                        roots[i].negate()
-                    };
+                    Complex[] factor = { new Complex(1), roots[i].negate() };
                     result = SignalProcessing.convolve(result, factor);
                 }
             }
@@ -797,7 +792,8 @@ public class ComplexArrayMath {
 
         if ((startIdx >= array.length) && (copySize > 0)) {
             throw new IllegalArgumentException("resize():  the start index '"
-                    + startIdx + "' is greather than equal to the array length '"
+                    + startIdx
+                    + "' is greather than equal to the array length '"
                     + array.length + "' and the number of items to be copied '"
                     + copySize + "' is greater than zero.");
         }

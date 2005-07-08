@@ -1,31 +1,31 @@
 /* IOPort for SDF
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.sdf.kernel;
 
 import ptolemy.actor.TypedIOPort;
@@ -37,30 +37,29 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SDFIOPort
 
 /**
-   This class extends IOPort with convenience methods for handling the token
-   production and consumption rates.  These are merely convenience methods,
-   as the pertinent attributes can be added to any IOPort and the SDF domain
-   will respect them.
-   <p>
-   It is not recommended to use this port as a port for composite actors
-   because the presence of the rate parameters will prevent the inner SDF
-   scheduler from propagating it rates to the outside.  That is, if the
-   parameters are present, the scheduler does not override them.
+ This class extends IOPort with convenience methods for handling the token
+ production and consumption rates.  These are merely convenience methods,
+ as the pertinent attributes can be added to any IOPort and the SDF domain
+ will respect them.
+ <p>
+ It is not recommended to use this port as a port for composite actors
+ because the presence of the rate parameters will prevent the inner SDF
+ scheduler from propagating it rates to the outside.  That is, if the
+ parameters are present, the scheduler does not override them.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Yellow (johnr)
-   @deprecated It is preferable to declare the rate parameters directly
-   in the actors, instead of using this class.  This allows the
-   dependence of rates to be understood by various SDF schedulers.
-*/
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Yellow (johnr)
+ @deprecated It is preferable to declare the rate parameters directly
+ in the actors, instead of using this class.  This allows the
+ dependence of rates to be understood by various SDF schedulers.
+ */
 public final class SDFIOPort extends TypedIOPort {
     /** Construct an SDFIOPort with no container and no name that is
      *  neither an input nor an output.
@@ -117,8 +116,8 @@ public final class SDFIOPort extends TypedIOPort {
      *   a port already in the container.
      */
     public SDFIOPort(ComponentEntity container, String name, boolean isInput,
-            boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+            boolean isOutput) throws IllegalActionException,
+            NameDuplicationException {
         this(container, name);
         setInput(isInput);
         setOutput(isOutput);
@@ -149,12 +148,12 @@ public final class SDFIOPort extends TypedIOPort {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SDFIOPort newObject = (SDFIOPort) (super.clone(workspace));
-        newObject.tokenConsumptionRate = (Parameter) newObject.getAttribute(
-                "tokenConsumptionRate");
-        newObject.tokenInitProduction = (Parameter) newObject.getAttribute(
-                "tokenInitProduction");
-        newObject.tokenProductionRate = (Parameter) newObject.getAttribute(
-                "tokenProductionRate");
+        newObject.tokenConsumptionRate = (Parameter) newObject
+                .getAttribute("tokenConsumptionRate");
+        newObject.tokenInitProduction = (Parameter) newObject
+                .getAttribute("tokenInitProduction");
+        newObject.tokenProductionRate = (Parameter) newObject
+                .getAttribute("tokenProductionRate");
         return newObject;
     }
 
@@ -258,8 +257,8 @@ public final class SDFIOPort extends TypedIOPort {
         }
 
         if (!isInput()) {
-            throw new IllegalActionException(this,
-                    "Port " + "is not an input port.");
+            throw new IllegalActionException(this, "Port "
+                    + "is not an input port.");
         }
 
         tokenConsumptionRate.setToken(new IntToken(rate));
@@ -280,8 +279,8 @@ public final class SDFIOPort extends TypedIOPort {
         }
 
         if (!isOutput()) {
-            throw new IllegalActionException(this,
-                    "Port " + "is not an Output Port.");
+            throw new IllegalActionException(this, "Port "
+                    + "is not an Output Port.");
         }
 
         tokenInitProduction.setToken(new IntToken(count));
@@ -303,8 +302,8 @@ public final class SDFIOPort extends TypedIOPort {
         }
 
         if (!isOutput()) {
-            throw new IllegalActionException(this,
-                    "Port " + "is not an Output Port.");
+            throw new IllegalActionException(this, "Port "
+                    + "is not an Output Port.");
         }
 
         tokenProductionRate.setToken(new IntToken(rate));

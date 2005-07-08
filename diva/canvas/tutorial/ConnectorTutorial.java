@@ -58,7 +58,6 @@ import diva.canvas.toolbox.BasicController;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;
 
-
 /** This tutorial shows how to use Connectors.
  *
  * <img src="doc-files/ConnectorTutorial.gif" align="right">
@@ -180,11 +179,13 @@ public class ConnectorTutorial {
     /** The two figures
      */
     private SitedRectangle figureA;
+
     private SitedRectangle figureB;
 
     /** The two connectors
      */
     private StraightConnector connectorA;
+
     private ManhattanConnector connectorB;
 
     /** Create a JCanvas and put it into a window.
@@ -228,7 +229,8 @@ public class ConnectorTutorial {
         connectorA = new StraightConnector(a, b);
 
         // Add the circle and arrowhead to it
-        Blob blob = new Blob(a.getX(), a.getY(), a.getNormal(), Blob.BLOB_CIRCLE);
+        Blob blob = new Blob(a.getX(), a.getY(), a.getNormal(),
+                Blob.BLOB_CIRCLE);
         connectorA.setTailEnd(blob);
 
         Arrowhead arrow = new Arrowhead(b.getX(), b.getY(), b.getNormal());
@@ -275,11 +277,11 @@ public class ConnectorTutorial {
         // The listener just tells both connectors to reroute themselves.
         DragInteractor i = controller.getDragInteractor();
         i.addLayerListener(new LayerAdapter() {
-                public void mouseDragged(LayerEvent e) {
-                    connectorA.reroute();
-                    connectorB.reroute();
-                }
-            });
+            public void mouseDragged(LayerEvent e) {
+                connectorA.reroute();
+                connectorB.reroute();
+            }
+        });
 
         // The connector selection interactor uses the same selection model
         SelectionInteractor ci = new SelectionInteractor(si.getSelectionModel());
@@ -299,22 +301,22 @@ public class ConnectorTutorial {
         // manipulator, here is an simple example of a connector
         // listener
         ConnectorListener cl = new ConnectorListener() {
-                public void connectorDragged(ConnectorEvent e) {
-                    //// System.out.println("Dragged");
-                }
+            public void connectorDragged(ConnectorEvent e) {
+                //// System.out.println("Dragged");
+            }
 
-                public void connectorDropped(ConnectorEvent e) {
-                    System.out.println("Dropped");
-                }
+            public void connectorDropped(ConnectorEvent e) {
+                System.out.println("Dropped");
+            }
 
-                public void connectorSnapped(ConnectorEvent e) {
-                    System.out.println("Snapped");
-                }
+            public void connectorSnapped(ConnectorEvent e) {
+                System.out.println("Snapped");
+            }
 
-                public void connectorUnsnapped(ConnectorEvent e) {
-                    System.out.println("Unsnapped");
-                }
-            };
+            public void connectorUnsnapped(ConnectorEvent e) {
+                System.out.println("Unsnapped");
+            }
+        };
 
         manipulator.addConnectorListener(cl);
     }
@@ -324,13 +326,13 @@ public class ConnectorTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ConnectorTutorial ex = new ConnectorTutorial();
-                    ex.createFigures();
-                    ex.createConnectors();
-                    ex.setupInteraction();
-                }
-            });
+            public void run() {
+                ConnectorTutorial ex = new ConnectorTutorial();
+                ex.createFigures();
+                ex.createConnectors();
+                ex.setupInteraction();
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////

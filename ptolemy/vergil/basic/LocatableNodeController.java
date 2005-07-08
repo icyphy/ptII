@@ -1,30 +1,30 @@
 /* The node controller for locatable nodes
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.basic;
 
 import java.awt.BasicStroke;
@@ -48,27 +48,26 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.NodeInteractor;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeController
 
 /**
-   This node controller provides interaction techniques for nodes that are
-   locations.   This is common when the node has some concept of its
-   graphical location, but does not know about the figure that it
-   is associated with.  This class provides the connection between the
-   figure's notion of location and the node's concept of location.
-   <p>
-   When nodes are drawn, they are automatically placed at the
-   coordinate given by the location.  A LocatableNodeDragInteractor
-   is used to update the location of the node as the figure moves.
+ This node controller provides interaction techniques for nodes that are
+ locations.   This is common when the node has some concept of its
+ graphical location, but does not know about the figure that it
+ is associated with.  This class provides the connection between the
+ figure's notion of location and the node's concept of location.
+ <p>
+ When nodes are drawn, they are automatically placed at the
+ coordinate given by the location.  A LocatableNodeDragInteractor
+ is used to update the location of the node as the figure moves.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class LocatableNodeController extends BasicNodeController {
     /** Create an instance associated with the specified graph controller.
      *  @param controller The graph controller.
@@ -251,16 +250,13 @@ public class LocatableNodeController extends BasicNodeController {
             if (object instanceof NamedObj
                     && (((NamedObj) object).getDerivedLevel() < Integer.MAX_VALUE)
                     && (cf != null)) {
-                float[] dash = {
-                    2.0f,
-                    5.0f
-                };
+                float[] dash = { 2.0f, 5.0f };
                 Stroke stroke = new BasicStroke(2f, /* width */
-                        BasicStroke.CAP_SQUARE, /* cap   */
-                        BasicStroke.JOIN_MITER, /* join  */
-                        10.0f, /* mitre limit */
-                        dash, /* dash  */
-                        0.0f); /* dash_phase  */
+                BasicStroke.CAP_SQUARE, /* cap   */
+                BasicStroke.JOIN_MITER, /* join  */
+                10.0f, /* mitre limit */
+                dash, /* dash  */
+                0.0f); /* dash_phase  */
                 BasicFigure bf = new BasicFigure(cf.getBackgroundFigure()
                         .getBounds());
                 bf.setStroke(stroke);

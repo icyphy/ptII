@@ -1,29 +1,29 @@
 /* Partition an image into smaller subimages.
-   @Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the
-   above copyright notice and the following two paragraphs appear in all
-   copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION 2
-   COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.sdf.lib.vq;
 
 import ptolemy.actor.lib.Transformer;
@@ -35,22 +35,21 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ImagePartition
 
 /**
-   Partition an image into smaller subimages.  Each input image
-   should have dimensions imageColumns by imageRows, and each output image
-   will have dimensions partitionColumns by partitionRows.  The output matrices
-   are row scanned from the top of input image.
+ Partition an image into smaller subimages.  Each input image
+ should have dimensions imageColumns by imageRows, and each output image
+ will have dimensions partitionColumns by partitionRows.  The output matrices
+ are row scanned from the top of input image.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Red (neuendor)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Red (neuendor)
+ */
 public class ImagePartition extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -75,10 +74,11 @@ public class ImagePartition extends Transformer {
         partitionRows = new Parameter(this, "partitionRows", new IntToken("2"));
         partitionRows.setTypeEquals(BaseType.INT);
 
-        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output,
+                "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
-        output_tokenProductionRate.setExpression(
-                "imageColumns * imageRows / partitionColumns / partitionRows");
+        output_tokenProductionRate
+                .setExpression("imageColumns * imageRows / partitionColumns / partitionRows");
 
         input.setTypeEquals(BaseType.INT_MATRIX);
         output.setTypeEquals(BaseType.INT_MATRIX);
@@ -131,7 +131,8 @@ public class ImagePartition extends Transformer {
 
         _part = new int[_partitionRows][_partitionColumns];
 
-        int partitionCount = (_imageColumns * _imageRows) / _partitionColumns / _partitionRows;
+        int partitionCount = (_imageColumns * _imageRows) / _partitionColumns
+                / _partitionRows;
         _partitions = new IntMatrixToken[partitionCount];
     }
 
@@ -161,8 +162,7 @@ public class ImagePartition extends Transformer {
         int[][] image = message.intMatrix();
 
         for (j = 0, partitionNumber = 0; j < _imageRows; j += _partitionRows) {
-            for (i = 0; i < _imageColumns;
-                 i += _partitionColumns, partitionNumber++) {
+            for (i = 0; i < _imageColumns; i += _partitionColumns, partitionNumber++) {
                 for (y = 0; y < _partitionRows; y++) {
                     System.arraycopy(image[j + y], i, _part[y], 0,
                             _partitionColumns);
@@ -178,9 +178,14 @@ public class ImagePartition extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IntMatrixToken[] _partitions;
+
     private int[][] _part;
+
     private int _imageColumns;
+
     private int _imageRows;
+
     private int _partitionColumns;
+
     private int _partitionRows;
 }

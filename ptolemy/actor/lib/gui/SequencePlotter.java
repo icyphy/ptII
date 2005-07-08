@@ -1,30 +1,30 @@
 /* Plot sequences.
 
-@Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.TypedIOPort;
@@ -39,28 +39,27 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Plot;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SequencePlotter
 
 /**
-   A sequence plotter.  This plotter contains an instance of the Plot
-   class from the Ptolemy plot package as a public member. Data at
-   the input, which can consist of any number of channels, are plotted
-   on this instance.  Each channel is plotted as a separate data set.
-   The horizontal axis represents the count of the iterations, scaled
-   by the <i>xUnit</i> parameter.  The horizontal increment between
-   samples is given by the <i>xUnit</i> parameter.
-   Its default value is 1.0. The horizontal value
-   of the first sample is given by the <i>xInit</i> parameter.
-   Its default value is 0.0. The input is of type DoubleToken.
+ A sequence plotter.  This plotter contains an instance of the Plot
+ class from the Ptolemy plot package as a public member. Data at
+ the input, which can consist of any number of channels, are plotted
+ on this instance.  Each channel is plotted as a separate data set.
+ The horizontal axis represents the count of the iterations, scaled
+ by the <i>xUnit</i> parameter.  The horizontal increment between
+ samples is given by the <i>xUnit</i> parameter.
+ Its default value is 1.0. The horizontal value
+ of the first sample is given by the <i>xInit</i> parameter.
+ Its default value is 0.0. The input is of type DoubleToken.
 
-   @author  Edward A. Lee, Bart Kienhuis
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @author  Edward A. Lee, Bart Kienhuis
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class SequencePlotter extends Plotter implements SequenceActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.

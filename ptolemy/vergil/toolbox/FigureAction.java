@@ -1,30 +1,30 @@
 /* An action that is associated with a figure.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.toolbox;
 
 import java.awt.Component;
@@ -49,28 +49,27 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.gui.toolbox.JContextMenu;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FigureAction
 
 /**
-   An action that is attached to a figure on a named object.
-   Such an action is fired in one of several ways.
-   The first way is through an ActionInteractor that is attached
-   to the figure.  The second way is through a context menu that is created
-   on the figure.  A third way is through a hotkey.
-   Unfortunately, the source of the event is different in
-   these cases.  This class makes it easier to write an action that is
-   triggered by any mechanism. Such an action would be derived from this
-   class, and would invoke super.actionPerformed() first in its own
-   actionPerformed() method.
+ An action that is attached to a figure on a named object.
+ Such an action is fired in one of several ways.
+ The first way is through an ActionInteractor that is attached
+ to the figure.  The second way is through a context menu that is created
+ on the figure.  A third way is through a hotkey.
+ Unfortunately, the source of the event is different in
+ these cases.  This class makes it easier to write an action that is
+ triggered by any mechanism. Such an action would be derived from this
+ class, and would invoke super.actionPerformed() first in its own
+ actionPerformed() method.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class FigureAction extends AbstractAction {
     /** Construct an action that is attached to a figure on a named object.
      *  @param name The name of the object.
@@ -294,7 +293,7 @@ public class FigureAction extends AbstractAction {
     public static class SourceType {
         /** Construct a SourceType.
          *  @param name The name of the SourceType.
-         */ 
+         */
         private SourceType(String name) {
             _name = name;
         }
@@ -312,9 +311,14 @@ public class FigureAction extends AbstractAction {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Figure _figure = null;
+
     private Frame _frame = null;
+
     private SourceType _sourceType = null;
+
     private NamedObj _target = null;
+
     private int _x = 0;
+
     private int _y = 0;
 }

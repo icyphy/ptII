@@ -1,29 +1,29 @@
 /* An attribute that holds the undo/redo information about a model.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.kernel.undo;
 
 import java.util.List;
@@ -36,37 +36,36 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// UndoStackAttribute
 
 /**
-   This attribute holds the undo/redo information for a model.
-   This attribute is not persistent, so undo/redo information disappears
-   when the model is closed. It is also a singleton, meaning that it will
-   replace any previous attribute that has the same name
-   and is an instance of the same base class, SingletonAttribute.
-   <p>
-   Two stacks of information are maintained - one for undo information and
-   one for redo information. Normally, a push onto this stack puts the
-   undo information in the undo stack. However, if the push occurs during
-   the execution of an undo, then the information is put on the redo stack.
-   The entries on the stack implement the UndoAction interface.
-   <p>
-   NOTE: the information in the redo stack is emptied when a new undo action is
-   pushed onto the undo stack that was not the result of a redo being
-   requested. This situation arises when a user requests a series of undo
-   and redo operations, and then performs some normal undoable action. At this
-   point the information in the redo stack is not relevant to the state of
-   the model and so must be cleared.
+ This attribute holds the undo/redo information for a model.
+ This attribute is not persistent, so undo/redo information disappears
+ when the model is closed. It is also a singleton, meaning that it will
+ replace any previous attribute that has the same name
+ and is an instance of the same base class, SingletonAttribute.
+ <p>
+ Two stacks of information are maintained - one for undo information and
+ one for redo information. Normally, a push onto this stack puts the
+ undo information in the undo stack. However, if the push occurs during
+ the execution of an undo, then the information is put on the redo stack.
+ The entries on the stack implement the UndoAction interface.
+ <p>
+ NOTE: the information in the redo stack is emptied when a new undo action is
+ pushed onto the undo stack that was not the result of a redo being
+ requested. This situation arises when a user requests a series of undo
+ and redo operations, and then performs some normal undoable action. At this
+ point the information in the redo stack is not relevant to the state of
+ the model and so must be cleared.
 
-   @see UndoAction
-   @author Neil Smyth and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 3.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @see UndoAction
+ @author Neil Smyth and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 3.1
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class UndoStackAttribute extends SingletonAttribute {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null,
@@ -198,8 +197,7 @@ public class UndoStackAttribute extends SingletonAttribute {
                 UndoAction mergedAction = _mergeActions(action, previousUndo);
 
                 if (_debugging) {
-                    _debug(
-                            "=======> Merging redo action onto undo stack to get:\n"
+                    _debug("=======> Merging redo action onto undo stack to get:\n"
                             + mergedAction);
                 }
 
@@ -304,16 +302,16 @@ public class UndoStackAttribute extends SingletonAttribute {
     private UndoAction _mergeActions(final UndoAction firstAction,
             final UndoAction secondAction) {
         return new UndoAction() {
-                public void execute() throws Exception {
-                    firstAction.execute();
-                    secondAction.execute();
-                }
+            public void execute() throws Exception {
+                firstAction.execute();
+                secondAction.execute();
+            }
 
-                public String toString() {
-                    return "Merged action.\nFirst part:\n" + firstAction
+            public String toString() {
+                return "Merged action.\nFirst part:\n" + firstAction
                         + "\n\nSecond part:\n" + secondAction;
-                }
-            };
+            }
+        };
     }
 
     ///////////////////////////////////////////////////////////////////

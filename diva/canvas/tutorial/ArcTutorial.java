@@ -59,7 +59,6 @@ import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.TypedDecorator;
 import diva.gui.BasicFrame;
 
-
 /** This tutorial shows how to use "arc" connectors.
  *
  * <img src="doc-files/ArcTutorial.gif" align="right">
@@ -136,14 +135,19 @@ public class ArcTutorial {
     /** The two figures
      */
     private Figure figureA;
+
     private Figure figureB;
+
     private Figure figureC;
 
     /** The connectors
      */
     private StraightConnector connectorA;
+
     private ArcConnector connectorB;
+
     private ArcConnector connectorC;
+
     private ArcConnector connectorD;
 
     /** The target that finds sites on the figures
@@ -256,13 +260,13 @@ public class ArcTutorial {
         // The listener just tells both connectors to reroute themselves.
         DragInteractor i = controller.getDragInteractor();
         i.addLayerListener(new LayerAdapter() {
-                public void mouseDragged(LayerEvent e) {
-                    connectorA.reroute();
-                    connectorB.reroute();
-                    connectorC.reroute();
-                    connectorD.reroute();
-                }
-            });
+            public void mouseDragged(LayerEvent e) {
+                connectorA.reroute();
+                connectorB.reroute();
+                connectorC.reroute();
+                connectorD.reroute();
+            }
+        });
 
         // The connector selection interactor uses the same selection model
         SelectionInteractor ci = new SelectionInteractor(si.getSelectionModel());
@@ -281,13 +285,13 @@ public class ArcTutorial {
         // Make resizing reroute the connectors too
         DragInteractor j = figureManipulator.getHandleInteractor();
         j.addLayerListener(new LayerAdapter() {
-                public void mouseDragged(LayerEvent e) {
-                    connectorA.reroute();
-                    connectorB.reroute();
-                    connectorC.reroute();
-                    connectorD.reroute();
-                }
-            });
+            public void mouseDragged(LayerEvent e) {
+                connectorA.reroute();
+                connectorB.reroute();
+                connectorC.reroute();
+                connectorD.reroute();
+            }
+        });
 
         // Create and set up the manipulators for connectors. Straight
         // connectors will have an instance of ConnectorManipulator
@@ -317,13 +321,13 @@ public class ArcTutorial {
      */
     public static void main(String[] argv) {
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ArcTutorial ex = new ArcTutorial();
-                    ex.createFigures();
-                    ex.createConnectors();
-                    ex.setupInteraction();
-                }
-            });
+            public void run() {
+                ArcTutorial ex = new ArcTutorial();
+                ex.createFigures();
+                ex.createConnectors();
+                ex.setupInteraction();
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////

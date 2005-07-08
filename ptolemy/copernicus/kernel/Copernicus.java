@@ -1,29 +1,29 @@
 /* Standalone application that generates code
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.kernel;
 
 import java.io.BufferedReader;
@@ -65,75 +65,74 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Copernicus
 
 /**
-   A Standalone application that generates code using the Ptolemy II code
-   generation system.  This class acts a wrapper for the copernicus.*.Main
-   classes by providing defaults arguments for the various backends.
+ A Standalone application that generates code using the Ptolemy II code
+ generation system.  This class acts a wrapper for the copernicus.*.Main
+ classes by providing defaults arguments for the various backends.
 
-   The <i>generatorAttribute</i> Parameter names a MoML file that
-   contains definitions for other Parameters and Variables that control
-   the compilation and execution of the model
+ The <i>generatorAttribute</i> Parameter names a MoML file that
+ contains definitions for other Parameters and Variables that control
+ the compilation and execution of the model
 
-   The default compilation arguments are read in from a file named
-   compileCommandTemplate.in, variables are substituted and the compile
-   command executed and then default arguments are read in from a file
-   named runCommandTemplate.in.
+ The default compilation arguments are read in from a file named
+ compileCommandTemplate.in, variables are substituted and the compile
+ command executed and then default arguments are read in from a file
+ named runCommandTemplate.in.
 
-   <p>For example:
-   <pre>
-   java -classpath $PTII ptolemy.copernicus.kernel.Copernicus foo.xml
-   </pre>
-   will read in the $PTII/ptolemy/copernicus/java/compileCommandTemplate.in,
-   substitute in the appropriate variables and then generate code for foo.xml
+ <p>For example:
+ <pre>
+ java -classpath $PTII ptolemy.copernicus.kernel.Copernicus foo.xml
+ </pre>
+ will read in the $PTII/ptolemy/copernicus/java/compileCommandTemplate.in,
+ substitute in the appropriate variables and then generate code for foo.xml
 
-   <p>The default code generator is the deep java code generator in
-   $PTII/ptolemy/copernicus/java.
+ <p>The default code generator is the deep java code generator in
+ $PTII/ptolemy/copernicus/java.
 
-   <p>The argument that names the xml file containing the model to generate
-   code for should be a relative pathname.  The xml file argument is
-   converted into a URL internally.
-   If no xml file argument is specified,
-   then code is generated for
-   <code>$PTII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml</code>
+ <p>The argument that names the xml file containing the model to generate
+ code for should be a relative pathname.  The xml file argument is
+ converted into a URL internally.
+ If no xml file argument is specified,
+ then code is generated for
+ <code>$PTII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml</code>
 
-   <p>Generating code is fairly complex, so there are many other parameters
-   that can be set as the other arguments.
+ <p>Generating code is fairly complex, so there are many other parameters
+ that can be set as the other arguments.
 
-   <p>The general format is
-   <code>-<i>VariableName</i> <i>VariableValue</i></code>, for example:
-   <code>-codeGenerator "shallow"</code>
-   <p>For example:
-   <pre>
-   java -classpath $PTII ptolemy.copernicus.kernel.GenerateCode -codeGenerator "shallow" foo.xml
-   </pre>
+ <p>The general format is
+ <code>-<i>VariableName</i> <i>VariableValue</i></code>, for example:
+ <code>-codeGenerator "shallow"</code>
+ <p>For example:
+ <pre>
+ java -classpath $PTII ptolemy.copernicus.kernel.GenerateCode -codeGenerator "shallow" foo.xml
+ </pre>
 
-   <p>The initial parameters, their values and any documentation can be
-   printed with
+ <p>The initial parameters, their values and any documentation can be
+ printed with
 
-   <pre>
-   java -classpath $PTII ptolemy.copernicus.kernel.GenerateCode -help
-   </pre>
+ <pre>
+ java -classpath $PTII ptolemy.copernicus.kernel.GenerateCode -help
+ </pre>
 
-   If you have rebuilt Ptolemy II from sources, and have a shell such as
-   bash available, then you can use <code>$PTII/bin/copernicus</code>
-   as a shortcut.  For example
-   <pre>
-   $PTII/bin/copernicus -codeGenerator "shallow" foo.xml
-   </pre>
+ If you have rebuilt Ptolemy II from sources, and have a shell such as
+ bash available, then you can use <code>$PTII/bin/copernicus</code>
+ as a shortcut.  For example
+ <pre>
+ $PTII/bin/copernicus -codeGenerator "shallow" foo.xml
+ </pre>
 
-   <p>The details of how this class works can be found in the
-   {@link GeneratorAttribute} documentation.
+ <p>The details of how this class works can be found in the
+ {@link GeneratorAttribute} documentation.
 
-   @author Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class Copernicus {
     /** Parse the specified command-line arguments and then execute
      *  any specified commands.
@@ -153,7 +152,8 @@ public class Copernicus {
         // Parse the model.
         CompositeActor toplevel = readInModel(_modelPath);
 
-        _generatorAttribute = (GeneratorAttribute) toplevel.getAttribute(GENERATOR_NAME);
+        _generatorAttribute = (GeneratorAttribute) toplevel
+                .getAttribute(GENERATOR_NAME);
 
         if (_generatorAttribute == null) {
             _generatorAttribute = new GeneratorAttribute(toplevel,
@@ -180,7 +180,7 @@ public class Copernicus {
 
         // See if we are redirecting the output.
         StringParameter output = (StringParameter) _generatorAttribute
-            .getAttribute("output");
+                .getAttribute("output");
 
         if ((output != null) && (output.getToken() != null)) {
             String fileName = output.stringValue();
@@ -216,8 +216,8 @@ public class Copernicus {
      */
     public static String commandToRun(GeneratorAttribute generatorAttribute)
             throws Exception {
-        String runCommandTemplateFile = generatorAttribute.getParameter(
-                "runCommandTemplateFile");
+        String runCommandTemplateFile = generatorAttribute
+                .getParameter("runCommandTemplateFile");
         return substitute(runCommandTemplateFile, generatorAttribute);
     }
 
@@ -252,7 +252,7 @@ public class Copernicus {
         // while reading in a model.
         new Parameter(generatorAttribute, "generatorAttributeFileName",
                 new StringToken(StringUtilities.substitute(
-                                        generatorAttributeFileName, "\\", "/")));
+                        generatorAttributeFileName, "\\", "/")));
 
         int exitValue = 1;
         String compile = generatorAttribute.getParameter("compile");
@@ -281,13 +281,14 @@ public class Copernicus {
             //                 model = modelClass;
             //             }
             // Instantiate the right code generator.
-            String codeGeneratorClassName = generatorAttribute.getParameter(
-                    "codeGeneratorClassName");
-            System.out.println("codeGeneratorClass = " + codeGeneratorClassName);
+            String codeGeneratorClassName = generatorAttribute
+                    .getParameter("codeGeneratorClassName");
+            System.out
+                    .println("codeGeneratorClass = " + codeGeneratorClassName);
 
             Class codeGeneratorClass = Class.forName(codeGeneratorClassName);
             KernelMain codeGenerator = (KernelMain) codeGeneratorClass
-                .newInstance();
+                    .newInstance();
 
             // Compile the model.
             codeGenerator.compile(model.getName(), model, generatorAttribute);
@@ -497,14 +498,14 @@ public class Copernicus {
         } catch (IOException ex) {
             // Try it as a resource
             URL inputFileURL = Thread.currentThread().getContextClassLoader()
-                .getResource(inputFileName);
+                    .getResource(inputFileName);
 
             if (inputFileURL == null) {
                 throw ex;
             }
 
-            inputFile = new BufferedReader(new InputStreamReader(
-                                                   inputFileURL.openStream()));
+            inputFile = new BufferedReader(new InputStreamReader(inputFileURL
+                    .openStream()));
         }
 
         return inputFile;
@@ -541,8 +542,8 @@ public class Copernicus {
             }
 
             if (modelURL == null) {
-                throw new IllegalActionException(null, ex,
-                        "Failed to parse '" + modelPathOrURL + "'");
+                throw new IllegalActionException(null, ex, "Failed to parse '"
+                        + modelPathOrURL + "'");
             }
         }
 
@@ -568,8 +569,8 @@ public class Copernicus {
         //removeGraphicalClasses.put("ptolemy.kernel.util.Location", null);
 
         // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.
-        removeGraphicalClasses.put("ptolemy.copernicus.gui.GeneratorTableauAttribute",
-                null);
+        removeGraphicalClasses.put(
+                "ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
 
         // FIXME: If this is Deep codegen, then don't use Test, use CGTest
         // because Test has a SharedParameter
@@ -592,9 +593,9 @@ public class Copernicus {
         try {
             toplevel = (CompositeActor) _parser.parse(modelURL, modelURL);
         } catch (Exception ex) {
-            throw new IllegalActionException(null, ex,
-                    "Failed to parse '" + modelPathOrURL
-                    + "' as a top level model in \n" + modelURL + "!");
+            throw new IllegalActionException(null, ex, "Failed to parse '"
+                    + modelPathOrURL + "' as a top level model in \n"
+                    + modelURL + "!");
         }
 
         // If the name of the toplevel is the empty string, change it to
@@ -670,7 +671,7 @@ public class Copernicus {
         }
 
         URL inputFileURL = Thread.currentThread().getContextClassLoader()
-            .getResource(inputFileName);
+                .getResource(inputFileName);
 
         if (inputFileURL == null) {
             throw new FileNotFoundException("Failed to find '" + inputFileName
@@ -678,7 +679,7 @@ public class Copernicus {
         }
 
         BufferedReader inputReader = new BufferedReader(new InputStreamReader(
-                                                                inputFileURL.openStream()));
+                inputFileURL.openStream()));
         String inputLine;
         StringBuffer output = new StringBuffer();
         String lineSeparator = System.getProperty("line.separator");
@@ -704,7 +705,7 @@ public class Copernicus {
     public static void substitute(BufferedReader inputFile, Map substituteMap,
             String outputFileName) throws FileNotFoundException, IOException {
         PrintWriter outputFile = new PrintWriter(new BufferedWriter(
-                                                         new FileWriter(outputFileName)));
+                new FileWriter(outputFileName)));
         String inputLine;
 
         while ((inputLine = inputFile.readLine()) != null) {
@@ -756,9 +757,10 @@ public class Copernicus {
         } else if (arg.equals("-verbose")) {
             _verbose = true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version "
-                    + VersionAttribute.CURRENT_VERSION.getExpression()
-                    + ", Build $Id$");
+            System.out
+                    .println("Version "
+                            + VersionAttribute.CURRENT_VERSION.getExpression()
+                            + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
             System.exit(0);
@@ -849,8 +851,8 @@ public class Copernicus {
         NamedObj namedObj = new NamedObj();
 
         try {
-            GeneratorAttribute generatorAttribute = new GeneratorAttribute(namedObj,
-                    "_helpGeneratorAttribute");
+            GeneratorAttribute generatorAttribute = new GeneratorAttribute(
+                    namedObj, "_helpGeneratorAttribute");
             return generatorAttribute.toString();
         } catch (Exception ex) {
             return ex.toString();
@@ -860,14 +862,14 @@ public class Copernicus {
     /** Return a string containing the usage */
     private String _usage() {
         StringBuffer usage = new StringBuffer(StringUtilities.usageString(
-                                                      _commandTemplate, _commandOptions, _commandFlags));
+                _commandTemplate, _commandOptions, _commandFlags));
 
         try {
             NamedObj namedObj = new NamedObj();
-            usage.append(
-                    "\n\nThe following attributes of the code generator can\n"
-                    + "be set.  For example '-codeGenerator java' means\n"
-                    + "to use the java code generator\n\n");
+            usage
+                    .append("\n\nThe following attributes of the code generator can\n"
+                            + "be set.  For example '-codeGenerator java' means\n"
+                            + "to use the java code generator\n\n");
 
             _generatorAttribute = new GeneratorAttribute(namedObj,
                     GENERATOR_NAME);
@@ -890,59 +892,54 @@ public class Copernicus {
 
     /** The command-line options that are either present or not. */
     protected String[] _commandFlags = {
-        "-help: Print this help information\n",
-        "-test: Smoke test the code generator by killing after 2 seconds.\n",
-        "-verbose: Show verbose execution information.\n",
-        "-version: Show version information.\n",
-    };
+            "-help: Print this help information\n",
+            "-test: Smoke test the code generator by killing after 2 seconds.\n",
+            "-verbose: Show verbose execution information.\n",
+            "-version: Show version information.\n", };
 
     /** The command-line options that take arguments. */
-    protected String[][] _commandOptions = {
-        {
-            "-<parameter name>",
-            "<parameter value>"
-        },
-    };
+    protected String[][] _commandOptions = { { "-<parameter name>",
+            "<parameter value>" }, };
 
     /** The form of the command line. */
-    protected String _commandTemplate =
-    "\ncopernicus [options . . .] [relative xml filename]\n"
-    + "This command used to generate code from a model.\n"
-    + "This command is very complex, see $PTII/doc/codegen.htm for details\n\n"
-    + "This command does command line argument substitution by reading\n"
-    + "template files and then executes a subprocess that that does\n"
-    + "the code generation.\n"
-    + "This command parses the given model file (specified as a file name,\n"
-    + " a URL or a resource) and generates code for the model\n"
-    + "based on a large number of configuration parameters.\n"
-    + "If the model contains an instance of the GeneratorAttribute class\n"
-    + "then the configuration parameters are taken from that instance.\n"
-    + "If the model does not contain an instance of the GeneratorAttribute\n"
-    + "class, then default parameters are taken from the moml file in\n"
-    + "$PTII/ptolemy/copernicus/kernel/Generator.xml.\n"
-    + "In any case, those parameters may be overridden by command line\n"
-    + "options of the form: -<option> <value>.\n\n"
-    + "The most significant configuration option is the\n"
-    + "-codeGenerator option which is used to select which code\n"
-    + "generator is used.  The default value is 'java', which means\n"
-    + "that the code generator class at ptolemy.copernicus.java.Main.java\n"
-    + "is used to generate code.\n"
-    + "-codeGenerator can have the following values:\n"
-    + "   applet         Generate a html files containing an applet version.\n"
-    + "   c              Generate C code version.\n"
-    + "   interpreted    Generate interpreted version of the model\n"
-    + "                    Similar to 'Save As, used primary for testing.\n"
-    + "   java           Generate a deep Java version that uses very\n"
-    + "                    few classes from Ptolemy.\n"
-    + "   jhdl           Generate a JDHL version (requires JHDL).\n"
-    + "   shallow        Generate a shallow Java version that uses many\n"
-    + "                   classes from Ptolemy.\n" + "\nExample usage:\n"
-    + "    copernicus ~/ptII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
-    + "(The model is loaded relative to your home directory and the java deep code generator is used.)\n"
-    + "    copernicus -codeGenerator shallow ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
-    + "(The model is loaded relative to the classpath and the shallow code generator is used.)\n"
-    + "    copernicus -codeGenerator c http://c:/users/neuendor/ptII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
-    + "(The model is loaded from the given URL (which happens to refer to the local file system, and the c code generator is used.)\n";
+    protected String _commandTemplate = "\ncopernicus [options . . .] [relative xml filename]\n"
+            + "This command used to generate code from a model.\n"
+            + "This command is very complex, see $PTII/doc/codegen.htm for details\n\n"
+            + "This command does command line argument substitution by reading\n"
+            + "template files and then executes a subprocess that that does\n"
+            + "the code generation.\n"
+            + "This command parses the given model file (specified as a file name,\n"
+            + " a URL or a resource) and generates code for the model\n"
+            + "based on a large number of configuration parameters.\n"
+            + "If the model contains an instance of the GeneratorAttribute class\n"
+            + "then the configuration parameters are taken from that instance.\n"
+            + "If the model does not contain an instance of the GeneratorAttribute\n"
+            + "class, then default parameters are taken from the moml file in\n"
+            + "$PTII/ptolemy/copernicus/kernel/Generator.xml.\n"
+            + "In any case, those parameters may be overridden by command line\n"
+            + "options of the form: -<option> <value>.\n\n"
+            + "The most significant configuration option is the\n"
+            + "-codeGenerator option which is used to select which code\n"
+            + "generator is used.  The default value is 'java', which means\n"
+            + "that the code generator class at ptolemy.copernicus.java.Main.java\n"
+            + "is used to generate code.\n"
+            + "-codeGenerator can have the following values:\n"
+            + "   applet         Generate a html files containing an applet version.\n"
+            + "   c              Generate C code version.\n"
+            + "   interpreted    Generate interpreted version of the model\n"
+            + "                    Similar to 'Save As, used primary for testing.\n"
+            + "   java           Generate a deep Java version that uses very\n"
+            + "                    few classes from Ptolemy.\n"
+            + "   jhdl           Generate a JDHL version (requires JHDL).\n"
+            + "   shallow        Generate a shallow Java version that uses many\n"
+            + "                   classes from Ptolemy.\n"
+            + "\nExample usage:\n"
+            + "    copernicus ~/ptII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
+            + "(The model is loaded relative to your home directory and the java deep code generator is used.)\n"
+            + "    copernicus -codeGenerator shallow ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
+            + "(The model is loaded relative to the classpath and the shallow code generator is used.)\n"
+            + "    copernicus -codeGenerator c http://c:/users/neuendor/ptII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
+            + "(The model is loaded from the given URL (which happens to refer to the local file system, and the c code generator is used.)\n";
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
@@ -964,8 +961,10 @@ public class Copernicus {
         // _stream
         public void run() {
             try {
-                InputStreamReader inputStreamReader = new InputStreamReader(_inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                InputStreamReader inputStreamReader = new InputStreamReader(
+                        _inputStream);
+                BufferedReader bufferedReader = new BufferedReader(
+                        inputStreamReader);
 
                 // If we are writing to stderr, prefix the string.
                 // The reason is that writing to stderr causes Tcl
@@ -978,7 +977,7 @@ public class Copernicus {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _stream.println( /*prefix + */
-                            line);
+                    line);
                 }
             } catch (IOException ioe) {
                 System.out.flush();
@@ -1010,7 +1009,10 @@ public class Copernicus {
 
     // The value of the ptolemy.ptII.dir property.
     private String _ptIIDirectory;
+
     private String _modelPath = null;
+
     private static String _momlClassName;
+
     private static MoMLParser _parser;
 }

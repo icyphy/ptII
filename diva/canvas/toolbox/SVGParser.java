@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.canvas.toolbox;
 
 import java.awt.Color;
@@ -51,7 +51,6 @@ import diva.util.java2d.Polygon2D;
 import diva.util.java2d.Polyline2D;
 import diva.util.xml.XmlElement;
 
-
 /** A collection of utilities to help parse graphics out of SVG files.
  *  For a description of SVG see <a href="http://www.w3.org/TR/SVG/">the
  *  specification</a>.
@@ -68,21 +67,9 @@ public class SVGParser {
      *  @return An array of symbolic color names.
      */
     public static String[] colorNames() {
-        String[] result = {
-            "black",
-            "blue",
-            "cyan",
-            "darkgray",
-            "gray",
-            "green",
-            "lightgray",
-            "magenta",
-            "orange",
-            "pink",
-            "red",
-            "white",
-            "yellow"
-        };
+        String[] result = { "black", "blue", "cyan", "darkgray", "gray",
+                "green", "lightgray", "magenta", "orange", "pink", "red",
+                "white", "yellow" };
         return result;
     }
 
@@ -121,7 +108,7 @@ public class SVGParser {
             height = _getDouble(attributes, "height");
 
             PaintedShape ps = new PaintedShape(new Rectangle2D.Double(x, y,
-                                                       width, height));
+                    width, height));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("circle")) {
@@ -132,8 +119,8 @@ public class SVGParser {
             cy = _getDouble(attributes, "cy", 0);
             r = _getDouble(attributes, "r");
 
-            PaintedShape ps = new PaintedShape(new Ellipse2D.Double(cx - r,
-                                                       cy - r, 2 * r, 2 * r));
+            PaintedShape ps = new PaintedShape(new Ellipse2D.Double(cx - r, cy
+                    - r, 2 * r, 2 * r));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("ellipse")) {
@@ -146,8 +133,8 @@ public class SVGParser {
             rx = _getDouble(attributes, "rx");
             ry = _getDouble(attributes, "ry");
 
-            PaintedShape ps = new PaintedShape(new Ellipse2D.Double(cx - rx,
-                                                       cy - ry, 2 * rx, 2 * ry));
+            PaintedShape ps = new PaintedShape(new Ellipse2D.Double(cx - rx, cy
+                    - ry, 2 * rx, 2 * ry));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("line")) {
@@ -165,7 +152,8 @@ public class SVGParser {
             processPaintedPathAttributes(pp, attributes);
             return pp;
         } else if (type.equals("polyline")) {
-            double[] coords = parseCoordString((String) attributes.get("points"));
+            double[] coords = parseCoordString((String) attributes
+                    .get("points"));
             Polyline2D poly = new Polyline2D.Double();
             poly.moveTo(coords[0], coords[1]);
 
@@ -177,7 +165,8 @@ public class SVGParser {
             processPaintedPathAttributes(pp, attributes);
             return pp;
         } else if (type.equals("polygon")) {
-            double[] coords = parseCoordString((String) attributes.get("points"));
+            double[] coords = parseCoordString((String) attributes
+                    .get("points"));
             Polygon2D poly = new Polygon2D.Double();
             poly.moveTo(coords[0], coords[1]);
 
@@ -221,8 +210,8 @@ public class SVGParser {
                     // Web Start needs this.
                     if (_refClass == null) {
                         try {
-                            _refClass = Class.forName(
-                                    "diva.canvas.toolbox.SVGParser");
+                            _refClass = Class
+                                    .forName("diva.canvas.toolbox.SVGParser");
                         } catch (ClassNotFoundException ex) {
                             throw new RuntimeException("Could not find "
                                     + "diva.canvas.toolbox.SVGParser");
@@ -508,8 +497,8 @@ public class SVGParser {
 
         while (children.hasNext()) {
             XmlElement child = (XmlElement) children.next();
-            PaintedObject object = createPaintedObject(child.getType(),
-                    child.getAttributeMap(), child.getPCData());
+            PaintedObject object = createPaintedObject(child.getType(), child
+                    .getAttributeMap(), child.getPCData());
 
             if (object != null) {
                 list.add(object);

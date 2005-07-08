@@ -1,30 +1,30 @@
 /* A port for sending and receiving in the wireless domain.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.kernel;
 
 import java.util.LinkedList;
@@ -46,56 +46,55 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// WirelessIOPort
 
 /**
 
-This port communicates via channels without wired connections.
-Channels are instances of WirelessChannel. The port references
-channels by name, where the name is specified by the
-<i>outsideChannel</i> or <i>insideChannel</i> parameter.
-<p>
-This port can be used on the boundary of wireless domain models.
-A port is outside wireless if an outside channel name is given and
-a wireless channel with the given name is contained by the container
-of the port's container (transparent hierarchy is not supported).
-Specially, it will use the specified wireless channel to communicate
-on the outside. A port is inside wireless if an inside channel
-name is given and a wireless channel with the given name is
-contained by the container of this port. It will use the specified
-wireless channel to communicate on the inside. If no outside channel
-or inside channel name is given or the named channel does not exist,
-then the behavior of the port reverts to that of the base class.
-Specifically, it will only communicate if it is wired.
-<p>
-it is valid for a model using the wireless director to have both
-wireless communication and wired communication, i.e. it may contain
-actors with ports using wireless communication (by specifying a
-wireless channel) and actors with ports using wired communication.
-If a port is outside/inside wireless(a wireless channel is specified),
-it will ignore all the communication through the wired connections
-to it if there is any on the outside/inside of it.
-<p>
-The width of this port on either side that is using wireless
-communication is fixed at one. Otherwise, it depends on the
-number of links to the port.
-<p>
-When this port is used for wireless communications, nothing is
-connected to it.  Consequently, methods that access the topology such
-as connectedPortList() and deepConnectedInPortList() return an empty
-list. There are no deeply connected ports.  However, sinkPortList()
-returns the port of the specified wireless channel. A consequence of
-this is that type constraints are automatically set up between ports
-that send on the channel and the channel port.
+ This port communicates via channels without wired connections.
+ Channels are instances of WirelessChannel. The port references
+ channels by name, where the name is specified by the
+ <i>outsideChannel</i> or <i>insideChannel</i> parameter.
+ <p>
+ This port can be used on the boundary of wireless domain models.
+ A port is outside wireless if an outside channel name is given and
+ a wireless channel with the given name is contained by the container
+ of the port's container (transparent hierarchy is not supported).
+ Specially, it will use the specified wireless channel to communicate
+ on the outside. A port is inside wireless if an inside channel
+ name is given and a wireless channel with the given name is
+ contained by the container of this port. It will use the specified
+ wireless channel to communicate on the inside. If no outside channel
+ or inside channel name is given or the named channel does not exist,
+ then the behavior of the port reverts to that of the base class.
+ Specifically, it will only communicate if it is wired.
+ <p>
+ it is valid for a model using the wireless director to have both
+ wireless communication and wired communication, i.e. it may contain
+ actors with ports using wireless communication (by specifying a
+ wireless channel) and actors with ports using wired communication.
+ If a port is outside/inside wireless(a wireless channel is specified),
+ it will ignore all the communication through the wired connections
+ to it if there is any on the outside/inside of it.
+ <p>
+ The width of this port on either side that is using wireless
+ communication is fixed at one. Otherwise, it depends on the
+ number of links to the port.
+ <p>
+ When this port is used for wireless communications, nothing is
+ connected to it.  Consequently, methods that access the topology such
+ as connectedPortList() and deepConnectedInPortList() return an empty
+ list. There are no deeply connected ports.  However, sinkPortList()
+ returns the port of the specified wireless channel. A consequence of
+ this is that type constraints are automatically set up between ports
+ that send on the channel and the channel port.
 
-@author Edward A. Lee and Xiaojun Liu
-@version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Green (cxh)
-@Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Edward A. Lee and Xiaojun Liu
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class WirelessIOPort extends TypedIOPort {
     /** Construct a port in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -109,8 +108,8 @@ public class WirelessIOPort extends TypedIOPort {
      *  @exception NameDuplicationException If creating the parameters
      *  of this port throws it.
      */
-    public WirelessIOPort(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public WirelessIOPort(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         outsideChannel = new StringParameter(this, "outsideChannel");
         outsideChannel.setExpression("");
@@ -156,8 +155,8 @@ public class WirelessIOPort extends TypedIOPort {
      *   a port already in the container.
      */
     public WirelessIOPort(ComponentEntity container, String name,
-            boolean isInput, boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+            boolean isInput, boolean isOutput) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name, isInput, isOutput);
 
         outsideChannel = new StringParameter(this, "outsideChannel");
@@ -221,7 +220,7 @@ public class WirelessIOPort extends TypedIOPort {
             if ((value != null) && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
                         "Expected a record for insideTransmitProperties "
-                        + "but got: " + value);
+                                + "but got: " + value);
             }
         } else if (attribute == outsideTransmitProperties) {
             Token value = outsideTransmitProperties.getToken();
@@ -229,7 +228,7 @@ public class WirelessIOPort extends TypedIOPort {
             if ((value != null) && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
                         "Expected a record for outsideTransmitProperties "
-                        + "but got: " + value);
+                                + "but got: " + value);
             }
         } else if ((attribute == insideChannel)
                 || (attribute == outsideChannel)) {
@@ -361,7 +360,8 @@ public class WirelessIOPort extends TypedIOPort {
         Nameable container = getContainer();
 
         if (container instanceof CompositeEntity) {
-            ComponentEntity entity = ((CompositeEntity) container).getEntity(channelName);
+            ComponentEntity entity = ((CompositeEntity) container)
+                    .getEntity(channelName);
 
             if (entity instanceof WirelessChannel) {
                 _insideChannel = (WirelessChannel) entity;
@@ -416,7 +416,7 @@ public class WirelessIOPort extends TypedIOPort {
 
             if (containersContainer instanceof CompositeEntity) {
                 ComponentEntity channel = ((CompositeEntity) containersContainer)
-                    .getEntity(channelName);
+                        .getEntity(channelName);
 
                 if (channel instanceof WirelessChannel) {
                     _outsideChannel = (WirelessChannel) channel;
@@ -448,7 +448,7 @@ public class WirelessIOPort extends TypedIOPort {
 
             for (int j = 0; j < localReceivers[channelIndex].length; j++) {
                 Token localToken = ((WirelessReceiver) localReceivers[channelIndex][j])
-                    .getProperties();
+                        .getProperties();
 
                 if (token == null) {
                     token = localToken;
@@ -480,7 +480,7 @@ public class WirelessIOPort extends TypedIOPort {
 
             for (int j = 0; j < localReceivers[channelIndex].length; j++) {
                 Token localToken = ((WirelessReceiver) localReceivers[channelIndex][j])
-                    .getProperties();
+                        .getProperties();
 
                 if (token == null) {
                     token = localToken;
@@ -920,7 +920,10 @@ public class WirelessIOPort extends TypedIOPort {
 
     // Cached versions.
     private WirelessChannel _insideChannel;
+
     private long _insideChannelVersion = -1L;
+
     private WirelessChannel _outsideChannel;
+
     private long _outsideChannelVersion = -1L;
 }

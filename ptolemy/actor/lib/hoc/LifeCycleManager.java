@@ -1,31 +1,31 @@
 /* A base class for actors that perform life-cycle management.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.lib.hoc;
 
 import ptolemy.actor.IOPort;
@@ -48,23 +48,22 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LifeCycleManager
 
 /**
-   This is a composite actor with some services for life-cycle management.
+ This is a composite actor with some services for life-cycle management.
 
-   FIXME: More.
+ FIXME: More.
 
-   @author Edward A. Lee, Yang Zhao
-   @version $Id$
-   @since Ptolemy II 4.0
-   @see ModelReference
-   @see ptolemy.actor.lib.SetVariable
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author Edward A. Lee, Yang Zhao
+ @version $Id$
+ @since Ptolemy II 4.0
+ @see ModelReference
+ @see ptolemy.actor.lib.SetVariable
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class LifeCycleManager extends TypedCompositeActor {
     /** Construct an actor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the
@@ -400,13 +399,12 @@ public class LifeCycleManager extends TypedCompositeActor {
                     port.send(0, ((Variable) attribute).getToken());
                 } else if (attribute instanceof Settable) {
                     if (_debugging) {
-                        _debug(
-                                "** Transferring parameter as string to output: "
+                        _debug("** Transferring parameter as string to output: "
                                 + port.getName());
                     }
 
-                    port.send(0,
-                            new StringToken(((Settable) attribute).getExpression()));
+                    port.send(0, new StringToken(((Settable) attribute)
+                            .getExpression()));
                 }
             }
         }

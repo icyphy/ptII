@@ -1,29 +1,29 @@
 /* Make all references to attributes point to attribute fields
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.HashMap;
@@ -71,24 +71,23 @@ import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.SimpleLocalDefs;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForAttributesTransformer
 
 /**
-   A transformer that is responsible for replacing references to attributes.
-   Any calls to the getAttribute() method are replaced with a field reference to
-   the field of the appropriate class that points to the correct attribute.
-   Any calls to the getDirector() method are replaced with null.
+ A transformer that is responsible for replacing references to attributes.
+ Any calls to the getAttribute() method are replaced with a field reference to
+ the field of the appropriate class that points to the correct attribute.
+ Any calls to the getDirector() method are replaced with null.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
-public class FieldsForAttributesTransformer extends SceneTransformer
-    implements HasPhaseOptions {
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class FieldsForAttributesTransformer extends SceneTransformer implements
+        HasPhaseOptions {
     /** Construct a new transformer
      */
     private FieldsForAttributesTransformer(CompositeActor model) {
@@ -126,7 +125,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer
         _attributeToFieldMap = new HashMap();
 
         _getDirectorSig = PtolemyUtilities.getDirectorMethod.getSubSignature();
-        _getAttributeSig = PtolemyUtilities.getAttributeMethod.getSubSignature();
+        _getAttributeSig = PtolemyUtilities.getAttributeMethod
+                .getSubSignature();
 
         _indexExistingFields(ModelTransformer.getModelClass(), _model);
 
@@ -136,8 +136,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer
     private void _replaceAttributeCalls(SootClass actorClass,
             ComponentEntity actor) {
         // Replace calls to getAttribute with field references.
-        for (Iterator methods = actorClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = actorClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             //       System.out.println("replaceAttributeCalls in " + method);
@@ -148,8 +148,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer
             // this will help us figure out where locals are defined.
             SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
 
-            for (Iterator units = body.getUnits().snapshotIterator();
-                 units.hasNext();) {
+            for (Iterator units = body.getUnits().snapshotIterator(); units
+                    .hasNext();) {
                 Stmt unit = (Stmt) units.next();
 
                 if (!unit.containsInvokeExpr()) {
@@ -171,7 +171,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer
                         } else {
                             box.setValue(NullConstant.v());
                         }
-                    } else if (r.getMethod().getSubSignature().equals(_getAttributeSig)) {
+                    } else if (r.getMethod().getSubSignature().equals(
+                            _getAttributeSig)) {
                         if (unit instanceof InvokeStmt) {
                             body.getUnits().remove(unit);
                         } else {
@@ -182,7 +183,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer
 
                             if (Evaluator.isValueConstantValued(nameValue)) {
                                 StringConstant nameConstant = (StringConstant) Evaluator
-                                    .getConstantValueOf(nameValue);
+                                        .getConstantValueOf(nameValue);
                                 String name = nameConstant.value;
 
                                 // perform type analysis to determine what the
@@ -192,7 +193,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer
                                         box, baseLocal, name, unit, localDefs);
                             } else {
                                 String string = "Attribute cannot be "
-                                    + "statically determined";
+                                        + "statically determined";
                                 throw new RuntimeException(string);
                             }
                         }
@@ -207,9 +208,10 @@ public class FieldsForAttributesTransformer extends SceneTransformer
             // Loop over all the entity classes and replace getAttribute calls.
             for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
                 ComponentEntity entity = (ComponentEntity) i.next();
-                String className = ModelTransformer.getInstanceClassName(entity,
-                        _options);
-                SootClass entityClass = Scene.v().loadClassAndSupport(className);
+                String className = ModelTransformer.getInstanceClassName(
+                        entity, _options);
+                SootClass entityClass = Scene.v()
+                        .loadClassAndSupport(className);
                 _replaceAttributeCalls(entityClass, entity);
             }
         }
@@ -220,8 +222,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer
     // invocation in the box with a reference to the appropriate field
     // for the attribute.
     private void _replaceGetAttributeMethod(SootClass theClass,
-            JimpleBody body, ValueBox box, Local baseLocal, String name, Unit unit,
-            LocalDefs localDefs) {
+            JimpleBody body, ValueBox box, Local baseLocal, String name,
+            Unit unit, LocalDefs localDefs) {
         if (_debug) {
             System.out.println("replacing getAttribute in " + unit);
         }
@@ -241,29 +243,31 @@ public class FieldsForAttributesTransformer extends SceneTransformer
 
             Attribute attribute = baseObject.getAttribute(name);
             Entity entityContainer = FieldsForEntitiesTransformer
-                .getEntityContainerOfObject(attribute);
+                    .getEntityContainerOfObject(attribute);
 
             //             NamedObj creatorObject =
             //                 ModelTransformer.getCreatorObject(attribute);
-            SootField attributeField = (SootField) _attributeToFieldMap.get(attribute);
+            SootField attributeField = (SootField) _attributeToFieldMap
+                    .get(attribute);
             Local local;
 
             if (entityContainer.equals(baseObject)) {
                 local = baseLocal;
             } else {
-                local = FieldsForEntitiesTransformer.getLocalReferenceForEntity(entityContainer,
-                        theClass, body.getThisLocal(), body, unit, _options);
+                local = FieldsForEntitiesTransformer
+                        .getLocalReferenceForEntity(entityContainer, theClass,
+                                body.getThisLocal(), body, unit, _options);
             }
 
             if (attributeField != null) {
                 System.out.println(unit.getClass().toString());
                 System.out.println(box.getClass().toString());
                 box.setValue(Jimple.v().newInstanceFieldRef(local,
-                                     attributeField));
+                        attributeField));
             } else {
                 throw new RuntimeException(
                         "Failed to find field for attribute "
-                        + attribute.getFullName());
+                                + attribute.getFullName());
             }
         } else {
             // Otherwise, we have an attribute inside a port or
@@ -273,11 +277,11 @@ public class FieldsForAttributesTransformer extends SceneTransformer
             // field.
             DefinitionStmt definition = _getFieldDef(baseLocal, unit, localDefs);
             InstanceFieldRef fieldRef = (InstanceFieldRef) definition
-                .getRightOp();
+                    .getRightOp();
             SootField baseField = fieldRef.getField();
-            _replaceGetAttributeMethod(theClass, body, box,
-                    (Local) fieldRef.getBase(), baseField.getName() + "." + name,
-                    definition, localDefs);
+            _replaceGetAttributeMethod(theClass, body, box, (Local) fieldRef
+                    .getBase(), baseField.getName() + "." + name, definition,
+                    localDefs);
 
             //baseField.getDeclaringClass().getFieldByName(
             //    baseField.getName() + "_" + name);
@@ -323,12 +327,12 @@ public class FieldsForAttributesTransformer extends SceneTransformer
     // to exist in the given class
     private void _getAttributeFields(SootClass theClass, NamedObj container,
             NamedObj object) {
-        for (Iterator attributes = object.attributeList().iterator();
-             attributes.hasNext();) {
+        for (Iterator attributes = object.attributeList().iterator(); attributes
+                .hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
 
-            String fieldName = ModelTransformer.getFieldNameForAttribute(attribute,
-                    container);
+            String fieldName = ModelTransformer.getFieldNameForAttribute(
+                    attribute, container);
 
             if (!theClass.declaresFieldByName(fieldName)) {
                 //                 System.out.println("Class " + theClass
@@ -351,7 +355,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer
                 SootClass fieldClass = ((RefType) type).getSootClass();
 
                 if (!SootUtilities.derivesFrom(fieldClass,
-                            PtolemyUtilities.attributeClass)) {
+                        PtolemyUtilities.attributeClass)) {
                     System.out.println("Class " + theClass
                             + " declares field for attribute "
                             + attribute.getFullName() + " but it has type "
@@ -392,18 +396,24 @@ public class FieldsForAttributesTransformer extends SceneTransformer
 
             for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
                 ComponentEntity entity = (ComponentEntity) i.next();
-                String className = ModelTransformer.getInstanceClassName(entity,
-                        _options);
-                SootClass entityClass = Scene.v().loadClassAndSupport(className);
+                String className = ModelTransformer.getInstanceClassName(
+                        entity, _options);
+                SootClass entityClass = Scene.v()
+                        .loadClassAndSupport(className);
                 _indexExistingFields(entityClass, entity);
             }
         }
     }
 
     private CompositeActor _model;
+
     private Map _options;
+
     private boolean _debug;
+
     private Map _attributeToFieldMap;
+
     private String _getDirectorSig;
+
     private String _getAttributeSig;
 }

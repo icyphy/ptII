@@ -29,7 +29,7 @@
 
 
 
-*/
+ */
 package diva.graph.tutorial;
 
 import java.awt.Color;
@@ -54,7 +54,6 @@ import diva.graph.modular.Node;
 import diva.graph.toolbox.TypedNodeRenderer;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
-
 
 /**
  * This tutorial shows how to customize the look of
@@ -84,11 +83,11 @@ public class NodeRendererTutorial {
         context.setSize(800, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    new NodeRendererTutorial(context);
-                    context.setVisible(true);
-                }
-            });
+            public void run() {
+                new NodeRendererTutorial(context);
+                context.setVisible(true);
+            }
+        });
     }
 
     private NodeRendererTutorial(AppContext context) {
@@ -131,12 +130,11 @@ public class NodeRendererTutorial {
         bgc.setGraphModel(model);
 
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    LevelLayout random = new LevelLayout(new BasicLayoutTarget(
-                                                                 bgc));
-                    random.layout(model.getRoot());
-                }
-            });
+            public void run() {
+                LevelLayout random = new LevelLayout(new BasicLayoutTarget(bgc));
+                random.layout(model.getRoot());
+            }
+        });
     }
 
     /**

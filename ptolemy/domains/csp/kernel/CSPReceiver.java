@@ -1,31 +1,31 @@
 /* Receiver for CSP style communication.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.csp.kernel;
 
 import ptolemy.actor.AbstractReceiver;
@@ -39,27 +39,26 @@ import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CSPReceiver
 
 /**
-   Receiver for CSP style communication. In CSP all communication is via
-   synchronous message passing, so both the the sending and receiving
-   process need to rendezvous at the receiver. For rendezvous, the
-   receiver is the key synchronization point. It is assumed each receiver
-   has at most one thread trying to send to it and at most one thread
-   trying to receive from it at any one time. The receiver performs the
-   synchronization necessary for simple rendezvous (get() and put()
-   operations). It also stores the flags that allow the ConditionalSend
-   and ConditionalReceive branches to know when they can proceed.
-   <p>
-   @author Neil Smyth, John S. Davis II
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (nsmyth)
-   @Pt.AcceptedRating Green (kienhuis)
-*/
+ Receiver for CSP style communication. In CSP all communication is via
+ synchronous message passing, so both the the sending and receiving
+ process need to rendezvous at the receiver. For rendezvous, the
+ receiver is the key synchronization point. It is assumed each receiver
+ has at most one thread trying to send to it and at most one thread
+ trying to receive from it at any one time. The receiver performs the
+ synchronization necessary for simple rendezvous (get() and put()
+ operations). It also stores the flags that allow the ConditionalSend
+ and ConditionalReceive branches to know when they can proceed.
+ <p>
+ @author Neil Smyth, John S. Davis II
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (nsmyth)
+ @Pt.AcceptedRating Green (kienhuis)
+ */
 public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     /** Construct a CSPReceiver with no container.
      */
@@ -698,6 +697,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private boolean _readBlocked = false;
+
     private boolean _writeBlocked = false;
 
     // Flag indicating whether or not a get is waiting at this receiver.
@@ -708,6 +708,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     // obsolete when implement containment
     private ConditionalBranchController _otherController = null;
+
     private int _otherID = -1;
 
     // Flag indicating whether or not a conditional receive is waiting
@@ -727,6 +728,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     // The token being transferred during the rendezvous.
     private Token _token;
+
     private BoundaryDetector _boundaryDetector;
+
     private Branch _otherBranch = null;
 }

@@ -1,33 +1,32 @@
 /* An actor that reads an array of images.
 
-@Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 
 package ptolemy.domains.gr.lib.vr;
-
 
 import ij.ImagePlus;
 import ij.ImageStack;
@@ -50,15 +49,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 ////StackReader
 /**
-   An actor that reads an array of images.
+ An actor that reads an array of images.
 
-   @author T. Crawford
-   @version $Id$
-   @since Ptolemy II 5.0
-   @Pt.ProposedRating Red
-   @Pt.AcceptedRating Red
+ @author T. Crawford
+ @version $Id$
+ @since Ptolemy II 5.0
+ @Pt.ProposedRating Red
+ @Pt.AcceptedRating Red
 
-*/public class StackReader extends SDFTransformer{
+ */
+public class StackReader extends SDFTransformer {
     /**Construct an actor with the given container and name.
      * @param container The container
      * @param name The name of this actor
@@ -94,13 +94,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 
     //public FilePortParameter input;
     public Parameter xResolution;
-    public Parameter yResolution;
-    public Parameter stackSize;
 
+    public Parameter yResolution;
+
+    public Parameter stackSize;
 
     ////////////////////////////////////////////////////////////////////
     ////////                public methods                     ////////
-
 
     /** Output the data read in the prefire.
      *  @exception IllegalActionException If there's no director.
@@ -114,44 +114,41 @@ import ptolemy.kernel.util.NameDuplicationException;
         output.broadcast(new ObjectToken(_imagePlus));
     }
 
-
-    public void initialize() throws IllegalActionException
-    {
+    public void initialize() throws IllegalActionException {
         // _parameterPort =  input.getPort();
-        _xResolution = ((IntToken)xResolution.getToken()).intValue();
-        _yResolution = ((IntToken)yResolution.getToken()).intValue();
-        _stackSize = ((IntToken)stackSize.getToken()).intValue();
+        _xResolution = ((IntToken) xResolution.getToken()).intValue();
+        _yResolution = ((IntToken) yResolution.getToken()).intValue();
+        _stackSize = ((IntToken) stackSize.getToken()).intValue();
 
     }
 
-
     /*  public boolean prefire() throws IllegalActionException {
-        public boolean prefire() throws IllegalActionException {
-        Token rateToken = input_tokenConsumptionRate.getToken();
-        int required = ((IntToken) rateToken).intValue();
+     public boolean prefire() throws IllegalActionException {
+     Token rateToken = input_tokenConsumptionRate.getToken();
+     int required = ((IntToken) rateToken).intValue();
 
-        // Derived classes may convert the input port to a multiport.
-        for (int i = 0; i < input.getWidth(); i++) {
-        if (!input.hasToken(i, required)) {
-        if (_debugging) {
-        _debug("Called prefire(), which returns false");
-        }
+     // Derived classes may convert the input port to a multiport.
+     for (int i = 0; i < input.getWidth(); i++) {
+     if (!input.hasToken(i, required)) {
+     if (_debugging) {
+     _debug("Called prefire(), which returns false");
+     }
 
-        return false;
-        }
-        }
+     return false;
+     }
+     }
 
-        return super.prefire();
-        }
-        }*/
+     return super.prefire();
+     }
+     }*/
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _readStack() throws IllegalActionException {
         _imageStack = new ImageStack(_xResolution, _yResolution);
         Token[] token = input.get(0, _stackSize);
-        for(int i = 0; i< _stackSize; i++){
+        for (int i = 0; i < _stackSize; i++) {
             _fileRoot = new String[_stackSize];
-            _fileRoot[i] = ((StringToken)token[i]).stringValue();
+            _fileRoot[i] = ((StringToken) token[i]).stringValue();
             System.out.println("_fileRoot = " + _fileRoot[i]);
 
             if (_fileRoot[i] == null) {
@@ -159,19 +156,17 @@ import ptolemy.kernel.util.NameDuplicationException;
             }
             //_fileRoot = _url.getFile();
 
-
-
             //if (imagePlus == null) {
             //FIXME Should check each image to see if valid
             ImagePlus imagePlus = new ImagePlus(_fileRoot[i]);
-            if (imagePlus != null){
+            if (imagePlus != null) {
                 _image = imagePlus.getImage();
 
                 _colorProcessor = new ColorProcessor(_image);
                 _imageStack.addSlice(_fileRoot[i], _colorProcessor);
                 imagePlus = null;
                 System.out.println("stackSize = " + _imageStack.getSize());
-            }else{
+            } else {
                 throw new IllegalActionException("_image is null");
             }
         }
@@ -183,29 +178,25 @@ import ptolemy.kernel.util.NameDuplicationException;
      *  @return A list of inequalities.
      */
     /*public List typeConstraintList() {
-      BaseType outType = (BaseType) output.getType();
-      InequalityTerm elementTerm = outType.getTypeTerm();
-      Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
+     BaseType outType = (BaseType) output.getType();
+     InequalityTerm elementTerm = outType.getTypeTerm();
+     Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
 
-      List result = new LinkedList();
-      result.add(ineq);
-      return result;
-      }*/
-
+     List result = new LinkedList();
+     result.add(ineq);
+     return result;
+     }*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     //Image that is readin
     private ImagePlus _imagePlus;
 
     //Image that is readin
     private ColorProcessor _colorProcessor;
 
-
     //Image that is readin
     private ImageStack _imageStack;
-
 
     //  The URL as a string.
     private String _fileRoot[];
@@ -215,7 +206,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 
     // The URL of the file.
     private URL _url;
-
 
     private int _stackSize;
 

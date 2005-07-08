@@ -1,31 +1,31 @@
 /* Class providing additional functions in the Ptolemy II expression language.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.data.expr;
 
 import java.io.BufferedReader;
@@ -75,24 +75,23 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.ComplexMatrixMath;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// UtilityFunctions
 
 /**
-   This class provides additional functions for use in the Ptolemy II
-   expression language.  All of the methods in this class are static
-   and return an instance of Token.  The expression language identifies
-   the appropriate method to use by using reflection, matching the
-   types of the arguments.
+ This class provides additional functions for use in the Ptolemy II
+ expression language.  All of the methods in this class are static
+ and return an instance of Token.  The expression language identifies
+ the appropriate method to use by using reflection, matching the
+ types of the arguments.
 
-   @author Christopher Hylands Brooks, Tobin Fricke, Bart Kienhuis, Edward A. Lee,
-   Steve Neuendorffer, Neil Smyth, Yang Zhao
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands Brooks, Tobin Fricke, Bart Kienhuis, Edward A. Lee,
+ Steve Neuendorffer, Neil Smyth, Yang Zhao
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class UtilityFunctions {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -159,7 +158,7 @@ public class UtilityFunctions {
         if (!(token.getElementType() instanceof ArrayType)) {
             throw new IllegalActionException(
                     "The argument to concatenate(ArrayToken) "
-                    + "must be an array of arrays.");
+                            + "must be an array of arrays.");
         }
 
         int nElements = 0;
@@ -256,16 +255,14 @@ public class UtilityFunctions {
         if (arity != 1) {
             throw new IllegalActionException(
                     "The predicate argument of filter() must be a function"
-                    + " that takes one argument.");
+                            + " that takes one argument.");
         }
 
         int sizeLimitValue = sizeLimit.intValue();
 
         for (int i = 0; i < array.length(); i++) {
             Token element = array.getElement(i);
-            Token[] elementList = {
-                element
-            };
+            Token[] elementList = { element };
             Token include = predicate.apply(elementList);
 
             if ((include instanceof BooleanToken)
@@ -316,23 +313,24 @@ public class UtilityFunctions {
      *   is not compatible with the other array argument.
      */
     public static Type filterReturnType(Type predicateType,
-            Type arrayTokenType, Type sizeLimitType) throws IllegalActionException {
+            Type arrayTokenType, Type sizeLimitType)
+            throws IllegalActionException {
         if (predicateType instanceof FunctionType) {
             FunctionType castPredicateType = (FunctionType) predicateType;
 
             if (castPredicateType.getArgCount() != 1) {
                 throw new IllegalActionException(
                         "filter() can only be used on functions that take "
-                        + "one argument.");
+                                + "one argument.");
             } else {
                 Type argType = castPredicateType.getArgType(0);
-                int comparison = TypeLattice.compare(((ArrayType) arrayTokenType)
-                        .getElementType(), argType);
+                int comparison = TypeLattice.compare(
+                        ((ArrayType) arrayTokenType).getElementType(), argType);
 
                 if ((comparison != CPO.LOWER) && (comparison != CPO.SAME)) {
                     throw new IllegalActionException(
                             "filter(): specified array element is not "
-                            + "compatible with function argument type.");
+                                    + "compatible with function argument type.");
                 }
 
                 return (ArrayType) arrayTokenType;
@@ -432,8 +430,8 @@ public class UtilityFunctions {
 
         if (!file.exists()) {
             String cp = System.getProperty("java.class.path");
-            StringTokenizer tokens = new StringTokenizer(cp,
-                    System.getProperty("path.separator"));
+            StringTokenizer tokens = new StringTokenizer(cp, System
+                    .getProperty("path.separator"));
 
             while (tokens.hasMoreTokens()) {
                 String token = tokens.nextToken();
@@ -607,8 +605,7 @@ public class UtilityFunctions {
         String[] names = new String[values.length];
         int i = 0;
 
-        for (Iterator iterator = commonNames.iterator(); iterator.hasNext();
-             i++) {
+        for (Iterator iterator = commonNames.iterator(); iterator.hasNext(); i++) {
             String name = (String) iterator.next();
             values[i] = record1.get(name);
             names[i] = name;
@@ -638,11 +635,11 @@ public class UtilityFunctions {
         if (arity != 1) {
             throw new IllegalActionException(
                     "iterate() can only be used on functions that take "
-                    + "one argument.");
+                            + "one argument.");
         } else if (length < 2) {
             throw new IllegalActionException(
                     "iterate() requires the length argument to be greater "
-                    + "than 1.");
+                            + "than 1.");
         } else {
             Token[] result = new Token[length];
             Token iterate = initial;
@@ -677,7 +674,7 @@ public class UtilityFunctions {
             if (castFunctionType.getArgCount() != 1) {
                 throw new IllegalActionException(
                         "iterate() can only be used on functions that take "
-                        + "one argument.");
+                                + "one argument.");
             } else {
                 Type argType = castFunctionType.getArgType(0);
                 int comparison = TypeLattice.compare(initialType, argType);
@@ -685,7 +682,7 @@ public class UtilityFunctions {
                 if ((comparison != CPO.LOWER) && (comparison != CPO.SAME)) {
                     throw new IllegalActionException(
                             "iterate(): specified initial value is not "
-                            + "compatible with function argument type.");
+                                    + "compatible with function argument type.");
                 }
 
                 Type resultType = castFunctionType.getReturnType();
@@ -694,12 +691,12 @@ public class UtilityFunctions {
                 if ((comparison2 != CPO.LOWER) && (comparison2 != CPO.SAME)) {
                     throw new IllegalActionException(
                             "iterate(): invalid function: function return "
-                            + "type is not "
-                            + "compatible with function argument type.");
+                                    + "type is not "
+                                    + "compatible with function argument type.");
                 }
 
                 return new ArrayType(TypeLattice.leastUpperBound(resultType,
-                                             initialType));
+                        initialType));
             }
         } else {
             return BaseType.UNKNOWN;
@@ -756,9 +753,9 @@ public class UtilityFunctions {
                 } else {
                     if (!library.substring(index, index + 4).equals("/lib")) {
                         shortLibraryName = "/lib"
-                            + library.substring(index + 1);
+                                + library.substring(index + 1);
                         library = library.substring(0, index)
-                            + shortLibraryName;
+                                + shortLibraryName;
                     }
                 }
             } else {
@@ -907,7 +904,7 @@ public class UtilityFunctions {
         } else {
             throw new IllegalActionException(
                     "map() can only be used on functions that take at least "
-                    + "one argument.");
+                            + "one argument.");
         }
 
         return new ArrayToken(result);
@@ -931,13 +928,13 @@ public class UtilityFunctions {
 
             if (castFunctionType.getArgCount() == 1) {
                 Type argType = castFunctionType.getArgType(0);
-                int comparison = TypeLattice.compare(((ArrayType) arrayTokenType)
-                        .getElementType(), argType);
+                int comparison = TypeLattice.compare(
+                        ((ArrayType) arrayTokenType).getElementType(), argType);
 
                 if ((comparison != CPO.LOWER) && (comparison != CPO.SAME)) {
                     throw new IllegalActionException(
                             "map(): specified array token is not compatible "
-                            + "with function argument type.");
+                                    + "with function argument type.");
                 }
             } else if (castFunctionType.getArgCount() > 1) {
                 Type firstArgType = castFunctionType.getArgType(0);
@@ -958,22 +955,23 @@ public class UtilityFunctions {
                 if (flag) {
                     Type argType = castFunctionType.getArgType(0);
                     Type elementType = ((ArrayType) arrayTokenType)
-                        .getElementType();
+                            .getElementType();
 
                     if (!(elementType instanceof ArrayType)) {
                         throw new IllegalActionException(
                                 "map(): specified array token is not "
-                                + "compatible with function arity.");
+                                        + "compatible with function arity.");
                     } else {
-                        int comparison = TypeLattice.compare(((ArrayType) elementType)
-                                .getElementType(), argType);
+                        int comparison = TypeLattice.compare(
+                                ((ArrayType) elementType).getElementType(),
+                                argType);
 
                         if ((comparison != CPO.LOWER)
                                 && (comparison != CPO.SAME)) {
                             throw new IllegalActionException(
                                     "map(): specified array token is not "
-                                    + "compatible with function "
-                                    + "argument type.");
+                                            + "compatible with function "
+                                            + "argument type.");
                         }
                     }
                 }
@@ -1145,7 +1143,8 @@ public class UtilityFunctions {
         } catch (IllegalActionException illegalAction) {
             // This should not happen since result should not be null.
             throw new InternalErrorException("UtilityFunction.random: "
-                    + "Cannot create the array that contains " + "random numbers.");
+                    + "Cannot create the array that contains "
+                    + "random numbers.");
         }
     }
 
@@ -1308,7 +1307,8 @@ public class UtilityFunctions {
                 } else {
                     if (row != l.size()) {
                         throw new IllegalActionException(" The Row"
-                                + " size needs to be the same for all" + " rows");
+                                + " size needs to be the same for all"
+                                + " rows");
                     }
                 }
 
@@ -1415,7 +1415,8 @@ public class UtilityFunctions {
             // This should not happen since the elements of the array always
             // have the same type.
             throw new InternalErrorException("UtilityFunctions.repeat: "
-                    + "Cannot construct ArrayToken. " + illegalAction.getMessage());
+                    + "Cannot construct ArrayToken. "
+                    + illegalAction.getMessage());
         } catch (IllegalArgumentException illegalArgument) {
             // This should not happen since the elements of the array always
             // have the same type.
@@ -1606,13 +1607,14 @@ public class UtilityFunctions {
 
             for (int i = 0; i < array.length(); i++) {
                 length += ((StringToken) (array.getElement(i))).stringValue()
-                    .length();
+                        .length();
             }
 
             StringBuffer buffer = new StringBuffer(length);
 
             for (int i = 0; i < array.length(); i++) {
-                buffer.append(((StringToken) (array.getElement(i))).stringValue());
+                buffer.append(((StringToken) (array.getElement(i)))
+                        .stringValue());
             }
 
             return new StringToken(buffer.toString());
@@ -1703,8 +1705,8 @@ public class UtilityFunctions {
             return new ComplexMatrixToken(ComplexMatrixMath.zero(rows, columns));
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("UtilityFunctions"
-                    + ".zeroMatrixComplex: " + "Cannot create ComplexMatrixToken. "
-                    + ex.getMessage());
+                    + ".zeroMatrixComplex: "
+                    + "Cannot create ComplexMatrixToken. " + ex.getMessage());
         }
     }
 
@@ -1721,8 +1723,8 @@ public class UtilityFunctions {
             result = new DoubleMatrixToken(mtr, DoubleMatrixToken.DO_NOT_COPY);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("UtilityFunctions"
-                    + ".zeroMatrixDouble: " + "Cannot create DoubleMatrixToken. "
-                    + ex.getMessage());
+                    + ".zeroMatrixDouble: "
+                    + "Cannot create DoubleMatrixToken. " + ex.getMessage());
         }
 
         return result;
@@ -1761,7 +1763,8 @@ public class UtilityFunctions {
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(
                     "UtilityFunctions.zeroMatrixLong: "
-                    + "Cannot create LongMatrixToken. " + ex.getMessage());
+                            + "Cannot create LongMatrixToken. "
+                            + ex.getMessage());
         }
 
         return result;
@@ -1862,7 +1865,7 @@ public class UtilityFunctions {
             // this inside the sort() methods.
             throw new ClassCastException(
                     "Sorting only works on arrays of strings"
-                    + " or non-complex scalars.");
+                            + " or non-complex scalars.");
         }
 
         private boolean _ascending;

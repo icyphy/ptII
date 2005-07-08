@@ -1,25 +1,25 @@
 /*
-  Copyright (c) 2003-2005 THALES.
-  All rights reserved.
+ Copyright (c) 2003-2005 THALES.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-  SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
-  OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
-  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+ SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+ OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-  THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-  BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-  UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package thales.actor.gui;
 
 import java.net.URI;
@@ -46,20 +46,19 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 import thales.vergil.SingleWindowApplication;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SingleWindowConfiguration
 
 /**
-   A Configuration that intercept created Tableau, and the content of its
-   Frame into a TabbedPane.
+ A Configuration that intercept created Tableau, and the content of its
+ Frame into a TabbedPane.
 
-   @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (jerome.blanc)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (jerome.blanc)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class SingleWindowConfiguration extends Configuration {
     /**
      * @param workspace
@@ -95,7 +94,7 @@ public class SingleWindowConfiguration extends Configuration {
 
             if (model != null) {
                 Iterator factories = model.attributeList(TableauFactory.class)
-                    .iterator();
+                        .iterator();
 
                 // If there are more than one of these, use the first
                 // one that agrees to open the model.
@@ -164,7 +163,8 @@ public class SingleWindowConfiguration extends Configuration {
                 try {
                     effigy.setContainer(null);
                 } catch (KernelException kernelException) {
-                    throw new InternalErrorException(this, kernelException, null);
+                    throw new InternalErrorException(this, kernelException,
+                            null);
                 }
             }
         }
@@ -201,15 +201,15 @@ public class SingleWindowConfiguration extends Configuration {
      *  @exception NameDuplicationException If a name conflict occurs (this
      *   should not be thrown).
      */
-    public Tableau openModel(NamedObj entity)
-            throws IllegalActionException, NameDuplicationException {
+    public Tableau openModel(NamedObj entity) throws IllegalActionException,
+            NameDuplicationException {
         // If the entity defers its MoML definition to another,
         // then open that other.
         InstantiableNamedObj deferredTo = null;
 
         if (entity instanceof InstantiableNamedObj) {
             deferredTo = (InstantiableNamedObj) ((InstantiableNamedObj) entity)
-                .getParent();
+                    .getParent();
         }
 
         if (deferredTo != null) {

@@ -1,31 +1,31 @@
 /* A baseclass for directors in process oriented domains that
-   incorporates hierarchical, heterogeneity.
+ incorporates hierarchical, heterogeneity.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.process;
 
 import java.util.Iterator;
@@ -43,86 +43,85 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CompositeProcessDirector
 
 /**
-   A baseclass for directors in process oriented domains that incorporate
-   hierarchical heterogeneity. As with ProcessDirector
-   CompositeProcessDirectors need to keep a count of the number of active
-   processes and the number of processes that are blocked for any reason
-   (e.g., trying to read from an empty channel in PN).
-   CompositeProcessDirector is a subclass of ProcessDirector to facilitate
-   models that consist of non-atomic actors.
-   <P>
-   A composite process director can be contained by an opaque composite
-   actor that is contained by a composite actor. Ports contained by opaque
-   composite actors are called opaque ports and such ports facilitate data
-   transfer across the composite actor boundaries. A composite process
-   director allocates two branch controllers to monitor data transfer in
-   channels associated with opaque ports. The <I>input</I> branch controller
-   monitors data transfer for channels associated with input opaque ports.
-   The <I>output</I> branch controller monitors data transfer for channels
-   associated with output opaque ports.
-   <P>
-   Associated with the channels of each opaque port is a pair of process
-   receivers. The <I>producer receiver</I> serves as the channel source
-   and the <I>consumer receiver</I> serves as the channel destination.
-   Each branch controller allocates a branch for each process receiver
-   pair and when executing, a branch repeatedly attempts to transfer a
-   single token from its producer receiver to its consumer receiver.
-   <P>
-   When a branch blocks while attempting to transfer data, it informs its
-   branch controller by passing the branch controller the blocked receiver.
-   If all of the branches of a controller have blocked, then we say that
-   the branch controller is blocked and the branch controller informs the
-   composite process director. In addition to monitoring the status of its
-   branch controllers, a composite process director keeps track of the
-   state of the actors that it contains. Actors can be internally or
-   externally blocked. We say that an actor is externally blocked if it
-   is blocked waiting to transfer tokens to or from a boundary port of
-   its container actor. Actors that are blocked but not externally are
-   said to be internally blocked.
-   <P>
-   Composite process directors monitor the state of the branch controllers
-   and contained actors and when necessary invoke the _resolveDeadlock()
-   method to deal with deadlocks. In the remainder of this paragraph we
-   consider the case of a process-oriented opaque composite actor that is
-   contained by another process-oriented opaque composite actor. If the
-   actors contained by the inner composite actor are not blocked, then
-   execution of the inner composite actor is allowed to continue
-   independent of the state of the branch controllers. If the actors
-   contained by the inner composite actor are internally blocked, then
-   after the branch controllers have been deactivated, execution of the
-   composite actor ends and postfire returns false indicating that
-   successive iterations are not allowed. If the actors contained by the
-   inner composite actor are externally blocked, then the composite
-   process director waits until the branch controllers block (an
-   inevitable condition) and registers the block with the containing
-   (outer) composite director of the actor.
-   <P>
-   In this paragraph we consider the case of a process-oriented opaque
-   composite actor that is contained by a schedule-oriented (non process)
-   opaque composite actor. If the actors contained by the inner composite
-   actor are not blocked, then execution of the inner composite actor is
-   allowed to continue independent of the state of the branch controllers.
-   If the actors contained by the inner composite actor are internally
-   blocked, then after the branch controllers have been deactivated,
-   execution of the composite actor ends and postfire returns false
-   indicating that successive iterations are not allowed. If the actors
-   contained by the inner composite actor are externally blocked, then
-   the composite process director waits until the branch controllers
-   block (an inevitable condition) and ends the iteration with postfire()
-   returning true indicating that successive iterations are allowed.
+ A baseclass for directors in process oriented domains that incorporate
+ hierarchical heterogeneity. As with ProcessDirector
+ CompositeProcessDirectors need to keep a count of the number of active
+ processes and the number of processes that are blocked for any reason
+ (e.g., trying to read from an empty channel in PN).
+ CompositeProcessDirector is a subclass of ProcessDirector to facilitate
+ models that consist of non-atomic actors.
+ <P>
+ A composite process director can be contained by an opaque composite
+ actor that is contained by a composite actor. Ports contained by opaque
+ composite actors are called opaque ports and such ports facilitate data
+ transfer across the composite actor boundaries. A composite process
+ director allocates two branch controllers to monitor data transfer in
+ channels associated with opaque ports. The <I>input</I> branch controller
+ monitors data transfer for channels associated with input opaque ports.
+ The <I>output</I> branch controller monitors data transfer for channels
+ associated with output opaque ports.
+ <P>
+ Associated with the channels of each opaque port is a pair of process
+ receivers. The <I>producer receiver</I> serves as the channel source
+ and the <I>consumer receiver</I> serves as the channel destination.
+ Each branch controller allocates a branch for each process receiver
+ pair and when executing, a branch repeatedly attempts to transfer a
+ single token from its producer receiver to its consumer receiver.
+ <P>
+ When a branch blocks while attempting to transfer data, it informs its
+ branch controller by passing the branch controller the blocked receiver.
+ If all of the branches of a controller have blocked, then we say that
+ the branch controller is blocked and the branch controller informs the
+ composite process director. In addition to monitoring the status of its
+ branch controllers, a composite process director keeps track of the
+ state of the actors that it contains. Actors can be internally or
+ externally blocked. We say that an actor is externally blocked if it
+ is blocked waiting to transfer tokens to or from a boundary port of
+ its container actor. Actors that are blocked but not externally are
+ said to be internally blocked.
+ <P>
+ Composite process directors monitor the state of the branch controllers
+ and contained actors and when necessary invoke the _resolveDeadlock()
+ method to deal with deadlocks. In the remainder of this paragraph we
+ consider the case of a process-oriented opaque composite actor that is
+ contained by another process-oriented opaque composite actor. If the
+ actors contained by the inner composite actor are not blocked, then
+ execution of the inner composite actor is allowed to continue
+ independent of the state of the branch controllers. If the actors
+ contained by the inner composite actor are internally blocked, then
+ after the branch controllers have been deactivated, execution of the
+ composite actor ends and postfire returns false indicating that
+ successive iterations are not allowed. If the actors contained by the
+ inner composite actor are externally blocked, then the composite
+ process director waits until the branch controllers block (an
+ inevitable condition) and registers the block with the containing
+ (outer) composite director of the actor.
+ <P>
+ In this paragraph we consider the case of a process-oriented opaque
+ composite actor that is contained by a schedule-oriented (non process)
+ opaque composite actor. If the actors contained by the inner composite
+ actor are not blocked, then execution of the inner composite actor is
+ allowed to continue independent of the state of the branch controllers.
+ If the actors contained by the inner composite actor are internally
+ blocked, then after the branch controllers have been deactivated,
+ execution of the composite actor ends and postfire returns false
+ indicating that successive iterations are not allowed. If the actors
+ contained by the inner composite actor are externally blocked, then
+ the composite process director waits until the branch controllers
+ block (an inevitable condition) and ends the iteration with postfire()
+ returning true indicating that successive iterations are allowed.
 
-   @author John S. Davis II
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (mudit)
-   @Pt.AcceptedRating Yellow (davisj)
-   @see Director
-*/
+ @author John S. Davis II
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (mudit)
+ @Pt.AcceptedRating Yellow (davisj)
+ @see Director
+ */
 public class CompositeProcessDirector extends ProcessDirector {
     /** Construct a director in the default workspace with an empty
      *  string as its name. The director is added to the list of
@@ -175,7 +174,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CompositeProcessDirector newObj = (CompositeProcessDirector) super
-            .clone(workspace);
+                .clone(workspace);
         newObj._onFirstIteration = true;
         newObj._inputBranchController = null;
         newObj._outputBranchController = null;
@@ -247,7 +246,7 @@ public class CompositeProcessDirector extends ProcessDirector {
 
         if (container != null) {
             CompositeActor containersContainer = (CompositeActor) container
-                .getContainer();
+                    .getContainer();
 
             if (containersContainer == null) {
                 // Use the overridden setCurrentTime() method
@@ -255,7 +254,7 @@ public class CompositeProcessDirector extends ProcessDirector {
                 setModelTime(new Time(this));
             } else {
                 Time currentTime = containersContainer.getDirector()
-                    .getModelTime();
+                        .getModelTime();
 
                 // Use the overridden setCurrentTime() method
                 // to set time backwards.
@@ -478,7 +477,8 @@ public class CompositeProcessDirector extends ProcessDirector {
         Iterator receiverIterator = receivers.iterator();
 
         while (receiverIterator.hasNext()) {
-            ProcessReceiver receiver = (ProcessReceiver) receiverIterator.next();
+            ProcessReceiver receiver = (ProcessReceiver) receiverIterator
+                    .next();
             _blockedReceivers.remove(receiver);
         }
 
@@ -525,7 +525,8 @@ public class CompositeProcessDirector extends ProcessDirector {
         Iterator blockedReceivers = _blockedReceivers.iterator();
 
         while (blockedReceivers.hasNext()) {
-            ProcessReceiver receiver = (ProcessReceiver) blockedReceivers.next();
+            ProcessReceiver receiver = (ProcessReceiver) blockedReceivers
+                    .next();
 
             if (receiver.isConnectedToBoundaryInside()) {
                 return true;
@@ -681,10 +682,11 @@ public class CompositeProcessDirector extends ProcessDirector {
 
                 if (execDir == null) {
                     // This is the top level director - problem!!!
-                    throw new IllegalActionException(this,
+                    throw new IllegalActionException(
+                            this,
                             "No executive director exists yet this "
-                            + "director's composite actor is externally "
-                            + "deadlocked.");
+                                    + "director's composite actor is externally "
+                                    + "deadlocked.");
                 } else if (execDir instanceof CompositeProcessDirector) {
                     // This is contained by a process-oriented MoC
                     return _registerBlockedReceiversWithExecutive();
@@ -698,10 +700,11 @@ public class CompositeProcessDirector extends ProcessDirector {
 
                 if (execDir == null) {
                     // This is the top level director - problem!!!
-                    throw new IllegalActionException(this,
+                    throw new IllegalActionException(
+                            this,
                             "No executive director exists yet this "
-                            + "director's composite actor is externally "
-                            + "deadlocked.");
+                                    + "director's composite actor is externally "
+                                    + "deadlocked.");
                 } else if (execDir instanceof CompositeProcessDirector) {
                     // This is contained by a process-oriented MoC
                     return _registerBlockedReceiversWithExecutive();
@@ -775,10 +778,16 @@ public class CompositeProcessDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private boolean _onFirstIteration = true;
+
     private BranchController _inputBranchController;
+
     private BranchController _outputBranchController;
+
     private boolean _inputControllerIsBlocked = true;
+
     private boolean _outputControllerIsBlocked = true;
+
     private LinkedList _blockedReceivers = new LinkedList();
+
     private Object _branchControllerLock = new Object();
 }

@@ -1,51 +1,50 @@
 /* Utilities used to manipulate classes
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.util;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ClassUtilities
 
 /**
-   A collection of utilities for manipulating classes.
-   These utilities do not depend on any other ptolemy.* packages.
+ A collection of utilities for manipulating classes.
+ These utilities do not depend on any other ptolemy.* packages.
 
 
-   @author Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (cxh)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class ClassUtilities {
     /** Instances of this class cannot be created.
      */
@@ -111,8 +110,8 @@ public class ClassUtilities {
                 return entryURL;
             } catch (Exception ex) {
                 // IOException constructor does not take a cause, so we add it.
-                IOException ioException = new IOException(
-                        "Cannot find \"" + jarURLString + "\".");
+                IOException ioException = new IOException("Cannot find \""
+                        + jarURLString + "\".");
                 ioException.initCause(ex);
                 throw ioException;
             }
@@ -134,10 +133,11 @@ public class ClassUtilities {
         // and actor.lib.python.PythonScript.  We moved it here
         // to avoid dependencies.
         String necessaryResource = StringUtilities.substitute(necessaryClass,
-                ".", "/") + ".class";
+                ".", "/")
+                + ".class";
 
         URL necessaryURL = Thread.currentThread().getContextClassLoader()
-            .getResource(necessaryResource);
+                .getResource(necessaryResource);
 
         if (necessaryURL != null) {
             String resourceResults = necessaryURL.getFile();
@@ -150,13 +150,14 @@ public class ClassUtilities {
             // Strip off the name of the resource we were looking for
             // so that we are left with the directory or jar file
             // it is in
-            resourceResults = resourceResults.substring(0,
-                    resourceResults.length() - necessaryResource.length());
+            resourceResults = resourceResults.substring(0, resourceResults
+                    .length()
+                    - necessaryResource.length());
 
             // Strip off the trailing !/
             if (resourceResults.endsWith("!/")) {
-                resourceResults = resourceResults.substring(0,
-                        resourceResults.length() - 2);
+                resourceResults = resourceResults.substring(0, resourceResults
+                        .length() - 2);
             }
 
             // Unfortunately, under Windows, URL.getFile() may
@@ -165,9 +166,8 @@ public class ClassUtilities {
             File resourceFile = new File(resourceResults);
 
             // Convert backslashes
-            String sanitizedResourceName =
-                StringUtilities.substitute(resourceFile
-                        .getPath(), "\\", "/");
+            String sanitizedResourceName = StringUtilities.substitute(
+                    resourceFile.getPath(), "\\", "/");
             return sanitizedResourceName;
         }
 

@@ -1,30 +1,30 @@
 /* An actor that changes the data format in a JAIImageToken.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.DataBuffer;
@@ -42,27 +42,26 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 // NOTE: If you update the list of types, then you will want
 // to update the list in actor/lib/jai/jai.xml.
 //////////////////////////////////////////////////////////////////////////
 //// JAIDataConvert
 
 /**
-   An actor that converts the data in an image to a new type.  This is
-   commonly used when other actors, for instance the DCT, do not preserve
-   the data type of the input.
-   <p>
-   The <i>dataFormat</i> attribute determines what type the data is being
-   cast to.  The available options are byte, double, float, int, short,
-   and unsigned short.
+ An actor that converts the data in an image to a new type.  This is
+ commonly used when other actors, for instance the DCT, do not preserve
+ the data type of the input.
+ <p>
+ The <i>dataFormat</i> attribute determines what type the data is being
+ cast to.  The available options are byte, double, float, int, short,
+ and unsigned short.
 
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author James Yeh
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class JAIDataConvert extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -179,8 +178,8 @@ public class JAIDataConvert extends Transformer {
         default:
             throw new InternalErrorException(this, null,
                     "Invalid value for _dataFormat private variable. "
-                    + "JAIDataConvert actor (" + getFullName() + ") on data type "
-                    + _dataFormat);
+                            + "JAIDataConvert actor (" + getFullName()
+                            + ") on data type " + _dataFormat);
         }
 
         return result;
@@ -193,9 +192,14 @@ public class JAIDataConvert extends Transformer {
 
     // Constants used for more efficient execution.
     private static final int _BYTE = 0;
+
     private static final int _DOUBLE = 1;
+
     private static final int _FLOAT = 2;
+
     private static final int _INT = 3;
+
     private static final int _SHORT = 4;
+
     private static final int _USHORT = 5;
 }

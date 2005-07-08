@@ -1,30 +1,30 @@
 /* An actor that converts 32 consecutive BooleanTokens to an IntToken
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.BooleanToken;
@@ -37,28 +37,27 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////
 /// BitsToInt
 
 /**
-   This actor converts a sequence of BooleanTokens into a single IntToken.
-   The number of Boolean tokens is specified by the <i>numberOfBits</i>
-   parameter and should be a positive integer not larger than 32. Let <i>k</i>
-   denotes the value of the <i>numberOfBits</i> parameter. The output
-   integer is ranged from -2<sup><i>k</i></sup> to 2<sup><i>k</i></sup> - 1.
+ This actor converts a sequence of BooleanTokens into a single IntToken.
+ The number of Boolean tokens is specified by the <i>numberOfBits</i>
+ parameter and should be a positive integer not larger than 32. Let <i>k</i>
+ denotes the value of the <i>numberOfBits</i> parameter. The output
+ integer is ranged from -2<sup><i>k</i></sup> to 2<sup><i>k</i></sup> - 1.
 
-   The first boolean token received indicates the sign of the integer. If
-   it is "false", the output integer is a non-negative number. If it is "true",
-   the output integer is a negative number. The least significant bit is
-   the last boolean token received.
+ The first boolean token received indicates the sign of the integer. If
+ it is "false", the output integer is a non-negative number. If it is "true",
+ the output integer is a negative number. The least significant bit is
+ the last boolean token received.
 
-   @author Michael Leung
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
+ @author Michael Leung
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
 public class BitsToInt extends SDFConverter {
     /** Construct an actor with the given container and name.
      *  @param container The container.

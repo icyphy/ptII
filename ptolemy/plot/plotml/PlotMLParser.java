@@ -1,59 +1,57 @@
 /* A parser for PlotML (Plot Markup Language) supporting Plot commands.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.plot.plotml;
-
 
 // Ptolemy imports.
 import ptolemy.plot.Plot;
 
 import com.microstar.xml.XmlException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PlotMLParser
 
 /**
-   This class constructs a plot from specifications
-   in PlotML (Plot Markup Language), which is an XML language.
-   This class supports extends the base class to
-   support the subset that applies to the Plot class.
-   It ignores unrecognized elements in the DTD.
-   The class contains an instance of the Microstar &AElig;lfred XML
-   parser and implements callback methods to interpret the parsed XML.
-   The way to use this class is to construct it with a reference to
-   a Plot object and then call its parse() method.
+ This class constructs a plot from specifications
+ in PlotML (Plot Markup Language), which is an XML language.
+ This class supports extends the base class to
+ support the subset that applies to the Plot class.
+ It ignores unrecognized elements in the DTD.
+ The class contains an instance of the Microstar &AElig;lfred XML
+ parser and implements callback methods to interpret the parsed XML.
+ The way to use this class is to construct it with a reference to
+ a Plot object and then call its parse() method.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class PlotMLParser extends PlotBoxMLParser {
     /** Construct an parser to parse commands for the specified plot object.
      *  @param plot The plot object to which to apply the commands.
@@ -219,9 +217,9 @@ public class PlotMLParser extends PlotBoxMLParser {
                 ex.printStackTrace();
 
                 String msg = "XML element \"" + elementName
-                    + "\" triggers exception:\n  " + ex.toString();
-                throw new XmlException(msg, _currentExternalEntity(),
-                        _parser.getLineNumber(), _parser.getColumnNumber());
+                        + "\" triggers exception:\n  " + ex.toString();
+                throw new XmlException(msg, _currentExternalEntity(), _parser
+                        .getLineNumber(), _parser.getColumnNumber());
             }
         }
 

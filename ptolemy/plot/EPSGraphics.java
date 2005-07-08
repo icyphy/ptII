@@ -1,29 +1,29 @@
 /* Graphics class supporting EPS export from plots.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.plot;
 
 import java.awt.Color;
@@ -45,26 +45,25 @@ import java.util.Hashtable;
 
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// EPSGraphics
 
 /**
-   Graphics class supporting EPS export from plots.
-   If this is used from within an applet, then the output goes to the standard
-   output.  Unfortunately, with standard browsers, this is not useful.
-   With MS Internet Explorer, standard output is not available.
-   With Netscape Navigator, standard output is available in the Java console,
-   but is limited to fewer lines than what is usually generated.
-   Thus, we recommend using this within Sun's appletviewer, and redirecting
-   its standard output to a file.
+ Graphics class supporting EPS export from plots.
+ If this is used from within an applet, then the output goes to the standard
+ output.  Unfortunately, with standard browsers, this is not useful.
+ With MS Internet Explorer, standard output is not available.
+ With Netscape Navigator, standard output is available in the Java console,
+ but is limited to fewer lines than what is usually generated.
+ Thus, we recommend using this within Sun's appletviewer, and redirecting
+ its standard output to a file.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class EPSGraphics extends Graphics {
     /** Constructor for a graphics object that writes encapsulated
      *  PostScript to the specified output stream.  If the out argument is
@@ -211,7 +210,7 @@ public class EPSGraphics extends Graphics {
         // but not in JDK1.1.
         throw new RuntimeException(
                 "Sorry, drawString(java.text.AttributedCharacterIterator, "
-                + "int , int) is not implemented in EPSGraphics");
+                        + "int , int) is not implemented in EPSGraphics");
     }
 
     /** Draw a string.  "(" is converted to "\(" and
@@ -459,10 +458,12 @@ public class EPSGraphics extends Graphics {
         double redscale = 0.8;
         double greenscale = 1.0; // lightest
         double fullscale = Math.sqrt(255.0 * 255.0 * ((bluescale * bluescale)
-                                             + (redscale * redscale) + (greenscale * greenscale)));
-        double graylevel = Math.sqrt((double) ((red * red * redscale * redscale)
-                                             + (blue * blue * bluescale * bluescale)
-                                             + (green * green * greenscale * greenscale))) / fullscale;
+                + (redscale * redscale) + (greenscale * greenscale)));
+        double graylevel = Math
+                .sqrt((double) ((red * red * redscale * redscale)
+                        + (blue * blue * bluescale * bluescale) + (green
+                        * green * greenscale * greenscale)))
+                / fullscale;
         _buffer.append("" + graylevel + " setgray\n");
 
         // NOTE -- for debugging, output color spec in comments
@@ -472,28 +473,26 @@ public class EPSGraphics extends Graphics {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Color _currentColor = Color.black;
+
     private Font _currentFont;
+
     private int _width;
+
     private int _height;
+
     private Hashtable _linepattern = new Hashtable();
+
     private OutputStream _out;
+
     private StringBuffer _buffer = new StringBuffer();
+
     private Clipboard _clipboard;
 
     // Default line patterns.
     // FIXME: Need at least 11 of these.
-    static private String[] _patterns = {
-        "[]",
-        "[1 1]",
-        "[4 4]",
-        "[4 4 1 4]",
-        "[2 2]",
-        "[4 2 1 2 1 2]",
-        "[5 3 2 3]",
-        "[3 3]",
-        "[4 2 1 2 2 2]",
-        "[1 2 5 2 1 2 1 2]",
-        "[4 1 2 1]",
-    };
+    static private String[] _patterns = { "[]", "[1 1]", "[4 4]", "[4 4 1 4]",
+            "[2 2]", "[4 2 1 2 1 2]", "[5 3 2 3]", "[3 3]", "[4 2 1 2 2 2]",
+            "[1 2 5 2 1 2 1 2]", "[4 1 2 1]", };
+
     private int _patternIndex = 0;
 }

@@ -1,29 +1,29 @@
 /* A transformer that removes unused fields from classes.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.kernel;
 
 import java.util.HashSet;
@@ -44,22 +44,21 @@ import soot.jimple.FieldRef;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// UnusedFieldRemover
 
 /**
-   A Transformer that removes any private fields from a class that are
-   never read.  This transformer also transforms the bodies of the
-   methods in a class to remove any writes to a removed field.
+ A Transformer that removes any private fields from a class that are
+ never read.  This transformer also transforms the bodies of the
+ methods in a class to remove any writes to a removed field.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
 
-*/
+ */
 public class UnusedFieldRemover extends SceneTransformer {
     /** Return an instance of this transformer that will operate on
      *  the given model.  The model is assumed to already have been
@@ -75,61 +74,68 @@ public class UnusedFieldRemover extends SceneTransformer {
         System.out.println("UnusedFieldRemover.internalTransform(" + phaseName
                 + ", " + options + ")");
 
-        SootClass stringClass = Scene.v().loadClassAndSupport("java.lang.String");
+        SootClass stringClass = Scene.v().loadClassAndSupport(
+                "java.lang.String");
         Type stringType = RefType.v(stringClass);
-        SootClass objectClass = Scene.v().loadClassAndSupport("java.lang.Object");
-        SootMethod toStringMethod = objectClass.getMethod(
-                "java.lang.String toString()");
-        SootClass namedObjClass = Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
-        SootMethod getAttributeMethod = namedObjClass.getMethod(
-                "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
-        SootMethod attributeChangedMethod = namedObjClass.getMethod(
-                "void attributeChanged(ptolemy.kernel.util.Attribute)");
+        SootClass objectClass = Scene.v().loadClassAndSupport(
+                "java.lang.Object");
+        SootMethod toStringMethod = objectClass
+                .getMethod("java.lang.String toString()");
+        SootClass namedObjClass = Scene.v().loadClassAndSupport(
+                "ptolemy.kernel.util.NamedObj");
+        SootMethod getAttributeMethod = namedObjClass
+                .getMethod("ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
+        SootMethod attributeChangedMethod = namedObjClass
+                .getMethod("void attributeChanged(ptolemy.kernel.util.Attribute)");
 
-        SootClass attributeClass = Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
+        SootClass attributeClass = Scene.v().loadClassAndSupport(
+                "ptolemy.kernel.util.Attribute");
         Type attributeType = RefType.v(attributeClass);
-        SootClass settableClass = Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
+        SootClass settableClass = Scene.v().loadClassAndSupport(
+                "ptolemy.kernel.util.Settable");
         Type settableType = RefType.v(settableClass);
-        SootMethod getExpressionMethod = settableClass.getMethod(
-                "java.lang.String getExpression()");
-        SootMethod setExpressionMethod = settableClass.getMethod(
-                "void setExpression(java.lang.String)");
+        SootMethod getExpressionMethod = settableClass
+                .getMethod("java.lang.String getExpression()");
+        SootMethod setExpressionMethod = settableClass
+                .getMethod("void setExpression(java.lang.String)");
 
-        SootClass tokenClass = Scene.v().loadClassAndSupport("ptolemy.data.Token");
+        SootClass tokenClass = Scene.v().loadClassAndSupport(
+                "ptolemy.data.Token");
         Type tokenType = RefType.v(tokenClass);
-        SootClass parameterClass = Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
-        SootMethod getTokenMethod = parameterClass.getMethod(
-                "ptolemy.data.Token getToken()");
-        SootMethod setTokenMethod = parameterClass.getMethod(
-                "void setToken(ptolemy.data.Token)");
+        SootClass parameterClass = Scene.v().loadClassAndSupport(
+                "ptolemy.data.expr.Variable");
+        SootMethod getTokenMethod = parameterClass
+                .getMethod("ptolemy.data.Token getToken()");
+        SootMethod setTokenMethod = parameterClass
+                .getMethod("void setToken(ptolemy.data.Token)");
 
         Set unusedFieldSet = new HashSet();
 
         // Loop over all the actor instance classes and create the set of
         // all fields.
-        for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
+        for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
+                .hasNext();) {
             SootClass entityClass = (SootClass) i.next();
 
             unusedFieldSet.addAll(entityClass.getFields());
         }
 
         // Loop through all the methods and kill all the used fields.
-        for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
+        for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
+                .hasNext();) {
             SootClass entityClass = (SootClass) i.next();
 
-            for (Iterator methods = entityClass.getMethods().iterator();
-                 methods.hasNext();) {
+            for (Iterator methods = entityClass.getMethods().iterator(); methods
+                    .hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
-                for (Iterator stmts = body.getUnits().iterator();
-                     stmts.hasNext();) {
+                for (Iterator stmts = body.getUnits().iterator(); stmts
+                        .hasNext();) {
                     Stmt stmt = (Stmt) stmts.next();
 
-                    for (Iterator boxes = stmt.getUseBoxes().iterator();
-                         boxes.hasNext();) {
+                    for (Iterator boxes = stmt.getUseBoxes().iterator(); boxes
+                            .hasNext();) {
                         ValueBox box = (ValueBox) boxes.next();
                         Value value = box.getValue();
 
@@ -144,21 +150,21 @@ public class UnusedFieldRemover extends SceneTransformer {
 
         // Loop through the methods again, and kill the statements
         // that write to an unused field.
-        for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
+        for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
+                .hasNext();) {
             SootClass entityClass = (SootClass) i.next();
 
-            for (Iterator methods = entityClass.getMethods().iterator();
-                 methods.hasNext();) {
+            for (Iterator methods = entityClass.getMethods().iterator(); methods
+                    .hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
-                for (Iterator stmts = body.getUnits().snapshotIterator();
-                     stmts.hasNext();) {
+                for (Iterator stmts = body.getUnits().snapshotIterator(); stmts
+                        .hasNext();) {
                     Stmt stmt = (Stmt) stmts.next();
 
-                    for (Iterator boxes = stmt.getDefBoxes().iterator();
-                         boxes.hasNext();) {
+                    for (Iterator boxes = stmt.getDefBoxes().iterator(); boxes
+                            .hasNext();) {
                         ValueBox box = (ValueBox) boxes.next();
                         Value value = box.getValue();
 
@@ -173,8 +179,8 @@ public class UnusedFieldRemover extends SceneTransformer {
                 }
             }
 
-            for (Iterator fields = entityClass.getFields().snapshotIterator();
-                 fields.hasNext();) {
+            for (Iterator fields = entityClass.getFields().snapshotIterator(); fields
+                    .hasNext();) {
                 SootField field = (SootField) fields.next();
 
                 if (unusedFieldSet.contains(field)) {

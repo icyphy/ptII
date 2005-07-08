@@ -1,31 +1,31 @@
 /* A TypedIOPort with parameters specific to the Giotto domain.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-review sendInside
-*/
+ review sendInside
+ */
 package ptolemy.domains.giotto.cgc;
 
 import ptolemy.actor.TypedIOPort;
@@ -35,32 +35,31 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypedIOPort
 
 /**
-   This port class is used with actors that are instances of CActor.
-   It features additional parameters specific to the
-   Giotto domain. If the port is specified as an output port, then
-   it has two parameters specified by default.
-   <ul>
-   <li> The parameter <i>initialOutputValue</i> which specifies
-   the value of the port
-   until the container has fired and assigned it a value. The
-   default value of this parameter is 0. It is constrained to
-   have the same type as this port.
-   <ul> The parameter <i>arrayLength</i>, which is used only if the type is
-   an array. This specifies the length of the array. The default
-   value of this parameter is 1.
-   </ul>
+ This port class is used with actors that are instances of CActor.
+ It features additional parameters specific to the
+ Giotto domain. If the port is specified as an output port, then
+ it has two parameters specified by default.
+ <ul>
+ <li> The parameter <i>initialOutputValue</i> which specifies
+ the value of the port
+ until the container has fired and assigned it a value. The
+ default value of this parameter is 0. It is constrained to
+ have the same type as this port.
+ <ul> The parameter <i>arrayLength</i>, which is used only if the type is
+ an array. This specifies the length of the array. The default
+ value of this parameter is 1.
+ </ul>
 
-   @author N.Vinay Krishnan, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (vkris)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author N.Vinay Krishnan, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (vkris)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class CPort extends TypedIOPort {
     /** Construct a CPort with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
@@ -103,8 +102,8 @@ public class CPort extends TypedIOPort {
      *   a port already in the container.
      */
     public CPort(ComponentEntity container, String name, boolean isInput,
-            boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+            boolean isOutput) throws IllegalActionException,
+            NameDuplicationException {
         this(container, name);
         setInput(isInput);
         setOutput(isOutput);

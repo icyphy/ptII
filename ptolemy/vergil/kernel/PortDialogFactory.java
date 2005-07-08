@@ -1,30 +1,30 @@
 /* A menu item factory that opens a dialog for adding ports.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.kernel;
 
 import java.awt.Component;
@@ -45,20 +45,19 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import diva.gui.toolbox.JContextMenu;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PortDialogFactory
 
 /**
-   A factory that creates a dialog to configure, add, or remove ports
-   from objects.
+ A factory that creates a dialog to configure, add, or remove ports
+ from objects.
 
-   @author Edward A. Lee and Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Edward A. Lee and Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class PortDialogFactory implements MenuItemFactory {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -92,52 +91,48 @@ public class PortDialogFactory implements MenuItemFactory {
         // when put in the background.
         // Note, this uses the "new" way of doing dialogs.
         Action configPortsAction = new AbstractAction(_configPorts) {
-                public void actionPerformed(ActionEvent e) {
-                    Component parent = menu.getInvoker();
+            public void actionPerformed(ActionEvent e) {
+                Component parent = menu.getInvoker();
 
-                    while (parent.getParent() != null) {
-                        parent = parent.getParent();
-                    }
+                while (parent.getParent() != null) {
+                    parent = parent.getParent();
+                }
 
-                    if (parent instanceof Frame) {
-                        DialogTableau dialogTableau = DialogTableau
-                            .createDialog((Frame) parent,
-                                    _configuration,
-                                    ((TableauFrame) parent).getEffigy(),
-                                    PortConfigurerDialog.class,
-                                    (Entity) target);
+                if (parent instanceof Frame) {
+                    DialogTableau dialogTableau = DialogTableau.createDialog(
+                            (Frame) parent, _configuration,
+                            ((TableauFrame) parent).getEffigy(),
+                            PortConfigurerDialog.class, (Entity) target);
 
-                        if (dialogTableau != null) {
-                            dialogTableau.show();
-                        }
+                    if (dialogTableau != null) {
+                        dialogTableau.show();
                     }
                 }
-            };
+            }
+        };
 
         retv = menu.add(configPortsAction, _configPorts);
 
         Action configUnitsAction = new AbstractAction(_configUnits) {
-                public void actionPerformed(ActionEvent e) {
-                    Component parent = menu.getInvoker();
+            public void actionPerformed(ActionEvent e) {
+                Component parent = menu.getInvoker();
 
-                    while (parent.getParent() != null) {
-                        parent = parent.getParent();
-                    }
+                while (parent.getParent() != null) {
+                    parent = parent.getParent();
+                }
 
-                    if (parent instanceof Frame) {
-                        DialogTableau dialogTableau = DialogTableau
-                            .createDialog((Frame) parent,
-                                    _configuration,
-                                    ((TableauFrame) parent).getEffigy(),
-                                    UnitConstraintsDialog.class,
-                                    (Entity) target);
+                if (parent instanceof Frame) {
+                    DialogTableau dialogTableau = DialogTableau.createDialog(
+                            (Frame) parent, _configuration,
+                            ((TableauFrame) parent).getEffigy(),
+                            UnitConstraintsDialog.class, (Entity) target);
 
-                        if (dialogTableau != null) {
-                            dialogTableau.show();
-                        }
+                    if (dialogTableau != null) {
+                        dialogTableau.show();
                     }
                 }
-            };
+            }
+        };
 
         retv = menu.add(configUnitsAction, _configUnits);
 
@@ -159,6 +154,8 @@ public class PortDialogFactory implements MenuItemFactory {
 
     /** The configuration. */
     private static String _configPorts = "Configure Ports";
+
     private static String _configUnits = "Configure Units";
+
     private Configuration _configuration;
 }

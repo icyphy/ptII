@@ -1,30 +1,30 @@
 /* An actor that delays the input for a certain amount of real time.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.parameters.PortParameter;
@@ -38,37 +38,36 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Sleep
 
 /**
-   On each firing, read at most one token from each input channel, sleep
-   by the specified amount of real time, and then produce the same input
-   tokens on the respective output channels. This actor calls Thread.sleep()
-   in the fire() method, so the thread that calls fire() will be suspended.
-   If fire() is called multiple times in one iteration, sleep is only called
-   the first time.
-   If the width of the output port is less than that of the input port,
-   the tokens in the extra channels are lost.
-   <p>
-   The effect of this actor is different in different domains.
-   In domains where all actors are iterated from within a single director
-   thread (like SDF and DE), then multiple instances of this actor will
-   result in cummulative time delays. That is, the time taken by an iteration
-   of the model will be greater than the sum of the sleep times of all the
-   instances. In domains where actors execute in their own thread (like PN
-   and CSP), only the execution of the individual actor is slowed.
-   Note that another way to slow down the execution of a model while running
-   inside vergil is to turn on animation.
+ On each firing, read at most one token from each input channel, sleep
+ by the specified amount of real time, and then produce the same input
+ tokens on the respective output channels. This actor calls Thread.sleep()
+ in the fire() method, so the thread that calls fire() will be suspended.
+ If fire() is called multiple times in one iteration, sleep is only called
+ the first time.
+ If the width of the output port is less than that of the input port,
+ the tokens in the extra channels are lost.
+ <p>
+ The effect of this actor is different in different domains.
+ In domains where all actors are iterated from within a single director
+ thread (like SDF and DE), then multiple instances of this actor will
+ result in cummulative time delays. That is, the time taken by an iteration
+ of the model will be greater than the sum of the sleep times of all the
+ instances. In domains where actors execute in their own thread (like PN
+ and CSP), only the execution of the individual actor is slowed.
+ Note that another way to slow down the execution of a model while running
+ inside vergil is to turn on animation.
 
-   @author Jie Liu, Christopher Hylands, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
+ @author Jie Liu, Christopher Hylands, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
 
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class Sleep extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -144,7 +143,7 @@ public class Sleep extends Transformer {
         if (!_wasSleepCalledInFireYet) {
             try {
                 long sleepTimeValue = ((LongToken) sleepTime.getToken())
-                    .longValue();
+                        .longValue();
 
                 if (_debugging) {
                     _debug(getName() + ": Wait for " + sleepTimeValue

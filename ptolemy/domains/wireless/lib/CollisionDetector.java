@@ -1,30 +1,30 @@
 /* An actor that detects collisions.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib;
 
 import java.util.Iterator;
@@ -47,124 +47,123 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CollisionDetector
 
 /**
-   This actor models a typical physical layer front end of a wireless
-   receiver. It models a receiver where messages have a non-zero duration
-   and messages can collide with one another, causing a failure to receive.
-   A message is provided to this actor at the time corresponding to the
-   start of its transmission. Along with the message (an arbitrary
-   token), the inputs must provide the duration of the message and its
-   power.  The message spans an interval of time starting when it is
-   provided to this actor and ending at that time plus the duration.
-   If another message overlaps with a given message and has sufficient
-   power, then the given message will be sent to the <i>collided</i>
-   output.  Otherwise it is sent to the <i>received</i> output. In both
-   cases, the message appears at the corresponding output at the time
-   it is received plus the duration (i.e. the time at which the message
-   has been completed).
-   <p>
-   The inputs are:
-   <ul>
-   <li> <i>message</i>: The message carried by each transmission.
-   <li> <i>power</i>: The power of the received signal at the
-   location of this receiver.
-   <li> <i>duration</i>: The time duration of the transmission.
-   </ul>
-   The power and duration are typically delivered by the channel
-   in the "properties" field of the transmission. The power
-   is usually given as a power density (per unit area) so that
-   a receiver can multiply it by its antenna area to determine
-   the received power. It is in a linear scale (vs. DB), typically with
-   units such as watts per square meter.  The duration is a
-   non-negative double, and the message is an arbitrary token.
-   <p>
-   The outputs are:
-   <ul>
-   <li> <i>received</i>: The message received. This port produces
-   an output only if the received power is sufficient
-   and there are no collisions.  The output is produced at a
-   time equal to the time this actor receives the message plus
-   the value received on the <i>duration</i> input.
-   <li> <i>collided</i>: The message discarded. This port produces
-   an output only if the received message collides with another
-   message of sufficient power.  The output is produced at a
-   time equal to the time this actor receives the message plus
-   the value received on the <i>duration</i> input.  The value
-   of the output is the message that cannot be received.
-   </ul>
-   <p>
-   This actor is typically used with a channel that delivers a properties
-   record token that contains <i>power</i> and <i>duration</i> fields.
-   These fields can be extracted by using a GetProperties actor followed
-   by a RecordDisassembler. The PowerLossChannel, for example, can be used.
-   However, in order for the type constraints to be satisfied, the
-   PowerLossChannel's <i>defaultProperties</i> parameter must be
-   augmented with a default value for the <i>duration</i>.
-   Each transmitter can override that default with its own message
-   duration and transmit power.
-   <p>
-   Any message whose power (as specified at the <i>power</i> input)
-   is less than the value of the <i>powerThreshold</i> parameter
-   is ignored. It will not cause collisions and is not produced
-   at the <i>collided</i> output.  The <i>powerThreshold</i> parameter
-   thus specifies the power level at which the receiver simply fails
-   to detect the signal.  It is given in a linear scale (vs. DB) with
-   the same units as the <i>power</i> input. The default value is zero,
-   i.e. by default it won't ignore any received signal.
-   <p>
-   Any message whose power exceeds <i>powerThreshold</i> has the
-   potential of being successfully received, of failing to be
-   received due to a collision, and of causing a collision.
-   A message is successfully received if throughout its duration,
-   its power exceeds the sum of all other message powers
-   by at least <i>SNRThresholdInDB</i> (which as the name
-   suggests, is given in decibels, rather than in a linear
-   scale, as is customary for power ratios).  Formally, let the
-   message power for the <i>i</i>-th message be
-   <i>p</i><sub><i>i</i></sub>(<i>t</i>) at time <i>t</i>.
-   Before the message is received and after its duration
-   expires, this power is zero.  The <i>i</i>-th message
-   is successfully received if
-   <quote>
-   <i>p</i><sub><i>i</i></sub>(<i>t</i>) >= <i>P</i>
-   <font face="Symbol">S</font><sub>(<i>j</i> != <i>i</i>)</sub>
-   <i>p</i><sub><i>j</i></sub>(<i>t</i>)
-   </quote>
-   for all <i>t</i> where <i>p</i><sub><i>i</i></sub>(<i>t</i>) > 0,
-   where
-   <quote>
-   <i>P</i> = 10^(<i>SNRThresholdInDB</i>/10)
-   </quote>
-   which is the signal to interference ratio in a linear scale.
-   <p>
-   The way this actor works is that each input that has sufficient power
-   is recorded in a hash table indexed by the time at which its duration
-   expires. In addition, the director is requested to fire this actor at
-   that time.  Any time a message arrives, the actor checks for collisions,
-   and marks any message subjected to a collision by this arrival.
-   When the duration expires, the message is produced on one of the
-   two outputs depending on whether it is marked as having encountered
-   a collision, and it is removed from the hash table.
-   <p>
-   NOTE: This actor assumes that the duration of messages is short
-   relative to the rate at which the actors move. That is, the received
-   power (and whether a receiver is in range) is determined once, at the
-   time the message starts, and remains constant throughout the transmission.
-   It also requires that all three inputs have tokens when fired.
+ This actor models a typical physical layer front end of a wireless
+ receiver. It models a receiver where messages have a non-zero duration
+ and messages can collide with one another, causing a failure to receive.
+ A message is provided to this actor at the time corresponding to the
+ start of its transmission. Along with the message (an arbitrary
+ token), the inputs must provide the duration of the message and its
+ power.  The message spans an interval of time starting when it is
+ provided to this actor and ending at that time plus the duration.
+ If another message overlaps with a given message and has sufficient
+ power, then the given message will be sent to the <i>collided</i>
+ output.  Otherwise it is sent to the <i>received</i> output. In both
+ cases, the message appears at the corresponding output at the time
+ it is received plus the duration (i.e. the time at which the message
+ has been completed).
+ <p>
+ The inputs are:
+ <ul>
+ <li> <i>message</i>: The message carried by each transmission.
+ <li> <i>power</i>: The power of the received signal at the
+ location of this receiver.
+ <li> <i>duration</i>: The time duration of the transmission.
+ </ul>
+ The power and duration are typically delivered by the channel
+ in the "properties" field of the transmission. The power
+ is usually given as a power density (per unit area) so that
+ a receiver can multiply it by its antenna area to determine
+ the received power. It is in a linear scale (vs. DB), typically with
+ units such as watts per square meter.  The duration is a
+ non-negative double, and the message is an arbitrary token.
+ <p>
+ The outputs are:
+ <ul>
+ <li> <i>received</i>: The message received. This port produces
+ an output only if the received power is sufficient
+ and there are no collisions.  The output is produced at a
+ time equal to the time this actor receives the message plus
+ the value received on the <i>duration</i> input.
+ <li> <i>collided</i>: The message discarded. This port produces
+ an output only if the received message collides with another
+ message of sufficient power.  The output is produced at a
+ time equal to the time this actor receives the message plus
+ the value received on the <i>duration</i> input.  The value
+ of the output is the message that cannot be received.
+ </ul>
+ <p>
+ This actor is typically used with a channel that delivers a properties
+ record token that contains <i>power</i> and <i>duration</i> fields.
+ These fields can be extracted by using a GetProperties actor followed
+ by a RecordDisassembler. The PowerLossChannel, for example, can be used.
+ However, in order for the type constraints to be satisfied, the
+ PowerLossChannel's <i>defaultProperties</i> parameter must be
+ augmented with a default value for the <i>duration</i>.
+ Each transmitter can override that default with its own message
+ duration and transmit power.
+ <p>
+ Any message whose power (as specified at the <i>power</i> input)
+ is less than the value of the <i>powerThreshold</i> parameter
+ is ignored. It will not cause collisions and is not produced
+ at the <i>collided</i> output.  The <i>powerThreshold</i> parameter
+ thus specifies the power level at which the receiver simply fails
+ to detect the signal.  It is given in a linear scale (vs. DB) with
+ the same units as the <i>power</i> input. The default value is zero,
+ i.e. by default it won't ignore any received signal.
+ <p>
+ Any message whose power exceeds <i>powerThreshold</i> has the
+ potential of being successfully received, of failing to be
+ received due to a collision, and of causing a collision.
+ A message is successfully received if throughout its duration,
+ its power exceeds the sum of all other message powers
+ by at least <i>SNRThresholdInDB</i> (which as the name
+ suggests, is given in decibels, rather than in a linear
+ scale, as is customary for power ratios).  Formally, let the
+ message power for the <i>i</i>-th message be
+ <i>p</i><sub><i>i</i></sub>(<i>t</i>) at time <i>t</i>.
+ Before the message is received and after its duration
+ expires, this power is zero.  The <i>i</i>-th message
+ is successfully received if
+ <quote>
+ <i>p</i><sub><i>i</i></sub>(<i>t</i>) >= <i>P</i>
+ <font face="Symbol">S</font><sub>(<i>j</i> != <i>i</i>)</sub>
+ <i>p</i><sub><i>j</i></sub>(<i>t</i>)
+ </quote>
+ for all <i>t</i> where <i>p</i><sub><i>i</i></sub>(<i>t</i>) > 0,
+ where
+ <quote>
+ <i>P</i> = 10^(<i>SNRThresholdInDB</i>/10)
+ </quote>
+ which is the signal to interference ratio in a linear scale.
+ <p>
+ The way this actor works is that each input that has sufficient power
+ is recorded in a hash table indexed by the time at which its duration
+ expires. In addition, the director is requested to fire this actor at
+ that time.  Any time a message arrives, the actor checks for collisions,
+ and marks any message subjected to a collision by this arrival.
+ When the duration expires, the message is produced on one of the
+ two outputs depending on whether it is marked as having encountered
+ a collision, and it is removed from the hash table.
+ <p>
+ NOTE: This actor assumes that the duration of messages is short
+ relative to the rate at which the actors move. That is, the received
+ power (and whether a receiver is in range) is determined once, at the
+ time the message starts, and remains constant throughout the transmission.
+ It also requires that all three inputs have tokens when fired.
 
-   @author Yang Zhao, Xiaojun Liu, Edward Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-   @see PowerLossChannel
-   @see GetProperties
-   @see ptolemy.actor.lib.RecordDisassembler
-*/
+ @author Yang Zhao, Xiaojun Liu, Edward Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ @see PowerLossChannel
+ @see GetProperties
+ @see ptolemy.actor.lib.RecordDisassembler
+ */
 public class CollisionDetector extends TypedAtomicActor {
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
@@ -184,23 +183,28 @@ public class CollisionDetector extends TypedAtomicActor {
 
         // Create and configure the ports.
         message = new WirelessIOPort(this, "message", true, false);
-        (new SingletonParameter(message, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(message, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         power = new TypedIOPort(this, "power", true, false);
         power.setTypeEquals(BaseType.DOUBLE);
-        (new SingletonParameter(power, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(power, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         duration = new TypedIOPort(this, "duration", true, false);
         duration.setTypeEquals(BaseType.DOUBLE);
-        (new SingletonParameter(duration, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(duration, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         received = new TypedIOPort(this, "received", false, true);
         received.setTypeSameAs(message);
-        (new SingletonParameter(received, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(received, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         collided = new TypedIOPort(this, "collided", false, true);
         collided.setTypeSameAs(message);
-        (new SingletonParameter(collided, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(collided, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         // Configure parameters.
         SNRThresholdInDB = new Parameter(this, "SNRThresholdInDB");
@@ -276,19 +280,20 @@ public class CollisionDetector extends TypedAtomicActor {
             if (SNRThresholdInDBValue <= 0.0) {
                 throw new IllegalActionException(this,
                         "SNRThresholdInDB is required to be positive. "
-                        + "Attempt to set it to: " + SNRThresholdInDBValue);
+                                + "Attempt to set it to: "
+                                + SNRThresholdInDBValue);
             } else {
                 // Convert to linear scale.
                 _SNRThresholdInDB = Math.pow(10, SNRThresholdInDBValue / 10);
             }
         } else if (attribute == powerThreshold) {
             _powerThreshold = ((DoubleToken) powerThreshold.getToken())
-                .doubleValue();
+                    .doubleValue();
 
             if (_powerThreshold < 0.0) {
                 throw new IllegalActionException(this,
                         "powerThreshold is required to be nonnegative. "
-                        + "Attempt to set it to: " + _powerThreshold);
+                                + "Attempt to set it to: " + _powerThreshold);
             }
         } else {
             super.attributeChanged(attribute);
@@ -304,7 +309,8 @@ public class CollisionDetector extends TypedAtomicActor {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CollisionDetector newObject = (CollisionDetector) super.clone(workspace);
+        CollisionDetector newObject = (CollisionDetector) super
+                .clone(workspace);
 
         newObject.received.setTypeSameAs(newObject.message);
         newObject.collided.setTypeSameAs(newObject.message);
@@ -356,7 +362,7 @@ public class CollisionDetector extends TypedAtomicActor {
                 reception.arrivalTime = currentTime.getDoubleValue();
                 reception.collided = false;
                 reception.duration = ((DoubleToken) duration.get(0))
-                    .doubleValue();
+                        .doubleValue();
 
                 if (_debugging) {
                     _debug("Message is above threshold and has duration: "
@@ -464,7 +470,9 @@ public class CollisionDetector extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private double _powerThreshold;
+
     private double _SNRThresholdInDB;
+
     private double _totalPower;
 
     // Record messages that have been received but
@@ -479,10 +487,15 @@ public class CollisionDetector extends TypedAtomicActor {
     private class Reception {
         // The message token.
         public Token data;
+
         public double duration;
+
         public double arrivalTime;
+
         public double expiration;
+
         public double power;
+
         public boolean collided;
     }
 }

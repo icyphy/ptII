@@ -1,30 +1,30 @@
 /* A class modeling a sensor that transmits location information.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.TypeAttribute;
@@ -40,30 +40,29 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Locator
 
 /**
-   This is a wireless sensor node that reacts to an input event by
-   transmitting an output with the current location of this node and
-   the time of the input.  The output is a record token with type
-   {location={double}, time=double}.  The location is an array with
-   two doubles representing the X and Y positions of the sensor.
-   The location of the sensor is determined by the _getLocation()
-   protected method, which in this base class returns the location
-   of the icon in the visual editor, which is determined from the
-   _location attribute of the actor.  If there is no _location
-   attribute, then an exception is thrown.  Derived classes may
-   override this protected method to specify the location in some
-   other way (or in more dimensions).
+ This is a wireless sensor node that reacts to an input event by
+ transmitting an output with the current location of this node and
+ the time of the input.  The output is a record token with type
+ {location={double}, time=double}.  The location is an array with
+ two doubles representing the X and Y positions of the sensor.
+ The location of the sensor is determined by the _getLocation()
+ protected method, which in this base class returns the location
+ of the icon in the visual editor, which is determined from the
+ _location attribute of the actor.  If there is no _location
+ attribute, then an exception is thrown.  Derived classes may
+ override this protected method to specify the location in some
+ other way (or in more dimensions).
 
-   @author Philip Baldwin, Xiaojun Liu and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (pjb2e)
-*/
+ @author Philip Baldwin, Xiaojun Liu and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (pjb2e)
+ */
 public class Locator extends TypedAtomicActor {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -139,10 +138,7 @@ public class Locator extends TypedAtomicActor {
             }
 
             // Construct the message about the input signal detected.
-            String[] labels = {
-                "location",
-                "time"
-            };
+            String[] labels = { "location", "time" };
 
             // Get the location and wrap each coordinate in a token.
             double[] location = _getLocation();
@@ -153,10 +149,8 @@ public class Locator extends TypedAtomicActor {
             }
 
             double timeValue = getDirector().getModelTime().getDoubleValue();
-            Token[] values = {
-                new ArrayToken(locationArray),
-                new DoubleToken(timeValue)
-            };
+            Token[] values = { new ArrayToken(locationArray),
+                    new DoubleToken(timeValue) };
             Token result = new RecordToken(labels, values);
 
             output.send(0, result);

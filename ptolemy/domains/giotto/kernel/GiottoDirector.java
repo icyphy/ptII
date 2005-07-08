@@ -1,31 +1,31 @@
 /* Director for the Giotto model of computation.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-// NOTE: Downgraded to red due to extensive changes.  EAL
-*/
+ // NOTE: Downgraded to red due to extensive changes.  EAL
+ */
 package ptolemy.domains.giotto.kernel;
 
 import java.util.Iterator;
@@ -61,34 +61,33 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// GiottoDirector
 
 /**
-   This class implements a director for the Giotto model of computation
-   without Giotto modes. Schedules are generated according to the Giotto
-   semantics. The GiottoScheduler class contains methods to compute the
-   schedules. The GiottoReceiver class implements the data flow between
-   actors using double-buffering.
-   <p>
-   If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
-   then the director will not process events until the real time elapsed
-   since the model started matches the time stamp of the event.
-   This ensures that the director does not get ahead of real time,
-   but, of course, it does not ensure that the director keeps up with
-   real time.
+ This class implements a director for the Giotto model of computation
+ without Giotto modes. Schedules are generated according to the Giotto
+ semantics. The GiottoScheduler class contains methods to compute the
+ schedules. The GiottoReceiver class implements the data flow between
+ actors using double-buffering.
+ <p>
+ If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
+ then the director will not process events until the real time elapsed
+ since the model started matches the time stamp of the event.
+ This ensures that the director does not get ahead of real time,
+ but, of course, it does not ensure that the director keeps up with
+ real time.
 
-   @author  Christoph Meyer Kirsch, Edward A. Lee and Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (cm)
-   @Pt.AcceptedRating Red (eal)
-   @see GiottoScheduler
-   @see GiottoReceiver
-*/
-public class GiottoDirector extends StaticSchedulingDirector
-    implements TimedDirector {
+ @author  Christoph Meyer Kirsch, Edward A. Lee and Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (cm)
+ @Pt.AcceptedRating Red (eal)
+ @see GiottoScheduler
+ @see GiottoReceiver
+ */
+public class GiottoDirector extends StaticSchedulingDirector implements
+        TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -182,28 +181,29 @@ public class GiottoDirector extends StaticSchedulingDirector
         while (_unitIndex < _schedule.size() && !_stopRequested) {
 
             setModelTime(_expectedNextIterationTime);
-            
+
             // Grab the next minor cycle (unit) schedule to execute.
             Schedule unitSchedule = (Schedule) _schedule.get(_unitIndex);
-    
+
             // We only do synchronization to real time here and leave time
             // update to upper level directors or the postfire() method.
             if (_synchronizeToRealTime) {
                 long elapsedTime = System.currentTimeMillis() - _realStartTime;
                 double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
-    
+
                 if (_expectedNextIterationTime.getDoubleValue() > elapsedTimeInSeconds) {
                     long timeToWait = (long) ((_expectedNextIterationTime
-                                                      .getDoubleValue() - elapsedTimeInSeconds) * 1000.0);
-    
+                            .getDoubleValue() - elapsedTimeInSeconds) * 1000.0);
+
                     if (timeToWait > 0) {
                         if (_debugging) {
-                            _debug("Waiting for real time to pass: " + timeToWait);
+                            _debug("Waiting for real time to pass: "
+                                    + timeToWait);
                         }
-    
+
                         // Synchronize on the scheduler.
                         Scheduler scheduler = getScheduler();
-    
+
                         synchronized (scheduler) {
                             try {
                                 scheduler.wait(timeToWait);
@@ -214,7 +214,7 @@ public class GiottoDirector extends StaticSchedulingDirector
                     }
                 }
             }
-    
+
             // Find the actors that will be invoked in this minor cycle (unit)
             // and update the receivers that are their destinations.
             // The reason that the destinations are updated is that any
@@ -230,25 +230,25 @@ public class GiottoDirector extends StaticSchedulingDirector
             // of committing any data values that the actor may have produced
             // in its initialize() method.
             Iterator scheduleIterator = unitSchedule.iterator();
-    
+
             while (scheduleIterator.hasNext()) {
                 Actor actor = ((Firing) scheduleIterator.next()).getActor();
-    
+
                 if (_debugging) {
                     _debug("Updating destination receivers of "
                             + ((NamedObj) actor).getFullName());
                 }
-    
+
                 List outputPortList = actor.outputPortList();
                 Iterator outputPorts = outputPortList.iterator();
-    
+
                 while (outputPorts.hasNext()) {
                     IOPort port = (IOPort) outputPorts.next();
                     Receiver[][] channelArray = port.getRemoteReceivers();
-    
+
                     for (int i = 0; i < channelArray.length; i++) {
                         Receiver[] receiverArray = channelArray[i];
-    
+
                         for (int j = 0; j < receiverArray.length; j++) {
                             GiottoReceiver receiver = (GiottoReceiver) receiverArray[j];
                             receiver.update();
@@ -256,32 +256,33 @@ public class GiottoDirector extends StaticSchedulingDirector
                     }
                 }
             }
-    
+
             scheduleIterator = unitSchedule.iterator();
-    
+
             while (scheduleIterator.hasNext()) {
                 Actor actor = ((Firing) scheduleIterator.next()).getActor();
-    
+
                 if (_debugging) {
                     _debug("Iterating " + ((NamedObj) actor).getFullName());
                 }
-    
+
                 if (actor.iterate(1) == STOP_ITERATING) {
                     // FIXME: How to handle this? 
                     // put the actor on a no-fire hashtable?
                 }
             }
-            
+
             _unitIndex++;
 
-            _expectedNextIterationTime = 
-                _expectedNextIterationTime.add(_unitTimeIncrement);
+            _expectedNextIterationTime = _expectedNextIterationTime
+                    .add(_unitTimeIncrement);
 
             if (_debugging) {
-                _debug("next Iteration time " + _expectedNextIterationTime + "\n");
+                _debug("next Iteration time " + _expectedNextIterationTime
+                        + "\n");
             }
-        } 
-        
+        }
+
         if (_unitIndex >= _schedule.size()) {
             _unitIndex = 0;
 
@@ -358,7 +359,7 @@ public class GiottoDirector extends StaticSchedulingDirector
             while (outputPorts.hasNext()) {
                 IOPort port = (IOPort) outputPorts.next();
                 Parameter initialValueParameter = (Parameter) ((NamedObj) port)
-                    .getAttribute("initialValue");
+                        .getAttribute("initialValue");
 
                 if (initialValueParameter != null) {
                     // Since we delay the transfer of outputs, we have to
@@ -411,7 +412,8 @@ public class GiottoDirector extends StaticSchedulingDirector
             return true;
         }
 
-        int numberOfIterations = ((IntToken) (iterations.getToken())).intValue();
+        int numberOfIterations = ((IntToken) (iterations.getToken()))
+                .intValue();
 
         if ((numberOfIterations > 0) && (_iterationCount >= numberOfIterations)) {
             // iterations limit is reached
@@ -451,8 +453,8 @@ public class GiottoDirector extends StaticSchedulingDirector
     public boolean prefire() throws IllegalActionException {
         if (_isEmbedded()) {
             CompositeActor container = (CompositeActor) getContainer();
-            Time outsideCurrentTime = ((Actor) container).getExecutiveDirector()
-                .getModelTime();
+            Time outsideCurrentTime = ((Actor) container)
+                    .getExecutiveDirector().getModelTime();
 
             if (outsideCurrentTime.compareTo(_expectedNextIterationTime) < 0) {
                 // not the scheduled time to fire.
@@ -504,13 +506,13 @@ public class GiottoDirector extends StaticSchedulingDirector
 
             if (executiveDirector instanceof GiottoDirector) {
                 double periodValue = ((GiottoDirector) executiveDirector)
-                    .getPeriod();
+                        .getPeriod();
                 Attribute frequency = compositeActor.getAttribute("frequency");
                 int frequencyValue;
 
                 if (frequency != null) {
                     frequencyValue = ((IntToken) (((Parameter) frequency)
-                                              .getToken())).intValue();
+                            .getToken())).intValue();
                 } else {
                     frequencyValue = 1;
                 }
@@ -558,7 +560,7 @@ public class GiottoDirector extends StaticSchedulingDirector
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque"
-                    + "input port.");
+                            + "input port.");
         }
 
         boolean transfer = false;
@@ -570,9 +572,8 @@ public class GiottoDirector extends StaticSchedulingDirector
 
                 if ((insideReceivers != null) && (insideReceivers[i] != null)) {
                     if (_debugging) {
-                        _debug(getName(),
-                                "transferring input from " + port.getName()
-                                + " channel " + i);
+                        _debug(getName(), "transferring input from "
+                                + port.getName() + " channel " + i);
                     }
 
                     for (int j = 0; j < insideReceivers[i].length; j++) {
@@ -607,7 +608,8 @@ public class GiottoDirector extends StaticSchedulingDirector
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(port,
-                    "transferOutputs: this port is not " + "an opaque output port.");
+                    "transferOutputs: this port is not "
+                            + "an opaque output port.");
         }
 
         boolean wasTransferred = false;
@@ -623,12 +625,12 @@ public class GiottoDirector extends StaticSchedulingDirector
                                     if (_debugging) {
                                         _debug(getName(),
                                                 "transferring output from "
-                                                + port.getName() + " to channel "
-                                                + i);
+                                                        + port.getName()
+                                                        + " to channel " + i);
                                     }
 
                                     Token t = ((GiottoReceiver) insideReceivers[i][j])
-                                        .remove();
+                                            .remove();
                                     port.send(i, t);
                                     wasTransferred = true;
                                 }
@@ -711,15 +713,15 @@ public class GiottoDirector extends StaticSchedulingDirector
         }
 
         // Enqueue a refire for the container of this director.
-        ((CompositeActor) getContainer()).getExecutiveDirector().fireAt((Actor) getContainer(),
-                _expectedNextIterationTime);
+        ((CompositeActor) getContainer()).getExecutiveDirector().fireAt(
+                (Actor) getContainer(), _expectedNextIterationTime);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The time for next iteration.
     private Time _expectedNextIterationTime;
-    
+
     // The count of iterations executed.
     private int _iterationCount = 0;
 

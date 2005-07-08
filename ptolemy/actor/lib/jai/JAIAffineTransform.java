@@ -1,31 +1,31 @@
 /* An actor that computes an affine transformation on a RenderedOp.
 
-@Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.jai;
 
 import java.awt.geom.AffineTransform;
@@ -49,33 +49,32 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// JAIAffineTransform
 
 /**
-   Compute an affine transformation on an image.  The parameter
-   affineMatrix must be a two by three matrix.  If the matrix is
-   <pre>
-   a b c
-   d e f
-   </pre>
-   the input (x', y') and output (x, y) is determined by the following two
-   equations.
-   <pre>
-   x = a*x' + b*y' + c;
-   y = d*x' + e*y' + f;
-   </pre>
-   Note that the c and f terms do not show up when the output is directly
-   displayed.  The c and f terms are translation terms, and only show up
-   when operated on with another image.
+ Compute an affine transformation on an image.  The parameter
+ affineMatrix must be a two by three matrix.  If the matrix is
+ <pre>
+ a b c
+ d e f
+ </pre>
+ the input (x', y') and output (x, y) is determined by the following two
+ equations.
+ <pre>
+ x = a*x' + b*y' + c;
+ y = d*x' + e*y' + f;
+ </pre>
+ Note that the c and f terms do not show up when the output is directly
+ displayed.  The c and f terms are translation terms, and only show up
+ when operated on with another image.
 
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author James Yeh
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class JAIAffineTransform extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -150,7 +149,7 @@ public class JAIAffineTransform extends Transformer {
             _subSampleBits = ((IntToken) subSampleBits.getToken()).intValue();
         } else if (attribute == affineMatrix) {
             DoubleMatrixToken affineMatrixToken = (DoubleMatrixToken) affineMatrix
-                .getToken();
+                    .getToken();
 
             if ((affineMatrixToken.getColumnCount() == 3)
                     && (affineMatrixToken.getRowCount() == 2)) {
@@ -209,22 +208,15 @@ public class JAIAffineTransform extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private AffineTransform _affineTransform;
-    private double[][] _initialMatrix = {
-        {
-            1.0F,
-            0.0F,
-            0.0F
-        },
-        {
-            0.0F,
-            1.0F,
-            0.0F
-        }
-    };
+
+    private double[][] _initialMatrix = { { 1.0F, 0.0F, 0.0F },
+            { 0.0F, 1.0F, 0.0F } };
+
     private Interpolation _interpolation;
 
     /** An indicator for the type of interpolation to use */
     private int _interpolationType;
+
     private double[][] _matrixValue;
 
     /** The subsample precision */
@@ -232,7 +224,10 @@ public class JAIAffineTransform extends Transformer {
 
     //Constants used for more efficient execution
     private static final int _BICUBIC = 0;
+
     private static final int _BICUBIC2 = 1;
+
     private static final int _BILINEAR = 2;
+
     private static final int _NEARESTNEIGHBOR = 3;
 }

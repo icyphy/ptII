@@ -1,29 +1,29 @@
 /* An actor containing a PetriNet composite actor.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.petrinet.kernel;
 
 import java.util.Iterator;
@@ -36,31 +36,30 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PetrinetActor
 
 /**
-   A Petri net Actor
+ A Petri net Actor
 
-   <p> As defined in the PetriNetDirector.java, a PetriNetActor is a
-   directed and weighted graph <i>G = (V, E) </i> containing three kinds
-   of nodes: Places <i>p_i</i>, Transitions <i>t_i</i>, and PetriNetActors
-   <i>PA_i</i>, i.e., <i> V = {p_i} union {t_i} union {PA_i} </i>,
-   where each <i>PA_i</i> itself is again defined as a PetriNetActor.
-   Each node of <i>V</i> is called a <i>component</i> of the
-   PetriNetActor <i>G</i>.
+ <p> As defined in the PetriNetDirector.java, a PetriNetActor is a
+ directed and weighted graph <i>G = (V, E) </i> containing three kinds
+ of nodes: Places <i>p_i</i>, Transitions <i>t_i</i>, and PetriNetActors
+ <i>PA_i</i>, i.e., <i> V = {p_i} union {t_i} union {PA_i} </i>,
+ where each <i>PA_i</i> itself is again defined as a PetriNetActor.
+ Each node of <i>V</i> is called a <i>component</i> of the
+ PetriNetActor <i>G</i>.
 
-   A PetriNetActor is implemented as an extension of TypedCompositeActor.
-   The current file contains two main methods: fire() and prefire().
-   More details of PetriNetActor can be found in PetriNetDirector.java.
+ A PetriNetActor is implemented as an extension of TypedCompositeActor.
+ The current file contains two main methods: fire() and prefire().
+ More details of PetriNetActor can be found in PetriNetDirector.java.
 
-   @author  Yuke Wang
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (yukewang)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ @author  Yuke Wang
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (yukewang)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class PetriNetActor extends TypedCompositeActor {
     /** Construct a PetriNetActor in the default workspace with an empty string
      *  as its name. Add the actor to the workspace directory.
@@ -109,7 +108,7 @@ public class PetriNetActor extends TypedCompositeActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
 
-    */
+     */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PetriNetActor newObject = (PetriNetActor) super.clone(workspace);
         return newObject;
@@ -124,7 +123,8 @@ public class PetriNetActor extends TypedCompositeActor {
      */
     public void fire() throws IllegalActionException {
         System.out.println("PetriNetActor.fire, the actors is " + "  "
-                + getFullName() + " Container is " + getContainer().getFullName());
+                + getFullName() + " Container is "
+                + getContainer().getFullName());
 
         PetriNetDirector director = (PetriNetDirector) getDirector();
         director.fire();

@@ -1,30 +1,30 @@
 /* Test for ChangeRequest.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.kernel.util.test;
 
 import java.util.Collections;
@@ -45,26 +45,25 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ChangeRequestTest
 
 /**
-   Test for ChangeRequest.
+ Test for ChangeRequest.
 
-   @author  Edward A. Lee, Contributor: Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (reviewmoderator)
-   @see ptolemy.kernel.util.ChangeRequest
+ @author  Edward A. Lee, Contributor: Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ @see ptolemy.kernel.util.ChangeRequest
 
-*/
+ */
 public class ChangeRequestTest implements ChangeListener {
     /** Constructor.
      */
-    public ChangeRequestTest()
-            throws IllegalActionException, NameDuplicationException {
+    public ChangeRequestTest() throws IllegalActionException,
+            NameDuplicationException {
         _top = new TypedCompositeActor();
         _top.setName("top");
         _manager = new Manager();
@@ -129,26 +128,25 @@ public class ChangeRequestTest implements ChangeListener {
     public void insertFeedback() {
         // Create an anonymous inner class
         ChangeRequest change = new ChangeRequest(this, "test2") {
-                protected void _execute() throws Exception {
-                    _const.output.unlinkAll();
-                    _rec.input.unlinkAll();
+            protected void _execute() throws Exception {
+                _const.output.unlinkAll();
+                _rec.input.unlinkAll();
 
-                    AddSubtract add = new AddSubtract(_top, "add");
-                    SampleDelay sampleDelay = new SampleDelay(_top,
-                            "sampleDelay");
-                    sampleDelay.initialOutputs.setExpression("{4, 5}");
-                    _top.connect(_const.output, add.plus);
+                AddSubtract add = new AddSubtract(_top, "add");
+                SampleDelay sampleDelay = new SampleDelay(_top, "sampleDelay");
+                sampleDelay.initialOutputs.setExpression("{4, 5}");
+                _top.connect(_const.output, add.plus);
 
-                    ComponentRelation relation = _top.connect(add.output,
-                            sampleDelay.input);
-                    _rec.input.link(relation);
+                ComponentRelation relation = _top.connect(add.output,
+                        sampleDelay.input);
+                _rec.input.link(relation);
 
-                    // Any pre-existing input port whose connections
-                    // are modified needs to have this method called.
-                    _rec.input.createReceivers();
-                    _top.connect(sampleDelay.output, add.plus);
-                }
-            };
+                // Any pre-existing input port whose connections
+                // are modified needs to have this method called.
+                _rec.input.createReceivers();
+                _top.connect(sampleDelay.output, add.plus);
+            }
+        };
 
         _top.requestChange(change);
     }
@@ -165,20 +163,20 @@ public class ChangeRequestTest implements ChangeListener {
 
     public void waitForCompletionTask() {
         Thread waitForCompletionThread = new Thread(new Runnable() {
-                public void run() {
-                    System.out.println(Thread.currentThread().getName()
-                            + " About to wait for completion");
+            public void run() {
+                System.out.println(Thread.currentThread().getName()
+                        + " About to wait for completion");
 
-                    try {
-                        _changeRequest.waitForCompletion();
-                    } catch (Exception ex) {
-                        System.out.println(ex);
-                    }
-
-                    System.out.println(Thread.currentThread().getName()
-                            + " Done waiting for completion");
+                try {
+                    _changeRequest.waitForCompletion();
+                } catch (Exception ex) {
+                    System.out.println(ex);
                 }
-            });
+
+                System.out.println(Thread.currentThread().getName()
+                        + " Done waiting for completion");
+            }
+        });
 
         waitForCompletionThread.setName("waitForCompletionThread");
         waitForCompletionThread.start();
@@ -189,12 +187,12 @@ public class ChangeRequestTest implements ChangeListener {
         // Create an anonymous inner class
         _changeRequest = new ChangeRequest(this,
                 "Change request that always throws an Exception") {
-                protected void _execute() throws Exception {
-                    if (1 == 1) {
-                        throw new Exception("Always Thrown Exception");
-                    }
+            protected void _execute() throws Exception {
+                if (1 == 1) {
+                    throw new Exception("Always Thrown Exception");
                 }
-            };
+            }
+        };
         return _changeRequest;
     }
 
@@ -202,10 +200,10 @@ public class ChangeRequestTest implements ChangeListener {
     public ChangeRequest mutateConst2ChangeRequest() {
         // Create an anonymous inner class
         _changeRequest = new ChangeRequest(this, "Changing Const to 2.0") {
-                protected void _execute() throws Exception {
-                    _const.value.setToken(new DoubleToken(2.0));
-                }
-            };
+            protected void _execute() throws Exception {
+                _const.value.setToken(new DoubleToken(2.0));
+            }
+        };
         return _changeRequest;
     }
 
@@ -220,8 +218,12 @@ public class ChangeRequestTest implements ChangeListener {
     ////                         private variables                 ////
     // ChangeRequest that modifies the system.
     public ChangeRequest _changeRequest;
+
     private Manager _manager;
+
     private Recorder _rec;
+
     private Const _const;
+
     private TypedCompositeActor _top;
 }

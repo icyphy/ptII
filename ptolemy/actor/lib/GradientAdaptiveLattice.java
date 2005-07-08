@@ -1,32 +1,32 @@
 /* An IIR filter actor that uses a direct form II implementation.
 
-Copyright (c) 2003-2005 The Regents of the University of California and
-Research in Motion Limited.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California and
+ Research in Motion Limited.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -42,25 +42,24 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 ///////////////////////////////////////////////////////////////////
 //// GradientAdaptiveLattice
 
 /**
-   An adaptive FIR filter with a lattice structure.  This class extends
-   the base class to dynamically adapt the reflection coefficients to
-   minimize the power of the output sequence.  The output reflection
-   coefficients are guaranteed to lie between -1.0 and 1.0, ensuring that the
-   resulting filter is a minimum phase linear predictor.  The
-   reflectionCoefficients parameter is interpreted as the initial
-   coefficients.
+ An adaptive FIR filter with a lattice structure.  This class extends
+ the base class to dynamically adapt the reflection coefficients to
+ minimize the power of the output sequence.  The output reflection
+ coefficients are guaranteed to lie between -1.0 and 1.0, ensuring that the
+ resulting filter is a minimum phase linear predictor.  The
+ reflectionCoefficients parameter is interpreted as the initial
+ coefficients.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (vogel)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (vogel)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class GradientAdaptiveLattice extends Lattice {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -84,7 +83,7 @@ public class GradientAdaptiveLattice extends Lattice {
         adaptedReflectionCoefficients = new TypedIOPort(this,
                 "adaptedReflectionCoefficients", false, true);
         adaptedReflectionCoefficients.setTypeEquals(new ArrayType(
-                                                            BaseType.DOUBLE));
+                BaseType.DOUBLE));
 
         output.setTypeAtLeast(input);
     }
@@ -117,9 +116,8 @@ public class GradientAdaptiveLattice extends Lattice {
             throws IllegalActionException {
         if (attribute == timeConstant) {
             double timeConstantValue = ((DoubleToken) timeConstant.getToken())
-                .doubleValue();
-            _oneMinusAlpha = ((timeConstantValue - 1.0) / (timeConstantValue
-                                      + 1.0));
+                    .doubleValue();
+            _oneMinusAlpha = ((timeConstantValue - 1.0) / (timeConstantValue + 1.0));
             _alpha = 1.0 - _oneMinusAlpha;
         }
 
@@ -135,7 +133,7 @@ public class GradientAdaptiveLattice extends Lattice {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GradientAdaptiveLattice newObject = (GradientAdaptiveLattice) super
-            .clone(workspace);
+                .clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
@@ -185,7 +183,7 @@ public class GradientAdaptiveLattice extends Lattice {
         for (int i = _order; i > 0; i--) {
             k = _reflectionCoefficients[i - 1];
             _backwardCache[i] = (-k * _forwardCache[i - 1])
-                + _backwardCache[i - 1];
+                    + _backwardCache[i - 1];
 
             double fe_i = _forwardCache[i];
             double be_i = _backwardCache[i];
@@ -193,7 +191,7 @@ public class GradientAdaptiveLattice extends Lattice {
             double be_ip = _backwardCache[i - 1];
 
             double newError = (_estimatedErrorPower[i] * _oneMinusAlpha)
-                + (_alpha * ((fe_ip * fe_ip) + (be_ip * be_ip)));
+                    + (_alpha * ((fe_ip * fe_ip) + (be_ip * be_ip)));
             double newCoefficient = _reflectionCoefficients[i - 1];
 
             if (newError != 0.0) {
@@ -226,6 +224,7 @@ public class GradientAdaptiveLattice extends Lattice {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private double _alpha = 0.0;
+
     private double _oneMinusAlpha = 1.0;
 
     // The error power in the output signal.  The length is _order.

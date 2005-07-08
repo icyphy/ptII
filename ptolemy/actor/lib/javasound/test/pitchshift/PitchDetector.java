@@ -1,49 +1,48 @@
 /* Perform pitch detection using an autocorrelation estimate.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.javasound.test.pitchshift;
 
 import ptolemy.math.Complex;
 import ptolemy.math.SignalProcessing;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PitchDetector
 
 /** Perform pitch detection on an input signal using an autocorrelation
-    estimate. The autocorrelation estimate is computed using the
-    DFT (an FFT algorithm is used) for efficiency.
+ estimate. The autocorrelation estimate is computed using the
+ DFT (an FFT algorithm is used) for efficiency.
 
-    @author Brian K. Vogel
-    @version $Id$
-    @since Ptolemy II 1.0
-    @Pt.ProposedRating Red (vogel)
-    @Pt.AcceptedRating Red (vogel)
-*/
+ @author Brian K. Vogel
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (vogel)
+ @Pt.AcceptedRating Red (vogel)
+ */
 public class PitchDetector {
     /** Initialize the pitch detector.
      *  Parameter <i>vectorSize</i> sets the vector size to be used by
@@ -103,8 +102,7 @@ public class PitchDetector {
         int curSkipSmaple = 0;
 
         // Main loop.
-        for (int vectorLoopPos = 0; vectorLoopPos < inputArray.length;
-             vectorLoopPos++) {
+        for (int vectorLoopPos = 0; vectorLoopPos < inputArray.length; vectorLoopPos++) {
             //System.out.println("vectorLoopPos " + vectorLoopPos);
             // Want to leave half of the array full of zeros, so that
             // we will have the appropriate amount of zero-padding
@@ -117,13 +115,13 @@ public class PitchDetector {
                     _recentInputArrayPos++;
                 } else {
                     // Step 2. Take DFT of recent input padded with zeros.
-                    _dftInput = SignalProcessing.FFTComplexOut(_recentInputArray);
+                    _dftInput = SignalProcessing
+                            .FFTComplexOut(_recentInputArray);
 
                     // Step 3. Take the Mag^2 of the DFT.
-                    for (int ind2 = 0; ind2 < _recentInputArray.length;
-                         ind2++) {
-                        _magSqDFT[ind2] = _dftInput[ind2].magnitude() * _dftInput[ind2]
-                            .magnitude();
+                    for (int ind2 = 0; ind2 < _recentInputArray.length; ind2++) {
+                        _magSqDFT[ind2] = _dftInput[ind2].magnitude()
+                                * _dftInput[ind2].magnitude();
                     }
 
                     // Step 4. Take IDFT of _magSqDFT.
@@ -161,8 +159,7 @@ public class PitchDetector {
                     int maxInd = 0;
 
                     if (firstZzeroIndex > 0) {
-                        for (int m = firstZzeroIndex; m < _maxAutoCorInd;
-                             m++) {
+                        for (int m = firstZzeroIndex; m < _maxAutoCorInd; m++) {
                             if (_autocorEst[m] > maxv) {
                                 maxv = _autocorEst[m];
                                 maxInd = m;
@@ -215,14 +212,20 @@ public class PitchDetector {
 
     // The lowest pitch to search for.
     private static final double _minAllowablePitch = 60;
+
     private int _maxAutoCorInd;
+
     private int _minAutoCorInd;
+
     private double[] _outPitchArray;
 
     //private double[] windowedInput;
     private Complex[] _dftInput;
+
     private double[] _recentInputArray;
+
     private double[] _magSqDFT;
+
     private double[] _autocorEst;
 
     // Initialize input pos

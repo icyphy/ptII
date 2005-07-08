@@ -1,30 +1,30 @@
 /* A continuous clock source.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.lib.Clock;
@@ -38,39 +38,38 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousClock
 
 /**
-   This is a clock source used in continuous-time (CT) domain.
-   It extends the clock actor in ptolemy/actor/lib directory
-   but overrides the fire, initialize, preinitialize and postfire method.
-   This actor serves as a wave form generator in CT domain.
-   <p>
-   The actor uses the fireAt() method of the director to request
-   firings at the beginning of each period plus each of the offsets,
-   which are treated as breakpoints. At each breakpoint,
-   the actor produces two outputs, one at t_minus phase and the other
-   one at t_plus phase. The time does not advance at these two phases.
-   For example, with the default settings, at time 1.0, the actor
-   produces 0 at t_minus phase and 1 at t_plus phase. Note, at
-   time t, which is between t_minus and t_plus, the possible output of
-   this actor can be any value between 0 and 1.
-   <p>
-   The clock has a stopTime parameter and a numberOfCycles parameter.
-   The whole model will stop execution when the
-   stop time is reached. If the numberOfCycles is set to a positive integer,
-   the clock will continue outputting the value of the defaultValue parameter
-   after the number of cycles are reached if the stop time is not reached.
-   <p>
-   @see ptolemy.actor.lib.Clock
-   @author Edward A. Lee, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 2.2
-   @Pt.ProposedRating Red (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
-*/
+ This is a clock source used in continuous-time (CT) domain.
+ It extends the clock actor in ptolemy/actor/lib directory
+ but overrides the fire, initialize, preinitialize and postfire method.
+ This actor serves as a wave form generator in CT domain.
+ <p>
+ The actor uses the fireAt() method of the director to request
+ firings at the beginning of each period plus each of the offsets,
+ which are treated as breakpoints. At each breakpoint,
+ the actor produces two outputs, one at t_minus phase and the other
+ one at t_plus phase. The time does not advance at these two phases.
+ For example, with the default settings, at time 1.0, the actor
+ produces 0 at t_minus phase and 1 at t_plus phase. Note, at
+ time t, which is between t_minus and t_plus, the possible output of
+ this actor can be any value between 0 and 1.
+ <p>
+ The clock has a stopTime parameter and a numberOfCycles parameter.
+ The whole model will stop execution when the
+ stop time is reached. If the numberOfCycles is set to a positive integer,
+ the clock will continue outputting the value of the defaultValue parameter
+ after the number of cycles are reached if the stop time is not reached.
+ <p>
+ @see ptolemy.actor.lib.Clock
+ @author Edward A. Lee, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 2.2
+ @Pt.ProposedRating Red (hyzheng)
+ @Pt.AcceptedRating Red (hyzheng)
+ */
 public class ContinuousClock extends Clock {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -88,12 +87,12 @@ public class ContinuousClock extends Clock {
 
         // Override the signal type to be CONTINUOUS to indicate
         // that this actor produce outputs with state semantics.
-        ((Parameter) output.getAttribute("signalType")).setToken(new StringToken(
-                                                                         "CONTINUOUS"));
+        ((Parameter) output.getAttribute("signalType"))
+                .setToken(new StringToken("CONTINUOUS"));
 
         // Override of the trigger signal type to CONTINUOUS.
-        ((Parameter) trigger.getAttribute("signalType")).setToken(new StringToken(
-                                                                          "CONTINUOUS"));
+        ((Parameter) trigger.getAttribute("signalType"))
+                .setToken(new StringToken("CONTINUOUS"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,7 +124,8 @@ public class ContinuousClock extends Clock {
         if (director.isDiscretePhase()) {
             // Get the current time and period.
             Time currentTime = director.getModelTime();
-            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+            double periodValue = ((DoubleToken) period.getToken())
+                    .doubleValue();
 
             // Use Time.NEGATIVE_INFINITY to indicate that no refire
             // event should be scheduled because we aren't at a phase boundary.
@@ -142,14 +142,17 @@ public class ContinuousClock extends Clock {
             // But do not do this if we are before the first iteration.
             // FIXME: why?
             if (_tentativeCycleCount > 0) {
-                while (_tentativeCycleStartTime.add(periodValue).compareTo(currentTime) <= 0) {
-                    _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
+                while (_tentativeCycleStartTime.add(periodValue).compareTo(
+                        currentTime) <= 0) {
+                    _tentativeCycleStartTime = _tentativeCycleStartTime
+                            .add(periodValue);
                 }
             }
 
             // Adjust the phase if the current time has moved beyond
             // the current phase time.
-            Time currentPhaseTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+            Time currentPhaseTime = _tentativeCycleStartTime
+                    .add(_offsets[_tentativePhase]);
 
             if (currentTime.compareTo(currentPhaseTime) == 0) {
                 // Phase boundary.  Change the current value.
@@ -158,13 +161,14 @@ public class ContinuousClock extends Clock {
                 // If we are beyond the number of cycles requested, then
                 // change the output value to zero.
                 int cycleLimit = ((IntToken) numberOfCycles.getToken())
-                    .intValue();
+                        .intValue();
 
                 // FIXME: performance suffers from this. cache the stop time.
                 // NOTE: there are two stop time. One is based on the cycles
                 // and period, and the other one is based on the stopTime
                 // parameter.
-                Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
+                Time stopTime = _tentativeStartTime.add(cycleLimit
+                        * periodValue);
 
                 if (((cycleLimit > 0) && (currentTime.compareTo(stopTime) >= 0))
                         || _tentativeDone) {
@@ -174,7 +178,8 @@ public class ContinuousClock extends Clock {
                 // Schedule the next firing in this period.
                 // NOTE: In the TM domain, this may not occur if we have
                 // missed a deadline.  As a consequence, the clock will stop.
-                _tentativeNextFiringTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+                _tentativeNextFiringTime = _tentativeCycleStartTime
+                        .add(_offsets[_tentativePhase]);
 
                 if (_debugging) {
                     _debug("next firing is at " + _tentativeNextFiringTime);
@@ -187,15 +192,16 @@ public class ContinuousClock extends Clock {
                     _tentativePhase = 0;
 
                     // Schedule the first firing in the next period.
-                    _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
+                    _tentativeCycleStartTime = _tentativeCycleStartTime
+                            .add(periodValue);
 
                     // Indicate that the cycle count should increase.
                     _tentativeCycleCountIncrement++;
                 }
 
                 if (_offsets[_tentativePhase] >= periodValue) {
-                    throw new IllegalActionException(this,
-                            "Offset number " + _tentativePhase + " with value "
+                    throw new IllegalActionException(this, "Offset number "
+                            + _tentativePhase + " with value "
                             + _offsets[_tentativePhase]
                             + " must be strictly less than the "
                             + "period, which is " + periodValue);

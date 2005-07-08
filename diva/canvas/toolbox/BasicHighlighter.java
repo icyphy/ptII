@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.canvas.toolbox;
 
 import java.awt.Color;
@@ -36,7 +36,6 @@ import java.awt.geom.Rectangle2D;
 import diva.canvas.DamageRegion;
 import diva.canvas.Figure;
 import diva.canvas.FigureDecorator;
-
 
 /** A decorator figure that displays a highlight behind the
  * figure. The highlighter has several options to control
@@ -111,9 +110,9 @@ public class BasicHighlighter extends FigureDecorator {
      */
     public Rectangle2D getBounds() {
         Rectangle2D b = getChild().getBounds();
-        Rectangle2D bounds = new Rectangle2D.Double(b.getX() - _halo,
-                b.getY() - _halo, b.getWidth() + (2 * _halo),
-                b.getHeight() + (2 * _halo));
+        Rectangle2D bounds = new Rectangle2D.Double(b.getX() - _halo, b.getY()
+                - _halo, b.getWidth() + (2 * _halo), b.getHeight()
+                + (2 * _halo));
 
         return bounds;
     }
@@ -202,7 +201,8 @@ public class BasicHighlighter extends FigureDecorator {
         double w = bounds.getWidth() + (2 * _halo);
         double h = bounds.getHeight() + (2 * _halo);
 
-        getParent().repaint(DamageRegion.createDamageRegion(
-                                    getTransformContext(), x, y, w, h));
+        getParent().repaint(
+                DamageRegion.createDamageRegion(getTransformContext(), x, y, w,
+                        h));
     }
 }

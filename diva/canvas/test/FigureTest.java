@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.canvas.test;
 
 import java.awt.Graphics2D;
@@ -41,7 +41,6 @@ import diva.util.jester.TestFailedException;
 import diva.util.jester.TestHarness;
 import diva.util.jester.TestSuite;
 import diva.util.jester.TestUtilities;
-
 
 /**
  * A test suite for Figure. Since Figure is an interface, this class
@@ -90,24 +89,25 @@ public class FigureTest extends TestSuite {
      */
     public void testProperties() {
         runTestCase(new TestCase("Figure properties") {
-                Figure figure;
-                Interactor r = new DragInteractor();
+            Figure figure;
 
-                public void init() throws Exception {
-                    figure = factory.createFigure();
-                }
+            Interactor r = new DragInteractor();
 
-                public void run() throws Exception {
-                    figure.setInteractor(r);
-                    figure.setVisible(false);
-                }
+            public void init() throws Exception {
+                figure = factory.createFigure();
+            }
 
-                public void check() throws TestFailedException {
-                    assertExpr(!figure.isVisible(), "Property visible");
-                    assertExpr(figure.getInteractor() == r,
-                            "Property interactionRole");
-                }
-            });
+            public void run() throws Exception {
+                figure.setInteractor(r);
+                figure.setVisible(false);
+            }
+
+            public void check() throws TestFailedException {
+                assertExpr(!figure.isVisible(), "Property visible");
+                assertExpr(figure.getInteractor() == r,
+                        "Property interactionRole");
+            }
+        });
     }
 
     /** Test hit. This doesn't actually do a hit test,
@@ -115,10 +115,10 @@ public class FigureTest extends TestSuite {
      */
     public void testHit() {
         runTestCase(new RegionTestCase("Figure hit") {
-                public void run() throws Exception {
-                    result = figure.hit(region);
-                }
-            });
+            public void run() throws Exception {
+                result = figure.hit(region);
+            }
+        });
     }
 
     /** Test intersection. This doesn't actually do an intersection test,
@@ -126,10 +126,10 @@ public class FigureTest extends TestSuite {
      */
     public void testIntersects() {
         runTestCase(new RegionTestCase("Figure intersects") {
-                public void run() throws Exception {
-                    result = figure.intersects(region);
-                }
-            });
+            public void run() throws Exception {
+                result = figure.intersects(region);
+            }
+        });
     }
 
     /** Test painting. This method calls both versions of the paint
@@ -146,126 +146,131 @@ public class FigureTest extends TestSuite {
         final Graphics2D g = buffer.createGraphics();
 
         runTestCase(new TestCase("Figure paint") {
-                Figure figure;
-                AffineTransform at1;
-                AffineTransform at2;
-                AffineTransform at3;
-                Rectangle2D region = new Rectangle2D.Double(10, 20, 30, 40);
+            Figure figure;
 
-                public void init() throws Exception {
-                    figure = factory.createFigure();
+            AffineTransform at1;
 
-                    AffineTransform at = new AffineTransform();
-                    at.translate(10, 20);
-                    at.scale(0.5, 2.0);
-                    figure.transform(at);
-                }
+            AffineTransform at2;
 
-                public void run() throws Exception {
-                    at1 = new AffineTransform(g.getTransform());
-                    figure.paint(g);
-                    at2 = new AffineTransform(g.getTransform());
-                    figure.paint(g, region);
-                    at3 = new AffineTransform(g.getTransform());
-                }
+            AffineTransform at3;
 
-                public void check() throws TestFailedException {
-                    assertExpr(at1.equals(at2),
-                            "Graphics2D transform changed from:\n    " + at1
-                            + " \nto:\n    " + at2);
-                    assertExpr(at2.equals(at3),
-                            "Graphics2D transform changed from:\n    " + at2
-                            + " \nto:\n    " + at3);
-                }
-            });
+            Rectangle2D region = new Rectangle2D.Double(10, 20, 30, 40);
+
+            public void init() throws Exception {
+                figure = factory.createFigure();
+
+                AffineTransform at = new AffineTransform();
+                at.translate(10, 20);
+                at.scale(0.5, 2.0);
+                figure.transform(at);
+            }
+
+            public void run() throws Exception {
+                at1 = new AffineTransform(g.getTransform());
+                figure.paint(g);
+                at2 = new AffineTransform(g.getTransform());
+                figure.paint(g, region);
+                at3 = new AffineTransform(g.getTransform());
+            }
+
+            public void check() throws TestFailedException {
+                assertExpr(at1.equals(at2),
+                        "Graphics2D transform changed from:\n    " + at1
+                                + " \nto:\n    " + at2);
+                assertExpr(at2.equals(at3),
+                        "Graphics2D transform changed from:\n    " + at2
+                                + " \nto:\n    " + at3);
+            }
+        });
 
         runTestCase(new RegionTestCase("Figure paint region test") {
-                public void run() throws Exception {
-                    figure.paint(g, region);
-                }
-            });
+            public void run() throws Exception {
+                figure.paint(g, region);
+            }
+        });
     }
 
     /** Test how transforms affect the figure
      */
     public void testTransform() {
         runTestCase(new TestCase("Figure transform") {
-                Figure figure;
-                AffineTransform at;
-                Shape shape;
-                Rectangle2D bounds;
+            Figure figure;
 
-                public void init() throws Exception {
-                    figure = factory.createFigure();
-                    at = new AffineTransform();
-                    at.translate(40, -20);
-                    at.scale(2.0, 0.5);
-                }
+            AffineTransform at;
 
-                public void run() throws Exception {
-                    shape = (Shape) figure.getShape();
-                    shape = ShapeUtilities.transformModify(shape, at);
-                    bounds = (Rectangle2D) figure.getBounds();
-                    bounds = (Rectangle2D) bounds.clone();
-                    ShapeUtilities.transformModify(bounds, at);
+            Shape shape;
 
-                    figure.transform(at);
-                }
+            Rectangle2D bounds;
 
-                public void check() throws TestFailedException {
-                    assertExpr(TestUtilities.shapeEquals(shape,
-                                       figure.getShape(), 0.01),
-                            "Shape not transformed: " + shape + " != "
-                            + figure.getShape());
+            public void init() throws Exception {
+                figure = factory.createFigure();
+                at = new AffineTransform();
+                at.translate(40, -20);
+                at.scale(2.0, 0.5);
+            }
 
-                    // For the bounds, we need to allow a large error,
-                    // because bounds don't necessarily transform correctly!
-                    // So this test is only useful for catching the most
-                    // gross errors
-                    assertExpr(TestUtilities.shapeEquals(bounds,
-                                       figure.getBounds(), 2.0),
-                            "Bounds not transformed: " + bounds + " != "
-                            + figure.getBounds());
-                }
-            });
+            public void run() throws Exception {
+                shape = (Shape) figure.getShape();
+                shape = ShapeUtilities.transformModify(shape, at);
+                bounds = (Rectangle2D) figure.getBounds();
+                bounds = (Rectangle2D) bounds.clone();
+                ShapeUtilities.transformModify(bounds, at);
+
+                figure.transform(at);
+            }
+
+            public void check() throws TestFailedException {
+                assertExpr(TestUtilities.shapeEquals(shape, figure.getShape(),
+                        0.01), "Shape not transformed: " + shape + " != "
+                        + figure.getShape());
+
+                // For the bounds, we need to allow a large error,
+                // because bounds don't necessarily transform correctly!
+                // So this test is only useful for catching the most
+                // gross errors
+                assertExpr(TestUtilities.shapeEquals(bounds,
+                        figure.getBounds(), 2.0), "Bounds not transformed: "
+                        + bounds + " != " + figure.getBounds());
+            }
+        });
     }
 
     /** Test how translates affect the figure
      */
     public void testTranslate() {
         runTestCase(new TestCase("Figure translate") {
-                Figure figure;
-                Shape shape;
-                Rectangle2D bounds;
+            Figure figure;
 
-                public void init() throws Exception {
-                    figure = factory.createFigure();
-                }
+            Shape shape;
 
-                public void run() throws Exception {
-                    shape = (Shape) figure.getShape();
-                    shape = new GeneralPath(shape);
-                    shape = ShapeUtilities.translateModify(shape, 10.0, -20.0);
-                    bounds = (Rectangle2D) figure.getBounds();
-                    bounds = (Rectangle2D) bounds.clone();
-                    bounds = (Rectangle2D) ShapeUtilities.translateModify(bounds,
-                            10.0, -20.0);
+            Rectangle2D bounds;
 
-                    figure.translate(10.0, -20.0);
-                }
+            public void init() throws Exception {
+                figure = factory.createFigure();
+            }
 
-                public void check() throws TestFailedException {
-                    assertExpr(TestUtilities.shapeEquals(shape,
-                                       figure.getShape(), 0.01),
-                            "Shape not translated: " + shape + " != "
-                            + figure.getShape());
+            public void run() throws Exception {
+                shape = (Shape) figure.getShape();
+                shape = new GeneralPath(shape);
+                shape = ShapeUtilities.translateModify(shape, 10.0, -20.0);
+                bounds = (Rectangle2D) figure.getBounds();
+                bounds = (Rectangle2D) bounds.clone();
+                bounds = (Rectangle2D) ShapeUtilities.translateModify(bounds,
+                        10.0, -20.0);
 
-                    assertExpr(TestUtilities.shapeEquals(bounds,
-                                       figure.getBounds(), 0.01),
-                            "Bounds not translated: " + bounds + " != "
-                            + figure.getBounds());
-                }
-            });
+                figure.translate(10.0, -20.0);
+            }
+
+            public void check() throws TestFailedException {
+                assertExpr(TestUtilities.shapeEquals(shape, figure.getShape(),
+                        0.01), "Shape not translated: " + shape + " != "
+                        + figure.getShape());
+
+                assertExpr(TestUtilities.shapeEquals(bounds,
+                        figure.getBounds(), 0.01), "Bounds not translated: "
+                        + bounds + " != " + figure.getBounds());
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -277,8 +282,11 @@ public class FigureTest extends TestSuite {
      */
     public abstract class RegionTestCase extends TestCase {
         Figure figure;
+
         boolean result;
+
         Rectangle2D region;
+
         Rectangle2D copy;
 
         public RegionTestCase(String str) {
@@ -302,8 +310,8 @@ public class FigureTest extends TestSuite {
         //}
         public void check() throws TestFailedException {
             assertExpr(TestUtilities.shapeEquals(region, copy, 0.01),
-                    "The region was changed from:\n    " + copy + " \nto:\n    "
-                    + region);
+                    "The region was changed from:\n    " + copy
+                            + " \nto:\n    " + region);
         }
     }
 }

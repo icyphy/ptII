@@ -1,30 +1,30 @@
 /* A tree cell renderer for ptolemy objects.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.tree;
 
 import java.awt.Component;
@@ -43,17 +43,16 @@ import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 
-
 /**
-   A tree cell renderer for Ptolemy objects.  This renderer renders
-   the icon of an object, if it has one.
+ A tree cell renderer for Ptolemy objects.  This renderer renders
+ the icon of an object, if it has one.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Revision$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Revision$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
     /** Create a new rendition for the given object.  The rendition is
      *  the default provided by the base class with the text set to
@@ -68,8 +67,8 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
             boolean selected, boolean expanded, boolean leaf, int row,
             boolean hasFocus) {
         DefaultTreeCellRenderer component = (DefaultTreeCellRenderer) super
-            .getTreeCellRendererComponent(tree, value, selected,
-                    expanded, leaf, row, hasFocus);
+                .getTreeCellRendererComponent(tree, value, selected, expanded,
+                        leaf, row, hasFocus);
 
         if (value instanceof NamedObj) {
             NamedObj object = (NamedObj) value;
@@ -113,13 +112,14 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                             icon = new XMLIcon(object, "_icon");
                             icon.setPersistent(false);
                         } else {
-                            icon = (EditorIcon) iconList.get(iconList.size()
-                                    - 1);
+                            icon = (EditorIcon) iconList
+                                    .get(iconList.size() - 1);
                         }
                     } catch (KernelException ex) {
                         throw new InternalErrorException(
-                                "could not create icon in " + object
-                                + " even though one did not previously exist.");
+                                "could not create icon in "
+                                        + object
+                                        + " even though one did not previously exist.");
                     }
 
                     // Wow.. this is a confusing line of code.. :)

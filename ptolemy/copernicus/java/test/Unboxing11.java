@@ -8,20 +8,31 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 public class Unboxing11 {
     private int _numberOfInputs;
+
     private int _numberOfLags;
+
     private int _lengthOfOutput;
+
     private boolean _symmetricOutput;
+
     private Token[] _outputs;
+
     public IntToken numberOfInputs_CGToken;
+
     public IntToken numberOfLags_CGToken;
+
     public BooleanToken biased_CGToken;
+
     public BooleanToken symmetricOutput_CGToken;
+
     public Token[] tokens;
+
     public Token token;
+
     public Token token_4_;
+
     public Token[] tokens_6_;
 
     public void fire() throws IllegalActionException {

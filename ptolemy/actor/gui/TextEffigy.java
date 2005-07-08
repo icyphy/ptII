@@ -1,29 +1,29 @@
 /* A representative of a text file.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.io.BufferedReader;
@@ -43,21 +43,20 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TextEffigy
 
 /**
-   An effigy for a text file.  If the ptolemy.user.texteditor property
-   is set to "emacs", then {@link ExternalTextEffigy} is used as an Effigy,
-   otherwise this class is used as an Effigy.
+ An effigy for a text file.  If the ptolemy.user.texteditor property
+ is set to "emacs", then {@link ExternalTextEffigy} is used as an Effigy,
+ otherwise this class is used as an Effigy.
 
-   @author Edward A. Lee, contributor Zoltan Kemenczy
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (neuendor)
-*/
+ @author Edward A. Lee, contributor Zoltan Kemenczy
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (neuendor)
+ */
 public class TextEffigy extends Effigy {
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
@@ -99,8 +98,8 @@ public class TextEffigy extends Effigy {
     public static TextEffigy newTextEffigy(CompositeEntity container,
             String text) throws Exception {
         // Create a new effigy.
-        TextEffigy effigy = new TextEffigy(container,
-                container.uniqueName("effigy"));
+        TextEffigy effigy = new TextEffigy(container, container
+                .uniqueName("effigy"));
         Document doc = new DefaultStyledDocument();
         effigy.setDocument(doc);
 
@@ -128,8 +127,8 @@ public class TextEffigy extends Effigy {
     public static TextEffigy newTextEffigy(CompositeEntity container, URL base,
             URL in) throws Exception {
         // Create a new effigy.
-        TextEffigy effigy = new TextEffigy(container,
-                container.uniqueName("effigy"));
+        TextEffigy effigy = new TextEffigy(container, container
+                .uniqueName("effigy"));
         Document doc = new DefaultStyledDocument();
         effigy.setDocument(doc);
 
@@ -145,12 +144,13 @@ public class TextEffigy extends Effigy {
                         inputStream = in.openStream();
                     } catch (NullPointerException npe) {
                         throw new IOException("Failed to open '" + in
-                                + "', base: '" + base + "' : openStream() threw a "
+                                + "', base: '" + base
+                                + "' : openStream() threw a "
                                 + "NullPointerException");
                     }
 
                     reader = new BufferedReader(new InputStreamReader(
-                                                        inputStream));
+                            inputStream));
 
                     // openStream throws an IOException, not a
                     // FileNotFoundException
@@ -161,9 +161,9 @@ public class TextEffigy extends Effigy {
                         // ptsupport.jar, then we may end up here,
                         // so we look for the file as a resource.
                         URL jarURL = ptolemy.util.ClassUtilities
-                            .jarURLEntryResource(in.toString());
+                                .jarURLEntryResource(in.toString());
                         reader = new BufferedReader(new InputStreamReader(
-                                                            jarURL.openStream()));
+                                jarURL.openStream()));
 
                         // We were able to open the URL, so update the
                         // original URL so that the title bar accurately
@@ -275,8 +275,8 @@ public class TextEffigy extends Effigy {
                 String editorPreference = ".";
 
                 try {
-                    editorPreference = System.getProperty("ptolemy.user.texteditor",
-                            ".");
+                    editorPreference = System.getProperty(
+                            "ptolemy.user.texteditor", ".");
                 } catch (SecurityException security) {
                     // Ignore, we are probably running in a sandbox
                     // or applet.
@@ -285,18 +285,15 @@ public class TextEffigy extends Effigy {
                 Class effigyClass;
 
                 if (editorPreference.equals("emacs")) {
-                    effigyClass = Class.forName(
-                            "ptolemy.actor.gui.ExternalTextEffigy");
+                    effigyClass = Class
+                            .forName("ptolemy.actor.gui.ExternalTextEffigy");
                 } else {
                     effigyClass = Class.forName("ptolemy.actor.gui.TextEffigy");
                 }
 
                 _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
-                        new Class[] {
-                            CompositeEntity.class,
-                            URL.class,
-                            URL.class
-                        });
+                        new Class[] { CompositeEntity.class, URL.class,
+                                URL.class });
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (NoSuchMethodException ex) {
@@ -336,12 +333,8 @@ public class TextEffigy extends Effigy {
                 throws Exception {
             // Create a new effigy.
             try {
-                return (Effigy) _newTextEffigyURL.invoke(null,
-                        new Object[] {
-                            container,
-                            base,
-                            in
-                        });
+                return (Effigy) _newTextEffigyURL.invoke(null, new Object[] {
+                        container, base, in });
             } catch (java.lang.reflect.InvocationTargetException ex) {
                 if (ex instanceof Exception) {
                     // Rethrow the initial cause

@@ -1,29 +1,29 @@
 /* Controller for modal models.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fsm.modal;
 
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -36,7 +36,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 // NOTE: This class duplicates code in Refinement, but
 // because of the inheritance hierarchy, there appears to be no convenient
 // way to share the code.
@@ -44,19 +43,19 @@ import ptolemy.kernel.util.Workspace;
 //// ModalController
 
 /**
-   This FSM actor supports mirroring of its ports in its container
-   (which is required to be a ModalModel), which in turn assures
-   mirroring of ports in each of the refinements.
-   <p>
-   Note that this actor has no attributes of its own.
-   Requests for attributes are delegated to the container.
+ This FSM actor supports mirroring of its ports in its container
+ (which is required to be a ModalModel), which in turn assures
+ mirroring of ports in each of the refinements.
+ <p>
+ Note that this actor has no attributes of its own.
+ Requests for attributes are delegated to the container.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class ModalController extends FSMActor {
     /** Construct a modal controller in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -136,7 +135,8 @@ public class ModalController extends FSMActor {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                    "ModalController.newPort: Internal error: " + ex.getMessage());
+                    "ModalController.newPort: Internal error: "
+                            + ex.getMessage());
         } finally {
             _mirrorDisable = false;
             _workspace.doneWriting();
@@ -166,7 +166,7 @@ public class ModalController extends FSMActor {
         if (!(container instanceof ModalModel) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "ModalController can only be contained by "
-                    + "ModalModel objects.");
+                            + "ModalModel objects.");
         }
     }
 

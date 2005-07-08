@@ -1,29 +1,29 @@
 /* A transformer that calls exit after a certain amount of time
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.kernel;
 
 import java.util.Date;
@@ -36,19 +36,18 @@ import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.SceneTransformer;
 
-
 /**
-   A transformer that calls System.exit() after a certain amount of time.
-   This transformer is useful for killing tests that are in tight loops.
-   We use a transformer instead of building this directly into the KernelMain
-   class to get parameter handling for free.
+ A transformer that calls System.exit() after a certain amount of time.
+ This transformer is useful for killing tests that are in tight loops.
+ We use a transformer instead of building this directly into the KernelMain
+ class to get parameter handling for free.
 
-   @author Stephen Neuendorffer, Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Stephen Neuendorffer, Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
     private static WatchDogTimer instance = new WatchDogTimer();
 
@@ -126,48 +125,48 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
         final long startTime = (new Date()).getTime();
 
         TimerTask doTimeToDie = new TimerTask() {
-                public void run() {
-                    try {
-                        System.err.println("WatchDogTimer went off after "
-                                + timeToDie + "ms.");
+            public void run() {
+                try {
+                    System.err.println("WatchDogTimer went off after "
+                            + timeToDie + "ms.");
 
-                        // Get the root ThreadGroup
-                        ThreadGroup parent;
+                    // Get the root ThreadGroup
+                    ThreadGroup parent;
 
-                        // Get the root ThreadGroup
-                        ThreadGroup rootGroup;
+                    // Get the root ThreadGroup
+                    ThreadGroup rootGroup;
 
-                        parent = Thread.currentThread().getThreadGroup();
+                    parent = Thread.currentThread().getThreadGroup();
 
-                        do {
-                            rootGroup = parent;
-                            parent = parent.getParent();
-                        } while (parent != null);
+                    do {
+                        rootGroup = parent;
+                        parent = parent.getParent();
+                    } while (parent != null);
 
-                        // Display all the threads
-                        Thread[] threads = new Thread[rootGroup.activeCount()];
-                        rootGroup.enumerate(threads);
+                    // Display all the threads
+                    Thread[] threads = new Thread[rootGroup.activeCount()];
+                    rootGroup.enumerate(threads);
 
-                        for (int i = 0; i < threads.length; i++) {
-                            System.err.println(i + ". " + threads[i]);
+                    for (int i = 0; i < threads.length; i++) {
+                        System.err.println(i + ". " + threads[i]);
 
-                            // It would be nice to display the stack traces,
-                            // but this is hard to do.  Thread.dumpStack()
-                            // only dumps the stack trace for the current thread.
-                            // For an idea using Thread.stop(), see
-                            // http://forum.java.sun.com/thread.jsp?forum=4&thread=178641&start=15&range=15&hilite=false&q=
-                        }
-                    } catch (Exception e) {
-                        System.err.println(e);
-                    } finally {
-                        System.out.println("WatchDogTime went off, stats: "
-                                + Manager.timeAndMemory(startTime));
-
-                        // Do not pass go, do not collect $200
-                        System.exit(4);
+                        // It would be nice to display the stack traces,
+                        // but this is hard to do.  Thread.dumpStack()
+                        // only dumps the stack trace for the current thread.
+                        // For an idea using Thread.stop(), see
+                        // http://forum.java.sun.com/thread.jsp?forum=4&thread=178641&start=15&range=15&hilite=false&q=
                     }
+                } catch (Exception e) {
+                    System.err.println(e);
+                } finally {
+                    System.out.println("WatchDogTime went off, stats: "
+                            + Manager.timeAndMemory(startTime));
+
+                    // Do not pass go, do not collect $200
+                    System.exit(4);
                 }
-            };
+            }
+        };
 
         if (_timer == null) {
             // Create the timer as a Daemon.. This way it won't prevent

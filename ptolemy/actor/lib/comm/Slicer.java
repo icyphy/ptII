@@ -1,31 +1,31 @@
 /* A Slicer, which functions as a decoder of the LineCoder
-   of complex type.
+ of complex type.
 
-   Copyright (c) 2003-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
@@ -41,29 +41,28 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Complex;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Slicer
 
 /**
-   The Slicer functions as a decoder of the LineCoder. The parameter
-   <i>table</i> and <i>wordLength</i> has the same meaning as in LineCoder,
-   except that the type of <i>table</i> is constrained to an ArrayToken
-   of complex numbers. On each firing, the Slicer consumes one complex
-   token from its input port and computes the Euclidean distance between
-   the input data and the elements in the Slicer. The actor produces
-   <i>wordLength</i> booleans on each firing. The values of these booleans
-   correspond to the index of the entry that minimizes the distance. For
-   example, if the first entry minimizes the distance, then all of these
-   values are <i>false</i>. If the second entry minimizes the distance,
-   then only the first boolean is true.
+ The Slicer functions as a decoder of the LineCoder. The parameter
+ <i>table</i> and <i>wordLength</i> has the same meaning as in LineCoder,
+ except that the type of <i>table</i> is constrained to an ArrayToken
+ of complex numbers. On each firing, the Slicer consumes one complex
+ token from its input port and computes the Euclidean distance between
+ the input data and the elements in the Slicer. The actor produces
+ <i>wordLength</i> booleans on each firing. The values of these booleans
+ correspond to the index of the entry that minimizes the distance. For
+ example, if the first entry minimizes the distance, then all of these
+ values are <i>false</i>. If the second entry minimizes the distance,
+ then only the first boolean is true.
 
-   @author Ye Zhou
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (zhouye)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Ye Zhou
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (zhouye)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class Slicer extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -78,8 +77,8 @@ public class Slicer extends Transformer {
         super(container, name);
 
         input.setTypeEquals(BaseType.COMPLEX);
-        _inputRate = new Parameter(input, "tokenConsumptionRate",
-                new IntToken(1));
+        _inputRate = new Parameter(input, "tokenConsumptionRate", new IntToken(
+                1));
         output.setTypeEquals(BaseType.BOOLEAN);
         _outputRate = new Parameter(output, "tokenProductionRate",
                 new IntToken(1));
@@ -120,8 +119,8 @@ public class Slicer extends Transformer {
 
         ComplexToken inputToken = ((ComplexToken) input.get(0));
         int index = 0;
-        double distance = _computeEuclideanDistance(_table[0],
-                inputToken.complexValue());
+        double distance = _computeEuclideanDistance(_table[0], inputToken
+                .complexValue());
 
         for (int i = 1; i < _size; i++) {
             double tempDistance = _computeEuclideanDistance(_table[i],
@@ -159,17 +158,18 @@ public class Slicer extends Transformer {
 
         if (tableToken.length() < _size) {
             /*
-              throw new IllegalActionException(this, "Table parameter must " +
-              "have at least " + _size + " entries, but only has " +
-              tableToken.length());
-            */
+             throw new IllegalActionException(this, "Table parameter must " +
+             "have at least " + _size + " entries, but only has " +
+             tableToken.length());
+             */
             _size = tableToken.length();
         }
 
         _table = new Complex[_size];
 
         for (int i = 0; i < _size; i++) {
-            _table[i] = ((ComplexToken) tableToken.getElement(i)).complexValue();
+            _table[i] = ((ComplexToken) tableToken.getElement(i))
+                    .complexValue();
         }
     }
 
@@ -187,7 +187,9 @@ public class Slicer extends Transformer {
     ////                         private variables                 ////
     // Local cache of these parameter values.
     private int _wordLength;
+
     private int _size;
+
     private Complex[] _table;
 
     // Consumption rate of the input port.

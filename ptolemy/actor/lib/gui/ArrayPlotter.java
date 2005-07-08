@@ -1,30 +1,30 @@
 /* Plot arrays of doubles.
 
-@Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.TypedIOPort;
@@ -42,40 +42,39 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Plot;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ArrayPlotter
 
 /**
-   A plotter that plots a sequence of arrays of doubles.
-   This plotter contains an instance of the Plot
-   class from the Ptolemy plot package as a public member. Data at
-   the input, which can consist of any number of channels, are plotted
-   on this instance.  Each input channel is plotted as a separate data set.
-   Each input token is an array of doubles.
-   <p>
-   The <i>iterationsPerUpdate</i> parameter can be used to fine tune
-   the display.  It can be quite expensive to generate the display, and
-   by default, this actor generates it on every firing.  If
-   <i>iterationsPerUpdate</i> is set to some integer greater than
-   one, then it specifies how many iterations should be executed
-   between updates. Thus, if <i>iterationsPerUpdate</i> = 2, then every
-   second time this actor fires, it will update the display. That is,
-   it will update its display on the first firing, the third, the
-   fifth, etc. It will, however, consume its inputs on every firing.
-   The plot is always updated in the wrapup() method.
-   <p>
-   Note that this can be used to generate live plots, like SequenceScope,
-   but it has fewer drawing artifacts than SequenceScope since it does
-   not use XOR drawing mode.
+ A plotter that plots a sequence of arrays of doubles.
+ This plotter contains an instance of the Plot
+ class from the Ptolemy plot package as a public member. Data at
+ the input, which can consist of any number of channels, are plotted
+ on this instance.  Each input channel is plotted as a separate data set.
+ Each input token is an array of doubles.
+ <p>
+ The <i>iterationsPerUpdate</i> parameter can be used to fine tune
+ the display.  It can be quite expensive to generate the display, and
+ by default, this actor generates it on every firing.  If
+ <i>iterationsPerUpdate</i> is set to some integer greater than
+ one, then it specifies how many iterations should be executed
+ between updates. Thus, if <i>iterationsPerUpdate</i> = 2, then every
+ second time this actor fires, it will update the display. That is,
+ it will update its display on the first firing, the third, the
+ fifth, etc. It will, however, consume its inputs on every firing.
+ The plot is always updated in the wrapup() method.
+ <p>
+ Note that this can be used to generate live plots, like SequenceScope,
+ but it has fewer drawing artifacts than SequenceScope since it does
+ not use XOR drawing mode.
 
-   @author  Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-   @see SequenceScope
-*/
+ @author  Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ @see SequenceScope
+ */
 public class ArrayPlotter extends Plotter implements SequenceActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -192,7 +191,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
 
                     for (int j = 0; j < currentArray.length; j++) {
                         double currentValue = ((DoubleToken) currentArray[j])
-                            .doubleValue();
+                                .doubleValue();
                         ((Plot) plot).addPoint(i + _offset, xValue,
                                 currentValue, true);
                         xValue += _xUnit;
@@ -203,7 +202,8 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
 
         _iteration++;
 
-        if (_iteration == ((IntToken) iterationsPerUpdate.getToken()).intValue()) {
+        if (_iteration == ((IntToken) iterationsPerUpdate.getToken())
+                .intValue()) {
             _iteration = 0;
         }
 
@@ -228,7 +228,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
 
                     for (int j = 0; j < currentArray.length; j++) {
                         double currentValue = ((DoubleToken) currentArray[j])
-                            .doubleValue();
+                                .doubleValue();
                         ((Plot) plot).addPoint(i + _offset, xValue,
                                 currentValue, true);
                         xValue += _xUnit;

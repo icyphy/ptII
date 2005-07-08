@@ -1,84 +1,83 @@
 /* A FixPoint data type.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.math;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FixPoint
 
 /**
-   The FixPoint class provides a fixed point data type and a set of functions
-   that operate on and return fixed point data. An instance of the class
-   is immutable, meaning that its value is set in the constructor and
-   cannot then be modified.  This is similar to the Java built-in classes
-   like Double, Integer, etc.
-   <p>
-   The FixPoint class represents signed numbers in a two's-complement
-   format with unlimited dynamic range and a resolution defined by a finite
-   number of fractional bits.
-   <p>
-   Because a fixed point data type uses a finite number of bits to
-   represent a value, a real value is converted to a number that
-   can be expressed with a given precision of the fixed point, thereby
-   introducing a quantization error. The overflow and rounding strategies
-   used for this quantization are defined by a Quantization instance.
-   <p>
-   The design of the FixPoint class complies with a philosophy that all
-   operators work losslessly, i.e. the fractional precision of the result
-   is determined such there is no loss of precision.
-   These changes are different for the various operations.
-   <p>
-   Violations of the loss-less philosophy occur during construction, division
-   and conversion to floating point. During construction from floating point
-   values, the nearest fixed point representation is created. The preferred
-   divide operator provides for explicit specification of the quantization.
-   A deprecated divide operator guesses at the result precision.
-   Conversion to floating point is limited by the available floating point
-   accuracy.
-   <p>
-   The FixPoint implementation uses the Java class BigInteger to represent the
-   finite value and so this implementation is truly platform independent.
-   Note that the FixPoint does not put any restrictions on the maximum number
-   of bits in the representation of a value.
+ The FixPoint class provides a fixed point data type and a set of functions
+ that operate on and return fixed point data. An instance of the class
+ is immutable, meaning that its value is set in the constructor and
+ cannot then be modified.  This is similar to the Java built-in classes
+ like Double, Integer, etc.
+ <p>
+ The FixPoint class represents signed numbers in a two's-complement
+ format with unlimited dynamic range and a resolution defined by a finite
+ number of fractional bits.
+ <p>
+ Because a fixed point data type uses a finite number of bits to
+ represent a value, a real value is converted to a number that
+ can be expressed with a given precision of the fixed point, thereby
+ introducing a quantization error. The overflow and rounding strategies
+ used for this quantization are defined by a Quantization instance.
+ <p>
+ The design of the FixPoint class complies with a philosophy that all
+ operators work losslessly, i.e. the fractional precision of the result
+ is determined such there is no loss of precision.
+ These changes are different for the various operations.
+ <p>
+ Violations of the loss-less philosophy occur during construction, division
+ and conversion to floating point. During construction from floating point
+ values, the nearest fixed point representation is created. The preferred
+ divide operator provides for explicit specification of the quantization.
+ A deprecated divide operator guesses at the result precision.
+ Conversion to floating point is limited by the available floating point
+ accuracy.
+ <p>
+ The FixPoint implementation uses the Java class BigInteger to represent the
+ finite value and so this implementation is truly platform independent.
+ Note that the FixPoint does not put any restrictions on the maximum number
+ of bits in the representation of a value.
 
-   @author Bart Kienhuis, Ed Willink, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.4, rewritten for Ptolemy II 2.2
-   @Pt.ProposedRating Red (Ed.Willink)
-   @Pt.AcceptedRating Red
-   @see Precision
-   @see Quantization
-*/
+ @author Bart Kienhuis, Ed Willink, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.4, rewritten for Ptolemy II 2.2
+ @Pt.ProposedRating Red (Ed.Willink)
+ @Pt.AcceptedRating Red
+ @see Precision
+ @see Quantization
+ */
 public class FixPoint implements Cloneable, Serializable {
     // For compatibility with an earlier implementation and in order to
     // support the current use of a FixPoint as a type exemplar, a FixPoint
@@ -261,7 +260,7 @@ public class FixPoint implements Cloneable, Serializable {
         int extraBits = _frac_bits - arg._frac_bits + fracBits;
         BigInteger num = (extraBits > 0) ? _value.shiftLeft(extraBits) : _value;
         BigInteger denom = (extraBits < 0) ? arg._value.shiftLeft(-extraBits)
-            : arg._value;
+                : arg._value;
 
         try {
             BigInteger[] result = num.divideAndRemainder(denom);
@@ -271,8 +270,8 @@ public class FixPoint implements Cloneable, Serializable {
                     fracBits);
         } catch (ArithmeticException e) {
             Overflow anOverflow = quant.getOverflow();
-            BigInteger infinity = (_value.signum() >= 0)
-                ? anOverflow.plusInfinity(quant) : anOverflow.minusInfinity(quant);
+            BigInteger infinity = (_value.signum() >= 0) ? anOverflow
+                    .plusInfinity(quant) : anOverflow.minusInfinity(quant);
 
             if (infinity != null) {
                 return new FixPoint(infinity, intBits, fracBits);

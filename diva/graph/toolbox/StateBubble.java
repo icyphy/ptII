@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.graph.toolbox;
 
 import java.awt.BasicStroke;
@@ -38,7 +38,6 @@ import java.awt.geom.Rectangle2D;
 import diva.canvas.AbstractFigure;
 import diva.util.java2d.PaintedShape;
 import diva.util.java2d.ShapeUtilities;
-
 
 /** A Figure that is customized for representing state bubbles.
  *
@@ -203,10 +202,11 @@ public class StateBubble extends AbstractFigure {
         case INITIAL_STATE:
 
             Ellipse2D bounds = (Ellipse2D) _outsideEllipse.shape;
-            Shape s = new Ellipse2D.Double(bounds.getX() + _spacing,
-                    bounds.getY() + _spacing,
-                    bounds.getWidth() - (2 * _spacing),
-                    bounds.getHeight() - (2 * _spacing));
+            Shape s = new Ellipse2D.Double(bounds.getX() + _spacing, bounds
+                    .getY()
+                    + _spacing, bounds.getWidth() - (2 * _spacing), bounds
+                    .getHeight()
+                    - (2 * _spacing));
 
             _insideEllipse = new PaintedShape(s);
             _outsideEllipse.setLineWidth(1);
@@ -248,12 +248,12 @@ public class StateBubble extends AbstractFigure {
      */
     public void transform(AffineTransform at) {
         repaint();
-        _outsideEllipse.shape = ShapeUtilities.transformModify(_outsideEllipse.shape,
-                at);
+        _outsideEllipse.shape = ShapeUtilities.transformModify(
+                _outsideEllipse.shape, at);
 
         if (_insideEllipse != null) {
-            _insideEllipse.shape = ShapeUtilities.transformModify(_insideEllipse.shape,
-                    at);
+            _insideEllipse.shape = ShapeUtilities.transformModify(
+                    _insideEllipse.shape, at);
         }
 
         repaint();
@@ -269,12 +269,12 @@ public class StateBubble extends AbstractFigure {
      */
     public void translate(double x, double y) {
         repaint();
-        _outsideEllipse.shape = ShapeUtilities.translateModify(_outsideEllipse.shape,
-                x, y);
+        _outsideEllipse.shape = ShapeUtilities.translateModify(
+                _outsideEllipse.shape, x, y);
 
         if (_insideEllipse != null) {
-            _insideEllipse.shape = ShapeUtilities.translateModify(_insideEllipse.shape,
-                    x, y);
+            _insideEllipse.shape = ShapeUtilities.translateModify(
+                    _insideEllipse.shape, x, y);
         }
 
         repaint();

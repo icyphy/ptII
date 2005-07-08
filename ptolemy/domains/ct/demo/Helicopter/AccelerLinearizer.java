@@ -1,30 +1,30 @@
 /* Linearization of the Acceler mode.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.demo.Helicopter;
 
 import java.util.StringTokenizer;
@@ -40,20 +40,19 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AccelerLinearizer
 
 /**
-   Linearization of the Acceler mode
-   Vx = -a0(Px-CPx)-a1*DPx-a2*DDPx-a3*D3Px-a4*D4Px
-   Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
-   @author  Jie Liu
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ Linearization of the Acceler mode
+ Vx = -a0(Px-CPx)-a1*DPx-a2*DDPx-a3*D3Px-a4*D4Px
+ Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
+ @author  Jie Liu
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class AccelerLinearizer extends TypedAtomicActor {
     /** Constructor
      */
@@ -175,7 +174,7 @@ public class AccelerLinearizer extends TypedAtomicActor {
      *        when needed.
      */
     public void fire() throws IllegalActionException {
-        /* double Px = */ ((DoubleToken) inputPx.get(0)).doubleValue();
+        /* double Px = */((DoubleToken) inputPx.get(0)).doubleValue();
 
         double DPx = ((DoubleToken) inputDPx.get(0)).doubleValue();
         double DDPx = ((DoubleToken) inputDDPx.get(0)).doubleValue();
@@ -188,11 +187,11 @@ public class AccelerLinearizer extends TypedAtomicActor {
         double D3Pz = ((DoubleToken) inputD3Pz.get(0)).doubleValue();
         double D4Pz = ((DoubleToken) inputD4Pz.get(0)).doubleValue();
 
-        double Vx = -1.0 * ((_alphaA[0] * (DDPx - _cAx)) + (_alphaA[1] * D3Px)
-                + (_alphaA[2] * D4Px));
-        double Vz = -1.0 * ((_alphaP[0] * (Pz - _cPz)) + (_alphaP[1] * DPz)
-                + (_alphaP[2] * DDPz) + (_alphaP[3] * D3Pz)
-                + (_alphaP[4] * D4Pz));
+        double Vx = -1.0
+                * ((_alphaA[0] * (DDPx - _cAx)) + (_alphaA[1] * D3Px) + (_alphaA[2] * D4Px));
+        double Vz = -1.0
+                * ((_alphaP[0] * (Pz - _cPz)) + (_alphaP[1] * DPz)
+                        + (_alphaP[2] * DDPz) + (_alphaP[3] * D3Pz) + (_alphaP[4] * D4Pz));
 
         double V = Math.sqrt((DPx * DPx) + (DPz * DPz));
         double R = Math.PI / 2.0;
@@ -326,18 +325,11 @@ public class AccelerLinearizer extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private double[] _alphaP = {
-        500.0,
-        650.0,
-        395.0,
-        121.0,
-        17.8
-    };
-    private double[] _alphaA = {
-        20.0000,
-        18.0000,
-        7.8000
-    };
+    private double[] _alphaP = { 500.0, 650.0, 395.0, 121.0, 17.8 };
+
+    private double[] _alphaA = { 20.0000, 18.0000, 7.8000 };
+
     private double _cAx;
+
     private double _cPz;
 }

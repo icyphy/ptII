@@ -1,31 +1,31 @@
 /** A token that contains a FixPoint number.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCL5AIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCL5AIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -43,24 +43,23 @@ import ptolemy.math.Precision;
 import ptolemy.math.Quantization;
 import ptolemy.math.Rounding;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FixToken
 
 /**
-   A token that contains an instance of FixPoint.
+ A token that contains an instance of FixPoint.
 
-   @author Bart Kienhuis, Edward A. Lee, Steve Neuendorffer Ed Willink
-   @see ptolemy.data.Token
-   @see ptolemy.math.FixPoint
-   @see ptolemy.math.FixPointQuantization
-   @see ptolemy.math.Precision
-   @see ptolemy.math.Quantization
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (kienhuis)
-   @Pt.AcceptedRating Yellow (kienhuis)
-*/
+ @author Bart Kienhuis, Edward A. Lee, Steve Neuendorffer Ed Willink
+ @see ptolemy.data.Token
+ @see ptolemy.math.FixPoint
+ @see ptolemy.math.FixPointQuantization
+ @see ptolemy.math.Precision
+ @see ptolemy.math.Quantization
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (kienhuis)
+ @Pt.AcceptedRating Yellow (kienhuis)
+ */
 public class FixToken extends ScalarToken {
     /** Construct a FixToken with the supplied FixPoint value.
      *  @param value A FixPoint value.
@@ -160,12 +159,12 @@ public class FixToken extends ScalarToken {
         int compare = TypeLattice.compare(BaseType.FIX, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "fix"));
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(token, "fix"));
         }
 
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "fix"));
+                "fix"));
     }
 
     /** Return the fixed point value of this token as a double. The
@@ -259,7 +258,7 @@ public class FixToken extends ScalarToken {
     public String toString() {
         Precision precision = _value.getPrecision();
         return "fix(" + _value.toString() + "," + precision.getNumberOfBits()
-            + "," + precision.getIntegerBitLength() + ")";
+                + "," + precision.getIntegerBitLength() + ")";
     }
 
     /** Return a new token representing the additive identity with
@@ -306,7 +305,7 @@ public class FixToken extends ScalarToken {
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
-                                                 this, rightArgument));
+                this, rightArgument));
     }
 
     /** Returns a token representing the bitwise NOT of this token.
@@ -317,7 +316,7 @@ public class FixToken extends ScalarToken {
      */
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
-                                                 this, this));
+                this, this));
     }
 
     /** Returns a token representing the bitwise OR of this token and
@@ -330,7 +329,7 @@ public class FixToken extends ScalarToken {
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Returns a token representing the bitwise XOR of this token and
@@ -343,7 +342,7 @@ public class FixToken extends ScalarToken {
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseXor",
-                                                 this, rightArgument));
+                this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -403,8 +402,9 @@ public class FixToken extends ScalarToken {
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         FixToken convertedArgument = (FixToken) rightArgument;
-        return BooleanToken.getInstance(_value.doubleValue() < convertedArgument.fixValue()
-                .doubleValue());
+        return BooleanToken
+                .getInstance(_value.doubleValue() < convertedArgument
+                        .fixValue().doubleValue());
     }
 
     /** Return a new token whose value is the value of this token
@@ -419,7 +419,7 @@ public class FixToken extends ScalarToken {
     protected ScalarToken _modulo(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -429,7 +429,8 @@ public class FixToken extends ScalarToken {
      *  @return A new FixToken containing the result.
      */
     protected ScalarToken _multiply(ScalarToken rightArgument) {
-        FixPoint result = _value.multiply(((FixToken) rightArgument).fixValue());
+        FixPoint result = _value
+                .multiply(((FixToken) rightArgument).fixValue());
         return new FixToken(result);
     }
 
@@ -450,7 +451,8 @@ public class FixToken extends ScalarToken {
      *  @return A new FixToken containing the result.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        FixPoint result = _value.subtract(((FixToken) rightArgument).fixValue());
+        FixPoint result = _value
+                .subtract(((FixToken) rightArgument).fixValue());
         return new FixToken(result);
     }
 

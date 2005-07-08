@@ -1,54 +1,53 @@
 /** An interface defining the operations on a complete partial order (CPO).
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.graph;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// CPO
 
 /**
-   An interface defining the operations on complete partial order (CPO).
-   The definitions of these operations can be found in "Introduction to
-   Lattices and Order," Cambridge University Press, 1990, by B. A. Davey
-   and H. A. Priestley. Informal definitions are given in the code comments.
+ An interface defining the operations on complete partial order (CPO).
+ The definitions of these operations can be found in "Introduction to
+ Lattices and Order," Cambridge University Press, 1990, by B. A. Davey
+ and H. A. Priestley. Informal definitions are given in the code comments.
 
-   Each element in the CPO is represented by an Object.
-   For infinite CPOs, the result of some of the operations may be an
-   infinite set, in which case, the class implementing those operations
-   can throw an Exception.
+ Each element in the CPO is represented by an Object.
+ For infinite CPOs, the result of some of the operations may be an
+ infinite set, in which case, the class implementing those operations
+ can throw an Exception.
 
-   @author Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (yuhong)
-   @Pt.AcceptedRating Green (kienhuis)
-*/
+ @author Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (yuhong)
+ @Pt.AcceptedRating Green (kienhuis)
+ */
 public interface CPO {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

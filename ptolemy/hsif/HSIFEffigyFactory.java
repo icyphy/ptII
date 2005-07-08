@@ -1,31 +1,31 @@
 /* An object that can create a new Effigy from an HSIF file.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.hsif;
 
 import java.io.BufferedReader;
@@ -45,21 +45,20 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// EffigyFactory
 
 /**
-   An object that can create a new Effigy from an HSIF file.
-   An HSIF filename can end with either .xml or .hsif
-   @author Haiyang Zheng, Edward A. Lee, Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.2
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.actor.gui.Configuration
-   @see Effigy
-*/
+ An object that can create a new Effigy from an HSIF file.
+ An HSIF filename can end with either .xml or .hsif
+ @author Haiyang Zheng, Edward A. Lee, Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.2
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.actor.gui.Configuration
+ @see Effigy
+ */
 public class HSIFEffigyFactory extends EffigyFactory {
     /** Create a factory with the given name and container.
      *  @param container The container.
@@ -137,7 +136,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
                 }
 
                 String temporaryOutputFileName = inputDirectoryBaseName
-                    + "_moml.xml";
+                        + "_moml.xml";
 
                 // Try to open the output file before we go through
                 // the trouble of ding the conversion.
@@ -199,12 +198,13 @@ public class HSIFEffigyFactory extends EffigyFactory {
                 outputFileWriter.close();
                 System.out.println(" Done");
 
-                URL temporaryOutputURL = MoMLApplication.specToURL(temporaryOutputFileName);
+                URL temporaryOutputURL = MoMLApplication
+                        .specToURL(temporaryOutputFileName);
 
                 // Note that createEffigy might end up substituting %20
                 // for spaces.
-                Effigy effigy = ((EffigyFactory) getContainer()).createEffigy(container,
-                        temporaryOutputURL, temporaryOutputURL);
+                Effigy effigy = ((EffigyFactory) getContainer()).createEffigy(
+                        container, temporaryOutputURL, temporaryOutputURL);
 
                 effigy.identifier.setExpression(temporaryOutputURL.toString());
                 return effigy;
@@ -243,7 +243,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
         }
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(
-                                                           inputStream));
+                inputStream));
 
         String inputLine;
 

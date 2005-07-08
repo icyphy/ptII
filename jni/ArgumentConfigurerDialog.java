@@ -1,30 +1,30 @@
 /* A top-level dialog window for configuring the arguments of an entity.
-   Largely inspired of PortConfigurerDialog
+ Largely inspired of PortConfigurerDialog
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package jni;
 
 import java.awt.Frame;
@@ -46,25 +46,24 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ArgumentConfigurerDialog
 
 /**
-   This class is a modal dialog box for configuring the arguments of an entity.
-   An instance of this class contains an instance of ArgumentConfigurer.
-   The dialog is modal, so the statement that creates the dialog will
-   not return until the user dismisses the dialog.
+ This class is a modal dialog box for configuring the arguments of an entity.
+ An instance of this class contains an instance of ArgumentConfigurer.
+ The dialog is modal, so the statement that creates the dialog will
+ not return until the user dismisses the dialog.
 
-   @see ArgumentConfigurer
-   @author Edward A. Lee, V.Arnould
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Yellow (vincent.arnould)
-   @Pt.AcceptedRating Red (vincent.arnould)
-*/
-public class ArgumentConfigurerDialog extends ComponentDialog
-    implements ChangeListener {
+ @see ArgumentConfigurer
+ @author Edward A. Lee, V.Arnould
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Yellow (vincent.arnould)
+ @Pt.AcceptedRating Red (vincent.arnould)
+ */
+public class ArgumentConfigurerDialog extends ComponentDialog implements
+        ChangeListener {
     /** Construct a dialog with the specified owner and target.
      *  Several buttons are added to the dialog.
      *  The dialog is placed relative to the owner.
@@ -121,11 +120,13 @@ public class ArgumentConfigurerDialog extends ComponentDialog
                 String argumentName = query.getStringValue("delete");
 
                 if (argumentName != null) {
-                    Argument argument = ((GenericJNIActor) _target).getArgument(argumentName);
+                    Argument argument = ((GenericJNIActor) _target)
+                            .getArgument(argumentName);
 
                     if (argument != null) {
                         try {
-                            ((GenericJNIActor) _target)._removeArgument(argument);
+                            ((GenericJNIActor) _target)
+                                    ._removeArgument(argument);
                         } catch (Exception e) {
                             MessageHandler.error("Unable to remove argument '"
                                     + argument + "'.", e);
@@ -137,7 +138,7 @@ public class ArgumentConfigurerDialog extends ComponentDialog
                         // immediate parent if there is none.
                         NamedObj container = (NamedObj) argument.getContainer();
                         String moml = "<deleteProperty name=\""
-                            + argument.getName() + "\"/>\n";
+                                + argument.getName() + "\"/>\n";
 
                         ChangeRequest request = new MoMLChangeRequest(this,
                                 container, moml);
@@ -152,12 +153,13 @@ public class ArgumentConfigurerDialog extends ComponentDialog
             // Having the documentation in a different package hierarchy
             // adds package dependencies, which makes it harder to ship
             // packages.
-            URL toRead = getClass().getClassLoader().getResource("ptolemy/actor/gui/doc/argDialog.htm");
+            URL toRead = getClass().getClassLoader().getResource(
+                    "ptolemy/actor/gui/doc/argDialog.htm");
 
             if ((toRead != null) && (configuration != null)) {
                 try {
-                    configuration.openModel(null, toRead,
-                            toRead.toExternalForm());
+                    configuration.openModel(null, toRead, toRead
+                            .toExternalForm());
                 } catch (Exception ex) {
                     MessageHandler.error("Help screen failure", ex);
                 }
@@ -230,8 +232,8 @@ public class ArgumentConfigurerDialog extends ComponentDialog
      *  @return The dialog that is created.
      */
     private ComponentDialog _openAddDialog(String message, String name,
-            String defValue, String cType)
-            throws IllegalActionException, NameDuplicationException {
+            String defValue, String cType) throws IllegalActionException,
+            NameDuplicationException {
         // Create a new dialog to add an argument, then open a new
         // ArgumentConfigurerDialog.
         //name = "new ";
@@ -274,8 +276,8 @@ public class ArgumentConfigurerDialog extends ComponentDialog
             argument.setExpression();
 
             String moml = "<property name=\"" + argument.getName()
-                + "\" value=\"" + argument.getExpression() + "\"" + " class=\""
-                + "jni.Argument" + "\"/>";
+                    + "\" value=\"" + argument.getExpression() + "\""
+                    + " class=\"" + "jni.Argument" + "\"/>";
             _target.addChangeListener(this);
             _target.requestChange(new MoMLChangeRequest(this, _target, moml));
         }
@@ -292,13 +294,8 @@ public class ArgumentConfigurerDialog extends ComponentDialog
 
     /** Button labels.
      */
-    private static String[] _moreButtons = {
-        "Commit",
-        "Add",
-        "Remove",
-        "Help",
-        "Cancel"
-    };
+    private static String[] _moreButtons = { "Commit", "Add", "Remove", "Help",
+            "Cancel" };
 
     /** The owner window.
      */
@@ -314,9 +311,5 @@ public class ArgumentConfigurerDialog extends ComponentDialog
 
     /** Possible configurations.
      */
-    private String[] _optionsArray = {
-        "input",
-        "ouput",
-        "return"
-    };
+    private String[] _optionsArray = { "input", "ouput", "return" };
 }

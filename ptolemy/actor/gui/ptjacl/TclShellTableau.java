@@ -1,29 +1,29 @@
 /* A tableau for evaluating Tcl expression interactively.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui.ptjacl;
 
 import java.awt.BorderLayout;
@@ -45,20 +45,19 @@ import tcl.lang.Interp;
 import tcl.lang.ReflectObject;
 import tcl.lang.TclException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TclShellTableau
 
 /**
-   A tableau that provides a Tcl Shell for interacting with Ptjacl,
-   a 100% Java implementation of Tcl
+ A tableau that provides a Tcl Shell for interacting with Ptjacl,
+ a 100% Java implementation of Tcl
 
-   @author Christopher Hylands and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class TclShellTableau extends Tableau implements ShellInterpreter {
     /** Create a new tableau.
      *  The tableau is itself an entity contained by the effigy
@@ -80,20 +79,19 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
 
         try {
             //
-            _tclInterp.setVar("panelShell",
-                    ReflectObject.newInstance(_tclInterp, ShellTextArea.class,
-                            frame._shellTextArea), 0);
+            _tclInterp.setVar("panelShell", ReflectObject.newInstance(
+                    _tclInterp, ShellTextArea.class, frame._shellTextArea), 0);
             _tclInterp.eval("proc puts {s} {" + "global panelShell; "
                     + "$panelShell appendJTextArea $s\\n}");
 
             // FIXME: what about user initializations in ~/.tclrc?
             // Source Ptolemy specific initializations.
-            _tclInterp.eval(
-                    "if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
+            _tclInterp
+                    .eval("if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
         } catch (TclException ex) {
             throw new IllegalActionException(this, ex,
                     "Could not initialize the " + "tcl interpreter:\n"
-                    + _tclInterp.getResult().toString());
+                            + _tclInterp.getResult().toString());
         }
     }
 
@@ -145,8 +143,8 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
          */
-        public TclShellFrame(Tableau tableau)
-                throws IllegalActionException, NameDuplicationException {
+        public TclShellFrame(Tableau tableau) throws IllegalActionException,
+                NameDuplicationException {
             super(tableau);
 
             JPanel component = new JPanel();
@@ -163,7 +161,8 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
         ////                         protected methods                 ////
         protected void _help() {
             try {
-                URL doc = getClass().getClassLoader().getResource("ptolemy/actor/gui/ptjacl/help.htm");
+                URL doc = getClass().getClassLoader().getResource(
+                        "ptolemy/actor/gui/ptjacl/help.htm");
                 getConfiguration().openModel(null, doc, doc.toExternalForm());
             } catch (Exception ex) {
                 System.out.println("TclShellTableau._help(): " + ex);

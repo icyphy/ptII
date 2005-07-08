@@ -1,30 +1,30 @@
 /* A text area for shell-style interactions.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.gui;
 
 import java.awt.BorderLayout;
@@ -48,19 +48,18 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ShellTextArea
 
 /**
-   A text area supporting shell-style interactions.
+ A text area supporting shell-style interactions.
 
-   @author John Reekie, Christopher Hylands, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author John Reekie, Christopher Hylands, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class ShellTextArea extends JPanel {
     /** Create a new instance with no initial message.
      */
@@ -84,8 +83,8 @@ public class ShellTextArea extends JPanel {
         JScrollPane jScrollPane = new JScrollPane(_jTextArea);
         add(jScrollPane);
 
-        setBorder(BorderFactory.createTitledBorder(
-                          BorderFactory.createLineBorder(Color.black), ""));
+        setBorder(BorderFactory.createTitledBorder(BorderFactory
+                .createLineBorder(Color.black), ""));
 
         // Event handling
         _jTextArea.addKeyListener(new ShellKeyListener());
@@ -111,18 +110,18 @@ public class ShellTextArea extends JPanel {
      */
     public void appendJTextArea(final String text) {
         Runnable doAppendJTextArea = new Runnable() {
-                public void run() {
-                    _jTextArea.append(text);
+            public void run() {
+                _jTextArea.append(text);
 
-                    // Scroll down as we generate text.
-                    _jTextArea.setCaretPosition(_jTextArea.getText().length());
+                // Scroll down as we generate text.
+                _jTextArea.setCaretPosition(_jTextArea.getText().length());
 
-                    // To prevent _promptCursor from being
-                    // updated before the JTextArea is actually updated,
-                    // this needs to be inside the Runnable.
-                    _promptCursor += text.length();
-                }
-            };
+                // To prevent _promptCursor from being
+                // updated before the JTextArea is actually updated,
+                // this needs to be inside the Runnable.
+                _promptCursor += text.length();
+            }
+        };
 
         SwingUtilities.invokeLater(doAppendJTextArea);
     }
@@ -133,12 +132,12 @@ public class ShellTextArea extends JPanel {
      */
     public void clearJTextArea() {
         Runnable doClearJTextArea = new Runnable() {
-                public void run() {
-                    _jTextArea.setText("");
-                    _jTextArea.setCaretPosition(0);
-                    _promptCursor = 0;
-                }
-            };
+            public void run() {
+                _jTextArea.setText("");
+                _jTextArea.setCaretPosition(0);
+                _promptCursor = 0;
+            }
+        };
 
         SwingUtilities.invokeLater(doClearJTextArea);
     }
@@ -180,10 +179,10 @@ public class ShellTextArea extends JPanel {
     public static void main(String[] args) {
         JFrame jFrame = new JFrame("ShellTextArea Example");
         WindowListener windowListener = new WindowAdapter() {
-                public void windowClosing(WindowEvent e) {
-                    System.exit(0);
-                }
-            };
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        };
 
         jFrame.addWindowListener(windowListener);
 
@@ -201,10 +200,10 @@ public class ShellTextArea extends JPanel {
     public void replaceRangeJTextArea(final String text, final int start,
             final int end) {
         Runnable doReplaceRangeJTextArea = new Runnable() {
-                public void run() {
-                    _jTextArea.replaceRange(text, start, end);
-                }
-            };
+            public void run() {
+                _jTextArea.replaceRange(text, start, end);
+            }
+        };
 
         SwingUtilities.invokeLater(doReplaceRangeJTextArea);
     }
@@ -218,13 +217,13 @@ public class ShellTextArea extends JPanel {
     public void returnResult(final String result) {
         // Make the text area editable again.
         Runnable doMakeEditable = new Runnable() {
-                public void run() {
-                    setEditable(true);
+            public void run() {
+                setEditable(true);
 
-                    String toPrint = result + "\n" + mainPrompt;
-                    appendJTextArea(toPrint);
-                }
-            };
+                String toPrint = result + "\n" + mainPrompt;
+                appendJTextArea(toPrint);
+            }
+        };
 
         SwingUtilities.invokeLater(doMakeEditable);
     }
@@ -340,8 +339,8 @@ public class ShellTextArea extends JPanel {
                     - _historyCursor - 1);
         }
 
-        replaceRangeJTextArea(text, _promptCursor,
-                _jTextArea.getText().length());
+        replaceRangeJTextArea(text, _promptCursor, _jTextArea.getText()
+                .length());
     }
 
     // Replace the command with an entry from the history.
@@ -356,8 +355,8 @@ public class ShellTextArea extends JPanel {
                     - _historyCursor);
         }
 
-        replaceRangeJTextArea(text, _promptCursor,
-                _jTextArea.getText().length());
+        replaceRangeJTextArea(text, _promptCursor, _jTextArea.getText()
+                .length());
     }
 
     // Update the command history.
@@ -384,6 +383,7 @@ public class ShellTextArea extends JPanel {
 
     // History
     private int _historyCursor = 0;
+
     private Vector _historyCommands = new Vector();
 
     // The initial message, if there is one.
@@ -416,7 +416,8 @@ public class ShellTextArea extends JPanel {
 
                 break;
 
-            default:}
+            default:
+            }
         }
 
         public void keyReleased(KeyEvent keyEvent) {
@@ -429,7 +430,8 @@ public class ShellTextArea extends JPanel {
 
                 break;
 
-            default:}
+            default:
+            }
         }
 
         public void keyPressed(KeyEvent keyEvent) {
@@ -500,14 +502,15 @@ public class ShellTextArea extends JPanel {
                         keyEvent.consume();
                         break;
 
-                    default:}
+                    default:
+                    }
 
                     break;
 
                 default:
-                    // Otherwise we got a regular character.
-                    // Don't consume it, and TextArea will
-                    // take care of displaying it.
+                // Otherwise we got a regular character.
+                // Don't consume it, and TextArea will
+                // take care of displaying it.
                 }
             }
         }

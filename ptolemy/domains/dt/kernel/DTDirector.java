@@ -1,30 +1,30 @@
 /* Discrete Time (DT) domain director.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.dt.kernel;
 
 import java.util.ArrayList;
@@ -67,128 +67,127 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DTDirector
 
 /**
-   The Discrete Time (DT) domain director.
+ The Discrete Time (DT) domain director.
 
-   <h1>DT overview</h1>
+ <h1>DT overview</h1>
 
-   The Discrete Time (DT) domain is a timed extension of the Synchronous
-   Dataflow (SDF) domain.  Like SDF, it has static scheduling of the
-   dataflow graph model. Similarly, DT requires that the data rates on
-   the ports of all actors be known beforehand and fixed. DT handles
-   feedback systems in the same way that SDF does, but with additional
-   constraints on initial tokens.  <p>
+ The Discrete Time (DT) domain is a timed extension of the Synchronous
+ Dataflow (SDF) domain.  Like SDF, it has static scheduling of the
+ dataflow graph model. Similarly, DT requires that the data rates on
+ the ports of all actors be known beforehand and fixed. DT handles
+ feedback systems in the same way that SDF does, but with additional
+ constraints on initial tokens.  <p>
 
-   <h1>Local and Global Time</h1>
+ <h1>Local and Global Time</h1>
 
-   Because of the inherent concurrency occurring within SDF models, there
-   are two notions of time in DT -- global time and local time.  Global
-   time increases steadily as execution progresses.  Moreover, global
-   time increases by fixed discrete amounts given by the <i>period</i>
-   parameter. On the other hand, each receiver is associated with an
-   independent local time. All the receivers have distinct local times as
-   an iteration proceeds. The local time of a receiver during an
-   iteration depends on the global time, period, firing count, port
-   rates, and the schedule. These local times obey the following
-   constraint:
+ Because of the inherent concurrency occurring within SDF models, there
+ are two notions of time in DT -- global time and local time.  Global
+ time increases steadily as execution progresses.  Moreover, global
+ time increases by fixed discrete amounts given by the <i>period</i>
+ parameter. On the other hand, each receiver is associated with an
+ independent local time. All the receivers have distinct local times as
+ an iteration proceeds. The local time of a receiver during an
+ iteration depends on the global time, period, firing count, port
+ rates, and the schedule. These local times obey the following
+ constraint:
 
-   <center>Global Time  <=  Local Time <= (Global Time + period)</center>
+ <center>Global Time  <=  Local Time <= (Global Time + period)</center>
 
-   The exact way that local time increments during an iteration is described in
-   detail in the DTReceiver documentation.
-   <p>
-   <h1> Period Parameter </h1><p>
+ The exact way that local time increments during an iteration is described in
+ detail in the DTReceiver documentation.
+ <p>
+ <h1> Period Parameter </h1><p>
 
-   The DT director has a <i>period</i> parameter which specifies the
-   amount of time per iteration. For hierarchical DT, this period
-   parameter only makes sense on the top-level. The user cannot
-   explicitly set the period parameter for a DT subsystem inside another
-   DT system. For heterogeneous hierarchies (e.g. DT inside DE or DT
-   inside CT), the period parameter specifies the time interval between
-   firings of the DT subsystem. The DT subsystem will not fire on times
-   that are not integer multiples of the period parameter.
+ The DT director has a <i>period</i> parameter which specifies the
+ amount of time per iteration. For hierarchical DT, this period
+ parameter only makes sense on the top-level. The user cannot
+ explicitly set the period parameter for a DT subsystem inside another
+ DT system. For heterogeneous hierarchies (e.g. DT inside DE or DT
+ inside CT), the period parameter specifies the time interval between
+ firings of the DT subsystem. The DT subsystem will not fire on times
+ that are not integer multiples of the period parameter.
 
-   <p>.
-   <h1>DT Features</h1>
-   The design of the DT domain is motivated by the following criteria:
-   <OL>
+ <p>.
+ <h1>DT Features</h1>
+ The design of the DT domain is motivated by the following criteria:
+ <OL>
 
-   <LI>) Uniform Token Flow: The time interval between tokens should be
-   regular and unchanging.  This conforms to the idea of having sampled
-   systems with fixed rates. Although the tokens flowing in DT do not
-   keep internal time stamps, each actor can query the DT director for
-   its own local time.  This local time is uniformly increasing by a
-   constant fraction of the director's <i>period</I>.  Local time is
-   incremented every time the get() method is called to obtain a token.
+ <LI>) Uniform Token Flow: The time interval between tokens should be
+ regular and unchanging.  This conforms to the idea of having sampled
+ systems with fixed rates. Although the tokens flowing in DT do not
+ keep internal time stamps, each actor can query the DT director for
+ its own local time.  This local time is uniformly increasing by a
+ constant fraction of the director's <i>period</I>.  Local time is
+ incremented every time the get() method is called to obtain a token.
 
-   <LI>) Causality: Tokens produced by an actor should only depend on
-   tokens produced or consumed in the past. This makes sense because we
-   don't expect an actor to produce a token before it can calculate the
-   token's value.  For example, if an actor needs three tokens A, B, and
-   C to compute token D, then the time when tokens A, B, and C are
-   consumed should be earlier than or equal to the time when token D is
-   produced.  Note that in DT, time does not get incremented due to
-   computation.  <LI>) SDF-style semantics: Ideally, we want DT to be a
-   timed-superset of SDF with compatible token flow and scheduling.
-   However, we can only approximate this behavior. It is not possible to
-   have uniform token flow, causality, and SDF-style semantics at the
-   same time.  Causality breaks for non-homogeneous actors in a feedback
-   system when fully-compatible SDF-style semantics is adopted.  To
-   remedy this situation, every actor in DT that has non-homogeneous
-   input ports should produce initial tokens at each of its output ports.
+ <LI>) Causality: Tokens produced by an actor should only depend on
+ tokens produced or consumed in the past. This makes sense because we
+ don't expect an actor to produce a token before it can calculate the
+ token's value.  For example, if an actor needs three tokens A, B, and
+ C to compute token D, then the time when tokens A, B, and C are
+ consumed should be earlier than or equal to the time when token D is
+ produced.  Note that in DT, time does not get incremented due to
+ computation.  <LI>) SDF-style semantics: Ideally, we want DT to be a
+ timed-superset of SDF with compatible token flow and scheduling.
+ However, we can only approximate this behavior. It is not possible to
+ have uniform token flow, causality, and SDF-style semantics at the
+ same time.  Causality breaks for non-homogeneous actors in a feedback
+ system when fully-compatible SDF-style semantics is adopted.  To
+ remedy this situation, every actor in DT that has non-homogeneous
+ input ports should produce initial tokens at each of its output ports.
 
-   </OL>
-   </p>
-   <p>
-   <h1> Design Notes</h1>
-   DT (Discrete Time) is a timed model of computation.  In order
-   to benefit from the internal time-keeping mechanism of DT, one should
-   use actors aware of time. For example, one should use TimedPlotter or
-   TimedScope instead of SequencePlotter or SequenceScope.
-   <p>
-   Top-level DT Directors have a <i>period</i> parameter that can be set by the
-   user.  Setting the period parameter of a non-top-level DT Director
-   under hierarchical DT has no meaning; and hence will be ignored.
-   <p>
+ </OL>
+ </p>
+ <p>
+ <h1> Design Notes</h1>
+ DT (Discrete Time) is a timed model of computation.  In order
+ to benefit from the internal time-keeping mechanism of DT, one should
+ use actors aware of time. For example, one should use TimedPlotter or
+ TimedScope instead of SequencePlotter or SequenceScope.
+ <p>
+ Top-level DT Directors have a <i>period</i> parameter that can be set by the
+ user.  Setting the period parameter of a non-top-level DT Director
+ under hierarchical DT has no meaning; and hence will be ignored.
+ <p>
 
-   <p> Domain-polymorphic actors that want to take advantage of the
-   multi-rate timing capabilities of DT should call
-   getCurrentTime(channel_number) for every
-   get(channel_number). Moreover, the call sequence should be ordered as
-   follows: getCurrentTime(channel_number) before get(channel_number).
+ <p> Domain-polymorphic actors that want to take advantage of the
+ multi-rate timing capabilities of DT should call
+ getCurrentTime(channel_number) for every
+ get(channel_number). Moreover, the call sequence should be ordered as
+ follows: getCurrentTime(channel_number) before get(channel_number).
 
-   Known bugs:
-   <pre>
-   1.) Put more tests on this case: when events come in faster than the period
-   of a DT composite actor (e.g clock feeding DT)
-   2.) Put more tests on this case: when DT composite actor doesn't fire because
-   there aren't enough tokens.
-   3.) Domain-polymorphic actors that use getCurrentTime() should be modified
-   to use DT's multirate timing capabilities.
-   CurrentTime  - modified
-   TimedPlotter - modified
-   TimedScope   - modified
-   SequentialClock - no input ports, gets global time only
-   PoissonClock - under investigation
-   Clock        - under investigation
-   Expression   - under investigation
-   </pre>
+ Known bugs:
+ <pre>
+ 1.) Put more tests on this case: when events come in faster than the period
+ of a DT composite actor (e.g clock feeding DT)
+ 2.) Put more tests on this case: when DT composite actor doesn't fire because
+ there aren't enough tokens.
+ 3.) Domain-polymorphic actors that use getCurrentTime() should be modified
+ to use DT's multirate timing capabilities.
+ CurrentTime  - modified
+ TimedPlotter - modified
+ TimedScope   - modified
+ SequentialClock - no input ports, gets global time only
+ PoissonClock - under investigation
+ Clock        - under investigation
+ Expression   - under investigation
+ </pre>
 
-   @see ptolemy.domains.dt.kernel.DTReceiver
-   @see ptolemy.domains.sdf.kernel.SDFDirector
-   @see ptolemy.domains.sdf.kernel.SDFReceiver
-   @see ptolemy.domains.sdf.kernel.SDFScheduler
+ @see ptolemy.domains.dt.kernel.DTReceiver
+ @see ptolemy.domains.sdf.kernel.SDFDirector
+ @see ptolemy.domains.sdf.kernel.SDFReceiver
+ @see ptolemy.domains.sdf.kernel.SDFScheduler
 
-   @author C. Fong
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (chf)
-   @Pt.AcceptedRating Yellow (vogel)
-*/
+ @author C. Fong
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (chf)
+ @Pt.AcceptedRating Yellow (vogel)
+ */
 public class DTDirector extends SDFDirector implements TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -213,8 +212,8 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public DTDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public DTDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -298,60 +297,60 @@ public class DTDirector extends SDFDirector implements TimedDirector {
         // because super.fire() is called. However, there are problems
         // with prefire return false in SDFDirector.fire()
         /*
-          _debugViewSchedule();
+         _debugViewSchedule();
 
-          if (container == null) {
-          throw new InvalidStateException("DTDirector " + getName() +
-          " fired, but it has no container!");
-          } else {
+         if (container == null) {
+         throw new InvalidStateException("DTDirector " + getName() +
+         " fired, but it has no container!");
+         } else {
 
-          Scheduler scheduler = getScheduler();
-          if (scheduler == null)
-          throw new IllegalActionException("Attempted to fire " +
-          "DT system with no scheduler");
-          Enumeration allActors = scheduler.schedule();
-          while (allActors.hasMoreElements()) {
+         Scheduler scheduler = getScheduler();
+         if (scheduler == null)
+         throw new IllegalActionException("Attempted to fire " +
+         "DT system with no scheduler");
+         Enumeration allActors = scheduler.schedule();
+         while (allActors.hasMoreElements()) {
 
-          Actor actor = (Actor)allActors.nextElement();
+         Actor actor = (Actor)allActors.nextElement();
 
-          boolean isFiringNonDTCompositeActor = false;
+         boolean isFiringNonDTCompositeActor = false;
 
-          if (actor instanceof CompositeActor) {
-          CompositeActor compositeActor = (CompositeActor) actor;
-          Director  insideDirector =
-          compositeActor.getDirector();
+         if (actor instanceof CompositeActor) {
+         CompositeActor compositeActor = (CompositeActor) actor;
+         Director  insideDirector =
+         compositeActor.getDirector();
 
-          if ( !(insideDirector instanceof DTDirector)) {
-          isFiringNonDTCompositeActor = true;
-          _insideDirector = insideDirector;
-          }
-          }
+         if ( !(insideDirector instanceof DTDirector)) {
+         isFiringNonDTCompositeActor = true;
+         _insideDirector = insideDirector;
+         }
+         }
 
-          if (isFiringNonDTCompositeActor) {
-          _pseudoTimeEnabled = true;
-          }
+         if (isFiringNonDTCompositeActor) {
+         _pseudoTimeEnabled = true;
+         }
 
 
-          if (!actor.prefire()) {
-          throw new IllegalActionException(this,
-          (ComponentEntity) actor, "Actor " +
-          "is not ready to fire.");
-          }
+         if (!actor.prefire()) {
+         throw new IllegalActionException(this,
+         (ComponentEntity) actor, "Actor " +
+         "is not ready to fire.");
+         }
 
-          if (_debugging)
-          _debug("Firing " + ((Nameable)actor).getFullName());
+         if (_debugging)
+         _debug("Firing " + ((Nameable)actor).getFullName());
 
-          actor.fire();
+         actor.fire();
 
-          // note: short circuit evaluation here
-          _postFireReturns = actor.postfire() && _postFireReturns;
+         // note: short circuit evaluation here
+         _postFireReturns = actor.postfire() && _postFireReturns;
 
-          if (isFiringNonDTCompositeActor) {
-          _pseudoTimeEnabled = false;
-          }
+         if (isFiringNonDTCompositeActor) {
+         _pseudoTimeEnabled = false;
+         }
 
-          }
-          }*/
+         }
+         }*/
         super.fire();
 
         // fire_
@@ -478,8 +477,8 @@ public class DTDirector extends SDFDirector implements TimedDirector {
                         "DT internal error: unknown actor");
             }
 
-            Parameter param = (Parameter) currentPort.getAttribute(
-                    "tokenConsumptionRate");
+            Parameter param = (Parameter) currentPort
+                    .getAttribute("tokenConsumptionRate");
 
             if ((param != null) && (currentPort.isInput())) {
                 rate = ((IntToken) param.getToken()).intValue();
@@ -500,13 +499,13 @@ public class DTDirector extends SDFDirector implements TimedDirector {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
 
             TypedIOPort currentPort = (TypedIOPort) currentReceiver
-                .getContainer();
+                    .getContainer();
 
             TypedIOPort fromPort = currentReceiver.getSourcePort();
             Type fromType = fromPort.getType();
             Actor fromActor = (Actor) fromPort.getContainer();
-            Parameter param = (Parameter) fromPort.getAttribute(
-                    "tokenProductionRate");
+            Parameter param = (Parameter) fromPort
+                    .getAttribute("tokenProductionRate");
             int outrate = 0;
 
             if ((param != null) && (fromPort.isOutput())) {
@@ -656,11 +655,11 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     public void setScheduler(Scheduler scheduler)
             throws IllegalActionException, NameDuplicationException {
         if (!(scheduler instanceof SDFScheduler)) {
-        	throw new IllegalActionException(this,
-        			"Scheduler is required to be an instance of SDFScheduler");
+            throw new IllegalActionException(this,
+                    "Scheduler is required to be an instance of SDFScheduler");
         }
         // FIXME: Instead, should fix the buffer sizes calculation.
-        ((SDFScheduler)scheduler).constrainBufferSizes.setExpression("false");
+        ((SDFScheduler) scheduler).constrainBufferSizes.setExpression("false");
     }
 
     /** Override the base class method to make sure that enough tokens
@@ -747,8 +746,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
         ListIterator actorIterator = _actorTable.listIterator();
         int repeats = 0;
 
-        foundRepeatValue:
-        while (actorIterator.hasNext()) {
+        foundRepeatValue: while (actorIterator.hasNext()) {
             DTActor currentActor = (DTActor) actorIterator.next();
 
             if (actor.equals(currentActor._actor)) {
@@ -791,7 +789,8 @@ public class DTDirector extends SDFDirector implements TimedDirector {
                     _actorTable.add(dtActor);
                 }
 
-                dtActor._repeats = currentScheduler.getFiringCount((Entity) dtActor._actor);
+                dtActor._repeats = currentScheduler
+                        .getFiringCount((Entity) dtActor._actor);
             }
         }
 
@@ -978,7 +977,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
                 insideReceivers = port.getInsideReceivers();
 
                 double deltaTime = ((DTReceiver) insideReceivers[0][0])
-                    .getDeltaTime();
+                        .getDeltaTime();
                 double ratio = timeElapsed.getDoubleValue() / deltaTime;
 
                 if (Math.abs(Math.round(ratio) - ratio) < _TOLERANCE) {
@@ -1043,7 +1042,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
             if (currentActor._actor instanceof SampleDelay) {
                 SampleDelay delay = (SampleDelay) currentActor._actor;
                 ArrayToken initialTokens = (ArrayToken) delay.initialOutputs
-                    .getToken();
+                        .getToken();
                 int delayCount = initialTokens.length();
 
                 _debug(" **DELAY** with " + delayCount + " initial tokens");
@@ -1233,7 +1232,9 @@ public class DTDirector extends SDFDirector implements TimedDirector {
 
     // used to determine whether the director should call transferOutputs()
     private boolean _shouldDoInternalTransferOutputs;
+
     private boolean _inputTokensAvailable;
+
     private Map _shouldTransferOutputs;
 
     // The tolerance value used when comparing time values.
@@ -1244,8 +1245,11 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     // Inner class to cache important variables for contained actors
     private class DTActor {
         private Actor _actor;
+
         private Time _localTime;
+
         private int _repeats;
+
         private boolean _shouldGenerateInitialTokens;
 
         /* Construct the information on the contained Actor

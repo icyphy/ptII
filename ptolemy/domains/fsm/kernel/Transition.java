@@ -1,29 +1,29 @@
 /* A transition in an FSMActor.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fsm.kernel;
 
 import java.util.Iterator;
@@ -55,101 +55,100 @@ import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Transition
 
 /**
-   A Transition has a source state and a destination state. A
-   transition has a guard expression, which is evaluated to a boolean value.
-   Whenever a transition is enabled, it must be taken immediately.
+ A Transition has a source state and a destination state. A
+ transition has a guard expression, which is evaluated to a boolean value.
+ Whenever a transition is enabled, it must be taken immediately.
 
-   <p> A transition can contain actions. The way to specify actions is
-   to give value to the <i>outputActions</i> parameter and the
-   <i>setActions</i> parameter.
+ <p> A transition can contain actions. The way to specify actions is
+ to give value to the <i>outputActions</i> parameter and the
+ <i>setActions</i> parameter.
 
-   The value of these parameters is a string of the form:
-   <pre>
-   <i>command</i>; <i>command</i>; ...
-   </pre>
-   where each <i>command</i> has the form:
-   <pre>
-   <i>destination</i> = <i>expression</i>
-   </pre>
-   For the <i>outputActions</i> parameter, <i>destination</i> is either
-   <pre>
-   <i>portName</i>
-   </pre>
-   or
-   <pre>
-   <i>portName</i>(<i>channelNumber</i>)
-   </pre>
-   Here, <i>portName</i> is the name of a port of the FSM actor,
-   If no <i>channelNumber</i> is given, then the value
-   is broadcasted to all channels of the port.
-   <p>
-   For the <i>setActions</i> parameter, <i>destination</i> is
-   <pre>
-   <i>variableName</i>
-   </pre>
-   <i>variableName</i> identifies either a variable or parameter of
-   the FSM actor, or a variable or parameter of the refinement of the
-   destination state of the transition. To give a variable of the
-   refinement, use a dotted name, as follows:
-   <pre>
-   <i>refinementName</i>.<i>variableName</i>
-   </pre>
-   The <i>expression</i> is a string giving an expression in the usual
-   Ptolemy II expression language. The expression may include references
-   to variables and parameters contained by the FSM actor.
-   <p>
-   The <i>outputActions</i> and <i>setActions</i> parameters are not the only
-   ways to specify actions. In fact, you can add action attributes that are
-   instances of anything that inherits from Action.
-   (Use the Add button in the Edit Parameters dialog).
-   <p>
-   An action is either a ChoiceAction or a CommitAction. The <i>setActions</i>
-   parameter is a CommitAction, whereas the <i>outputActions</i> parameter is a
-   ChoiceAction. A commit action is executed when the transition is taken to
-   change the state of the FSM, in the postfire() method of FSMActor.
-   A choice action, by contrast, is executed in the fire() method
-   of the FSMActor when the transition is chosen, but not yet taken.
-   The difference is subtle, and for most domains, irrelevant.
-   A few domains, however, such as CT, which have fixed point semantics,
-   where the fire() method may be invoked several times before the
-   transition is taken (committed). For such domains, it is useful
-   to have actions that fulfill the ChoiceAction interface.
-   Such actions participate in the search for a fixed point, but
-   do not change the state of the FSM.
-   <p>
-   A transition can be preemptive or non-preemptive. When a preemptive transition
-   is chosen, the refinement of its source state is not fired. A non-preemptive
-   transition is only chosen after the refinement of its source state is fired.
-   <p>
-   The <i>reset</i> parameter specifies whether the refinement of the destination
-   state is reset when the transition is taken. There is no reset() method in the
-   Actor interface, so the initialize() method of the refinement is called. Please
-   note that this feature is still under development.
-   <p>
-   The <i>nondeterministic</i> parameter specifies whether this transition is
-   nondeterministic. Here nondeterministic means that this transition may not
-   be the only enabled transition at a time. The default value is a boolean
-   token with value as false, meaning that if this transition is enabled, it
-   must be the only enabled transition.
+ The value of these parameters is a string of the form:
+ <pre>
+ <i>command</i>; <i>command</i>; ...
+ </pre>
+ where each <i>command</i> has the form:
+ <pre>
+ <i>destination</i> = <i>expression</i>
+ </pre>
+ For the <i>outputActions</i> parameter, <i>destination</i> is either
+ <pre>
+ <i>portName</i>
+ </pre>
+ or
+ <pre>
+ <i>portName</i>(<i>channelNumber</i>)
+ </pre>
+ Here, <i>portName</i> is the name of a port of the FSM actor,
+ If no <i>channelNumber</i> is given, then the value
+ is broadcasted to all channels of the port.
+ <p>
+ For the <i>setActions</i> parameter, <i>destination</i> is
+ <pre>
+ <i>variableName</i>
+ </pre>
+ <i>variableName</i> identifies either a variable or parameter of
+ the FSM actor, or a variable or parameter of the refinement of the
+ destination state of the transition. To give a variable of the
+ refinement, use a dotted name, as follows:
+ <pre>
+ <i>refinementName</i>.<i>variableName</i>
+ </pre>
+ The <i>expression</i> is a string giving an expression in the usual
+ Ptolemy II expression language. The expression may include references
+ to variables and parameters contained by the FSM actor.
+ <p>
+ The <i>outputActions</i> and <i>setActions</i> parameters are not the only
+ ways to specify actions. In fact, you can add action attributes that are
+ instances of anything that inherits from Action.
+ (Use the Add button in the Edit Parameters dialog).
+ <p>
+ An action is either a ChoiceAction or a CommitAction. The <i>setActions</i>
+ parameter is a CommitAction, whereas the <i>outputActions</i> parameter is a
+ ChoiceAction. A commit action is executed when the transition is taken to
+ change the state of the FSM, in the postfire() method of FSMActor.
+ A choice action, by contrast, is executed in the fire() method
+ of the FSMActor when the transition is chosen, but not yet taken.
+ The difference is subtle, and for most domains, irrelevant.
+ A few domains, however, such as CT, which have fixed point semantics,
+ where the fire() method may be invoked several times before the
+ transition is taken (committed). For such domains, it is useful
+ to have actions that fulfill the ChoiceAction interface.
+ Such actions participate in the search for a fixed point, but
+ do not change the state of the FSM.
+ <p>
+ A transition can be preemptive or non-preemptive. When a preemptive transition
+ is chosen, the refinement of its source state is not fired. A non-preemptive
+ transition is only chosen after the refinement of its source state is fired.
+ <p>
+ The <i>reset</i> parameter specifies whether the refinement of the destination
+ state is reset when the transition is taken. There is no reset() method in the
+ Actor interface, so the initialize() method of the refinement is called. Please
+ note that this feature is still under development.
+ <p>
+ The <i>nondeterministic</i> parameter specifies whether this transition is
+ nondeterministic. Here nondeterministic means that this transition may not
+ be the only enabled transition at a time. The default value is a boolean
+ token with value as false, meaning that if this transition is enabled, it
+ must be the only enabled transition.
 
-   @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
-   @see State
-   @see Action
-   @see ChoiceAction
-   @see CommitAction
-   @see CommitActionsAttribute
-   @see FSMActor
-   @see OutputActionsAttribute
-*/
+ @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (hyzheng)
+ @Pt.AcceptedRating Red (hyzheng)
+ @see State
+ @see Action
+ @see ChoiceAction
+ @see CommitAction
+ @see CommitActionsAttribute
+ @see FSMActor
+ @see OutputActionsAttribute
+ */
 public class Transition extends ComponentRelation {
     /** Construct a transition in the given workspace with an empty string
      *  as a name.
@@ -163,8 +162,8 @@ public class Transition extends ComponentRelation {
      *  @exception NameDuplicationException If the name coincides with
      *   any relation already in the container.
      */
-    public Transition(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public Transition(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -271,7 +270,7 @@ public class Transition extends ComponentRelation {
             workspace().incrVersion();
         } else if (attribute == nondeterministic) {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
-                .booleanValue();
+                    .booleanValue();
         } else if (attribute == guardExpression) {
             // The guard and trigger expressions can only be evaluated at run
             // time, because the input variables they can reference are created
@@ -323,13 +322,13 @@ public class Transition extends ComponentRelation {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Transition newObject = (Transition) super.clone(workspace);
-        newObject.guardExpression = (StringAttribute) newObject.getAttribute(
-                "guardExpression");
+        newObject.guardExpression = (StringAttribute) newObject
+                .getAttribute("guardExpression");
         newObject.preemptive = (Parameter) newObject.getAttribute("preemptive");
-        newObject.triggerExpression = (StringAttribute) newObject.getAttribute(
-                "triggerExpression");
-        newObject.refinementName = (StringAttribute) newObject.getAttribute(
-                "refinementName");
+        newObject.triggerExpression = (StringAttribute) newObject
+                .getAttribute("triggerExpression");
+        newObject.refinementName = (StringAttribute) newObject
+                .getAttribute("refinementName");
         newObject._guardParseTree = null;
         newObject._triggerParseTree = null;
         newObject._actionListsVersion = -1;
@@ -459,7 +458,7 @@ public class Transition extends ComponentRelation {
 
             Nameable container = getContainer();
             TypedCompositeActor containerContainer = (TypedCompositeActor) container
-                .getContainer();
+                    .getContainer();
             int index = 0;
 
             while (tokenizer.hasMoreTokens()) {
@@ -470,12 +469,13 @@ public class Transition extends ComponentRelation {
                             "Malformed list of refinements: " + names);
                 }
 
-                TypedActor element = (TypedActor) containerContainer.getEntity(name);
+                TypedActor element = (TypedActor) containerContainer
+                        .getEntity(name);
 
                 if (element == null) {
-                    throw new IllegalActionException(this,
-                            "Cannot find " + "refinement with name \"" + name
-                            + "\" in " + containerContainer.getFullName());
+                    throw new IllegalActionException(this, "Cannot find "
+                            + "refinement with name \"" + name + "\" in "
+                            + containerContainer.getFullName());
                 }
 
                 _refinement[index++] = element;
@@ -518,7 +518,7 @@ public class Transition extends ComponentRelation {
         try {
             if (_exeDirectorIsHSDirector && !_relationList.isEmpty()) {
                 ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
-                    .setConstructionMode(false);
+                        .setConstructionMode(false);
             }
 
             FSMActor fsmActor = (FSMActor) getContainer();
@@ -531,8 +531,8 @@ public class Transition extends ComponentRelation {
                 _guardParseTree = parser.generateParseTree(expr);
             }
 
-            Token token = _parseTreeEvaluator.evaluateParseTree(_guardParseTree,
-                    fsmActor.getPortScope());
+            Token token = _parseTreeEvaluator.evaluateParseTree(
+                    _guardParseTree, fsmActor.getPortScope());
 
             if (token == null) {
                 // FIXME: when could this happen??
@@ -547,7 +547,8 @@ public class Transition extends ComponentRelation {
             return false;
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(this, ex,
-                    "Error evaluating guard expression: " + getGuardExpression());
+                    "Error evaluating guard expression: "
+                            + getGuardExpression());
         }
     }
 
@@ -589,8 +590,8 @@ public class Transition extends ComponentRelation {
             _triggerParseTree = parser.generateParseTree(expr);
         }
 
-        Token triggerToken = _parseTreeEvaluator.evaluateParseTree(_triggerParseTree,
-                fsmActor.getPortScope());
+        Token triggerToken = _parseTreeEvaluator.evaluateParseTree(
+                _triggerParseTree, fsmActor.getPortScope());
         boolean triggerValue = ((BooleanToken) triggerToken).booleanValue();
 
         if (_guardParseTree == null) {
@@ -601,15 +602,14 @@ public class Transition extends ComponentRelation {
             _guardParseTree = parser.generateParseTree(expr);
         }
 
-        Token guardToken = _parseTreeEvaluator.evaluateParseTree(_guardParseTree,
-                fsmActor.getPortScope());
+        Token guardToken = _parseTreeEvaluator.evaluateParseTree(
+                _guardParseTree, fsmActor.getPortScope());
         boolean guardValue = ((BooleanToken) guardToken).booleanValue();
 
         if ((triggerValue == true) && (guardValue == false)) {
-            throw new IllegalActionException(this,
-                    "The trigger: " + getTriggerExpression()
-                    + " is true but the guard: " + getGuardExpression()
-                    + " is false.");
+            throw new IllegalActionException(this, "The trigger: "
+                    + getTriggerExpression() + " is true but the guard: "
+                    + getGuardExpression() + " is false.");
         }
 
         return triggerValue;
@@ -635,7 +635,7 @@ public class Transition extends ComponentRelation {
             if (!(container instanceof FSMActor)) {
                 throw new IllegalActionException(container, this,
                         "Transition can only be contained by instances of "
-                        + "FSMActor.");
+                                + "FSMActor.");
             }
         }
 
@@ -707,7 +707,7 @@ public class Transition extends ComponentRelation {
         if ((port != st.incomingPort) && (port != st.outgoingPort)) {
             throw new IllegalActionException(this, port.getContainer(),
                     "Transition can only be linked to incoming or outgoing "
-                    + "port of State.");
+                            + "port of State.");
         }
 
         if (numLinks() == 0) {
@@ -762,8 +762,8 @@ public class Transition extends ComponentRelation {
     }
 
     // Initialize the variables of this transition.
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         guardExpression = new StringAttribute(this, "guardExpression");
         outputActions = new OutputActionsAttribute(this, "outputActions");
         setActions = new CommitActionsAttribute(this, "setActions");
@@ -840,14 +840,14 @@ public class Transition extends ComponentRelation {
 
             if (container != null) {
                 TypedCompositeActor modalModel = (TypedCompositeActor) container
-                    .getContainer();
+                        .getContainer();
 
                 if (modalModel != null) {
                     Director director = modalModel.getDirector();
 
                     if (director instanceof HSDirector) {
                         errorTolerance = ((HSDirector) director)
-                            .getErrorTolerance();
+                                .getErrorTolerance();
                         _exeDirectorIsHSDirector = true;
                     } else {
                         _exeDirectorIsHSDirector = false;
@@ -858,15 +858,15 @@ public class Transition extends ComponentRelation {
             if (_exeDirectorIsHSDirector) {
                 // associate the relation list with the
                 // ParseTreeEvaluatorForGuardExpression
-                _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList,
-                        errorTolerance);
+                _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
+                        _relationList, errorTolerance);
 
                 // Invalid a relation list for the transition.
                 _relationList.destroy();
 
                 // Reconstruct the relation list.
                 ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
-                    .setConstructionMode(true);
+                        .setConstructionMode(true);
             } else {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
             }

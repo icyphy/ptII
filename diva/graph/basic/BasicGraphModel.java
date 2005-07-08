@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.graph.basic;
 
 import java.util.ArrayList;
@@ -36,7 +36,6 @@ import diva.graph.modular.Node;
 import diva.util.ArrayIterator;
 import diva.util.BasicPropertyContainer;
 import diva.util.SemanticObjectContainer;
-
 
 /**
  * A basic implementation of a mutable graph model that stores its
@@ -86,7 +85,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
      * representation.
      */
     private static abstract class Intermediate extends BasicPropertyContainer
-        implements SemanticObjectContainer {
+            implements SemanticObjectContainer {
         /**
          * The semantic object of this intermediate.
          */
@@ -165,16 +164,16 @@ public class BasicGraphModel extends BasicModularGraphModel {
          */
         public Iterator inNodes() {
             return new diva.util.IteratorAdapter() {
-                    Iterator edges = inEdges();
+                Iterator edges = inEdges();
 
-                    public boolean hasNext() {
-                        return edges.hasNext();
-                    }
+                public boolean hasNext() {
+                    return edges.hasNext();
+                }
 
-                    public Object next() {
-                        return ((Edge) edges.next()).getTail();
-                    }
-                };
+                public Object next() {
+                    return ((Edge) edges.next()).getTail();
+                }
+            };
         }
 
         /**
@@ -193,16 +192,16 @@ public class BasicGraphModel extends BasicModularGraphModel {
          */
         public Iterator outNodes() {
             return new diva.util.IteratorAdapter() {
-                    Iterator edges = outEdges();
+                Iterator edges = outEdges();
 
-                    public boolean hasNext() {
-                        return edges.hasNext();
-                    }
+                public boolean hasNext() {
+                    return edges.hasNext();
+                }
 
-                    public Object next() {
-                        return ((Edge) edges.next()).getHead();
-                    }
-                };
+                public Object next() {
+                    return ((Edge) edges.next()).getHead();
+                }
+            };
         }
 
         public void removeInEdge(Edge e) {
@@ -234,8 +233,8 @@ public class BasicGraphModel extends BasicModularGraphModel {
     /**
      * A simple composite node implementation.
      */
-    private static class BasicCompositeNode extends BasicNode
-        implements CompositeNode {
+    private static class BasicCompositeNode extends BasicNode implements
+            CompositeNode {
         /**
          * The nodes that this composite node
          * contains.

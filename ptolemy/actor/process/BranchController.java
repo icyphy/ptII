@@ -1,32 +1,32 @@
 /* A BranchController manages the execution of a set of branch objects by
-   monitoring whether the branches have blocked.
+ monitoring whether the branches have blocked.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.process;
 
 import java.util.Iterator;
@@ -38,32 +38,31 @@ import ptolemy.actor.Receiver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// BranchController
 
 /**
-   A BranchController manages the execution of a set of branch objects by
-   monitoring whether the branches have blocked. A branch blocks when it is
-   either unable to get data from its producer receiver or put data into its
-   consumer receiver. When a branch blocks, it registers the block with its
-   branch controller by passing the specific receiver that is blocked. If all
-   of a branch controllers branches are blocked, then the branch controller
-   informs the director associated with its containing composite actors.
-   <P>
-   Branches are assigned to a branch controller by the director associated
-   with the controller's composite actor via the addBranches() method. This
-   method takes an io port and determine's the port's receivers. Branches
-   are then instantiated and assigned to the receivers according to whether
-   the receivers are producer or consumer receivers.
+ A BranchController manages the execution of a set of branch objects by
+ monitoring whether the branches have blocked. A branch blocks when it is
+ either unable to get data from its producer receiver or put data into its
+ consumer receiver. When a branch blocks, it registers the block with its
+ branch controller by passing the specific receiver that is blocked. If all
+ of a branch controllers branches are blocked, then the branch controller
+ informs the director associated with its containing composite actors.
+ <P>
+ Branches are assigned to a branch controller by the director associated
+ with the controller's composite actor via the addBranches() method. This
+ method takes an io port and determine's the port's receivers. Branches
+ are then instantiated and assigned to the receivers according to whether
+ the receivers are producer or consumer receivers.
 
 
-   @author John S. Davis II
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (davisj)
-   @Pt.AcceptedRating Red (davisj)
-*/
+ @author John S. Davis II
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (davisj)
+ @Pt.AcceptedRating Red (davisj)
+ */
 public class BranchController implements Runnable {
     /** Construct a branch controller in the specified composite actor
      *  container.
@@ -133,9 +132,8 @@ public class BranchController implements Runnable {
         }
 
         if (_ports.contains(port)) {
-            throw new IllegalActionException(port,
-                    "This port " + "is already controlled by this "
-                    + "BranchController");
+            throw new IllegalActionException(port, "This port "
+                    + "is already controlled by this " + "BranchController");
         }
 
         // Careful; maintain order of following test in case
@@ -180,10 +178,12 @@ public class BranchController implements Runnable {
                     consumerReceiver = (ProcessReceiver) consumerReceivers[i][0];
                 } catch (ClassCastException ex) {
                     // See [Bug 5] and pn/test/PNInsideDE.xml
-                    throw new IllegalActionException(port, ex,
+                    throw new IllegalActionException(
+                            port,
+                            ex,
                             "At the current time, process-oriented domains "
-                            + "(PN and CSP) cannot be nested inside "
-                            + "firing-based domains (SDF, DE, CT, etc.).");
+                                    + "(PN and CSP) cannot be nested inside "
+                                    + "firing-based domains (SDF, DE, CT, etc.).");
                 }
 
                 branch = new Branch(producerReceiver, consumerReceiver, this);
@@ -431,9 +431,14 @@ public class BranchController implements Runnable {
 
     // The CompositeActor that owns this controller object.
     private CompositeActor _parentActor;
+
     private LinkedList _branches = new LinkedList();
+
     private LinkedList _ports = new LinkedList();
+
     private LinkedList _blockedReceivers = new LinkedList();
+
     private boolean _isActive = false;
+
     private String _parentName = null;
 }

@@ -1,30 +1,30 @@
 /* A pulse source.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -41,45 +41,44 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Pulse
 
 /**
-   Produce a pulse with a shape specified by the parameters.
-   The <i>values</i> parameter contains an ArrayToken, which specifies
-   the sequence of values to produce at the output.  The <i>indexes</i>
-   parameter contains an array of integers, which specifies when those values
-   should be produced.  The array in the <i>indexes</i> parameter
-   must have the same length as that in the
-   <i>values</i> parameter or an exception will be thrown by the fire() method.
-   Also, the <i>indexes</i> array must be increasing and non-negative,
-   or an exception will be thrown when it is set.
-   <p>
-   Eventually, this actor will support various kinds of interpolation.
-   For now, it outputs a zero (of the same type as the values) whenever
-   the iteration count does not match an index in <i>indexes</i>.
-   <p>
-   The default for the <i>values</i> parameter is
-   an integer vector of form {1, 0}.
-   The default indexes array is {0, 1}.
-   Thus, the default output sequence will be 1, 0, 0, ...
-   <p>
-   However, the Pulse actor has a <I>repeat</i> parameter. When set to
-   true, the defined sequence is repeated indefinitely. Otherwise, the
-   default sequence of zero values result.
-   <p>
-   The type of the output can be any token type. This type is inferred
-   from the element type of the <i>values</i> parameter.
-   <p>
-   NOTE: A reset input for this actor would be useful.  This would reset
-   the iterations count, to cause the pulse to emerge again.
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ Produce a pulse with a shape specified by the parameters.
+ The <i>values</i> parameter contains an ArrayToken, which specifies
+ the sequence of values to produce at the output.  The <i>indexes</i>
+ parameter contains an array of integers, which specifies when those values
+ should be produced.  The array in the <i>indexes</i> parameter
+ must have the same length as that in the
+ <i>values</i> parameter or an exception will be thrown by the fire() method.
+ Also, the <i>indexes</i> array must be increasing and non-negative,
+ or an exception will be thrown when it is set.
+ <p>
+ Eventually, this actor will support various kinds of interpolation.
+ For now, it outputs a zero (of the same type as the values) whenever
+ the iteration count does not match an index in <i>indexes</i>.
+ <p>
+ The default for the <i>values</i> parameter is
+ an integer vector of form {1, 0}.
+ The default indexes array is {0, 1}.
+ Thus, the default output sequence will be 1, 0, 0, ...
+ <p>
+ However, the Pulse actor has a <I>repeat</i> parameter. When set to
+ true, the defined sequence is repeated indefinitely. Otherwise, the
+ default sequence of zero values result.
+ <p>
+ The type of the output can be any token type. This type is inferred
+ from the element type of the <i>values</i> parameter.
+ <p>
+ NOTE: A reset input for this actor would be useful.  This would reset
+ the iterations count, to cause the pulse to emerge again.
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class Pulse extends SequenceSource {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -154,13 +153,14 @@ public class Pulse extends SequenceSource {
             int previous = 0;
 
             for (int i = 0; i < indexesValue.length(); i++) {
-                _indexes[i] = ((IntToken) indexesValue.getElement(i)).intValue();
+                _indexes[i] = ((IntToken) indexesValue.getElement(i))
+                        .intValue();
 
                 // Check nondecreasing property.
                 if (_indexes[i] < previous) {
                     throw new IllegalActionException(this,
                             "Value of indexes is not nondecreasing "
-                            + "and nonnegative.");
+                                    + "and nonnegative.");
                 }
 
                 previous = _indexes[i];
@@ -176,7 +176,7 @@ public class Pulse extends SequenceSource {
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this,
                         "Cannot set values to something that is not an array: "
-                        + values.getToken());
+                                + values.getToken());
             }
         } else if (attribute == repeat) {
             _repeatFlag = ((BooleanToken) repeat.getToken()).booleanValue();
@@ -217,7 +217,7 @@ public class Pulse extends SequenceSource {
             if (val.length() != _indexes.length) {
                 throw new IllegalActionException(this,
                         "Parameters values and indexes have "
-                        + "different lengths.");
+                                + "different lengths.");
             }
 
             currentIndex = _indexes[_indexColCount];

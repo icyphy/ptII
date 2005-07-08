@@ -1,56 +1,55 @@
 /* A library for mathematical operations on matrices of ints.
 
-Some algorithms are from
+ Some algorithms are from
 
-[1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
-Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
+ [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
+ Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
-    package ptolemy.math;
-
+ */
+package ptolemy.math;
 
 //////////////////////////////////////////////////////////////////////////
 //// IntegerMatrixMath
 
 /**
-   This class provides a library for mathematical operations on
-   matrices of ints.
+ This class provides a library for mathematical operations on
+ matrices of ints.
 
-   Rows and column numbers of matrices are specified with zero-based indices.
-   All calls expect matrix arguments to be non-null. In addition, all
-   rows of the matrix are expected to have the same number of columns.
+ Rows and column numbers of matrices are specified with zero-based indices.
+ All calls expect matrix arguments to be non-null. In addition, all
+ rows of the matrix are expected to have the same number of columns.
 
-   @author Jeff Tsay
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (ctsay)
-   @Pt.AcceptedRating Yellow (ctsay)
-*/
+ @author Jeff Tsay
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (ctsay)
+ @Pt.AcceptedRating Yellow (ctsay)
+ */
 public class IntegerMatrixMath {
     // private constructor prevents construction of this class.
     private IntegerMatrixMath() {
@@ -108,8 +107,8 @@ public class IntegerMatrixMath {
      *  using z as the left operand in all cases and the matrix elements
      *  as the right operands (op.operate(z, matrix[i][j])).
      */
-    public static final int[][] applyBinaryOperation(
-            IntegerBinaryOperation op, final int z, final int[][] matrix) {
+    public static final int[][] applyBinaryOperation(IntegerBinaryOperation op,
+            final int z, final int[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -129,8 +128,8 @@ public class IntegerMatrixMath {
      *  using the matrix elements as the left operands and z as the right
      *  operand in all cases (op.operate(matrix[i][j], z)).
      */
-    public static final int[][] applyBinaryOperation(
-            IntegerBinaryOperation op, final int[][] matrix, final int z) {
+    public static final int[][] applyBinaryOperation(IntegerBinaryOperation op,
+            final int[][] matrix, final int z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -153,8 +152,8 @@ public class IntegerMatrixMath {
      *  matrices are not the same size, throw an
      *  IllegalArgumentException.
      */
-    public static final int[][] applyBinaryOperation(
-            IntegerBinaryOperation op, final int[][] matrix1, final int[][] matrix2) {
+    public static final int[][] applyBinaryOperation(IntegerBinaryOperation op,
+            final int[][] matrix1, final int[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -253,7 +252,7 @@ public class IntegerMatrixMath {
     /** Return a new matrix that is the formed by bitwise ORing z with
      *  each element of the input matrix (matrix[i][j] | z).
 
-    */
+     */
     public static final int[][] bitwiseOr(final int[][] matrix, final int z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
@@ -499,9 +498,9 @@ public class IntegerMatrixMath {
      *  @param colSpan An int specifying how many columns to copy.
      */
     public static final void matrixCopy(final int[][] srcMatrix,
-            final int srcRowStart, final int srcColStart, final int[][] destMatrix,
-            final int destRowStart, final int destColStart, final int rowSpan,
-            final int colSpan) {
+            final int srcRowStart, final int srcColStart,
+            final int[][] destMatrix, final int destRowStart,
+            final int destColStart, final int rowSpan, final int colSpan) {
         // We should verify the parameters here
         for (int i = 0; i < rowSpan; i++) {
             System.arraycopy(srcMatrix[srcRowStart + i], srcColStart,
@@ -580,8 +579,9 @@ public class IntegerMatrixMath {
         if (rows != array.length) {
             throw new IllegalArgumentException(
                     "preMultiply : array does not have the same number of "
-                    + "elements (" + array.length + ") as the number of rows "
-                    + "of the matrix (" + rows + ")");
+                            + "elements (" + array.length
+                            + ") as the number of rows " + "of the matrix ("
+                            + rows + ")");
         }
 
         int[] returnValue = new int[columns];
@@ -612,8 +612,9 @@ public class IntegerMatrixMath {
         if (columns != array.length) {
             throw new IllegalArgumentException(
                     "postMultiply() : array does not have the same number "
-                    + "of elements (" + array.length + ") as the number of "
-                    + "columns of the matrix (" + columns + ")");
+                            + "of elements (" + array.length
+                            + ") as the number of " + "columns of the matrix ("
+                            + columns + ")");
         }
 
         int[] returnValue = new int[rows];
@@ -1060,8 +1061,7 @@ public class IntegerMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if ((matrix1[i][j] > (matrix2[i][j] + errorMatrix[i][j]))
-                        || (matrix1[i][j] < (matrix2[i][j]
-                                    - errorMatrix[i][j]))) {
+                        || (matrix1[i][j] < (matrix2[i][j] - errorMatrix[i][j]))) {
                     return false;
                 }
             }
@@ -1083,10 +1083,10 @@ public class IntegerMatrixMath {
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.IntegerMatrixMath." + caller + "() : one matrix "
-                    + _dimensionString(matrix1)
-                    + " is not the same size as another matrix "
-                    + _dimensionString(matrix2) + ".");
+                    "ptolemy.math.IntegerMatrixMath." + caller
+                            + "() : one matrix " + _dimensionString(matrix1)
+                            + " is not the same size as another matrix "
+                            + _dimensionString(matrix2) + ".");
         }
     }
 
@@ -1101,8 +1101,9 @@ public class IntegerMatrixMath {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
                     "ptolemy.math.IntegerMatrixMath." + caller
-                    + "() : matrix argument " + _dimensionString(matrix)
-                    + " is not a square matrix.");
+                            + "() : matrix argument "
+                            + _dimensionString(matrix)
+                            + " is not a square matrix.");
         }
 
         return _rows(matrix);

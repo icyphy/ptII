@@ -1,29 +1,29 @@
 /* Top-level window containing a plotter.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
@@ -50,28 +50,27 @@ import ptolemy.plot.PlotFormatter;
 import ptolemy.util.StringUtilities;
 import diva.gui.GUIUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PlotTableauFrame
 
 /**
 
-PlotTableauFrame is a version of PlotFrame in the plot package that
-works more closely with the Ptolemy actor.gui infrastructure.
-In particular, the File menu commands will open Ptolemy models
-and HTML files, not just PlotML files. It contains an instance
-of PlotBox. If not specified in the constructor, the default
-is to contain a Plot object, where Plot extends PlotBox. This
-field is set once in the constructor and immutable afterwards.
+ PlotTableauFrame is a version of PlotFrame in the plot package that
+ works more closely with the Ptolemy actor.gui infrastructure.
+ In particular, the File menu commands will open Ptolemy models
+ and HTML files, not just PlotML files. It contains an instance
+ of PlotBox. If not specified in the constructor, the default
+ is to contain a Plot object, where Plot extends PlotBox. This
+ field is set once in the constructor and immutable afterwards.
 
-@see Plot
-@see PlotBox
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.1
-@Pt.ProposedRating Yellow (cxh)
-@Pt.AcceptedRating Yellow (cxh)
-*/
+ @see Plot
+ @see PlotBox
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class PlotTableauFrame extends TableauFrame {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
@@ -166,13 +165,11 @@ public class PlotTableauFrame extends TableauFrame {
         _specialMenu.setMnemonic(KeyEvent.VK_S);
         _menubar.add(_specialMenu);
 
-        JMenuItem[] specialMenuItems = {
-            new JMenuItem("Clear", KeyEvent.VK_C),
-            new JMenuItem("Export", KeyEvent.VK_E),
-            new JMenuItem("Fill", KeyEvent.VK_F),
-            new JMenuItem("Reset axes", KeyEvent.VK_R),
-            new JMenuItem("Sample plot", KeyEvent.VK_S),
-        };
+        JMenuItem[] specialMenuItems = { new JMenuItem("Clear", KeyEvent.VK_C),
+                new JMenuItem("Export", KeyEvent.VK_E),
+                new JMenuItem("Fill", KeyEvent.VK_F),
+                new JMenuItem("Reset axes", KeyEvent.VK_R),
+                new JMenuItem("Sample plot", KeyEvent.VK_S), };
         SpecialMenuListener sml = new SpecialMenuListener();
 
         // Set the action command and listener for each menu item.
@@ -226,7 +223,7 @@ public class PlotTableauFrame extends TableauFrame {
         }
 
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                                           "plot.eps"));
+                "plot.eps"));
 
         int returnVal = fileDialog.showDialog(this, "Export");
 
@@ -238,9 +235,9 @@ public class PlotTableauFrame extends TableauFrame {
                 fout = new FileOutputStream(file);
                 plot.export(fout);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Error exporting plot to '" + file + "': " + ex,
-                        "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error exporting plot to '"
+                        + file + "': " + ex, "Ptolemy II Error",
+                        JOptionPane.WARNING_MESSAGE);
             } finally {
                 if (fout != null) {
                     try {
@@ -260,9 +257,9 @@ public class PlotTableauFrame extends TableauFrame {
     protected void _help() {
         JOptionPane.showMessageDialog(this,
                 "PlotTableauFrame is a plot in a top-level window.\n"
-                + "  File formats understood: Ptplot ASCII.\n"
-                + "  Left mouse button: Zooming.", "About Ptolemy Plot",
-                JOptionPane.INFORMATION_MESSAGE);
+                        + "  File formats understood: Ptplot ASCII.\n"
+                        + "  Left mouse button: Zooming.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Print the plot.
@@ -275,8 +272,8 @@ public class PlotTableauFrame extends TableauFrame {
             try {
                 job.print();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Printing failed:\n" + ex.toString(), "Print Error",
+                JOptionPane.showMessageDialog(this, "Printing failed:\n"
+                        + ex.toString(), "Print Error",
                         JOptionPane.WARNING_MESSAGE);
             }
         }
@@ -310,9 +307,9 @@ public class PlotTableauFrame extends TableauFrame {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                JOptionPane.showMessageDialog(null,
-                        "Format Exception:\n" + exception.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Format Exception:\n"
+                        + exception.toString(), "Ptolemy Plot Error",
+                        JOptionPane.WARNING_MESSAGE);
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta
@@ -345,9 +342,9 @@ public class PlotTableauFrame extends TableauFrame {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                JOptionPane.showMessageDialog(null,
-                        "Special Menu Exception:\n" + exception.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Special Menu Exception:\n"
+                        + exception.toString(), "Ptolemy Plot Error",
+                        JOptionPane.WARNING_MESSAGE);
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta

@@ -1,32 +1,32 @@
 /* TransitionRefinement for modal models.
 
-Copyright (c) 1998-2005 The Regents of the University of California and
-Research in Motion Limited.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California and
+ Research in Motion Limited.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fsm.modal;
 
 import ptolemy.kernel.CompositeEntity;
@@ -36,32 +36,31 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TransitionRefinement
 
 /**
 
-Transition refinements provide a way to use composite actors which are run
-whenever a transition is taken in an FSM modal, much in the same way
-that State refinements are run every time an FSM is in a particular state.
-This provides an alternative mechanism for performing calculations during
-a Transition other than expressions in the Set Actions and Output Actions
-of that Transition. The expression actions are still executed but only
-after the Transition refinement has been fired.<p>
+ Transition refinements provide a way to use composite actors which are run
+ whenever a transition is taken in an FSM modal, much in the same way
+ that State refinements are run every time an FSM is in a particular state.
+ This provides an alternative mechanism for performing calculations during
+ a Transition other than expressions in the Set Actions and Output Actions
+ of that Transition. The expression actions are still executed but only
+ after the Transition refinement has been fired.<p>
 
-This typed composite actor supports mirroring of its ports in its
-container (which is required to be a ModalModel), which in turn assures
-mirroring of ports in each of the refinements and the controller.
-TransitionRefinement fulfills the CTStepSizeControlActor interface so that
-it can be used to construct hybrid systems using the CT domain.<p>
+ This typed composite actor supports mirroring of its ports in its
+ container (which is required to be a ModalModel), which in turn assures
+ mirroring of ports in each of the refinements and the controller.
+ TransitionRefinement fulfills the CTStepSizeControlActor interface so that
+ it can be used to construct hybrid systems using the CT domain.<p>
 
-@author David Hermann, Research In Motion Limited
-@version $Id$
-@since Ptolemy II 2.1
-@Pt.ProposedRating Red (eal)
-@Pt.AcceptedRating Red (reviewmoderator)
-*/
+ @author David Hermann, Research In Motion Limited
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class TransitionRefinement extends Refinement {
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
@@ -101,8 +100,8 @@ public class TransitionRefinement extends Refinement {
             if (_mirrorDisable || (getContainer() == null)) {
                 // Have already called newPort() in the container.
                 // This time, process the request.
-                TransitionRefinementPort port = new TransitionRefinementPort(this,
-                        name);
+                TransitionRefinementPort port = new TransitionRefinementPort(
+                        this, name);
 
                 // NOTE: This is a total kludge, but when a port is created
                 // this way, rather than by parsing MoML that specifies the

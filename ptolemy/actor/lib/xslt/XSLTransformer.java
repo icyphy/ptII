@@ -1,30 +1,30 @@
 /* An actor that read an XSLT file and apply it to its input.
 
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.xslt;
 
 import java.io.BufferedReader;
@@ -45,28 +45,27 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// XSLTTransformer
 
 /**
-   This actor reads an XSLT file and apply it to a dom tree. The file or
-   URL is specified using any form acceptable to the FileParameter class.
+ This actor reads an XSLT file and apply it to a dom tree. The file or
+ URL is specified using any form acceptable to the FileParameter class.
 
-   <p>Currently, this actor requires the
-   <a href="http://saxon.sourceforge.net/">Saxon</a> XSLT processor
-   so as to ensure reproducible results.  This restriction may
-   be relaxed in later versions of this actor.
+ <p>Currently, this actor requires the
+ <a href="http://saxon.sourceforge.net/">Saxon</a> XSLT processor
+ so as to ensure reproducible results.  This restriction may
+ be relaxed in later versions of this actor.
 
-   <p>FIXME: what should the type of the input/output ports be???.
+ <p>FIXME: what should the type of the input/output ports be???.
 
-   @see ptolemy.actor.lib.javasound.AudioReader
-   @author  Yang Zhao, Christopher Hylands Brooks
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (liuj)
-*/
+ @see ptolemy.actor.lib.javasound.AudioReader
+ @author  Yang Zhao, Christopher Hylands Brooks
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (liuj)
+ */
 public class XSLTransformer extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -125,7 +124,8 @@ public class XSLTransformer extends Transformer {
      */
     public void fire() throws IllegalActionException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        javax.xml.transform.Result result = new javax.xml.transform.stream.StreamResult(out);
+        javax.xml.transform.Result result = new javax.xml.transform.stream.StreamResult(
+                out);
 
         if (_debugging) {
             _debug("--- open an output stream for the result. \n");
@@ -138,7 +138,8 @@ public class XSLTransformer extends Transformer {
                     Document doc = in.getDomTree();
 
                     try {
-                        javax.xml.transform.Source xmlSource = new javax.xml.transform.dom.DOMSource(doc);
+                        javax.xml.transform.Source xmlSource = new javax.xml.transform.dom.DOMSource(
+                                doc);
                         _transformer.transform(xmlSource, result);
 
                         if (_debugging) {
@@ -206,7 +207,8 @@ public class XSLTransformer extends Transformer {
             }
 
             if (reader != null) {
-                _xsltSource = new javax.xml.transform.stream.StreamSource(reader);
+                _xsltSource = new javax.xml.transform.stream.StreamSource(
+                        reader);
             } else {
                 _xsltSource = null;
             }
@@ -217,32 +219,37 @@ public class XSLTransformer extends Transformer {
 
             if (_xsltSource != null) {
                 _transformerFactory = javax.xml.transform.TransformerFactory
-                    .newInstance();
+                        .newInstance();
 
-                if (!_transformerFactory.getClass().getName().startsWith("net.sf.saxon")) {
-                    throw new IllegalActionException(this,
+                if (!_transformerFactory.getClass().getName().startsWith(
+                        "net.sf.saxon")) {
+                    throw new IllegalActionException(
+                            this,
                             "The XSLTransformer actor works best\nwith "
-                            + "saxon7.jar.\n" + "The transformerFactory was '"
-                            + _transformerFactory.getClass().getName()
-                            + "'.\nIf saxon7.jar was in the classpath, then "
-                            + "it should have\nstarted with "
-                            + "\"net.sf.saxon\".\n" + "If this actor does not use "
-                            + "saxon, then the results will be "
-                            + "different between\nruns that "
-                            + "use saxon and runs that " + "do not.\nDetails:\n"
-                            + "This actor uses "
-                            + "javax.xml.transform.TransformerFactory.\nThe "
-                            + "concrete TransformerFactory class can be "
-                            + "adjusted by\nsetting the "
-                            + "javax.xml.transform.TransformerFactory "
-                            + "property or by\nreading in a jar file that "
-                            + "has the appropriate\nService Provider set.\n"
-                            + "(For details about Jar Service Providers,\nsee "
-                            + "http://java.sun.com/j2se/1.4.2/docs/guide/jar/jar.html)\n"
-                            + "The saxon7.jar file includes a\n"
-                            + "META-INF/services/javax.xml.transform.TransformerFactory "
-                            + "\nfile that sets the TransformerFactory "
-                            + "class name start with 'net.sf.saxon'.");
+                                    + "saxon7.jar.\n"
+                                    + "The transformerFactory was '"
+                                    + _transformerFactory.getClass().getName()
+                                    + "'.\nIf saxon7.jar was in the classpath, then "
+                                    + "it should have\nstarted with "
+                                    + "\"net.sf.saxon\".\n"
+                                    + "If this actor does not use "
+                                    + "saxon, then the results will be "
+                                    + "different between\nruns that "
+                                    + "use saxon and runs that "
+                                    + "do not.\nDetails:\n"
+                                    + "This actor uses "
+                                    + "javax.xml.transform.TransformerFactory.\nThe "
+                                    + "concrete TransformerFactory class can be "
+                                    + "adjusted by\nsetting the "
+                                    + "javax.xml.transform.TransformerFactory "
+                                    + "property or by\nreading in a jar file that "
+                                    + "has the appropriate\nService Provider set.\n"
+                                    + "(For details about Jar Service Providers,\nsee "
+                                    + "http://java.sun.com/j2se/1.4.2/docs/guide/jar/jar.html)\n"
+                                    + "The saxon7.jar file includes a\n"
+                                    + "META-INF/services/javax.xml.transform.TransformerFactory "
+                                    + "\nfile that sets the TransformerFactory "
+                                    + "class name start with 'net.sf.saxon'.");
                 }
 
                 _transformer = _transformerFactory.newTransformer(_xsltSource);
@@ -261,6 +268,8 @@ public class XSLTransformer extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private javax.xml.transform.Source _xsltSource;
+
     private javax.xml.transform.TransformerFactory _transformerFactory;
+
     private javax.xml.transform.Transformer _transformer;
 }

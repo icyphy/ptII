@@ -52,7 +52,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 /**
  * @author liuxj, Yang
  *
@@ -63,8 +62,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  * Use a timer task for peer discovery, and actor query.
  */
-public class JxtaCorbaActorClient extends TypedAtomicActor
-    implements QueryHandler {
+public class JxtaCorbaActorClient extends TypedAtomicActor implements
+        QueryHandler {
     public JxtaCorbaActorClient(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -82,6 +81,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
      *  is StringToken.
      */
     public Parameter remoteActorName;
+
     public Parameter ORBInitProperties;
 
     ///////////////////////////////////////////////////////////////////
@@ -90,11 +90,11 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
         super.initialize();
 
         _remoteActorName = ((StringToken) remoteActorName.getToken())
-            .stringValue();
+                .stringValue();
 
         // String tokenize the parameter ORBInitProperties
-        StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
-                                                         .getToken()).stringValue());
+        StringTokenizer st = new StringTokenizer(
+                ((StringToken) ORBInitProperties.getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
 
@@ -123,9 +123,9 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
             configProperties = new FileInputStream(configFile);
             _properties.load(configProperties);
         } catch (IOException e) {
-            System.out.println(
-                    "Warning: Can't find configuration propertiees file. ' "
-                    + e.getMessage() + "'");
+            System.out
+                    .println("Warning: Can't find configuration propertiees file. ' "
+                            + e.getMessage() + "'");
         } finally {
             if (configProperties != null) {
                 try {
@@ -151,17 +151,16 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
         String groupAdvFileName = _properties.getProperty("GroupAdvFileName");
 
         if (groupAdvFileName == null) {
-            System.out.println(
-                    "Error: property undefined - GroupAdvFileName.\n");
+            System.out
+                    .println("Error: property undefined - GroupAdvFileName.\n");
         }
 
         PeerGroupAdvertisement groupAdv = null;
 
         try {
             groupAdv = (PeerGroupAdvertisement) AdvertisementFactory
-                .newAdvertisement(XML_MIME_TYPE,
-                        new FileInputStream(_configDir + "/"
-                                + groupAdvFileName));
+                    .newAdvertisement(XML_MIME_TYPE, new FileInputStream(
+                            _configDir + "/" + groupAdvFileName));
         } catch (FileNotFoundException ex) {
             System.out.println("Error: cannot find group adv file.\n"
                     + ex.getMessage());
@@ -187,8 +186,8 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
         StructuredDocument identityInfo = null;
 
         try {
-            AuthenticationCredential authCred = new AuthenticationCredential(_group,
-                    null, identityInfo);
+            AuthenticationCredential authCred = new AuthenticationCredential(
+                    _group, null, identityInfo);
             MembershipService membershipService = _group.getMembershipService();
             _authenticator = membershipService.apply(authCred);
 
@@ -221,8 +220,8 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
         _resolverService.sendQuery(null, _actorQueryMessage);
 
         synchronized (this) {
-            System.out.println(
-                    "send out corba actor query message, and wait for response... ");
+            System.out
+                    .println("send out corba actor query message, and wait for response... ");
 
             try {
                 wait();
@@ -247,8 +246,8 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
         } catch (SystemException ex) {
             _debug(getName(), " CORBA set up failed " + ex.getMessage());
             ex.printStackTrace();
-            throw new IllegalActionException(this,
-                    "CORBA set up faliar" + ex.getMessage());
+            throw new IllegalActionException(this, "CORBA set up faliar"
+                    + ex.getMessage());
         }
 
         try {
@@ -260,11 +259,12 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
 
                 if ((att != ORBInitProperties) && (att != remoteActorName)
                         && (att instanceof Parameter)) {
-                    _debug(getName(), " check remote parameter: ", att.getName());
+                    _debug(getName(), " check remote parameter: ", att
+                            .getName());
 
                     if (!_remoteActor.hasParameter(att.getName())) {
-                        throw new IllegalActionException(this,
-                                "Parameter: " + att.getName()
+                        throw new IllegalActionException(this, "Parameter: "
+                                + att.getName()
                                 + " not found on the remote side.");
                     }
                 }
@@ -276,30 +276,30 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
                 IOPort p = (IOPort) ports.next();
                 _debug(getName(), " check remote port: ", p.getName());
 
-                if (!_remoteActor.hasPort(p.getName(), p.isInput(),
-                            p.isOutput(), p.isMultiport())) {
+                if (!_remoteActor.hasPort(p.getName(), p.isInput(), p
+                        .isOutput(), p.isMultiport())) {
                     _debug("Port: " + p.getName()
                             + " not found on the remote side"
                             + " or has wrong type.");
-                    throw new IllegalActionException(this,
-                            "Port: " + p.getName()
-                            + " not found on the remote side"
+                    throw new IllegalActionException(this, "Port: "
+                            + p.getName() + " not found on the remote side"
                             + " or has wrong type.");
                 }
 
                 try {
-                    _remoteActor.setPortWidth(p.getName(), (short) p.getWidth());
+                    _remoteActor
+                            .setPortWidth(p.getName(), (short) p.getWidth());
                 } catch (UserException ex) {
                     _debug("Port: " + p.getName() + " does not support width");
-                    throw new IllegalActionException(this,
-                            "Port: " + p.getName() + " does not support width "
+                    throw new IllegalActionException(this, "Port: "
+                            + p.getName() + " does not support width "
                             + p.getWidth());
                 }
             }
         } catch (SystemException ex) {
             _debug(getName(), " CORBA set up failed " + ex.getMessage());
-            throw new IllegalActionException(this,
-                    "CORBA set up faliar" + ex.getMessage());
+            throw new IllegalActionException(this, "CORBA set up faliar"
+                    + ex.getMessage());
         }
 
         _debug("Finished initializing " + getName());
@@ -325,13 +325,13 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
             } catch (CorbaIllegalActionException ex) {
                 throw new IllegalActionException(this,
                         "remote actor throws IllegalActionException"
-                        + ex.getMessage());
+                                + ex.getMessage());
             }
 
             _transferOutputs();
         } catch (SystemException ex) {
-            throw new InvalidStateException(this,
-                    "Comminication Failiar." + ex.getMessage());
+            throw new InvalidStateException(this, "Comminication Failiar."
+                    + ex.getMessage());
         }
     }
 
@@ -351,17 +351,17 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
             _transferInputs();
 
             try {
-                /* result = */ _remoteActor.postfire();
+                /* result = */_remoteActor.postfire();
             } catch (CorbaIllegalActionException ex) {
                 throw new IllegalActionException(this,
                         "remote actor throws IllegalActionException"
-                        + ex.getMessage());
+                                + ex.getMessage());
             }
 
             _transferOutputs();
         } catch (SystemException ex) {
-            throw new InvalidStateException(this,
-                    "Comminication Failiar." + ex.getMessage());
+            throw new InvalidStateException(this, "Comminication Failiar."
+                    + ex.getMessage());
         }
 
         // FIXME: why don't we return the value of result?
@@ -390,13 +390,13 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
             } catch (CorbaIllegalActionException ex) {
                 throw new IllegalActionException(this,
                         "remote actor throws IllegalActionException"
-                        + ex.getMessage());
+                                + ex.getMessage());
             }
 
             _transferOutputs();
         } catch (SystemException ex) {
-            throw new InvalidStateException(this,
-                    "Comminication Failiar." + ex.getMessage());
+            throw new InvalidStateException(this, "Comminication Failiar."
+                    + ex.getMessage());
         }
 
         return result;
@@ -409,10 +409,11 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
             _remoteActor.prefire();
         } catch (CorbaIllegalActionException ex) {
             throw new IllegalActionException(this,
-                    "remote actor throws IllegalActionException" + ex.getMessage());
+                    "remote actor throws IllegalActionException"
+                            + ex.getMessage());
         } catch (SystemException ex) {
-            throw new InvalidStateException(this,
-                    "Comminication Failiar." + ex.getMessage());
+            throw new InvalidStateException(this, "Comminication Failiar."
+                    + ex.getMessage());
         }
     }
 
@@ -420,8 +421,8 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
      * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
      */
     public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-            throws NoResponseException, ResendQueryException, DiscardQueryException,
-            IOException {
+            throws NoResponseException, ResendQueryException,
+            DiscardQueryException, IOException {
         //do nothing.
         return null;
     }
@@ -435,35 +436,35 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
         //_ior = r.substring(4) ;
         //System.out.println("the response is: " + _ior);
         /*StructuredTextDocument doc = (StructuredTextDocument)
-          response.getDocument(XML_MIME_TYPE);
-          Enumeration rps = doc.getChildren("Response");
-          //TextElement rrr = (TextElement) rps.nextElement();
-          //System.out.println("the name of the element is: " + rrr.getName());
-          while (rps.hasMoreElements()) {
-          TextElement rp = (TextElement) rps.nextElement();
-          Enumeration cbrps = rp.getChildren();
-          TextElement rrr = (TextElement) cbrps.nextElement();
-          System.out.println("the name of the element is: " + rrr.getName());
+         response.getDocument(XML_MIME_TYPE);
+         Enumeration rps = doc.getChildren("Response");
+         //TextElement rrr = (TextElement) rps.nextElement();
+         //System.out.println("the name of the element is: " + rrr.getName());
+         while (rps.hasMoreElements()) {
+         TextElement rp = (TextElement) rps.nextElement();
+         Enumeration cbrps = rp.getChildren();
+         TextElement rrr = (TextElement) cbrps.nextElement();
+         System.out.println("the name of the element is: " + rrr.getName());
 
-          while (cbrps.hasMoreElements()) {
-          TextElement cbrp = (TextElement) cbrps.nextElement();
-          System.out.println("the name of the element is: " + cbrp.getName());
-          Enumeration  acts = cbrp.getChildren("CorbaActor");
-          while (acts.hasMoreElements()) {
-          TextElement act = (TextElement) acts.nextElement();
-          System.out.println("the name of the actor element is: " + act.getName());
-          if (act.getTextValue() == _remoteActorName) {
-          Enumeration  iors = cbrp.getChildren("CorbaActorIOR");
-          while (iors.hasMoreElements()) {
-          TextElement ior = (TextElement) iors.nextElement();
-          _ior = ior.getTextValue();
+         while (cbrps.hasMoreElements()) {
+         TextElement cbrp = (TextElement) cbrps.nextElement();
+         System.out.println("the name of the element is: " + cbrp.getName());
+         Enumeration  acts = cbrp.getChildren("CorbaActor");
+         while (acts.hasMoreElements()) {
+         TextElement act = (TextElement) acts.nextElement();
+         System.out.println("the name of the actor element is: " + act.getName());
+         if (act.getTextValue() == _remoteActorName) {
+         Enumeration  iors = cbrp.getChildren("CorbaActorIOR");
+         while (iors.hasMoreElements()) {
+         TextElement ior = (TextElement) iors.nextElement();
+         _ior = ior.getTextValue();
 
-          }
-          }
-          }
-          }
-          }
-        */
+         }
+         }
+         }
+         }
+         }
+         */
         System.out.println("the IOR is: " + _ior);
         notifyAll();
     }
@@ -492,24 +493,26 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
                     Token inputToken = port.get(0);
 
                     try {
-                        _remoteActor.transferInput(inputName, i,
-                                inputToken.toString());
+                        _remoteActor.transferInput(inputName, i, inputToken
+                                .toString());
                     } catch (SystemException ex) {
                         throw new InvalidStateException(this,
                                 "Communication failiar." + ex.getMessage());
                     } catch (CorbaIllegalActionException ex1) {
                         throw new IllegalActionException(this,
                                 "Illegal Action on remote actor. "
-                                + ex1.getMessage());
+                                        + ex1.getMessage());
                     } catch (CorbaUnknownPortException ex2) {
                         throw new IllegalActionException(this,
                                 "Wrong port name. " + ex2.getMessage());
                     } catch (CorbaIndexOutofBoundException ex3) {
                         throw new IllegalActionException(this, port,
-                                "Channel index out of bound. " + ex3.getMessage());
+                                "Channel index out of bound. "
+                                        + ex3.getMessage());
                     } catch (CorbaIllegalValueException ex4) {
                         throw new IllegalActionException(port,
-                                "contains illegal token value. " + ex4.getMessage());
+                                "contains illegal token value. "
+                                        + ex4.getMessage());
                     }
                 }
             }
@@ -536,8 +539,8 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
             for (short i = 0; i < port.getWidth(); i++) {
                 try {
                     if (_remoteActor.hasData(portName, i)) {
-                        String returndata = _remoteActor.transferOutput(portName,
-                                i);
+                        String returndata = _remoteActor.transferOutput(
+                                portName, i);
 
                         //FIXME: type?
                         DoubleToken outputToken = new DoubleToken(returndata);
@@ -548,10 +551,11 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
                             "Communication failiar." + ex.getMessage());
                 } catch (CorbaIllegalActionException ex1) {
                     throw new IllegalActionException(this,
-                            "Illegal Action on remote actor. " + ex1.getMessage());
+                            "Illegal Action on remote actor. "
+                                    + ex1.getMessage());
                 } catch (CorbaUnknownPortException ex2) {
-                    throw new IllegalActionException(this,
-                            "Unknow port name" + portName + ex2.getMessage());
+                    throw new IllegalActionException(this, "Unknow port name"
+                            + portName + ex2.getMessage());
                 } catch (CorbaIndexOutofBoundException ex3) {
                     throw new IllegalActionException(this, port,
                             "channel index out of bound. " + ex3.getMessage());
@@ -563,19 +567,34 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private Properties _properties;
+
     private PeerGroup _group;
+
     private ResolverService _resolverService;
+
     private Authenticator _authenticator;
+
     private Credential _credential;
+
     private ResolverQueryMsg _actorQueryMessage;
+
     private ResolverResponseMsg _actorQueryResponse;
+
     private String _configDir;
+
     private static String _CONFIG_DIR = "pae.config.dir";
+
     private String _CONFIG_FILE = "Peer.properties";
+
     private String _actorListFileName;
+
     private String _ACTOR_QUERY_HANDLER_NAME = "ActorQueryHandler";
+
     private MimeMediaType XML_MIME_TYPE = new MimeMediaType("text/xml");
+
     private String _ior = null;
+
     private String _remoteActorName;
+
     private CorbaActor _remoteActor;
 }

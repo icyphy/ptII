@@ -1,29 +1,29 @@
 /* A standalone plot application.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.plot;
 
 import java.awt.event.WindowAdapter;
@@ -39,75 +39,74 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplication
 
 /**
-   PlotApplication is a versatile two-dimensional data plotter application.
-   It can read files compatible with the Ptolemy plot
-   file format (currently only ASCII).  For a description of the file
-   format, see the Plot and PlotBox classes.
-   Command-line options include:
-   <dl>
+ PlotApplication is a versatile two-dimensional data plotter application.
+ It can read files compatible with the Ptolemy plot
+ file format (currently only ASCII).  For a description of the file
+ format, see the Plot and PlotBox classes.
+ Command-line options include:
+ <dl>
 
-   <dt><code>-help</code></a>
-   <dt>Print the usage, including all command-line options
-   that exist for backward compatibility and then exit.
-   The help menu choice will display the same information.
-   <dt><code>-test</code></a>
-   <dt>Display the plot, then exit after 2 seconds.
+ <dt><code>-help</code></a>
+ <dt>Print the usage, including all command-line options
+ that exist for backward compatibility and then exit.
+ The help menu choice will display the same information.
+ <dt><code>-test</code></a>
+ <dt>Display the plot, then exit after 2 seconds.
 
-   <dt><code>-version</code></a>
-   <dt>Print the program version and then exit.
-   While ptplot is running,
-   the version menu choice will display the same information.
-   <dt><code>-</code></a>
-   <dt>Read the plot data from standard in.
-   </dl>
+ <dt><code>-version</code></a>
+ <dt>Print the program version and then exit.
+ While ptplot is running,
+ the version menu choice will display the same information.
+ <dt><code>-</code></a>
+ <dt>Read the plot data from standard in.
+ </dl>
 
-   <p>
-   For compatibility with historical applications, this application has
-   a limited ability to read pxgraph files.  The command line arguments
-   must be used, and the options that are understood are exactly those
-   of the pxgraph application, plus some more to allow for cross-platform
-   reading.  It is not possible to read pxgraph files
-   using the "Open" menu command (because of the cross-platform problems).
-   The additional command-line arguments are:
-   <dl>
+ <p>
+ For compatibility with historical applications, this application has
+ a limited ability to read pxgraph files.  The command line arguments
+ must be used, and the options that are understood are exactly those
+ of the pxgraph application, plus some more to allow for cross-platform
+ reading.  It is not possible to read pxgraph files
+ using the "Open" menu command (because of the cross-platform problems).
+ The additional command-line arguments are:
+ <dl>
 
-   <dt><code>-bigendian</code></a>
-   <dt>Data files are in big-endian, or network binary format.
-   If you are on a little-endian machine, such as a machine
-   with an Intel x86 chip, and you would like to read a binary
-   format file created on a big-endian machine, such as a Sun SPARC,
-   use the <code>-bigendian</code> flag.
+ <dt><code>-bigendian</code></a>
+ <dt>Data files are in big-endian, or network binary format.
+ If you are on a little-endian machine, such as a machine
+ with an Intel x86 chip, and you would like to read a binary
+ format file created on a big-endian machine, such as a Sun SPARC,
+ use the <code>-bigendian</code> flag.
 
-   <dt><code>-littleendian</code></a>
-   <dt>Data files are in little-endian, or x86 binary format.
-   If you are on a big-endian machine, such as a Sun Sparc,
-   and you would like to read a binary
-   format file created on a little-endian machine, such as Intel x86
-   machine, then use the <code>-littleendian</code> flag.
-   </dl>
-   <p>
-   To compile and run this application, do the following:
-   <pre>
-   javac -classpath ../.. PlotApplication.java
-   java -classpath ../.. ptolemy.plot.PlotApplication
-   </pre>
-   <p>
-   This assumes a particular directory structure.  If this is not what you
-   have, then alter the above accordingly.
+ <dt><code>-littleendian</code></a>
+ <dt>Data files are in little-endian, or x86 binary format.
+ If you are on a big-endian machine, such as a Sun Sparc,
+ and you would like to read a binary
+ format file created on a little-endian machine, such as Intel x86
+ machine, then use the <code>-littleendian</code> flag.
+ </dl>
+ <p>
+ To compile and run this application, do the following:
+ <pre>
+ javac -classpath ../.. PlotApplication.java
+ java -classpath ../.. ptolemy.plot.PlotApplication
+ </pre>
+ <p>
+ This assumes a particular directory structure.  If this is not what you
+ have, then alter the above accordingly.
 
-   @see Plot
-   @see PlotBox
-   @author Christopher Hylands and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @see Plot
+ @see PlotBox
+ @author Christopher Hylands and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class PlotApplication extends PlotFrame {
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.
@@ -132,8 +131,7 @@ public class PlotApplication extends PlotFrame {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PlotApplication(PlotBox plot, String[] args)
-            throws Exception {
+    public PlotApplication(PlotBox plot, String[] args) throws Exception {
         // invoke the base class constructor and pass in the argument a Plot
         // object. This makes sure that the plot field is an instance of
         // Plot class.
@@ -141,13 +139,13 @@ public class PlotApplication extends PlotFrame {
 
         // Handle window closing by exiting the application.
         addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent e) {
-                    // Strangely, calling _close() here sends javac into
-                    // an infinite loop (in jdk 1.1.4).
-                    //              _close();
-                    System.exit(0);
-                }
-            });
+            public void windowClosing(WindowEvent e) {
+                // Strangely, calling _close() here sends javac into
+                // an infinite loop (in jdk 1.1.4).
+                //              _close();
+                System.exit(0);
+            }
+        });
 
         _parseArgs(args);
 
@@ -171,13 +169,13 @@ public class PlotApplication extends PlotFrame {
 
         // Handle window closing by exiting the application.
         addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent e) {
-                    // Strangely, calling _close() here sends javac into
-                    // an infinite loop (in jdk 1.1.4).
-                    //              _close();
-                    System.exit(0);
-                }
-            });
+            public void windowClosing(WindowEvent e) {
+                // Strangely, calling _close() here sends javac into
+                // an infinite loop (in jdk 1.1.4).
+                //              _close();
+                System.exit(0);
+            }
+        });
 
         setVisible(true);
     }
@@ -191,15 +189,15 @@ public class PlotApplication extends PlotFrame {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
-                    public void run() {
-                        try {
-                            new PlotApplication(new Plot(), args);
-                        } catch (Exception ex) {
-                            System.err.println(ex.toString());
-                            ex.printStackTrace();
-                        }
+                public void run() {
+                    try {
+                        new PlotApplication(new Plot(), args);
+                    } catch (Exception ex) {
+                        System.err.println(ex.toString());
+                        ex.printStackTrace();
                     }
-                };
+                }
+            };
 
             SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {
@@ -221,15 +219,20 @@ public class PlotApplication extends PlotFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     protected void _about() {
-        JOptionPane.showMessageDialog(this,
-                "PlotApplication class\n" + "By: Edward A. Lee "
-                + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
-                + ", Build: $Id$\n\n"
-                + "For more information, see\n"
-                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                + "Copyright (c) 1997-2005, "
-                + "The Regents of the University of California.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane
+                .showMessageDialog(
+                        this,
+                        "PlotApplication class\n"
+                                + "By: Edward A. Lee "
+                                + "and Christopher Hylands\n"
+                                + "Version "
+                                + PlotBox.PTPLOT_RELEASE
+                                + ", Build: $Id$\n\n"
+                                + "For more information, see\n"
+                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                                + "Copyright (c) 1997-2005, "
+                                + "The Regents of the University of California.",
+                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Exit the application.
@@ -243,8 +246,8 @@ public class PlotApplication extends PlotFrame {
     protected void _help() {
         JOptionPane.showMessageDialog(this,
                 "PlotApplication is a standalone plot " + " application.\n"
-                + "  File formats understood: Ptplot ASCII.\n"
-                + "  Left mouse button: Zooming.\n\n" + _usage(),
+                        + "  File formats understood: Ptplot ASCII.\n"
+                        + "  Left mouse button: Zooming.\n\n" + _usage(),
                 "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -256,8 +259,8 @@ public class PlotApplication extends PlotFrame {
      *  @exception FileNotFoundException If an input file cannot be found.
      *  @exception IOException If there is a problem reading an input.
      */
-    protected int _parseArgs(String[] args)
-            throws CmdLineArgException, FileNotFoundException, IOException {
+    protected int _parseArgs(String[] args) throws CmdLineArgException,
+            FileNotFoundException, IOException {
         int i = 0;
         int argumentsRead;
         String arg;
@@ -284,8 +287,10 @@ public class PlotApplication extends PlotFrame {
                 _test = true;
                 continue;
             } else if (arg.equals("-version")) {
-                System.out.println("Version " + PlotBox.PTPLOT_RELEASE
-                        + ", Build $Id$");
+                System.out
+                        .println("Version "
+                                + PlotBox.PTPLOT_RELEASE
+                                + ", Build $Id$");
                 System.exit(0);
                 continue;
             } else if (arg.equals("-width")) {
@@ -351,31 +356,17 @@ public class PlotApplication extends PlotFrame {
         // White     - The default (not supported at this time)
         // "(Unsupported)" - The string that is printed to indicate if
         //                   a option is unsupported.
-        String[][] commandOptions = {
-            {
-                "-height",
-                "<pixels>"
-            },
-            {
-                "-width",
-                "<pixels>"
-            },
-        };
+        String[][] commandOptions = { { "-height", "<pixels>" },
+                { "-width", "<pixels>" }, };
 
-        String[] commandFlags = {
-            "-help",
-            "-test",
-            "-version",
-            "-",
-        };
+        String[] commandFlags = { "-help", "-test", "-version", "-", };
         String result = "Usage: ptplot [ options ] [file ...]\n\n"
-            + "Options that take values:\n";
+                + "Options that take values:\n";
 
         int i;
 
         for (i = 0; i < commandOptions.length; i++) {
-            result += (" " + commandOptions[i][0] + " " + commandOptions[i][1]
-                    + "\n");
+            result += (" " + commandOptions[i][0] + " " + commandOptions[i][1] + "\n");
         }
 
         result += "\nBoolean flags:\n";

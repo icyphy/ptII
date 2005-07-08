@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.canvas.connector;
 
 import diva.canvas.Figure;
@@ -36,7 +36,6 @@ import diva.canvas.interactor.GrabHandle;
 import diva.canvas.interactor.GrabHandleFactory;
 import diva.canvas.interactor.Manipulator;
 import diva.canvas.toolbox.BasicHighlighter;
-
 
 /**
  * A manipulator which attaches grab handles to the ends of
@@ -110,7 +109,8 @@ public class ConnectorManipulator extends Manipulator {
      * into, around on, or out of a suitable target object.
      */
     public void addLayerMotionListener(LayerMotionListener l) {
-        _layerMotionListener = LayerEventMulticaster.add(_layerMotionListener, l);
+        _layerMotionListener = LayerEventMulticaster.add(_layerMotionListener,
+                l);
     }
 
     /** Get the connector target
@@ -159,14 +159,15 @@ public class ConnectorManipulator extends Manipulator {
      * is attached to grab-handles.
      */
     public void removeConnectorListener(ConnectorListener l) {
-        ((ConnectorInteractor) getHandleInteractor()).removeConnectorListener(l);
+        ((ConnectorInteractor) getHandleInteractor())
+                .removeConnectorListener(l);
     }
 
     /** Remove the given layer motion listener from this interactor.
      */
     public void removeLayerMotionListener(LayerMotionListener l) {
-        _layerMotionListener = LayerEventMulticaster.remove(_layerMotionListener,
-                l);
+        _layerMotionListener = LayerEventMulticaster.remove(
+                _layerMotionListener, l);
     }
 
     /** Refresh the geometry. Check that the sites that the handles
@@ -273,6 +274,7 @@ public class ConnectorManipulator extends Manipulator {
     //// TargetHighlighter
     static class TargetHighlighter implements LayerMotionListener {
         BasicHighlighter _high;
+
         FigureContainer _parent;
 
         public void mouseEntered(LayerEvent e) {

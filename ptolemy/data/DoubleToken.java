@@ -1,30 +1,30 @@
 /* A token that contains a double precision number.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.data;
 
 import ptolemy.data.type.BaseType;
@@ -34,25 +34,24 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToken
 
 /**
-   A token that contains a 64-bit signed mantissa, signed exponent double
-   precision floating-point number (IEEE 754).  This class handles overflow and
-   underflow as does normal java arithmetic on doubles.
+ A token that contains a 64-bit signed mantissa, signed exponent double
+ precision floating-point number (IEEE 754).  This class handles overflow and
+ underflow as does normal java arithmetic on doubles.
 
-   <p> Note that a double cannot be losslessly converted to a long, and
-   vice versa, as both have 64-bit representations in Java.
+ <p> Note that a double cannot be losslessly converted to a long, and
+ vice versa, as both have 64-bit representations in Java.
 
-   @see ptolemy.data.Token
-   @author Neil Smyth, Yuhong Xiong, Christopher Hylands, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @see ptolemy.data.Token
+ @author Neil Smyth, Yuhong Xiong, Christopher Hylands, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class DoubleToken extends ScalarToken {
     /** Construct a DoubleToken with value 0.0.
      */
@@ -113,8 +112,8 @@ public class DoubleToken extends ScalarToken {
         int compare = TypeLattice.compare(BaseType.DOUBLE, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "double"));
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(token, "double"));
         }
 
         compare = TypeLattice.compare(BaseType.INT, token);
@@ -126,7 +125,7 @@ public class DoubleToken extends ScalarToken {
             return result;
         } else {
             throw new IllegalActionException(notSupportedConversionMessage(
-                                                     token, "double"));
+                    token, "double"));
         }
     }
 
@@ -209,7 +208,7 @@ public class DoubleToken extends ScalarToken {
                 return TokenUtilities.regularFormat.format(_value) + unitString;
             } else {
                 return TokenUtilities.exponentialFormat.format(_value)
-                    + unitString;
+                        + unitString;
             }
         }
     }
@@ -264,7 +263,7 @@ public class DoubleToken extends ScalarToken {
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
-                                                 this, rightArgument));
+                this, rightArgument));
     }
 
     /** Returns a token representing the bitwise NOT of this token.
@@ -275,7 +274,7 @@ public class DoubleToken extends ScalarToken {
      */
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
-                                                 this, this));
+                this, this));
     }
 
     /** Returns a token representing the bitwise OR of this token and
@@ -288,7 +287,7 @@ public class DoubleToken extends ScalarToken {
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Returns a token representing the bitwise XOR of this token and
@@ -301,7 +300,7 @@ public class DoubleToken extends ScalarToken {
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseXor",
-                                                 this, rightArgument));
+                this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -352,7 +351,8 @@ public class DoubleToken extends ScalarToken {
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         DoubleToken convertedArgument = (DoubleToken) rightArgument;
-        return BooleanToken.getInstance(_value < convertedArgument.doubleValue());
+        return BooleanToken.getInstance(_value < convertedArgument
+                .doubleValue());
     }
 
     /** Return a new token whose value is the value of this token
@@ -385,7 +385,7 @@ public class DoubleToken extends ScalarToken {
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         double difference = _value
-            - ((DoubleToken) rightArgument).doubleValue();
+                - ((DoubleToken) rightArgument).doubleValue();
         return new DoubleToken(difference);
     }
 

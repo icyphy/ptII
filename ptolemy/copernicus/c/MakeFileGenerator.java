@@ -1,47 +1,46 @@
 /*
 
-A class that generates a makefile for a given class.
+ A class that generates a makefile for a given class.
 
-Copyright (c) 2002-2005 The University of Maryland.
-All rights reserved.
+ Copyright (c) 2002-2005 The University of Maryland.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.HashSet;
 import java.util.Iterator;
 
-
 /** A class that generates the makefile for the given class. The generated file
-    has the name (class).make.
+ has the name (class).make.
 
-    @author Ankush Varma
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (ankush)
-    @Pt.AcceptedRating Red (ankush)
-*/
+ @author Ankush Varma
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (ankush)
+ @Pt.AcceptedRating Red (ankush)
+ */
 public class MakeFileGenerator {
     /** Dummy constructor
      */
@@ -54,8 +53,8 @@ public class MakeFileGenerator {
      *  makeFile.
      */
     public static String classNameToMakeFileName(String className) {
-        StringBuffer name = new StringBuffer(CNames.classNameToFileName(
-                                                     className));
+        StringBuffer name = new StringBuffer(CNames
+                .classNameToFileName(className));
         return name.toString();
     }
 
@@ -117,13 +116,13 @@ public class MakeFileGenerator {
         }
 
         /* FIXME: Why is this needed?
-           code.append("STATIC= -static");
-           code.append("# Uncomment the next line for dynamic linking\n");
-           if (isStatic) {
-           code.append("#");
-           }
-           code.append("STATIC=\n");
-        */
+         code.append("STATIC= -static");
+         code.append("# Uncomment the next line for dynamic linking\n");
+         if (isStatic) {
+         code.append("#");
+         }
+         code.append("STATIC=\n");
+         */
         // The -g flag is for gdb debugging.
         //code.append("CFLAGS = -O2 -static -s -Wall -pedantic -I .");
         code.append("CFLAGS = " + Options.v().get("cFlags"));
@@ -175,7 +174,9 @@ public class MakeFileGenerator {
                 + StubFileGenerator.stubFileNameSuffix() + ")\n");
 
         // Main Target.
-        code.append("\n" + className + ".exe : depend $(OBJECTS) $(LIB_FILE)\n");
+        code
+                .append("\n" + className
+                        + ".exe : depend $(OBJECTS) $(LIB_FILE)\n");
 
         code.append("\tgcc $(CFLAGS) $(OBJECTS) $(LIB_FILE) ");
 

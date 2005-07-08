@@ -1,34 +1,34 @@
 /*
 
-A C code generator for generating "code files" (.c files) that implement
-Java classes.
+ A C code generator for generating "code files" (.c files) that implement
+ Java classes.
 
-Copyright (c) 2001-2005 The University of Maryland.
-All rights reserved.
+ Copyright (c) 2001-2005 The University of Maryland.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES
-, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES
+ , INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.Iterator;
@@ -38,16 +38,15 @@ import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
 
-
 /** A C code generator for generating "code files" (.c files) that implement
-    Java classes.
+ Java classes.
 
-    @author Shuvra S. Bhattacharyya, Ankush Varma
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (ssb)
-    @Pt.AcceptedRating Red (ssb)
-*/
+ @author Shuvra S. Bhattacharyya, Ankush Varma
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (ssb)
+ @Pt.AcceptedRating Red (ssb)
+ */
 public class CodeFileGenerator extends CodeGenerator {
     /** Construct a code file generator.
      */
@@ -118,7 +117,7 @@ public class CodeFileGenerator extends CodeGenerator {
             if (method.isPrivate() && RequiredFileGenerator.isRequired(method)) {
                 if (count++ == 0) {
                     bodyCode.append(_comment("Prototypes for functions that "
-                                            + "implement private methods"));
+                            + "implement private methods"));
                 }
 
                 bodyCode.append(_generateMethodHeader(method) + ";\n");
@@ -128,8 +127,8 @@ public class CodeFileGenerator extends CodeGenerator {
         bodyCode.append("\n");
 
         // Generate the code for all of the methods.
-        MethodCodeGenerator methodCodeGenerator = new MethodCodeGenerator(_context,
-                _requiredTypeMap);
+        MethodCodeGenerator methodCodeGenerator = new MethodCodeGenerator(
+                _context, _requiredTypeMap);
 
         methods = source.getMethods().iterator();
 
@@ -183,16 +182,19 @@ public class CodeFileGenerator extends CodeGenerator {
      */
     protected StringBuffer _declareConstants() {
         StringBuffer code = new StringBuffer();
-        String typeName = CNames.instanceNameOf(Scene.v().getSootClass("java.lang.String"));
+        String typeName = CNames.instanceNameOf(Scene.v().getSootClass(
+                "java.lang.String"));
         Iterator stringConstants = _context.getStringConstants();
 
         if (stringConstants.hasNext()) {
             code.append(_comment("Pointers to string constants"));
 
             while (stringConstants.hasNext()) {
-                code.append("static " + typeName + " "
-                        + _context.getIdentifier((String) (stringConstants.next()))
-                        + ";\n");
+                code.append("static "
+                        + typeName
+                        + " "
+                        + _context.getIdentifier((String) (stringConstants
+                                .next())) + ";\n");
             }
         }
 
@@ -214,7 +216,7 @@ public class CodeFileGenerator extends CodeGenerator {
         final String argumentName = "class";
         final String argumentReference = argumentName + "->";
         code.append(_comment("Function that initializes structure for Class "
-                            + source.getName()));
+                + source.getName()));
         code.append("void " + CNames.initializerNameOf(source) + "("
                 + CNames.classNameOf(source) + " " + argumentName + ") {\n");
 
@@ -222,24 +224,24 @@ public class CodeFileGenerator extends CodeGenerator {
         if (!Context.getSingleClassMode()) {
             code.append(_indent(1) + "/* Inherited Methods */\n");
             code.append(_generateMethodPointerInitialization(
-                                MethodListGenerator.getInheritedMethods(source),
-                                argumentReference));
+                    MethodListGenerator.getInheritedMethods(source),
+                    argumentReference));
         }
 
         // New methods.
         code.append(_indent(1) + "/* New Methods */\n");
-        code.append(_generateMethodPointerInitialization(
-                            MethodListGenerator.getNewMethods(source), argumentReference));
+        code.append(_generateMethodPointerInitialization(MethodListGenerator
+                .getNewMethods(source), argumentReference));
 
         // Constructors.
         code.append(_indent(1) + "/* Constructors */\n");
-        code.append(_generateMethodPointerInitialization(
-                            MethodListGenerator.getConstructors(source), argumentReference));
+        code.append(_generateMethodPointerInitialization(MethodListGenerator
+                .getConstructors(source), argumentReference));
 
         // Private methods.
         code.append(_indent(1) + "/* Private Methods */\n");
-        code.append(_generateMethodPointerInitialization(
-                            MethodListGenerator.getPrivateMethods(source), argumentReference));
+        code.append(_generateMethodPointerInitialization(MethodListGenerator
+                .getPrivateMethods(source), argumentReference));
 
         Iterator stringConstants = _context.getStringConstants();
 
@@ -332,15 +334,15 @@ public class CodeFileGenerator extends CodeGenerator {
     }
 
     /** Generate code to initialize method pointers (in the method table)
-        in a structure that implements a class.
+     in a structure that implements a class.
 
-        @param methodList The list of methods for which pointers are to be
-        initialized.
+     @param methodList The list of methods for which pointers are to be
+     initialized.
 
-        @param argumentReference A C reference pointing to the structure
-        which has the "methods" substructure containing the method
-        pointers. Typically this is a class structure in the C code.
-    */
+     @param argumentReference A C reference pointing to the structure
+     which has the "methods" substructure containing the method
+     pointers. Typically this is a class structure in the C code.
+     */
     private String _generateMethodPointerInitialization(List methodList,
             String argumentReference) {
         StringBuffer code = new StringBuffer();

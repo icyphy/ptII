@@ -1,31 +1,31 @@
 /* A subclass of Query supporting Ptolemy II attributes.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.awt.Color;
@@ -73,37 +73,36 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
 
 /**
-   This class is a query dialog box with various entries for setting
-   the values of Ptolemy II attributes that implement the Settable
-   interface and have visibility FULL.  One or more entries are
-   associated with an attribute so that if the entry is changed, the
-   attribute value is updated, and if the attribute value changes,
-   the entry is updated. To change an attribute, this class queues
-   a change request with a particular object called the <i>change
-   handler</i>.  The change handler is specified as a constructor
-   argument.
-   <p>
-   It is important to note that it may take
-   some time before the value of a attribute is actually changed, since it
-   is up to the change handler to decide when change requests are processed.
-   The change handler will typically delegate change requests to the
-   Manager, although this is not necessarily the case.
-   <p>
-   To use this class, add an entry to the query using addStyledEntry().
+ This class is a query dialog box with various entries for setting
+ the values of Ptolemy II attributes that implement the Settable
+ interface and have visibility FULL.  One or more entries are
+ associated with an attribute so that if the entry is changed, the
+ attribute value is updated, and if the attribute value changes,
+ the entry is updated. To change an attribute, this class queues
+ a change request with a particular object called the <i>change
+ handler</i>.  The change handler is specified as a constructor
+ argument.
+ <p>
+ It is important to note that it may take
+ some time before the value of a attribute is actually changed, since it
+ is up to the change handler to decide when change requests are processed.
+ The change handler will typically delegate change requests to the
+ Manager, although this is not necessarily the case.
+ <p>
+ To use this class, add an entry to the query using addStyledEntry().
 
-   @author Brian K. Vogel and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
-public class PtolemyQuery extends Query implements QueryListener, ValueListener,
-                                                   ChangeListener, CloseListener {
+ @author Brian K. Vogel and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
+public class PtolemyQuery extends Query implements QueryListener,
+        ValueListener, ChangeListener, CloseListener {
     /** Construct a panel with no queries in it and with the specified
      *  change handler. When an entry changes, a change request is
      *  queued with the given change handler. The change handler should
@@ -153,11 +152,12 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
         boolean foundStyle = false;
 
         if (attribute instanceof NamedObj) {
-            Iterator styles = ((NamedObj) attribute).attributeList(ParameterEditorStyle.class)
-                .iterator();
+            Iterator styles = ((NamedObj) attribute).attributeList(
+                    ParameterEditorStyle.class).iterator();
 
             while (styles.hasNext() && !foundStyle) {
-                ParameterEditorStyle style = (ParameterEditorStyle) styles.next();
+                ParameterEditorStyle style = (ParameterEditorStyle) styles
+                        .next();
 
                 try {
                     style.addEntry(this);
@@ -187,7 +187,7 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
                     foundStyle = true;
                 } else if (attribute instanceof IntRangeParameter) {
                     int current = ((IntRangeParameter) attribute)
-                        .getCurrentValue();
+                            .getCurrentValue();
                     int min = ((IntRangeParameter) attribute).getMinValue();
                     int max = ((IntRangeParameter) attribute).getMaxValue();
 
@@ -205,8 +205,8 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
                             .getToken()).intValue();
 
                     // Get the quantized integer for the current value.
-                    int quantized = ((int) Math.round(((current - min) * precision) / (max
-                                                              - min)));
+                    int quantized = ((int) Math
+                            .round(((current - min) * precision) / (max - min)));
                     addSlider(name, name, quantized, 0, precision);
                     attachParameter(attribute, name);
                     foundStyle = true;
@@ -219,7 +219,8 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
                     // Specify the directory in which to start browsing
                     // to be the location where the model is defined,
                     // if that is known.
-                    URI modelURI = URIAttribute.getModelURI((NamedObj) attribute);
+                    URI modelURI = URIAttribute
+                            .getModelURI((NamedObj) attribute);
                     File directory = null;
 
                     if (modelURI != null) {
@@ -243,28 +244,27 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
 
                     if (attribute instanceof NamedObj) {
                         Parameter marker = (Parameter) ((NamedObj) attribute)
-                            .getAttribute("allowFiles",
-                                    Parameter.class);
+                                .getAttribute("allowFiles", Parameter.class);
 
                         if (marker != null) {
                             Token value = marker.getToken();
 
                             if (value instanceof BooleanToken) {
                                 allowFiles = ((BooleanToken) value)
-                                    .booleanValue();
+                                        .booleanValue();
                             }
                         }
 
                         marker = (Parameter) ((NamedObj) attribute)
-                            .getAttribute("allowDirectories",
-                                    Parameter.class);
+                                .getAttribute("allowDirectories",
+                                        Parameter.class);
 
                         if (marker != null) {
                             Token value = marker.getToken();
 
                             if (value instanceof BooleanToken) {
                                 allowDirectories = ((BooleanToken) value)
-                                    .booleanValue();
+                                        .booleanValue();
                             }
                         }
                     }
@@ -300,7 +300,8 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof Variable) {
-                    Type declaredType = ((Variable) attribute).getDeclaredType();
+                    Type declaredType = ((Variable) attribute)
+                            .getDeclaredType();
                     Token current = ((Variable) attribute).getToken();
 
                     if (declaredType == BaseType.BOOLEAN) {
@@ -310,8 +311,8 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
                         // and the default Line style should be used.
                         if (attribute.getExpression().equals("true")
                                 || attribute.getExpression().equals("false")) {
-                            addCheckBox(name, name,
-                                    ((BooleanToken) current).booleanValue());
+                            addCheckBox(name, name, ((BooleanToken) current)
+                                    .booleanValue());
                             attachParameter(attribute, name);
                             foundStyle = true;
                         }
@@ -397,13 +398,13 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
         // Handle tool tips.  This is almost certainly an instance
         // of NamedObj, but check to be sure.
         if (attribute instanceof NamedObj) {
-            Attribute tooltipAttribute = ((NamedObj) attribute).getAttribute(
-                    "tooltip");
+            Attribute tooltipAttribute = ((NamedObj) attribute)
+                    .getAttribute("tooltip");
 
             if ((tooltipAttribute != null)
                     && tooltipAttribute instanceof Documentation) {
-                setToolTip(entryName,
-                        ((Documentation) tooltipAttribute).getValue());
+                setToolTip(entryName, ((Documentation) tooltipAttribute)
+                        .getValue());
             } else {
                 String tip = Documentation.consolidate((NamedObj) attribute);
 
@@ -493,7 +494,7 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
              + description
              + "\n" + exception.getMessage()
              + "\n\nPlease enter a new value:");
-            */
+             */
 
             // Need to extract the name of the entry from the request.
             // Default value is the description itself.
@@ -517,58 +518,57 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
             // NOTE: Do this in the event thread, since this might be invoked
             // in whatever thread is processing mutations.
             SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        if (attribute != null) {
-                            _query.addStyledEntry(attribute);
-                        } else {
-                            throw new InternalErrorException(
-                                    "Expected attribute attached to entry name: "
-                                    + entryName);
+                public void run() {
+                    if (attribute != null) {
+                        _query.addStyledEntry(attribute);
+                    } else {
+                        throw new InternalErrorException(
+                                "Expected attribute attached to entry name: "
+                                        + entryName);
+                    }
+
+                    _dialog = new ComponentDialog(JOptionPane
+                            .getFrameForComponent(PtolemyQuery.this), "Error",
+                            _query, null);
+
+                    // The above returns only when the modal
+                    // dialog is closing.  The following will
+                    // force a new dialog to be created if the
+                    // value is not valid.
+                    _query._isOpenErrorWindow = false;
+
+                    if (_dialog.buttonPressed().equals("Cancel")) {
+                        if (_revertValue.containsKey(entryName)) {
+                            String revertValue = (String) _revertValue
+                                    .get(entryName);
+
+                            // NOTE: Do not use setAndNotify() here because
+                            // that checks whether the string entry has
+                            // changed, and we want to force revert even
+                            // if it appears to not have changed.
+                            set(((NamedObj) attribute).getName(), revertValue);
+                            changed(entryName);
                         }
-
-                        _dialog = new ComponentDialog(JOptionPane
-                                .getFrameForComponent(
-                                        PtolemyQuery.this), "Error",
-                                _query, null);
-
-                        // The above returns only when the modal
-                        // dialog is closing.  The following will
-                        // force a new dialog to be created if the
-                        // value is not valid.
-                        _query._isOpenErrorWindow = false;
-
-                        if (_dialog.buttonPressed().equals("Cancel")) {
-                            if (_revertValue.containsKey(entryName)) {
-                                String revertValue = (String) _revertValue.get(entryName);
-
-                                // NOTE: Do not use setAndNotify() here because
-                                // that checks whether the string entry has
-                                // changed, and we want to force revert even
-                                // if it appears to not have changed.
-                                set(((NamedObj) attribute).getName(),
-                                        revertValue);
-                                changed(entryName);
-                            }
-                        } else {
-                            // Force evaluation to check validity of
-                            // the entry.  NOTE: Normally, we would
-                            // not need to force evaluation because if
-                            // the value has changed, then listeners
-                            // are automatically notified.  However,
-                            // if the value has not changed, then they
-                            // are not notified.  Since the original
-                            // value was invalid, it is not acceptable
-                            // to skip notification in this case.  So
-                            // we force it.
-                            try {
-                                attribute.validate();
-                            } catch (IllegalActionException ex) {
-                                change.setErrorReported(false);
-                                changeFailed(change, ex);
-                            }
+                    } else {
+                        // Force evaluation to check validity of
+                        // the entry.  NOTE: Normally, we would
+                        // not need to force evaluation because if
+                        // the value has changed, then listeners
+                        // are automatically notified.  However,
+                        // if the value has not changed, then they
+                        // are not notified.  Since the original
+                        // value was invalid, it is not acceptable
+                        // to skip notification in this case.  So
+                        // we force it.
+                        try {
+                            attribute.validate();
+                        } catch (IllegalActionException ex) {
+                            change.setErrorReported(false);
+                            changeFailed(change, ex);
                         }
                     }
-                });
+                }
+            });
         }
     }
 
@@ -595,22 +595,21 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
                 // Passwords have to be handled specially because the password
                 // is not represented in a string.
                 request = new ChangeRequest(this, name) {
-                        protected void _execute()
-                                throws IllegalActionException {
-                            char[] password = getCharArrayValue(name);
-                            ((PasswordAttribute) attribute).setPassword(password);
-                            attribute.validate();
+                    protected void _execute() throws IllegalActionException {
+                        char[] password = getCharArrayValue(name);
+                        ((PasswordAttribute) attribute).setPassword(password);
+                        attribute.validate();
 
-                            Iterator derived = ((PasswordAttribute) attribute).getDerivedList()
-                                .iterator();
+                        Iterator derived = ((PasswordAttribute) attribute)
+                                .getDerivedList().iterator();
 
-                            while (derived.hasNext()) {
-                                PasswordAttribute derivedPassword = (PasswordAttribute) derived
+                        while (derived.hasNext()) {
+                            PasswordAttribute derivedPassword = (PasswordAttribute) derived
                                     .next();
-                                derivedPassword.setPassword(password);
-                            }
+                            derivedPassword.setPassword(password);
                         }
-                    };
+                    }
+                };
             } else if (attribute instanceof NamedObj) {
                 // NOTE: We must use a MoMLChangeRequest so that changes
                 // propagate to any objects that have been instantiating
@@ -633,7 +632,7 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
                         double min = ((DoubleToken) ((DoubleRangeParameter) attribute).min
                                 .getToken()).doubleValue();
                         double newValueAsDouble = min
-                            + (((max - min) * newValue) / precision);
+                                + (((max - min) * newValue) / precision);
                         stringValue = "" + newValueAsDouble;
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
@@ -645,49 +644,48 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
                 // MoML definition, or the immediate parent if there is none.
                 NamedObj parent = (NamedObj) castAttribute.getContainer();
                 String moml = "<property name=\"" + castAttribute.getName()
-                    + "\" value=\"" + StringUtilities.escapeForXML(stringValue)
-                    + "\"/>";
+                        + "\" value=\""
+                        + StringUtilities.escapeForXML(stringValue) + "\"/>";
                 request = new MoMLChangeRequest(this, // originator
                         parent, // context
                         moml, // MoML code
                         null) { // base
-                        protected void _execute() throws Exception {
-                            synchronized (PtolemyQuery.this) {
-                                try {
-                                    _ignoreChangeNotifications = true;
-                                    super._execute();
-                                } finally {
-                                    _ignoreChangeNotifications = false;
-                                }
+                    protected void _execute() throws Exception {
+                        synchronized (PtolemyQuery.this) {
+                            try {
+                                _ignoreChangeNotifications = true;
+                                super._execute();
+                            } finally {
+                                _ignoreChangeNotifications = false;
                             }
                         }
-                    };
+                    }
+                };
             } else {
                 // If the attribute is not a NamedObj, then we
                 // set its value directly.
                 request = new ChangeRequest(this, name) {
-                        protected void _execute()
-                                throws IllegalActionException {
-                            attribute.setExpression(getStringValue(name));
+                    protected void _execute() throws IllegalActionException {
+                        attribute.setExpression(getStringValue(name));
 
-                            attribute.validate();
+                        attribute.validate();
 
-                            /* NOTE: Earlier version:
-                            // Here, we need to handle instances of Variable
-                            // specially.  This is too bad...
-                            if (attribute instanceof Variable) {
+                        /* NOTE: Earlier version:
+                         // Here, we need to handle instances of Variable
+                         // specially.  This is too bad...
+                         if (attribute instanceof Variable) {
 
-                            // Will this ever happen?  A
-                            // Variable that is not a NamedObj???
-                            // Retrieve the token to force
-                            // evaluation, so as to check the
-                            // validity of the new value.
+                         // Will this ever happen?  A
+                         // Variable that is not a NamedObj???
+                         // Retrieve the token to force
+                         // evaluation, so as to check the
+                         // validity of the new value.
 
-                            ((Variable)attribute).getToken();
-                            }
-                            */
-                        }
-                    };
+                         ((Variable)attribute).getToken();
+                         }
+                         */
+                    }
+                };
             }
 
             // NOTE: This object is never removed as a listener from
@@ -756,7 +754,7 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
          foreground = _NOT_OVERRIDDEN_FOREGROUND_COLOR;
          }
          }
-        */
+         */
         return foreground;
     }
 
@@ -779,32 +777,33 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
         // from another thread.  And this method is called whenever an
         // attribute change has occurred, which can happen in any thread.
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    // Check that the attribute is attached
-                    // to at least one entry.
-                    if (_attributes.containsValue(attribute)) {
-                        // Get the list of entry names that the attribute
-                        // is attached to.
-                        List entryNameList = (List) _varToListOfEntries.get(attribute);
+            public void run() {
+                // Check that the attribute is attached
+                // to at least one entry.
+                if (_attributes.containsValue(attribute)) {
+                    // Get the list of entry names that the attribute
+                    // is attached to.
+                    List entryNameList = (List) _varToListOfEntries
+                            .get(attribute);
 
-                        // For each entry name, call set() to update its
-                        // value with the value of attribute
-                        Iterator entryNames = entryNameList.iterator();
+                    // For each entry name, call set() to update its
+                    // value with the value of attribute
+                    Iterator entryNames = entryNameList.iterator();
 
-                        String newValue = _getTranslatedExpression(attribute);
+                    String newValue = _getTranslatedExpression(attribute);
 
-                        while (entryNames.hasNext()) {
-                            String name = (String) entryNames.next();
+                    while (entryNames.hasNext()) {
+                        String name = (String) entryNames.next();
 
-                            // Compare value against what is in
-                            // already to avoid changing it again.
-                            if (!getStringValue(name).equals(newValue)) {
-                                set(name, newValue);
-                            }
+                        // Compare value against what is in
+                        // already to avoid changing it again.
+                        if (!getStringValue(name).equals(newValue)) {
+                            set(name, newValue);
                         }
                     }
                 }
-            });
+            }
+        });
     }
 
     /** Unsubscribe as a listener to all objects that we have subscribed to.
@@ -864,8 +863,8 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
                         .getToken()).intValue();
 
                 // Get the quantized integer for the current value.
-                int quantized = ((int) Math.round(((current - min) * precision) / (max
-                                                          - min)));
+                int quantized = ((int) Math.round(((current - min) * precision)
+                        / (max - min)));
 
                 newValue = "" + quantized;
             } catch (IllegalActionException e) {

@@ -1,30 +1,30 @@
 /* A polymorphic switch, which routes inputs to specified output channels.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -36,35 +36,34 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Switch
 
 /**
-   A polymorphic switch, which routes inputs to specified output channels.
-   This actor has two input ports, the <i>input</i> port for data,
-   and the <i>control</i> port to select which output channel to use.
-   When it fires, if an input token is available at the <i>control</i>
-   input, that token is read, and its value is noted.  If an input
-   token is available on the <i>input</i> port, then that token is
-   read, sent to the output channel specified by the most recently
-   received value on the <i>control</i> port.  If no token has been
-   received on the <i>control</i> port, then the token is sent to
-   channel zero.  If the value of the most recently received token
-   on the <i>control</i> port is out of range (less than zero,
-   or greater than or equal to the width of the output), then no
-   output is produced, and the token is lost.
-   <p>
-   Note that it may be tempting to call an instance of this
-   class "switch", but recall that "switch" is a Java keyword, and
-   thus it cannot be the name of an object.
+ A polymorphic switch, which routes inputs to specified output channels.
+ This actor has two input ports, the <i>input</i> port for data,
+ and the <i>control</i> port to select which output channel to use.
+ When it fires, if an input token is available at the <i>control</i>
+ input, that token is read, and its value is noted.  If an input
+ token is available on the <i>input</i> port, then that token is
+ read, sent to the output channel specified by the most recently
+ received value on the <i>control</i> port.  If no token has been
+ received on the <i>control</i> port, then the token is sent to
+ channel zero.  If the value of the most recently received token
+ on the <i>control</i> port is out of range (less than zero,
+ or greater than or equal to the width of the output), then no
+ output is produced, and the token is lost.
+ <p>
+ Note that it may be tempting to call an instance of this
+ class "switch", but recall that "switch" is a Java keyword, and
+ thus it cannot be the name of an object.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class Switch extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.

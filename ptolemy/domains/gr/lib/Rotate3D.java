@@ -1,30 +1,30 @@
 /* An actor that rotates the input 3D shape
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.lib;
 
 import javax.media.j3d.Group;
@@ -44,26 +44,25 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Rotate3D
 
 /** Conceptually, this actor takes 3D geometry in its input and produces
-    a rotated version in its output. In reality, this actor encapsulates a
-    Java3D TransformGroup which is converted into a node in the resulting
-    Java3D scene graph. This actor will only have meaning in the GR domain.
+ a rotated version in its output. In reality, this actor encapsulates a
+ Java3D TransformGroup which is converted into a node in the resulting
+ Java3D scene graph. This actor will only have meaning in the GR domain.
 
-    The parameters <i>axisDirectionX</i>,<i>axisDirectionY</i>, and
-    <i>axisDirectionZ</i> determine the direction of the axis of rotation.
-    The parameters <i>baseX</i>, <i>baseY</i>, and <i>baseZ</i> determine
-    the pivot point for axis of the rotation. The parameter <i>initialAngle</i>
-    determines the initial angle of rotation.
-    @author C. Fong
-    @version $Id$
-    @since Ptolemy II 1.0
-    @Pt.ProposedRating Red (chf)
-    @Pt.AcceptedRating Red (chf)
-*/
+ The parameters <i>axisDirectionX</i>,<i>axisDirectionY</i>, and
+ <i>axisDirectionZ</i> determine the direction of the axis of rotation.
+ The parameters <i>baseX</i>, <i>baseY</i>, and <i>baseZ</i> determine
+ the pivot point for axis of the rotation. The parameter <i>initialAngle</i>
+ determines the initial angle of rotation.
+ @author C. Fong
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (chf)
+ @Pt.AcceptedRating Red (chf)
+ */
 public class Rotate3D extends GRTransform {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -83,22 +82,10 @@ public class Rotate3D extends GRTransform {
         initialAngle = new Parameter(this, "initialAngle", new DoubleToken(0.0));
 
         axisDirection = new Parameter(this, "axisDirection",
-                new DoubleMatrixToken(new double[][] {
-                    {
-                        0.0,
-                        1.0,
-                        0.0
-                    }
-                }));
+                new DoubleMatrixToken(new double[][] { { 0.0, 1.0, 0.0 } }));
 
         pivotLocation = new Parameter(this, "pivotLocation",
-                new DoubleMatrixToken(new double[][] {
-                    {
-                        0.0,
-                        0.0,
-                        0.0
-                    }
-                }));
+                new DoubleMatrixToken(new double[][] { { 0.0, 0.0, 0.0 } }));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -152,10 +139,10 @@ public class Rotate3D extends GRTransform {
             if (angle.hasToken(0)) {
                 double in = ((DoubleToken) angle.get(0)).doubleValue();
                 double originalAngle = ((DoubleToken) initialAngle.getToken())
-                    .doubleValue();
+                        .doubleValue();
 
                 DoubleMatrixToken axis = (DoubleMatrixToken) axisDirection
-                    .getToken();
+                        .getToken();
 
                 _xAxis = (float) axis.getElementAt(0, 0);
                 _yAxis = (float) axis.getElementAt(0, 1);
@@ -166,10 +153,10 @@ public class Rotate3D extends GRTransform {
                 if (_isAccumulating()) {
                     _accumulatedAngle = in + _accumulatedAngle;
                     quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
-                                     _accumulatedAngle));
+                            _accumulatedAngle));
                 } else {
-                    quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
-                                     in + originalAngle));
+                    quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis, in
+                            + originalAngle));
                 }
 
                 _rotation.set(quat);
@@ -205,7 +192,7 @@ public class Rotate3D extends GRTransform {
         _baseZ = (float) pivot.getElementAt(0, 2);
 
         double originalAngle = ((DoubleToken) initialAngle.getToken())
-            .doubleValue();
+                .doubleValue();
 
         _accumulatedAngle = originalAngle;
 
@@ -239,14 +226,24 @@ public class Rotate3D extends GRTransform {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private double _xAxis;
+
     private double _yAxis;
+
     private double _zAxis;
+
     private double _baseX;
+
     private double _baseY;
+
     private double _baseZ;
+
     private TransformGroup _topTranslate;
+
     private TransformGroup _middleRotate;
+
     private TransformGroup _bottomTranslate;
+
     private Transform3D _rotation;
+
     private double _accumulatedAngle;
 }

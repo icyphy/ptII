@@ -1,31 +1,31 @@
 /* A token that contains a set of label/token pairs.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.data;
 
 import org.w3c.dom.Document;
@@ -35,22 +35,21 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// XmlToken
 
 /**
-   A token that contains a xml document.
+ A token that contains a xml document.
 
-   Currently, no operations between function tokens (add, multiply, etc.)
-   are supported.
+ Currently, no operations between function tokens (add, multiply, etc.)
+ are supported.
 
-   @author Yang Zhao
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Yang Zhao
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class XMLToken extends Token {
     /** Construct an empty token.
      */
@@ -87,7 +86,7 @@ public class XMLToken extends Token {
         }
 
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "xmltoken"));
+                "xmltoken"));
     }
 
     /** Return the dom document parsed from the xml string.
@@ -138,12 +137,13 @@ public class XMLToken extends Token {
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
         StringToken convertedArgument = (StringToken) rightArgument;
-        return BooleanToken.getInstance(toString().compareTo(convertedArgument
-                                                .toString()) == 0);
+        return BooleanToken.getInstance(toString().compareTo(
+                convertedArgument.toString()) == 0);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Document _doc;
+
     private String _toString;
 }

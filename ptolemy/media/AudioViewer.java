@@ -1,30 +1,30 @@
 /* A viewer for audio files.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.media;
 
 import java.awt.Event;
@@ -48,20 +48,19 @@ import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplication;
 import sun.audio.AudioPlayer;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AudioViewer
 
 /**
-   Display sound files.
+ Display sound files.
 
-   @see PlotApplication
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @see PlotApplication
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class AudioViewer extends PlotApplication {
     /** Construct an audio plot with no command-line arguments.
      *  @exception Exception Not thrown in this base class.
@@ -80,7 +79,7 @@ public class AudioViewer extends PlotApplication {
 
         JMenuItem play = new JMenuItem("Play", KeyEvent.VK_P);
         play.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
-                                    Event.CTRL_MASK));
+                Event.CTRL_MASK));
         play.setActionCommand("Play");
 
         PlayListener playlistener = new PlayListener();
@@ -140,20 +139,27 @@ public class AudioViewer extends PlotApplication {
     /** Display basic information about the application.
      */
     protected void _about() {
-        JOptionPane.showMessageDialog(this,
-                "Ptolemy AudioViewer (ptaudio program)\n" + "By: Edward A. Lee\n"
-                + "Version 2.0, Build: "
-                + "$Id$"
-                + "\n\n" + "For more information, see\n"
-                + "http://ptolemy.eecs.berkeley.edu/java/ptplot",
-                "About Ptolemy AudioViewer", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane
+                .showMessageDialog(
+                        this,
+                        "Ptolemy AudioViewer (ptaudio program)\n"
+                                + "By: Edward A. Lee\n"
+                                + "Version 2.0, Build: "
+                                + "$Id$"
+                                + "\n\n"
+                                + "For more information, see\n"
+                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot",
+                        "About Ptolemy AudioViewer",
+                        JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display some help.
      */
     protected void _help() {
-        JOptionPane.showMessageDialog(this, "Use Control-P to play the sound",
-                "Usage of Ptolemy AudioViewer", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane
+                .showMessageDialog(this, "Use Control-P to play the sound",
+                        "Usage of Ptolemy AudioViewer",
+                        JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Read the specified stream.  This method checks to see whether
@@ -260,7 +266,9 @@ public class AudioViewer extends PlotApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private DataInputStream _dataInputStream;
+
     private Audio _sound;
+
     private ByteArrayInputStream _instream;
 
     ///////////////////////////////////////////////////////////////////

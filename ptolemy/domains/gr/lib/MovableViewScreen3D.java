@@ -1,30 +1,30 @@
 /* A GR 3D scene viewer
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.lib;
 
 import javax.media.j3d.Transform3D;
@@ -43,18 +43,17 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MovableViewScreen3D
 
 /** A sink actor that renders the GR geometry into a display screen with movable viewpoint
 
-@author Adam Cataldo
-@version $Id$
-@since Ptolemy II 4.1
-@Pt.ProposedRating Red (acataldo)
-@Pt.AcceptedRating Red (acataldo)
-*/
+ @author Adam Cataldo
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Red (acataldo)
+ @Pt.AcceptedRating Red (acataldo)
+ */
 public class MovableViewScreen3D extends ViewScreen3D {
     /** Construct a ViewScreen in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
@@ -145,9 +144,12 @@ public class MovableViewScreen3D extends ViewScreen3D {
             double axisY;
             double axisZ;
             double angle;
-            xPosition = ((DoubleToken) positionToken.getElement(0)).doubleValue();
-            yPosition = ((DoubleToken) positionToken.getElement(1)).doubleValue();
-            zPosition = ((DoubleToken) positionToken.getElement(2)).doubleValue();
+            xPosition = ((DoubleToken) positionToken.getElement(0))
+                    .doubleValue();
+            yPosition = ((DoubleToken) positionToken.getElement(1))
+                    .doubleValue();
+            zPosition = ((DoubleToken) positionToken.getElement(2))
+                    .doubleValue();
             axisX = ((DoubleToken) axisToken.getElement(0)).doubleValue();
             axisY = ((DoubleToken) axisToken.getElement(1)).doubleValue();
             axisZ = ((DoubleToken) axisToken.getElement(2)).doubleValue();
@@ -159,7 +161,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
             Vector3d vector = new Vector3d(xPosition, yPosition, zPosition);
             Transform3D t = new Transform3D(quaternion, vector, 1.0);
             TransformGroup group = _simpleUniverse.getViewingPlatform()
-                .getViewPlatformTransform();
+                    .getViewPlatformTransform();
             group.setTransform(t);
         }
     }
@@ -202,7 +204,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
         Vector3d vector = new Vector3d(xPosition, yPosition, zPosition);
         Transform3D t = new Transform3D(quaternion, vector, 1.0);
         TransformGroup group = _simpleUniverse.getViewingPlatform()
-            .getViewPlatformTransform();
+                .getViewPlatformTransform();
         group.setTransform(t);
         _initialPosition = _position;
         _initialAxis = _axis;
@@ -233,10 +235,15 @@ public class MovableViewScreen3D extends ViewScreen3D {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     protected ArrayToken _position;
+
     protected ArrayToken _axis;
+
     protected DoubleToken _angle;
+
     protected ArrayToken _initialPosition;
+
     protected ArrayToken _initialAxis;
+
     protected DoubleToken _initialAngle;
 
     ///////////////////////////////////////////////////////////////////

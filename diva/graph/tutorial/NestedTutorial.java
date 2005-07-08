@@ -29,7 +29,7 @@
 
 
 
-*/
+ */
 package diva.graph.tutorial;
 
 import javax.swing.SwingUtilities;
@@ -46,7 +46,6 @@ import diva.graph.modular.Edge;
 import diva.graph.modular.Node;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
-
 
 /**
  * This example shows three alternatives to display a prepopulated
@@ -69,11 +68,11 @@ public class NestedTutorial {
     public static void main(String[] argv) {
         final AppContext context = new BasicFrame("Nested Tutorial");
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    new NestedTutorial(context);
-                    context.setVisible(true);
-                }
-            });
+            public void run() {
+                new NestedTutorial(context);
+                context.setVisible(true);
+            }
+        });
     }
 
     private NestedTutorial(AppContext context) {
@@ -127,11 +126,11 @@ public class NestedTutorial {
         final BasicGraphController bgc = new BasicGraphController();
         context.getContentPane().add(new JGraph(new GraphPane(bgc, model)));
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    RandomLayout random = new RandomLayout(new BasicLayoutTarget(
-                                                                   bgc));
-                    random.layout(model.getRoot());
-                }
-            });
+            public void run() {
+                RandomLayout random = new RandomLayout(new BasicLayoutTarget(
+                        bgc));
+                random.layout(model.getRoot());
+            }
+        });
     }
 }

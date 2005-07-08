@@ -1,31 +1,31 @@
 /* A token that contains a label/token pairs in a union.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -35,30 +35,28 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.UnionType;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// UnionToken
 
 /**
-   A token that contains a label/token pairs. This pair is one of the
-   choices in a union type, but the exact type is not stored in this
-   class. Operations on union tokens may require that they have the
-   same field in among the possible choices.
+ A token that contains a label/token pairs. This pair is one of the
+ choices in a union type, but the exact type is not stored in this
+ class. Operations on union tokens may require that they have the
+ same field in among the possible choices.
 
-   @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (yuhong)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (yuhong)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class UnionToken extends AbstractNotConvertibleToken {
     /** Construct a UnionToken with the specified label and value.
      *  @param label The label.
      *  @param value The value of this token.
      *  @exception IllegalActionException If the label or the value is null.
      */
-    public UnionToken(String label, Token value)
-            throws IllegalActionException {
+    public UnionToken(String label, Token value) throws IllegalActionException {
         if (label == null || value == null) {
             throw new IllegalActionException("UnionToken: The label or the "
                     + "value is null.");
@@ -196,9 +194,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
         UnionToken unionToken = (UnionToken) rightArgument;
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._add: The label "
-                    + "of the argument token (" + unionToken.label() 
-                    + ") is different from that of this token ("
-                    + _label + ".");
+                    + "of the argument token (" + unionToken.label()
+                    + ") is different from that of this token (" + _label + ".");
         }
 
         Token value = _value.add(unionToken.value());
@@ -219,9 +216,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
 
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._divide: The label "
-                    + "of the argument token (" + unionToken.label() 
-                    + ") is different from that of this token ("
-                    + _label + ".");
+                    + "of the argument token (" + unionToken.label()
+                    + ") is different from that of this token (" + _label + ".");
         }
 
         Token value = _value.divide(unionToken.value());
@@ -286,9 +282,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
         UnionToken unionToken = (UnionToken) rightArgument;
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._modulo: The label "
-                    + "of the argument token (" + unionToken.label() 
-                    + ") is different from that of this token ("
-                    + _label + ".");
+                    + "of the argument token (" + unionToken.label()
+                    + ") is different from that of this token (" + _label + ".");
         }
 
         Token value = _value.modulo(unionToken.value());
@@ -309,9 +304,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
         UnionToken unionToken = (UnionToken) rightArgument;
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._multiply: The label "
-                    + "of the argument token (" + unionToken.label() 
-                    + ") is different from that of this token ("
-                    + _label + ".");
+                    + "of the argument token (" + unionToken.label()
+                    + ") is different from that of this token (" + _label + ".");
         }
 
         Token value = _value.multiply(unionToken.value());
@@ -332,9 +326,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
         UnionToken unionToken = (UnionToken) rightArgument;
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._subtract: The label "
-                    + "of the argument token (" + unionToken.label() 
-                    + ") is different from that of this token ("
-                    + _label + ".");
+                    + "of the argument token (" + unionToken.label()
+                    + ") is different from that of this token (" + _label + ".");
         }
 
         Token value = _value.subtract(unionToken.value());
@@ -345,6 +338,6 @@ public class UnionToken extends AbstractNotConvertibleToken {
     ////                         private variables                 ////
 
     private String _label;
+
     private Token _value;
 }
-

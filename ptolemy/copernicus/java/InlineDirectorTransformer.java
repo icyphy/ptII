@@ -1,29 +1,29 @@
 /* A transformer that inlines method calls on an SDF director.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -49,25 +49,24 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// InlineDirectorTransformer
 
 /**
-   A transformer that inlines an SDF director.  This transformer synthesizes
-   methods that properly implement the executable interface inside the class
-   representing the model.  The resulting class includes code to properly
-   initialize the instance classes for the actors and fire them in the
-   order of the SDF schedule.
+ A transformer that inlines an SDF director.  This transformer synthesizes
+ methods that properly implement the executable interface inside the class
+ representing the model.  The resulting class includes code to properly
+ initialize the instance classes for the actors and fire them in the
+ order of the SDF schedule.
 
-   @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
-public class InlineDirectorTransformer extends SceneTransformer
-    implements HasPhaseOptions {
+ @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class InlineDirectorTransformer extends SceneTransformer implements
+        HasPhaseOptions {
     /** Construct a new transformer
      */
     private InlineDirectorTransformer(CompositeActor model) {
@@ -109,8 +108,8 @@ public class InlineDirectorTransformer extends SceneTransformer
             Entity entity = (Entity) i.next();
 
             if (entity instanceof CompositeActor) {
-                String className = ModelTransformer.getInstanceClassName(entity,
-                        options);
+                String className = ModelTransformer.getInstanceClassName(
+                        entity, options);
                 SootClass compositeClass = Scene.v().getSootClass(className);
                 _inlineDirectorsIn((CompositeActor) entity, compositeClass,
                         phaseName, options);
@@ -154,15 +153,15 @@ public class InlineDirectorTransformer extends SceneTransformer
             SootClass theClass = Scene.v().loadClassAndSupport(className);
 
             // Loop over all the methods...
-            for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
+            for (Iterator methods = theClass.getMethods().iterator(); methods
+                    .hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
 
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 // Loop over all the statements.
-                for (Iterator units = body.getUnits().snapshotIterator();
-                     units.hasNext();) {
+                for (Iterator units = body.getUnits().snapshotIterator(); units
+                        .hasNext();) {
                     Stmt unit = (Stmt) units.next();
 
                     if (!unit.containsInvokeExpr()) {
@@ -172,8 +171,9 @@ public class InlineDirectorTransformer extends SceneTransformer
                     ValueBox box = (ValueBox) unit.getInvokeExprBox();
                     InvokeExpr r = (InvokeExpr) box.getValue();
 
-                    if (r.getMethod().getSubSignature().equals(PtolemyUtilities.invalidateResolvedTypesMethod
-                                .getSubSignature())) {
+                    if (r.getMethod().getSubSignature().equals(
+                            PtolemyUtilities.invalidateResolvedTypesMethod
+                                    .getSubSignature())) {
                         // Remove calls to invalidateResolvedTypes()
                         body.getUnits().remove(unit);
                     }

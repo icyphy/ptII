@@ -27,7 +27,7 @@
  COPYRIGHTENDKEY
 
 
-*/
+ */
 package diva.gui.tutorial;
 
 import java.io.BufferedReader;
@@ -42,7 +42,6 @@ import diva.gui.AbstractDocument;
 import diva.gui.Application;
 import diva.gui.Document;
 import diva.gui.DocumentFactory;
-
 
 /**
  * A example document that contains plain boring old text

@@ -1,29 +1,29 @@
 /* A extension of the SDFScheduler that caches the schedules.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.kernel;
 
 import java.util.ArrayList;
@@ -49,26 +49,26 @@ import ptolemy.kernel.util.Workspace;
 //// CachedSDFScheduler
 
 /**
-The CachedSDFScheduler extends the SDFScheduler by caching schedules.
-The cached schedules are labeled by their corresponding rate signatures,
-with the most recently used at the beginning of the cache queue. If the
-rate signatures are contained in the cache keys, then the corresponding
-schedule in the cache is used. Therefore, we do not need to recompute the
-schedule again.
-<p>
-The size of the cache in the CachedSDFScheduler is usually set by its
-containning director when constructing this scheduler. If the cache is
-full, the least recently used schedule (at the end of the cache) is
-discarded.
+ The CachedSDFScheduler extends the SDFScheduler by caching schedules.
+ The cached schedules are labeled by their corresponding rate signatures,
+ with the most recently used at the beginning of the cache queue. If the
+ rate signatures are contained in the cache keys, then the corresponding
+ schedule in the cache is used. Therefore, we do not need to recompute the
+ schedule again.
+ <p>
+ The size of the cache in the CachedSDFScheduler is usually set by its
+ containning director when constructing this scheduler. If the cache is
+ full, the least recently used schedule (at the end of the cache) is
+ discarded.
 
-@see SDFScheduler
+ @see SDFScheduler
 
-@author Ye Zhou. Contributor: Brian K. Vogel
-@version $Id$
-@since Ptolemy II 5.0
-@Pt.ProposedRating Red (zhouye)
-@Pt.AcceptedRating Red (cxh)
-*/
+ @author Ye Zhou. Contributor: Brian K. Vogel
+ @version $Id$
+ @since Ptolemy II 5.0
+ @Pt.ProposedRating Red (zhouye)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class CachedSDFScheduler extends SDFScheduler {
 
     /** Construct a scheduler with no container(director)
@@ -140,7 +140,7 @@ public class CachedSDFScheduler extends SDFScheduler {
 
     //////////////////////////////////////////////////////////////////
     ////                  protected methods                       ////
-    
+
     /** Return the scheduling sequence. If the schedule exist in the
      *  cache (schedules are identified by the rate signatures of ports),
      *  then return the corresponding schedule in the cache. Otherwise,
@@ -173,13 +173,13 @@ public class CachedSDFScheduler extends SDFScheduler {
             rates.append(rate);
         }
 
-        Iterator outputPorts = _outputPortList.iterator();        
+        Iterator outputPorts = _outputPortList.iterator();
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
             int rate = DFUtilities.getTokenProductionRate(outputPort);
             rates.append(rate);
-            
-            /*int initRate = */ DFUtilities.getTokenInitProduction(outputPort);
+
+            /*int initRate = */DFUtilities.getTokenInitProduction(outputPort);
             rates.append(rate);
         }
 
@@ -188,7 +188,7 @@ public class CachedSDFScheduler extends SDFScheduler {
             // cache hit.
             schedule = (Schedule) _scheduleCache.get(rateKey);
 
-            if (! rateKey.equals(_mostRecentRates)) {
+            if (!rateKey.equals(_mostRecentRates)) {
                 _mostRecentRates = rateKey;
                 if (_cacheSize > 0) {
                     // Remove the key from its old position in
@@ -238,8 +238,8 @@ public class CachedSDFScheduler extends SDFScheduler {
      *  @return The list of input ports.
      */
     private List _getInputPortList() {
-        CompositeActor container
-            = (CompositeActor) getContainer().getContainer();
+        CompositeActor container = (CompositeActor) getContainer()
+                .getContainer();
         List actors = container.deepEntityList();
         Iterator actorIterator = actors.iterator();
         List inputPortList = new LinkedList();
@@ -263,8 +263,8 @@ public class CachedSDFScheduler extends SDFScheduler {
      *  @return The list of output ports.
      */
     private List _getOutputPortList() {
-        CompositeActor container
-            = (CompositeActor) getContainer().getContainer();
+        CompositeActor container = (CompositeActor) getContainer()
+                .getContainer();
         List actors = container.deepEntityList();
         Iterator actorIterator2 = actors.iterator();
         List outputPortList = new LinkedList();

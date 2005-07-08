@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.canvas.connector;
 
 import java.awt.Shape;
@@ -34,7 +34,6 @@ import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;
 import diva.canvas.TransformContext;
 import diva.util.java2d.Polyline2D;
-
 
 /**
  * A basic manhattan router.
@@ -99,7 +98,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
         // smarter, and should depend on the normal at the other
         // end if there is one.
         int headDir = CanvasUtilities.reverseDirection(getManhattanDirection(
-                                                               xDiff, yDiff));
+                xDiff, yDiff));
         headSite.setNormal(CanvasUtilities.getNormal(headDir));
 
         if (currentContext != null) {
@@ -144,18 +143,18 @@ public class BasicManhattanRouter implements ManhattanRouter {
         // FIXME Adjust for decorations on the ends
 
         /*
-          if (c.getHeadEnd() != null) {
-          c.getHeadEnd().setNormal(angle+Math.PI);
-          c.getHeadEnd().setOrigin(headPt.getX(), headPt.getY());
-          c.getHeadEnd().getConnection(headPt);
-          }
-          if (c.getTailEnd() != null) {
-          c.getTailEnd().setNormal(angle);
-          c.getTailEnd().setOrigin(tailPt.getX(), tailPt.getY());
-          c.getTailEnd().getConnection(tailPt);
-          }
+         if (c.getHeadEnd() != null) {
+         c.getHeadEnd().setNormal(angle+Math.PI);
+         c.getHeadEnd().setOrigin(headPt.getX(), headPt.getY());
+         c.getHeadEnd().getConnection(headPt);
+         }
+         if (c.getTailEnd() != null) {
+         c.getTailEnd().setNormal(angle);
+         c.getTailEnd().setOrigin(tailPt.getX(), tailPt.getY());
+         c.getTailEnd().getConnection(tailPt);
+         }
 
-        */
+         */
     }
 
     private Polyline2D _route(Point2D head, int headDir, Point2D tail,
@@ -183,19 +182,18 @@ public class BasicManhattanRouter implements ManhattanRouter {
             } else {
                 if (xDiff < 0) {
                     //System.out.println("routing backwards");
-                    point = new Point2D.Double(head.getX() - MINDIST,
-                            head.getY());
+                    point = new Point2D.Double(head.getX() - MINDIST, head
+                            .getY());
                 } else if (((yDiff > 0) && (tailDir == SwingUtilities.SOUTH))
-                        || ((yDiff < 0)
-                                && (tailDir == SwingUtilities.NORTH))) {
+                        || ((yDiff < 0) && (tailDir == SwingUtilities.NORTH))) {
                     //System.out.println("completing 90");
                     point = new Point2D.Double(tail.getX(), head.getY());
                 } else if (headDir == tailDir) {
                     double pos = Math.min(head.getX(), tail.getX()) - MINDIST;
                     point = new Point2D.Double(pos, head.getY());
                 } else {
-                    point = new Point2D.Double(head.getX() - (xDiff / 2),
-                            head.getY());
+                    point = new Point2D.Double(head.getX() - (xDiff / 2), head
+                            .getY());
                 }
 
                 if (yDiff > 0) {
@@ -214,19 +212,18 @@ public class BasicManhattanRouter implements ManhattanRouter {
             } else {
                 if (xDiff > 0) {
                     //System.out.println("routing backwards");
-                    point = new Point2D.Double(head.getX() + MINDIST,
-                            head.getY());
+                    point = new Point2D.Double(head.getX() + MINDIST, head
+                            .getY());
                 } else if (((yDiff > 0) && (tailDir == SwingUtilities.SOUTH))
-                        || ((yDiff < 0)
-                                && (tailDir == SwingUtilities.NORTH))) {
+                        || ((yDiff < 0) && (tailDir == SwingUtilities.NORTH))) {
                     //System.out.println("completing 90");
                     point = new Point2D.Double(tail.getX(), head.getY());
                 } else if (headDir == tailDir) {
                     double pos = Math.max(head.getX(), tail.getX()) + MINDIST;
                     point = new Point2D.Double(pos, head.getY());
                 } else {
-                    point = new Point2D.Double(head.getX() - (xDiff / 2),
-                            head.getY());
+                    point = new Point2D.Double(head.getX() - (xDiff / 2), head
+                            .getY());
                 }
 
                 if (yDiff > 0) {
@@ -245,19 +242,18 @@ public class BasicManhattanRouter implements ManhattanRouter {
             } else {
                 if (yDiff > 0) {
                     //System.out.println("routing backwards");
-                    point = new Point2D.Double(head.getX(),
-                            head.getY() + MINDIST);
+                    point = new Point2D.Double(head.getX(), head.getY()
+                            + MINDIST);
                 } else if (((xDiff > 0) && (tailDir == SwingUtilities.EAST))
-                        || ((xDiff < 0)
-                                && (tailDir == SwingUtilities.WEST))) {
+                        || ((xDiff < 0) && (tailDir == SwingUtilities.WEST))) {
                     //System.out.println("completing 90");
                     point = new Point2D.Double(head.getX(), tail.getY());
                 } else if (headDir == tailDir) {
                     double pos = Math.max(head.getY(), tail.getY()) + MINDIST;
                     point = new Point2D.Double(head.getX(), pos);
                 } else {
-                    point = new Point2D.Double(head.getX(),
-                            head.getY() - (yDiff / 2));
+                    point = new Point2D.Double(head.getX(), head.getY()
+                            - (yDiff / 2));
                 }
 
                 if (xDiff > 0) {
@@ -276,19 +272,18 @@ public class BasicManhattanRouter implements ManhattanRouter {
             } else {
                 if (yDiff < 0) {
                     //System.out.println("routing backwards");
-                    point = new Point2D.Double(head.getX(),
-                            head.getY() - MINDIST);
+                    point = new Point2D.Double(head.getX(), head.getY()
+                            - MINDIST);
                 } else if (((xDiff > 0) && (tailDir == SwingUtilities.EAST))
-                        || ((xDiff < 0)
-                                && (tailDir == SwingUtilities.WEST))) {
+                        || ((xDiff < 0) && (tailDir == SwingUtilities.WEST))) {
                     //System.out.println("completing 90");
                     point = new Point2D.Double(head.getX(), tail.getY());
                 } else if (headDir == tailDir) {
                     double pos = Math.min(head.getY(), tail.getY()) - MINDIST;
                     point = new Point2D.Double(head.getX(), pos);
                 } else {
-                    point = new Point2D.Double(head.getX(),
-                            head.getY() - (yDiff / 2));
+                    point = new Point2D.Double(head.getX(), head.getY()
+                            - (yDiff / 2));
                 }
 
                 if (xDiff > 0) {
@@ -309,6 +304,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
     }
 
     private double TOL = .1;
+
     private double MINDIST = 7;
 
     /** Return the direction between two points who differ by the

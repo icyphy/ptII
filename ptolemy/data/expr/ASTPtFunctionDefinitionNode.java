@@ -1,34 +1,34 @@
 /* ASTPtFunctionDefinitionNode represent function definitions in the
-   parse tree.
+ parse tree.
 
-   Copyright (c) 2002-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-   Created: September 2002
+ Created: September 2002
 
-*/
+ */
 package ptolemy.data.expr;
 
 import java.util.ArrayList;
@@ -40,39 +40,38 @@ import java.util.Map;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtFunctionDefinitionNode
 
 /**
-   The parse tree created from function definitions of the form:
-   <pre>
-   function (x) x + 5
-   </pre>
+ The parse tree created from function definitions of the form:
+ <pre>
+ function (x) x + 5
+ </pre>
 
-   which defines a function of one argument.  The above is assumed to
-   have arguments declared of type general.  Monomorphic type-safe
-   functions can be declared using syntax like:
+ which defines a function of one argument.  The above is assumed to
+ have arguments declared of type general.  Monomorphic type-safe
+ functions can be declared using syntax like:
 
-   <pre>
-   function (x:int) x+5
-   </pre>
+ <pre>
+ function (x:int) x+5
+ </pre>
 
-   This declares that the function only takes integer arguments.  The
-   return type (in this case integer, since the result of adding 5 to an
-   integer is an integer) is inferred automatically.
+ This declares that the function only takes integer arguments.  The
+ return type (in this case integer, since the result of adding 5 to an
+ integer is an integer) is inferred automatically.
 
-   FIXME: check argument name duplication
+ FIXME: check argument name duplication
 
-   @author Xiaojun Liu, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (nsmyth)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.data.expr.ASTPtRootNode
-   @see ptolemy.data.expr.PtParser
-   @see ptolemy.data.Token
-*/
+ @author Xiaojun Liu, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (nsmyth)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.data.expr.ASTPtRootNode
+ @see ptolemy.data.expr.PtParser
+ @see ptolemy.data.Token
+ */
 public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
     public ASTPtFunctionDefinitionNode(int id) {
         super(id);
@@ -91,7 +90,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
      */
     public Object clone() throws CloneNotSupportedException {
         ASTPtFunctionDefinitionNode newNode = (ASTPtFunctionDefinitionNode) super
-            .clone();
+                .clone();
         newNode._argList = (ArrayList) _argList.clone();
         return newNode;
     }
@@ -142,8 +141,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
 
         Iterator argNames = functionNode.getArgumentNameList().iterator();
 
-        for (Iterator names = getArgumentNameList().iterator();
-             names.hasNext();) {
+        for (Iterator names = getArgumentNameList().iterator(); names.hasNext();) {
             String name = (String) names.next();
             String argName = (String) argNames.next();
             newRenaming.put(name, argName);
@@ -170,5 +168,6 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
     }
 
     protected ArrayList _argList = new ArrayList();
+
     protected Type[] _argTypes = null;
 }

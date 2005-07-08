@@ -1,105 +1,104 @@
 /* A class that keeps track of compiler options.
 
-Copyright (c) 2003-2005 The University of Maryland.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The University of Maryland.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.Hashtable;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// Options
 
 /**
-   A class that keeps track of compiler options. All options are stored as
-   key-value string pairs. Possible options are:
+ A class that keeps track of compiler options. All options are stored as
+ key-value string pairs. Possible options are:
 
-   <p>
-   <b> verbose </b><br>
-   <i>true/false</i> Turns verbose mode on or off.
+ <p>
+ <b> verbose </b><br>
+ <i>true/false</i> Turns verbose mode on or off.
 
-   <p>
-   <b> compileMode </b> <br>
-   <i>singleClass</i> compiles only the given class, <br>
-   <i>full</i> generates all required files.
+ <p>
+ <b> compileMode </b> <br>
+ <i>singleClass</i> compiles only the given class, <br>
+ <i>full</i> generates all required files.
 
-   <p>
-   <b> pruneLevel </b> <br>
-   <i> 0 </i> no code pruning done. <br>
-   <i> 1 </i> Code Pruning done by CallGraphPruner.
+ <p>
+ <b> pruneLevel </b> <br>
+ <i> 0 </i> no code pruning done. <br>
+ <i> 1 </i> Code Pruning done by CallGraphPruner.
 
-   <p>
-   <b> vta </b> <br>
-   <i> true/false </i> Whether or not to perform Variable Type Analysis.
+ <p>
+ <b> vta </b> <br>
+ <i> true/false </i> Whether or not to perform Variable Type Analysis.
 
-   <p>
-   <b> lib </b> <br>
-   stores the path to the directory where library of generated files is
-   stored.
+ <p>
+ <b> lib </b> <br>
+ stores the path to the directory where library of generated files is
+ stored.
 
-   <p>
-   <b> gcDir </b> <br>
-   stores the path to the directory containing the garbage collector. Not
-   using this option turns the collector off.
+ <p>
+ <b> gcDir </b> <br>
+ stores the path to the directory containing the garbage collector. Not
+ using this option turns the collector off.
 
-   <p>
-   <b> target </b> <br>
-   <i> C6000 </i> The TMS320C6xxx series of processors. <br>
-   The target platform. A blank refers to a generic unix-like system. This
-   includes Cygwin installations on windows.
+ <p>
+ <b> target </b> <br>
+ <i> C6000 </i> The TMS320C6xxx series of processors. <br>
+ The target platform. A blank refers to a generic unix-like system. This
+ includes Cygwin installations on windows.
 
-   <p>
-   <b> runtimeDir </b> <br>
-   The path to the runtime directory.
+ <p>
+ <b> runtimeDir </b> <br>
+ The path to the runtime directory.
 
-   <p>
-   <b> ptII </b> <br>
-   The path to the ptII directory.
+ <p>
+ <b> ptII </b> <br>
+ The path to the ptII directory.
 
-   <p>
-   <b> compulsoryMethods </b> <br>
-   A semicolon-separated list of methods for which code must always be generated.
-   If more than one such entity is to be specified, the entire list may be
-   enclosed within double quotes. The complete method subsignature of the form
-   <pre> returnType class.method(arg1, arg2 ... ) </pre>
-   must be specified.
+ <p>
+ <b> compulsoryMethods </b> <br>
+ A semicolon-separated list of methods for which code must always be generated.
+ If more than one such entity is to be specified, the entire list may be
+ enclosed within double quotes. The complete method subsignature of the form
+ <pre> returnType class.method(arg1, arg2 ... ) </pre>
+ must be specified.
 
-   <p>
-   <b> cFlags </b> <br>
-   The GCC flags to be used in the makefile.
+ <p>
+ <b> cFlags </b> <br>
+ The GCC flags to be used in the makefile.
 
-   <p>
-   <b>reportEntities</b> <br>
-   <i> true/false </i> whether to output a summary of the number of classes,
-   methods and fields (entities) generated.
+ <p>
+ <b>reportEntities</b> <br>
+ <i> true/false </i> whether to output a summary of the number of classes,
+ methods and fields (entities) generated.
 
 
-   @author Ankush Varma
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (ankush)
-   @Pt.AcceptedRating Red (ssb)
-*/
+ @author Ankush Varma
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (ankush)
+ @Pt.AcceptedRating Red (ssb)
+ */
 public class Options {
     /** Default constructor. Initializes default key-value pairs.
      */
@@ -123,9 +122,9 @@ public class Options {
 
     /** Get the value corresponding to a key from the options table.
 
-    @param key The name of the option to be looked up.
-    @return The value corresponding to this option.
-    */
+     @param key The name of the option to be looked up.
+     @return The value corresponding to this option.
+     */
     public String get(String key) {
         return (String) _optionTable.get(key);
     }
@@ -166,14 +165,11 @@ public class Options {
      */
     public static boolean isValidOption(String string) {
         if (string.equals("lib") || string.equals("verbose")
-                || string.equals("compileMode")
-                || string.equals("pruneLevel")
+                || string.equals("compileMode") || string.equals("pruneLevel")
                 || string.equals("gcDir") || string.equals("target")
                 || string.equals("runtimeDir") || string.equals("vta")
-                || string.equals("ptII")
-                || string.equals("compulsoryMethods")
-                || string.equals("cFlags")
-                || string.equals("reportEntities")) {
+                || string.equals("ptII") || string.equals("compulsoryMethods")
+                || string.equals("cFlags") || string.equals("reportEntities")) {
             return true;
         } else {
             return false;
@@ -194,9 +190,9 @@ public class Options {
     }
 
     /** Put a key-value pair into the options table.
-        @param key The name of the option to be set.
-        @param value The value assigned to this option.
-    */
+     @param key The name of the option to be set.
+     @param value The value assigned to this option.
+     */
     public void put(String key, String value) {
         _optionTable.put(key, value);
     }

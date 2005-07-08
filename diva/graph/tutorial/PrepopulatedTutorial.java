@@ -29,7 +29,7 @@
 
 
 
-*/
+ */
 package diva.graph.tutorial;
 
 import java.awt.GridLayout;
@@ -51,7 +51,6 @@ import diva.graph.modular.Edge;
 import diva.graph.modular.Node;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
-
 
 /**
  * This example shows three alternatives to display a prepopulated
@@ -76,11 +75,11 @@ public class PrepopulatedTutorial {
         context.setSize(300, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    new PrepopulatedTutorial(context);
-                    context.setVisible(true);
-                }
-            });
+            public void run() {
+                new PrepopulatedTutorial(context);
+                context.setVisible(true);
+            }
+        });
     }
 
     private PrepopulatedTutorial(AppContext context) {
@@ -146,12 +145,12 @@ public class PrepopulatedTutorial {
         final BasicGraphController bgc = new BasicGraphController();
         context.getContentPane().add(new JGraph(new GraphPane(bgc, model)));
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    RandomLayout random = new RandomLayout(new BasicLayoutTarget(
-                                                                   bgc));
-                    random.layout(model.getRoot());
-                }
-            });
+            public void run() {
+                RandomLayout random = new RandomLayout(new BasicLayoutTarget(
+                        bgc));
+                random.layout(model.getRoot());
+            }
+        });
     }
 
     /**
@@ -162,8 +161,8 @@ public class PrepopulatedTutorial {
     public void setModelPostDisplay(MutableGraphModel model, AppContext context) {
         BasicGraphController gc = new BasicGraphController();
         gc.addGraphViewListener(new IncrementalLayoutListener(
-                                        new IncrLayoutAdapter(
-                                                new LevelLayout(new BasicLayoutTarget(gc))), null));
+                new IncrLayoutAdapter(
+                        new LevelLayout(new BasicLayoutTarget(gc))), null));
         context.getContentPane().add(new JGraph(new GraphPane(gc, model)));
     }
 }

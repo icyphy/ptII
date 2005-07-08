@@ -1,30 +1,30 @@
 /* A type polymorphic FIR filter with a port that sets the taps.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -38,46 +38,45 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// VariableFIR
 
 /**
-   This actor implements a type polymorphic finite-impulse response
-   filter with multirate capability, where the impulse response
-   of the filter is provided by an input. Since this filter operates on
-   Tokens, it is polymorphic in the type of data it operates on.
-   <p>
-   If the <i>decimation</i> parameter is unity (the default), then
-   the <i>blockSize</i> parameter specifies the number of inputs
-   of the filter that are processed per coefficient set provided on the
-   <i>newTaps</i> input.  Otherwise, if <i>decimation</i> is greater than unity,
-   then the number of tokens consumed is the product of <i>decimation</i>
-   and <i>blockSize</i>, and all these inputs are processed using the
-   filter coefficients provided on <i>newTaps</i>.
-   In all other respects, the behavior of this
-   actor is the same as that of the base class.
-   <p>
-   Note that when a new set of filter coefficients arrives on <i>newTaps</i>,
-   if the new set has more coefficients than the old set, then a transient
-   will occur that may be unexpected.  The delay line containing previously
-   consumed data has to be increased in length to match the number of
-   new coefficients.  However, the extended part of the delay line cannot
-   possibly be initialized with previously consumed data because that
-   data has not been saved.  Unless this actor were to save <i>all</i>
-   previously consumed data (which would be hopelessly inefficient), there
-   is no way it can be assured of always having the requisite data.
-   Thus, the actor initializes the extended part of the delay line
-   with zeros of the same type as the input data.
+ This actor implements a type polymorphic finite-impulse response
+ filter with multirate capability, where the impulse response
+ of the filter is provided by an input. Since this filter operates on
+ Tokens, it is polymorphic in the type of data it operates on.
+ <p>
+ If the <i>decimation</i> parameter is unity (the default), then
+ the <i>blockSize</i> parameter specifies the number of inputs
+ of the filter that are processed per coefficient set provided on the
+ <i>newTaps</i> input.  Otherwise, if <i>decimation</i> is greater than unity,
+ then the number of tokens consumed is the product of <i>decimation</i>
+ and <i>blockSize</i>, and all these inputs are processed using the
+ filter coefficients provided on <i>newTaps</i>.
+ In all other respects, the behavior of this
+ actor is the same as that of the base class.
+ <p>
+ Note that when a new set of filter coefficients arrives on <i>newTaps</i>,
+ if the new set has more coefficients than the old set, then a transient
+ will occur that may be unexpected.  The delay line containing previously
+ consumed data has to be increased in length to match the number of
+ new coefficients.  However, the extended part of the delay line cannot
+ possibly be initialized with previously consumed data because that
+ data has not been saved.  Unless this actor were to save <i>all</i>
+ previously consumed data (which would be hopelessly inefficient), there
+ is no way it can be assured of always having the requisite data.
+ Thus, the actor initializes the extended part of the delay line
+ with zeros of the same type as the input data.
 
-   @author Edward A. Lee, Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
+ @author Edward A. Lee, Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
 
-   @see ptolemy.data.Token
-*/
+ @see ptolemy.data.Token
+ */
 public class VariableFIR extends FIR {
     /** Construct an actor with the given container and name.
      *  @param container The container.

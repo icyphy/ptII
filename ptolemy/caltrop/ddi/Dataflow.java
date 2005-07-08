@@ -1,32 +1,32 @@
 /*
-  @Copyright (c) 2003-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
 
-*/
+ */
 package ptolemy.caltrop.ddi;
 
 import java.util.ArrayList;
@@ -53,17 +53,16 @@ import caltrop.interpreter.ast.Transition;
 import caltrop.interpreter.environment.Environment;
 import caltrop.interpreter.util.PriorityUtil;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Dataflow
 
 /**
-   @author J&#246;rn W. Janneck, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author J&#246;rn W. Janneck, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class Dataflow extends AbstractDDI implements DDI {
     public Dataflow(TypedAtomicActor ptActor, Actor actor, Context context,
             Environment env) {
@@ -86,11 +85,11 @@ public class Dataflow extends AbstractDDI implements DDI {
             TypedIOPort port = (TypedIOPort) _ptActor.getPort(name);
 
             if (isInput) {
-                portMap.put(name,
-                        new SingleInputPort(name, new DFInputChannel(port, 0)));
+                portMap.put(name, new SingleInputPort(name, new DFInputChannel(
+                        port, 0)));
             } else {
-                portMap.put(name,
-                        new SingleOutputPort(name, new DFOutputChannel(port, 0)));
+                portMap.put(name, new SingleOutputPort(name,
+                        new DFOutputChannel(port, 0)));
             }
         }
 
@@ -98,15 +97,25 @@ public class Dataflow extends AbstractDDI implements DDI {
     }
 
     protected TypedAtomicActor _ptActor;
+
     protected Actor _actor;
+
     protected Action[] _actions;
+
     protected Context _context;
+
     protected Environment _env;
+
     protected Set _currentStateSet;
+
     protected Transition[] _currentTransitions;
+
     protected DataflowActorInterpreter _actorInterpreter;
+
     protected Map _inputPorts;
+
     protected Map _outputPorts;
+
     protected Action _lastFiredAction;
 
     public boolean isLegalActor() {
@@ -132,7 +141,7 @@ public class Dataflow extends AbstractDDI implements DDI {
      * @exception IllegalActionException If an error occurs during the
      * interpretation of the action.
 
-    */
+     */
     public void fire() throws IllegalActionException {
         // FIXMELATER: state transition and potentially rollback
         try {
@@ -154,9 +163,9 @@ public class Dataflow extends AbstractDDI implements DDI {
                     "Could not fire CAL actor '" + _actor.getName() + "'");
         }
     }
-    
+
     /** Preinitialize this actor.
-     */    
+     */
     public void preinitialize() throws IllegalActionException {
     }
 
@@ -229,7 +238,7 @@ public class Dataflow extends AbstractDDI implements DDI {
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
                     "Error during initializer selection in actor '"
-                    + _actor.getName() + "'");
+                            + _actor.getName() + "'");
         }
 
         try {
@@ -240,14 +249,14 @@ public class Dataflow extends AbstractDDI implements DDI {
             }
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Could not fire initializer in CAL actor '" + _actor.getName()
-                    + "'");
+                    "Could not fire initializer in CAL actor '"
+                            + _actor.getName() + "'");
         }
     }
 
     private void _commitInputChannels() {
-        for (Iterator iterator = _inputPorts.values().iterator();
-             iterator.hasNext();) {
+        for (Iterator iterator = _inputPorts.values().iterator(); iterator
+                .hasNext();) {
             InputPort inputPort = (InputPort) iterator.next();
 
             for (int i = 0; i < inputPort.width(); i++) {
@@ -258,8 +267,8 @@ public class Dataflow extends AbstractDDI implements DDI {
     }
 
     private void _rollbackInputChannels() {
-        for (Iterator iterator = _inputPorts.values().iterator();
-             iterator.hasNext();) {
+        for (Iterator iterator = _inputPorts.values().iterator(); iterator
+                .hasNext();) {
             InputPort inputPort = (InputPort) iterator.next();
 
             for (int i = 0; i < inputPort.width(); i++) {
@@ -300,8 +309,8 @@ public class Dataflow extends AbstractDDI implements DDI {
             return true;
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Error during action selection in actor '" + _actor.getName()
-                    + "'");
+                    "Error during action selection in actor '"
+                            + _actor.getName() + "'");
         }
     }
 
@@ -309,11 +318,11 @@ public class Dataflow extends AbstractDDI implements DDI {
         QID tag = a.getTag();
 
         if ((tag != null) && (_currentStateSet != null)) {
-            
+
             int length = _currentTransitions.length;
             for (int i = 0; i < length; i++) {
                 Transition t = _currentTransitions[i];
-                
+
                 if (isPrefixedByTagList(tag, t.getActionTags())) {
                     return true;
                 }
@@ -357,14 +366,15 @@ public class Dataflow extends AbstractDDI implements DDI {
         // The set of transitions that we can take in the current state.
         ArrayList nt = new ArrayList();
         Transition[] ts = _actor.getScheduleFSM().getTransitions();
-        
+
         for (int i = 0; i < ts.length; i++) {
             Transition t = ts[i];
             if (_currentStateSet.contains(t.getSourceState())) {
                 nt.add(t);
             }
         }
-        _currentTransitions = (Transition[])nt.toArray(new Transition[nt.size()]);
+        _currentTransitions = (Transition[]) nt.toArray(new Transition[nt
+                .size()]);
     }
 
     private static boolean isPrefixedByTagList(QID tag, QID[] tags) {

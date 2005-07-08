@@ -1,30 +1,30 @@
 /* The controller for the 2-D helicopter.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.demo.Helicopter;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,66 +37,65 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ControllerActor
 
 /**
-   The controller for the helicopter. It has the form:
-   <pre><code>
-   +-         -+         +-    +-  -+ -+
-   | dddTm/dttt|         |     | Vx |  |
-   |           | = inv(K)|-b + |    |  |
-   |    dA/dt  |         |     | Vz |  |
-   +-         -+         +-    +-  -+ -+
-   </code></pre>
-   where
-   <pre><code>
-   [kInv11 kInv12]
-   inv(K) =  [             ]
-   [kInv21 kInv22]
-   and
-   kInv11 = ((MM*TM*Sin[th])/(Iy*m) + (hM*TM^2*Cos[a]*Sin[th])/(Iy*m))/
-   ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
-   (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
+ The controller for the helicopter. It has the form:
+ <pre><code>
+ +-         -+         +-    +-  -+ -+
+ | dddTm/dttt|         |     | Vx |  |
+ |           | = inv(K)|-b + |    |  |
+ |    dA/dt  |         |     | Vz |  |
+ +-         -+         +-    +-  -+ -+
+ </code></pre>
+ where
+ <pre><code>
+ [kInv11 kInv12]
+ inv(K) =  [             ]
+ [kInv21 kInv22]
+ and
+ kInv11 = ((MM*TM*Sin[th])/(Iy*m) + (hM*TM^2*Cos[a]*Sin[th])/(Iy*m))/
+ ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
+ (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
 
-   kInv12 = (-((MM*TM*Cos[th])/(Iy*m)) - (hM*TM^2*Cos[a]*Cos[th])/(Iy*m))/
-   ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
-   (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
+ kInv12 = (-((MM*TM*Cos[th])/(Iy*m)) - (hM*TM^2*Cos[a]*Cos[th])/(Iy*m))/
+ ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
+ (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
 
-   kInv21 = Cos[th]/
-   (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
-   (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
+ kInv21 = Cos[th]/
+ (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
+ (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
 
-   kInv22 = Sin[th]/
-   (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
-   (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
+ kInv22 = Sin[th]/
+ (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
+ (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
 
-   [b1]
-   b = [  ]
-   [b2]
+ [b1]
+ b = [  ]
+ [b2]
 
-   b1 = (3*DDotTM*Dotth*Cos[th])/m - (Dotth^3*TM*Cos[th])/m +
-   (DotTM*hM*TM*Cos[th]*Sin[a])/(Iy*m) +
-   (3*DotTM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) -
-   (3*Dotth^2*DotTM*Sin[th])/m -
-   (3*Dotth*TM*(a*MM + hM*TM*Sin[a])*Sin[th])/(Iy*m)
+ b1 = (3*DDotTM*Dotth*Cos[th])/m - (Dotth^3*TM*Cos[th])/m +
+ (DotTM*hM*TM*Cos[th]*Sin[a])/(Iy*m) +
+ (3*DotTM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) -
+ (3*Dotth^2*DotTM*Sin[th])/m -
+ (3*Dotth*TM*(a*MM + hM*TM*Sin[a])*Sin[th])/(Iy*m)
 
-   b2 = (3*Dotth^2*DotTM*Cos[th])/m +
-   (3*Dotth*TM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) +
-   (3*DDotTM*Dotth*Sin[th])/m - (Dotth^3*TM*Sin[th])/m +
-   (DotTM*hM*TM*Sin[a]*Sin[th])/(Iy*m) +
-   (3*DotTM*(a*MM + hM*TM*Sin[a])*Sin[th])/(Iy*m)
-   </pre>
-   The input of the actors are Tm, DTm, DDTm, A, Th, DTh, Vx, and Vz
-   The outputs are DDDTm, and DA
-   @author  Jie Liu
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (reviewmoderator)
+ b2 = (3*Dotth^2*DotTM*Cos[th])/m +
+ (3*Dotth*TM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) +
+ (3*DDotTM*Dotth*Sin[th])/m - (Dotth^3*TM*Sin[th])/m +
+ (DotTM*hM*TM*Sin[a]*Sin[th])/(Iy*m) +
+ (3*DotTM*(a*MM + hM*TM*Sin[a])*Sin[th])/(Iy*m)
+ </pre>
+ The input of the actors are Tm, DTm, DDTm, A, Th, DTh, Vx, and Vz
+ The outputs are DDDTm, and DA
+ @author  Jie Liu
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (reviewmoderator)
 
-*/
+ */
 public class ControllerActor extends TypedAtomicActor {
     /** Construct the actor, all parameters take the default value.
      * @param container The TypedCompositeActor this star belongs to
@@ -204,44 +203,48 @@ public class ControllerActor extends TypedAtomicActor {
         double mass2 = _mass * _mass;
 
         // compute inv(K)
-        double IK11 = (((_Mm * Tm * Math.sin(Th)) / (_Iy * _mass))
-                + ((_hm * Tm * Tm * Math.cos(A) * Math.sin(Th)) / (_Iy * _mass))) / (((_Mm * Tm * CosTh2) / (_Iy * mass2))
+        double IK11 = (((_Mm * Tm * Math.sin(Th)) / (_Iy * _mass)) + ((_hm * Tm
+                * Tm * Math.cos(A) * Math.sin(Th)) / (_Iy * _mass)))
+                / (((_Mm * Tm * CosTh2) / (_Iy * mass2))
                         + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
-                        + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
-                        + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2)));
+                        + ((_Mm * Tm * SinTh2) / (_Iy * mass2)) + ((_hm * Tm
+                        * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2)));
 
-        double IK12 = (-((_Mm * Tm * Math.cos(Th)) / (_Iy * _mass))
-                - ((_hm * Tm * Tm * Math.cos(A) * Math.cos(Th)) / (_Iy * _mass))) / (((_Mm * Tm * CosTh2) / (_Iy * mass2))
+        double IK12 = (-((_Mm * Tm * Math.cos(Th)) / (_Iy * _mass)) - ((_hm
+                * Tm * Tm * Math.cos(A) * Math.cos(Th)) / (_Iy * _mass)))
+                / (((_Mm * Tm * CosTh2) / (_Iy * mass2))
                         + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
-                        + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
-                        + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2)));
+                        + ((_Mm * Tm * SinTh2) / (_Iy * mass2)) + ((_hm * Tm
+                        * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2)));
 
-        double IK21 = Math.cos(Th) / (_mass * (((_Mm * Tm * CosTh2) / (_Iy * mass2))
-                                              + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
-                                              + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
-                                              + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2))));
+        double IK21 = Math.cos(Th)
+                / (_mass * (((_Mm * Tm * CosTh2) / (_Iy * mass2))
+                        + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
+                        + ((_Mm * Tm * SinTh2) / (_Iy * mass2)) + ((_hm * Tm
+                        * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2))));
 
-        double IK22 = Math.sin(Th) / (_mass * (((_Mm * Tm * CosTh2) / (_Iy * mass2))
-                                              + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
-                                              + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
-                                              + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2))));
+        double IK22 = Math.sin(Th)
+                / (_mass * (((_Mm * Tm * CosTh2) / (_Iy * mass2))
+                        + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
+                        + ((_Mm * Tm * SinTh2) / (_Iy * mass2)) + ((_hm * Tm
+                        * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2))));
 
         double B1 = (((3.0 * DDTm * DTh * Math.cos(Th)) / _mass)
                 - ((DTh * DTh * DTh * Tm * Math.cos(Th)) / _mass)
-                + ((DTm * _hm * Tm * Math.cos(Th) * Math.sin(A)) / (_Iy * _mass))
-                + ((3.0 * DTm * Math.cos(Th) * ((A * _Mm)
-                            + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass)))
-            - ((3.0 * DTh * DTh * DTm * Math.sin(Th)) / _mass)
-            - ((3.0 * DTh * Tm * ((A * _Mm) + (_hm * Tm * Math.sin(A))) * Math
-                       .sin(Th)) / (_Iy * _mass));
+                + ((DTm * _hm * Tm * Math.cos(Th) * Math.sin(A)) / (_Iy * _mass)) + ((3.0
+                * DTm * Math.cos(Th) * ((A * _Mm) + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass)))
+                - ((3.0 * DTh * DTh * DTm * Math.sin(Th)) / _mass)
+                - ((3.0 * DTh * Tm * ((A * _Mm) + (_hm * Tm * Math.sin(A))) * Math
+                        .sin(Th)) / (_Iy * _mass));
 
         double B2 = (((3.8 * DTh * DTh * DTm * Math.cos(Th)) / _mass)
-                + ((3.0 * DTh * Tm * Math.cos(Th) * ((A * _Mm)
-                            + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass))
-                + ((3.0 * DDTm * DTh * Math.sin(Th)) / _mass))
-            - ((DTh * DTh * DTh * Tm * Math.sin(Th)) / _mass)
-            + ((DTm * _hm * Tm * Math.sin(A) * Math.sin(Th)) / (_Iy * _mass))
-            + ((3.0 * DTm * ((A * _Mm) + (_hm * Tm * Math.sin(A))) * Math.sin(Th)) / (_Iy * _mass));
+                + ((3.0 * DTh * Tm * Math.cos(Th) * ((A * _Mm) + (_hm * Tm * Math
+                        .sin(A)))) / (_Iy * _mass)) + ((3.0 * DDTm * DTh * Math
+                .sin(Th)) / _mass))
+                - ((DTh * DTh * DTh * Tm * Math.sin(Th)) / _mass)
+                + ((DTm * _hm * Tm * Math.sin(A) * Math.sin(Th)) / (_Iy * _mass))
+                + ((3.0 * DTm * ((A * _Mm) + (_hm * Tm * Math.sin(A))) * Math
+                        .sin(Th)) / (_Iy * _mass));
 
         double DDDTm = (IK11 * (B1 + Vx)) + (IK12 * (B2 + Vz));
         double DA = (IK21 * (B1 + Vx)) + (IK22 * (B2 + Vz));
@@ -327,7 +330,10 @@ public class ControllerActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private double _Iy;
+
     private double _hm;
+
     private double _Mm;
+
     private double _mass;
 }

@@ -1,30 +1,30 @@
 /* The Variable Step Trapezoidal Rule Solver
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.kernel.solver;
 
 import ptolemy.data.DoubleToken;
@@ -36,50 +36,49 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TrapezoidalRuleSolver
 
 /**This is a second order variable step size ODE solver that uses the
-   trapezoidal rule algorithm. Unlike the solvers with fixed step size,
-   this solver adjusts its step size based on the estimation of the
-   local truncation error.
-   <p>
-   NOTE: The design of this solver, in particular, the design of estimation of
-   the local truncation error, is still preliminary.
-   <p>
+ trapezoidal rule algorithm. Unlike the solvers with fixed step size,
+ this solver adjusts its step size based on the estimation of the
+ local truncation error.
+ <p>
+ NOTE: The design of this solver, in particular, the design of estimation of
+ the local truncation error, is still preliminary.
+ <p>
 
-   For an ODE
-   <pre>
-   x' = f(x, t)
-   x(0) = x0
-   </pre>
-   the solver iterates:
-   <pre>
-   x(t+h) = x(t) + (h/2)*(x'(t) + x'(t+h))
-   </pre>
-   This solver uses an implicit algorithm, which involves a fixed-point
-   iteration to find x(t+h) and x'(t+h).
-   <p>
-   The local truncation error (LTE) control is based on the formula 9.78 in
-   "Modeling and Simulation of Dynamic Systems" by Robert L. Woods and Kent L.
-   Lawrence.
-   <p>
-   The basic idea is that once states and derivatives are resolved, denoted as
-   x(t+h) and x'(t+h), use a two-step method with the calculated derivatives
-   to recalculate the states, denoted as xx(t+h). Since this solver is second
-   order, the LTE is approximately:
-   <pre>
-   abs(x(t+h) - xx(t+h))/(2^2 - 1)
-   </pre>
-   This is used to adjust the step size.
+ For an ODE
+ <pre>
+ x' = f(x, t)
+ x(0) = x0
+ </pre>
+ the solver iterates:
+ <pre>
+ x(t+h) = x(t) + (h/2)*(x'(t) + x'(t+h))
+ </pre>
+ This solver uses an implicit algorithm, which involves a fixed-point
+ iteration to find x(t+h) and x'(t+h).
+ <p>
+ The local truncation error (LTE) control is based on the formula 9.78 in
+ "Modeling and Simulation of Dynamic Systems" by Robert L. Woods and Kent L.
+ Lawrence.
+ <p>
+ The basic idea is that once states and derivatives are resolved, denoted as
+ x(t+h) and x'(t+h), use a two-step method with the calculated derivatives
+ to recalculate the states, denoted as xx(t+h). Since this solver is second
+ order, the LTE is approximately:
+ <pre>
+ abs(x(t+h) - xx(t+h))/(2^2 - 1)
+ </pre>
+ This is used to adjust the step size.
 
-   @author Jie Liu, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (hyzheng)
-   @Pt.AcceptedRating Green (hyzheng)
-*/
+ @author Jie Liu, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Green (hyzheng)
+ */
 public class TrapezoidalRuleSolver extends ODESolver {
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
@@ -129,8 +128,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
         if (_getRoundCount() == 0) {
             _recalculatingWithTwoSteps = false;
             _firstStep = true;
-            director.setModelTime(director.getModelTime().add(director
-                                          .getCurrentStepSize()));
+            director.setModelTime(director.getModelTime().add(
+                    director.getCurrentStepSize()));
         }
 
         if (_isConverged()) {
@@ -211,7 +210,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
 
             if (!_recalculatingWithTwoSteps) {
                 tentativeState = integrator.getState()
-                    + ((h * (f1 + f2)) / 2.0);
+                        + ((h * (f1 + f2)) / 2.0);
 
                 double error = Math.abs(tentativeState
                         - integrator.getTentativeState());
@@ -227,11 +226,11 @@ public class TrapezoidalRuleSolver extends ODESolver {
                 if (_firstStep) {
                     // calculate the states with half of the step size.
                     tentativeState = integrator.getState()
-                        + ((h * (f1 + f2)) / 2.0 / 2.0);
+                            + ((h * (f1 + f2)) / 2.0 / 2.0);
                 } else {
                     // calculate the states with half of the step size.
                     tentativeState = integrator.getTentativeState()
-                        + ((h * (f1 + f2)) / 2.0 / 2.0);
+                            + ((h * (f1 + f2)) / 2.0 / 2.0);
 
                     // NOTE: We save the newly calculated state as the saved
                     // aux variable and restore the tentativeState back to
@@ -262,8 +261,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
         CTDirector director = (CTDirector) getContainer();
         double tolerance = director.getErrorTolerance();
         double[] k = integrator.getAuxVariables();
-        double localError = (1.0 / 3.0) * Math.abs(integrator.getTentativeState()
-                - k[0]);
+        double localError = (1.0 / 3.0)
+                * Math.abs(integrator.getTentativeState() - k[0]);
         integrator.setAuxVariables(1, localError);
 
         if (_debugging) {
@@ -306,8 +305,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
         double newh = h;
 
         if ((localError / tolerance) < 0.1) {
-            newh = h * Math.min(2,
-                    Math.pow(((3.0 * tolerance) / localError),
+            newh = h
+                    * Math.min(2, Math.pow(((3.0 * tolerance) / localError),
                             1.0 / 3.0));
         }
 
@@ -338,6 +337,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
 
     /** Name of this Solver. */
     private static final String _DEFAULT_NAME = "CT_Trapezoidal_Rule_Solver";
+
     private boolean _recalculatingWithTwoSteps = false;
+
     private boolean _firstStep = true;
 }

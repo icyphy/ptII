@@ -1,31 +1,31 @@
 /* An atomic actor that filter an array via applying a model specified by a file or URL.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.lib.hoc;
 
 import java.net.URL;
@@ -58,46 +58,45 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ApplyFilterOverArray
 
 /**
 
-This is an atomic actor that filter an array received at its
-<i>inputArray</i> input port via applying a model specified by a
-file or URL. The specified model evaluated on each input array
-element should return a boolean value and the output is an array
-that only contains elements satisfying the specified model (the
-evaluated result is true).
+ This is an atomic actor that filter an array received at its
+ <i>inputArray</i> input port via applying a model specified by a
+ file or URL. The specified model evaluated on each input array
+ element should return a boolean value and the output is an array
+ that only contains elements satisfying the specified model (the
+ evaluated result is true).
 
-<p> Instead of output all the satisfied elements in the input
-array, the parameter <i>maxOutputLength</i> can be used to specify
-how many elements this actor should only output. If the specified
-length is larger than the number of satisfied elements, it will
-ignore the specified length and only output all the satisfied
-elements.
+ <p> Instead of output all the satisfied elements in the input
+ array, the parameter <i>maxOutputLength</i> can be used to specify
+ how many elements this actor should only output. If the specified
+ length is larger than the number of satisfied elements, it will
+ ignore the specified length and only output all the satisfied
+ elements.
 
-<p>
-FIXME: what should be the correct behavior if no enough elements to output?
-<p>
-FIXME: make a convention, say when the maxOutputLength is -1, for output
-all the satisfied elements?
+ <p>
+ FIXME: what should be the correct behavior if no enough elements to output?
+ <p>
+ FIXME: make a convention, say when the maxOutputLength is -1, for output
+ all the satisfied elements?
 
-FIXME: should add a ModelToken and an input port for receiving the filter
-model. Create a composite actor for providing a ModelToken from its inside
-model.
-<P>
+ FIXME: should add a ModelToken and an input port for receiving the filter
+ model. Create a composite actor for providing a ModelToken from its inside
+ model.
+ <P>
 
-@author Yang Zhao, Ilkay Altintas
-@version $Id$
-@since Ptolemy II 4.1
-@see ptolemy.actor.lib.hoc.ModelReference
-@Pt.ProposedRating Yellow (ellen_zh)
-@Pt.AcceptedRating Red (ellen_zh)
-*/
-public class ApplyFilterOverArray extends TypedAtomicActor
-    implements ExecutionListener {
+ @author Yang Zhao, Ilkay Altintas
+ @version $Id$
+ @since Ptolemy II 4.1
+ @see ptolemy.actor.lib.hoc.ModelReference
+ @Pt.ProposedRating Yellow (ellen_zh)
+ @Pt.AcceptedRating Red (ellen_zh)
+ */
+public class ApplyFilterOverArray extends TypedAtomicActor implements
+        ExecutionListener {
     /** Construct a ApplyFilterOverArray with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -218,7 +217,8 @@ public class ApplyFilterOverArray extends TypedAtomicActor
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ApplyFilterOverArray newActor = (ApplyFilterOverArray) super.clone(workspace);
+        ApplyFilterOverArray newActor = (ApplyFilterOverArray) super
+                .clone(workspace);
         newActor._manager = null;
         newActor._model = null;
         newActor._throwable = null;

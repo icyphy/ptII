@@ -1,30 +1,30 @@
 /* An actor that hold the last event and outputs a constant signal.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.lib.Transformer;
@@ -39,21 +39,20 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ZeroOrderHold
 
 /**
-   Convert discrete events at the input to a continuous-time
-   signal at the output by holding the value of the discrete
-   event until the next discrete event arrives.
+ Convert discrete events at the input to a continuous-time
+ signal at the output by holding the value of the discrete
+ event until the next discrete event arrives.
 
-   @author Jie Liu
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Jie Liu
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class ZeroOrderHold extends Transformer implements CTWaveformGenerator {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -76,9 +75,9 @@ public class ZeroOrderHold extends Transformer implements CTWaveformGenerator {
         new Parameter(input, "signalType", new StringToken("DISCRETE"));
         new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"-25,10 -15,10 -15,-10 5,-10\"/>\n"
                 + "<polyline points=\"5,-10 5,0 15,0 15,10 25,10\"/>\n"
                 + "</svg>\n");

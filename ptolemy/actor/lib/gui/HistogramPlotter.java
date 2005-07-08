@@ -1,30 +1,30 @@
 /* Plot histograms.
 
-@Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.gui;
 
 import java.io.InputStream;
@@ -46,42 +46,41 @@ import ptolemy.plot.Histogram;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.plotml.HistogramMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// HistogramPlotter
 
 /**
-   A histogram plotter.  This plotter contains an instance of the Histogram
-   class from the Ptolemy plot package as a public member.  A histogram
-   of data at the input port, which can consist of any number of channels,
-   is plotted on this instance. The input data type is double.
-   <p>
-   The output plot consists of a set of vertical bars, each representing
-   a histogram bin.  The height of the bar is the count of the number
-   of inputs that have been observed that fall within that bin.
-   The <i>n</i>-th bin represents values in the range
-   (<i>x</i> - <i>w</i>/2 + <i>o</i>, <i>x</i> + <i>w</i>/2 + <i>o</i>),
-   where <i>w</i> is the value of the <i>binWidth</i> parameter,
-   and <i>o</i> is the value of the <i>binOffset</i> parameter.
-   So for example, if <i>o = w/2</i>,
-   then each bin represents values from <i>nw</i> to
-   (<i>n</i> + 1)<i>w</i> for some integer <i>n</i>.
-   The default offset is 0.5, half the default bin width, which is 1.0.
-   <p>
-   This actor has a <i>legend</i> parameter,
-   which gives a comma-separated list of labels to attach to
-   each dataset.  Normally, the number of elements in this list
-   should equal the number of input channels, although this
-   is not enforced.
+ A histogram plotter.  This plotter contains an instance of the Histogram
+ class from the Ptolemy plot package as a public member.  A histogram
+ of data at the input port, which can consist of any number of channels,
+ is plotted on this instance. The input data type is double.
+ <p>
+ The output plot consists of a set of vertical bars, each representing
+ a histogram bin.  The height of the bar is the count of the number
+ of inputs that have been observed that fall within that bin.
+ The <i>n</i>-th bin represents values in the range
+ (<i>x</i> - <i>w</i>/2 + <i>o</i>, <i>x</i> + <i>w</i>/2 + <i>o</i>),
+ where <i>w</i> is the value of the <i>binWidth</i> parameter,
+ and <i>o</i> is the value of the <i>binOffset</i> parameter.
+ So for example, if <i>o = w/2</i>,
+ then each bin represents values from <i>nw</i> to
+ (<i>n</i> + 1)<i>w</i> for some integer <i>n</i>.
+ The default offset is 0.5, half the default bin width, which is 1.0.
+ <p>
+ This actor has a <i>legend</i> parameter,
+ which gives a comma-separated list of labels to attach to
+ each dataset.  Normally, the number of elements in this list
+ should equal the number of input channels, although this
+ is not enforced.
 
-   @see ptolemy.plot.Histogram
+ @see ptolemy.plot.Histogram
 
-   @author  Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @author  Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class HistogramPlotter extends PlotterBase implements Placeable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -107,20 +106,20 @@ public class HistogramPlotter extends PlotterBase implements Placeable {
         binOffset.setExpression("0.5");
         binOffset.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-12\" y=\"-12\" " + "width=\"24\" height=\"24\" "
-                + "style=\"fill:white\"/>\n" + "<rect x=\"2\" y=\"-18\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
+                + "style=\"fill:lightGrey\"/>\n" + "<rect x=\"-12\" y=\"-12\" "
+                + "width=\"24\" height=\"24\" " + "style=\"fill:white\"/>\n"
+                + "<rect x=\"2\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n" + "<rect x=\"8\" y=\"-18\" "
                 + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"8\" y=\"-18\" " + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n" + "<rect x=\"14\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"-8\" y=\"2\" " + "width=\"4\" height=\"10\" "
-                + "style=\"fill:red\"/>\n" + "<rect x=\"-2\" y=\"-8\" "
-                + "width=\"4\" height=\"20\" " + "style=\"fill:red\"/>\n"
-                + "<rect x=\"4\" y=\"-5\" " + "width=\"4\" height=\"17\" "
-                + "style=\"fill:red\"/>\n" + "</svg>\n");
+                + "<rect x=\"14\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n" + "<rect x=\"-8\" y=\"2\" "
+                + "width=\"4\" height=\"10\" " + "style=\"fill:red\"/>\n"
+                + "<rect x=\"-2\" y=\"-8\" " + "width=\"4\" height=\"20\" "
+                + "style=\"fill:red\"/>\n" + "<rect x=\"4\" y=\"-5\" "
+                + "width=\"4\" height=\"17\" " + "style=\"fill:red\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -258,7 +257,7 @@ public class HistogramPlotter extends PlotterBase implements Placeable {
             if (containerEffigy == null) {
                 throw new IllegalActionException(this,
                         "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                                + toplevel().getFullName());
             }
 
             try {

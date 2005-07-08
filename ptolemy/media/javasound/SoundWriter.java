@@ -1,30 +1,30 @@
 /* A buffer that supports the writing of audio samples to a sound file.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.media.javasound;
 
 import java.io.ByteArrayInputStream;
@@ -39,70 +39,69 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 
-
 /////////////////////////////////////////////////////////////
 //// SoundWriter
 
 /**
-   This class is a buffer that supports the writing of audio samples
-   to a sound file. Specifically, this buffer supports the writing of
-   double-valued audio samples. The maximum valid range of sample
-   values is from -1.0 to 1.0. Any values outside of this range will
-   be hard-clipped to fall within this range.
-   <p>
-   <b>Supported file types</b>
-   <p>
-   Valid sound file formats are WAVE (.wav), AIFF (.aif, .aiff),
-   AU (.au). Valid sample rates are 8000, 11025, 22050, 44100, and
-   48000 Hz. Both 8 bit and 16 bit audio are supported. Mono and
-   stereo files are supported.
-   <p>
-   <b>Usage</b>
-   <p>
-   The path to the sound file to write is given as a constructor
-   parameter, along with parameters that specify the desired
-   audio format. The constructor also takes an array length
-   parameter, which is explained below.
-   <p>
-   After invoking the constructor, the putSamples() method should
-   be repeatedly invoked to write samples to the specified sound
-   file. This method is blocking, so it will not return until the
-   samples have been written. The putSamples() method takes a
-   multidimensional array as a parameter. The first index
-   represents the channel number (0 for first channel, 1 for  second
-   channel, etc.). The second index represents the sample index within
-   a channel. For each channel i, the size of the array,
-   putSamplesArray[i].length, must be equal to the constructor
-   parameter putSamplesArraySize. Otherwise an exception will
-   occur. Thus, each call to putSamples() writes putSamplesArraySize
-   on each channel. It should be noted that the putSamples() method
-   does not write samples directly to a sound file, but instead
-   writes samples to an internal array. The internal array of
-   samples is written to the sound file by the closeFile() method.
-   <p>
-   The closeFile() method should be invoked when no more samples
-   need to be written. This method will write the internal array
-   of samples to the output file and close the file. It is not
-   possible to write any more samples after closeFile() has been
-   called. An exception will occur if putSamples() is invoked
-   at any point after closeFile() is invoked.
-   <p>
-   <b>Security issues</b>
-   <p>
-   Applications have no restrictions on the
-   capturing or playback of audio. Applet code is not allowed to
-   write native files by default. The .java.policy file must be
-   modified to grant applets more privileges.
-   <p>
-   Note: Requires Java 2 v1.3.0 or later.
+ This class is a buffer that supports the writing of audio samples
+ to a sound file. Specifically, this buffer supports the writing of
+ double-valued audio samples. The maximum valid range of sample
+ values is from -1.0 to 1.0. Any values outside of this range will
+ be hard-clipped to fall within this range.
+ <p>
+ <b>Supported file types</b>
+ <p>
+ Valid sound file formats are WAVE (.wav), AIFF (.aif, .aiff),
+ AU (.au). Valid sample rates are 8000, 11025, 22050, 44100, and
+ 48000 Hz. Both 8 bit and 16 bit audio are supported. Mono and
+ stereo files are supported.
+ <p>
+ <b>Usage</b>
+ <p>
+ The path to the sound file to write is given as a constructor
+ parameter, along with parameters that specify the desired
+ audio format. The constructor also takes an array length
+ parameter, which is explained below.
+ <p>
+ After invoking the constructor, the putSamples() method should
+ be repeatedly invoked to write samples to the specified sound
+ file. This method is blocking, so it will not return until the
+ samples have been written. The putSamples() method takes a
+ multidimensional array as a parameter. The first index
+ represents the channel number (0 for first channel, 1 for  second
+ channel, etc.). The second index represents the sample index within
+ a channel. For each channel i, the size of the array,
+ putSamplesArray[i].length, must be equal to the constructor
+ parameter putSamplesArraySize. Otherwise an exception will
+ occur. Thus, each call to putSamples() writes putSamplesArraySize
+ on each channel. It should be noted that the putSamples() method
+ does not write samples directly to a sound file, but instead
+ writes samples to an internal array. The internal array of
+ samples is written to the sound file by the closeFile() method.
+ <p>
+ The closeFile() method should be invoked when no more samples
+ need to be written. This method will write the internal array
+ of samples to the output file and close the file. It is not
+ possible to write any more samples after closeFile() has been
+ called. An exception will occur if putSamples() is invoked
+ at any point after closeFile() is invoked.
+ <p>
+ <b>Security issues</b>
+ <p>
+ Applications have no restrictions on the
+ capturing or playback of audio. Applet code is not allowed to
+ write native files by default. The .java.policy file must be
+ modified to grant applets more privileges.
+ <p>
+ Note: Requires Java 2 v1.3.0 or later.
 
-   @author Brian K. Vogel
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (vogel)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.media.javasound.SoundCapture
-*/
+ @author Brian K. Vogel
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (vogel)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.media.javasound.SoundCapture
+ */
 public class SoundWriter {
     /** Construct a sound writer object with the specified name.
      *  Valid sound file formats are WAVE (.wav), AIFF (.aif,
@@ -143,9 +142,9 @@ public class SoundWriter {
                     + sampleRate);
             System.out.println("SoundWriter: constructor : channels = "
                     + channels);
-            System.out.println(
-                    "SoundWriter: constructor : putSamplesArraySize = "
-                    + putSamplesArraySize);
+            System.out
+                    .println("SoundWriter: constructor : putSamplesArraySize = "
+                            + putSamplesArraySize);
         }
     }
 
@@ -269,10 +268,12 @@ public class SoundWriter {
             audioBytes[i] = j.byteValue();
         }
 
-        ByteArrayInputStream byteInputArrayStream = new ByteArrayInputStream(audioBytes);
+        ByteArrayInputStream byteInputArrayStream = new ByteArrayInputStream(
+                audioBytes);
 
-        AudioInputStream audioInputStream = new AudioInputStream(byteInputArrayStream,
-                _playToFileFormat, audioBytes.length / _frameSizeInBytes);
+        AudioInputStream audioInputStream = new AudioInputStream(
+                byteInputArrayStream, _playToFileFormat, audioBytes.length
+                        / _frameSizeInBytes);
 
         outFile = new File(_fileName);
 
@@ -400,23 +401,35 @@ public class SoundWriter {
     ////                         private variables                 ////
     // The output file to write to.
     private File outFile;
+
     private int _productionRate;
+
     private String _fileName;
+
     private int _bitsPerSample;
+
     private int _putSamplesSize;
+
     private float _sampleRate;
+
     private int _channels;
+
     private int _bufferSize;
+
     private SourceDataLine _sourceLine;
 
     // Array of audio samples in byte format.
     private byte[] _data;
+
     private int _frameSizeInBytes;
+
     private ArrayList _toFileBuffer;
 
     // This is the format of _toFileBuffer.
     private AudioFormat _playToFileFormat;
+
     private int _bytesPerSample;
+
     private boolean _isAudioWriterActive;
 
     /////////////// For debugging: ///////////////////////////////

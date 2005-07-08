@@ -1,32 +1,32 @@
 /* An actor that receive data from a remote publisher.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj)
-@AcceptedRating Yellow (janneck)
-*/
+ @ProposedRating Yellow (liuj)
+ @AcceptedRating Yellow (janneck)
+ */
 package ptolemy.actor.corba;
 
 import java.util.StringTokenizer;
@@ -50,30 +50,29 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PushConsumer
 
 /**
-   An actor that receives data from a remote publisher.
-   Specify the ORB initial property with the<i>ORBInitProperties<i>
-   paremerter, for example:
-   "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
-   where "xyz.eecs.berkeley.edu" is the machine runing name server, and
-   "1050" is the port for name service.
+ An actor that receives data from a remote publisher.
+ Specify the ORB initial property with the<i>ORBInitProperties<i>
+ paremerter, for example:
+ "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
+ where "xyz.eecs.berkeley.edu" is the machine runing name server, and
+ "1050" is the port for name service.
 
-   Specify the name of the consumer with <i>ConsumerName<i>, which is
-   registed on the name server.
+ Specify the name of the consumer with <i>ConsumerName<i>, which is
+ registed on the name server.
 
-   If the <i>blocking<i> paremerter is true, then wait until there is
-   token received, otherwise, send a default value specified by the
-   <i>defaultToken<i> paremerter. Notice that the type of the output port
-   is determined by the type of this parameter.
+ If the <i>blocking<i> paremerter is true, then wait until there is
+ token received, otherwise, send a default value specified by the
+ <i>defaultToken<i> paremerter. Notice that the type of the output port
+ is determined by the type of this parameter.
 
-   @author Yang Zhao
-   @version $Id$
-   @since Ptolemy II 1.0
-*/
+ @author Yang Zhao
+ @version $Id$
+ @since Ptolemy II 1.0
+ */
 public class PushConsumer extends Source {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -158,8 +157,8 @@ public class PushConsumer extends Source {
         super.initialize();
 
         // String tokenize the parameter ORBInitProperties
-        StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
-                                                         .getToken()).stringValue());
+        StringTokenizer st = new StringTokenizer(
+                ((StringToken) ORBInitProperties.getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
 
@@ -249,8 +248,8 @@ public class PushConsumer extends Source {
             _debug(getName(), " ORB initialized");
 
             //get the root naming context
-            org.omg.CORBA.Object objRef = _orb.resolve_initial_references(
-                    "NameService");
+            org.omg.CORBA.Object objRef = _orb
+                    .resolve_initial_references("NameService");
             NamingContext ncRef = NamingContextHelper.narrow(objRef);
 
             if (ncRef != null) {
@@ -261,21 +260,20 @@ public class PushConsumer extends Source {
             _orb.connect(_consumer);
 
             //registe the consumer with the given name
-            NameComponent namecomp = new NameComponent(((StringToken) consumerName
-                                                               .getToken()).stringValue(), "");
+            NameComponent namecomp = new NameComponent(
+                    ((StringToken) consumerName.getToken()).stringValue(), "");
             _debug(getName(), " register the consumer with name: ",
                     (consumerName.getToken()).toString());
 
-            NameComponent[] path = {
-                namecomp
-            };
+            NameComponent[] path = { namecomp };
             ncRef.rebind(path, _consumer);
         } catch (UserException ex) {
-            throw new IllegalActionException(this,
+            throw new IllegalActionException(
+                    this,
                     " initialize ORB failed. Please make sure the "
-                    + "naming server has already started and the "
-                    + "ORBInitProperty parameter is configured correctly. "
-                    + "the error message is: " + ex.getMessage());
+                            + "naming server has already started and the "
+                            + "ORBInitProperty parameter is configured correctly. "
+                            + "the error message is: " + ex.getMessage());
         }
     }
 
@@ -343,8 +341,8 @@ public class PushConsumer extends Source {
                 _lastReadToken = new StringToken(data.extract_string());
 
                 if (_debugging) {
-                    _debug(getName(),
-                            " receive data:\n" + _lastReadToken.toString());
+                    _debug(getName(), " receive data:\n"
+                            + _lastReadToken.toString());
                 }
 
                 if (_fireIsWaiting) {

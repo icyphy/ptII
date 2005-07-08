@@ -1,30 +1,30 @@
 /* A token that contains a 2-D double matrix.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -41,20 +41,19 @@ import ptolemy.math.ComplexMatrixMath;
 import ptolemy.math.DoubleArrayMath;
 import ptolemy.math.DoubleMatrixMath;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToken
 
 /**
-   A token that contains a 2-D double matrix.
+ A token that contains a 2-D double matrix.
 
-   @author Yuhong Xiong, Jeff Tsay, Christopher Hylands, Steve Neuendorffer,
-   Shuvra S. Bhattacharyya
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Yuhong Xiong, Jeff Tsay, Christopher Hylands, Steve Neuendorffer,
+ Shuvra S. Bhattacharyya
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class DoubleMatrixToken extends MatrixToken {
     /** Construct an DoubleMatrixToken with a one by one matrix. The
      *  only element in the matrix has value 0.0
@@ -234,8 +233,8 @@ public class DoubleMatrixToken extends MatrixToken {
         int compare = TypeLattice.compare(BaseType.DOUBLE_MATRIX, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "[double]"));
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(token, "[double]"));
         }
 
         // try double
@@ -258,7 +257,7 @@ public class DoubleMatrixToken extends MatrixToken {
         // The argument is below DoubleMatrixToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "[double]"));
+                "[double]"));
     }
 
     /** Return the content in the token as a 2-D double matrix.
@@ -403,8 +402,8 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     public final Token oneRight() {
         try {
-            return new DoubleMatrixToken(DoubleMatrixMath.identity(_columnCount),
-                    DO_NOT_COPY);
+            return new DoubleMatrixToken(DoubleMatrixMath
+                    .identity(_columnCount), DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("DoubleMatrixToken.oneRight: "
@@ -578,8 +577,8 @@ public class DoubleMatrixToken extends MatrixToken {
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         DoubleMatrixToken convertedArgument = (DoubleMatrixToken) rightArgument;
-        double[] result = DoubleArrayMath.subtract(_value,
-                convertedArgument._getInternalDoubleArray());
+        double[] result = DoubleArrayMath.subtract(_value, convertedArgument
+                ._getInternalDoubleArray());
         return new DoubleMatrixToken(result, _rowCount, _columnCount,
                 DO_NOT_COPY);
     }
@@ -614,7 +613,7 @@ public class DoubleMatrixToken extends MatrixToken {
             throws IllegalActionException {
         double scalar = ((DoubleToken) rightArgument).doubleValue();
         double[] result = DoubleArrayMath.negative(DoubleArrayMath.add(_value,
-                                                           -scalar));
+                -scalar));
         return new DoubleMatrixToken(result, _rowCount, _columnCount,
                 DO_NOT_COPY);
     }
@@ -632,6 +631,8 @@ public class DoubleMatrixToken extends MatrixToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private double[] _value;
+
     private int _rowCount;
+
     private int _columnCount;
 }

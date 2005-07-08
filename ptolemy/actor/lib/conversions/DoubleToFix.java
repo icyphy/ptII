@@ -1,30 +1,30 @@
 /* An actor that converts a DoubleToken to a FixToken.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.data.DoubleToken;
@@ -43,44 +43,43 @@ import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
 import ptolemy.math.Rounding;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToFix
 
 /**
-   This actor converts a DoubleToken to a FixToken with a specified
-   precision. Note that this conversion is lossy, in that the output
-   is an approximation of the input. The approximation can be
-   constructed using a variety of rounding and overflow strategies.
-   <p>
-   The precision of the output is given by the <i>precision</i> parameter,
-   which is an integer matrix of the form [<i>m</i>, <i>n</i>], where
-   the total number of bits in the output is <i>m</i>, of which
-   <i>n</i> are integer bits. The default precision is [16, 2], which means
-   that an output has 16 bits, of which 2 bits represent the
-   integer part.
-   <p>
-   The rounding strategy is defined by the <i>rounding</i> parameter and
-   defaults to <i>nearest</i> (or <i>half_floor</i>), selecting the nearest
-   representable value. The floor value nearer to minus infinity is used
-   for values half way between representable values. Other strategies
-   such as <i>truncate</i> are described under ptolemy.math.Rounding.
-   <p>
-   The overflow strategy is defined by the <i>overflow</i> parameter and
-   defaults to <i>saturate</i> (or <i>clip</i>). Out of range values are
-   saturated to the nearest representable value. Other strategies
-   such as <i>modulo</i> are described under ptolemy.math.Overflow.
+ This actor converts a DoubleToken to a FixToken with a specified
+ precision. Note that this conversion is lossy, in that the output
+ is an approximation of the input. The approximation can be
+ constructed using a variety of rounding and overflow strategies.
+ <p>
+ The precision of the output is given by the <i>precision</i> parameter,
+ which is an integer matrix of the form [<i>m</i>, <i>n</i>], where
+ the total number of bits in the output is <i>m</i>, of which
+ <i>n</i> are integer bits. The default precision is [16, 2], which means
+ that an output has 16 bits, of which 2 bits represent the
+ integer part.
+ <p>
+ The rounding strategy is defined by the <i>rounding</i> parameter and
+ defaults to <i>nearest</i> (or <i>half_floor</i>), selecting the nearest
+ representable value. The floor value nearer to minus infinity is used
+ for values half way between representable values. Other strategies
+ such as <i>truncate</i> are described under ptolemy.math.Rounding.
+ <p>
+ The overflow strategy is defined by the <i>overflow</i> parameter and
+ defaults to <i>saturate</i> (or <i>clip</i>). Out of range values are
+ saturated to the nearest representable value. Other strategies
+ such as <i>modulo</i> are described under ptolemy.math.Overflow.
 
-   @author Bart Kienhuis, Contributor: Edward A. Lee, Ed.Willink,
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (pwhitake)
-   @Pt.AcceptedRating Green (pwhitake)
-   @see ptolemy.data.FixToken
-   @see ptolemy.math.Overflow
-   @see ptolemy.math.Precision
-   @see ptolemy.math.Rounding
-*/
+ @author Bart Kienhuis, Contributor: Edward A. Lee, Ed.Willink,
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Green (pwhitake)
+ @Pt.AcceptedRating Green (pwhitake)
+ @see ptolemy.data.FixToken
+ @see ptolemy.math.Overflow
+ @see ptolemy.math.Precision
+ @see ptolemy.math.Rounding
+ */
 public class DoubleToFix extends Converter {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -111,7 +110,7 @@ public class DoubleToFix extends Converter {
     ////                     ports and parameters                  ////
 
     /** The precision of the output fixed-point number, which is represented
-        by a 2-element integer matrix. */
+     by a 2-element integer matrix. */
     public Parameter precision;
 
     /** The overflow strategy used, such as "saturate" or "modulo". */
@@ -137,8 +136,8 @@ public class DoubleToFix extends Converter {
                         "Invalid precision (not a 1 by 2 matrix).");
             }
 
-            Precision precision = new Precision(token.getElementAt(0, 0),
-                    token.getElementAt(0, 1));
+            Precision precision = new Precision(token.getElementAt(0, 0), token
+                    .getElementAt(0, 1));
             _quantization = _quantization.setPrecision(precision);
         } else if (attribute == rounding) {
             Rounding r = Rounding.getName(rounding.getExpression());

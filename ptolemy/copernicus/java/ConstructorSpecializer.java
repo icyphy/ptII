@@ -1,29 +1,29 @@
 /* Eliminate all references to named objects
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -51,20 +51,19 @@ import soot.jimple.JimpleBody;
 import soot.jimple.ParameterRef;
 import soot.jimple.Stmt;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ConstructorSpecializer
 
 /**
 
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Red (cxh)
-@Pt.AcceptedRating Red (cxh)
-*/
-public class ConstructorSpecializer extends SceneTransformer
-    implements HasPhaseOptions {
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class ConstructorSpecializer extends SceneTransformer implements
+        HasPhaseOptions {
     /** Construct a new transformer
      */
     private ConstructorSpecializer(CompositeActor model) {
@@ -100,29 +99,31 @@ public class ConstructorSpecializer extends SceneTransformer
         List modifiedConstructorClassList = new LinkedList();
 
         // Loop over all the classes
-        for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
+        for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
+                .hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
-            if (SootUtilities.derivesFrom(theClass, PtolemyUtilities.actorClass)
+            if (SootUtilities
+                    .derivesFrom(theClass, PtolemyUtilities.actorClass)
                     || SootUtilities.derivesFrom(theClass,
                             PtolemyUtilities.compositeActorClass)
                     || SootUtilities.derivesFrom(theClass,
                             PtolemyUtilities.attributeClass)) {
-                if (theClass.declaresFieldByName(
-                            ModelTransformer.getContainerFieldName())) {
-                    for (Iterator methods = theClass.getMethods().iterator();
-                         methods.hasNext();) {
+                if (theClass.declaresFieldByName(ModelTransformer
+                        .getContainerFieldName())) {
+                    for (Iterator methods = theClass.getMethods().iterator(); methods
+                            .hasNext();) {
                         SootMethod method = (SootMethod) methods.next();
 
                         if (method.getName().equals("<init>")
                                 && (method.getParameterCount() == 2)) {
                             // Change the constructor so that it takes an
                             // appropriate container type.
-                            SootField containerField = theClass.getFieldByName(ModelTransformer
-                                    .getContainerFieldName());
+                            SootField containerField = theClass
+                                    .getFieldByName(ModelTransformer
+                                            .getContainerFieldName());
                             RefType containerType = (RefType) containerField
-                                .getType();
+                                    .getType();
                             List typeList = new LinkedList();
                             typeList.add(containerType);
                             typeList.add(RefType.v("java.lang.String"));
@@ -136,11 +137,10 @@ public class ConstructorSpecializer extends SceneTransformer
                             // Replace the parameter refs so THEY have
                             // the right type, too..
                             JimpleBody body = (JimpleBody) method
-                                .retrieveActiveBody();
+                                    .retrieveActiveBody();
 
                             for (Iterator units = body.getUnits()
-                                     .snapshotIterator();
-                                 units.hasNext();) {
+                                    .snapshotIterator(); units.hasNext();) {
                                 Stmt unit = (Stmt) units.next();
 
                                 if (unit instanceof IdentityStmt) {
@@ -152,11 +152,14 @@ public class ConstructorSpecializer extends SceneTransformer
 
                                         if (parameterRef.getIndex() == 0) {
                                             ValueBox box = identityStmt
-                                                .getRightOpBox();
-                                            box.setValue(Jimple.v()
-                                                    .newParameterRef(method
-                                                            .getParameterType(0),
-                                                            0));
+                                                    .getRightOpBox();
+                                            box
+                                                    .setValue(Jimple
+                                                            .v()
+                                                            .newParameterRef(
+                                                                    method
+                                                                            .getParameterType(0),
+                                                                    0));
                                         }
                                     }
                                 }
@@ -178,62 +181,62 @@ public class ConstructorSpecializer extends SceneTransformer
         // Fix the specialInvokes.
 
         /* for (Iterator i = Scene.v().getApplicationClasses().iterator();
-           i.hasNext();) {
+         i.hasNext();) {
 
-           SootClass theClass = (SootClass) i.next();
-           // Loop through all the methods in the class.
-           for (Iterator methods = theClass.getMethods().iterator();
-           methods.hasNext();) {
-           SootMethod method = (SootMethod)methods.next();
+         SootClass theClass = (SootClass) i.next();
+         // Loop through all the methods in the class.
+         for (Iterator methods = theClass.getMethods().iterator();
+         methods.hasNext();) {
+         SootMethod method = (SootMethod)methods.next();
 
-           // System.out.println("method = " + method);
-           JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+         // System.out.println("method = " + method);
+         JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
-           for (Iterator units = body.getUnits().snapshotIterator();
-           units.hasNext();) {
-           Stmt unit = (Stmt)units.next();
-           if (unit.containsInvokeExpr()) {
-           ValueBox box = unit.getInvokeExprBox();
-           Value value = box.getValue();
+         for (Iterator units = body.getUnits().snapshotIterator();
+         units.hasNext();) {
+         Stmt unit = (Stmt)units.next();
+         if (unit.containsInvokeExpr()) {
+         ValueBox box = unit.getInvokeExprBox();
+         Value value = box.getValue();
 
-           if (value instanceof SpecialInvokeExpr) {
-           // If we're constructing one of our actor classes,
-           // then switch to the modified constructor.
-           SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
-           SootClass declaringClass =
-           expr.getMethod().getDeclaringClass();
-           if (expr.getMethod().getName().equals("<init>") &&
-           modifiedConstructorClassList.contains(
-           declaringClass)) {
-           // System.out.println(
-           //                                         "replacing constructor invocation = "
-           //                                         + unit + " in method " + method);
-           SootMethod newConstructor =
-           declaringClass.getMethodByName("<init>");
-           if (newConstructor.getParameterCount() == 1) {
-           // Replace with just container arg constructor.
-           List args = new LinkedList();
-           args.add(expr.getArg(0));
-           box.setValue(
-           Jimple.v().newSpecialInvokeExpr(
-           (Local)expr.getBase(),
-           newConstructor,
-           args));
-           } else {
-           // Replace with zero arg constructor.
-           box.setValue(
-           Jimple.v().newSpecialInvokeExpr(
-           (Local)expr.getBase(),
-           newConstructor,
-           Collections.EMPTY_LIST));
-           }
-           }
-           }
-           }
-           }
-           }
-           }
-        */
+         if (value instanceof SpecialInvokeExpr) {
+         // If we're constructing one of our actor classes,
+         // then switch to the modified constructor.
+         SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
+         SootClass declaringClass =
+         expr.getMethod().getDeclaringClass();
+         if (expr.getMethod().getName().equals("<init>") &&
+         modifiedConstructorClassList.contains(
+         declaringClass)) {
+         // System.out.println(
+         //                                         "replacing constructor invocation = "
+         //                                         + unit + " in method " + method);
+         SootMethod newConstructor =
+         declaringClass.getMethodByName("<init>");
+         if (newConstructor.getParameterCount() == 1) {
+         // Replace with just container arg constructor.
+         List args = new LinkedList();
+         args.add(expr.getArg(0));
+         box.setValue(
+         Jimple.v().newSpecialInvokeExpr(
+         (Local)expr.getBase(),
+         newConstructor,
+         args));
+         } else {
+         // Replace with zero arg constructor.
+         box.setValue(
+         Jimple.v().newSpecialInvokeExpr(
+         (Local)expr.getBase(),
+         newConstructor,
+         Collections.EMPTY_LIST));
+         }
+         }
+         }
+         }
+         }
+         }
+         }
+         */
     }
 
     private CompositeActor _model;

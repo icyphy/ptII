@@ -1,30 +1,30 @@
 /* Measure the time that events at one input have to wait for events at another.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.de.lib;
 
 import java.util.Vector;
@@ -40,27 +40,26 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// WaitingTime
 
 /**
-   This actor measures the time that events at one input have to wait for
-   events at another.  Specifically, there will be one output event for
-   each <i>waiter</i> input event.  But the output event is delayed until the
-   next arrival of an event at <i>waitee</i>.  When one or more events arrive
-   at <i>waitee</i>, then all events that have arrived at <i>waiter</i> since
-   the last <i>waitee</i> (or since the start of the execution) trigger an
-   output.  The value of each output is the time that the <i>waiter</i> event
-   waited for <i>waitee</i>.  The inputs have undeclared type, so anything
-   is acceptable.  The output is always a DoubleToken.
+ This actor measures the time that events at one input have to wait for
+ events at another.  Specifically, there will be one output event for
+ each <i>waiter</i> input event.  But the output event is delayed until the
+ next arrival of an event at <i>waitee</i>.  When one or more events arrive
+ at <i>waitee</i>, then all events that have arrived at <i>waiter</i> since
+ the last <i>waitee</i> (or since the start of the execution) trigger an
+ output.  The value of each output is the time that the <i>waiter</i> event
+ waited for <i>waitee</i>.  The inputs have undeclared type, so anything
+ is acceptable.  The output is always a DoubleToken.
 
-   @author Lukito Muliadi, Edward A Lee
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Lukito Muliadi, Edward A Lee
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class WaitingTime extends DEActor {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -144,7 +143,7 @@ public class WaitingTime extends DEActor {
             for (int i = 0; i < _waiting.size(); i++) {
                 Time previousTime = (Time) _waiting.elementAt(i);
                 DoubleToken outToken = new DoubleToken(currentTime.subtract(
-                                                               previousTime).getDoubleValue());
+                        previousTime).getDoubleValue());
                 output.send(0, outToken);
             }
 

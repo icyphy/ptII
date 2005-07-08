@@ -1,30 +1,30 @@
 /* An attribute for specifying that a parameter is edited with a combo menu.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui.style;
 
 import ptolemy.actor.gui.PtolemyQuery;
@@ -32,33 +32,32 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// EditableChoiceStyle
 
 /**
-   This attribute annotates user settable attributes to specify
-   an editable combobox style for configuring the containing attribute.
-   An editable combobox allows an arbitrary value to be entered in the
-   combobox.
-   For an uneditable combobox, use ChoiceStyle instead.
-   The choices that are presented in the combobox
-   are given by a set of attributes implementing the Settable interface,
-   such as StringAttribute, contained by this style.
-   <p>
-   This class extends ChoiceStyle only for the purpose of eliminating code
-   duplication.
+ This attribute annotates user settable attributes to specify
+ an editable combobox style for configuring the containing attribute.
+ An editable combobox allows an arbitrary value to be entered in the
+ combobox.
+ For an uneditable combobox, use ChoiceStyle instead.
+ The choices that are presented in the combobox
+ are given by a set of attributes implementing the Settable interface,
+ such as StringAttribute, contained by this style.
+ <p>
+ This class extends ChoiceStyle only for the purpose of eliminating code
+ duplication.
 
-   @see ChoiceStyle
-   @see ptolemy.actor.gui.EditorPaneFactory
-   @see ParameterEditorStyle
-   @see ptolemy.kernel.util.StringAttribute
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
+ @see ChoiceStyle
+ @see ptolemy.actor.gui.EditorPaneFactory
+ @see ParameterEditorStyle
+ @see ptolemy.kernel.util.StringAttribute
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
 public class EditableChoiceStyle extends ChoiceStyle {
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.

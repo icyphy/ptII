@@ -1,32 +1,32 @@
 /* An IIR filter actor that uses a direct form II implementation.
 
-Copyright (c) 1998-2005 The Regents of the University of California and
-Research in Motion Limited.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California and
+ Research in Motion Limited.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -43,31 +43,30 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 
-
 ///////////////////////////////////////////////////////////////////
 //// IIR
 
 /**
 
-This actor is an implementation of an infinite impulse response IIR
-filter.  A direct form II [1] implementation is used. This actor is type
-polymorphic. Its input, output,
-numerator and denominator types can be any type of Token supporting the
-basic arithmetic operations (add, subtract and multiply).
-<p>
-This filter has a transfer function given by:
+ This actor is an implementation of an infinite impulse response IIR
+ filter.  A direct form II [1] implementation is used. This actor is type
+ polymorphic. Its input, output,
+ numerator and denominator types can be any type of Token supporting the
+ basic arithmetic operations (add, subtract and multiply).
+ <p>
+ This filter has a transfer function given by:
 
-<b>References</b>
-<p>[1]A. V. Oppenheim, R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
-Prentice Hall, 1989.
+ <b>References</b>
+ <p>[1]A. V. Oppenheim, R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
+ Prentice Hall, 1989.
 
-@author Brian K. Vogel, Steve Neuendorffer
-@author Aleksandar Necakov, Research in Motion Limited
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Red (vogel)
-@Pt.AcceptedRating Red (cxh)
-*/
+ @author Brian K. Vogel, Steve Neuendorffer
+ @author Aleksandar Necakov, Research in Motion Limited
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (vogel)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class IIR extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -146,11 +145,12 @@ public class IIR extends Transformer {
 
             // Note: a<sub>0</sub> must always be 1.
             // Issue a warning if it isn't.
-            if (!_denominator[0].isEqualTo(_denominator[0].one()).booleanValue()) {
+            if (!_denominator[0].isEqualTo(_denominator[0].one())
+                    .booleanValue()) {
                 try {
-                    MessageHandler.warning(
-                            "First denominator value is required to be 1. "
-                            + "Using 1.");
+                    MessageHandler
+                            .warning("First denominator value is required to be 1. "
+                                    + "Using 1.");
                 } catch (CancelException ex) {
                     throw new IllegalActionException(this,
                             "Canceled parameter change.");
@@ -182,14 +182,15 @@ public class IIR extends Transformer {
 
         try {
             newObject.numerator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-            newObject.denominator.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+            newObject.denominator
+                    .setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
             ArrayType numeratorType = (ArrayType) newObject.numerator.getType();
             InequalityTerm elementTerm = numeratorType.getElementTypeTerm();
             newObject.output.setTypeAtLeast(elementTerm);
 
             ArrayType denominatorType = (ArrayType) newObject.denominator
-                .getType();
+                    .getType();
             InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
             newObject.output.setTypeAtLeast(elementTerm2);
 
@@ -263,8 +264,9 @@ public class IIR extends Transformer {
     ////                         private methods                   ////
     private Token _computeOutput(Token xCurrent) throws IllegalActionException {
         for (int j = 1; j < _denominator.length; j++) {
-            xCurrent = xCurrent.subtract(_denominator[j].multiply(
-                                                 _stateVector[(_currentTap + j) % _stateVector.length]));
+            xCurrent = xCurrent.subtract(_denominator[j]
+                    .multiply(_stateVector[(_currentTap + j)
+                            % _stateVector.length]));
         }
 
         _stateVector[_currentTap] = xCurrent;
@@ -272,8 +274,9 @@ public class IIR extends Transformer {
         Token yCurrent = _numerator[0].zero();
 
         for (int k = 0; k < _numerator.length; k++) {
-            yCurrent = yCurrent.add(_numerator[k].multiply(
-                                            _stateVector[(_currentTap + k) % _stateVector.length]));
+            yCurrent = yCurrent.add(_numerator[k]
+                    .multiply(_stateVector[(_currentTap + k)
+                            % _stateVector.length]));
         }
 
         return yCurrent;
@@ -297,6 +300,7 @@ public class IIR extends Transformer {
     ////                         private variables                 ////
     // Filter parameters
     private Token[] _numerator = new Token[0];
+
     private Token[] _denominator = new Token[0];
 
     // Filter state vector

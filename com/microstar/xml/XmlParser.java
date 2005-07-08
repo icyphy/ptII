@@ -13,35 +13,34 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Stack;
 
-
 /**
-  * Parse XML documents and return parse events through call-backs.
-  * <p>You need to define a class implementing the <code>XmlHandler</code>
-  * interface: an object belonging to this class will receive the
-  * callbacks for the events.  (As an alternative to implementing
-  * the full XmlHandler interface, you can simply extend the
-  * <code>HandlerBase</code> convenience class.)
-  * <p>Usage (assuming that <code>MyHandler</code> is your implementation
-  * of the <code>XmlHandler</code> interface):
-  * <pre>
-  * XmlHandler handler = new MyHandler();
-  * XmlParser parser = new XmlParser();
-  * parser.setHandler(handler);
-  * try {
-  *   parser.parse("http://www.host.com/doc.xml", null);
-  * } catch (Exception e) {
-  *   [do something interesting]
-  * }
-  * </pre>
-  * <p>Alternatively, you can use the standard SAX interfaces
-  * with the <code>SAXDriver</code> class as your entry point.
-  * @author Copyright (c) 1997, 1998 by Microstar Software Ltd.
-  * @author Written by David Megginson &lt;dmeggins@microstar.com&gt;
-  * @version 1.1
-  * @since Ptolemy II 0.2
-  * @see XmlHandler
-  * @see HandlerBase
-  */
+ * Parse XML documents and return parse events through call-backs.
+ * <p>You need to define a class implementing the <code>XmlHandler</code>
+ * interface: an object belonging to this class will receive the
+ * callbacks for the events.  (As an alternative to implementing
+ * the full XmlHandler interface, you can simply extend the
+ * <code>HandlerBase</code> convenience class.)
+ * <p>Usage (assuming that <code>MyHandler</code> is your implementation
+ * of the <code>XmlHandler</code> interface):
+ * <pre>
+ * XmlHandler handler = new MyHandler();
+ * XmlParser parser = new XmlParser();
+ * parser.setHandler(handler);
+ * try {
+ *   parser.parse("http://www.host.com/doc.xml", null);
+ * } catch (Exception e) {
+ *   [do something interesting]
+ * }
+ * </pre>
+ * <p>Alternatively, you can use the standard SAX interfaces
+ * with the <code>SAXDriver</code> class as your entry point.
+ * @author Copyright (c) 1997, 1998 by Microstar Software Ltd.
+ * @author Written by David Megginson &lt;dmeggins@microstar.com&gt;
+ * @version 1.1
+ * @since Ptolemy II 0.2
+ * @see XmlHandler
+ * @see HandlerBase
+ */
 public class XmlParser {
     //
     // Use special cheats that speed up the code (currently about 50%),
@@ -55,85 +54,85 @@ public class XmlParser {
     ////////////////////////////////////////////////////////////////////////
 
     /**
-      * Construct a new parser with no associated handler.
-      * @see #setHandler
-      * @see #parse
-      */
+     * Construct a new parser with no associated handler.
+     * @see #setHandler
+     * @see #parse
+     */
     public XmlParser() {
     }
 
     /**
-      * Set the handler that will receive parsing events.
-      * @param handler The handler to receive callback events.
-      * @see #parse
-      * @see XmlHandler
-      */
+     * Set the handler that will receive parsing events.
+     * @param handler The handler to receive callback events.
+     * @see #parse
+     * @see XmlHandler
+     */
     public void setHandler(XmlHandler handler) {
         this.handler = handler;
     }
 
     /**
-      * Parse an XML document from a URI.
-      * <p>You may parse a document more than once, but only one thread
-      * may call this method for an object at one time.
-      * @param systemId The URI of the document.
-      * @param publicId The public identifier of the document, or null.
-      * @param encoding The suggested encoding, or null if unknown.
-      * @exception java.lang.Exception Any exception thrown by your
-      *            own handlers, or any derivation of java.io.IOException
-      *            thrown by the parser itself.
-      */
+     * Parse an XML document from a URI.
+     * <p>You may parse a document more than once, but only one thread
+     * may call this method for an object at one time.
+     * @param systemId The URI of the document.
+     * @param publicId The public identifier of the document, or null.
+     * @param encoding The suggested encoding, or null if unknown.
+     * @exception java.lang.Exception Any exception thrown by your
+     *            own handlers, or any derivation of java.io.IOException
+     *            thrown by the parser itself.
+     */
     public void parse(String systemId, String publicId, String encoding)
-        throws java.lang.Exception {
+            throws java.lang.Exception {
         doParse(systemId, publicId, null, null, encoding);
     }
 
     /**
-      * Parse an XML document from a byte stream.
-      * <p>The URI that you supply will become the base URI for
-      * resolving relative links, but &AElig;lfred will actually read
-      * the document from the supplied input stream.
-      * <p>You may parse a document more than once, but only one thread
-      * may call this method for an object at one time.
-      * @param systemId The base URI of the document, or null if not
-      *                 known.
-      * @param publicId The public identifier of the document, or null
-      *                 if not known.
-      * @param stream A byte input stream.
-      * @param encoding The suggested encoding, or null if unknown.
-      * @exception java.lang.Exception Any exception thrown by your
-      *            own handlers, or any derivation of java.io.IOException
-      *            thrown by the parser itself.
-      */
+     * Parse an XML document from a byte stream.
+     * <p>The URI that you supply will become the base URI for
+     * resolving relative links, but &AElig;lfred will actually read
+     * the document from the supplied input stream.
+     * <p>You may parse a document more than once, but only one thread
+     * may call this method for an object at one time.
+     * @param systemId The base URI of the document, or null if not
+     *                 known.
+     * @param publicId The public identifier of the document, or null
+     *                 if not known.
+     * @param stream A byte input stream.
+     * @param encoding The suggested encoding, or null if unknown.
+     * @exception java.lang.Exception Any exception thrown by your
+     *            own handlers, or any derivation of java.io.IOException
+     *            thrown by the parser itself.
+     */
     public void parse(String systemId, String publicId, InputStream stream,
-        String encoding) throws java.lang.Exception {
+            String encoding) throws java.lang.Exception {
         doParse(systemId, publicId, null, stream, encoding);
     }
 
     /**
-      * Parse an XML document from a character stream.
-      * <p>The URI that you supply will become the base URI for
-      * resolving relative links, but &AElig;lfred will actually read
-      * the document from the supplied input stream.
-      * <p>You may parse a document more than once, but only one thread
-      * may call this method for an object at one time.
-      * @param systemId The base URI of the document, or null if not
-      *                 known.
-      * @param publicId The public identifier of the document, or null
-      *                 if not known.
-      * @param reader A character stream.
-      * @exception java.lang.Exception Any exception thrown by your
-      *            own handlers, or any derivation of java.io.IOException
-      *            thrown by the parser itself.
-      */
+     * Parse an XML document from a character stream.
+     * <p>The URI that you supply will become the base URI for
+     * resolving relative links, but &AElig;lfred will actually read
+     * the document from the supplied input stream.
+     * <p>You may parse a document more than once, but only one thread
+     * may call this method for an object at one time.
+     * @param systemId The base URI of the document, or null if not
+     *                 known.
+     * @param publicId The public identifier of the document, or null
+     *                 if not known.
+     * @param reader A character stream.
+     * @exception java.lang.Exception Any exception thrown by your
+     *            own handlers, or any derivation of java.io.IOException
+     *            thrown by the parser itself.
+     */
     public void parse(String systemId, String publicId, Reader reader)
-        throws java.lang.Exception {
+            throws java.lang.Exception {
         doParse(systemId, publicId, reader, null, null);
     }
 
     private synchronized void doParse(String systemId, String publicId,
-        Reader reader, InputStream stream, String encoding)
-        throws java.lang.Exception {
+            Reader reader, InputStream stream, String encoding)
+            throws java.lang.Exception {
         basePublicId = publicId;
         baseURI = systemId;
         baseReader = reader;
@@ -153,7 +152,7 @@ public class XmlParser {
         }
 
         pushURL("[document]", basePublicId, baseURI, baseReader,
-            baseInputStream, encoding);
+                baseInputStream, encoding);
 
         parseDocument();
 
@@ -172,33 +171,33 @@ public class XmlParser {
     //
 
     /**
-      * Constant: an element has not been declared.
-      * @see #getElementContentType
-      */
+     * Constant: an element has not been declared.
+     * @see #getElementContentType
+     */
     public final static int CONTENT_UNDECLARED = 0;
 
     /**
-      * Constant: the element has a content model of ANY.
-      * @see #getElementContentType
-      */
+     * Constant: the element has a content model of ANY.
+     * @see #getElementContentType
+     */
     public final static int CONTENT_ANY = 1;
 
     /**
-      * Constant: the element has declared content of EMPTY.
-      * @see #getElementContentType
-      */
+     * Constant: the element has declared content of EMPTY.
+     * @see #getElementContentType
+     */
     public final static int CONTENT_EMPTY = 2;
 
     /**
-      * Constant: the element has mixed content.
-      * @see #getElementContentType
-      */
+     * Constant: the element has mixed content.
+     * @see #getElementContentType
+     */
     public final static int CONTENT_MIXED = 3;
 
     /**
-      * Constant: the element has element content.
-      * @see #getElementContentType
-      */
+     * Constant: the element has element content.
+     * @see #getElementContentType
+     */
     public final static int CONTENT_ELEMENTS = 4;
 
     //
@@ -206,27 +205,27 @@ public class XmlParser {
     //
 
     /**
-      * Constant: the entity has not been declared.
-      * @see #getEntityType
-      */
+     * Constant: the entity has not been declared.
+     * @see #getEntityType
+     */
     public final static int ENTITY_UNDECLARED = 0;
 
     /**
-      * Constant: the entity is internal.
-      * @see #getEntityType
-      */
+     * Constant: the entity is internal.
+     * @see #getEntityType
+     */
     public final static int ENTITY_INTERNAL = 1;
 
     /**
-      * Constant: the entity is external, non-XML data.
-      * @see #getEntityType
-      */
+     * Constant: the entity is external, non-XML data.
+     * @see #getEntityType
+     */
     public final static int ENTITY_NDATA = 2;
 
     /**
-      * Constant: the entity is external XML data.
-      * @see #getEntityType
-      */
+     * Constant: the entity is external XML data.
+     * @see #getEntityType
+     */
     public final static int ENTITY_TEXT = 3;
 
     //
@@ -234,69 +233,69 @@ public class XmlParser {
     //
 
     /**
-      * Constant: the attribute has not been declared for this element type.
-      * @see #getAttributeType
-      */
+     * Constant: the attribute has not been declared for this element type.
+     * @see #getAttributeType
+     */
     public final static int ATTRIBUTE_UNDECLARED = 0;
 
     /**
-      * Constant: the attribute value is a string value.
-      * @see #getAttributeType
-      */
+     * Constant: the attribute value is a string value.
+     * @see #getAttributeType
+     */
     public final static int ATTRIBUTE_CDATA = 1;
 
     /**
-      * Constant: the attribute value is a unique identifier.
-      * @see #getAttributeType
-      */
+     * Constant: the attribute value is a unique identifier.
+     * @see #getAttributeType
+     */
     public final static int ATTRIBUTE_ID = 2;
 
     /**
-      * Constant: the attribute value is a reference to a unique identifier.
-      * @see #getAttributeType
-      */
+     * Constant: the attribute value is a reference to a unique identifier.
+     * @see #getAttributeType
+     */
     public final static int ATTRIBUTE_IDREF = 3;
 
     /**
-      * Constant: the attribute value is a list of ID references.
-      * @see #getAttributeType
-      */
+     * Constant: the attribute value is a list of ID references.
+     * @see #getAttributeType
+     */
     public final static int ATTRIBUTE_IDREFS = 4;
 
     /**
-      * Constant: the attribute value is the name of an entity.
-      * @see #getAttributeType
-      */
+     * Constant: the attribute value is the name of an entity.
+     * @see #getAttributeType
+     */
     public final static int ATTRIBUTE_ENTITY = 5;
 
     /**
-      * Constant: the attribute value is a list of entity names.
-      * @see #getAttributeType
-      */
+     * Constant: the attribute value is a list of entity names.
+     * @see #getAttributeType
+     */
     public final static int ATTRIBUTE_ENTITIES = 6;
 
     /**
-      * Constant: the attribute value is a name token.
-      * @see #getAttributeType
-      */
+     * Constant: the attribute value is a name token.
+     * @see #getAttributeType
+     */
     public final static int ATTRIBUTE_NMTOKEN = 7;
 
     /**
-      * Constant: the attribute value is a list of name tokens.
-      * @see #getAttributeType
-      */
+     * Constant: the attribute value is a list of name tokens.
+     * @see #getAttributeType
+     */
     public final static int ATTRIBUTE_NMTOKENS = 8;
 
     /**
-      * Constant: the attribute value is a token from an enumeration.
-      * @see #getAttributeType
-      */
+     * Constant: the attribute value is a token from an enumeration.
+     * @see #getAttributeType
+     */
     public final static int ATTRIBUTE_ENUMERATED = 9;
 
     /**
-      * Constant: the attribute is the name of a notation.
-      * @see #getAttributeType
-      */
+     * Constant: the attribute is the name of a notation.
+     * @see #getAttributeType
+     */
     public final static int ATTRIBUTE_NOTATION = 10;
 
     //
@@ -305,8 +304,8 @@ public class XmlParser {
     //
 
     /**
-      * Hash table of attribute types.
-      */
+     * Hash table of attribute types.
+     */
     private static Hashtable attributeTypeHash;
 
     static {
@@ -326,12 +325,19 @@ public class XmlParser {
     // Constants for supported encodings.
     //
     private final static int ENCODING_UTF_8 = 1;
+
     private final static int ENCODING_ISO_8859_1 = 2;
+
     private final static int ENCODING_UCS_2_12 = 3;
+
     private final static int ENCODING_UCS_2_21 = 4;
+
     private final static int ENCODING_UCS_4_1234 = 5;
+
     private final static int ENCODING_UCS_4_4321 = 6;
+
     private final static int ENCODING_UCS_4_2143 = 7;
+
     private final static int ENCODING_UCS_4_3412 = 8;
 
     //
@@ -339,61 +345,72 @@ public class XmlParser {
     //
 
     /**
-      * Constant: the attribute is not declared.
-      * @see #getAttributeDefaultValueType
-      */
+     * Constant: the attribute is not declared.
+     * @see #getAttributeDefaultValueType
+     */
     public final static int ATTRIBUTE_DEFAULT_UNDECLARED = 0;
 
     /**
-      * Constant: the attribute has a literal default value specified.
-      * @see #getAttributeDefaultValueType
-      * @see #getAttributeDefaultValue
-      */
+     * Constant: the attribute has a literal default value specified.
+     * @see #getAttributeDefaultValueType
+     * @see #getAttributeDefaultValue
+     */
     public final static int ATTRIBUTE_DEFAULT_SPECIFIED = 1;
 
     /**
-      * Constant: the attribute was declared #IMPLIED.
-      * @see #getAttributeDefaultValueType
-      */
+     * Constant: the attribute was declared #IMPLIED.
+     * @see #getAttributeDefaultValueType
+     */
     public final static int ATTRIBUTE_DEFAULT_IMPLIED = 2;
 
     /**
-      * Constant: the attribute was declared #REQUIRED.
-      * @see #getAttributeDefaultValueType
-      */
+     * Constant: the attribute was declared #REQUIRED.
+     * @see #getAttributeDefaultValueType
+     */
     public final static int ATTRIBUTE_DEFAULT_REQUIRED = 3;
 
     /**
-      * Constant: the attribute was declared #FIXED.
-      * @see #getAttributeDefaultValueType
-      * @see #getAttributeDefaultValue
-      */
+     * Constant: the attribute was declared #FIXED.
+     * @see #getAttributeDefaultValueType
+     * @see #getAttributeDefaultValue
+     */
     public final static int ATTRIBUTE_DEFAULT_FIXED = 4;
 
     //
     // Constants for input.
     //
     private final static int INPUT_NONE = 0;
+
     private final static int INPUT_INTERNAL = 1;
+
     private final static int INPUT_EXTERNAL = 2;
+
     private final static int INPUT_STREAM = 3;
+
     private final static int INPUT_BUFFER = 4;
+
     private final static int INPUT_READER = 5;
 
     //
     // Flags for reading literals.
     //
     private final static int LIT_CHAR_REF = 1;
+
     private final static int LIT_ENTITY_REF = 2;
+
     private final static int LIT_PE_REF = 4;
+
     private final static int LIT_NORMALIZE = 8;
 
     //
     // Flags for parsing context.
     //
     private final static int CONTEXT_NONE = 0;
+
     private final static int CONTEXT_DTD = 1;
+
     private final static int CONTEXT_ENTITYVALUE = 2;
+
     private final static int CONTEXT_ATTRIBUTEVALUE = 3;
 
     //////////////////////////////////////////////////////////////////////
@@ -401,14 +418,14 @@ public class XmlParser {
     //////////////////////////////////////////////////////////////////////
 
     /**
-      * Report an error.
-      * @param message The error message.
-      * @param textFound The text that caused the error (or null).
-      * @see XmlHandler#error
-      * @see #line
-      */
+     * Report an error.
+     * @param message The error message.
+     * @param textFound The text that caused the error (or null).
+     * @see XmlHandler#error
+     * @see #line
+     */
     void error(String message, String textFound, String textExpected)
-        throws java.lang.Exception {
+            throws java.lang.Exception {
         errorCount++;
 
         if (textFound != null) {
@@ -431,12 +448,12 @@ public class XmlParser {
     }
 
     /**
-      * Report a serious error.
-      * @param message The error message.
-      * @param textFound The text that caused the error (or null).
-      */
+     * Report a serious error.
+     * @param message The error message.
+     * @param textFound The text that caused the error (or null).
+     */
     void error(String message, char textFound, String textExpected)
-        throws java.lang.Exception {
+            throws java.lang.Exception {
         error(message, new Character(textFound).toString(), textExpected);
     }
 
@@ -445,15 +462,15 @@ public class XmlParser {
     //////////////////////////////////////////////////////////////////////
 
     /**
-      * Parse an XML document.
-      * <pre>
-      * [1] document ::= prolog element Misc*
-      * </pre>
-      * <p>This is the top-level parsing function for a single XML
-      * document.  As a minimum, a well-formed document must have
-      * a document element, and a valid document must have a prolog
-      * as well.
-      */
+     * Parse an XML document.
+     * <pre>
+     * [1] document ::= prolog element Misc*
+     * </pre>
+     * <p>This is the top-level parsing function for a single XML
+     * document.  As a minimum, a well-formed document must have
+     * a document element, and a valid document must have a prolog
+     * as well.
+     */
     void parseDocument() throws java.lang.Exception {
         char c;
 
@@ -471,25 +488,25 @@ public class XmlParser {
     }
 
     /**
-      * Skip a comment.
-      * <pre>
-      * [18] Comment ::= '&lt;!--' ((Char - '-') | ('-' (Char - '-')))* "-->"
-      * </pre>
-      * <p>(The <code>&lt;!--</code> has already been read.)
-      */
+     * Skip a comment.
+     * <pre>
+     * [18] Comment ::= '&lt;!--' ((Char - '-') | ('-' (Char - '-')))* "-->"
+     * </pre>
+     * <p>(The <code>&lt;!--</code> has already been read.)
+     */
     void parseComment() throws java.lang.Exception {
         skipUntil("-->");
     }
 
     /**
-      * Parse a processing instruction and do a call-back.
-      * <pre>
-      * [19] PI ::= '&lt;?' Name (S (Char* - (Char* '?&gt;' Char*)))? '?&gt;'
-      * </pre>
-      * <p>(The <code>&lt;?</code> has already been read.)
-      * <p>An XML processing instruction <em>must</em> begin with
-      * a Name, which is the instruction's target.
-      */
+     * Parse a processing instruction and do a call-back.
+     * <pre>
+     * [19] PI ::= '&lt;?' Name (S (Char* - (Char* '?&gt;' Char*)))? '?&gt;'
+     * </pre>
+     * <p>(The <code>&lt;?</code> has already been read.)
+     * <p>An XML processing instruction <em>must</em> begin with
+     * a Name, which is the instruction's target.
+     */
     void parsePI() throws java.lang.Exception {
         String name;
 
@@ -506,35 +523,35 @@ public class XmlParser {
     }
 
     /**
-      * Parse a CDATA marked section.
-      * <pre>
-      * [20] CDSect ::= CDStart CData CDEnd
-      * [21] CDStart ::= '&lt;![CDATA['
-      * [22] CData ::= (Char* - (Char* ']]&gt;' Char*))
-      * [23] CDEnd ::= ']]&gt;'
-      * </pre>
-      * <p>(The '&lt;![CDATA[' has already been read.)
-      * <p>Note that this just appends characters to the dataBuffer,
-      * without actually generating an event.
-      */
+     * Parse a CDATA marked section.
+     * <pre>
+     * [20] CDSect ::= CDStart CData CDEnd
+     * [21] CDStart ::= '&lt;![CDATA['
+     * [22] CData ::= (Char* - (Char* ']]&gt;' Char*))
+     * [23] CDEnd ::= ']]&gt;'
+     * </pre>
+     * <p>(The '&lt;![CDATA[' has already been read.)
+     * <p>Note that this just appends characters to the dataBuffer,
+     * without actually generating an event.
+     */
     void parseCDSect() throws java.lang.Exception {
         parseUntil("]]>");
     }
 
     /**
-      * Parse the prolog of an XML document.
-      * <pre>
-      * [24] prolog ::= XMLDecl? Misc* (Doctypedecl Misc*)?
-      * </pre>
-      * <p>There are a couple of tricks here.  First, it is necessary to
-      * declare the XML default attributes after the DTD (if present)
-      * has been read.  Second, it is not possible to expand general
-      * references in attribute value literals until after the entire
-      * DTD (if present) has been parsed.
-      * <p>We do not look for the XML declaration here, because it is
-      * handled by pushURL().
-      * @see pushURL
-      */
+     * Parse the prolog of an XML document.
+     * <pre>
+     * [24] prolog ::= XMLDecl? Misc* (Doctypedecl Misc*)?
+     * </pre>
+     * <p>There are a couple of tricks here.  First, it is necessary to
+     * declare the XML default attributes after the DTD (if present)
+     * has been read.  Second, it is not possible to expand general
+     * references in attribute value literals until after the entire
+     * DTD (if present) has been parsed.
+     * <p>We do not look for the XML declaration here, because it is
+     * handled by pushURL().
+     * @see pushURL
+     */
     void parseProlog() throws java.lang.Exception {
         parseMisc();
 
@@ -545,20 +562,20 @@ public class XmlParser {
     }
 
     /**
-      * Parse the XML declaration.
-      * <pre>
-      * [25] XMLDecl ::= '&lt;?xml' VersionInfo EncodingDecl? SDDecl? S? '?&gt;'
-      * [26] VersionInfo ::= S 'version' Eq ('"1.0"' | "'1.0'")
-      * [33] SDDecl ::= S 'standalone' Eq "'" ('yes' | 'no') "'"
-      *               | S 'standalone' Eq '"' ("yes" | "no") '"'
-      * [78] EncodingDecl ::= S 'encoding' Eq QEncoding
-      * </pre>
-      * <p>([80] to [82] are also significant.)
-      * <p>(The <code>&lt;?xml</code> and whitespace have already been read.)
-      * <p>TODO: validate value of standalone.
-      * @see #parseTextDecl
-      * @see #checkEncoding
-      */
+     * Parse the XML declaration.
+     * <pre>
+     * [25] XMLDecl ::= '&lt;?xml' VersionInfo EncodingDecl? SDDecl? S? '?&gt;'
+     * [26] VersionInfo ::= S 'version' Eq ('"1.0"' | "'1.0'")
+     * [33] SDDecl ::= S 'standalone' Eq "'" ('yes' | 'no') "'"
+     *               | S 'standalone' Eq '"' ("yes" | "no") '"'
+     * [78] EncodingDecl ::= S 'encoding' Eq QEncoding
+     * </pre>
+     * <p>([80] to [82] are also significant.)
+     * <p>(The <code>&lt;?xml</code> and whitespace have already been read.)
+     * <p>TODO: validate value of standalone.
+     * @see #parseTextDecl
+     * @see #checkEncoding
+     */
     void parseXMLDecl(boolean ignoreEncoding) throws java.lang.Exception {
         String version;
         String encodingName = null;
@@ -590,7 +607,7 @@ public class XmlParser {
 
             // FIXME: Why is the literal read, but the value ignored?
 
-            /* standalone = */ readLiteral(0);
+            /* standalone = */readLiteral(0);
         }
 
         skipWhitespace();
@@ -598,18 +615,18 @@ public class XmlParser {
     }
 
     /**
-      * Parse the Encoding PI.
-      * <pre>
-      * [78] EncodingDecl ::= S 'encoding' Eq QEncoding
-      * [79] EncodingPI ::= '&lt;?xml' S 'encoding' Eq QEncoding S? '?&gt;'
-      * [80] QEncoding ::= '"' Encoding '"' | "'" Encoding "'"
-      * [81] Encoding ::= LatinName
-      * [82] LatinName ::= [A-Za-z] ([A-Za-z0-9._] | '-')*
-      * </pre>
-      * <p>(The <code>&lt;?xml</code>' and whitespace have already been read.)
-      * @see #parseXMLDecl
-      * @see #checkEncoding
-      */
+     * Parse the Encoding PI.
+     * <pre>
+     * [78] EncodingDecl ::= S 'encoding' Eq QEncoding
+     * [79] EncodingPI ::= '&lt;?xml' S 'encoding' Eq QEncoding S? '?&gt;'
+     * [80] QEncoding ::= '"' Encoding '"' | "'" Encoding "'"
+     * [81] Encoding ::= LatinName
+     * [82] LatinName ::= [A-Za-z] ([A-Za-z0-9._] | '-')*
+     * </pre>
+     * <p>(The <code>&lt;?xml</code>' and whitespace have already been read.)
+     * @see #parseXMLDecl
+     * @see #checkEncoding
+     */
     void parseTextDecl(boolean ignoreEncoding) throws java.lang.Exception {
         String encodingName = null;
 
@@ -637,18 +654,18 @@ public class XmlParser {
     }
 
     /**
-      * Check that the encoding specified makes sense.
-      * <p>Compare what the author has specified in the XML declaration
-      * or encoding PI with what we have detected.
-      * <p>This is also important for distinguishing among the various
-      * 7- and 8-bit encodings, such as ISO-LATIN-1 (I cannot autodetect
-      * those).
-      * @param encodingName The name of the encoding specified by the user.
-      * @see #parseXMLDecl
-      * @see #parseTextDecl
-      */
+     * Check that the encoding specified makes sense.
+     * <p>Compare what the author has specified in the XML declaration
+     * or encoding PI with what we have detected.
+     * <p>This is also important for distinguishing among the various
+     * 7- and 8-bit encodings, such as ISO-LATIN-1 (I cannot autodetect
+     * those).
+     * @param encodingName The name of the encoding specified by the user.
+     * @see #parseXMLDecl
+     * @see #parseTextDecl
+     */
     void checkEncoding(String encodingName, boolean ignoreEncoding)
-        throws java.lang.Exception {
+            throws java.lang.Exception {
         encodingName = encodingName.toUpperCase();
 
         if (ignoreEncoding) {
@@ -663,7 +680,7 @@ public class XmlParser {
                 encoding = ENCODING_ISO_8859_1;
             } else if (!encodingName.equals("UTF-8")) {
                 error("unsupported 8-bit encoding", encodingName,
-                    "UTF-8 or ISO-8859-1");
+                        "UTF-8 or ISO-8859-1");
             }
 
             break;
@@ -673,9 +690,9 @@ public class XmlParser {
         case ENCODING_UCS_2_21:
 
             if (!encodingName.equals("ISO-10646-UCS-2")
-                            && !encodingName.equals("UTF-16")) {
+                    && !encodingName.equals("UTF-16")) {
                 error("unsupported 16-bit encoding", encodingName,
-                    "ISO-10646-UCS-2");
+                        "ISO-10646-UCS-2");
             }
 
             break;
@@ -688,18 +705,18 @@ public class XmlParser {
 
             if (!encodingName.equals("ISO-10646-UCS-4")) {
                 error("unsupported 32-bit encoding", encodingName,
-                    "ISO-10646-UCS-4");
+                        "ISO-10646-UCS-4");
             }
         }
     }
 
     /**
-      * Parse miscellaneous markup outside the document element and DOCTYPE
-      * declaration.
-      * <pre>
-      * [27] Misc ::= Comment | PI | S
-      * </pre>
-      */
+     * Parse miscellaneous markup outside the document element and DOCTYPE
+     * declaration.
+     * <pre>
+     * [27] Misc ::= Comment | PI | S
+     * </pre>
+     */
     void parseMisc() throws java.lang.Exception {
         while (true) {
             skipWhitespace();
@@ -715,13 +732,13 @@ public class XmlParser {
     }
 
     /**
-      * Parse a document type declaration.
-      * <pre>
-      * [28] doctypedecl ::= '&lt;!DOCTYPE' S Name (S ExternalID)? S?
-      *                      ('[' %markupdecl* ']' S?)? '&gt;'
-      * </pre>
-      * <p>(The <code>&lt;!DOCTYPE</code> has already been read.)
-      */
+     * Parse a document type declaration.
+     * <pre>
+     * [28] doctypedecl ::= '&lt;!DOCTYPE' S Name (S ExternalID)? S?
+     *                      ('[' %markupdecl* ']' S?)? '&gt;'
+     * </pre>
+     * <p>(The <code>&lt;!DOCTYPE</code> has already been read.)
+     */
     void parseDoctypedecl() throws java.lang.Exception {
         String doctypeName;
         String[] ids;
@@ -790,15 +807,15 @@ public class XmlParser {
     }
 
     /**
-      * Parse a markup declaration in the internal or external DTD subset.
-      * <pre>
-      * [29] markupdecl ::= ( %elementdecl | %AttlistDecl | %EntityDecl |
-      *                       %NotationDecl | %PI | %S | %Comment |
-      *                       InternalPERef )
-      * [30] InternalPERef ::= PEReference
-      * [31] extSubset ::= (%markupdecl | %conditionalSect)*
-      * </pre>
-      */
+     * Parse a markup declaration in the internal or external DTD subset.
+     * <pre>
+     * [29] markupdecl ::= ( %elementdecl | %AttlistDecl | %EntityDecl |
+     *                       %NotationDecl | %PI | %S | %Comment |
+     *                       InternalPERef )
+     * [30] InternalPERef ::= PEReference
+     * [31] extSubset ::= (%markupdecl | %conditionalSect)*
+     * </pre>
+     */
     void parseMarkupdecl() throws java.lang.Exception {
         if (tryRead("<!ELEMENT")) {
             parseElementdecl();
@@ -820,17 +837,17 @@ public class XmlParser {
     }
 
     /**
-      * Parse an element, with its tags.
-      * <pre>
-      * [33] STag ::= '&lt;' Name (S Attribute)* S? '&gt;' [WFC: unique Att spec]
-      * [38] element ::= EmptyElement | STag content ETag
-      * [39] EmptyElement ::= '&lt;' Name (S Attribute)* S? '/&gt;'
-      *                       [WFC: unique Att spec]
-      * </pre>
-      * <p>(The '&lt;' has already been read.)
-      * <p>NOTE: this method actually chains onto parseContent(), if necessary,
-      * and parseContent() will take care of calling parseETag().
-      */
+     * Parse an element, with its tags.
+     * <pre>
+     * [33] STag ::= '&lt;' Name (S Attribute)* S? '&gt;' [WFC: unique Att spec]
+     * [38] element ::= EmptyElement | STag content ETag
+     * [39] EmptyElement ::= '&lt;' Name (S Attribute)* S? '/&gt;'
+     *                       [WFC: unique Att spec]
+     * </pre>
+     * <p>(The '&lt;' has already been read.)
+     * <p>NOTE: this method actually chains onto parseContent(), if necessary,
+     * and parseContent() will take care of calling parseETag().
+     */
     void parseElement() throws java.lang.Exception {
         String gi;
         char c;
@@ -872,8 +889,7 @@ public class XmlParser {
 
         if (atts != null) {
             String aname;
-loop: 
-            while (atts.hasMoreElements()) {
+            loop: while (atts.hasMoreElements()) {
                 aname = (String) atts.nextElement();
 
                 // See if it was specified.
@@ -885,8 +901,8 @@ loop:
 
                 // I guess not...
                 if (handler != null) {
-                    handler.attribute(aname,
-                        getAttributeExpandedValue(gi, aname), false);
+                    handler.attribute(aname, getAttributeExpandedValue(gi,
+                            aname), false);
                 }
             }
         }
@@ -923,13 +939,13 @@ loop:
     }
 
     /**
-      * Parse an attribute assignment.
-      * <pre>
-      * [34] Attribute ::= Name Eq AttValue
-      * </pre>
-      * @param name The name of the attribute's element.
-      * @see XmlHandler#attribute
-      */
+     * Parse an attribute assignment.
+     * <pre>
+     * [34] Attribute ::= Name Eq AttValue
+     * </pre>
+     * @param name The name of the attribute's element.
+     * @see XmlHandler#attribute
+     */
     void parseAttribute(String name) throws java.lang.Exception {
         String aname;
         int type;
@@ -979,9 +995,9 @@ loop:
     }
 
     /**
-      * Parse an equals sign surrounded by optional whitespace.
-      * [35] Eq ::= S? '=' S?
-      */
+     * Parse an equals sign surrounded by optional whitespace.
+     * [35] Eq ::= S? '=' S?
+     */
     void parseEq() throws java.lang.Exception {
         skipWhitespace();
         require('=');
@@ -989,10 +1005,10 @@ loop:
     }
 
     /**
-      * Parse an end tag.
-      * [36] ETag ::= '</' Name S? '>'
-      * *NOTE: parseContent() chains to here.
-      */
+     * Parse an end tag.
+     * [36] ETag ::= '</' Name S? '>'
+     * *NOTE: parseContent() chains to here.
+     */
     void parseETag() throws java.lang.Exception {
         String name;
         name = readNmtoken(true);
@@ -1010,10 +1026,10 @@ loop:
     }
 
     /**
-      * Parse the content of an element.
-      * [37] content ::= (element | PCData | Reference | CDSect | PI | Comment)*
-      * [68] Reference ::= EntityRef | CharRef
-      */
+     * Parse the content of an element.
+     * [37] content ::= (element | PCData | Reference | CDSect | PI | Comment)*
+     * [68] Reference ::= EntityRef | CharRef
+     */
     void parseContent() throws java.lang.Exception {
         char c;
 
@@ -1091,11 +1107,11 @@ loop:
     }
 
     /**
-      * Parse an element type declaration.
-      * [40] elementdecl ::= '<!ELEMENT' S %Name S (%S S)? %contentspec S? '>'
-      *                      [VC: Unique Element Declaration]
-      * *NOTE: the '<!ELEMENT' has already been read.
-      */
+     * Parse an element type declaration.
+     * [40] elementdecl ::= '<!ELEMENT' S %Name S (%S S)? %contentspec S? '>'
+     *                      [VC: Unique Element Declaration]
+     * *NOTE: the '<!ELEMENT' has already been read.
+     */
     void parseElementdecl() throws java.lang.Exception {
         String name;
 
@@ -1114,9 +1130,9 @@ loop:
     }
 
     /**
-      * Content specification.
-      * [41] contentspec ::= 'EMPTY' | 'ANY' | Mixed | elements
-      */
+     * Content specification.
+     * [41] contentspec ::= 'EMPTY' | 'ANY' | Mixed | elements
+     */
     void parseContentspec(String name) throws java.lang.Exception {
         if (tryRead("EMPTY")) {
             setElement(name, CONTENT_EMPTY, null, null);
@@ -1141,17 +1157,17 @@ loop:
     }
 
     /**
-      * Parse an element-content model.
-      * [42] elements ::= (choice | seq) ('?' | '*' | '+')?
-      * [44] cps ::= S? %cp S?
-      * [45] choice ::= '(' S? %ctokplus (S? '|' S? %ctoks)* S? ')'
-      * [46] ctokplus ::= cps ('|' cps)+
-      * [47] ctoks ::= cps ('|' cps)*
-      * [48] seq ::= '(' S? %stoks (S? ',' S? %stoks)* S? ')'
-      * [49] stoks ::= cps (',' cps)*
-      * *NOTE: the opening '(' and S have already been read.
-      * *TODO: go over parameter entity boundaries more carefully.
-      */
+     * Parse an element-content model.
+     * [42] elements ::= (choice | seq) ('?' | '*' | '+')?
+     * [44] cps ::= S? %cp S?
+     * [45] choice ::= '(' S? %ctokplus (S? '|' S? %ctoks)* S? ')'
+     * [46] ctokplus ::= cps ('|' cps)+
+     * [47] ctoks ::= cps ('|' cps)*
+     * [48] seq ::= '(' S? %stoks (S? ',' S? %stoks)* S? ')'
+     * [49] stoks ::= cps (',' cps)*
+     * *NOTE: the opening '(' and S have already been read.
+     * *TODO: go over parameter entity boundaries more carefully.
+     */
     void parseElements() throws java.lang.Exception {
         char c;
         char sep;
@@ -1228,11 +1244,11 @@ loop:
     }
 
     /**
-      * Parse a content particle.
-      * [43] cp ::= (Name | choice | seq) ('?' | '*' | '+')
-      * *NOTE: I actually use a slightly different production here:
-      *        cp ::= (elements | (Name ('?' | '*' | '+')?))
-      */
+     * Parse a content particle.
+     * [43] cp ::= (Name | choice | seq) ('?' | '*' | '+')
+     * *NOTE: I actually use a slightly different production here:
+     *        cp ::= (elements | (Name ('?' | '*' | '+')?))
+     */
     void parseCp() throws java.lang.Exception {
         char c;
 
@@ -1258,12 +1274,12 @@ loop:
     }
 
     /**
-      * Parse mixed content.
-      * [50] Mixed ::= '(' S? %( %'#PCDATA' (S? '|' S? %Mtoks)* ) S? ')*'
-      *              | '(' S? %('#PCDATA') S? ')'
-      * [51] Mtoks ::= %Name (S? '|' S? %Name)*
-      * *NOTE: the S and '#PCDATA' have already been read.
-      */
+     * Parse mixed content.
+     * [50] Mixed ::= '(' S? %( %'#PCDATA' (S? '|' S? %Mtoks)* ) S? ')*'
+     *              | '(' S? %('#PCDATA') S? ')'
+     * [51] Mtoks ::= %Name (S? '|' S? %Name)*
+     * *NOTE: the S and '#PCDATA' have already been read.
+     */
     void parseMixed() throws java.lang.Exception {
         // Check for PCDATA alone.
         skipWhitespace();
@@ -1289,10 +1305,10 @@ loop:
     }
 
     /**
-      * Parse an attribute list declaration.
-      * [52] AttlistDecl ::= '<!ATTLIST' S %Name S? %AttDef+ S? '>'
-      * *NOTE: the '<!ATTLIST' has already been read.
-      */
+     * Parse an attribute list declaration.
+     * [52] AttlistDecl ::= '<!ATTLIST' S %Name S? %AttDef+ S? '>'
+     * *NOTE: the '<!ATTLIST' has already been read.
+     */
     void parseAttlistDecl() throws java.lang.Exception {
         String elementName;
 
@@ -1307,9 +1323,9 @@ loop:
     }
 
     /**
-      * Parse a single attribute definition.
-      * [53] AttDef ::= S %Name S %AttType S %Default
-      */
+     * Parse a single attribute definition.
+     * [53] AttDef ::= S %Name S %AttType S %Default
+     */
     void parseAttDef(String elementName) throws java.lang.Exception {
         String name;
         int type;
@@ -1334,14 +1350,14 @@ loop:
     }
 
     /**
-      * Parse the attribute type.
-      * [54] AttType ::= StringType | TokenizedType | EnumeratedType
-      * [55] StringType ::= 'CDATA'
-      * [56] TokenizedType ::= 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' | 'ENTITIES' |
-      *                        'NMTOKEN' | 'NMTOKENS'
-      * [57] EnumeratedType ::= NotationType | Enumeration
-      * *TODO: validate the type!!
-      */
+     * Parse the attribute type.
+     * [54] AttType ::= StringType | TokenizedType | EnumeratedType
+     * [55] StringType ::= 'CDATA'
+     * [56] TokenizedType ::= 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' | 'ENTITIES' |
+     *                        'NMTOKEN' | 'NMTOKENS'
+     * [57] EnumeratedType ::= NotationType | Enumeration
+     * *TODO: validate the type!!
+     */
     int readAttType() throws java.lang.Exception {
         String typeString;
         Integer type;
@@ -1368,11 +1384,11 @@ loop:
     }
 
     /**
-      * Parse an enumeration.
-      * [60] Enumeration ::= '(' S? %Etoks (S? '|' S? %Etoks)* S? ')'
-      * [61] Etoks ::= %Nmtoken (S? '|' S? %Nmtoken)*
-      * *NOTE: the '(' has already been read.
-      */
+     * Parse an enumeration.
+     * [60] Enumeration ::= '(' S? %Etoks (S? '|' S? %Etoks)* S? ')'
+     * [61] Etoks ::= %Nmtoken (S? '|' S? %Nmtoken)*
+     * *NOTE: the '(' has already been read.
+     */
     void parseEnumeration() throws java.lang.Exception {
         dataBufferAppend('(');
 
@@ -1395,12 +1411,12 @@ loop:
     }
 
     /**
-      * Parse a notation type for an attribute.
-      * [58] NotationType ::= %'NOTATION' S '(' S? %Ntoks (S? '|' S? %Ntoks)*
-      *                       S? ')'
-      * [59] Ntoks ::= %Name (S? '|' S? %Name)
-      * *NOTE: the 'NOTATION' has already been read
-      */
+     * Parse a notation type for an attribute.
+     * [58] NotationType ::= %'NOTATION' S '(' S? %Ntoks (S? '|' S? %Ntoks)*
+     *                       S? ')'
+     * [59] Ntoks ::= %Name (S? '|' S? %Name)
+     * *NOTE: the 'NOTATION' has already been read
+     */
     void parseNotationType() throws java.lang.Exception {
         requireWhitespace();
         require('(');
@@ -1409,11 +1425,11 @@ loop:
     }
 
     /**
-      * Parse the default value for an attribute.
-      * [62] Default ::= '#REQUIRED' | '#IMPLIED' | ((%'#FIXED' S)? %AttValue
-      */
+     * Parse the default value for an attribute.
+     * [62] Default ::= '#REQUIRED' | '#IMPLIED' | ((%'#FIXED' S)? %AttValue
+     */
     void parseDefault(String elementName, String name, int type,
-        String enumeration) throws java.lang.Exception {
+            String enumeration) throws java.lang.Exception {
         int valueType = ATTRIBUTE_DEFAULT_SPECIFIED;
         String value = null;
 
@@ -1441,17 +1457,17 @@ loop:
     }
 
     /**
-      * Parse a conditional section.
-      * [63] conditionalSect ::= includeSect || ignoreSect
-      * [64] includeSect ::= '<![' %'INCLUDE' '[' (%markupdecl*)* ']]>'
-      * [65] ignoreSect ::= '<![' %'IGNORE' '[' ignoreSectContents* ']]>'
-      * [66] ignoreSectContents ::= ((SkipLit | Comment | PI) -(Char* ']]>'))
-      *                           | ('<![' ignoreSectContents* ']]>')
-      *                           | (Char - (']' | [<'"]))
-      *                           | ('<!' (Char - ('-' | '[')))
-      * *NOTE: the '<![' has already been read.
-      * *TODO: verify that I am handling ignoreSectContents right.
-      */
+     * Parse a conditional section.
+     * [63] conditionalSect ::= includeSect || ignoreSect
+     * [64] includeSect ::= '<![' %'INCLUDE' '[' (%markupdecl*)* ']]>'
+     * [65] ignoreSect ::= '<![' %'IGNORE' '[' ignoreSectContents* ']]>'
+     * [66] ignoreSectContents ::= ((SkipLit | Comment | PI) -(Char* ']]>'))
+     *                           | ('<![' ignoreSectContents* ']]>')
+     *                           | (Char - (']' | [<'"]))
+     *                           | ('<!' (Char - ('-' | '[')))
+     * *NOTE: the '<![' has already been read.
+     * *TODO: verify that I am handling ignoreSectContents right.
+     */
     void parseConditionalSect() throws java.lang.Exception {
         skipWhitespace();
 
@@ -1493,22 +1509,21 @@ loop:
             }
         } else {
             error("conditional section must begin with INCLUDE or IGNORE",
-                null, null);
+                    null, null);
         }
     }
 
     /**
-      * Read a character reference.
-      * [67] CharRef ::= '&#' [0-9]+ ';' | '&#x' [0-9a-fA-F]+ ';'
-      * *NOTE: the '&#' has already been read.
-      */
+     * Read a character reference.
+     * [67] CharRef ::= '&#' [0-9]+ ';' | '&#x' [0-9a-fA-F]+ ';'
+     * *NOTE: the '&#' has already been read.
+     */
     void parseCharRef() throws java.lang.Exception {
         int value = 0;
         char c;
 
         if (tryRead('x')) {
-loop1: 
-            while (true) {
+            loop1: while (true) {
                 c = readCh();
 
                 switch (c) {
@@ -1547,8 +1562,7 @@ loop1:
                 }
             }
         } else {
-loop2: 
-            while (true) {
+            loop2: while (true) {
                 c = readCh();
 
                 switch (c) {
@@ -1588,16 +1602,16 @@ loop2:
         } else {
             // too big for surrogate
             error("character reference " + value + " is too large for UTF-16",
-                new Integer(value).toString(), null);
+                    new Integer(value).toString(), null);
         }
     }
 
     /**
-      * Parse a reference.
-      * [69] EntityRef ::= '&' Name ';'
-      * *NOTE: the '&' has already been read.
-      * @param externalAllowed External entities are allowed here.
-      */
+     * Parse a reference.
+     * [69] EntityRef ::= '&' Name ';'
+     * *NOTE: the '&' has already been read.
+     * @param externalAllowed External entities are allowed here.
+     */
     void parseEntityRef(boolean externalAllowed) throws java.lang.Exception {
         String name;
 
@@ -1617,10 +1631,10 @@ loop2:
 
             if (externalAllowed) {
                 pushURL(name, getEntityPublicId(name), getEntitySystemId(name),
-                    null, null, null);
+                        null, null, null);
             } else {
                 error("reference to external entity in attribute value.", name,
-                    null);
+                        null);
             }
 
             break;
@@ -1631,7 +1645,7 @@ loop2:
                 error("data entity reference in content", name, null);
             } else {
                 error("reference to external entity in attribute value.", name,
-                    null);
+                        null);
             }
 
             break;
@@ -1639,10 +1653,10 @@ loop2:
     }
 
     /**
-      * Parse a parameter entity reference.
-      * [70] PEReference ::= '%' Name ';'
-      * *NOTE: the '%' has already been read.
-      */
+     * Parse a parameter entity reference.
+     * [70] PEReference ::= '%' Name ';'
+     * *NOTE: the '%' has already been read.
+     */
     void parsePEReference(boolean isEntityValue) throws java.lang.Exception {
         String name;
 
@@ -1671,7 +1685,7 @@ loop2:
             }
 
             pushURL(name, getEntityPublicId(name), getEntitySystemId(name),
-                null, null, null);
+                    null, null, null);
 
             if (isEntityValue) {
                 pushString(null, " ");
@@ -1682,16 +1696,16 @@ loop2:
     }
 
     /**
-      * Parse an entity declaration.
-      * [71] EntityDecl ::= '<!ENTITY' S %Name S %EntityDef S? '>'
-      *                   | '<!ENTITY' S '%' S %Name S %EntityDef S? '>'
-      * [72] EntityDef ::= EntityValue | ExternalDef
-      * [73] ExternalDef ::= ExternalID %NDataDecl?
-      * [74] ExternalID ::= 'SYSTEM' S SystemLiteral
-      *                   | 'PUBLIC' S PubidLiteral S SystemLiteral
-      * [75] NDataDecl ::= S %'NDATA' S %Name
-      * *NOTE: the '<!ENTITY' has already been read.
-      */
+     * Parse an entity declaration.
+     * [71] EntityDecl ::= '<!ENTITY' S %Name S %EntityDef S? '>'
+     *                   | '<!ENTITY' S '%' S %Name S %EntityDef S? '>'
+     * [72] EntityDef ::= EntityValue | ExternalDef
+     * [73] ExternalDef ::= ExternalID %NDataDecl?
+     * [74] ExternalID ::= 'SYSTEM' S SystemLiteral
+     *                   | 'PUBLIC' S PubidLiteral S SystemLiteral
+     * [75] NDataDecl ::= S %'NDATA' S %Name
+     * *NOTE: the '<!ENTITY' has already been read.
+     */
     void parseEntityDecl() throws java.lang.Exception {
         char c;
         boolean peFlag = false;
@@ -1753,10 +1767,10 @@ loop2:
     }
 
     /**
-      * Parse a notation declaration.
-      * [81] NotationDecl ::= '<!NOTATION' S %Name S %ExternalID S? '>'
-      * *NOTE: the '<!NOTATION' has already been read.
-      */
+     * Parse a notation declaration.
+     * [81] NotationDecl ::= '<!NOTATION' S %Name S %ExternalID S? '>'
+     * *NOTE: the '<!NOTATION' has already been read.
+     */
     void parseNotationDecl() throws java.lang.Exception {
         String nname;
         String[] ids;
@@ -1781,13 +1795,13 @@ loop2:
     }
 
     /**
-      * Parse PCDATA.
-      * <pre>
-      * [16] PCData ::= [^&lt;&amp;]*
-      * </pre>
-      * <p>The trick here is that the data stays in the dataBuffer without
-      * necessarily being converted to a string right away.
-      */
+     * Parse PCDATA.
+     * <pre>
+     * [16] PCData ::= [^&lt;&amp;]*
+     * </pre>
+     * <p>The trick here is that the data stays in the dataBuffer without
+     * necessarily being converted to a string right away.
+     */
     void parsePCData() throws java.lang.Exception {
         char c;
 
@@ -1800,8 +1814,7 @@ loop2:
             int lineAugment = 0;
             int columnAugment = 0;
 
-loop: 
-            for (int i = readBufferPos; i < readBufferLength; i++) {
+            loop: for (int i = readBufferPos; i < readBufferLength; i++) {
                 switch (readBuffer[i]) {
                 case '\n':
                     lineAugment++;
@@ -1854,9 +1867,9 @@ loop:
     //////////////////////////////////////////////////////////////////////
 
     /**
-      * Require whitespace characters.
-      * [1] S ::= (#x20 | #x9 | #xd | #xa)+
-      */
+     * Require whitespace characters.
+     * [1] S ::= (#x20 | #x9 | #xd | #xa)+
+     */
     void requireWhitespace() throws java.lang.Exception {
         char c = readCh();
 
@@ -1868,8 +1881,8 @@ loop:
     }
 
     /**
-      * Parse whitespace characters, and leave them in the data buffer.
-      */
+     * Parse whitespace characters, and leave them in the data buffer.
+     */
     void parseWhitespace() throws java.lang.Exception {
         char c = readCh();
 
@@ -1882,9 +1895,9 @@ loop:
     }
 
     /**
-      * Skip whitespace characters.
-      * [1] S ::= (#x20 | #x9 | #xd | #xa)+
-      */
+     * Skip whitespace characters.
+     * [1] S ::= (#x20 | #x9 | #xd | #xa)+
+     */
     void skipWhitespace() throws java.lang.Exception {
         // Start with a little cheat.  Most of
         // the time, the white space will fall
@@ -1894,8 +1907,7 @@ loop:
             int lineAugment = 0;
             int columnAugment = 0;
 
-loop: 
-            for (int i = readBufferPos; i < readBufferLength; i++) {
+            loop: for (int i = readBufferPos; i < readBufferLength; i++) {
                 switch (readBuffer[i]) {
                 case ' ':
                 case '\t':
@@ -1911,7 +1923,7 @@ loop:
                 case '%':
 
                     if ((context == CONTEXT_DTD)
-                                    || (context == CONTEXT_ENTITYVALUE)) {
+                            || (context == CONTEXT_ENTITYVALUE)) {
                         break loop;
                     } // else fall through...
 
@@ -1941,22 +1953,21 @@ loop:
     }
 
     /**
-      * Read a name or name token.
-      * [5] Name ::= (Letter | '_' | ':') (NameChar)*
-      * [7] Nmtoken ::= (NameChar)+
-      * *NOTE: [6] is implemented implicitly where required.
-      */
+     * Read a name or name token.
+     * [5] Name ::= (Letter | '_' | ':') (NameChar)*
+     * [7] Nmtoken ::= (NameChar)+
+     * *NOTE: [6] is implemented implicitly where required.
+     */
     String readNmtoken(boolean isName) throws java.lang.Exception {
         char c;
 
         if (USE_CHEATS) {
-loop: 
-            for (int i = readBufferPos; i < readBufferLength; i++) {
+            loop: for (int i = readBufferPos; i < readBufferLength; i++) {
                 switch (readBuffer[i]) {
                 case '%':
 
                     if ((context == CONTEXT_DTD)
-                                    || (context == CONTEXT_ENTITYVALUE)) {
+                            || (context == CONTEXT_ENTITYVALUE)) {
                         break loop;
                     } // else fall through...
 
@@ -1995,10 +2006,8 @@ loop:
 
         nameBufferPos = 0;
 
-
-// Read the first character.
-loop: 
-        while (true) {
+        // Read the first character.
+        loop: while (true) {
             c = readCh();
 
             switch (c) {
@@ -2041,14 +2050,14 @@ loop:
     }
 
     /**
-      * Read a literal.
-      * [10] AttValue ::= '"' ([^<&"] | Reference)* '"'
-      *                 | "'" ([^<&'] | Reference)* "'"
-      * [11] SystemLiteral ::= '"' URLchar* '"' | "'" (URLchar - "'")* "'"
-      * [13] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
-      * [9] EntityValue ::= '"' ([^%&"] | PEReference | Reference)* '"'
-      *                   | "'" ([^%&'] | PEReference | Reference)* "'"
-      */
+     * Read a literal.
+     * [10] AttValue ::= '"' ([^<&"] | Reference)* '"'
+     *                 | "'" ([^<&'] | Reference)* "'"
+     * [11] SystemLiteral ::= '"' URLchar* '"' | "'" (URLchar - "'")* "'"
+     * [13] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
+     * [9] EntityValue ::= '"' ([^%&"] | PEReference | Reference)* '"'
+     *                   | "'" ([^%&'] | PEReference | Reference)* "'"
+     */
     String readLiteral(int flags) throws java.lang.Exception {
         char delim;
         char c;
@@ -2066,8 +2075,7 @@ loop:
         try {
             c = readCh();
 
-loop: 
-            while (c != delim) {
+            loop: while (c != delim) {
                 switch (c) {
                 // Literals never have line ends
                 case '\n':
@@ -2106,7 +2114,7 @@ loop:
             }
         } catch (EOFException e) {
             error("end of input while looking for delimiter (started on line "
-                + startLine + ')', null, new Character(delim).toString());
+                    + startLine + ')', null, new Character(delim).toString());
         }
 
         // Normalise whitespace if necessary.
@@ -2119,11 +2127,11 @@ loop:
     }
 
     /**
-      * Try reading external identifiers.
-      * <p>The system identifier is not required for notations.
-      * @param inNotation Are we in a notation?
-      * @return A two-member String array containing the identifiers.
-      */
+     * Try reading external identifiers.
+     * <p>The system identifier is not required for notations.
+     * @param inNotation Are we in a notation?
+     * @return A two-member String array containing the identifiers.
+     */
     String[] readExternalIds(boolean inNotation) throws java.lang.Exception {
         String[] ids = new String[2];
 
@@ -2150,13 +2158,13 @@ loop:
     }
 
     /**
-      * Test if a character is whitespace.
-      * <pre>
-      * [1] S ::= (#x20 | #x9 | #xd | #xa)+
-      * </pre>
-      * @param c The character to test.
-      * @return true if the character is whitespace.
-      */
+     * Test if a character is whitespace.
+     * <pre>
+     * [1] S ::= (#x20 | #x9 | #xd | #xa)+
+     * </pre>
+     * @param c The character to test.
+     * @return true if the character is whitespace.
+     */
     final boolean isWhitespace(char c) {
         switch ((int) c) {
         case 0x20:
@@ -2175,8 +2183,8 @@ loop:
     //////////////////////////////////////////////////////////////////////
 
     /**
-      * Add a character to the data buffer.
-      */
+     * Add a character to the data buffer.
+     */
     void dataBufferAppend(char c) {
         // Expand buffer if necessary.
         dataBuffer = (char[]) extendArray(dataBuffer, dataBuffer.length,
@@ -2185,26 +2193,26 @@ loop:
     }
 
     /**
-      * Add a string to the data buffer.
-      */
+     * Add a string to the data buffer.
+     */
     void dataBufferAppend(String s) {
         dataBufferAppend(s.toCharArray(), 0, s.length());
     }
 
     /**
-      * Append (part of) a character array to the data buffer.
-      */
+     * Append (part of) a character array to the data buffer.
+     */
     void dataBufferAppend(char[] ch, int start, int length) {
         dataBuffer = (char[]) extendArray(dataBuffer, dataBuffer.length,
                 dataBufferPos + length);
         System.arraycopy((Object) ch, start, (Object) dataBuffer,
-            dataBufferPos, length);
+                dataBufferPos, length);
         dataBufferPos += length;
     }
 
     /**
-      * Normalise whitespace in the data buffer.
-      */
+     * Normalise whitespace in the data buffer.
+     */
     void dataBufferNormalize() {
         int i = 0;
         int j = 0;
@@ -2242,10 +2250,10 @@ loop:
     }
 
     /**
-      * Convert the data buffer to a string.
-      * @param internFlag true if the contents should be interned.
-      * @see #intern(char[],int,int)
-      */
+     * Convert the data buffer to a string.
+     * @param internFlag true if the contents should be interned.
+     * @see #intern(char[],int,int)
+     */
     String dataBufferToString() {
         String s = new String(dataBuffer, 0, dataBufferPos);
         dataBufferPos = 0;
@@ -2253,9 +2261,9 @@ loop:
     }
 
     /**
-      * Flush the contents of the data buffer to the handler, if
-      * appropriate, and reset the buffer for new input.
-      */
+     * Flush the contents of the data buffer to the handler, if
+     * appropriate, and reset the buffer for new input.
+     */
     void dataBufferFlush() throws java.lang.Exception {
         if (dataBufferPos > 0) {
             switch (currentElementContent) {
@@ -2288,8 +2296,8 @@ loop:
     }
 
     /**
-      * Require a string to appear, or throw an exception.
-      */
+     * Require a string to appear, or throw an exception.
+     */
     void require(String delim) throws java.lang.Exception {
         char[] ch = delim.toCharArray();
 
@@ -2299,8 +2307,8 @@ loop:
     }
 
     /**
-      * Require a character to appear, or throw an exception.
-      */
+     * Require a character to appear, or throw an exception.
+     */
     void require(char delim) throws java.lang.Exception {
         char c = readCh();
 
@@ -2310,38 +2318,38 @@ loop:
     }
 
     /**
-      * Return an internalised version of a string.
-      * <p>&AElig;lfred uses this method to create an internalised version
-      * of all names and attribute values, so that it can test equality
-      * with <code>==</code> instead of <code>String.equals()</code>.
-      * <p>If you want to be able to test for equality in the same way,
-      * you can use this method to internalise your own strings first:
-      * <pre>
-      * String PARA = handler.intern("PARA");
-      * </pre>
-      * <p>Note that this will not return the same results as String.intern().
-      * @param s The string to internalise.
-      * @return An internalised version of the string.
-      * @see #intern(char[],int,int)
-      * @see java.lang.String#intern
-      */
+     * Return an internalised version of a string.
+     * <p>&AElig;lfred uses this method to create an internalised version
+     * of all names and attribute values, so that it can test equality
+     * with <code>==</code> instead of <code>String.equals()</code>.
+     * <p>If you want to be able to test for equality in the same way,
+     * you can use this method to internalise your own strings first:
+     * <pre>
+     * String PARA = handler.intern("PARA");
+     * </pre>
+     * <p>Note that this will not return the same results as String.intern().
+     * @param s The string to internalise.
+     * @return An internalised version of the string.
+     * @see #intern(char[],int,int)
+     * @see java.lang.String#intern
+     */
     public String intern(String s) {
         char[] ch = s.toCharArray();
         return intern(ch, 0, ch.length);
     }
 
     /**
-      * Create an internalised string from a character array.
-      * <p>This is much more efficient than constructing a non-internalised
-      * string first, and then internalising it.
-      * <p>Note that this will not return the same results as String.intern().
-      * @param ch an array of characters for building the string.
-      * @param start the starting position in the array.
-      * @param length the number of characters to place in the string.
-      * @return an internalised string.
-      * @see #intern(String)
-      * @see java.lang.String#intern
-      */
+     * Create an internalised string from a character array.
+     * <p>This is much more efficient than constructing a non-internalised
+     * string first, and then internalising it.
+     * <p>Note that this will not return the same results as String.intern().
+     * @param ch an array of characters for building the string.
+     * @param start the starting position in the array.
+     * @param length the number of characters to place in the string.
+     * @return an internalised string.
+     * @see #intern(String)
+     * @see java.lang.String#intern
+     */
     public String intern(char[] ch, int start, int length) {
         int index;
         int hash = 0;
@@ -2402,9 +2410,9 @@ loop:
     }
 
     /**
-      * Ensure the capacity of an array, allocating a new one if
-      * necessary.
-      */
+     * Ensure the capacity of an array, allocating a new one if
+     * necessary.
+     */
     Object extendArray(Object array, int currentSize, int requiredSize) {
         if (requiredSize < currentSize) {
             return array;
@@ -2438,29 +2446,29 @@ loop:
     //
 
     /**
-      * Get the declared elements for an XML document.
-      * <p>The results will be valid only after the DTD (if any) has been
-      * parsed.
-      * @return An enumeration of all element types declared for this
-      *         document (as Strings).
-      * @see #getElementContentType
-      * @see #getElementContentModel
-      */
+     * Get the declared elements for an XML document.
+     * <p>The results will be valid only after the DTD (if any) has been
+     * parsed.
+     * @return An enumeration of all element types declared for this
+     *         document (as Strings).
+     * @see #getElementContentType
+     * @see #getElementContentModel
+     */
     public Enumeration declaredElements() {
         return elementInfo.keys();
     }
 
     /**
-      * Look up the content type of an element.
-      * @param name The element type name.
-      * @return An integer constant representing the content type.
-      * @see #getElementContentModel
-      * @see #CONTENT_UNDECLARED
-      * @see #CONTENT_ANY
-      * @see #CONTENT_EMPTY
-      * @see #CONTENT_MIXED
-      * @see #CONTENT_ELEMENTS
-      */
+     * Look up the content type of an element.
+     * @param name The element type name.
+     * @return An integer constant representing the content type.
+     * @see #getElementContentModel
+     * @see #CONTENT_UNDECLARED
+     * @see #CONTENT_ANY
+     * @see #CONTENT_EMPTY
+     * @see #CONTENT_MIXED
+     * @see #CONTENT_ELEMENTS
+     */
     public int getElementContentType(String name) {
         Object[] element = (Object[]) elementInfo.get(name);
 
@@ -2472,13 +2480,13 @@ loop:
     }
 
     /**
-      * Look up the content model of an element.
-      * <p>The result will always be null unless the content type is
-      * CONTENT_ELEMENTS or CONTENT_MIXED.
-      * @param name The element type name.
-      * @return The normalised content model, as a string.
-      * @see #getElementContentType
-      */
+     * Look up the content model of an element.
+     * <p>The result will always be null unless the content type is
+     * CONTENT_ELEMENTS or CONTENT_MIXED.
+     * @param name The element type name.
+     * @return The normalised content model, as a string.
+     * @see #getElementContentType
+     */
     public String getElementContentModel(String name) {
         Object[] element = (Object[]) elementInfo.get(name);
 
@@ -2490,13 +2498,13 @@ loop:
     }
 
     /**
-      * Register an element.
-      * Array format:
-      *  element type
-      *  attribute hash table
-      */
+     * Register an element.
+     * Array format:
+     *  element type
+     *  attribute hash table
+     */
     void setElement(String name, int contentType, String contentModel,
-        Hashtable attributes) throws java.lang.Exception {
+            Hashtable attributes) throws java.lang.Exception {
         Object[] element;
 
         // Try looking up the element
@@ -2509,7 +2517,7 @@ loop:
             element[1] = null;
             element[2] = null;
         } else if ((contentType != CONTENT_UNDECLARED)
-                        && (((Integer) element[0]).intValue() != CONTENT_UNDECLARED)) {
+                && (((Integer) element[0]).intValue() != CONTENT_UNDECLARED)) {
             error("multiple declarations for element type", name, null);
             return;
         }
@@ -2534,9 +2542,9 @@ loop:
     }
 
     /**
-      * Look up the attribute hash table for an element.
-      * The hash table is the second item in the element array.
-      */
+     * Look up the attribute hash table for an element.
+     * The hash table is the second item in the element array.
+     */
     Hashtable getElementAttributes(String name) {
         Object[] element = (Object[]) elementInfo.get(name);
 
@@ -2552,17 +2560,17 @@ loop:
     //
 
     /**
-      * Get the declared attributes for an element type.
-      * @param elname The name of the element type.
-      * @return An Enumeration of all the attributes declared for
-      *         a specific element type.  The results will be valid only
-      *         after the DTD (if any) has been parsed.
-      * @see #getAttributeType
-      * @see #getAttributeEnumeration
-      * @see #getAttributeDefaultValueType
-      * @see #getAttributeDefaultValue
-      * @see #getAttributeExpandedValue
-      */
+     * Get the declared attributes for an element type.
+     * @param elname The name of the element type.
+     * @return An Enumeration of all the attributes declared for
+     *         a specific element type.  The results will be valid only
+     *         after the DTD (if any) has been parsed.
+     * @see #getAttributeType
+     * @see #getAttributeEnumeration
+     * @see #getAttributeDefaultValueType
+     * @see #getAttributeDefaultValue
+     * @see #getAttributeExpandedValue
+     */
     public Enumeration declaredAttributes(String elname) {
         Hashtable attlist = getElementAttributes(elname);
 
@@ -2574,22 +2582,22 @@ loop:
     }
 
     /**
-      * Retrieve the declared type of an attribute.
-      * @param name The name of the associated element.
-      * @param aname The name of the attribute.
-      * @return An integer constant representing the attribute type.
-      * @see #ATTRIBUTE_UNDECLARED
-      * @see #ATTRIBUTE_CDATA
-      * @see #ATTRIBUTE_ID
-      * @see #ATTRIBUTE_IDREF
-      * @see #ATTRIBUTE_IDREFS
-      * @see #ATTRIBUTE_ENTITY
-      * @see #ATTRIBUTE_ENTITIES
-      * @see #ATTRIBUTE_NMTOKEN
-      * @see #ATTRIBUTE_NMTOKENS
-      * @see #ATTRIBUTE_ENUMERATED
-      * @see #ATTRIBUTE_NOTATION
-      */
+     * Retrieve the declared type of an attribute.
+     * @param name The name of the associated element.
+     * @param aname The name of the attribute.
+     * @return An integer constant representing the attribute type.
+     * @see #ATTRIBUTE_UNDECLARED
+     * @see #ATTRIBUTE_CDATA
+     * @see #ATTRIBUTE_ID
+     * @see #ATTRIBUTE_IDREF
+     * @see #ATTRIBUTE_IDREFS
+     * @see #ATTRIBUTE_ENTITY
+     * @see #ATTRIBUTE_ENTITIES
+     * @see #ATTRIBUTE_NMTOKEN
+     * @see #ATTRIBUTE_NMTOKENS
+     * @see #ATTRIBUTE_ENUMERATED
+     * @see #ATTRIBUTE_NOTATION
+     */
     public int getAttributeType(String name, String aname) {
         Object[] attribute = getAttribute(name, aname);
 
@@ -2601,13 +2609,13 @@ loop:
     }
 
     /**
-      * Retrieve the allowed values for an enumerated attribute type.
-      * @param name The name of the associated element.
-      * @param aname The name of the attribute.
-      * @return A string containing the token list.
-      * @see #ATTRIBUTE_ENUMERATED
-      * @see #ATTRIBUTE_NOTATION
-      */
+     * Retrieve the allowed values for an enumerated attribute type.
+     * @param name The name of the associated element.
+     * @param aname The name of the attribute.
+     * @return A string containing the token list.
+     * @see #ATTRIBUTE_ENUMERATED
+     * @see #ATTRIBUTE_NOTATION
+     */
     public String getAttributeEnumeration(String name, String aname) {
         Object[] attribute = getAttribute(name, aname);
 
@@ -2619,13 +2627,13 @@ loop:
     }
 
     /**
-      * Retrieve the default value of a declared attribute.
-      * @param name The name of the associated element.
-      * @param aname The name of the attribute.
-      * @return The default value, or null if the attribute was
-      *         #IMPLIED or simply undeclared and unspecified.
-      * @see #getAttributeExpandedValue
-      */
+     * Retrieve the default value of a declared attribute.
+     * @param name The name of the associated element.
+     * @param aname The name of the attribute.
+     * @return The default value, or null if the attribute was
+     *         #IMPLIED or simply undeclared and unspecified.
+     * @see #getAttributeExpandedValue
+     */
     public String getAttributeDefaultValue(String name, String aname) {
         Object[] attribute = getAttribute(name, aname);
 
@@ -2637,14 +2645,14 @@ loop:
     }
 
     /**
-      * Retrieve the expanded value of a declared attribute.
-      * <p>All general entities will be expanded.
-      * @param name The name of the associated element.
-      * @param aname The name of the attribute.
-      * @return The expanded default value, or null if the attribute was
-      *         #IMPLIED or simply undeclared
-      * @see #getAttributeDefaultValue
-      */
+     * Retrieve the expanded value of a declared attribute.
+     * <p>All general entities will be expanded.
+     * @param name The name of the associated element.
+     * @param aname The name of the attribute.
+     * @return The expanded default value, or null if the attribute was
+     *         #IMPLIED or simply undeclared
+     * @see #getAttributeDefaultValue
+     */
     public String getAttributeExpandedValue(String name, String aname) {
         Object[] attribute = getAttribute(name, aname);
 
@@ -2654,7 +2662,7 @@ loop:
             try {
                 pushString(null, (char) 0 + (String) attribute[1] + (char) 0);
                 attribute[4] = readLiteral(LIT_NORMALIZE | LIT_CHAR_REF
-                                    | LIT_ENTITY_REF);
+                        | LIT_ENTITY_REF);
             } catch (Exception e) {
             }
         }
@@ -2663,16 +2671,16 @@ loop:
     }
 
     /**
-      * Retrieve the default value type of a declared attribute.
-      * @param name The name of the element.
-      * @param aname The name of the attribute.
-      * @return ATTRIBUTE_DEFAULT_UNDECLARED if the attribute
-      * cannot be found, otherwise return an integer.
-      * @see #ATTRIBUTE_DEFAULT_SPECIFIED
-      * @see #ATTRIBUTE_DEFAULT_IMPLIED
-      * @see #ATTRIBUTE_DEFAULT_REQUIRED
-      * @see #ATTRIBUTE_DEFAULT_FIXED
-      */
+     * Retrieve the default value type of a declared attribute.
+     * @param name The name of the element.
+     * @param aname The name of the attribute.
+     * @return ATTRIBUTE_DEFAULT_UNDECLARED if the attribute
+     * cannot be found, otherwise return an integer.
+     * @see #ATTRIBUTE_DEFAULT_SPECIFIED
+     * @see #ATTRIBUTE_DEFAULT_IMPLIED
+     * @see #ATTRIBUTE_DEFAULT_REQUIRED
+     * @see #ATTRIBUTE_DEFAULT_FIXED
+     */
     public int getAttributeDefaultValueType(String name, String aname) {
         Object[] attribute = getAttribute(name, aname);
 
@@ -2684,15 +2692,15 @@ loop:
     }
 
     /**
-      * Register an attribute declaration for later retrieval.
-      * Format:
-      * - String type
-      * - String default value
-      * - int value type
-      * *TODO: do something with attribute types.
-      */
+     * Register an attribute declaration for later retrieval.
+     * Format:
+     * - String type
+     * - String default value
+     * - int value type
+     * *TODO: do something with attribute types.
+     */
     void setAttribute(String elName, String name, int type, String enumeration,
-        String value, int valueType) throws java.lang.Exception {
+            String value, int valueType) throws java.lang.Exception {
         Hashtable attlist;
         Object[] attribute;
 
@@ -2723,11 +2731,11 @@ loop:
     }
 
     /**
-      * Retrieve the three-member array representing an
-      * attribute declaration.
-      * @param elName The name of the element.
-      * @param name The name of the attribute.
-      */
+     * Retrieve the three-member array representing an
+     * attribute declaration.
+     * @param elName The name of the element.
+     * @param name The name of the attribute.
+     */
     Object[] getAttribute(String elName, String name) {
         Hashtable attlist;
         Object[] attribute;
@@ -2747,16 +2755,16 @@ loop:
     //
 
     /**
-      * Get declared entities.
-      * @return An Enumeration of all the entities declared for
-      *         this XML document.  The results will be valid only
-      *         after the DTD (if any) has been parsed.
-      * @see #getEntityType
-      * @see #getEntityPublicId
-      * @see #getEntitySystemId
-      * @see #getEntityValue
-      * @see #getEntityNotationName
-      */
+     * Get declared entities.
+     * @return An Enumeration of all the entities declared for
+     *         this XML document.  The results will be valid only
+     *         after the DTD (if any) has been parsed.
+     * @see #getEntityType
+     * @see #getEntityPublicId
+     * @see #getEntitySystemId
+     * @see #getEntityValue
+     * @see #getEntityNotationName
+     */
     public Enumeration declaredEntities() {
         return entityInfo.keys();
     }
@@ -2771,14 +2779,14 @@ loop:
     }
 
     /**
-      * Find the type of an entity.
-      * @param ename The name of the entity.
-      * @return An integer constant representing the entity type.
-      * @see #ENTITY_UNDECLARED
-      * @see #ENTITY_INTERNAL
-      * @see #ENTITY_NDATA
-      * @see #ENTITY_TEXT
-      */
+     * Find the type of an entity.
+     * @param ename The name of the entity.
+     * @return An integer constant representing the entity type.
+     * @see #ENTITY_UNDECLARED
+     * @see #ENTITY_INTERNAL
+     * @see #ENTITY_NDATA
+     * @see #ENTITY_TEXT
+     */
     public int getEntityType(String ename) {
         Object[] entity = (Object[]) entityInfo.get(ename);
 
@@ -2790,14 +2798,14 @@ loop:
     }
 
     /**
-      * Return an external entity's public identifier, if any.
-      * @param ename The name of the external entity.
-      * @return The entity's system identifier, or null if the
-      *         entity was not declared, if it is not an
-      *         external entity, or if no public identifier was
-      *         provided.
-      * @see #getEntityType
-      */
+     * Return an external entity's public identifier, if any.
+     * @param ename The name of the external entity.
+     * @return The entity's system identifier, or null if the
+     *         entity was not declared, if it is not an
+     *         external entity, or if no public identifier was
+     *         provided.
+     * @see #getEntityType
+     */
     public String getEntityPublicId(String ename) {
         Object[] entity = (Object[]) entityInfo.get(ename);
 
@@ -2809,13 +2817,13 @@ loop:
     }
 
     /**
-      * Return an external entity's system identifier.
-      * @param ename The name of the external entity.
-      * @return The entity's system identifier, or null if the
-      *         entity was not declared, or if it is not an
-      *         external entity.
-      * @see #getEntityType
-      */
+     * Return an external entity's system identifier.
+     * @param ename The name of the external entity.
+     * @return The entity's system identifier, or null if the
+     *         entity was not declared, or if it is not an
+     *         external entity.
+     * @see #getEntityType
+     */
     public String getEntitySystemId(String ename) {
         Object[] entity = (Object[]) entityInfo.get(ename);
 
@@ -2827,12 +2835,12 @@ loop:
     }
 
     /**
-      * Return the value of an internal entity.
-      * @param ename The name of the internal entity.
-      * @return The entity's value, or null if the entity was
-      *         not declared, or if it is not an internal entity.
-      * @see #getEntityType
-      */
+     * Return the value of an internal entity.
+     * @param ename The name of the internal entity.
+     * @return The entity's value, or null if the entity was
+     *         not declared, or if it is not an internal entity.
+     * @see #getEntityType
+     */
     public String getEntityValue(String ename) {
         Object[] entity = (Object[]) entityInfo.get(ename);
 
@@ -2844,13 +2852,13 @@ loop:
     }
 
     /**
-      * Get the notation name associated with an NDATA entity.
-      * @param eName The NDATA entity name.
-      * @return The associated notation name, or null if the
-      *         entity was not declared, or if it is not an
-      *         NDATA entity.
-      * @see #getEntityType
-      */
+     * Get the notation name associated with an NDATA entity.
+     * @param eName The NDATA entity name.
+     * @return The associated notation name, or null if the
+     *         entity was not declared, or if it is not an
+     *         NDATA entity.
+     * @see #getEntityType
+     */
     public String getEntityNotationName(String eName) {
         Object[] entity = (Object[]) entityInfo.get(eName);
 
@@ -2862,32 +2870,32 @@ loop:
     }
 
     /**
-      * Register an entity declaration for later retrieval.
-      */
+     * Register an entity declaration for later retrieval.
+     */
     void setInternalEntity(String eName, String value) {
         setEntity(eName, ENTITY_INTERNAL, null, null, value, null);
     }
 
     /**
-      * Register an external data entity.
-      */
+     * Register an external data entity.
+     */
     void setExternalDataEntity(String eName, String pubid, String sysid,
-        String nName) {
+            String nName) {
         setEntity(eName, ENTITY_NDATA, pubid, sysid, null, nName);
     }
 
     /**
-      * Register an external text entity.
-      */
+     * Register an external text entity.
+     */
     void setExternalTextEntity(String eName, String pubid, String sysid) {
         setEntity(eName, ENTITY_TEXT, pubid, sysid, null, null);
     }
 
     /**
-      * Register an entity declaration for later retrieval.
-      */
+     * Register an entity declaration for later retrieval.
+     */
     void setEntity(String eName, int eClass, String pubid, String sysid,
-        String value, String nName) {
+            String value, String nName) {
         Object[] entity;
 
         if (entityInfo.get(eName) == null) {
@@ -2907,27 +2915,27 @@ loop:
     //
 
     /**
-      * Get declared notations.
-      * @return An Enumeration of all the notations declared for
-      *         this XML document.  The results will be valid only
-      *         after the DTD (if any) has been parsed.
-      * @see #getNotationPublicId
-      * @see #getNotationSystemId
-      */
+     * Get declared notations.
+     * @return An Enumeration of all the notations declared for
+     *         this XML document.  The results will be valid only
+     *         after the DTD (if any) has been parsed.
+     * @see #getNotationPublicId
+     * @see #getNotationSystemId
+     */
     public Enumeration declaredNotations() {
         return notationInfo.keys();
     }
 
     /**
-      * Look up the public identifier for a notation.
-      * You will normally use this method to look up a notation
-      * that was provided as an attribute value or for an NDATA entity.
-      * @param nname The name of the notation.
-      * @return A string containing the public identifier, or null
-      *         if none was provided or if no such notation was
-      *         declared.
-      * @see #getNotationSystemId
-      */
+     * Look up the public identifier for a notation.
+     * You will normally use this method to look up a notation
+     * that was provided as an attribute value or for an NDATA entity.
+     * @param nname The name of the notation.
+     * @return A string containing the public identifier, or null
+     *         if none was provided or if no such notation was
+     *         declared.
+     * @see #getNotationSystemId
+     */
     public String getNotationPublicId(String nname) {
         Object[] notation = (Object[]) notationInfo.get(nname);
 
@@ -2939,14 +2947,14 @@ loop:
     }
 
     /**
-      * Look up the system identifier for a notation.
-      * You will normally use this method to look up a notation
-      * that was provided as an attribute value or for an NDATA entity.
-      * @param nname The name of the notation.
-      * @return A string containing the system identifier, or null
-      *         if no such notation was declared.
-      * @see #getNotationPublicId
-      */
+     * Look up the system identifier for a notation.
+     * You will normally use this method to look up a notation
+     * that was provided as an attribute value or for an NDATA entity.
+     * @param nname The name of the notation.
+     * @return A string containing the system identifier, or null
+     *         if no such notation was declared.
+     * @see #getNotationPublicId
+     */
     public String getNotationSystemId(String nname) {
         Object[] notation = (Object[]) notationInfo.get(nname);
 
@@ -2958,13 +2966,13 @@ loop:
     }
 
     /**
-      * Register a notation declaration for later retrieval.
-      * Format:
-      * - public id
-      * - system id
-      */
+     * Register a notation declaration for later retrieval.
+     * Format:
+     * - public id
+     * - system id
+     */
     void setNotation(String nname, String pubid, String sysid)
-        throws java.lang.Exception {
+            throws java.lang.Exception {
         Object[] notation;
 
         if (notationInfo.get(nname) == null) {
@@ -2982,17 +2990,17 @@ loop:
     //
 
     /**
-      * Return the current line number.
-      * @return The current line number.
-      */
+     * Return the current line number.
+     * @return The current line number.
+     */
     public int getLineNumber() {
         return line;
     }
 
     /**
-      * Return the current column number.
-      * @return The current column number.
-      */
+     * Return the current column number.
+     * @return The current column number.
+     */
     public int getColumnNumber() {
         return column;
     }
@@ -3002,23 +3010,23 @@ loop:
     //////////////////////////////////////////////////////////////////////
 
     /**
-      * Read a single character from the readBuffer.
-      * <p>The readDataChunk() method maintains the buffer.
-      * <p>If we hit the end of an entity, try to pop the stack and
-      * keep going.
-      * <p>(This approach doesn't really enforce XML's rules about
-      * entity boundaries, but this is not currently a validating
-      * parser).
-      * <p>This routine also attempts to keep track of the current
-      * position in external entities, but it's not entirely accurate.
-      * @return The next available input character.
-      * @see #unread(char)
-      * @see #unread(String)
-      * @see #readDataChunk
-      * @see #readBuffer
-      * @see #line
-      * @return The next character from the current input source.
-      */
+     * Read a single character from the readBuffer.
+     * <p>The readDataChunk() method maintains the buffer.
+     * <p>If we hit the end of an entity, try to pop the stack and
+     * keep going.
+     * <p>(This approach doesn't really enforce XML's rules about
+     * entity boundaries, but this is not currently a validating
+     * parser).
+     * <p>This routine also attempts to keep track of the current
+     * position in external entities, but it's not entirely accurate.
+     * @return The next available input character.
+     * @see #unread(char)
+     * @see #unread(String)
+     * @see #readDataChunk
+     * @see #readBuffer
+     * @see #line
+     * @return The next character from the current input source.
+     */
     char readCh() throws java.lang.Exception {
         char c;
 
@@ -3057,8 +3065,7 @@ loop:
         // catch the '%' in parameter entity
         // declarations.
         if ((c == '%')
-                        && ((context == CONTEXT_DTD)
-                        || (context == CONTEXT_ENTITYVALUE))) {
+                && ((context == CONTEXT_DTD) || (context == CONTEXT_ENTITYVALUE))) {
             char c2 = readCh();
             unread(c2);
 
@@ -3079,20 +3086,20 @@ loop:
     }
 
     /**
-      * Push a single character back onto the current input stream.
-      * <p>This method usually pushes the character back onto
-      * the readBuffer, while the unread(String) method treats the
-      * string as a new internal entity.
-      * <p>I don't think that this would ever be called with
-      * readBufferPos = 0, because the methods always reads a character
-      * before unreading it, but just in case, I've added a boundary
-      * condition.
-      * @param c The character to push back.
-      * @see #readCh
-      * @see #unread(String)
-      * @see #unread(char[])
-      * @see #readBuffer
-      */
+     * Push a single character back onto the current input stream.
+     * <p>This method usually pushes the character back onto
+     * the readBuffer, while the unread(String) method treats the
+     * string as a new internal entity.
+     * <p>I don't think that this would ever be called with
+     * readBufferPos = 0, because the methods always reads a character
+     * before unreading it, but just in case, I've added a boundary
+     * condition.
+     * @param c The character to push back.
+     * @see #readCh
+     * @see #unread(String)
+     * @see #unread(char[])
+     * @see #readBuffer
+     */
     void unread(char c) throws java.lang.Exception {
         // Normal condition.
         if (c == '\n') {
@@ -3108,15 +3115,15 @@ loop:
     }
 
     /**
-      * Push a char array back onto the current input stream.
-      * <p>NOTE: you must <em>never</em> push back characters that you
-      * haven't actually read: use pushString() instead.
-      * @see #readCh
-      * @see #unread(char)
-      * @see #unread(String)
-      * @see #readBuffer
-      * @see #pushString
-      */
+     * Push a char array back onto the current input stream.
+     * <p>NOTE: you must <em>never</em> push back characters that you
+     * haven't actually read: use pushString() instead.
+     * @see #readCh
+     * @see #unread(char)
+     * @see #unread(String)
+     * @see #readBuffer
+     * @see #pushString
+     */
     void unread(char[] ch, int length) throws java.lang.Exception {
         for (int i = 0; i < length; i++) {
             if (ch[i] == '\n') {
@@ -3134,24 +3141,24 @@ loop:
     }
 
     /**
-      * Push a new external input source.
-      * <p>The source will be either an external text entity, or the DTD
-      * external subset.
-      * <p>TO DO: Right now, this method always attempts to autodetect
-      * the encoding; in the future, it should allow the caller to
-      * request an encoding explicitly, and it should also look at the
-      * headers with an HTTP connection.
-      * @param url The java.net.URL object for the entity.
-      * @see XmlHandler#resolveEntity
-      * @see #pushString
-      * @see #sourceType
-      * @see #pushInput
-      * @see #detectEncoding
-      * @see #sourceType
-      * @see #readBuffer
-      */
+     * Push a new external input source.
+     * <p>The source will be either an external text entity, or the DTD
+     * external subset.
+     * <p>TO DO: Right now, this method always attempts to autodetect
+     * the encoding; in the future, it should allow the caller to
+     * request an encoding explicitly, and it should also look at the
+     * headers with an HTTP connection.
+     * @param url The java.net.URL object for the entity.
+     * @see XmlHandler#resolveEntity
+     * @see #pushString
+     * @see #sourceType
+     * @see #pushInput
+     * @see #detectEncoding
+     * @see #sourceType
+     * @see #readBuffer
+     */
     void pushURL(String ename, String publicId, String systemId, Reader reader,
-        InputStream stream, String encoding) throws java.lang.Exception {
+            InputStream stream, String encoding) throws java.lang.Exception {
         URL url;
         boolean ignoreEncoding = false;
 
@@ -3254,8 +3261,8 @@ loop:
     }
 
     /**
-      * Check for an encoding declaration.
-      */
+     * Check for an encoding declaration.
+     */
     void tryEncodingDecl(boolean ignoreEncoding) throws java.lang.Exception {
         // Read the XML/Encoding declaration.
         if (tryRead("<?xml")) {
@@ -3273,24 +3280,24 @@ loop:
     }
 
     /**
-      * Attempt to detect the encoding of an entity.
-      * <p>The trick here (as suggested in the XML standard) is that
-      * any entity not in UTF-8, or in UCS-2 with a byte-order mark,
-      * <b>must</b> begin with an XML declaration or an encoding
-      * declaration; we simply have to look for "&lt;?XML" in various
-      * encodings.
-      * <p>This method has no way to distinguish among 8-bit encodings.
-      * Instead, it assumes UTF-8, then (possibly) revises its assumption
-      * later in checkEncoding().  Any ASCII-derived 8-bit encoding
-      * should work, but most will be rejected later by checkEncoding().
-      * <p>I don't currently detect EBCDIC, since I'm concerned that it
-      * could also be a valid UTF-8 sequence; I'll have to do more checking
-      * later.
-      * @see #tryEncoding(byte[], byte, byte, byte, byte)
-      * @see #tryEncoding(byte[], byte, byte)
-      * @see #checkEncoding
-      * @see #read8bitEncodingDeclaration
-      */
+     * Attempt to detect the encoding of an entity.
+     * <p>The trick here (as suggested in the XML standard) is that
+     * any entity not in UTF-8, or in UCS-2 with a byte-order mark,
+     * <b>must</b> begin with an XML declaration or an encoding
+     * declaration; we simply have to look for "&lt;?XML" in various
+     * encodings.
+     * <p>This method has no way to distinguish among 8-bit encodings.
+     * Instead, it assumes UTF-8, then (possibly) revises its assumption
+     * later in checkEncoding().  Any ASCII-derived 8-bit encoding
+     * should work, but most will be rejected later by checkEncoding().
+     * <p>I don't currently detect EBCDIC, since I'm concerned that it
+     * could also be a valid UTF-8 sequence; I'll have to do more checking
+     * later.
+     * @see #tryEncoding(byte[], byte, byte, byte, byte)
+     * @see #tryEncoding(byte[], byte, byte)
+     * @see #checkEncoding
+     * @see #read8bitEncodingDeclaration
+     */
     void detectEncoding() throws java.lang.Exception {
         byte[] signature = new byte[4];
 
@@ -3302,22 +3309,22 @@ loop:
 
         // Look for a known signature.
         if (tryEncoding(signature, (byte) 0x00, (byte) 0x00, (byte) 0x00,
-                            (byte) 0x3c)) {
+                (byte) 0x3c)) {
             // UCS-4 must begin with "<!XML"
             // 0x00 0x00 0x00 0x3c: UCS-4, big-endian (1234)
             encoding = ENCODING_UCS_4_1234;
         } else if (tryEncoding(signature, (byte) 0x3c, (byte) 0x00,
-                            (byte) 0x00, (byte) 0x00)) {
+                (byte) 0x00, (byte) 0x00)) {
             // UCS-4 must begin with "<!XML"
             // 0x3c 0x00 0x00 0x00: UCS-4, little-endian (4321)
             encoding = ENCODING_UCS_4_4321;
         } else if (tryEncoding(signature, (byte) 0x00, (byte) 0x00,
-                            (byte) 0x3c, (byte) 0x00)) {
+                (byte) 0x3c, (byte) 0x00)) {
             // UCS-4 must begin with "<!XML"
             // 0x00 0x00 0x3c 0x00: UCS-4, unusual (2143)
             encoding = ENCODING_UCS_4_2143;
         } else if (tryEncoding(signature, (byte) 0x00, (byte) 0x3c,
-                            (byte) 0x00, (byte) 0x00)) {
+                (byte) 0x00, (byte) 0x00)) {
             // UCS-4 must begin with "<!XML"
             // 0x00 0x3c 0x00 0x00: UCS-4, unusual (3421)
             encoding = ENCODING_UCS_4_3412;
@@ -3334,19 +3341,19 @@ loop:
             is.read();
             is.read();
         } else if (tryEncoding(signature, (byte) 0x00, (byte) 0x3c,
-                            (byte) 0x00, (byte) 0x3f)) {
+                (byte) 0x00, (byte) 0x3f)) {
             // UCS-2 without a BOM must begin with "<?XML"
             // 0x00 0x3c 0x00 0x3f: UCS-2, big-endian, no byte-order mark
             encoding = ENCODING_UCS_2_12;
             error("no byte-order mark for UCS-2 entity", null, null);
         } else if (tryEncoding(signature, (byte) 0x3c, (byte) 0x00,
-                            (byte) 0x3f, (byte) 0x00)) {
+                (byte) 0x3f, (byte) 0x00)) {
             // UCS-2 without a BOM must begin with "<?XML"
             // 0x3c 0x00 0x3f 0x00: UCS-2, little-endian, no byte-order mark
             encoding = ENCODING_UCS_2_21;
             error("no byte-order mark for UCS-2 entity", null, null);
         } else if (tryEncoding(signature, (byte) 0x3c, (byte) 0x3f,
-                            (byte) 0x78, (byte) 0x6d)) {
+                (byte) 0x78, (byte) 0x6d)) {
             // Some kind of 8-bit encoding with "<?XML"
             // 0x3c 0x3f 0x78 0x6d: UTF-8 or other 8-bit markup (read ENCODING)
             encoding = ENCODING_UTF_8;
@@ -3359,65 +3366,64 @@ loop:
     }
 
     /**
-      * Check for a four-byte signature.
-      * <p>Utility routine for detectEncoding().
-      * <p>Always looks for some part of "<?XML" in a specific encoding.
-      * @param sig The first four bytes read.
-      * @param b1 The first byte of the signature
-      * @param b2 The second byte of the signature
-      * @param b3 The third byte of the signature
-      * @param b4 The fourth byte of the signature
-      * @see #detectEncoding
-      */
+     * Check for a four-byte signature.
+     * <p>Utility routine for detectEncoding().
+     * <p>Always looks for some part of "<?XML" in a specific encoding.
+     * @param sig The first four bytes read.
+     * @param b1 The first byte of the signature
+     * @param b2 The second byte of the signature
+     * @param b3 The third byte of the signature
+     * @param b4 The fourth byte of the signature
+     * @see #detectEncoding
+     */
     boolean tryEncoding(byte[] sig, byte b1, byte b2, byte b3, byte b4) {
-        return ((sig[0] == b1) && (sig[1] == b2) && (sig[2] == b3)
-                    && (sig[3] == b4));
+        return ((sig[0] == b1) && (sig[1] == b2) && (sig[2] == b3) && (sig[3] == b4));
     }
 
     /**
-      * Check for a two-byte signature.
-      * <p>Looks for a UCS-2 byte-order mark.
-      * <p>Utility routine for detectEncoding().
-      * @param sig The first four bytes read.
-      * @param b1 The first byte of the signature
-      * @param b2 The second byte of the signature
-      * @see #detectEncoding
-      */
+     * Check for a two-byte signature.
+     * <p>Looks for a UCS-2 byte-order mark.
+     * <p>Utility routine for detectEncoding().
+     * @param sig The first four bytes read.
+     * @param b1 The first byte of the signature
+     * @param b2 The second byte of the signature
+     * @see #detectEncoding
+     */
     boolean tryEncoding(byte[] sig, byte b1, byte b2) {
         return ((sig[0] == b1) && (sig[1] == b2));
     }
 
     /**
-      * This method pushes a string back onto input.
-      * <p>It is useful either as the expansion of an internal entity,
-      * or for backtracking during the parse.
-      * <p>Call pushCharArray() to do the actual work.
-      * @param s The string to push back onto input.
-      * @see #pushCharArray
-      */
+     * This method pushes a string back onto input.
+     * <p>It is useful either as the expansion of an internal entity,
+     * or for backtracking during the parse.
+     * <p>Call pushCharArray() to do the actual work.
+     * @param s The string to push back onto input.
+     * @see #pushCharArray
+     */
     void pushString(String ename, String s) throws java.lang.Exception {
         char[] ch = s.toCharArray();
         pushCharArray(ename, ch, 0, ch.length);
     }
 
     /**
-      * Push a new internal input source.
-      * <p>This method is useful for expanding an internal entity,
-      * or for unreading a string of characters.  It creates a new
-      * readBuffer containing the characters in the array, instead
-      * of characters converted from an input byte stream.
-      * <p>I've added a couple of optimisations: don't push zero-
-      * length strings, and just push back a single character
-      * for 1-character strings; this should save some time and memory.
-      * @param ch The char array to push.
-      * @see #pushString
-      * @see #pushURL
-      * @see #readBuffer
-      * @see #sourceType
-      * @see #pushInput
-      */
+     * Push a new internal input source.
+     * <p>This method is useful for expanding an internal entity,
+     * or for unreading a string of characters.  It creates a new
+     * readBuffer containing the characters in the array, instead
+     * of characters converted from an input byte stream.
+     * <p>I've added a couple of optimisations: don't push zero-
+     * length strings, and just push back a single character
+     * for 1-character strings; this should save some time and memory.
+     * @param ch The char array to push.
+     * @see #pushString
+     * @see #pushURL
+     * @see #readBuffer
+     * @see #sourceType
+     * @see #pushInput
+     */
     void pushCharArray(String ename, char[] ch, int start, int length)
-        throws java.lang.Exception {
+            throws java.lang.Exception {
         // Push the existing status
         pushInput(ename);
         sourceType = INPUT_INTERNAL;
@@ -3428,31 +3434,31 @@ loop:
     }
 
     /**
-      * Save the current input source onto the stack.
-      * <p>This method saves all of the global variables associated with
-      * the current input source, so that they can be restored when a new
-      * input source has finished.  It also tests for entity recursion.
-      * <p>The method saves the following global variables onto a stack
-      * using a fixed-length array:
-      * <ol>
-      * <li>sourceType
-      * <li>externalEntity
-      * <li>readBuffer
-      * <li>readBufferPos
-      * <li>readBufferLength
-      * <li>line
-      * <li>encoding
-      * </ol>
-      * @param ename The name of the entity (if any) causing the new input.
-      * @see #popInput
-      * @see #sourceType
-      * @see #externalEntity
-      * @see #readBuffer
-      * @see #readBufferPos
-      * @see #readBufferLength
-      * @see #line
-      * @see #encoding
-      */
+     * Save the current input source onto the stack.
+     * <p>This method saves all of the global variables associated with
+     * the current input source, so that they can be restored when a new
+     * input source has finished.  It also tests for entity recursion.
+     * <p>The method saves the following global variables onto a stack
+     * using a fixed-length array:
+     * <ol>
+     * <li>sourceType
+     * <li>externalEntity
+     * <li>readBuffer
+     * <li>readBufferPos
+     * <li>readBufferLength
+     * <li>line
+     * <li>encoding
+     * </ol>
+     * @param ename The name of the entity (if any) causing the new input.
+     * @see #popInput
+     * @see #sourceType
+     * @see #externalEntity
+     * @see #readBuffer
+     * @see #readBufferPos
+     * @see #readBufferLength
+     * @see #line
+     * @see #encoding
+     */
     void pushInput(String ename) throws java.lang.Exception {
         Object[] input = new Object[12];
 
@@ -3496,20 +3502,20 @@ loop:
     }
 
     /**
-      * Restore a previous input source.
-      * <p>This method restores all of the global variables associated with
-      * the current input source.
-      * @exception java.io.EOFException
-      *    If there are no more entries on the input stack.
-      * @see #pushInput
-      * @see #sourceType
-      * @see #externalEntity
-      * @see #readBuffer
-      * @see #readBufferPos
-      * @see #readBufferLength
-      * @see #line
-      * @see #encoding
-      */
+     * Restore a previous input source.
+     * <p>This method restores all of the global variables associated with
+     * the current input source.
+     * @exception java.io.EOFException
+     *    If there are no more entries on the input stack.
+     * @see #pushInput
+     * @see #sourceType
+     * @see #externalEntity
+     * @see #readBuffer
+     * @see #readBufferPos
+     * @see #readBufferLength
+     * @see #line
+     * @see #encoding
+     */
     void popInput() throws java.lang.Exception {
         Object[] input;
 
@@ -3550,9 +3556,9 @@ loop:
         // is nothing else to pop.
         if (inputStack.isEmpty()) {
             throw new EOFException("XML parser input stack was empty, "
-                + "end of file or xml fragment reached. "
-                + "Perhaps there is a missing '>' "
-                + "or a comment is unterminated by '->'?");
+                    + "end of file or xml fragment reached. "
+                    + "Perhaps there is a missing '>' "
+                    + "or a comment is unterminated by '->'?");
         } else {
             input = (Object[]) inputStack.pop();
             entityStack.pop();
@@ -3573,16 +3579,16 @@ loop:
     }
 
     /**
-      * Return true if we can read the expected character.
-      * <p>Note that the character will be removed from the input stream
-      * on success, but will be put back on failure.  Do not attempt to
-      * read the character again if the method succeeds.
-      * @param delim The character that should appear next.  For a
-      *              insensitive match, you must supply this in upper-case.
-      * @return true if the character was successfully read, or false if
-      *         it was not.
-      * @see #tryRead(String)
-      */
+     * Return true if we can read the expected character.
+     * <p>Note that the character will be removed from the input stream
+     * on success, but will be put back on failure.  Do not attempt to
+     * read the character again if the method succeeds.
+     * @param delim The character that should appear next.  For a
+     *              insensitive match, you must supply this in upper-case.
+     * @return true if the character was successfully read, or false if
+     *         it was not.
+     * @see #tryRead(String)
+     */
     boolean tryRead(char delim) throws java.lang.Exception {
         char c;
 
@@ -3600,20 +3606,20 @@ loop:
     }
 
     /**
-      * Return true if we can read the expected string.
-      * <p>This is simply a convenience method.
-      * <p>Note that the string will be removed from the input stream
-      * on success, but will be put back on failure.  Do not attempt to
-      * read the string again if the method succeeds.
-      * <p>This method will push back a character rather than an
-      * array whenever possible (probably the majority of cases).
-      * <p><b>NOTE:</b> This method currently has a hard-coded limit
-      * of 100 characters for the delimiter.
-      * @param delim The string that should appear next.
-      * @return true if the string was successfully read, or false if
-      *         it was not.
-      * @see #tryRead(char)
-      */
+     * Return true if we can read the expected string.
+     * <p>This is simply a convenience method.
+     * <p>Note that the string will be removed from the input stream
+     * on success, but will be put back on failure.  Do not attempt to
+     * read the string again if the method succeeds.
+     * <p>This method will push back a character rather than an
+     * array whenever possible (probably the majority of cases).
+     * <p><b>NOTE:</b> This method currently has a hard-coded limit
+     * of 100 characters for the delimiter.
+     * @param delim The string that should appear next.
+     * @return true if the string was successfully read, or false if
+     *         it was not.
+     * @see #tryRead(char)
+     */
     boolean tryRead(String delim) throws java.lang.Exception {
         char[] ch = delim.toCharArray();
         char c;
@@ -3638,12 +3644,12 @@ loop:
     }
 
     /**
-      * Return true if we can read some whitespace.
-      * <p>This is simply a convenience method.
-      * <p>This method will push back a character rather than an
-      * array whenever possible (probably the majority of cases).
-      * @return true if whitespace was found.
-      */
+     * Return true if we can read some whitespace.
+     * <p>This is simply a convenience method.
+     * <p>This method will push back a character rather than an
+     * array whenever possible (probably the majority of cases).
+     * @return true if whitespace was found.
+     */
     boolean tryWhitespace() throws java.lang.Exception {
         char c;
         c = readCh();
@@ -3658,14 +3664,14 @@ loop:
     }
 
     /**
-      * Read all data until we find the specified string.
-      * <p>This is especially useful for scanning marked sections.
-      * <p>This is a a little inefficient right now, since it calls tryRead()
-      * for every character.
-      * @param delim The string delimiter
-      * @see #tryRead(String, boolean)
-      * @see #readCh
-      */
+     * Read all data until we find the specified string.
+     * <p>This is especially useful for scanning marked sections.
+     * <p>This is a a little inefficient right now, since it calls tryRead()
+     * for every character.
+     * @param delim The string delimiter
+     * @see #tryRead(String, boolean)
+     * @see #readCh
+     */
     void parseUntil(String delim) throws java.lang.Exception {
         char c;
         int startLine = line;
@@ -3677,7 +3683,7 @@ loop:
             }
         } catch (EOFException e) {
             error("end of input while looking for delimiter (started on line "
-                + startLine + ')', null, delim);
+                    + startLine + ')', null, delim);
         }
     }
 
@@ -3688,14 +3694,14 @@ loop:
     // '%'.
 
     /**
-      * Skip all data until we find the specified string.
-      * <p>This is especially useful for scanning comments.
-      * <p>This is a a little inefficient right now, since it calls tryRead()
-      * for every character.
-      * @param delim The string delimiter
-      * @see #tryRead(String, boolean)
-      * @see #readCh
-      */
+     * Skip all data until we find the specified string.
+     * <p>This is especially useful for scanning comments.
+     * <p>This is a a little inefficient right now, since it calls tryRead()
+     * for every character.
+     * @param delim The string delimiter
+     * @see #tryRead(String, boolean)
+     * @see #readCh
+     */
     void skipUntil(String delim) throws java.lang.Exception {
         while (!tryRead(delim)) {
             char c;
@@ -3739,16 +3745,16 @@ loop:
     }
 
     /**
-      * Read just the encoding declaration (or XML declaration) at the
-      * start of an external entity.
-      * When this method is called, we know that the declaration is
-      * present (or appears to be).  We also know that the entity is
-      * in some sort of ASCII-derived 8-bit encoding.
-      * The idea of this is to let us read what the 8-bit encoding is
-      * before we've committed to converting any more of the file; the
-      * XML or encoding declaration must be in 7-bit ASCII, so we're
-      * safe as long as we don't go past it.
-      */
+     * Read just the encoding declaration (or XML declaration) at the
+     * start of an external entity.
+     * When this method is called, we know that the declaration is
+     * present (or appears to be).  We also know that the entity is
+     * in some sort of ASCII-derived 8-bit encoding.
+     * The idea of this is to let us read what the 8-bit encoding is
+     * before we've committed to converting any more of the file; the
+     * XML or encoding declaration must be in 7-bit ASCII, so we're
+     * safe as long as we don't go past it.
+     */
     void read8bitEncodingDeclaration() throws java.lang.Exception {
         int ch;
         readBufferPos = readBufferLength = 0;
@@ -3763,7 +3769,7 @@ loop:
 
             case -1:
                 error("end of file before end of XML or encoding declaration.",
-                    null, "?>");
+                        null, "?>");
                 return;
             }
 
@@ -3778,18 +3784,18 @@ loop:
     //////////////////////////////////////////////////////////////////////
 
     /**
-      * Read a chunk of data from an external input source.
-      * <p>This is simply a front-end that fills the rawReadBuffer
-      * with bytes, then calls the appropriate encoding handler.
-      * @see #encoding
-      * @see #rawReadBuffer
-      * @see #readBuffer
-      * @see #filterCR
-      * @see #copyUtf8ReadBuffer
-      * @see #copyIso8859_1ReadBuffer
-      * @see #copyUcs_2ReadBuffer
-      * @see #copyUcs_4ReadBuffer
-      */
+     * Read a chunk of data from an external input source.
+     * <p>This is simply a front-end that fills the rawReadBuffer
+     * with bytes, then calls the appropriate encoding handler.
+     * @see #encoding
+     * @see #rawReadBuffer
+     * @see #readBuffer
+     * @see #filterCR
+     * @see #copyUtf8ReadBuffer
+     * @see #copyIso8859_1ReadBuffer
+     * @see #copyUcs_2ReadBuffer
+     * @see #copyUcs_4ReadBuffer
+     */
     void readDataChunk() throws java.lang.Exception {
         int count;
 
@@ -3874,20 +3880,19 @@ loop:
     }
 
     /**
-      * Filter carriage returns in the read buffer.
-      * <p>CRLF becomes LF; CR becomes LF.
-      * @see #readDataChunk
-      * @see #readBuffer
-      * @see #readBufferOverflow
-      */
+     * Filter carriage returns in the read buffer.
+     * <p>CRLF becomes LF; CR becomes LF.
+     * @see #readDataChunk
+     * @see #readBuffer
+     * @see #readBufferOverflow
+     */
     void filterCR() {
         int i;
         int j;
 
         readBufferOverflow = -1;
 
-loop: 
-        for (i = 0, j = 0; j < readBufferLength; i++, j++) {
+        loop: for (i = 0, j = 0; j < readBufferLength; i++, j++) {
             switch (readBuffer[j]) {
             case '\r':
 
@@ -3902,7 +3907,8 @@ loop:
                 readBuffer[i] = '\n';
                 break;
 
-            case '\n':default:
+            case '\n':
+            default:
                 readBuffer[i] = readBuffer[j];
                 break;
             }
@@ -3912,18 +3918,18 @@ loop:
     }
 
     /**
-      * Convert a buffer of UTF-8-encoded bytes into UTF-16 characters.
-      * <p>When readDataChunk() calls this method, the raw bytes are in
-      * rawReadBuffer, and the final characters will appear in
-      * readBuffer.
-      * <p>The tricky part of this is dealing with UTF-8 multi-byte
-      * sequences, but it doesn't seem to slow things down too much.
-      * @param count The number of bytes to convert.
-      * @see #readDataChunk
-      * @see #rawReadBuffer
-      * @see #readBuffer
-      * @see #getNextUtf8Byte
-      */
+     * Convert a buffer of UTF-8-encoded bytes into UTF-16 characters.
+     * <p>When readDataChunk() calls this method, the raw bytes are in
+     * rawReadBuffer, and the final characters will appear in
+     * readBuffer.
+     * <p>The tricky part of this is dealing with UTF-8 multi-byte
+     * sequences, but it doesn't seem to slow things down too much.
+     * @param count The number of bytes to convert.
+     * @see #readDataChunk
+     * @see #rawReadBuffer
+     * @see #readBuffer
+     * @see #getNextUtf8Byte
+     */
     void copyUtf8ReadBuffer(int count) throws java.lang.Exception {
         int i = 0;
         int j = readBufferPos;
@@ -3940,13 +3946,13 @@ loop:
                 readBuffer[j++] = (char) b1;
             } else if ((b1 & 0xe0) == 0xc0) {
                 // 2-byte sequence: 00000yyyyyxxxxxx = 110yyyyy 10xxxxxx
-                readBuffer[j++] = (char) (((b1 & 0x1f) << 6)
-                                | getNextUtf8Byte(i++, count));
+                readBuffer[j++] = (char) (((b1 & 0x1f) << 6) | getNextUtf8Byte(
+                        i++, count));
             } else if ((b1 & 0xf0) == 0xe0) {
                 // 3-byte sequence: zzzzyyyyyyxxxxxx = 1110zzzz 10yyyyyy 10xxxxxx
                 readBuffer[j++] = (char) (((b1 & 0x0f) << 12)
-                                | (getNextUtf8Byte(i++, count) << 6)
-                                | getNextUtf8Byte(i++, count));
+                        | (getNextUtf8Byte(i++, count) << 6) | getNextUtf8Byte(
+                        i++, count));
             } else if ((b1 & 0xf8) == 0xf0) {
                 // 4-byte sequence: 11101110wwwwzzzzyy + 110111yyyyxxxxxx
                 //     = 11110uuu 10uuzzzz 10yyyyyy 10xxxxxx
@@ -3955,9 +3961,8 @@ loop:
                 int b3 = getNextUtf8Byte(i++, count);
                 int b4 = getNextUtf8Byte(i++, count);
                 readBuffer[j++] = (char) (0xd800
-                                | ((((b1 & 0x07) << 2)
-                                | (((b2 & 0x30) >> 4) - 1)) << 6)
-                                | ((b2 & 0x0f) << 2) | ((b3 & 0x30) >> 4));
+                        | ((((b1 & 0x07) << 2) | (((b2 & 0x30) >> 4) - 1)) << 6)
+                        | ((b2 & 0x0f) << 2) | ((b3 & 0x30) >> 4));
                 readBuffer[j++] = (char) (0xdc | ((b3 & 0x0f) << 6) | b4);
 
                 // TODO: test that surrogate value is legal.
@@ -3976,15 +3981,15 @@ loop:
     }
 
     /**
-      * Return the next byte value in a UTF-8 sequence.
-      * If it is not possible to get a byte from the current
-      * entity, throw an exception.
-      * @param pos The current position in the rawReadBuffer.
-      * @param count The number of bytes in the rawReadBuffer
-      * @return The significant six bits of a non-initial byte in
-      *         a UTF-8 sequence.
-      * @exception EOFException If the sequence is incomplete.
-      */
+     * Return the next byte value in a UTF-8 sequence.
+     * If it is not possible to get a byte from the current
+     * entity, throw an exception.
+     * @param pos The current position in the rawReadBuffer.
+     * @param count The number of bytes in the rawReadBuffer
+     * @return The significant six bits of a non-initial byte in
+     *         a UTF-8 sequence.
+     * @exception EOFException If the sequence is incomplete.
+     */
     int getNextUtf8Byte(int pos, int count) throws java.lang.Exception {
         int val;
 
@@ -3997,7 +4002,7 @@ loop:
 
             if (val == -1) {
                 encodingError("unfinished multi-byte UTF-8 sequence at EOF",
-                    -1, pos);
+                        -1, pos);
             }
         }
 
@@ -4005,7 +4010,7 @@ loop:
         // start.
         if ((val & 0xc0) != 0x80) {
             encodingError("bad continuation of multi-byte UTF-8 sequence", val,
-                pos + 1);
+                    pos + 1);
         }
 
         // Return the significant bits.
@@ -4013,16 +4018,16 @@ loop:
     }
 
     /**
-      * Convert a buffer of ISO-8859-1-encoded bytes into UTF-16 characters.
-      * <p>When readDataChunk() calls this method, the raw bytes are in
-      * rawReadBuffer, and the final characters will appear in
-      * readBuffer.
-      * <p>This is a direct conversion, with no tricks.
-      * @param count The number of bytes to convert.
-      * @see #readDataChunk
-      * @see #rawReadBuffer
-      * @see #readBuffer
-      */
+     * Convert a buffer of ISO-8859-1-encoded bytes into UTF-16 characters.
+     * <p>When readDataChunk() calls this method, the raw bytes are in
+     * rawReadBuffer, and the final characters will appear in
+     * readBuffer.
+     * <p>This is a direct conversion, with no tricks.
+     * @param count The number of bytes to convert.
+     * @see #readDataChunk
+     * @see #rawReadBuffer
+     * @see #readBuffer
+     */
     void copyIso8859_1ReadBuffer(int count) {
         int i;
         int j;
@@ -4039,19 +4044,19 @@ loop:
     }
 
     /**
-      * Convert a buffer of UCS-2-encoded bytes into UTF-16 characters.
-      * <p>When readDataChunk() calls this method, the raw bytes are in
-      * rawReadBuffer, and the final characters will appear in
-      * readBuffer.
-      * @param count The number of bytes to convert.
-      * @param shift1 The number of bits to shift byte 1.
-      * @param shift2 The number of bits to shift byte 2
-      * @see #readDataChunk
-      * @see #rawReadBuffer
-      * @see #readBuffer
-      */
+     * Convert a buffer of UCS-2-encoded bytes into UTF-16 characters.
+     * <p>When readDataChunk() calls this method, the raw bytes are in
+     * rawReadBuffer, and the final characters will appear in
+     * readBuffer.
+     * @param count The number of bytes to convert.
+     * @param shift1 The number of bits to shift byte 1.
+     * @param shift2 The number of bits to shift byte 2
+     * @see #readDataChunk
+     * @see #rawReadBuffer
+     * @see #readBuffer
+     */
     void copyUcs2ReadBuffer(int count, int shift1, int shift2)
-        throws java.lang.Exception {
+            throws java.lang.Exception {
         int j = readBufferPos;
 
         if ((count > 0) && ((count % 2) != 0)) {
@@ -4059,8 +4064,7 @@ loop:
         }
 
         for (int i = 0; i < count; i += 2) {
-            readBuffer[j++] = (char) (((rawReadBuffer[i] & 0xff) << shift1)
-                            | ((rawReadBuffer[i + 1] & 0xff) << shift2));
+            readBuffer[j++] = (char) (((rawReadBuffer[i] & 0xff) << shift1) | ((rawReadBuffer[i + 1] & 0xff) << shift2));
 
             if (readBuffer[j - 1] == '\r') {
                 sawCR = true;
@@ -4071,36 +4075,36 @@ loop:
     }
 
     /**
-      * Convert a buffer of UCS-4-encoded bytes into UTF-16 characters.
-      * <p>When readDataChunk() calls this method, the raw bytes are in
-      * rawReadBuffer, and the final characters will appear in
-      * readBuffer.
-      * <p>Java has 16-bit chars, but this routine will attempt to use
-      * surrogates to encoding values between 0x00010000 and 0x000fffff.
-      * @param count The number of bytes to convert.
-      * @param shift1 The number of bits to shift byte 1.
-      * @param shift2 The number of bits to shift byte 2
-      * @param shift3 The number of bits to shift byte 2
-      * @param shift4 The number of bits to shift byte 2
-      * @see #readDataChunk
-      * @see #rawReadBuffer
-      * @see #readBuffer
-      */
+     * Convert a buffer of UCS-4-encoded bytes into UTF-16 characters.
+     * <p>When readDataChunk() calls this method, the raw bytes are in
+     * rawReadBuffer, and the final characters will appear in
+     * readBuffer.
+     * <p>Java has 16-bit chars, but this routine will attempt to use
+     * surrogates to encoding values between 0x00010000 and 0x000fffff.
+     * @param count The number of bytes to convert.
+     * @param shift1 The number of bits to shift byte 1.
+     * @param shift2 The number of bits to shift byte 2
+     * @param shift3 The number of bits to shift byte 2
+     * @param shift4 The number of bits to shift byte 2
+     * @see #readDataChunk
+     * @see #rawReadBuffer
+     * @see #readBuffer
+     */
     void copyUcs4ReadBuffer(int count, int shift1, int shift2, int shift3,
-        int shift4) throws java.lang.Exception {
+            int shift4) throws java.lang.Exception {
         int j = readBufferPos;
         int value;
 
         if ((count > 0) && ((count % 4) != 0)) {
-            encodingError("number of bytes in UCS-4 encoding not divisible by 4",
-                -1, count);
+            encodingError(
+                    "number of bytes in UCS-4 encoding not divisible by 4", -1,
+                    count);
         }
 
         for (int i = 0; i < count; i += 4) {
             value = (((rawReadBuffer[i] & 0xff) << shift1)
-                            | ((rawReadBuffer[i + 1] & 0xff) << shift2)
-                            | ((rawReadBuffer[i + 2] & 0xff) << shift3)
-                            | ((rawReadBuffer[i + 3] & 0xff) << shift4));
+                    | ((rawReadBuffer[i + 1] & 0xff) << shift2)
+                    | ((rawReadBuffer[i + 2] & 0xff) << shift3) | ((rawReadBuffer[i + 3] & 0xff) << shift4));
 
             if (value < 0x0000ffff) {
                 readBuffer[j++] = (char) value;
@@ -4120,15 +4124,15 @@ loop:
     }
 
     /**
-      * Report a character encoding error.
-      */
+     * Report a character encoding error.
+     */
     void encodingError(String message, int value, int offset)
-        throws java.lang.Exception {
+            throws java.lang.Exception {
         String uri;
 
         if (value >= 0) {
             message = message + " (byte value: 0x" + Integer.toHexString(value)
-                + ')';
+                    + ')';
         }
 
         if (externalEntity != null) {
@@ -4145,8 +4149,8 @@ loop:
     //////////////////////////////////////////////////////////////////////
 
     /**
-      * Re-initialize the variables for each parse.
-      */
+     * Re-initialize the variables for each parse.
+     */
     void initializeVariables() {
         // No errors; first lineb
         errorCount = 0;
@@ -4185,9 +4189,9 @@ loop:
     }
 
     /**
-      * Clean up after the parse to allow some garbage collection.
-      * Leave around anything that might be useful for queries.
-      */
+     * Clean up after the parse to allow some garbage collection.
+     * Leave around anything that might be useful for queries.
+     */
     void cleanupVariables() {
         errorCount = -1;
         line = -1;
@@ -4211,13 +4215,21 @@ loop:
     // I/O information.
     //
     private Reader reader; // current reader
+
     private InputStream is; // current input stream
+
     private int line; // current line number
+
     private int column; // current column number
+
     private int sourceType; // type of input source
+
     private Stack inputStack; // stack of input sources
+
     private URLConnection externalEntity; // current external entity
+
     private int encoding; // current character encoding.
+
     private int currentByteCount; // how many bytes read from current source.
 
     //
@@ -4229,9 +4241,13 @@ loop:
     // Buffers for decoded but unparsed character input.
     //
     private final static int READ_BUFFER_MAX = 16384;
+
     private char[] readBuffer;
+
     private int readBufferPos;
+
     private int readBufferLength;
+
     private int readBufferOverflow; // overflow character from last data chunk.
 
     //
@@ -4248,35 +4264,45 @@ loop:
     // Buffer for parsed character data.
     //
     private static int DATA_BUFFER_INITIAL = 4096;
+
     private char[] dataBuffer;
+
     private int dataBufferPos;
 
     //
     // Buffer for parsed names.
     //
     private static int NAME_BUFFER_INITIAL = 1024;
+
     private char[] nameBuffer;
+
     private int nameBufferPos;
 
     //
     // Hashtables for DTD information on elements, entities, and notations.
     //
     private Hashtable elementInfo;
+
     private Hashtable entityInfo;
+
     private Hashtable notationInfo;
 
     //
     // Element type currently in force.
     //
     private String currentElement;
+
     private int currentElementContent;
 
     //
     // Base external identifiers for resolution.
     //
     private String basePublicId;
+
     private String baseURI;
+
     private Reader baseReader;
+
     private InputStream baseInputStream;
 
     //
@@ -4288,12 +4314,14 @@ loop:
     // Symbol table, for internalising names.
     //
     private Object[] symbolTable;
+
     private final static int SYMBOL_TABLE_LENGTH = 1087;
 
     //
     // Hash table of attributes found in current start tag.
     //
     private String[] tagAttributes;
+
     private int tagAttributePos;
 
     //

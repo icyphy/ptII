@@ -1,30 +1,30 @@
 /* An actor that displays input data in a text area on the screen.
 
-@Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.gui;
 
 import java.awt.Color;
@@ -61,42 +61,41 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Display
 
 /**
-   Display the values of the tokens arriving on the input channels in a
-   text area on the screen.  Each input token is written on a
-   separate line.  The input type can be of any type.
-   If the input happens to be a StringToken,
-   then the surrounding quotation marks are stripped before printing
-   the value of the token.  Thus, string-valued tokens can be used to
-   generate arbitrary textual output, at one token per line.
-   Tokens are read from the input only in
-   the postfire() method, to allow them to settle in domains where they
-   converge to a fixed point.
-   <p>
-   This actor has a <i>suppressBlankLines</i> parameter, whose default value
-   is false. If this parameter is configured to be true, this actor does not
-   put a blank line in the display.
-   <p>
-   Note that because of complexities in Swing, if you resize the display
-   window, then, unlike the plotters, the new size will not be persistent.
-   That is, if you save the model and then re-open it, the new size is
-   forgotten.  To control the size, you should set the <i>rowsDisplayed</i>
-   and <i>columnsDisplayed</i> parameters.
-   <p>
-   Note that this actor internally uses JTextArea, a Java Swing object
-   that is known to consume large amounts of memory. It is not advisable
-   to use this actor to log large output streams.
+ Display the values of the tokens arriving on the input channels in a
+ text area on the screen.  Each input token is written on a
+ separate line.  The input type can be of any type.
+ If the input happens to be a StringToken,
+ then the surrounding quotation marks are stripped before printing
+ the value of the token.  Thus, string-valued tokens can be used to
+ generate arbitrary textual output, at one token per line.
+ Tokens are read from the input only in
+ the postfire() method, to allow them to settle in domains where they
+ converge to a fixed point.
+ <p>
+ This actor has a <i>suppressBlankLines</i> parameter, whose default value
+ is false. If this parameter is configured to be true, this actor does not
+ put a blank line in the display.
+ <p>
+ Note that because of complexities in Swing, if you resize the display
+ window, then, unlike the plotters, the new size will not be persistent.
+ That is, if you save the model and then re-open it, the new size is
+ forgotten.  To control the size, you should set the <i>rowsDisplayed</i>
+ and <i>columnsDisplayed</i> parameters.
+ <p>
+ Note that this actor internally uses JTextArea, a Java Swing object
+ that is known to consume large amounts of memory. It is not advisable
+ to use this actor to log large output streams.
 
-   @author  Yuhong Xiong, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (yuhong)
-   @Pt.AcceptedRating Yellow (vogel)
-*/
+ @author  Yuhong Xiong, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (yuhong)
+ @Pt.AcceptedRating Yellow (vogel)
+ */
 public class Display extends Sink implements Placeable {
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
@@ -128,11 +127,10 @@ public class Display extends Sink implements Placeable {
         _windowProperties = new WindowPropertiesAttribute(this,
                 "_windowProperties");
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-15\" "
-                + "width=\"40\" height=\"30\" " + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-15\" y=\"-10\" " + "width=\"30\" height=\"20\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-20\" y=\"-15\" " + "width=\"40\" height=\"30\" "
+                + "style=\"fill:lightGrey\"/>\n" + "<rect x=\"-15\" y=\"-10\" "
+                + "width=\"30\" height=\"20\" " + "style=\"fill:white\"/>\n"
                 + "<line x1=\"-13\" y1=\"-6\" x2=\"-4\" y2=\"-6\" "
                 + "style=\"stroke:grey\"/>\n"
                 + "<line x1=\"-13\" y1=\"-2\" x2=\"0\" y2=\"-2\" "
@@ -201,7 +199,8 @@ public class Display extends Sink implements Placeable {
                 }
             }
         } else if (attribute == columnsDisplayed) {
-            int numColumns = ((IntToken) columnsDisplayed.getToken()).intValue();
+            int numColumns = ((IntToken) columnsDisplayed.getToken())
+                    .intValue();
 
             if (numColumns <= 0) {
                 throw new IllegalActionException(this,
@@ -221,7 +220,7 @@ public class Display extends Sink implements Placeable {
             }
         } else if (attribute == suppressBlankLines) {
             _suppressBlankLines = ((BooleanToken) suppressBlankLines.getToken())
-                .booleanValue();
+                    .booleanValue();
         }
     }
 
@@ -266,20 +265,20 @@ public class Display extends Sink implements Placeable {
             if (containerEffigy == null) {
                 throw new IllegalActionException(this,
                         "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                                + toplevel().getFullName());
             }
 
             try {
-                TextEffigy textEffigy = TextEffigy.newTextEffigy(containerEffigy,
-                        "");
+                TextEffigy textEffigy = TextEffigy.newTextEffigy(
+                        containerEffigy, "");
 
                 // The default identifier is "Unnamed", which is no good for
                 // two reasons: Wrong title bar label, and it causes a save-as
                 // to destroy the original window.
                 textEffigy.identifier.setExpression(getFullName());
 
-                DisplayWindowTableau tableau = new DisplayWindowTableau(textEffigy,
-                        "tableau");
+                DisplayWindowTableau tableau = new DisplayWindowTableau(
+                        textEffigy, "tableau");
                 _frame = tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
@@ -291,7 +290,8 @@ public class Display extends Sink implements Placeable {
             int numRows = ((IntToken) rowsDisplayed.getToken()).intValue();
             textArea.setRows(numRows);
 
-            int numColumns = ((IntToken) columnsDisplayed.getToken()).intValue();
+            int numColumns = ((IntToken) columnsDisplayed.getToken())
+                    .intValue();
             textArea.setColumns(numColumns);
             _windowProperties.setProperties(_frame);
             _frame.pack();
@@ -308,10 +308,10 @@ public class Display extends Sink implements Placeable {
         }
 
         /*
-          int tab = ((IntToken)tabSize.getToken()).intValue();
-          // NOTE: As of jdk 1.3beta the following is ignored.
-          textArea.setTabSize(tab);
-        */
+         int tab = ((IntToken)tabSize.getToken()).intValue();
+         // NOTE: As of jdk 1.3beta the following is ignored.
+         textArea.setTabSize(tab);
+         */
     }
 
     /** Specify the container in which the data should be displayed.
@@ -365,7 +365,8 @@ public class Display extends Sink implements Placeable {
             int numRows = ((IntToken) rowsDisplayed.getToken()).intValue();
             textArea.setRows(numRows);
 
-            int numColumns = ((IntToken) columnsDisplayed.getToken()).intValue();
+            int numColumns = ((IntToken) columnsDisplayed.getToken())
+                    .intValue();
             textArea.setColumns(numColumns);
 
             // Note that in an applet, you may see problems where
@@ -506,18 +507,18 @@ public class Display extends Sink implements Placeable {
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    if (textArea != null) {
-                        if ((_container != null) && (_scrollPane != null)) {
-                            _container.remove(_scrollPane);
-                            _container.invalidate();
-                            _container.repaint();
-                        } else if (_frame != null) {
-                            _frame.dispose();
-                        }
+            public void run() {
+                if (textArea != null) {
+                    if ((_container != null) && (_scrollPane != null)) {
+                        _container.remove(_scrollPane);
+                        _container.invalidate();
+                        _container.repaint();
+                    } else if (_frame != null) {
+                        _frame.dispose();
                     }
                 }
-            });
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////

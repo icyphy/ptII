@@ -34,7 +34,6 @@ import soot.Timers;
 import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.FlowAnalysis;
 
-
 /**
  *   Abstract class that provides the fixed point iteration functionality
  *   required by all ForwardFlowAnalyses.
@@ -54,12 +53,12 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis {
         // CHANGED
         final HashMap indexMap = new HashMap();
         TreeSet changedUnitsSet = new TreeSet(new Comparator() {
-                public int compare(Object o1, Object o2) {
-                    Integer i1 = (Integer) indexMap.get(o1);
-                    Integer i2 = (Integer) indexMap.get(o2);
-                    return i1.compareTo(i2);
-                }
-            });
+            public int compare(Object o1, Object o2) {
+                Integer i1 = (Integer) indexMap.get(o1);
+                Integer i2 = (Integer) indexMap.get(o2);
+                return i1.compareTo(i2);
+            }
+        });
 
         int numNodes = graph.size();
         int numComputations = 0;

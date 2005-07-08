@@ -1,30 +1,30 @@
 /* A ComponentEntity is a vertex in a clustered graph.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.kernel;
 
 import java.lang.ref.WeakReference;
@@ -39,32 +39,31 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ComponentEntity
 
 /**
-   A ComponentEntity is a component in a CompositeEntity.
-   It might itself be composite, but in this base class it is assumed to
-   be atomic (meaning that it cannot contain components).
-   <p>
-   Derived classes may further constrain the container to be
-   a subclass of CompositeEntity.  To do this, they should override
-   the protected method _checkContainer() to throw an exception.
-   <p>
-   A ComponentEntity can contain instances of ComponentPort.  Derived
-   classes may further constrain to a subclass of ComponentPort.
-   To do this, they should override the public method newPort() to create
-   a port of the appropriate subclass, and the protected method _addPort()
-   to throw an exception if its argument is a port that is not of the
-   appropriate subclass.
+ A ComponentEntity is a component in a CompositeEntity.
+ It might itself be composite, but in this base class it is assumed to
+ be atomic (meaning that it cannot contain components).
+ <p>
+ Derived classes may further constrain the container to be
+ a subclass of CompositeEntity.  To do this, they should override
+ the protected method _checkContainer() to throw an exception.
+ <p>
+ A ComponentEntity can contain instances of ComponentPort.  Derived
+ classes may further constrain to a subclass of ComponentPort.
+ To do this, they should override the public method newPort() to create
+ a port of the appropriate subclass, and the protected method _addPort()
+ to throw an exception if its argument is a port that is not of the
+ appropriate subclass.
 
-   @author John S. Davis II, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @author John S. Davis II, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class ComponentEntity extends Entity {
     /** Construct an entity in the default workspace with an empty string
      *  The object is added to the workspace directory.
@@ -174,7 +173,8 @@ public class ComponentEntity extends Entity {
         if ((container != null) && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
                     "Cannot instantiate into a container that is not an "
-                    + "instance of CompositeEntity: " + container.getFullName());
+                            + "instance of CompositeEntity: "
+                            + container.getFullName());
         }
 
         ComponentEntity clone = (ComponentEntity) super.instantiate(container,
@@ -409,8 +409,8 @@ public class ComponentEntity extends Entity {
      *  @exception NameDuplicationException If this entity already has a
      *   port with the specified name.
      */
-    public Port newPort(String name)
-            throws IllegalActionException, NameDuplicationException {
+    public Port newPort(String name) throws IllegalActionException,
+            NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -565,8 +565,8 @@ public class ComponentEntity extends Entity {
      *  @exception NameDuplicationException If there already is an entity
      *   in the container with the same name.
      */
-    public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -574,7 +574,8 @@ public class ComponentEntity extends Entity {
         CompositeEntity container = (CompositeEntity) getContainer();
 
         if ((container != null)) {
-            ComponentEntity another = (ComponentEntity) container.getEntity(name);
+            ComponentEntity another = (ComponentEntity) container
+                    .getEntity(name);
 
             if ((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
@@ -606,8 +607,8 @@ public class ComponentEntity extends Entity {
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the entity.
      */
-    protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+    protected void _addPort(Port port) throws IllegalActionException,
+            NameDuplicationException {
         if (!(port instanceof ComponentPort)) {
             throw new IllegalActionException(this, port,
                     "Incompatible port class for this entity.");
@@ -656,8 +657,8 @@ public class ComponentEntity extends Entity {
         // the base class, particularly when pasting
         // an instance or subclass into a new context.
         while ((aboveLevel < levelsToSearch)
-                && ((candidate == null)
-                        || !candidate.isClassDefinition()) && (context != null)) {
+                && ((candidate == null) || !candidate.isClassDefinition())
+                && (context != null)) {
             context = (NamedObj) context.getContainer();
 
             if (context instanceof CompositeEntity) {
@@ -691,7 +692,7 @@ public class ComponentEntity extends Entity {
         if ((container != null) && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
                     "Component entity can only be contained by "
-                    + "a CompositeEntity");
+                            + "a CompositeEntity");
         }
 
         // NOTE: If we don't enforce this, then undo could fail,
@@ -726,8 +727,7 @@ public class ComponentEntity extends Entity {
             }
 
             if (hasDeferrals) {
-                throw new IllegalActionException(this,
-                        "Cannot delete because "
+                throw new IllegalActionException(this, "Cannot delete because "
                         + "there are instances and/or subclasses:\n"
                         + names.toString());
             }
@@ -749,19 +749,20 @@ public class ComponentEntity extends Entity {
     protected NamedObj _getContainedObject(NamedObj container,
             String relativeName) throws IllegalActionException {
         if (!(container instanceof CompositeEntity)) {
-            throw new IllegalActionException(this,
-                    "Expected " + container.getFullName()
+            throw new IllegalActionException(this, "Expected "
+                    + container.getFullName()
                     + " to be an instance of ptolemy.kernel.CompositeEntity,"
                     + " but it is " + container.getClass().getName());
         }
 
-        ComponentEntity candidate = ((CompositeEntity) container).getEntity(relativeName);
+        ComponentEntity candidate = ((CompositeEntity) container)
+                .getEntity(relativeName);
 
         if ((candidate != null) && !getClass().isInstance(candidate)) {
-            throw new IllegalActionException(this,
-                    "Expected " + candidate.getFullName()
-                    + " to be an instance of " + getClass().getName()
-                    + ", but it is " + candidate.getClass().getName());
+            throw new IllegalActionException(this, "Expected "
+                    + candidate.getFullName() + " to be an instance of "
+                    + getClass().getName() + ", but it is "
+                    + candidate.getClass().getName());
         }
 
         return candidate;
@@ -780,7 +781,7 @@ public class ComponentEntity extends Entity {
             throws IllegalActionException {
         try {
             ComponentEntity newObject = (ComponentEntity) super
-                ._propagateExistence(container);
+                    ._propagateExistence(container);
             newObject.setContainer((CompositeEntity) container);
             return newObject;
         } catch (NameDuplicationException e) {
@@ -791,8 +792,8 @@ public class ComponentEntity extends Entity {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _addIcon() {
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
                 + "height=\"40\" style=\"fill:white\"/>\n"
                 + "<polygon points=\"-20,-10 20,0 -20,10\" "
                 + "style=\"fill:blue\"/>\n" + "</svg>\n");

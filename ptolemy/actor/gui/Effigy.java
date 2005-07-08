@@ -1,29 +1,29 @@
 /* A named object that represents a ptolemy model.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -46,58 +46,57 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Effigy
 
 /**
-   An effigy represents model metadata, and is contained by the
-   model directory or by another effigy. The effigy, for example,
-   keeps track of where the model originated (from a URI or file)
-   and whether the model has been modified since the URI or file was
-   read. In design automation, such information is often called
-   "metadata." When we began to design this class, we called it
-   ModelModel, because it was a model of a Ptolemy II model.
-   However, this name seemed awkward, so we changed it to Effigy.
-   We also considered the name Proxy for the class. We rejected that
-   name because of the common use of the word "proxy" in distributed
-   object-oriented models.
-   <p>
-   The Effigy class extends CompositeEntity, so an instance of Effigy
-   can contain entities.  By convention, an effigy contains all
-   open instances of Tableau associated with the model. It also
-   contains a string attribute named "identifier" with a value that
-   uniquely identifies the model. A typical choice (which depends on
-   the configuration) is the canonical URI for a MoML file that
-   describes the model.  In the case of an effigy contained by another,
-   a typical choice is the URI of the parent effigy, a pound sign "#",
-   and a name.
-   <p>
-   An effigy may contain other effigies.  The master effigy
-   in such a containment hierarchy is typically associated with a
-   URI or file.
-   Contained effigies are associated with the same file, and represent
-   structured data within the top-level representation in the file.
-   The masterEffigy() method returns that master effigy.
-   The topEffigy() method in this base class returns the same
-   master effigy. However, in derived classes, a master effigy
-   may be contained by another effigy, so the top effigy is not
-   the same as the master effigy. The top effigy is directly contained
-   by the ModelDirectory in the Configuration.
-   <p>
-   NOTE: It might seem more natural for the identifier to match the name
-   of the effigy rather than recording the identifier in a string attribute.
-   But in Ptolemy II, an entity name cannot have periods in it, and a URI
-   typically does have periods in it.
+ An effigy represents model metadata, and is contained by the
+ model directory or by another effigy. The effigy, for example,
+ keeps track of where the model originated (from a URI or file)
+ and whether the model has been modified since the URI or file was
+ read. In design automation, such information is often called
+ "metadata." When we began to design this class, we called it
+ ModelModel, because it was a model of a Ptolemy II model.
+ However, this name seemed awkward, so we changed it to Effigy.
+ We also considered the name Proxy for the class. We rejected that
+ name because of the common use of the word "proxy" in distributed
+ object-oriented models.
+ <p>
+ The Effigy class extends CompositeEntity, so an instance of Effigy
+ can contain entities.  By convention, an effigy contains all
+ open instances of Tableau associated with the model. It also
+ contains a string attribute named "identifier" with a value that
+ uniquely identifies the model. A typical choice (which depends on
+ the configuration) is the canonical URI for a MoML file that
+ describes the model.  In the case of an effigy contained by another,
+ a typical choice is the URI of the parent effigy, a pound sign "#",
+ and a name.
+ <p>
+ An effigy may contain other effigies.  The master effigy
+ in such a containment hierarchy is typically associated with a
+ URI or file.
+ Contained effigies are associated with the same file, and represent
+ structured data within the top-level representation in the file.
+ The masterEffigy() method returns that master effigy.
+ The topEffigy() method in this base class returns the same
+ master effigy. However, in derived classes, a master effigy
+ may be contained by another effigy, so the top effigy is not
+ the same as the master effigy. The top effigy is directly contained
+ by the ModelDirectory in the Configuration.
+ <p>
+ NOTE: It might seem more natural for the identifier to match the name
+ of the effigy rather than recording the identifier in a string attribute.
+ But in Ptolemy II, an entity name cannot have periods in it, and a URI
+ typically does have periods in it.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (celaine)
-   @see ModelDirectory
-   @see Tableau
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (celaine)
+ @see ModelDirectory
+ @see Tableau
+ */
 public class Effigy extends CompositeEntity {
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
@@ -513,7 +512,7 @@ public class Effigy extends CompositeEntity {
                 && !(container instanceof Effigy)) {
             throw new IllegalActionException(this, container,
                     "The container can only be set to an "
-                    + "instance of ModelDirectory or Effigy.");
+                            + "instance of ModelDirectory or Effigy.");
         }
     }
 

@@ -1,30 +1,30 @@
 /* Huffman code base class.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.comm;
 
 import java.util.LinkedList;
@@ -43,24 +43,23 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanBasic
 
 /**
-   Given a probability distribution, generate the Huffman code book.
-   The probability distribution is given by the <i>pmf</i> parameter.
-   The corresponding alphabet is given by the <i>alphabet</i> parameter.
-   The code book is in a format of an array of strings, each string
-   consists of '0' and '1's. The code book is sent to the
-   <i>huffmanCodeBook</i> output port.
+ Given a probability distribution, generate the Huffman code book.
+ The probability distribution is given by the <i>pmf</i> parameter.
+ The corresponding alphabet is given by the <i>alphabet</i> parameter.
+ The code book is in a format of an array of strings, each string
+ consists of '0' and '1's. The code book is sent to the
+ <i>huffmanCodeBook</i> output port.
 
-   @author Ye Zhou
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (zhouye)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Ye Zhou
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Red (zhouye)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class HuffmanBasic extends Transformer {
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
@@ -210,7 +209,7 @@ public class HuffmanBasic extends Transformer {
         if (_pmf.length != alphabetArrayToken.length()) {
             throw new IllegalActionException(this,
                     "uncoded alphabet and pmf are required to be arrays"
-                    + "with same length.");
+                            + "with same length.");
         }
 
         Token[] alphabetTokens = new Token[_pmf.length];

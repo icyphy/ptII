@@ -1,29 +1,29 @@
 /* Top-level window for Ptolemy models with a menubar and status bar.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.awt.Image;
@@ -58,34 +58,33 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TableauFrame
 
 /**
-   This is a top-level window associated with a tableau that has
-   a menubar and status bar. Derived classes should add components
-   to the content pane using a line like:
-   <pre>
-   getContentPane().add(component, BorderLayout.CENTER);
-   </pre>
-   The base class provides generic features for menubars and toolbars,
-   and this class specializes the base class for Ptolemy II.
-   <p>
-   A help menu is provided with two entries, About and Help. In both
-   cases, an HTML file is opened.  The configuration can specify which
-   HTML file to open by containing an instance of FileParameter with
-   name "_about" or "_help".  The value of this attribute is a file
-   name (which may begin with the keywords $CLASSPATH or $PTII to
-   specify that the file is located relative to the CLASSPATH or to
-   the Ptolemy II installation directory).
+ This is a top-level window associated with a tableau that has
+ a menubar and status bar. Derived classes should add components
+ to the content pane using a line like:
+ <pre>
+ getContentPane().add(component, BorderLayout.CENTER);
+ </pre>
+ The base class provides generic features for menubars and toolbars,
+ and this class specializes the base class for Ptolemy II.
+ <p>
+ A help menu is provided with two entries, About and Help. In both
+ cases, an HTML file is opened.  The configuration can specify which
+ HTML file to open by containing an instance of FileParameter with
+ name "_about" or "_help".  The value of this attribute is a file
+ name (which may begin with the keywords $CLASSPATH or $PTII to
+ specify that the file is located relative to the CLASSPATH or to
+ the Ptolemy II installation directory).
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (celaine)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (celaine)
+ */
 public class TableauFrame extends Top {
     /** Construct an empty top-level frame.
      *  After constructing this, it is necessary
@@ -258,7 +257,7 @@ public class TableauFrame extends Top {
             try {
                 Configuration configuration = getConfiguration();
                 FileParameter aboutAttribute = (FileParameter) configuration
-                    .getAttribute("_about", FileParameter.class);
+                        .getAttribute("_about", FileParameter.class);
                 URL doc;
 
                 if (aboutAttribute != null) {
@@ -276,8 +275,8 @@ public class TableauFrame extends Top {
 
                 if (effigy == null) {
                     // No main welcome window.  Create one.
-                    EffigyFactory effigyFactory = new HTMLEffigyFactory(directory
-                            .workspace());
+                    EffigyFactory effigyFactory = new HTMLEffigyFactory(
+                            directory.workspace());
                     effigy = effigyFactory.createEffigy(directory, (URL) null,
                             doc);
 
@@ -289,7 +288,7 @@ public class TableauFrame extends Top {
                     try {
                         // Create a tableau if there is a tableau factory.
                         TableauFactory factory = (TableauFactory) getConfiguration()
-                            .getAttribute("tableauFactory");
+                                .getAttribute("tableauFactory");
 
                         if (factory != null) {
                             Tableau tableau = factory.createTableau(effigy);
@@ -336,17 +335,18 @@ public class TableauFrame extends Top {
             // is capable of creating blank effigies.
             final Configuration configuration = getConfiguration();
             EffigyFactory effigyFactory = (EffigyFactory) configuration
-                .getEntity("effigyFactory");
+                    .getEntity("effigyFactory");
             boolean canCreateBlank = false;
             final ModelDirectory directory = getDirectory();
 
             if ((effigyFactory != null) && (directory != null)) {
-                List factoryList = effigyFactory.entityList(EffigyFactory.class);
+                List factoryList = effigyFactory
+                        .entityList(EffigyFactory.class);
                 Iterator factories = factoryList.iterator();
 
                 while (factories.hasNext()) {
                     final EffigyFactory factory = (EffigyFactory) factories
-                        .next();
+                            .next();
 
                     if (!factory.canCreateBlankEffigy()) {
                         continue;
@@ -356,19 +356,19 @@ public class TableauFrame extends Top {
 
                     String name = factory.getName();
                     ActionListener menuListener = new ActionListener() {
-                            public void actionPerformed(ActionEvent event) {
-                                Effigy effigy = null;
+                        public void actionPerformed(ActionEvent event) {
+                            Effigy effigy = null;
 
-                                try {
-                                    effigy = factory.createEffigy(directory);
-                                } catch (Exception ex) {
-                                    MessageHandler.error("Could not create new effigy",
-                                            ex);
-                                }
-
-                                configuration.createPrimaryTableau(effigy);
+                            try {
+                                effigy = factory.createEffigy(directory);
+                            } catch (Exception ex) {
+                                MessageHandler.error(
+                                        "Could not create new effigy", ex);
                             }
-                        };
+
+                            configuration.createPrimaryTableau(effigy);
+                        }
+                    };
 
                     JMenuItem item = new JMenuItem(name);
                     item.setActionCommand(name);
@@ -399,12 +399,12 @@ public class TableauFrame extends Top {
                     _menubar.add(_viewMenu);
 
                     ViewMenuListener viewMenuListener = new ViewMenuListener();
-                    Iterator factories = _factoryContainer.attributeList(TableauFactory.class)
-                        .iterator();
+                    Iterator factories = _factoryContainer.attributeList(
+                            TableauFactory.class).iterator();
 
                     while (factories.hasNext()) {
                         TableauFactory factory = (TableauFactory) factories
-                            .next();
+                                .next();
                         String name = factory.getName();
                         JMenuItem item = new JMenuItem(name);
 
@@ -546,7 +546,7 @@ public class TableauFrame extends Top {
             if (model != null) {
                 if (previousOpen instanceof PtolemyEffigy) {
                     NamedObj possibleContainer = ((PtolemyEffigy) previousOpen)
-                        .getModel();
+                            .getModel();
 
                     if ((possibleContainer != null)
                             && possibleContainer.deepContains(model)) {
@@ -571,7 +571,7 @@ public class TableauFrame extends Top {
                 previousOpen.showTableaux();
 
                 String confirm = "Unsaved changes in " + file.getName()
-                    + ". OK to discard changes?";
+                        + ". OK to discard changes?";
 
                 // Show a MODAL dialog
                 int selected = JOptionPane.showOptionDialog(this, confirm,
@@ -675,7 +675,8 @@ public class TableauFrame extends Top {
             // Note that PtolemyIISmallIcon.gif is also in doc/img.
             // We place a duplicate copy here to make it easy to ship
             // jar files that contain all the appropriate images.
-            URL url = getClass().getResource("/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
+            URL url = getClass().getResource(
+                    "/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
 
             if (url == null) {
                 return null;
@@ -720,7 +721,7 @@ public class TableauFrame extends Top {
         try {
             Configuration configuration = getConfiguration();
             FileParameter helpAttribute = (FileParameter) configuration
-                .getAttribute("_help", FileParameter.class);
+                    .getAttribute("_help", FileParameter.class);
             URL doc;
 
             if (helpAttribute != null) {
@@ -754,12 +755,12 @@ public class TableauFrame extends Top {
         Nameable configuration = _tableau.toplevel();
 
         if (configuration instanceof Configuration) {
-            ((Configuration) configuration).openModel(url, url,
-                    url.toExternalForm());
+            ((Configuration) configuration).openModel(url, url, url
+                    .toExternalForm());
         } else {
             throw new InternalErrorException(
                     "Expected top-level to be a Configuration: "
-                    + _tableau.toplevel().getFullName());
+                            + _tableau.toplevel().getFullName());
         }
     }
 
@@ -810,8 +811,8 @@ public class TableauFrame extends Top {
         JFileChooser fileDialog = _saveAsFileDialog();
 
         if (_initialSaveAsFileName != null) {
-            fileDialog.setSelectedFile(new File(
-                                               fileDialog.getCurrentDirectory(), _initialSaveAsFileName));
+            fileDialog.setSelectedFile(new File(fileDialog
+                    .getCurrentDirectory(), _initialSaveAsFileName));
         }
 
         // Show the dialog.
@@ -921,15 +922,15 @@ public class TableauFrame extends Top {
                 if ((children != null) && (children.size() > 0)) {
                     StringBuffer confirm = new StringBuffer(
                             "Warning: This model defines a class, "
-                            + "and there are open models with instances\n"
-                            + "or subclasses the modified version of "
-                            + "this model:\n");
+                                    + "and there are open models with instances\n"
+                                    + "or subclasses the modified version of "
+                                    + "this model:\n");
                     Iterator instances = children.iterator();
                     int length = confirm.length();
 
                     while (instances.hasNext()) {
                         WeakReference reference = (WeakReference) instances
-                            .next();
+                                .next();
                         Instantiable instance = (Instantiable) reference.get();
 
                         if (instance != null) {
@@ -1069,13 +1070,14 @@ public class TableauFrame extends Top {
                 JMenuItem target = (JMenuItem) e.getSource();
                 String actionCommand = target.getActionCommand();
                 TableauFactory factory = (TableauFactory) _factoryContainer
-                    .getAttribute(actionCommand);
+                        .getAttribute(actionCommand);
 
                 if (factory != null) {
                     Effigy tableauContainer = (Effigy) _tableau.getContainer();
 
                     try {
-                        Tableau tableau = factory.createTableau(tableauContainer);
+                        Tableau tableau = factory
+                                .createTableau(tableauContainer);
                         tableau.show();
                     } catch (Throwable throwable) {
                         // Copernicus might throw a java.lang.Error if

@@ -1,32 +1,32 @@
 /*
-  @Copyright (c) 2003-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
 
-*/
+ */
 package ptolemy.caltrop.ddi.util;
 
 import java.util.ArrayList;
@@ -43,19 +43,18 @@ import caltrop.interpreter.ast.Expression;
 import caltrop.interpreter.ast.InputPattern;
 import caltrop.interpreter.environment.Environment;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DataMapEnvironment
 
 /**
-   A read-only Environment that wraps a Map of data read from input ports.
+ A read-only Environment that wraps a Map of data read from input ports.
 
-   @author J&#246;rn W. Janneck
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author J&#246;rn W. Janneck
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class DataMapEnvironment implements Environment {
     // FIXME: assumes repeat expressions can be evaluated in the
     // environment passed in to the constructor.
@@ -67,7 +66,8 @@ public class DataMapEnvironment implements Environment {
             // try to find it. if we don't find it,
             // throw an UnboundPortVarException.
             String portName = pvi.getPortName();
-            List data = (List) _dataFromInputPorts.get(new ChannelID(portName, 0));
+            List data = (List) _dataFromInputPorts.get(new ChannelID(portName,
+                    0));
 
             if (data == null) {
                 throw new UnboundPortVarException(varName + "unbound.");
@@ -77,12 +77,12 @@ public class DataMapEnvironment implements Environment {
                 // if we have read the entire list, return it. otherwise,
                 // throw an exception.
                 if (data.size() > ((pvi._repeatVal * pvi.getLength())
-                            - (pvi.getLength()) - pvi.getIndex())) {
+                        - (pvi.getLength()) - pvi.getIndex())) {
                     // we've read enough tokens to construct the entire list.
                     List result = new ArrayList();
 
-                    for (int i = pvi.getIndex(); i < data.size();
-                         i = i + pvi.getLength()) {
+                    for (int i = pvi.getIndex(); i < data.size(); i = i
+                            + pvi.getLength()) {
                         result.add(data.get(i));
                     }
 
@@ -163,10 +163,15 @@ public class DataMapEnvironment implements Environment {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private InputPattern[] _inputPatterns;
+
     private Environment _parentEnv;
+
     private Map _dataFromInputPorts;
+
     private Context _context;
+
     private ExprEvaluator _eval;
+
     private Map _varNameToVarInfo; //String varName -> PortVarInfo
 
     ///////////////////////////////////////////////////////////////////
@@ -193,9 +198,9 @@ public class DataMapEnvironment implements Environment {
 
             for (int j = 0; j < variables.length; j++) {
                 String variable = variables[j];
-                result.put(variable,
-                        new PortVarInfo(inputPattern.getPortname(), j,
-                                variables.length, isList, repeatVal));
+                result.put(variable, new PortVarInfo(
+                        inputPattern.getPortname(), j, variables.length,
+                        isList, repeatVal));
             }
         }
 
@@ -212,9 +217,13 @@ public class DataMapEnvironment implements Environment {
 
     private static class PortVarInfo {
         private String _portName;
+
         private int _index;
+
         private int _length;
+
         private boolean _isList;
+
         private int _repeatVal;
 
         public PortVarInfo(String portName, int index, int length,

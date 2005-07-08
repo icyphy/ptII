@@ -1,29 +1,29 @@
 /* A panel containing controls for a Ptolemy II model.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.awt.Color;
@@ -55,25 +55,24 @@ import ptolemy.gui.CloseListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ModelPane
 
 /**
 
-ModelPane is a panel for interacting with an executing Ptolemy II model.
-It has optional controls for setting top-level and director parameters,
-a set of buttons for controlling the execution, and a panel for displaying
-results of the execution.  Any entity in the model that implements
-the Placeable interface is placed in the display region.
+ ModelPane is a panel for interacting with an executing Ptolemy II model.
+ It has optional controls for setting top-level and director parameters,
+ a set of buttons for controlling the execution, and a panel for displaying
+ results of the execution.  Any entity in the model that implements
+ the Placeable interface is placed in the display region.
 
-@see Placeable
-@author Edward A. Lee, Elaine Cheong
-@version $Id$
-@since Ptolemy II 0.4
-@Pt.ProposedRating Green (eal)
-@Pt.AcceptedRating Yellow (janneck)
-*/
+ @see Placeable
+ @author Edward A. Lee, Elaine Cheong
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (janneck)
+ */
 public class ModelPane extends JPanel implements CloseListener {
     /** Construct a panel for interacting with the specified Ptolemy II model.
      *  This uses the default layout, which is horizontal, and shows
@@ -115,8 +114,9 @@ public class ModelPane extends JPanel implements CloseListener {
             // Add run controls.
             _controlPanel = new JPanel();
             _controlPanel.setLayout(new BoxLayout(_controlPanel,
-                                            BoxLayout.Y_AXIS));
-            _controlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+                    BoxLayout.Y_AXIS));
+            _controlPanel
+                    .setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
             // Add a listener that requests the focus when we click
             // in the pane. This allows keyboard bindings to work.
@@ -127,12 +127,12 @@ public class ModelPane extends JPanel implements CloseListener {
             if ((show & BUTTONS) != 0) {
                 _buttonPanel = new JPanel();
                 _buttonPanel.setLayout(new BoxLayout(_buttonPanel,
-                                               BoxLayout.X_AXIS));
+                        BoxLayout.X_AXIS));
                 _buttonPanel.addMouseListener(clickListener);
 
                 // Padding top and bottom...
                 _buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0,
-                                               10, 0));
+                        10, 0));
                 _buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
 
                 _goButton = new JButton("Go");
@@ -141,39 +141,39 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_goButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _goButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent event) {
-                            startRun();
-                        }
-                    });
+                    public void actionPerformed(ActionEvent event) {
+                        startRun();
+                    }
+                });
 
                 _pauseButton = new JButton("Pause");
                 _pauseButton.setToolTipText("Pause execution of the model");
                 _buttonPanel.add(_pauseButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _pauseButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent event) {
-                            pauseRun();
-                        }
-                    });
+                    public void actionPerformed(ActionEvent event) {
+                        pauseRun();
+                    }
+                });
 
                 _resumeButton = new JButton("Resume");
                 _resumeButton.setToolTipText("Resume executing the model");
                 _buttonPanel.add(_resumeButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _resumeButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent event) {
-                            resumeRun();
-                        }
-                    });
+                    public void actionPerformed(ActionEvent event) {
+                        resumeRun();
+                    }
+                });
 
                 _stopButton = new JButton("Stop");
                 _stopButton.setToolTipText("Stop executing the model");
                 _buttonPanel.add(_stopButton);
                 _stopButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent event) {
-                            stopRun();
-                        }
-                    });
+                    public void actionPerformed(ActionEvent event) {
+                        stopRun();
+                    }
+                });
                 _controlPanel.add(_buttonPanel);
                 _buttonPanel.setBackground(null);
             }
@@ -316,8 +316,8 @@ public class ModelPane extends JPanel implements CloseListener {
                     _controlPanel.add(_parameterQuery);
 
                     if ((_show & DIRECTOR_PARAMETERS) != 0) {
-                        _controlPanel.add(Box.createRigidArea(
-                                                  new Dimension(0, 15)));
+                        _controlPanel.add(Box.createRigidArea(new Dimension(0,
+                                15)));
                     }
                 }
             }
@@ -327,7 +327,8 @@ public class ModelPane extends JPanel implements CloseListener {
                 Director director = _model.getDirector();
 
                 if (director != null) {
-                    List dirParameterList = director.attributeList(Parameter.class);
+                    List dirParameterList = director
+                            .attributeList(Parameter.class);
 
                     if (dirParameterList.size() > 0) {
                         JLabel pTitle = new JLabel("Director parameters:");
@@ -335,8 +336,8 @@ public class ModelPane extends JPanel implements CloseListener {
                         // Use a dark blue for the text color.
                         pTitle.setForeground(new Color(0, 0, 128));
                         _controlPanel.add(pTitle);
-                        _controlPanel.add(Box.createRigidArea(
-                                                  new Dimension(0, 8)));
+                        _controlPanel.add(Box.createRigidArea(new Dimension(0,
+                                8)));
                         _directorQuery = new Configurer(director);
 
                         if (_layout == HORIZONTAL) {
@@ -367,10 +368,10 @@ public class ModelPane extends JPanel implements CloseListener {
 
                 if (directorSize.width > modelSize.width) {
                     _parameterQuery.setPreferredSize(new Dimension(
-                                                             directorSize.width, modelSize.height));
+                            directorSize.width, modelSize.height));
                 } else {
                     _directorQuery.setPreferredSize(new Dimension(
-                                                            modelSize.width, directorSize.height));
+                            modelSize.width, directorSize.height));
                 }
             }
 
@@ -626,7 +627,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 break;
 
             default:
-                // None
+            // None
             }
         }
 
@@ -643,16 +644,20 @@ public class ModelPane extends JPanel implements CloseListener {
                 break;
 
             default:
-                // None
+            // None
             }
         }
 
         private boolean _control = false;
+
         private boolean _shift = false;
+
         private String _helpString = "Key bindings in button panel:\n"
-        + "  Control-G: Start a run.\n" + "  Control-H: Display help.\n"
-        + "  Control-M: Export MoML to standard out.\n"
-        + "  Control-P: Pause a run.\n" + "  Control-R: Resume a run.\n"
-        + "  Control-S: Stop a run.\n" + "  Control-?: Display help.\n";
+                + "  Control-G: Start a run.\n"
+                + "  Control-H: Display help.\n"
+                + "  Control-M: Export MoML to standard out.\n"
+                + "  Control-P: Pause a run.\n"
+                + "  Control-R: Resume a run.\n" + "  Control-S: Stop a run.\n"
+                + "  Control-?: Display help.\n";
     }
 }

@@ -1,31 +1,31 @@
 /* An actor that writes to a PNG file.
 
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.jai;
 
 import java.io.File;
@@ -45,28 +45,27 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.media.jai.codec.PNGEncodeParam;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// JAIPNGWriter
 
 /**
-   Write a javax.media.jai.RenderedOp to a specified PNG file.
+ Write a javax.media.jai.RenderedOp to a specified PNG file.
 
-   <p>The file is specified by the <i>fileName</i> attribute
-   using any form acceptable to FileParameter.
+ <p>The file is specified by the <i>fileName</i> attribute
+ using any form acceptable to FileParameter.
 
-   <p>If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
-   then this actor will overwrite the specified file if it exists without
-   asking.  If <i>true</i> (the default), then if the file exists, then
-   this actor will ask for confirmation before overwriting.
+ <p>If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
+ then this actor will overwrite the specified file if it exists without
+ asking.  If <i>true</i> (the default), then if the file exists, then
+ this actor will ask for confirmation before overwriting.
 
-   @see ptolemy.data.expr.FileParameter
-   @author James Yeh, Christopher Hylands Brooks
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @see ptolemy.data.expr.FileParameter
+ @author James Yeh, Christopher Hylands Brooks
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class JAIPNGWriter extends JAIWriter {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -98,8 +97,8 @@ public class JAIPNGWriter extends JAIWriter {
         setBackground.setTypeEquals(BaseType.BOOLEAN);
         setBackground.setToken(BooleanToken.FALSE);
 
-        background = new Parameter(this, "background",
-                new ArrayToken(_initialArray));
+        background = new Parameter(this, "background", new ArrayToken(
+                _initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -154,7 +153,7 @@ public class JAIPNGWriter extends JAIWriter {
         // in postfire().
         if (attribute == adam7Interlacing) {
             _adam7Interlacing = ((BooleanToken) adam7Interlacing.getToken())
-                .booleanValue();
+                    .booleanValue();
         } else if (attribute == setGamma) {
             _setGamma = ((BooleanToken) setGamma.getToken()).booleanValue();
         } else if (attribute == gamma) {
@@ -163,7 +162,7 @@ public class JAIPNGWriter extends JAIWriter {
             _bitDepth = ((IntToken) bitDepth.getToken()).intValue();
         } else if (attribute == setBackground) {
             _setBackground = ((BooleanToken) setBackground.getToken())
-                .booleanValue();
+                    .booleanValue();
         } else if (attribute == background) {
             Token[] data = ((ArrayToken) background.getToken()).arrayValue();
 
@@ -196,7 +195,8 @@ public class JAIPNGWriter extends JAIWriter {
 
             _imageEncoderName = "PNG";
 
-            PNGEncodeParam parameters = PNGEncodeParam.getDefaultEncodeParam(_image);
+            PNGEncodeParam parameters = PNGEncodeParam
+                    .getDefaultEncodeParam(_image);
 
             if (parameters instanceof PNGEncodeParam.Gray) {
                 PNGEncodeParam.Gray parametersGray = new PNGEncodeParam.Gray();
@@ -266,13 +266,15 @@ public class JAIPNGWriter extends JAIWriter {
 
     /** The FileOutputStream for file writing. */
     private FileOutputStream _stream;
+
     private boolean _setGamma;
+
     private double _gamma;
+
     private boolean _setBackground;
-    private IntToken[] _initialArray = {
-        new IntToken(0),
-        new IntToken(0),
-        new IntToken(0)
-    };
+
+    private IntToken[] _initialArray = { new IntToken(0), new IntToken(0),
+            new IntToken(0) };
+
     private int[] _valueArray;
 }

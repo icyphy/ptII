@@ -1,25 +1,25 @@
 /*
-  Copyright (c) 2003-2005 THALES.
-  All rights reserved.
+ Copyright (c) 2003-2005 THALES.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-  SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
-  OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
-  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+ SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+ OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-  THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-  BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-  UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package thales.actor.gui;
 
 import java.awt.BorderLayout;
@@ -57,28 +57,31 @@ import thales.vergil.SingleWindowApplication;
 import thales.vergil.navigable.NavigableActorGraphFrame;
 import thales.vergil.navigable.NavigationPTree;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SingleWindowHTMLViewer
 
 /**
-   Main application Frame. Contains all the
-   panels, menus and needed widget for the whole Design Environment.
+ Main application Frame. Contains all the
+ panels, menus and needed widget for the whole Design Environment.
 
-   Soci&eacute;t&eacute; : Thales Research and technology</p>
-   @author J&eacute;r&ocirc;me Blanc, Soci&eacute;t&eacute; : Thales Research and technology, 01 sept. 2003
-   @version $Id$
-   @since Ptolemy II 3.1
-   @Pt.ProposedRating Yellow (jerome.blanc)
-   @Pt.AcceptedRating Red (cxh)
-*/
-public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener {
+ Soci&eacute;t&eacute; : Thales Research and technology</p>
+ @author J&eacute;r&ocirc;me Blanc, Soci&eacute;t&eacute; : Thales Research and technology, 01 sept. 2003
+ @version $Id$
+ @since Ptolemy II 3.1
+ @Pt.ProposedRating Yellow (jerome.blanc)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class SingleWindowHTMLViewer extends HTMLViewer implements
+        ChangeListener {
     /**
      * Main panel
      */
     protected JPanel startPanel = new JPanel();
+
     protected JTabbedPane _viewsTabbedPane = new JTabbedPane();
+
     private JMenuBar _originalMenuBar = null;
+
     private Configuration _configuration = null;
 
     public SingleWindowHTMLViewer() {
@@ -106,34 +109,34 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener
 
         _viewsTabbedPane.addChangeListener(this);
         _viewsTabbedPane.addMouseListener(new MouseAdapter() {
-                /* (non-Javadoc)
-                 * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
-                 */
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getModifiers() == InputEvent.BUTTON3_MASK) {
-                        JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
-                        int index = tabbedPane.getSelectedIndex();
+            /* (non-Javadoc)
+             * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
+             */
+            public void mouseClicked(MouseEvent e) {
+                if (e.getModifiers() == InputEvent.BUTTON3_MASK) {
+                    JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
+                    int index = tabbedPane.getSelectedIndex();
 
-                        if (index > 0) {
-                            final Component theClickedOne = tabbedPane
+                    if (index > 0) {
+                        final Component theClickedOne = tabbedPane
                                 .getComponentAt(index);
-                            JPopupMenu popUpMenu = new JPopupMenu();
-                            JMenuItem close = new JMenuItem("Close");
-                            close.addActionListener(new ActionListener() {
-                                    /* (non-Javadoc)
-                                     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-                                     */
-                                    public void actionPerformed(ActionEvent e) {
-                                        closeTabbedPane(theClickedOne);
-                                    }
-                                });
-                            popUpMenu.add(close);
-                            popUpMenu.show((Component) e.getSource(), e.getX(),
-                                    e.getY());
-                        }
+                        JPopupMenu popUpMenu = new JPopupMenu();
+                        JMenuItem close = new JMenuItem("Close");
+                        close.addActionListener(new ActionListener() {
+                            /* (non-Javadoc)
+                             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+                             */
+                            public void actionPerformed(ActionEvent e) {
+                                closeTabbedPane(theClickedOne);
+                            }
+                        });
+                        popUpMenu.add(close);
+                        popUpMenu.show((Component) e.getSource(), e.getX(), e
+                                .getY());
                     }
                 }
-            });
+            }
+        });
 
         buildStartPanel(_scroller);
     }
@@ -170,26 +173,26 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener
 
         frame.setName(tableauName);
         frame.addWindowListener(new WindowAdapter() {
-                /* (non-Javadoc)
-                 * @see java.awt.event.WindowAdapter#windowClosed(java.awt.event.WindowEvent)
-                 */
-                public void windowClosed(WindowEvent e) {
-                    removeEmptyTabs();
-                }
+            /* (non-Javadoc)
+             * @see java.awt.event.WindowAdapter#windowClosed(java.awt.event.WindowEvent)
+             */
+            public void windowClosed(WindowEvent e) {
+                removeEmptyTabs();
+            }
 
-                /* (non-Javadoc)
-                 * @see java.awt.event.WindowAdapter#windowActivated(java.awt.event.WindowEvent)
-                 */
-                public void windowActivated(WindowEvent e) {
-                    JFrame frame = (JFrame) e.getSource();
-                    frame.hide();
+            /* (non-Javadoc)
+             * @see java.awt.event.WindowAdapter#windowActivated(java.awt.event.WindowEvent)
+             */
+            public void windowActivated(WindowEvent e) {
+                JFrame frame = (JFrame) e.getSource();
+                frame.hide();
 
-                    try {
-                        selectTab(frame.getName());
-                    } catch (IndexOutOfBoundsException ex) {
-                    }
+                try {
+                    selectTab(frame.getName());
+                } catch (IndexOutOfBoundsException ex) {
                 }
-            });
+            }
+        });
 
         Container container = frame.getContentPane();
         container.setSize(_viewsTabbedPane.getSize());
@@ -287,8 +290,8 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener
         Tableau answer = null;
 
         if (tableauFullName != null) {
-            tableauFullName = tableauFullName.substring(15,
-                    tableauFullName.length());
+            tableauFullName = tableauFullName.substring(15, tableauFullName
+                    .length());
 
             Entity tableau = _configuration.getEntity(tableauFullName);
 

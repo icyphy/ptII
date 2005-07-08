@@ -1,34 +1,34 @@
 /*
-  A class that extracts ordered lists of method declarations
-  with an ordering convention that facilitates translation
-  of methods into function pointers (e.g., for C code generation).
+ A class that extracts ordered lists of method declarations
+ with an ordering convention that facilitates translation
+ of methods into function pointers (e.g., for C code generation).
 
-  Copyright (c) 2001-2005 The University of Maryland.
-  All rights reserved.
+ Copyright (c) 2001-2005 The University of Maryland.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -38,61 +38,60 @@ import java.util.LinkedList;
 import soot.SootClass;
 import soot.SootMethod;
 
-
 /** A class that extracts ordered lists of method declarations
-    with an ordering convention that facilitates translation
-    of methods into function pointers (e.g., for C code generation).
-    <p>
-    Specifically, the class extracts the class initializer method
-    (if present); the list of constructors;
-    the list of all new public
-    and protected methods that are defined
-    for a given class (i.e., new method definitions, excluding definitions
-    that override methods in superclasses); the list of
-    inherited methods; and the list of
-    private methods.  For sub-classes, overridden methods in the
-    inherited methods list are replaced with the overriding definitions.
-    Thus, the inherited methods list is the list of 'active' definitions
-    in the current scope whose declarations originated in superclasses.
-    <p>
-    For example, consider the following class/method combinations:
-    <p>
-    class C1(base class), public methods m1, m2, m3; private method p1
-    <br>
-    class C2(extends C1), public methods m4, m5(overrides m2)
-    <br>
-    class C3 (extends C2), public methods m6, m7; private methods p1, p2
-    <p>
-    Then the inherited methods list generated for C3 is
-    <p>
-    m1, m5, m3, m4;
-    <p>
-    the private list generated for C3 is
-    <p>
-    p1, p2;
-    <p>
-    the inherited methods list generated for C2 is
-    <p>
-    m1, m5, m3;
-    <p>
-    and the new methods list generated for C2 is
-    <p>
-    m4.
-    <p>
-    If function pointers are declared according to these orderings
-    in the translated type definitions associated with C1, C2, and C3,
-    then virtual functions can be implemented correctly.
-    <p>
-    The lists constructed by this class are lists of method declarations.
-    That is, each element is of type SootMethod.
+ with an ordering convention that facilitates translation
+ of methods into function pointers (e.g., for C code generation).
+ <p>
+ Specifically, the class extracts the class initializer method
+ (if present); the list of constructors;
+ the list of all new public
+ and protected methods that are defined
+ for a given class (i.e., new method definitions, excluding definitions
+ that override methods in superclasses); the list of
+ inherited methods; and the list of
+ private methods.  For sub-classes, overridden methods in the
+ inherited methods list are replaced with the overriding definitions.
+ Thus, the inherited methods list is the list of 'active' definitions
+ in the current scope whose declarations originated in superclasses.
+ <p>
+ For example, consider the following class/method combinations:
+ <p>
+ class C1(base class), public methods m1, m2, m3; private method p1
+ <br>
+ class C2(extends C1), public methods m4, m5(overrides m2)
+ <br>
+ class C3 (extends C2), public methods m6, m7; private methods p1, p2
+ <p>
+ Then the inherited methods list generated for C3 is
+ <p>
+ m1, m5, m3, m4;
+ <p>
+ the private list generated for C3 is
+ <p>
+ p1, p2;
+ <p>
+ the inherited methods list generated for C2 is
+ <p>
+ m1, m5, m3;
+ <p>
+ and the new methods list generated for C2 is
+ <p>
+ m4.
+ <p>
+ If function pointers are declared according to these orderings
+ in the translated type definitions associated with C1, C2, and C3,
+ then virtual functions can be implemented correctly.
+ <p>
+ The lists constructed by this class are lists of method declarations.
+ That is, each element is of type SootMethod.
 
-    @author Shuvra S. Bhattacharyya
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (ssb)
-    @Pt.AcceptedRating Red (ssb)
+ @author Shuvra S. Bhattacharyya
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (ssb)
+ @Pt.AcceptedRating Red (ssb)
 
-*/
+ */
 public class MethodListGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -201,9 +200,11 @@ public class MethodListGenerator {
                     } else if (previousEntry != method) {
                         throw new RuntimeException(
                                 "More than one class initializer "
-                                + "method found for " + source.getName() + ":\n"
-                                + previousEntry.getSubSignature() + ", and "
-                                + method.getSubSignature() + ".\n");
+                                        + "method found for "
+                                        + source.getName() + ":\n"
+                                        + previousEntry.getSubSignature()
+                                        + ", and " + method.getSubSignature()
+                                        + ".\n");
                     }
                 } else if (name.indexOf("init") != -1) {
                     // (Non-static) class constructor.
@@ -212,8 +213,8 @@ public class MethodListGenerator {
                     // Unrecognized method with name that contains '<'
                     throw new RuntimeException(
                             "Unknown type of special method: "
-                            + method.getSubSignature() + " in class "
-                            + source.getName());
+                                    + method.getSubSignature() + " in class "
+                                    + source.getName());
                 }
             } else {
                 if (method.isPrivate()) {
@@ -227,8 +228,8 @@ public class MethodListGenerator {
                         SootMethod inheritedMethod = (SootMethod) (inheritedMethods
                                 .next());
 
-                        if (method.getSubSignature().equals(inheritedMethod
-                                    .getSubSignature())) {
+                        if (method.getSubSignature().equals(
+                                inheritedMethod.getSubSignature())) {
                             found = true;
                         } else {
                             inheritedMethodIndex++;
@@ -258,36 +259,36 @@ public class MethodListGenerator {
         // First we create a list of the subSignatures of all inherited
         // methods.
         /*
-          HashSet subSignatures = new HashSet();
-          Iterator inheritedMethods = (Iterator)inheritedList.listIterator();
-          while (inheritedMethods.hasNext()) {
-          SootMethod inheritedMethod = (SootMethod)inheritedMethods.next();
-          subSignatures.add(inheritedMethod.getSubSignature());
-          }
-          // Iterate over all the interfaces this class implements.
-          // FIXME: There must be a faster implementation than a
-          // triple-nested loop.
-          // FIXME: Methods end up duplicated. Need to take care of that.
-          Iterator interfaces = source.getInterfaces().iterator();
-          while (interfaces.hasNext()) {
-          SootClass thisInterface = (SootClass)interfaces.next();
+         HashSet subSignatures = new HashSet();
+         Iterator inheritedMethods = (Iterator)inheritedList.listIterator();
+         while (inheritedMethods.hasNext()) {
+         SootMethod inheritedMethod = (SootMethod)inheritedMethods.next();
+         subSignatures.add(inheritedMethod.getSubSignature());
+         }
+         // Iterate over all the interfaces this class implements.
+         // FIXME: There must be a faster implementation than a
+         // triple-nested loop.
+         // FIXME: Methods end up duplicated. Need to take care of that.
+         Iterator interfaces = source.getInterfaces().iterator();
+         while (interfaces.hasNext()) {
+         SootClass thisInterface = (SootClass)interfaces.next();
 
-          // Iterate over each method in each interface.
-          Iterator interfaceMethods = thisInterface.getMethods().iterator();
-          while (interfaceMethods.hasNext()) {
-          SootMethod thisMethod = (SootMethod)interfaceMethods.next();
-          // Prevent the method from being listed as "inherited" if
-          // its declared by this class itself, or if its
-          // subSignature is already present.
-          String thisSubsignature = thisMethod.getSubSignature();
-          if (!source.declaresMethod(thisSubsignature)
-          && !subSignatures.contains(thisSubsignature)) {
-          inheritedList.addLast(thisMethod);
-          subSignatures.add(thisSubsignature);
-          }
-          }
-          }
-        */
+         // Iterate over each method in each interface.
+         Iterator interfaceMethods = thisInterface.getMethods().iterator();
+         while (interfaceMethods.hasNext()) {
+         SootMethod thisMethod = (SootMethod)interfaceMethods.next();
+         // Prevent the method from being listed as "inherited" if
+         // its declared by this class itself, or if its
+         // subSignature is already present.
+         String thisSubsignature = thisMethod.getSubSignature();
+         if (!source.declaresMethod(thisSubsignature)
+         && !subSignatures.contains(thisSubsignature)) {
+         inheritedList.addLast(thisMethod);
+         subSignatures.add(thisSubsignature);
+         }
+         }
+         }
+         */
         _constructorListMap.put(source, constructorList);
         _inheritedListMap.put(source, inheritedList);
         _newListMap.put(source, newList);

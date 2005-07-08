@@ -1,30 +1,30 @@
 /* Send and receive bytes via the serial port.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.io.comm;
 
 import java.io.IOException;
@@ -54,86 +54,85 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SerialComm
 
 /**
-   Send and receive bytes via the serial port.  The serial port and
-   baud rate are specified by parameters.
-   <p>
-   This actor requires that the Java comm API be installed.
-   The comm API comes from http://java.sun.com/products/javacomm/
-   To install the comm API on a Windows machine:
-   <ul>
-   <li> place the win32com.dll in $JDK\jre\bin directory.
-   <li> make sure the win32com.dll is executable.
-   <li> Place the comm.jar in $JDK\jre\lib\ext.
-   <li> Place the javax.comm.properties in $JDK\jre\lib .
-   </ul>
-   where $JDK is the location of your Java development kit.
+ Send and receive bytes via the serial port.  The serial port and
+ baud rate are specified by parameters.
+ <p>
+ This actor requires that the Java comm API be installed.
+ The comm API comes from http://java.sun.com/products/javacomm/
+ To install the comm API on a Windows machine:
+ <ul>
+ <li> place the win32com.dll in $JDK\jre\bin directory.
+ <li> make sure the win32com.dll is executable.
+ <li> Place the comm.jar in $JDK\jre\lib\ext.
+ <li> Place the javax.comm.properties in $JDK\jre\lib .
+ </ul>
+ where $JDK is the location of your Java development kit.
 
-   <p>This actor can be used in most domains, but the parameters must
-   be chosen carefully to match the domain semantics.  This actor sets
-   up a listener to the serial port, and when input data appears on the
-   serial port, it calls fireAtCurrentTime() on the director.  This
-   behavior is useful in the DE domain, for example (although you will
-   likely have to set the <i>stopWhenQueueIsEmpty</i> parameter of the
-   director false).
+ <p>This actor can be used in most domains, but the parameters must
+ be chosen carefully to match the domain semantics.  This actor sets
+ up a listener to the serial port, and when input data appears on the
+ serial port, it calls fireAtCurrentTime() on the director.  This
+ behavior is useful in the DE domain, for example (although you will
+ likely have to set the <i>stopWhenQueueIsEmpty</i> parameter of the
+ director false).
 
-   <p> Some domains, however, such as SDF, ignore the fireAtCurrentTime()
-   call.  Such domains, will typically fire this actor when its outputs
-   are needed. Consequently, for use in such domains, you will likely
-   want to set the <i>blocking</i> parameter of this actor to true.
-   When this parameter is true, the fire() method first reads data on
-   its input port (if any) and writes it to the serial port, and then
-   blocks until sufficient input data are available at the serial port.
-   It then reads that data from the serial port and packages it as
-   a byte array to produce on the output of this actor.
+ <p> Some domains, however, such as SDF, ignore the fireAtCurrentTime()
+ call.  Such domains, will typically fire this actor when its outputs
+ are needed. Consequently, for use in such domains, you will likely
+ want to set the <i>blocking</i> parameter of this actor to true.
+ When this parameter is true, the fire() method first reads data on
+ its input port (if any) and writes it to the serial port, and then
+ blocks until sufficient input data are available at the serial port.
+ It then reads that data from the serial port and packages it as
+ a byte array to produce on the output of this actor.
 
-   <p>The inputs and outputs of this actor are unsigned byte arrays.
-   The <i>minimumOutputSize</i> parameter specifies the minimum number of
-   bytes that are produced on the output in each firing.  The
-   <i>maximumOutputSize</i> parameter specifies the maximum number
-   of bytes that are produced on the output on each firing. If these
-   two numbers are equal, then when a firing produces data, it will
-   always produce the same amount of data.  Otherwise, the amount
-   of data produced is nondeterministic.
+ <p>The inputs and outputs of this actor are unsigned byte arrays.
+ The <i>minimumOutputSize</i> parameter specifies the minimum number of
+ bytes that are produced on the output in each firing.  The
+ <i>maximumOutputSize</i> parameter specifies the maximum number
+ of bytes that are produced on the output on each firing. If these
+ two numbers are equal, then when a firing produces data, it will
+ always produce the same amount of data.  Otherwise, the amount
+ of data produced is nondeterministic.
 
-   <p>The <i>discardOldData</i> parameter, if true, indicates
-   that the fire() method may discard bytes.  In particular, if
-   there are more than <i>maximumOutputSize</i> bytes available
-   on the serial port, then all but the most recent <i>maximumOutputSize</i>
-   will be discarded.
+ <p>The <i>discardOldData</i> parameter, if true, indicates
+ that the fire() method may discard bytes.  In particular, if
+ there are more than <i>maximumOutputSize</i> bytes available
+ on the serial port, then all but the most recent <i>maximumOutputSize</i>
+ will be discarded.
 
-   <p>For example, if you wish for this actor to produce only the
-   most recent byte read on the serial port each time it fires,
-   set <i>discardOldData</i> to true, <i>blocking</i> to true,
-   and both <i>minimumOutputSize</i> and <i>maximumOutputSize</i>
-   to 1.
+ <p>For example, if you wish for this actor to produce only the
+ most recent byte read on the serial port each time it fires,
+ set <i>discardOldData</i> to true, <i>blocking</i> to true,
+ and both <i>minimumOutputSize</i> and <i>maximumOutputSize</i>
+ to 1.
 
-   <p> If after firing there are additional data available on the
-   input port, then the fire() method will call fireAtCurrentTime()
-   on the director before returning.
+ <p> If after firing there are additional data available on the
+ input port, then the fire() method will call fireAtCurrentTime()
+ on the director before returning.
 
-   <p> FIXME: This actor has some key limitations.
-   <ul>
-   <li> It currently works only under Windows.
-   <li> It is designed under the (poor) assumption that there will
-   be only one instance of the actor present.  It should use static
-   data structures to ensure that if there are multiple instances,
-   then all instances see all serial port input data.
-   </ul>
+ <p> FIXME: This actor has some key limitations.
+ <ul>
+ <li> It currently works only under Windows.
+ <li> It is designed under the (poor) assumption that there will
+ be only one instance of the actor present.  It should use static
+ data structures to ensure that if there are multiple instances,
+ then all instances see all serial port input data.
+ </ul>
 
-   @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
-   (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating red (winthrop)
-   @Pt.AcceptedRating red (winthrop)
-*/
-public class SerialComm extends TypedAtomicActor
-    implements SerialPortEventListener {
+ @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
+ (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating red (winthrop)
+ @Pt.AcceptedRating red (winthrop)
+ */
+public class SerialComm extends TypedAtomicActor implements
+        SerialPortEventListener {
     /** Construct a SerialComm actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -162,7 +161,7 @@ public class SerialComm extends TypedAtomicActor
 
         while (ports.hasMoreElements()) {
             CommPortIdentifier identifier = (CommPortIdentifier) ports
-                .nextElement();
+                    .nextElement();
 
             if (identifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                 String value = identifier.getName();
@@ -286,25 +285,25 @@ public class SerialComm extends TypedAtomicActor
             // new rate.
         } else if (attribute == minimumOutputSize) {
             _minimumOutputSize = ((IntToken) minimumOutputSize.getToken())
-                .intValue();
+                    .intValue();
 
             if (_minimumOutputSize < 1) {
                 throw new IllegalActionException(this,
                         "minimumOutputSize is required "
-                        + "to be strictly positive.");
+                                + "to be strictly positive.");
             }
         } else if (attribute == maximumOutputSize) {
             _maximumOutputSize = ((IntToken) maximumOutputSize.getToken())
-                .intValue();
+                    .intValue();
 
             if (_maximumOutputSize < 1) {
                 throw new IllegalActionException(this,
                         "maximumOutputSize is required "
-                        + "to be strictly positive.");
+                                + "to be strictly positive.");
             }
         } else if (attribute == discardOldData) {
             _discardOldData = ((BooleanToken) discardOldData.getToken())
-                .booleanValue();
+                    .booleanValue();
         } else if (attribute == blocking) {
             _blocking = ((BooleanToken) blocking.getToken()).booleanValue();
         } else {
@@ -345,14 +344,13 @@ public class SerialComm extends TypedAtomicActor
                 int inputLength = dataArrayToken.length();
 
                 if (_debugging) {
-                    _debug(
-                            "Writing bytes from the input port to the serial port: "
+                    _debug("Writing bytes from the input port to the serial port: "
                             + inputLength);
                 }
 
                 for (int j = 0; j < inputLength; j++) {
                     UnsignedByteToken dataToken = (UnsignedByteToken) dataArrayToken
-                        .getElement(j);
+                            .getElement(j);
                     out.write(dataToken.byteValue());
                 }
 
@@ -380,8 +378,7 @@ public class SerialComm extends TypedAtomicActor
                     bytesAvailable = in.available();
 
                     if (_debugging) {
-                        _debug(
-                                "Number of input bytes available on the serial port: "
+                        _debug("Number of input bytes available on the serial port: "
                                 + bytesAvailable);
                     }
                 } catch (InterruptedException ex) {
@@ -433,8 +430,7 @@ public class SerialComm extends TypedAtomicActor
 
                 if (available >= _minimumOutputSize) {
                     if (_debugging) {
-                        _debug(
-                                "Calling fireAtCurrentTime() to deal with additional bytes: "
+                        _debug("Calling fireAtCurrentTime() to deal with additional bytes: "
                                 + available);
                     }
 
@@ -461,7 +457,8 @@ public class SerialComm extends TypedAtomicActor
 
         try {
             String serialPortNameValue = serialPortName.stringValue();
-            CommPortIdentifier portID = CommPortIdentifier.getPortIdentifier(serialPortNameValue);
+            CommPortIdentifier portID = CommPortIdentifier
+                    .getPortIdentifier(serialPortNameValue);
             _serialPort = (SerialPort) portID.open("Ptolemy", 2000);
 
             // The 2000 above is 2000mS to open the port, otherwise time out.
@@ -510,7 +507,7 @@ public class SerialComm extends TypedAtomicActor
             // This will only occur if the model is not running.
             throw new KernelRuntimeException(this, null, ex,
                     "Failure calling fireAtCurrentTime() "
-                    + "from the event listener.");
+                            + "from the event listener.");
         }
     }
 

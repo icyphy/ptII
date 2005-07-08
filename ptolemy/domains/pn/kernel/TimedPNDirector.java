@@ -1,31 +1,31 @@
 /* Governs the execution of a CompositeActor with timed Kahn process
-   network semantics.
+ network semantics.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.pn.kernel;
 
 import ptolemy.actor.Actor;
@@ -40,69 +40,68 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TimedPNDirector
 
 /**
-   A TimedPNDirector governs the execution of a CompositeActor with
-   Kahn-MacQueen process networks (PN) semantics extended by introduction of a
-   notion of global time.
-   <p>
-   The thread that calls the various execution methods (initialize, prefire, fire
-   and postfire) on the director is referred to as the <i>directing thread</i>.
-   This directing thread might be the main thread responsible for the execution
-   of the entire simulation or might be the thread created by the executive
-   director of the containing composite actor.
-   <p>
-   In the PN domain, the director creates a thread (an instance of
-   ProcessThread), representing a Kahn process, for each actor in the model.
-   The threads are created in initialize() and started in the prefire() method
-   of the ProcessDirector. A process is considered <i>active</i> from its
-   creation until its termination. An active process can block when trying to
-   read from a channel (read-blocked), when trying to write to a channel
-   (write-blocked), or when waiting for time to progress (time-blocked). Time
-   can progress for an active process in this model of computation only when the
-   process is  blocked.
-   <p>
-   A <i>deadlock</i> is when all the active processes are blocked.
-   The director is responsible for handling deadlocks during execution.
-   This director handles three different sorts of deadlocks, real deadlock, timed
-   deadlock and artificial deadlock.
-   <p>
-   A real deadlock is when all the processes are blocked on a read meaning that
-   no process can proceed until it receives new data. The execution can be
-   terminated, if desired, in such a situation. If the container of this director
-   does not have any input ports (as is in the case of a top-level composite
-   actor), then the executive director or manager terminates the execution.
-   If the container has input ports, then it is up to the
-   executive director of the container to decide on the termination of the
-   execution. To terminate the execution after detection of a real deadlock, the
-   manager or the executive director calls wrapup() on the director.
-   <p>
-   An artificial deadlock is when all processes are blocked and at least one
-   process is blocked on a write. In this case the director increases the
-   capacity of the receiver with the smallest capacity amongst all the
-   receivers on which a process is blocked on a write.
-   This breaks the deadlock and the execution can proceed.
-   <p>
-   A timed deadlock is when all the processes under the control of this
-   director are blocked, at least one process is blocked on a delay (time-blocked)
-   and no process is blocked on a write. This director supports a notion of global
-   time. All active processes that are not blocked and are executing concurrently
-   are executing at the same global time. A process that wants time to advance,
-   suspends itself by calling the fireAt() method of the director and specifies
-   the time it wants to be awakened at. Time can advance only when a timed
-   deadlock occurs. In such a case, the director advances time to the time when
-   the first timed-blocked process can be awakened.
-   <p>
+ A TimedPNDirector governs the execution of a CompositeActor with
+ Kahn-MacQueen process networks (PN) semantics extended by introduction of a
+ notion of global time.
+ <p>
+ The thread that calls the various execution methods (initialize, prefire, fire
+ and postfire) on the director is referred to as the <i>directing thread</i>.
+ This directing thread might be the main thread responsible for the execution
+ of the entire simulation or might be the thread created by the executive
+ director of the containing composite actor.
+ <p>
+ In the PN domain, the director creates a thread (an instance of
+ ProcessThread), representing a Kahn process, for each actor in the model.
+ The threads are created in initialize() and started in the prefire() method
+ of the ProcessDirector. A process is considered <i>active</i> from its
+ creation until its termination. An active process can block when trying to
+ read from a channel (read-blocked), when trying to write to a channel
+ (write-blocked), or when waiting for time to progress (time-blocked). Time
+ can progress for an active process in this model of computation only when the
+ process is  blocked.
+ <p>
+ A <i>deadlock</i> is when all the active processes are blocked.
+ The director is responsible for handling deadlocks during execution.
+ This director handles three different sorts of deadlocks, real deadlock, timed
+ deadlock and artificial deadlock.
+ <p>
+ A real deadlock is when all the processes are blocked on a read meaning that
+ no process can proceed until it receives new data. The execution can be
+ terminated, if desired, in such a situation. If the container of this director
+ does not have any input ports (as is in the case of a top-level composite
+ actor), then the executive director or manager terminates the execution.
+ If the container has input ports, then it is up to the
+ executive director of the container to decide on the termination of the
+ execution. To terminate the execution after detection of a real deadlock, the
+ manager or the executive director calls wrapup() on the director.
+ <p>
+ An artificial deadlock is when all processes are blocked and at least one
+ process is blocked on a write. In this case the director increases the
+ capacity of the receiver with the smallest capacity amongst all the
+ receivers on which a process is blocked on a write.
+ This breaks the deadlock and the execution can proceed.
+ <p>
+ A timed deadlock is when all the processes under the control of this
+ director are blocked, at least one process is blocked on a delay (time-blocked)
+ and no process is blocked on a write. This director supports a notion of global
+ time. All active processes that are not blocked and are executing concurrently
+ are executing at the same global time. A process that wants time to advance,
+ suspends itself by calling the fireAt() method of the director and specifies
+ the time it wants to be awakened at. Time can advance only when a timed
+ deadlock occurs. In such a case, the director advances time to the time when
+ the first timed-blocked process can be awakened.
+ <p>
 
-   @author Mudit Goel
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (mudit)
-   @Pt.AcceptedRating Green (davisj)
-*/
+ @author Mudit Goel
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (mudit)
+ @Pt.AcceptedRating Green (davisj)
+ */
 public class TimedPNDirector extends PNDirector implements TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -115,8 +114,8 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public TimedPNDirector()
-            throws IllegalActionException, NameDuplicationException {
+    public TimedPNDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
         timeResolution.setVisibility(Settable.FULL);
     }
@@ -133,8 +132,8 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public TimedPNDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public TimedPNDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         timeResolution.setVisibility(Settable.FULL);
     }
@@ -179,8 +178,8 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
         TimedPNDirector newObject = (TimedPNDirector) super.clone(workspace);
 
         try {
-            newObject._eventQueue = new CalendarQueue(new TimedEvent.TimeComparator(
-                                                              this));
+            newObject._eventQueue = new CalendarQueue(
+                    new TimedEvent.TimeComparator(this));
         } catch (IllegalActionException e) {
             // If the time resolution of the director is invalid,
             // it should have been caught before this.
@@ -205,8 +204,8 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     public synchronized void fireAt(Actor actor, Time newFiringTime)
             throws IllegalActionException {
         if (newFiringTime.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException(this,
-                    "The process wants to " + " get fired in the past!");
+            throw new IllegalActionException(this, "The process wants to "
+                    + " get fired in the past!");
         }
 
         _eventQueue.put(new TimedEvent(newFiringTime, actor));
@@ -229,8 +228,8 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
         if (newTime.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException(this,
-                    "Attempt to set the " + "time to past.");
+            throw new IllegalActionException(this, "Attempt to set the "
+                    + "time to past.");
         } else {
             super.setModelTime(newTime);
         }
@@ -350,8 +349,8 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  to advance. These processes are sorted by the time they want to resume
      *  at.
      */
-    protected CalendarQueue _eventQueue = new CalendarQueue(new TimedEvent.TimeComparator(
-                                                                    this));
+    protected CalendarQueue _eventQueue = new CalendarQueue(
+            new TimedEvent.TimeComparator(this));
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

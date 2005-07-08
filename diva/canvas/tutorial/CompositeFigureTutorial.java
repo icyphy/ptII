@@ -27,7 +27,7 @@
  COPYRIGHTENDKEY
 
 
-*/
+ */
 package diva.canvas.tutorial;
 
 import java.awt.Color;
@@ -44,7 +44,6 @@ import diva.canvas.toolbox.BasicController;
 import diva.canvas.toolbox.BasicEllipse;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;
-
 
 /**
  * This tutorial demonstrates how to use composite figures.
@@ -123,7 +122,9 @@ public class CompositeFigureTutorial {
 
     // More objects
     FigureLayer layer;
+
     BasicController controller;
+
     Interactor defaultInteractor;
 
     /** Create a JCanvas and put it into a window.
@@ -145,13 +146,13 @@ public class CompositeFigureTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    CompositeFigureTutorial ex = new CompositeFigureTutorial();
-                    ex.createCompositeFigure();
-                    ex.createBackgroundedCompositeFigure();
-                    ex.graphicsPane.repaint();
-                }
-            });
+            public void run() {
+                CompositeFigureTutorial ex = new CompositeFigureTutorial();
+                ex.createCompositeFigure();
+                ex.createBackgroundedCompositeFigure();
+                ex.graphicsPane.repaint();
+            }
+        });
     }
 
     /** Create a composite figure that does not have a background

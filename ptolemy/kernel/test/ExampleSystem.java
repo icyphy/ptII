@@ -1,29 +1,29 @@
 /* Construct a test hierarchal graph using the ptolemy.kernel classes.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.kernel.test;
 
 import java.io.Serializable;
@@ -37,24 +37,23 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ExampleSystem
 
 /**
-   ExampleSystem constructs a hierarchal graph as shown in
-   Ptolemy II design document, Figure 8.
-   The graph has 10 entities, 14 ports, and 12 relations.
-   The main function also returns the results of some key functions of
-   ComponentRelation and ComponentPort.
-   See Ptolemy 2 design document, Figure 11
+ ExampleSystem constructs a hierarchal graph as shown in
+ Ptolemy II design document, Figure 8.
+ The graph has 10 entities, 14 ports, and 12 relations.
+ The main function also returns the results of some key functions of
+ ComponentRelation and ComponentPort.
+ See Ptolemy 2 design document, Figure 11
 
-   @author Jie Liu
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Red
-   @Pt.AcceptedRating Red
-*/
+ @author Jie Liu
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Red
+ @Pt.AcceptedRating Red
+ */
 public class ExampleSystem implements Serializable {
     /** Construct the graph.
      *  @exception NameDuplicationException if the example system cannot
@@ -62,8 +61,8 @@ public class ExampleSystem implements Serializable {
      *  @exception IllegalActionException if the example system cannot
      *  be built.
      */
-    public ExampleSystem()
-            throws IllegalActionException, NameDuplicationException {
+    public ExampleSystem() throws IllegalActionException,
+            NameDuplicationException {
         super();
 
         // Create composite entities
@@ -124,33 +123,35 @@ public class ExampleSystem implements Serializable {
     /** Return the results as a String. */
     public String toString() {
         return ("----Methods of ComponentRelation----\n" + "linkedPorts:\n"
-                + printLinkedPorts(r1) + printLinkedPorts(r2) + printLinkedPorts(r3)
-                + printLinkedPorts(r4) + printLinkedPorts(r5) + printLinkedPorts(r6)
-                + printLinkedPorts(r7) + printLinkedPorts(r8) + printLinkedPorts(r9)
-                + printLinkedPorts(r10) + printLinkedPorts(r11) + printLinkedPorts(r12)
+                + printLinkedPorts(r1) + printLinkedPorts(r2)
+                + printLinkedPorts(r3) + printLinkedPorts(r4)
+                + printLinkedPorts(r5) + printLinkedPorts(r6)
+                + printLinkedPorts(r7) + printLinkedPorts(r8)
+                + printLinkedPorts(r9) + printLinkedPorts(r10)
+                + printLinkedPorts(r11) + printLinkedPorts(r12)
                 + "\ndeepLinkedPorts:\n" + printDeepLinkedPorts(r1)
                 + printDeepLinkedPorts(r2) + printDeepLinkedPorts(r3)
                 + printDeepLinkedPorts(r4) + printDeepLinkedPorts(r5)
                 + printDeepLinkedPorts(r6) + printDeepLinkedPorts(r7)
                 + printDeepLinkedPorts(r8) + printDeepLinkedPorts(r9)
                 + printDeepLinkedPorts(r10) + printDeepLinkedPorts(r11)
-                + printDeepLinkedPorts(r12) + "\n----Methods of ComponentPort----\n"
-                + "connectedPorts:\n" + printConnectedPorts(p0)
-                + printConnectedPorts(p1) + printConnectedPorts(p2)
-                + printConnectedPorts(p3) + printConnectedPorts(p4)
-                + printConnectedPorts(p5) + printConnectedPorts(p6)
-                + printConnectedPorts(p7) + printConnectedPorts(p8)
-                + printConnectedPorts(p9) + printConnectedPorts(p10)
-                + printConnectedPorts(p11) + printConnectedPorts(p12)
-                + printConnectedPorts(p13) + printConnectedPorts(p14)
-                + "\ndeepConnectedPorts:\n" + printDeepConnectedPorts(p0)
-                + printDeepConnectedPorts(p1) + printDeepConnectedPorts(p2)
-                + printDeepConnectedPorts(p3) + printDeepConnectedPorts(p4)
-                + printDeepConnectedPorts(p5) + printDeepConnectedPorts(p6)
-                + printDeepConnectedPorts(p7) + printDeepConnectedPorts(p8)
-                + printDeepConnectedPorts(p9) + printDeepConnectedPorts(p10)
-                + printDeepConnectedPorts(p11) + printDeepConnectedPorts(p12)
-                + printDeepConnectedPorts(p13) + printDeepConnectedPorts(p14));
+                + printDeepLinkedPorts(r12)
+                + "\n----Methods of ComponentPort----\n" + "connectedPorts:\n"
+                + printConnectedPorts(p0) + printConnectedPorts(p1)
+                + printConnectedPorts(p2) + printConnectedPorts(p3)
+                + printConnectedPorts(p4) + printConnectedPorts(p5)
+                + printConnectedPorts(p6) + printConnectedPorts(p7)
+                + printConnectedPorts(p8) + printConnectedPorts(p9)
+                + printConnectedPorts(p10) + printConnectedPorts(p11)
+                + printConnectedPorts(p12) + printConnectedPorts(p13)
+                + printConnectedPorts(p14) + "\ndeepConnectedPorts:\n"
+                + printDeepConnectedPorts(p0) + printDeepConnectedPorts(p1)
+                + printDeepConnectedPorts(p2) + printDeepConnectedPorts(p3)
+                + printDeepConnectedPorts(p4) + printDeepConnectedPorts(p5)
+                + printDeepConnectedPorts(p6) + printDeepConnectedPorts(p7)
+                + printDeepConnectedPorts(p8) + printDeepConnectedPorts(p9)
+                + printDeepConnectedPorts(p10) + printDeepConnectedPorts(p11)
+                + printDeepConnectedPorts(p12) + printDeepConnectedPorts(p13) + printDeepConnectedPorts(p14));
     }
 
     /** Print the linked ports for a given ComponentRelation. The ports
@@ -234,8 +235,8 @@ public class ExampleSystem implements Serializable {
      *  @exception IllegalActionException if the example system cannot
      *  be built.
      */
-    public static void main(String[] args)
-            throws NameDuplicationException, IllegalActionException {
+    public static void main(String[] args) throws NameDuplicationException,
+            IllegalActionException {
         ExampleSystem exsys = new ExampleSystem();
         System.out.println(exsys.toString());
     }

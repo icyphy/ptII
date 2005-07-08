@@ -1,29 +1,29 @@
 /* A property that specifies the category of a base unit.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.data.unit;
 
 import ptolemy.kernel.util.Attribute;
@@ -36,16 +36,16 @@ import ptolemy.kernel.util.Workspace;
 //// UnitCategory
 
 /**
-   A property that specifies the category of a base unit.  For example, in the
-   International System of Units, the base unit meter has the category length.
+ A property that specifies the category of a base unit.  For example, in the
+ International System of Units, the base unit meter has the category length.
 
-   @author Xiaojun Liu
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (liuxj)
-   @Pt.AcceptedRating Red (liuxj)
-   @see ptolemy.data.unit.BaseUnit
-*/
+ @author Xiaojun Liu
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (liuxj)
+ @Pt.AcceptedRating Red (liuxj)
+ @see ptolemy.data.unit.BaseUnit
+ */
 public class UnitCategory extends Attribute {
     /** Construct a unit category in the default workspace with an empty string
      *  as its name.
@@ -99,7 +99,6 @@ public class UnitCategory extends Attribute {
         return (BaseUnit) (getContainer());
     }
 
-
     /** Set the container and register this object in to the system wide
      *  unit system by calling 
      *  {@link UnitUtilities#registerUnitCategory(String)}.
@@ -109,9 +108,9 @@ public class UnitCategory extends Attribute {
      *  throws it.
      *  @exception NameDuplicationException If Attribute.setContainer()
      *  throws it.
-     */   
-    public void setContainer(NamedObj container) 
-            throws IllegalActionException, NameDuplicationException {
+     */
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         super.setContainer(container);
         UnitUtilities.registerUnitCategory(((BaseUnit) this.getContainer())
                 .getName());

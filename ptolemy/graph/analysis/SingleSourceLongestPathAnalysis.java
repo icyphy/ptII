@@ -1,28 +1,28 @@
 /* An analysis to find the longest path from a single source to all the other
-   nodes in a directed graph.
+ nodes in a directed graph.
 
-   Copyright (c) 2003-2005 The University of Maryland. All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2003-2005 The University of Maryland. All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
 
-*/
+ */
 package ptolemy.graph.analysis;
 
 import java.util.List;
@@ -34,22 +34,21 @@ import ptolemy.graph.analysis.analyzer.SingleSourceLongestPathAnalyzer;
 import ptolemy.graph.analysis.strategy.AllEdgeSingleSourceLongestPathStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SingleSourceLongestPathAnalysis
 
 /**
-   An analysis to find the longest path from a single source to all the other
-   nodes in a directed graph. In a graph with multiple edges between two nodes the
-   one with the largest associated value is being considered for the longest path.
-   <p>
+ An analysis to find the longest path from a single source to all the other
+ nodes in a directed graph. In a graph with multiple edges between two nodes the
+ one with the largest associated value is being considered for the longest path.
+ <p>
 
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (shahrooz)
-   @Pt.AcceptedRating Red (ssb)
-   @author Shahrooz Shahparnia
-   @version $Id$
-*/
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (shahrooz)
+ @Pt.AcceptedRating Red (ssb)
+ @author Shahrooz Shahparnia
+ @version $Id$
+ */
 public class SingleSourceLongestPathAnalysis extends Analysis {
     /** Construct an instance of this class with a default analyzer.
      *  The default analyzer runs in O(E), in which E is the number of edges.
@@ -63,7 +62,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
     public SingleSourceLongestPathAnalysis(Graph graph, Node startNode,
             ToDoubleMapping edgeLengths) {
         super(new AllEdgeSingleSourceLongestPathStrategy(graph, startNode,
-                      edgeLengths));
+                edgeLengths));
     }
 
     /** Construct an instance of this class with a given analyzer.
@@ -118,7 +117,8 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  @return The length of the longest path.
      */
     public double pathLength(Node endNode) {
-        return ((SingleSourceLongestPathAnalyzer) analyzer()).pathLength(endNode);
+        return ((SingleSourceLongestPathAnalyzer) analyzer())
+                .pathLength(endNode);
     }
 
     /** Set the start-node of this analysis to the given node.
@@ -136,7 +136,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      */
     public String toString() {
         return "Single source longest path analysis using "
-            + "the following analyzer:\n" + analyzer().toString();
+                + "the following analyzer:\n" + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

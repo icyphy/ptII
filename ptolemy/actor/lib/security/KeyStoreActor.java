@@ -1,30 +1,30 @@
 /* A baseclass for actors that read or write keystores.
 
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.security;
 
 import java.io.File;
@@ -55,133 +55,132 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// KeyStore
 
 /** A baseclass for actors that read or write keystores.
 
-<p>Keystores are ways to manage keys and certificates.  A keystore file can
-be created by using the <code>keytool</code> executable that comes with Java,
-or, if the <i>createFileOrURLIfNecessary</i> parameter is true,
-then a keystore will be created for you.
+ <p>Keystores are ways to manage keys and certificates.  A keystore file can
+ be created by using the <code>keytool</code> executable that comes with Java,
+ or, if the <i>createFileOrURLIfNecessary</i> parameter is true,
+ then a keystore will be created for you.
 
-To create a simple keystore by hand that contains a private key and
-a public key signed with a self signed certificate, run:
-<pre>
-cd $PTII
-make ptKeystore
-</pre>
-which will create a keystore with a store password
-of <code>this.is.the.storePassword,change.it</code>
-and key password of
-of <code>this.is.the.keyPassword,change.it</code>.
+ To create a simple keystore by hand that contains a private key and
+ a public key signed with a self signed certificate, run:
+ <pre>
+ cd $PTII
+ make ptKeystore
+ </pre>
+ which will create a keystore with a store password
+ of <code>this.is.the.storePassword,change.it</code>
+ and key password of
+ of <code>this.is.the.keyPassword,change.it</code>.
 
-<br>The alias of the certificate will be <code>claudius</code>
+ <br>The alias of the certificate will be <code>claudius</code>
 
-<p>A keystore may have at most one type, which describes the format
-of the keystore.  If a keyStore file exists, then the <i>keyStoreType</i>
-parameter is set to the type of the preexisting keyStore.  Changing
-the <i>keyStoreType</i> of a preexisting keystore to a different type
-is likely to throw an exception when the keyStore is opened.
-If a keyStore file does not exist, then when it is created it will
-be created with the type from the <i>keyStoreType</i> parameter.
-<p>The <code>keytool</code> creates keystores that have a type of
-"JKS".  To view the keystore type, run
-<code>keytool -keystore <i>keystoreFile</i>-list</code>.
+ <p>A keystore may have at most one type, which describes the format
+ of the keystore.  If a keyStore file exists, then the <i>keyStoreType</i>
+ parameter is set to the type of the preexisting keyStore.  Changing
+ the <i>keyStoreType</i> of a preexisting keystore to a different type
+ is likely to throw an exception when the keyStore is opened.
+ If a keyStore file does not exist, then when it is created it will
+ be created with the type from the <i>keyStoreType</i> parameter.
+ <p>The <code>keytool</code> creates keystores that have a type of
+ "JKS".  To view the keystore type, run
+ <code>keytool -keystore <i>keystoreFile</i>-list</code>.
 
-<p>The {@link ptolemy.actor.lib.security.SecretKey} actor outputs a
-key that must read in with a keystore type of "JCEKS", so if this
-actor is being used with a SecretKey actor, then the type should be
-set to "JCEKS".
+ <p>The {@link ptolemy.actor.lib.security.SecretKey} actor outputs a
+ key that must read in with a keystore type of "JCEKS", so if this
+ actor is being used with a SecretKey actor, then the type should be
+ set to "JCEKS".
 
-<p>Derived classes should add input or output ports as necessary.
-Derived classes should call _loadKeyStore() so that _keyStore is properly
-initialized before accessing _keyStore themselves.
+ <p>Derived classes should add input or output ports as necessary.
+ Derived classes should call _loadKeyStore() so that _keyStore is properly
+ initialized before accessing _keyStore themselves.
 
-<h3>How to exchange data securely with a remote part</h3>
-<a href="http://java.sun.com/docs/books/tutorial/security1.2/toolfilex/index.html" target="_top">http://java.sun.com/docs/books/tutorial/security1.2/toolfilex/index.html</a>
-discusses how to exchange files using signatures, keytool
-and jarsigner.  In Ptolemy II, we use actors derived from
-the KeyStoreActor.
+ <h3>How to exchange data securely with a remote part</h3>
+ <a href="http://java.sun.com/docs/books/tutorial/security1.2/toolfilex/index.html" target="_top">http://java.sun.com/docs/books/tutorial/security1.2/toolfilex/index.html</a>
+ discusses how to exchange files using signatures, keytool
+ and jarsigner.  In Ptolemy II, we use actors derived from
+ the KeyStoreActor.
 
-<h4>Steps for the Sender</h4>
-<ol>
-<li>Generate keys using keytool, which is included
-in the JDK
-<pre>
-keytool -genkey -alias claudius -keystore $PTII/ptKeystore -keypass myKeyPassword -storepass myStorePassword
-</pre>
-You will be prompted for information about yourself.
-<li>Optional: Generate a Certificate Signing Request (CSR), send
-it to your vendor and import the response.  Since we
-are using a self signed certificate, this step is option.
-<li> Export the certificate
-<pre>
-keytool -alias claudius -export -keystore $PTII/ptKeystore -keypass myKeyPassword -storepass myStorePassword -file claudius.cer -rfc
-</pre>
-<li> Send the output file (claudius.cer) to the recipient
-<li>Create a Ptolemy model that uses the
-{@link ptolemy.actor.lib.security.PrivateKeyReader} actor
-to read $PTII/ptKeystore with the appropriate passwords
-and sign your data.
-See the left side of $PTII/ptolemy/actor/lib/security/test/auto/Signature.xml
-for an example model.
+ <h4>Steps for the Sender</h4>
+ <ol>
+ <li>Generate keys using keytool, which is included
+ in the JDK
+ <pre>
+ keytool -genkey -alias claudius -keystore $PTII/ptKeystore -keypass myKeyPassword -storepass myStorePassword
+ </pre>
+ You will be prompted for information about yourself.
+ <li>Optional: Generate a Certificate Signing Request (CSR), send
+ it to your vendor and import the response.  Since we
+ are using a self signed certificate, this step is option.
+ <li> Export the certificate
+ <pre>
+ keytool -alias claudius -export -keystore $PTII/ptKeystore -keypass myKeyPassword -storepass myStorePassword -file claudius.cer -rfc
+ </pre>
+ <li> Send the output file (claudius.cer) to the recipient
+ <li>Create a Ptolemy model that uses the
+ {@link ptolemy.actor.lib.security.PrivateKeyReader} actor
+ to read $PTII/ptKeystore with the appropriate passwords
+ and sign your data.
+ See the left side of $PTII/ptolemy/actor/lib/security/test/auto/Signature.xml
+ for an example model.
 
-</ol>
-<h4>Steps for the Receiver</h4>
-<ol>
-<li>Receive the public key from the sender and import it
-into your keystore
-<pre>
-cxh@cooley 91% keytool -import -alias claudius -keystore $PTII/receivedKeystore -file claudius.cer
-Enter keystore password:  foobar
-Owner: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, ST=Your State, C=US
-Issuer: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, ST=Your State, C=US
-Serial number: 3fa9b2c5
-Valid from: Wed Nov 05 18:32:37 PST 2003 until: Tue Feb 03 18:32:37 PST 2004
-Certificate fingerprints:
-         MD5:  D7:43:A0:C0:39:49:A8:80:69:EA:11:91:17:CE:E5:E3
-         SHA1: C1:3B:9A:92:35:4F:7F:A5:23:AB:57:28:D6:67:ED:43:AB:EA:A9:2B
-Trust this certificate? [no]:  yes
-Certificate was added to keystore
-cxh@cooley 92%
-</pre>
+ </ol>
+ <h4>Steps for the Receiver</h4>
+ <ol>
+ <li>Receive the public key from the sender and import it
+ into your keystore
+ <pre>
+ cxh@cooley 91% keytool -import -alias claudius -keystore $PTII/receivedKeystore -file claudius.cer
+ Enter keystore password:  foobar
+ Owner: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, ST=Your State, C=US
+ Issuer: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, ST=Your State, C=US
+ Serial number: 3fa9b2c5
+ Valid from: Wed Nov 05 18:32:37 PST 2003 until: Tue Feb 03 18:32:37 PST 2004
+ Certificate fingerprints:
+ MD5:  D7:43:A0:C0:39:49:A8:80:69:EA:11:91:17:CE:E5:E3
+ SHA1: C1:3B:9A:92:35:4F:7F:A5:23:AB:57:28:D6:67:ED:43:AB:EA:A9:2B
+ Trust this certificate? [no]:  yes
+ Certificate was added to keystore
+ cxh@cooley 92%
+ </pre>
 
-<li>Verify the signature by calling up the sender and comparing the
-fingerprints on the phone.  The send can view the fingerprints with
-<pre>
-cxh@cooley 93% keytool -printcert -file claudius.cer
-Owner: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, ST=Your State, C=US
-Issuer: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, ST=Your State, C=US
-Serial number: 3fa9b2c5
-Valid from: Wed Nov 05 18:32:37 PST 2003 until: Tue Feb 03 18:32:37 PST 2004
-Certificate fingerprints:
-         MD5:  D7:43:A0:C0:39:49:A8:80:69:EA:11:91:17:CE:E5:E3
-         SHA1: C1:3B:9A:92:35:4F:7F:A5:23:AB:57:28:D6:67:ED:43:AB:EA:A9:2B
-cxh@cooley 94%
-</pre>
-If the Certificate fingerprints match, then the file has not been
-modified in transit.
-<li> The receiver should then create a model that uses the
-{@link ptolemy.actor.lib.security.PublicKeyReader} actor with
-the appropriate passwords.
-See the right side of $PTII/ptolemy/actor/lib/security/test/auto/Signature.xml
-for an example model.
+ <li>Verify the signature by calling up the sender and comparing the
+ fingerprints on the phone.  The send can view the fingerprints with
+ <pre>
+ cxh@cooley 93% keytool -printcert -file claudius.cer
+ Owner: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, ST=Your State, C=US
+ Issuer: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, ST=Your State, C=US
+ Serial number: 3fa9b2c5
+ Valid from: Wed Nov 05 18:32:37 PST 2003 until: Tue Feb 03 18:32:37 PST 2004
+ Certificate fingerprints:
+ MD5:  D7:43:A0:C0:39:49:A8:80:69:EA:11:91:17:CE:E5:E3
+ SHA1: C1:3B:9A:92:35:4F:7F:A5:23:AB:57:28:D6:67:ED:43:AB:EA:A9:2B
+ cxh@cooley 94%
+ </pre>
+ If the Certificate fingerprints match, then the file has not been
+ modified in transit.
+ <li> The receiver should then create a model that uses the
+ {@link ptolemy.actor.lib.security.PublicKeyReader} actor with
+ the appropriate passwords.
+ See the right side of $PTII/ptolemy/actor/lib/security/test/auto/Signature.xml
+ for an example model.
 
-</ol>
+ </ol>
 
-<p>For more information about keystores, see
-<a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html" target="_top">Security Tools Summary</a>
-and
-<br><a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/windows/keytool.html" target="_top">Keytool</a>.
+ <p>For more information about keystores, see
+ <a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html" target="_top">Security Tools Summary</a>
+ and
+ <br><a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/windows/keytool.html" target="_top">Keytool</a>.
 
-@author  Christopher Hylands Brooks
-@version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Yellow (cxh)
-@Pt.AcceptedRating Red (cxh)
-*/
+ @author  Christopher Hylands Brooks
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class KeyStoreActor extends TypedAtomicActor {
     // This actor could be called 'KeyStore', but that conflicts with
     // java.security.KeyStore, so we call it 'KeyStoreActor', which also
@@ -196,7 +195,7 @@ public class KeyStoreActor extends TypedAtomicActor {
      *   actor with this name.
      */
     public KeyStoreActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         alias = new StringParameter(this, "alias");
@@ -311,7 +310,7 @@ public class KeyStoreActor extends TypedAtomicActor {
      *   is <i>URL</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == alias) {
             _alias = alias.getExpression();
         } else if (attribute == fileOrURL) {
@@ -338,7 +337,7 @@ public class KeyStoreActor extends TypedAtomicActor {
      *  the keystore.
      */
     public void createKeystore(String keystoreFilename)
-        throws IllegalActionException {
+            throws IllegalActionException {
         System.out.println("Creating keystore " + keystoreFilename);
 
         String javaHomeProperty = "ptolemy.ptII.java.home";
@@ -348,8 +347,8 @@ public class KeyStoreActor extends TypedAtomicActor {
             javaHome = StringUtilities.getProperty(javaHomeProperty);
         } catch (SecurityException ex) {
             System.out.println("Warning: KeyStoreActor: Failed to get the "
-                + "java home directory " + "(-sandbox always causes this): "
-                + ex);
+                    + "java home directory "
+                    + "(-sandbox always causes this): " + ex);
         }
 
         if ((javaHome == null) || (javaHome.length() == 0)) {
@@ -362,49 +361,56 @@ public class KeyStoreActor extends TypedAtomicActor {
                 javaHome = javaHome.replace('\\', '/');
             } else {
                 throw new InternalErrorException(this, null,
-                    "Could not find the " + javaHomeProperty + " and the "
-                    + "java.home property. Perhaps "
-                    + "$PTII/lib/ptII.properties "
-                    + "is not being read properly?");
+                        "Could not find the " + javaHomeProperty + " and the "
+                                + "java.home property. Perhaps "
+                                + "$PTII/lib/ptII.properties "
+                                + "is not being read properly?");
             }
         }
 
         File javaHomeFile = new File(javaHome);
 
         if (!javaHomeFile.isDirectory()) {
-            throw new InternalErrorException(this, null,
-                "Could not find the Java "
-                + "directory that contains bin/keytool.  "
-                + "Tried looking for the '" + javaHome + "' directory. "
-                + "Perhaps the " + javaHomeProperty
-                + " or java.home property was not set " + "properly because "
-                + "$PTII/lib/ptII.properties is not being read properly?");
+            throw new InternalErrorException(
+                    this,
+                    null,
+                    "Could not find the Java "
+                            + "directory that contains bin/keytool.  "
+                            + "Tried looking for the '"
+                            + javaHome
+                            + "' directory. "
+                            + "Perhaps the "
+                            + javaHomeProperty
+                            + " or java.home property was not set "
+                            + "properly because "
+                            + "$PTII/lib/ptII.properties is not being read properly?");
         }
 
         String keytoolPath = javaHome + "/bin/keytool";
 
         String commonCommand = " -keystore " + keystoreFilename
-            + " -storetype " + _keyStoreType + " -alias " + _alias
-            + " -storepass \"" + _storePassword + "\"" + " -keypass \""
-            + _keyPassword + "\"";
+                + " -storetype " + _keyStoreType + " -alias " + _alias
+                + " -storepass \"" + _storePassword + "\"" + " -keypass \""
+                + _keyPassword + "\"";
 
-        String command1 = keytoolPath + " -genkey"
-            + " -dname \"CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US\""
-            + commonCommand;
+        String command1 = keytoolPath
+                + " -genkey"
+                + " -dname \"CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US\""
+                + commonCommand;
 
         String command2 = keytoolPath + " -selfcert" + commonCommand;
 
         String command3 = keytoolPath + " -list" + " -keystore "
-            + keystoreFilename + " -storepass \"" + _storePassword + "\"";
+                + keystoreFilename + " -storepass \"" + _storePassword + "\"";
 
         _exec(command1);
         _exec(command2);
         _exec(command3);
 
         if (!(new File(keystoreFilename)).exists()) {
-            throw new IllegalActionException(this,
-                "Failed to create '" + keystoreFilename + "', try running\n"
-                + command1 + "\n" + command2 + "\n" + command3);
+            throw new IllegalActionException(this, "Failed to create '"
+                    + keystoreFilename + "', try running\n" + command1 + "\n"
+                    + command2 + "\n" + command3);
         }
     }
 
@@ -508,7 +514,8 @@ public class KeyStoreActor extends TypedAtomicActor {
                 _loadKeyStoreNeeded = true;
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
-                    "Failed to get instance '" + keyStoreType + "'of keyStore");
+                        "Failed to get instance '" + keyStoreType
+                                + "'of keyStore");
             }
         }
     }
@@ -536,32 +543,33 @@ public class KeyStoreActor extends TypedAtomicActor {
                 // so we are trying to create a new empty keyStore.
             } catch (IOException ex2) {
                 // We once had a bug here where asURL() had a bug.
-                throw new IllegalActionException(this, ex2,
-                        "Failed to open '" + fileOrURL.asURL()
-                        + "' keyStore");
+                throw new IllegalActionException(this, ex2, "Failed to open '"
+                        + fileOrURL.asURL() + "' keyStore");
             }
 
             if (keyStoreInputStream == null) {
                 if (((BooleanToken) createFileOrURLIfNecessary.getToken())
-                                .booleanValue()) {
+                        .booleanValue()) {
                     String keystoreFileName = fileOrURL.stringValue();
 
                     try {
-                        String classpathProperty = ((StringToken) Constants.get(
-                                "CLASSPATH")).stringValue();
+                        String classpathProperty = ((StringToken) Constants
+                                .get("CLASSPATH")).stringValue();
 
                         if (keystoreFileName.startsWith(classpathProperty)) {
-                            keystoreFileName = ((StringToken) Constants.get(
-                                    "PTII")).stringValue() + "/"
-                                + keystoreFileName.substring(classpathProperty
-                                                .length());
+                            keystoreFileName = ((StringToken) Constants
+                                    .get("PTII")).stringValue()
+                                    + "/"
+                                    + keystoreFileName
+                                            .substring(classpathProperty
+                                                    .length());
                         }
 
                         createKeystore(keystoreFileName);
                     } catch (IllegalActionException ex) {
                         throw new IllegalActionException(this, ex,
-                            "Failed to create keystore '" + keystoreFileName
-                            + "'");
+                                "Failed to create keystore '"
+                                        + keystoreFileName + "'");
                     }
 
                     try {
@@ -582,17 +590,17 @@ public class KeyStoreActor extends TypedAtomicActor {
                     alias.removeAllChoices();
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
-                        "Problem creating a new empty keyStore.");
+                            "Problem creating a new empty keyStore.");
                 }
             } else {
                 try {
-                    _keyStore.load(keyStoreInputStream,
-                        _storePassword.toCharArray());
+                    _keyStore.load(keyStoreInputStream, _storePassword
+                            .toCharArray());
                     alias.removeAllChoices();
 
                     // Add all the aliases as possible choices.
-                    for (Enumeration aliases = _keyStore.aliases();
-                                    aliases.hasMoreElements();) {
+                    for (Enumeration aliases = _keyStore.aliases(); aliases
+                            .hasMoreElements();) {
                         String aliasName = (String) aliases.nextElement();
                         alias.addChoice(aliasName);
                     }
@@ -600,13 +608,13 @@ public class KeyStoreActor extends TypedAtomicActor {
                     keyStoreInputStream.close();
                 } catch (java.io.EOFException ex) {
                     throw new IllegalActionException(this, ex,
-                        "Problem loading " + fileOrURLDescription()
-                        + ", perhaps the file is of length 0? "
-                        + "To create a sample file, try "
-                        + "cd $PTII; make ptKeystore");
+                            "Problem loading " + fileOrURLDescription()
+                                    + ", perhaps the file is of length 0? "
+                                    + "To create a sample file, try "
+                                    + "cd $PTII; make ptKeystore");
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
-                        "Problem loading " + fileOrURLDescription());
+                            "Problem loading " + fileOrURLDescription());
                 }
             }
 
@@ -698,16 +706,17 @@ public class KeyStoreActor extends TypedAtomicActor {
             // Preprocess by removing lines that begin with '#'
             // and converting substrings that begin and end
             // with double quotes into one array element.
-            final String[] commandTokens = StringUtilities.tokenizeForExec(command);
+            final String[] commandTokens = StringUtilities
+                    .tokenizeForExec(command);
             _process = runtime.exec(commandTokens);
 
             // Create two threads to read from the subprocess.
             _outputGobbler = new _StreamReaderThread(_process.getInputStream(),
                     "KeyStoreActor Stdout Gobbler-"
-                    + _keystoreStreamReaderThreadCount++, this);
+                            + _keystoreStreamReaderThreadCount++, this);
             _errorGobbler = new _StreamReaderThread(_process.getErrorStream(),
                     "KeyStoreActor Stderr Gobbler-"
-                    + _keystoreStreamReaderThreadCount++, this);
+                            + _keystoreStreamReaderThreadCount++, this);
             _errorGobbler.start();
             _outputGobbler.start();
 
@@ -730,8 +739,8 @@ public class KeyStoreActor extends TypedAtomicActor {
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Problem setting up command '" + command + "'\n" + outputString
-                + "\n" + errorString);
+                    "Problem setting up command '" + command + "'\n"
+                            + outputString + "\n" + errorString);
         }
 
         System.out.print(outputString);
@@ -774,8 +783,8 @@ public class KeyStoreActor extends TypedAtomicActor {
             if (_debugging) {
                 try {
                     _debug("getAndReset: Gobbler '" + getName() + "' Ready: "
-                        + _inputStreamReader.ready() + " Available: "
-                        + _inputStream.available());
+                            + _inputStreamReader.ready() + " Available: "
+                            + _inputStream.available());
                 } catch (Exception ex) {
                     throw new InternalErrorException(ex);
                 }
@@ -787,8 +796,8 @@ public class KeyStoreActor extends TypedAtomicActor {
             } catch (Throwable throwable) {
                 if (_debugging) {
                     _debug("WARNING: getAndReset(): _read() threw an "
-                        + "exception, which we are ignoring.\n"
-                        + throwable.getMessage());
+                            + "exception, which we are ignoring.\n"
+                            + throwable.getMessage());
                 }
             }
 
@@ -798,8 +807,8 @@ public class KeyStoreActor extends TypedAtomicActor {
             try {
                 _inputStreamReader.close();
             } catch (Exception ex) {
-                throw new InternalErrorException(null, ex,
-                    getName() + " failed to close.");
+                throw new InternalErrorException(null, ex, getName()
+                        + " failed to close.");
             }
 
             return results;
@@ -825,20 +834,20 @@ public class KeyStoreActor extends TypedAtomicActor {
                 // if there is no data present, but the string can still
                 // read.
                 while (((length = _inputStreamReader.read(chars, 0, 80)) != -1)
-                                && !_stopRequested && !_stopFireRequested) {
+                        && !_stopRequested && !_stopFireRequested) {
                     if (_debugging) {
                         // Note that ready might be false here since
                         // we already read the data.
                         _debug("_read(): Gobbler '" + getName() + "' Ready: "
-                            + _inputStreamReader.ready() + " Value: '"
-                            + String.valueOf(chars, 0, length) + "'");
+                                + _inputStreamReader.ready() + " Value: '"
+                                + String.valueOf(chars, 0, length) + "'");
                     }
 
                     _stringBuffer.append(chars, 0, length);
                 }
             } catch (Throwable throwable) {
-                throw new InternalErrorException(_actor, throwable,
-                    getName() + ": Failed while reading from " + _inputStream);
+                throw new InternalErrorException(_actor, throwable, getName()
+                        + ": Failed while reading from " + _inputStream);
             }
         }
 

@@ -1,30 +1,30 @@
 /* Applet to display raw text from a URL in a text area.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.gui.demo;
 
 import java.io.BufferedReader;
@@ -41,23 +41,22 @@ import javax.swing.JTextArea;
 
 import ptolemy.gui.BasicJApplet;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ShowRawDocumentApplet
 
 /**
-   Applet to display raw text from a URL in a TextArea.
+ Applet to display raw text from a URL in a TextArea.
 
-   This applet is useful for displaying raw xml source with out processing
-   it.  If you would like to display a document within a browser with regular
-   processing, see the documentation for appletContext.showDocument(sourceURL).
+ This applet is useful for displaying raw xml source with out processing
+ it.  If you would like to display a document within a browser with regular
+ processing, see the documentation for appletContext.showDocument(sourceURL).
 
-   @author  Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author  Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class ShowRawDocumentApplet extends BasicJApplet {
     /** Constructor.
      */
@@ -109,7 +108,7 @@ public class ShowRawDocumentApplet extends BasicJApplet {
             }
         }
 
-        /*JFrame _frame = */ new JFrame();
+        /*JFrame _frame = */new JFrame();
         _jTextArea = new JTextArea(rows, columns);
         _jTextArea.setEditable(false);
         _scrollPane = new JScrollPane(_jTextArea);
@@ -146,29 +145,17 @@ public class ShowRawDocumentApplet extends BasicJApplet {
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String[][] newinfo = {
-            {
-                "columns",
-                "integer",
-                "40"
-            },
-            {
-                "rows",
-                "integer",
-                "10"
-            },
-            {
-                "source",
-                "",
-                "URL of the file to be displayed"
-            },
-        };
+        String[][] newinfo = { { "columns", "integer", "40" },
+                { "rows", "integer", "10" },
+                { "source", "", "URL of the file to be displayed" }, };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private BufferedReader _bufferedReader;
+
     private JTextArea _jTextArea;
+
     private JScrollPane _scrollPane;
 }

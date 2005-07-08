@@ -1,28 +1,28 @@
 /*  A class that generates code for the C structure corresponding to
-    an instance of a class (an Object).
+ an instance of a class (an Object).
 
-    Copyright (c) 2003-2005 The University of Maryland.
-    All rights reserved.
-    Permission is hereby granted, without written agreement and without
-    license or royalty fees, to use, copy, modify, and distribute this
-    software and its documentation for any purpose, provided that the above
-    copyright notice and the following two paragraphs appear in all copies
-    of this software.
+ Copyright (c) 2003-2005 The University of Maryland.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-    IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-    FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-    ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-    THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-    SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-    THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-    PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-    MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-    ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -35,20 +35,19 @@ import soot.Modifier;
 import soot.SootClass;
 import soot.SootField;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ClassStructureGenerator
 
 /**
-   A class that generates code for the C structure corresponding to an
-   instance of a class (an Object).
+ A class that generates code for the C structure corresponding to an
+ instance of a class (an Object).
 
-   @author Ankush Varma
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (<your email address>)
-   @Pt.AcceptedRating Red (ssb)
-*/
+ @author Ankush Varma
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (<your email address>)
+ @Pt.AcceptedRating Red (ssb)
+ */
 public class InstanceStructureGenerator extends CodeGenerator {
     /** Default constructor.
      * @param context The context to use for the generated code.
@@ -75,7 +74,7 @@ public class InstanceStructureGenerator extends CodeGenerator {
         // Generate the type declaration header for the class instance
         // structure.
         code.append(_comment("Structure that implements instances of Class "
-                            + source.getName()));
+                + source.getName()));
         code.append("struct " + typeName + " {\n");
 
         // Pointer to common, class-specific information.
@@ -145,8 +144,8 @@ public class InstanceStructureGenerator extends CodeGenerator {
         Iterator fields = source.getFields().iterator();
         int insertedFields = 0;
         String header = "\n" + _indent(1)
-            + "/* Public and protected fields for " + source.getName()
-            + " */\n";
+                + "/* Public and protected fields for " + source.getName()
+                + " */\n";
 
         // Generate public and protected fields
         while (fields.hasNext()) {
@@ -200,7 +199,7 @@ public class InstanceStructureGenerator extends CodeGenerator {
         Iterator fields = superClass.getFields().iterator();
         int insertedFields = 0;
         String header = "\n" + _indent(1)
-            + _comment("Fields inherited from " + superClass.getName());
+                + _comment("Fields inherited from " + superClass.getName());
 
         while (fields.hasNext()) {
             SootField field = (SootField) (fields.next());
@@ -210,12 +209,12 @@ public class InstanceStructureGenerator extends CodeGenerator {
             boolean pub = field.isPublic();
             boolean prot = field.isProtected();
             boolean friendly = (!priv) && (!pub) && (!prot);
-            boolean samePack = (source.getPackageName().compareTo(superClass
-                                        .getPackageName()) == 0);
+            boolean samePack = (source.getPackageName().compareTo(
+                    superClass.getPackageName()) == 0);
 
             // Whether this field should be visible to this class.
             boolean visible = (!stat)
-                && (pub || prot || (friendly && samePack));
+                    && (pub || prot || (friendly && samePack));
 
             // If a field has already been inherited from another class, it
             // need not be declared again.

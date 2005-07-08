@@ -1,31 +1,31 @@
 /* A non-interruptible timer that produces an event with a time delay
-   specified by the input.
+ specified by the input.
 
-   Copyright (c) 2004-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.de.lib;
 
 import java.util.LinkedList;
@@ -39,35 +39,34 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NonInterruptibleTimer
 
 /**
-   A NonInterruptibleTimer actor works similar to the {@link Timer} actor,
-   except that if a NonInterruptibleTimer actor has not finished processing
-   the previous input, a new input has to be delayed for processing.
-   In other words, it can not be interrupted to respond new inputs. Instead,
-   the new inputs will be queued and processed in a first come first serve
-   (FCFS) fashion. This actor extends the Timer actor.
-   <p>
-   The key difference between the NonInterruptibleTimer actor and the Server
-   actor is how the service time is specified.  In the NonInterruptibleTimer
-   actor, whenever an input arrives, the value of the input token specifies
-   the service time.  This actor will guarantee that much service time to be
-   given to that input.  In the Server actor, service times for inputs ar
-   decided by the ServiceTime parameter, which may change any time during an
-   execution. In particular, how much service time an input actually gets is
-   decided the value of the ServiceTime parameter at the time the server is
-   ready to serve that input.
+ A NonInterruptibleTimer actor works similar to the {@link Timer} actor,
+ except that if a NonInterruptibleTimer actor has not finished processing
+ the previous input, a new input has to be delayed for processing.
+ In other words, it can not be interrupted to respond new inputs. Instead,
+ the new inputs will be queued and processed in a first come first serve
+ (FCFS) fashion. This actor extends the Timer actor.
+ <p>
+ The key difference between the NonInterruptibleTimer actor and the Server
+ actor is how the service time is specified.  In the NonInterruptibleTimer
+ actor, whenever an input arrives, the value of the input token specifies
+ the service time.  This actor will guarantee that much service time to be
+ given to that input.  In the Server actor, service times for inputs ar
+ decided by the ServiceTime parameter, which may change any time during an
+ execution. In particular, how much service time an input actually gets is
+ decided the value of the ServiceTime parameter at the time the server is
+ ready to serve that input.
 
-   @see Timer
-   @author Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
-*/
+ @see Timer
+ @author Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (hyzheng)
+ @Pt.AcceptedRating Red (hyzheng)
+ */
 public class NonInterruptibleTimer extends Timer {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -116,7 +115,7 @@ public class NonInterruptibleTimer extends Timer {
         if (_delayedOutputTokens.size() > 0) {
             if (currentTime.compareTo(_nextTimeFree) == 0) {
                 TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens
-                    .get();
+                        .get();
                 Time eventTime = earliestEvent.timeStamp;
 
                 if (!eventTime.equals(currentTime)) {
@@ -168,11 +167,11 @@ public class NonInterruptibleTimer extends Timer {
                 && _delayedOutputTokens.isEmpty()) {
             // NOTE: the input has a fixed data type as double.
             DoubleToken delayToken = (DoubleToken) _delayedInputTokensList
-                .removeFirst();
+                    .removeFirst();
             double delay = delayToken.doubleValue();
             _nextTimeFree = currentTime.add(delay);
-            _delayedOutputTokens.put(new TimedEvent(_nextTimeFree,
-                                             value.getToken()));
+            _delayedOutputTokens.put(new TimedEvent(_nextTimeFree, value
+                    .getToken()));
             getDirector().fireAt(this, _nextTimeFree);
         }
 

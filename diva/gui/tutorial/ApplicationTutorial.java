@@ -27,7 +27,7 @@
  COPYRIGHTENDKEY
 
 
-*/
+ */
 package diva.gui.tutorial;
 
 import java.awt.BorderLayout;
@@ -39,7 +39,6 @@ import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -53,7 +52,6 @@ import diva.gui.Document;
 import diva.gui.GUIUtilities;
 import diva.gui.View;
 import diva.resource.RelativeBundle;
-
 
 /**
  * A simple text editor.  This application implements a very simple
@@ -111,25 +109,25 @@ public class ApplicationTutorial extends AbstractApplication {
         context.setIconImage(iconImage);
 
         /*
-        // create the editing component.
-        _displayedDocument = null;
-        displayDocument(getCurrentDocument());
-        */
+         // create the editing component.
+         _displayedDocument = null;
+         displayDocument(getCurrentDocument());
+         */
         // When the currently selected document is changed, this listener
         // is notified.
         addViewListener(new ListDataListener() {
-                public void contentsChanged(ListDataEvent e) {
-                    System.out.println("current document = "
-                            + getCurrentView().getDocument());
-                    setCurrentView(getCurrentView()); //FIXME
-                }
+            public void contentsChanged(ListDataEvent e) {
+                System.out.println("current document = "
+                        + getCurrentView().getDocument());
+                setCurrentView(getCurrentView()); //FIXME
+            }
 
-                public void intervalAdded(ListDataEvent e) {
-                }
+            public void intervalAdded(ListDataEvent e) {
+            }
 
-                public void intervalRemoved(ListDataEvent e) {
-                }
-            });
+            public void intervalRemoved(ListDataEvent e) {
+            }
+        });
 
         // Set the size of the context.
         context.makeComponent().setSize(800, 600);
@@ -173,7 +171,7 @@ public class ApplicationTutorial extends AbstractApplication {
      _editorPane.setEditable(false);
      }
      }
-    */
+     */
     /** Get the title of this application
      */
     public String getTitle() {
@@ -189,15 +187,15 @@ public class ApplicationTutorial extends AbstractApplication {
             setStoragePolicy(storage);
 
             FileFilter ff = new FileFilter() {
-                    public boolean accept(File file) {
-                        return GUIUtilities.getFileExtension(file).toLowerCase()
+                public boolean accept(File file) {
+                    return GUIUtilities.getFileExtension(file).toLowerCase()
                             .equals("txt");
-                    }
+                }
 
-                    public String getDescription() {
-                        return "Text files";
-                    }
-                };
+                public String getDescription() {
+                    return "Text files";
+                }
+            };
 
             JFileChooser fc;
             fc = storage.getOpenFileChooser();
@@ -230,7 +228,8 @@ public class ApplicationTutorial extends AbstractApplication {
 
         action = DefaultActions.openAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'O', "Open a graph document");
+        GUIUtilities
+                .addMenuItem(menuFile, action, 'O', "Open a graph document");
 
         action = DefaultActions.closeAction(this);
         addAction(action);
@@ -273,15 +272,15 @@ public class ApplicationTutorial extends AbstractApplication {
 
         // Conventional new/open/save buttons
         action = getAction("New");
-        GUIUtilities.addToolBarButton(tb, action, null,
-                resources.getImageIcon("NewImage"));
+        GUIUtilities.addToolBarButton(tb, action, null, resources
+                .getImageIcon("NewImage"));
 
         action = getAction("Open");
-        GUIUtilities.addToolBarButton(tb, action, null,
-                resources.getImageIcon("OpenImage"));
+        GUIUtilities.addToolBarButton(tb, action, null, resources
+                .getImageIcon("OpenImage"));
 
         action = getAction("Save");
-        GUIUtilities.addToolBarButton(tb, action, null,
-                resources.getImageIcon("SaveImage"));
+        GUIUtilities.addToolBarButton(tb, action, null, resources
+                .getImageIcon("SaveImage"));
     }
 }

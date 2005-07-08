@@ -1,30 +1,30 @@
 /* A parameter that has an associated port.
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.parameters;
 
 import ptolemy.actor.TypedActor;
@@ -43,84 +43,83 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PortParameter
 
 /**
-   This parameter creates an associated port that can be used to update
-   the current value of the parameter. This parameter has two values,
-   which may not be equal, a <i>current value</i> and a <i>persistent value</i>.
-   The persistent value is returned by
-   getExpression() and is set by any of three different mechanisms:
-   <ul>
-   <li> calling setExpression();
-   <li> calling setToken(); and
-   <li> specifying a value as a constructor argument.
-   </ul>
-   All three of these will also set the current value, which is then
-   equal to the persistent value.
-   The current value is returned by get getToken()
-   and is set by any of three different mechanisms:
-   <ul>
-   <li> calling setCurrentValue();
-   <li> calling update() sets the current value if there is an associated
-   port, and that port has a token to consume; and
-   </ul>
-   These three techniques do not change the persistent value, so after
-   these are used, the persistent value and current value may be different.
-   <p>
-   When using this parameter in an actor, care must be exercised
-   to call update() exactly once per firing prior to calling getToken().
-   Each time update() is called, a new token will be consumed from
-   the associated port (if the port is connected and has a token).
-   If this is called multiple times in an iteration, it may result in
-   consuming tokens that were intended for subsequent iterations.
-   Thus, for example, update() should not be called in fire() and then
-   again in postfire().  Moreover, in some domains (such as DE),
-   it is essential that if a token is provided on a port, that it
-   is consumed.  In DE, the actor will be repeatedly fired until
-   the token is consumed.  Thus, it is an error to not call update()
-   once per iteration.  For an example of an actor that uses this
-   mechanism, see Ramp.
-   <p>
-   If this actor is placed in a container that does not implement
-   the TypedActor interface, then no associated port is created,
-   and it functions as an ordinary parameter.  This is useful,
-   for example, if this is put in a library, where one would not
-   want the associated port to appear.
+ This parameter creates an associated port that can be used to update
+ the current value of the parameter. This parameter has two values,
+ which may not be equal, a <i>current value</i> and a <i>persistent value</i>.
+ The persistent value is returned by
+ getExpression() and is set by any of three different mechanisms:
+ <ul>
+ <li> calling setExpression();
+ <li> calling setToken(); and
+ <li> specifying a value as a constructor argument.
+ </ul>
+ All three of these will also set the current value, which is then
+ equal to the persistent value.
+ The current value is returned by get getToken()
+ and is set by any of three different mechanisms:
+ <ul>
+ <li> calling setCurrentValue();
+ <li> calling update() sets the current value if there is an associated
+ port, and that port has a token to consume; and
+ </ul>
+ These three techniques do not change the persistent value, so after
+ these are used, the persistent value and current value may be different.
+ <p>
+ When using this parameter in an actor, care must be exercised
+ to call update() exactly once per firing prior to calling getToken().
+ Each time update() is called, a new token will be consumed from
+ the associated port (if the port is connected and has a token).
+ If this is called multiple times in an iteration, it may result in
+ consuming tokens that were intended for subsequent iterations.
+ Thus, for example, update() should not be called in fire() and then
+ again in postfire().  Moreover, in some domains (such as DE),
+ it is essential that if a token is provided on a port, that it
+ is consumed.  In DE, the actor will be repeatedly fired until
+ the token is consumed.  Thus, it is an error to not call update()
+ once per iteration.  For an example of an actor that uses this
+ mechanism, see Ramp.
+ <p>
+ If this actor is placed in a container that does not implement
+ the TypedActor interface, then no associated port is created,
+ and it functions as an ordinary parameter.  This is useful,
+ for example, if this is put in a library, where one would not
+ want the associated port to appear.
 
-   <p>There are a few situations where PortParameter might not do what
-   you expect:
+ <p>There are a few situations where PortParameter might not do what
+ you expect:
 
-   <ol>
-   <li> If it is used in a transparent composite actor, then a token provided
-   to a PortParameter will never be read.  A transparent composite actor
-   is one without a director.
+ <ol>
+ <li> If it is used in a transparent composite actor, then a token provided
+ to a PortParameter will never be read.  A transparent composite actor
+ is one without a director.
 
-   <br>Workaround: Put a director in the composite.
+ <br>Workaround: Put a director in the composite.
 
-   <li> Certain actors (such as the Integrator in CT) read parameter
-   values only during initialization.  During initialization, a
-   PortParameter can only have a value set via the parameter (it
-   can't have yet received a token).  So if the initial value of the
-   Integrator is set to the value of the PortParameter, then it will
-   see only the parameter value, never the value provided via the
-   port.
+ <li> Certain actors (such as the Integrator in CT) read parameter
+ values only during initialization.  During initialization, a
+ PortParameter can only have a value set via the parameter (it
+ can't have yet received a token).  So if the initial value of the
+ Integrator is set to the value of the PortParameter, then it will
+ see only the parameter value, never the value provided via the
+ port.
 
-   <br>Workaround: Use a RunCompositeActor to contain the model with the
-   Integrator.
+ <br>Workaround: Use a RunCompositeActor to contain the model with the
+ Integrator.
 
-   </ol>
+ </ol>
 
-   @see ptolemy.actor.lib.Ramp
-   @see ParameterPort
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
+ @see ptolemy.actor.lib.Ramp
+ @see ParameterPort
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
 public class PortParameter extends Parameter {
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -164,8 +163,8 @@ public class PortParameter extends Parameter {
      *   an parameter already in the container.
      */
     public PortParameter(NamedObj container, String name,
-            ptolemy.data.Token token)
-            throws IllegalActionException, NameDuplicationException {
+            ptolemy.data.Token token) throws IllegalActionException,
+            NameDuplicationException {
         this(container, name);
         setToken(token);
     }
@@ -252,8 +251,8 @@ public class PortParameter extends Parameter {
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
-    public void setContainer(Entity entity)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(Entity entity) throws IllegalActionException,
+            NameDuplicationException {
         Entity previousContainer = (Entity) getContainer();
         super.setContainer(entity);
 
@@ -326,8 +325,8 @@ public class PortParameter extends Parameter {
      *  @exception NameDuplicationException If the container already
      *   contains an attribute with the proposed name.
      */
-    public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
         if (_settingName) {
             return;
         }

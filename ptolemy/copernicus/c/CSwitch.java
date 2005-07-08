@@ -1,33 +1,33 @@
 /*
-  An implementation of the visitor design pattern that generates C code
-  from Jimple statements.
+ An implementation of the visitor design pattern that generates C code
+ from Jimple statements.
 
-  Copyright (c) 2001-2005 The University of Maryland.
-  All rights reserved.
+ Copyright (c) 2001-2005 The University of Maryland.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -115,21 +115,20 @@ import soot.jimple.UshrExpr;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.XorExpr;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CSwitch
 
 /** An implementation of the visitor design pattern that generates C code
-    from Jimple statements. Code generated in this class is placed in an
-    internal code stack (see {@link #_push(StringBuffer)}, and {@link
-    #_pop()}).
+ from Jimple statements. Code generated in this class is placed in an
+ internal code stack (see {@link #_push(StringBuffer)}, and {@link
+ #_pop()}).
 
-    @author Shuvra S. Bhattacharyya, Ankush Varma
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (ssb)
-    @Pt.AcceptedRating Red (ssb)
-*/
+ @author Shuvra S. Bhattacharyya, Ankush Varma
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (ssb)
+ @Pt.AcceptedRating Red (ssb)
+ */
 public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
@@ -224,13 +223,13 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
 
         if (stmt.getLeftOp().getType() instanceof ArrayType) {
-            _context.addArrayInstance(CNames.typeNameOf(
-                                              stmt.getLeftOp().getType()));
+            _context.addArrayInstance(CNames.typeNameOf(stmt.getLeftOp()
+                    .getType()));
         }
 
         if (stmt.getRightOp().getType() instanceof ArrayType) {
-            _context.addArrayInstance(CNames.typeNameOf(
-                                              stmt.getRightOp().getType()));
+            _context.addArrayInstance(CNames.typeNameOf(stmt.getRightOp()
+                    .getType()));
         }
 
         // castType makes sure values on left and right are compatible
@@ -267,9 +266,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                     + CNames.localNameOf((Local) v.getOp()));
         } else {
             /*
-              System.err.println("CSwitch.caseCastExpression does not"
-              +"handle null.");
-            */
+             System.err.println("CSwitch.caseCastExpression does not"
+             +"handle null.");
+             */
             defaultCase(v);
         }
     }
@@ -427,7 +426,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     public void caseIfStmt(IfStmt stmt) {
         stmt.getCondition().apply(this);
         _push(new StringBuffer("if (" + _pop() + ") " + "goto "
-                      + getLabel(stmt.getTarget())));
+                + getLabel(stmt.getTarget())));
     }
 
     /** Generate code for a reference to a non-static field of an object.
@@ -450,7 +449,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             v.getOp().apply(this);
             _push(CNames.instanceOfFunction + "(" + "(PCCG_CLASS_INSTANCE*)"
                     + _pop() + ", "
-                    + CNames.hashNumberOf(((RefType) type).getSootClass()) + ")");
+                    + CNames.hashNumberOf(((RefType) type).getSootClass())
+                    + ")");
 
             // Add the required include file.
             _context.addIncludeFile("\""
@@ -572,14 +572,16 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             //FIXME: Integer Compatibility issue.
             if (dummyLookupValue > maxLong) {
                 dummyLookupValue = maxLong;
-                code.append(Utilities.comment(
-                                    "Warning: index out of range of long: "
-                                    + "truncated by CSWitch.caseLookupSwitchStmt()"));
+                code
+                        .append(Utilities
+                                .comment("Warning: index out of range of long: "
+                                        + "truncated by CSWitch.caseLookupSwitchStmt()"));
             } else if (dummyLookupValue < -maxLong) {
                 dummyLookupValue = -maxLong;
-                code.append(Utilities.comment(
-                                    "Warning: index out of range of long: "
-                                    + "truncated by CSWitch.caseLookupSwitchStmt()"));
+                code
+                        .append(Utilities
+                                .comment("Warning: index out of range of long: "
+                                        + "truncated by CSWitch.caseLookupSwitchStmt()"));
             }
 
             code.append(_indent() + "case " + dummyLookupValue + ": goto "
@@ -589,9 +591,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         code.append(_indent() + "default: goto "
                 + getLabel(stmt.getDefaultTarget()) + ";\n");
 
-                                     indentLevel--;
-                                     code.append(_indent() + "}\n");
-                                     _push(code);
+        indentLevel--;
+        code.append(_indent() + "}\n");
+        _push(code);
     }
 
     /** Generate the code for a "less than" expression.
@@ -664,7 +666,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     public void caseNewMultiArrayExpr(NewMultiArrayExpr v) {
         if (_debug) {
             System.out.println("NewMultiArrayExpr: " + v.getSizeCount() + "/"
-                    + v.getSizes().size() + v.getBaseType().getClass().getName());
+                    + v.getSizes().size()
+                    + v.getBaseType().getClass().getName());
         }
 
         String sizeCode = new String();
@@ -680,14 +683,14 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
 
         _push(_generateArrayAllocation(v.getBaseType(), v.getSizeCount(),
-                      sizeCode));
+                sizeCode));
     }
 
     /* FIXME : Is this replaced by something else?
-       public void caseNextNextStmtRef(NextNextStmtRef v) {
-       defaultCase(v);
-       }
-    */
+     public void caseNextNextStmtRef(NextNextStmtRef v) {
+     defaultCase(v);
+     }
+     */
 
     /** Generate code for a Nop(No operation) statement.
      *  @param stmt The statement.
@@ -855,8 +858,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         // We use the % operator to suppress warnings.
         _push("(" + shiftIndex + " <= " + dataWidth + ") ? " + "(" + "("
                 + number + " > 0)? " + "(" + number + " >> " + "(" + shiftIndex
-                + " % " + dataWidth + ")" + "): " + "( " + "( -" + "(" + "(-" + "("
-                + number + ")" + ") >> " + "(" + "(" + shiftIndex + " % "
+                + " % " + dataWidth + ")" + "): " + "( " + "( -" + "(" + "(-"
+                + "(" + number + ")" + ") >> " + "(" + "(" + shiftIndex + " % "
                 + dataWidth + ")" + ")" + ")" + ")" + " - 1" + ") " + "): 0");
     }
 
@@ -877,19 +880,20 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         if (!declaringClass.isInterface()) {
             cast = "(" + CNames.instanceNameOf(declaringClass)
-                + "/* actual cast */)";
+                    + "/* actual cast */)";
         }
 
-        Iterator inheritedMethods = MethodListGenerator.getInheritedMethods(declaringClass)
-            .iterator();
+        Iterator inheritedMethods = MethodListGenerator.getInheritedMethods(
+                declaringClass).iterator();
 
         while (inheritedMethods.hasNext()) {
             SootMethod inheritedMethod = (SootMethod) inheritedMethods.next();
 
-            if (inheritedMethod.getSubSignature().equals(method.getSubSignature())) {
+            if (inheritedMethod.getSubSignature().equals(
+                    method.getSubSignature())) {
                 cast = "("
-                    + CNames.instanceNameOf(inheritedMethod.getDeclaringClass())
-                    + "/* inherited cast */)";
+                        + CNames.instanceNameOf(inheritedMethod
+                                .getDeclaringClass()) + "/* inherited cast */)";
                 break;
             }
         }
@@ -898,7 +902,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             _unexpectedCase(v, "RefType base type expected.");
         } else {
             SootClass baseClass = ((RefType) (v.getBase().getType()))
-                .getSootClass();
+                    .getSootClass();
 
             if (baseClass == declaringClass) {
                 if (method.isStatic()) {
@@ -944,12 +948,12 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      */
     public void caseStaticInvokeExpr(StaticInvokeExpr v) {
         if (!Context.getSingleClassMode()) {
-            String includeFileName = v.toString().substring(v.toString()
-                    .indexOf('<')
-                    + 1, v.toString().indexOf(':'));
+            String includeFileName = v.toString().substring(
+                    v.toString().indexOf('<') + 1, v.toString().indexOf(':'));
 
             includeFileName = "\""
-                + CNames.sanitize(includeFileName).replace('.', '/') + ".h\"";
+                    + CNames.sanitize(includeFileName).replace('.', '/')
+                    + ".h\"";
 
             _context.addIncludeFile(includeFileName);
         }
@@ -1043,9 +1047,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         code.append(_indent() + "default: goto "
                 + getLabel(stmt.getDefaultTarget()) + ";\n");
 
-                                     indentLevel--;
-                                     code.append(_indent() + "}\n");
-                                     _push(code);
+        indentLevel--;
+        code.append(_indent() + "}\n");
+        _push(code);
     }
 
     /** Generate code for a "this" reference. Currently not supported.
@@ -1123,10 +1127,11 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push("(" + shiftIndex + " <= " + dataWidth + ")? " + "(" + "("
                 + number + " > 0)? " + "(" + number + " >> " + "(" + shiftIndex
                 + " % " + dataWidth + ")" + "): " + "(" + "(" + "(" + "( - ("
-                + number + "))" + " >> " + "(" + "(" + shiftIndex + " -1 " + ")"
-                + "%" + dataWidth + ")" + ")" + " | " + "(" + "((unsigned long) "
-                + max + ")" + ">>" + "(" + shiftIndex + "- 1)" + ")" + ")" + " - "
-                + "(" + "(-(" + number + ")) >> " + shiftIndex + ")" + ")" + "): 0");
+                + number + "))" + " >> " + "(" + "(" + shiftIndex + " -1 "
+                + ")" + "%" + dataWidth + ")" + ")" + " | " + "("
+                + "((unsigned long) " + max + ")" + ">>" + "(" + shiftIndex
+                + "- 1)" + ")" + ")" + " - " + "(" + "(-(" + number + ")) >> "
+                + shiftIndex + ")" + ")" + "): 0");
     }
 
     /** Generate code for a virtual invoke expression.
@@ -1291,7 +1296,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         } else {
             // If its a primitive type.
             elementClass = CNames.arrayClassPrefix
-                + CNames.typeNameOf(elementType) + "_elem";
+                    + CNames.typeNameOf(elementType) + "_elem";
             elementSizeType = CNames.typeNameOf(elementType);
         }
 
@@ -1300,9 +1305,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         // by the calling method with the appropriate dimension
         // and size.
         return CNames.arrayAllocateFunction + "((PCCG_CLASS_PTR)"
-            + " malloc(sizeof(" + elementClass + "))" + ", sizeof("
-            + elementSizeType + "), " + dimensions + ", " + dimensionsToFill + ", "
-            + sizeCode + ")";
+                + " malloc(sizeof(" + elementClass + "))" + ", sizeof("
+                + elementSizeType + "), " + dimensions + ", "
+                + dimensionsToFill + ", " + sizeCode + ")";
     }
 
     /** Generate code for a binary operation expression.
@@ -1351,8 +1356,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         // the interface, not Object.
         if ((expression instanceof VirtualInvokeExpr)
                 && (Scene.v().getSootClass("java.lang.Object")
-                        .declaresMethod(method
-                                .getSubSignature()))) {
+                        .declaresMethod(method.getSubSignature()))) {
             Type baseType = expression.getBase().getType();
 
             if (baseType instanceof RefType) {
@@ -1376,18 +1380,19 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         // Default cast is used only if the declaring class does not seem
         // to inherit this method.
         cast = "(" + CNames.instanceNameOf(declaringClass)
-            + "/* default cast */)";
+                + "/* default cast */)";
 
-        Iterator inheritedMethods = MethodListGenerator.getInheritedMethods(declaringClass)
-            .iterator();
+        Iterator inheritedMethods = MethodListGenerator.getInheritedMethods(
+                declaringClass).iterator();
 
         while (inheritedMethods.hasNext()) {
             SootMethod inheritedMethod = (SootMethod) inheritedMethods.next();
 
-            if (inheritedMethod.getSubSignature().equals(method.getSubSignature())) {
+            if (inheritedMethod.getSubSignature().equals(
+                    method.getSubSignature())) {
                 cast = "("
-                    + CNames.instanceNameOf(inheritedMethod.getDeclaringClass())
-                    + "/* inherited cast */)";
+                        + CNames.instanceNameOf(inheritedMethod
+                                .getDeclaringClass()) + "/* inherited cast */)";
                 break;
             }
         }
@@ -1447,10 +1452,10 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 + message + " " + "*/; epc--");
 
         /*
-          System.err.println("Unexpected code conversion case in CSwitch:\n"
-          + "        " + message + "\n        Case object is of class "
-          + object.getClass().getName());
-        */
+         System.err.println("Unexpected code conversion case in CSwitch:\n"
+         + "        " + message + "\n        Case object is of class "
+         + object.getClass().getName());
+         */
     }
 
     ///////////////////////////////////////////////////////////////////

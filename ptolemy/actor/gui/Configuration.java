@@ -1,29 +1,29 @@
 /* Base class for Ptolemy configurations.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -47,68 +47,67 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Configuration
 
 /**
-   This is a base class for a composite entity that defines the
-   configuration of an application that uses Ptolemy II classes.
-   An instance of this class is in charge of the user interface,
-   and coordinates multiple views of multiple models. One of its
-   functions, for example, is to manage the opening of new models,
-   ensuring that an appropriate view is used. It also makes sure that
-   if a model is opened that is already open, then existing views are
-   shown rather than creating new views.
-   <p>
-   The applications <i>vergil</i> and <i>moml</i> (at least) use
-   configurations defined in MoML files, typically located in
-   ptII/ptolemy/configs. The <i>moml</i> application takes as
-   command line arguments a list of MoML files, the first of which
-   is expected to define an instance of Configuration and its contents.
-   That configuration is then used to open subsequent MoML files on the
-   command line, and to manage the user interface.
-   <p>
-   Rather than performing all these functions itself, this class
-   is a container for a model directory, effigy factories, and tableau
-   factories that actually realize these functions. An application
-   is configured by populating an instance of this class with
-   a suitable set of these other classes. A minimal configuration
-   defined in MoML is shown below:
-   <pre>
-   &lt;?xml version="1.0" standalone="no"?&gt;
-   &lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-   "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
-   &lt;entity name="configuration" class="ptolemy.actor.gui.Configuration"&gt;
-   &lt;doc&gt;Configuration to run but not edit Ptolemy II models&lt;/doc&gt;
-   &lt;entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/&gt;
-   &lt;entity name="effigyFactory" class="ptolemy.actor.gui.PtolemyEffigy$Factory"/&gt;
-   &lt;property name="tableauFactory" class="ptolemy.actor.gui.RunTableau$Factory"/&gt;
-   &lt;/entity&gt;
-   </pre>
-   <p>
-   It must contain, at a minimum, an instance of ModelDirectory, named
-   "directory", and an instance of EffigyFactory, named "effigyFactory".
-   The openModel() method delegates to the effigy factory the opening of a model.
-   It may also contain an instance of TextEditorTableauFactory, named "tableauFactory".
-   A tableau is a visual representation of the model in a top-level window.
-   The above minimal configuration can be used to run Ptolemy II models
-   by opening a run panel only.
-   <p>
-   When the directory becomes empty (all models have been closed),
-   it removes itself from the configuration. When this happens, the
-   configuration calls System.exit() to exit the application.
+ This is a base class for a composite entity that defines the
+ configuration of an application that uses Ptolemy II classes.
+ An instance of this class is in charge of the user interface,
+ and coordinates multiple views of multiple models. One of its
+ functions, for example, is to manage the opening of new models,
+ ensuring that an appropriate view is used. It also makes sure that
+ if a model is opened that is already open, then existing views are
+ shown rather than creating new views.
+ <p>
+ The applications <i>vergil</i> and <i>moml</i> (at least) use
+ configurations defined in MoML files, typically located in
+ ptII/ptolemy/configs. The <i>moml</i> application takes as
+ command line arguments a list of MoML files, the first of which
+ is expected to define an instance of Configuration and its contents.
+ That configuration is then used to open subsequent MoML files on the
+ command line, and to manage the user interface.
+ <p>
+ Rather than performing all these functions itself, this class
+ is a container for a model directory, effigy factories, and tableau
+ factories that actually realize these functions. An application
+ is configured by populating an instance of this class with
+ a suitable set of these other classes. A minimal configuration
+ defined in MoML is shown below:
+ <pre>
+ &lt;?xml version="1.0" standalone="no"?&gt;
+ &lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+ "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+ &lt;entity name="configuration" class="ptolemy.actor.gui.Configuration"&gt;
+ &lt;doc&gt;Configuration to run but not edit Ptolemy II models&lt;/doc&gt;
+ &lt;entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/&gt;
+ &lt;entity name="effigyFactory" class="ptolemy.actor.gui.PtolemyEffigy$Factory"/&gt;
+ &lt;property name="tableauFactory" class="ptolemy.actor.gui.RunTableau$Factory"/&gt;
+ &lt;/entity&gt;
+ </pre>
+ <p>
+ It must contain, at a minimum, an instance of ModelDirectory, named
+ "directory", and an instance of EffigyFactory, named "effigyFactory".
+ The openModel() method delegates to the effigy factory the opening of a model.
+ It may also contain an instance of TextEditorTableauFactory, named "tableauFactory".
+ A tableau is a visual representation of the model in a top-level window.
+ The above minimal configuration can be used to run Ptolemy II models
+ by opening a run panel only.
+ <p>
+ When the directory becomes empty (all models have been closed),
+ it removes itself from the configuration. When this happens, the
+ configuration calls System.exit() to exit the application.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (celaine)
-   @see EffigyFactory
-   @see ModelDirectory
-   @see Tableau
-   @see TextEditorTableau
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (celaine)
+ @see EffigyFactory
+ @see ModelDirectory
+ @see Tableau
+ @see TextEditorTableau
+ */
 public class Configuration extends CompositeEntity {
     /** Construct an instance in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -158,7 +157,7 @@ public class Configuration extends CompositeEntity {
 
             if (model != null) {
                 Iterator factories = model.attributeList(TableauFactory.class)
-                    .iterator();
+                        .iterator();
 
                 // If there are more than one of these, use the first
                 // one that agrees to open the model.
@@ -222,7 +221,8 @@ public class Configuration extends CompositeEntity {
                 try {
                     effigy.setContainer(null);
                 } catch (KernelException kernelException) {
-                    throw new InternalErrorException(this, kernelException, null);
+                    throw new InternalErrorException(this, kernelException,
+                            null);
                 }
 
                 // As a last resort, attempt to open source code
@@ -231,23 +231,25 @@ public class Configuration extends CompositeEntity {
                     NamedObj object = ((PtolemyEffigy) effigy).getModel();
 
                     // Source code is found by name.
-                    String filename = StringUtilities.objectToSourceFileName(object);
+                    String filename = StringUtilities
+                            .objectToSourceFileName(object);
 
                     try {
-                        URL toRead = getClass().getClassLoader().getResource(filename);
+                        URL toRead = getClass().getClassLoader().getResource(
+                                filename);
 
                         if (toRead != null) {
-                            return openModel(null, toRead,
-                                    toRead.toExternalForm());
+                            return openModel(null, toRead, toRead
+                                    .toExternalForm());
                         } else {
-                            MessageHandler.error(
-                                    "Cannot find a tableau or the source code for "
-                                    + object.getFullName());
+                            MessageHandler
+                                    .error("Cannot find a tableau or the source code for "
+                                            + object.getFullName());
                         }
                     } catch (Exception exception) {
                         MessageHandler.error(
                                 "Failed to open the source code for "
-                                + object.getFullName(), exception);
+                                        + object.getFullName(), exception);
                     }
                 }
 
@@ -372,9 +374,9 @@ public class Configuration extends CompositeEntity {
             effigy = factory.createEffigy(directory, base, in);
 
             if (effigy == null) {
-                MessageHandler.error(
-                        "Unsupported file type or connection not available: "
-                        + in.toExternalForm());
+                MessageHandler
+                        .error("Unsupported file type or connection not available: "
+                                + in.toExternalForm());
                 return null;
             }
 
@@ -430,8 +432,8 @@ public class Configuration extends CompositeEntity {
      *  @exception NameDuplicationException If a name conflict occurs (this
      *   should not be thrown).
      */
-    public Tableau openModel(NamedObj entity)
-            throws IllegalActionException, NameDuplicationException {
+    public Tableau openModel(NamedObj entity) throws IllegalActionException,
+            NameDuplicationException {
         return openModel(entity, null);
     }
 
@@ -466,7 +468,7 @@ public class Configuration extends CompositeEntity {
 
         if (entity instanceof InstantiableNamedObj) {
             deferredTo = (InstantiableNamedObj) ((InstantiableNamedObj) entity)
-                .getParent();
+                    .getParent();
             isClass = ((InstantiableNamedObj) entity).isClassDefinition();
         }
 
@@ -488,7 +490,7 @@ public class Configuration extends CompositeEntity {
         if (container != null) {
             throw new IllegalActionException(this,
                     "Configuration can only be at the top level "
-                    + "of a hierarchy.");
+                            + "of a hierarchy.");
         }
     }
 
@@ -574,7 +576,7 @@ public class Configuration extends CompositeEntity {
             NamedObj model) {
         if (composite != null) {
             Iterator effigies = composite.entityList(PtolemyEffigy.class)
-                .iterator();
+                    .iterator();
 
             while (effigies.hasNext()) {
                 PtolemyEffigy effigy = (PtolemyEffigy) effigies.next();
@@ -637,7 +639,7 @@ public class Configuration extends CompositeEntity {
                 // the value might not get set.
                 if (uri == null) {
                     effigy.identifier.setExpression(_effigyIdentifier(effigy,
-                                                            entity));
+                            entity));
                 } else {
                     effigy.identifier.setExpression(uri.toString());
                 }
@@ -700,7 +702,8 @@ public class Configuration extends CompositeEntity {
                     }
                 }
 
-                effigy.identifier.setExpression(_effigyIdentifier(effigy, entity));
+                effigy.identifier.setExpression(_effigyIdentifier(effigy,
+                        entity));
 
                 return createPrimaryTableau(effigy);
             }

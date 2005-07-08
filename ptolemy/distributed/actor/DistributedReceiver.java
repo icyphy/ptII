@@ -23,7 +23,7 @@
  HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package ptolemy.distributed.actor;
 
 import java.rmi.RemoteException;
@@ -42,17 +42,17 @@ import ptolemy.kernel.util.KernelException;
 //// DistributedReceiver
 
 /**
-   An implementation of the Receiver interface for distributed environments.
-   Basically, its task is to forward tokens to distributed services
-   whenever the put method is called.
+ An implementation of the Receiver interface for distributed environments.
+ Basically, its task is to forward tokens to distributed services
+ whenever the put method is called.
 
-   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.actor.AbstractReceiver
-*/
+ @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (kapokasa)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.actor.AbstractReceiver
+ */
 public class DistributedReceiver extends AbstractReceiver {
 
     ///////////////////////////////////////////////////////////////////
@@ -98,14 +98,13 @@ public class DistributedReceiver extends AbstractReceiver {
             System.out.println("Forwarding token: " + token.toString());
         }
 
-        for (Iterator services = servicesReceiversListMap.keySet().iterator();
-             services.hasNext();) {
+        for (Iterator services = servicesReceiversListMap.keySet().iterator(); services
+                .hasNext();) {
             ServiceItem server = (ServiceItem) services.next();
             LinkedList ids = (LinkedList) servicesReceiversListMap.get(server);
             HashMap hashMap = new HashMap();
             hashMap.put(token, ids);
-            DistributedActor distributedActor = (DistributedActor)
-                server.service;
+            DistributedActor distributedActor = (DistributedActor) server.service;
             try {
                 distributedActor.put(hashMap);
             } catch (RemoteException e) {
@@ -121,8 +120,8 @@ public class DistributedReceiver extends AbstractReceiver {
      */
     public void setServicesReceiversListMap(HashMap servRecListMap) {
         if (VERBOSE) {
-            System.out.println("> DistributedReceiver." +
-                               "setServicesReceiversListMap()");
+            System.out.println("> DistributedReceiver."
+                    + "setServicesReceiversListMap()");
         }
         servicesReceiversListMap = servRecListMap;
     }

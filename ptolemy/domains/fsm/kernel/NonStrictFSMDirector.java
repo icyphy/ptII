@@ -1,30 +1,30 @@
 /* This director extends FSMDirector by consuming only input tokens
-   that are needed in the current state.
+ that are needed in the current state.
 
-   Copyright (c) 2004-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fsm.kernel;
 
 import java.util.HashSet;
@@ -47,43 +47,42 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NonStrictFSMDirector
 
 /**
-   This director extends FSMDirector by consuming only input tokens that
-   are needed in the current state. An input port will consume at most one
-   token if:
-   <p>
-   1. The port is referred by any guard expression of the preemptive
-   transitions leaving the current state, the output actions
-   and/or set actions of the enabled transition.
-   <p>
-   2. No preemptive transition is enabled and the port is referred by
-   the refinements of the current state, any guard expression of the
-   nonpreemptive transitions leaving the current state, the output
-   actions and/or set actions of the enabled transition.
-   <p>
-   A port is said to be referred by a guard/output action/set action
-   expression of a transition if the port name appears in that expression.
-   A port is said to be referred by a state refinement if the it is
-   not a dangling port and has a consumption rate greater than zero in
-   the refinement.
-   <p>
-   FIXME: This is highly preliminary. Missing capabilities:
-   FIXME: Currently this director uses the default receiver of FSMDirector,
-   which is a mailbox, so there is no way to consume more than one token.
-   This director could use a different receiver and support a syntax in
-   the guard expression language to support consumption of more than one
-   token.
+ This director extends FSMDirector by consuming only input tokens that
+ are needed in the current state. An input port will consume at most one
+ token if:
+ <p>
+ 1. The port is referred by any guard expression of the preemptive
+ transitions leaving the current state, the output actions
+ and/or set actions of the enabled transition.
+ <p>
+ 2. No preemptive transition is enabled and the port is referred by
+ the refinements of the current state, any guard expression of the
+ nonpreemptive transitions leaving the current state, the output
+ actions and/or set actions of the enabled transition.
+ <p>
+ A port is said to be referred by a guard/output action/set action
+ expression of a transition if the port name appears in that expression.
+ A port is said to be referred by a state refinement if the it is
+ not a dangling port and has a consumption rate greater than zero in
+ the refinement.
+ <p>
+ FIXME: This is highly preliminary. Missing capabilities:
+ FIXME: Currently this director uses the default receiver of FSMDirector,
+ which is a mailbox, so there is no way to consume more than one token.
+ This director could use a different receiver and support a syntax in
+ the guard expression language to support consumption of more than one
+ token.
 
-   @author Ye Zhou
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (zhouye)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Ye Zhou
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Red (zhouye)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class NonStrictFSMDirector extends FSMDirector {
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -149,7 +148,8 @@ public class NonStrictFSMDirector extends FSMDirector {
                     throw new MultipleEnabledTransitionsException(controller
                             .currentState(),
                             "Multiple enabled transitions found but "
-                            + enabledTransition.getName() + " is deterministic.");
+                                    + enabledTransition.getName()
+                                    + " is deterministic.");
                 }
             }
         }
@@ -172,7 +172,8 @@ public class NonStrictFSMDirector extends FSMDirector {
                 randomChoice--;
             }
 
-            enabledTransition = (Transition) enabledTransitions.get(randomChoice);
+            enabledTransition = (Transition) enabledTransitions
+                    .get(randomChoice);
         }
 
         _enabledTransition = enabledTransition;
@@ -238,10 +239,11 @@ public class NonStrictFSMDirector extends FSMDirector {
                     Transition transition = (Transition) transitions.next();
 
                     if (!enabledTransition.isNondeterministic()) {
-                        throw new MultipleEnabledTransitionsException(controller
-                                .currentState(),
+                        throw new MultipleEnabledTransitionsException(
+                                controller.currentState(),
                                 "Multiple enabled transitions found but "
-                                + transition.getName() + " is deterministic.");
+                                        + transition.getName()
+                                        + " is deterministic.");
                     }
                 }
             }
@@ -262,7 +264,8 @@ public class NonStrictFSMDirector extends FSMDirector {
                     randomChoice--;
                 }
 
-                enabledTransition = (Transition) enabledTransitions.get(randomChoice);
+                enabledTransition = (Transition) enabledTransitions
+                        .get(randomChoice);
             }
 
             _enabledTransition = enabledTransition;
@@ -412,17 +415,18 @@ public class NonStrictFSMDirector extends FSMDirector {
 
                     if ((inputPort.getWidth() != 0)
                             && (DFUtilities.getRate(inputPort) > 0)) {
-                        Iterator inputPortsOutside = inputPort.deepConnectedInPortList()
-                            .iterator();
+                        Iterator inputPortsOutside = inputPort
+                                .deepConnectedInPortList().iterator();
 
                         while (inputPortsOutside.hasNext()) {
                             IOPort inputPortOutside = (IOPort) inputPortsOutside
-                                .next();
+                                    .next();
 
                             if ((inputPortOutside.getContainer() == container)
                                     && !_refinementReferredInputPorts
-                                    .contains(inputPortOutside)) {
-                                _refinementReferredInputPorts.add(inputPortOutside);
+                                            .contains(inputPortOutside)) {
+                                _refinementReferredInputPorts
+                                        .add(inputPortOutside);
                             }
                         }
                     }
@@ -482,8 +486,8 @@ public class NonStrictFSMDirector extends FSMDirector {
             String string = transition.getGuardExpression();
 
             if (string.equals("")) {
-                throw new IllegalActionException(this,
-                        "guard expression on " + transition.getName() + "is null!");
+                throw new IllegalActionException(this, "guard expression on "
+                        + transition.getName() + "is null!");
             }
 
             PtParser parser = new PtParser();

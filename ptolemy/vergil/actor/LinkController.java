@@ -1,30 +1,30 @@
 /* The edge controller for links.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.actor;
 
 import ptolemy.actor.gui.Configuration;
@@ -58,21 +58,20 @@ import diva.graph.EdgeRenderer;
 import diva.graph.GraphController;
 import diva.gui.toolbox.MenuCreator;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LinkController
 
 /**
-   This class provides interaction techniques for edges that are to be
-   connected between ports and relations.  Standard interaction
-   techniques for an undirected edge are allowed.
+ This class provides interaction techniques for edges that are to be
+ connected between ports and relations.  Standard interaction
+ techniques for an undirected edge are allowed.
 
-   @author Steve Neuendorffer, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class LinkController extends BasicEdgeController {
     /** Create a link controller associated with the specified graph
      *  controller.
@@ -107,11 +106,13 @@ public class LinkController extends BasicEdgeController {
         // menu factory, which is a protected member of this class.
         // Derived classes can add menu items to it.
         _menuFactory = new PtolemyMenuFactory(controller);
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(_configureAction));
+        _menuFactory
+                .addMenuItemFactory(new MenuActionFactory(_configureAction));
         _menuCreator.setMenuFactory(_menuFactory);
 
         // Add a double click interactor.
-        ActionInteractor doubleClickInteractor = new ActionInteractor(_configureAction);
+        ActionInteractor doubleClickInteractor = new ActionInteractor(
+                _configureAction);
         doubleClickInteractor.setConsuming(false);
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 
@@ -153,12 +154,12 @@ public class LinkController extends BasicEdgeController {
             Object object = f.getUserObject();
 
             if (object instanceof Port
-            		|| object instanceof Vertex
-					|| (object instanceof Locatable
-                    && ((Locatable) object).getContainer() instanceof Port)) {
+                    || object instanceof Vertex
+                    || (object instanceof Locatable && ((Locatable) object)
+                            .getContainer() instanceof Port)) {
                 return super.acceptHead(c, f);
             } else {
-            	return false;
+                return false;
             }
         }
 
@@ -166,9 +167,9 @@ public class LinkController extends BasicEdgeController {
             Object object = f.getUserObject();
 
             if (object instanceof Port
-            		|| object instanceof Vertex
-					|| (object instanceof Locatable
-                    && ((Locatable) object).getContainer() instanceof Port)) {
+                    || object instanceof Vertex
+                    || (object instanceof Locatable && ((Locatable) object)
+                            .getContainer() instanceof Port)) {
                 return super.acceptHead(c, f);
             } else {
                 return false;
@@ -188,7 +189,7 @@ public class LinkController extends BasicEdgeController {
     }
 
     public static class LinkRenderer implements EdgeRenderer {
-        
+
         /** Render a visual representation of the given edge. If the
          *  StringAttribute _color of the edge is set then use that color to
          *  highlight the node. If the StringAttribute _explanation of the edge
@@ -246,7 +247,7 @@ public class LinkController extends BasicEdgeController {
             Object edge = c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
             ActorGraphModel model = (ActorGraphModel) getController()
-                .getGraphModel();
+                    .getGraphModel();
 
             switch (evt.getEnd()) {
             case ConnectorEvent.HEAD_END:

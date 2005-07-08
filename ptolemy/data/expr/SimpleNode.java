@@ -3,8 +3,11 @@ package ptolemy.data.expr;
 
 public class SimpleNode implements Node {
     protected Node parent;
+
     protected Node[] children;
+
     protected int id;
+
     protected PtParser parser;
 
     public SimpleNode(int i) {
@@ -51,10 +54,10 @@ public class SimpleNode implements Node {
     }
 
     /* You can override these two methods in subclasses of SimpleNode to
-       customize the way the node appears when the tree is dumped.  If
-       your output uses more than one line you should override
-       toString(String), otherwise overriding toString() is probably all
-       you need to do. */
+     customize the way the node appears when the tree is dumped.  If
+     your output uses more than one line you should override
+     toString(String), otherwise overriding toString() is probably all
+     you need to do. */
     public String toString() {
         return PtParserTreeConstants.jjtNodeName[id];
     }
@@ -64,7 +67,7 @@ public class SimpleNode implements Node {
     }
 
     /* Override this method if you want to customize how the node dumps
-       out its children. */
+     out its children. */
     public void dump(String prefix) {
         System.out.println(toString(prefix));
 

@@ -1,32 +1,32 @@
 /* A DDEDirector governs the execution of actors operating according
-   to the DDE model of computation.
+ to the DDE model of computation.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.dde.kernel;
 
 import java.util.Collections;
@@ -53,79 +53,78 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DDEDirector
 
 /**
-   A DDEDirector governs the execution of actors operating according
-   to the DDE model of computation (MoC). The DDE MoC incorporates
-   a distributed notion of time into a dataflow style communication
-   semantic. Blocking reads occur if attempts to consume data are
-   made when the corresponding receiver is empty and blocking writes
-   occur if attempts to produce data are made when the corresponding
-   receiver is full.
-   <P>
-   In conjunction with the blocking read/write facilities, the DDE
-   domain uses a distributed, local notion of time. In a network of
-   actors governed by a DDEDirector each actor has a local notion of
-   time. Several features of the DDEDirector are intended to facilitate
-   these local notions of time.
-   <P>
-   All DDE models have a completion time. The completion time is a preset
-   time after which all execution ceases. The completion time for a
-   DDEDirector is specified via the <I>stopTime</I> parameter. The value
-   of the stopTime parameter is passed to the receivers of all actors
-   that the DDEDirector governs via newReceiver() during initialize().
-   After initialize() has been called, the value of stopTime can not be
-   changed.
-   <P>
-   The default value of the stopTime parameter is
-   PrioritizedTimedQueue.ETERNITY. Given this value, a DDE model will
-   continue executing without regard for a completion time.
-   <P>
-   Deadlock due to feedback loops is dealt with via NullTokens. When an
-   actor in a DDE model receives a NullToken, it may advance its local
-   time value even though no computation results directly from
-   consumption of the NullToken. For models with feedback topologies,
-   the FeedBackDelay actor should be used in the feedback loop.
-   <P>
-   The DDE model of computation assumes that valid time stamps have
-   non-negative values. Three special purpose negative time values
-   are reserved with the following meanings. The value of
-   PrioritizedTimedQueue.INACTIVE is reserved to indicate the termination
-   of a receiver. The value of PrioritizedTimedQueue.ETERNITY is reserved
-   to indicate that a receiver has not begun to participate in a model's
-   execution. The value of PrioritizedTimedQueue.IGNORE is reserved to
-   indicate that the current token at the head of a DDEReceiver should
-   be ignored in favor of the tokens contained in the other receivers
-   of the actor in question. More details of IGNORE can be found in
-   FeedBackDelay.
-   <P>
-   NOTE: The current implementation of this director does not
-   include an infrastructure for mutations. Hence, ChangeRequest
-   and other facilities for changing the topology of a model are
-   not included in this director.
+ A DDEDirector governs the execution of actors operating according
+ to the DDE model of computation (MoC). The DDE MoC incorporates
+ a distributed notion of time into a dataflow style communication
+ semantic. Blocking reads occur if attempts to consume data are
+ made when the corresponding receiver is empty and blocking writes
+ occur if attempts to produce data are made when the corresponding
+ receiver is full.
+ <P>
+ In conjunction with the blocking read/write facilities, the DDE
+ domain uses a distributed, local notion of time. In a network of
+ actors governed by a DDEDirector each actor has a local notion of
+ time. Several features of the DDEDirector are intended to facilitate
+ these local notions of time.
+ <P>
+ All DDE models have a completion time. The completion time is a preset
+ time after which all execution ceases. The completion time for a
+ DDEDirector is specified via the <I>stopTime</I> parameter. The value
+ of the stopTime parameter is passed to the receivers of all actors
+ that the DDEDirector governs via newReceiver() during initialize().
+ After initialize() has been called, the value of stopTime can not be
+ changed.
+ <P>
+ The default value of the stopTime parameter is
+ PrioritizedTimedQueue.ETERNITY. Given this value, a DDE model will
+ continue executing without regard for a completion time.
+ <P>
+ Deadlock due to feedback loops is dealt with via NullTokens. When an
+ actor in a DDE model receives a NullToken, it may advance its local
+ time value even though no computation results directly from
+ consumption of the NullToken. For models with feedback topologies,
+ the FeedBackDelay actor should be used in the feedback loop.
+ <P>
+ The DDE model of computation assumes that valid time stamps have
+ non-negative values. Three special purpose negative time values
+ are reserved with the following meanings. The value of
+ PrioritizedTimedQueue.INACTIVE is reserved to indicate the termination
+ of a receiver. The value of PrioritizedTimedQueue.ETERNITY is reserved
+ to indicate that a receiver has not begun to participate in a model's
+ execution. The value of PrioritizedTimedQueue.IGNORE is reserved to
+ indicate that the current token at the head of a DDEReceiver should
+ be ignored in favor of the tokens contained in the other receivers
+ of the actor in question. More details of IGNORE can be found in
+ FeedBackDelay.
+ <P>
+ NOTE: The current implementation of this director does not
+ include an infrastructure for mutations. Hence, ChangeRequest
+ and other facilities for changing the topology of a model are
+ not included in this director.
 
 
-   @author John S. Davis II, Mudit Goel
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (davisj)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.domains.pn.kernel.PNDirector
-   @see ptolemy.domains.dde.kernel.FeedBackDelay
-   @see ptolemy.domains.dde.kernel.NullToken
-*/
-public class DDEDirector extends CompositeProcessDirector
-    implements TimedDirector {
+ @author John S. Davis II, Mudit Goel
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Red (davisj)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.domains.pn.kernel.PNDirector
+ @see ptolemy.domains.dde.kernel.FeedBackDelay
+ @see ptolemy.domains.dde.kernel.NullToken
+ */
+public class DDEDirector extends CompositeProcessDirector implements
+        TimedDirector {
     /** Construct a DDEDirector in the default workspace with
      *  an empty string as its name. The director is added to
      *  the list of objects in the workspace. Increment the
      *  version number of the workspace.
      */
-    public DDEDirector()
-            throws IllegalActionException, NameDuplicationException {
+    public DDEDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -139,8 +138,8 @@ public class DDEDirector extends CompositeProcessDirector
      *  of the workspace.
      * @param workspace The workspace of this object.
      */
-    public DDEDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public DDEDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -504,8 +503,11 @@ public class DDEDirector extends CompositeProcessDirector
     // Since the completionTime is a constant, we do not convert it
     // to a time object.
     private Time _completionTime;
+
     private boolean _pendingMutations = false;
+
     private LinkedList _writeBlockedQueues;
+
     private Hashtable _initialTimeTable;
 
     ///////////////////////////////////////////////////////////////////

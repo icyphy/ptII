@@ -1,30 +1,30 @@
 /* Unbundle a matrix into a sequence of N by M tokens.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -43,33 +43,32 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MatrixToSequence
 
 /**
-   This actor unbundles a matrix into a sequence of output tokens.
-   On each firing, it writes the elements of the array to the output
-   as a sequence of output tokens.
-   and writes one output matrix token with the specified number of rows
-   and columns.
-   If the <i>enforceMatrixSize</i> parameter true, then if an input
-   matrix does not match <i>rows</i> and <i>columns</i>, then
-   the fire() method will throw an exception.
-   This feature is important in domains, such as SDF,
-   that do static scheduling based on production and consumption
-   rates.  For other domains, such as DE and PN, the <i>enforceMatrixSize</i>
-   parameter can be set to false, in which case the <i>rows</i> and
-   <i>columns</i> parameters will be ignored.
-   This actor is polymorphic. It can accept any matrix input and the output
-   will have the type of the elements of the matrix.
-   <p>
-   @author Edward Lee
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (neuendor)
-*/
+ This actor unbundles a matrix into a sequence of output tokens.
+ On each firing, it writes the elements of the array to the output
+ as a sequence of output tokens.
+ and writes one output matrix token with the specified number of rows
+ and columns.
+ If the <i>enforceMatrixSize</i> parameter true, then if an input
+ matrix does not match <i>rows</i> and <i>columns</i>, then
+ the fire() method will throw an exception.
+ This feature is important in domains, such as SDF,
+ that do static scheduling based on production and consumption
+ rates.  For other domains, such as DE and PN, the <i>enforceMatrixSize</i>
+ parameter can be set to false, in which case the <i>rows</i> and
+ <i>columns</i> parameters will be ignored.
+ This actor is polymorphic. It can accept any matrix input and the output
+ will have the type of the elements of the matrix.
+ <p>
+ @author Edward Lee
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (neuendor)
+ */
 public class MatrixToSequence extends SDFTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -98,8 +97,8 @@ public class MatrixToSequence extends SDFTransformer {
         output_tokenProductionRate.setExpression("rows * columns");
 
         // Set the icon.
-        _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
@@ -180,7 +179,7 @@ public class MatrixToSequence extends SDFTransformer {
         int actualRowCount = token.getRowCount();
         int actualColumnCount = token.getColumnCount();
         boolean enforce = ((BooleanToken) enforceMatrixSize.getToken())
-            .booleanValue();
+                .booleanValue();
 
         if (enforce) {
             int rowsValue = ((IntToken) rows.getToken()).intValue();
@@ -190,7 +189,7 @@ public class MatrixToSequence extends SDFTransformer {
                     || (actualColumnCount != columnsValue)) {
                 throw new IllegalActionException(this,
                         "The input matrix size does not"
-                        + " match what the actor requires.");
+                                + " match what the actor requires.");
             }
         }
 

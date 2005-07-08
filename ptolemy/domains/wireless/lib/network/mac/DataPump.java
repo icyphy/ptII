@@ -1,34 +1,33 @@
 /* An actor that talks to the Physical layer to get permission of
-   sending data.
+ sending data.
 
-   Copyright (c) 2004-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib.network.mac;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
@@ -39,30 +38,29 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DataPump
 
 /**
-   This actor works in the Transmission block in IEEE 802.11 Mac. For every
-   TxRequest from the Protocol_Control block, this actor sends a PhyTxStart
-   request to the physical layer. Upon receiving the PhyTxStart confirmation,
-   it sends data to the physical layer. After the data has been sent, it sends
-   PhyTxEnd request to the physical layer and sends TxConfirm to the source of
-   the original TxRequest after receiving PhyTxEnd confirmation from the
-   physical layer.
-   <p>
-   Both TxCoordination and RxCoordination in the Protocol_Control can send
-   TxRequest and require TxConfirm. This actor uses a pair of input and output
-   ports to tell the source of the TxRequest and the destination of the
-   TxConfirm.
+ This actor works in the Transmission block in IEEE 802.11 Mac. For every
+ TxRequest from the Protocol_Control block, this actor sends a PhyTxStart
+ request to the physical layer. Upon receiving the PhyTxStart confirmation,
+ it sends data to the physical layer. After the data has been sent, it sends
+ PhyTxEnd request to the physical layer and sends TxConfirm to the source of
+ the original TxRequest after receiving PhyTxEnd confirmation from the
+ physical layer.
+ <p>
+ Both TxCoordination and RxCoordination in the Protocol_Control can send
+ TxRequest and require TxConfirm. This actor uses a pair of input and output
+ ports to tell the source of the TxRequest and the destination of the
+ TxConfirm.
 
-   @author Yang Zhao, Charlie Zhong and Xiaojun Liu
-   @version DataPump.java,v 1.18 2004/04/22 19:46:18 ellen_zh Exp
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (ellen_zh)
-   @Pt.AcceptedRating Red (pjb2e)
-*/
+ @author Yang Zhao, Charlie Zhong and Xiaojun Liu
+ @version DataPump.java,v 1.18 2004/04/22 19:46:18 ellen_zh Exp
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (ellen_zh)
+ @Pt.AcceptedRating Red (pjb2e)
+ */
 public class DataPump extends MACActorBase {
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
@@ -198,13 +196,12 @@ public class DataPump extends MACActorBase {
                     _toBackoff(Busy);
 
                     int length = ((IntToken) _pdu.get("Length")).intValue();
-                    int rate = ((IntToken) _inputMessage.get("rate")).intValue();
-                    Token[] value = {
-                        new IntToken(TxStart),
-                        new IntToken(length),
-                        new IntToken(rate)
-                    };
-                    toPHYLayer.send(0, new RecordToken(TxStartMsgFields, value));
+                    int rate = ((IntToken) _inputMessage.get("rate"))
+                            .intValue();
+                    Token[] value = { new IntToken(TxStart),
+                            new IntToken(length), new IntToken(rate) };
+                    toPHYLayer
+                            .send(0, new RecordToken(TxStartMsgFields, value));
                     _state = Wait_TxStart;
 
                     break;
@@ -221,11 +218,9 @@ public class DataPump extends MACActorBase {
             case Wait_TxStart:
 
                 if (_messageType == TxStartConfirm) {
-                    Token[] values = {
-                        new IntToken(TxData),
-                        _pdu
-                    };
-                    RecordToken newPdu = new RecordToken(TxDataMsgFields, values);
+                    Token[] values = { new IntToken(TxData), _pdu };
+                    RecordToken newPdu = new RecordToken(TxDataMsgFields,
+                            values);
                     toPHYLayer.send(0, newPdu);
                     _state = Wait_TxEnd;
                 }
@@ -235,9 +230,7 @@ public class DataPump extends MACActorBase {
             case Wait_TxEnd:
 
                 if (_messageType == TxEnd) {
-                    Token[] value = {
-                        new IntToken(TxConfirm)
-                    };
+                    Token[] value = { new IntToken(TxConfirm) };
                     RecordToken confirm = new RecordToken(TxConfirmMsgFields,
                             value);
 
@@ -289,39 +282,47 @@ public class DataPump extends MACActorBase {
     ////                         private methods                   ////
     private void _toBackoff(int kind) throws IllegalActionException {
         // send idle/busy event to the backoff block
-        Token[] value = {
-            new IntToken(kind)
-        };
+        Token[] value = { new IntToken(kind) };
         RecordToken t = new RecordToken(CSMsgFields, value);
         toBackoff.send(0, t);
     }
 
     /**   private void _getMsgType() throws IllegalActionException {
 
-    if (channelStatus.hasToken(0)) {
-    _inputMessage = (RecordToken) channelStatus.get(0);
-    } else if (fromFilterMpdu.hasToken(0)) {
-    _inputMessage = (RecordToken) fromFilterMpdu.get(0);
-    }
-    if (_inputMessage != null) {
-    _messageType = ((IntToken)
-    _inputMessage.get("kind")).intValue();
-    }
-    }
-    */
+     if (channelStatus.hasToken(0)) {
+     _inputMessage = (RecordToken) channelStatus.get(0);
+     } else if (fromFilterMpdu.hasToken(0)) {
+     _inputMessage = (RecordToken) fromFilterMpdu.get(0);
+     }
+     if (_inputMessage != null) {
+     _messageType = ((IntToken)
+     _inputMessage.get("kind")).intValue();
+     }
+     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     //Define the states of the inside FSM.
     private static final int Tx_Idle = 0;
+
     private static final int Wait_TxStart = 1;
+
     private static final int Wait_TxEnd = 2;
+
     private int _state = 0;
+
     private int _source = 0;
+
     private static final int FromProtocolTx = 0;
+
     private static final int FromProtocolRx = 1;
+
     private RecordToken _pdu;
+
     private RecordToken _inputMessage;
+
     private int _messageType;
+
     private double _currentTime;
 }

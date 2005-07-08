@@ -1,55 +1,54 @@
 /** An interface for a term in an inequality over a CPO.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.graph;
 
 import ptolemy.kernel.util.IllegalActionException;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// InequalityTerm
 
 /**
-   An interface for a term in an inequality over a CPO.
-   A term is either a constant, a variable, or a function.
-   In some applications, a term may be associated with an Object. For
-   example, the value of the term may represent a certain characteristic
-   of an Object, and it is necessary to get a reference of that Object
-   from a term. This can be done through the getAssociatedObject() method
-   of this interface.
+ An interface for a term in an inequality over a CPO.
+ A term is either a constant, a variable, or a function.
+ In some applications, a term may be associated with an Object. For
+ example, the value of the term may represent a certain characteristic
+ of an Object, and it is necessary to get a reference of that Object
+ from a term. This can be done through the getAssociatedObject() method
+ of this interface.
 
-   @author Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (yuhong)
-   @Pt.AcceptedRating Green (kienhuis)
-   @see CPO
-*/
+ @author Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (yuhong)
+ @Pt.AcceptedRating Green (kienhuis)
+ @see CPO
+ */
 public interface InequalityTerm {
     /** Return the Object associated with this term. If this term is
      *  not associated with a particular Object, or it is not necessary

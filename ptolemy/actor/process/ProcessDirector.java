@@ -1,31 +1,31 @@
 /* The base class for directors for the process oriented domains.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-Semantics of initialize(Actor) have changed.
-*/
+ Semantics of initialize(Actor) have changed.
+ */
 package ptolemy.actor.process;
 
 import java.util.Iterator;
@@ -45,41 +45,40 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ProcessDirector
 
 /**
-   The base class for directors for the process oriented domains. It provides
-   default implementations for methods that are common across such domains.
-   <P>
-   In the process oriented domains, the director controlling a model
-   needs to keep track of the state of the model. In particular it needs
-   to maintain an accurate count of the number of active processes under
-   its control and any processes that are blocked for whatever reason (trying
-   to read from an empty channel as in PN).
-   These counts, and perhaps other counts, are needed by the
-   director to control and respond when deadlock is detected (no processes
-   can make progress), or to respond to requests from higher in the hierarchy.
-   <P>
-   The methods that control how the director detects and responds to deadlocks
-   are _areActorsDeadlocked() and _resolveDeadlock(). These methods should be
-   overridden in derived classes to get domain-specific behaviour. The
-   implementations given here are trivial and suffice only to illustrate
-   the approach that should be followed.
-   <P>
-   This base class is not sufficient for executing hierarchical, heterogeneous
-   models. In order to accommodate hierarchical, heterogeneity the subclass
-   CompositeProcessDirector must be used.
-   <P>
-   <P>
-   @author Mudit Goel, Neil Smyth, John S. Davis II
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (mudit)
-   @Pt.AcceptedRating Yellow (mudit)
-   @see Director
-*/
+ The base class for directors for the process oriented domains. It provides
+ default implementations for methods that are common across such domains.
+ <P>
+ In the process oriented domains, the director controlling a model
+ needs to keep track of the state of the model. In particular it needs
+ to maintain an accurate count of the number of active processes under
+ its control and any processes that are blocked for whatever reason (trying
+ to read from an empty channel as in PN).
+ These counts, and perhaps other counts, are needed by the
+ director to control and respond when deadlock is detected (no processes
+ can make progress), or to respond to requests from higher in the hierarchy.
+ <P>
+ The methods that control how the director detects and responds to deadlocks
+ are _areActorsDeadlocked() and _resolveDeadlock(). These methods should be
+ overridden in derived classes to get domain-specific behaviour. The
+ implementations given here are trivial and suffice only to illustrate
+ the approach that should be followed.
+ <P>
+ This base class is not sufficient for executing hierarchical, heterogeneous
+ models. In order to accommodate hierarchical, heterogeneity the subclass
+ CompositeProcessDirector must be used.
+ <P>
+ <P>
+ @author Mudit Goel, Neil Smyth, John S. Davis II
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (mudit)
+ @Pt.AcceptedRating Yellow (mudit)
+ @see Director
+ */
 public class ProcessDirector extends Director {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -460,7 +459,7 @@ public class ProcessDirector extends Director {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
+                    .iterator();
             Iterator actorPorts;
             ProcessReceiver nextReceiver;
 

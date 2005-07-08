@@ -1,32 +1,32 @@
 /* An actor that performs adaptive median filtering on a double matrix.
 
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.lib.jai;
 
 import ptolemy.actor.lib.Transformer;
@@ -39,36 +39,35 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AdaptiveMedian
 
 /**
-   This actor performs adaptive median filtering on an image.  The
-   algorithm is as follows.  For each pixel in the image, a square region
-   of interest is formed with the pixel at the center.  If said region
-   can not be formed (because it is at or near the edge).
+ This actor performs adaptive median filtering on an image.  The
+ algorithm is as follows.  For each pixel in the image, a square region
+ of interest is formed with the pixel at the center.  If said region
+ can not be formed (because it is at or near the edge).
 
-   If the median of this region of interest is strictly less than the
-   maximum value in the region of interest and strictly greater than
-   the minimum value in the region of interest, then we keep the pixel
-   if it too is strictly less than the maximum value in the region of
-   interest and strictly greater than the minimum value in the region
-   of interest.  If it is not, then use the median of the region of
-   interest instead of the pixel.
+ If the median of this region of interest is strictly less than the
+ maximum value in the region of interest and strictly greater than
+ the minimum value in the region of interest, then we keep the pixel
+ if it too is strictly less than the maximum value in the region of
+ interest and strictly greater than the minimum value in the region
+ of interest.  If it is not, then use the median of the region of
+ interest instead of the pixel.
 
-   If the pixel is not strictly less than the maximum value and strictly
-   greater than the minimum value, an attempt is made at using larger
-   region of interest.  If successful, then this process is repeated until
-   a value can be determine, or we hit the the maximum window size.  If this
-   happens, then the pixel is kept.  This process is repeated for each pixel.
+ If the pixel is not strictly less than the maximum value and strictly
+ greater than the minimum value, an attempt is made at using larger
+ region of interest.  If successful, then this process is repeated until
+ a value can be determine, or we hit the the maximum window size.  If this
+ happens, then the pixel is kept.  This process is repeated for each pixel.
 
-   @author James Yeh, Contributor: Christopher Hylands Brooks
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author James Yeh, Contributor: Christopher Hylands Brooks
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class AdaptiveMedian extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -141,8 +140,7 @@ public class AdaptiveMedian extends Transformer {
                     // not.  If we can't (i.e. we are at or near the
                     // edge of an image) then just keep the data.
                     if (((i - dist) < 0) || ((j - dist) < 0)
-                            || ((i + dist) >= width)
-                            || ((j + dist) >= height)) {
+                            || ((i + dist) >= width) || ((j + dist) >= height)) {
                         outputData[i][j] = data[i][j];
                         windowSize = 3;
                         break;

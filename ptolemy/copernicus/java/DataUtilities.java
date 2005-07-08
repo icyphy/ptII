@@ -1,29 +1,29 @@
 /* Ptolemy-specific utilities to use with Soot
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.Collections;
@@ -51,21 +51,20 @@ import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
 import soot.util.Chain;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DataUtilities
 
 /**
-   This class consists of ptolemy-specific static utility methods for use
-   with Soot.  This class particularly contains code relating to the
-   ptolemy.data package.
+ This class consists of ptolemy-specific static utility methods for use
+ with Soot.  This class particularly contains code relating to the
+ ptolemy.data package.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class DataUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -91,8 +90,8 @@ public class DataUtilities {
         try {
             PtParser parser = new PtParser();
             ASTPtRootNode parseTree = parser.generateParseTree(expression);
-            ActorCodeGenerationScope scope = new ActorCodeGenerationScope(entity,
-                    entityClass, nameToFieldOrLocal, nameToType, body,
+            ActorCodeGenerationScope scope = new ActorCodeGenerationScope(
+                    entity, entityClass, nameToFieldOrLocal, nameToType, body,
                     insertPoint);
             ParseTreeCodeGenerator generator = new ParseTreeCodeGenerator();
             local = generator.generateCode(parseTree, body, insertPoint, scope);
@@ -130,8 +129,8 @@ public class DataUtilities {
      *  identifier values when they are discovered in traversing the
      *  parse tree.
      */
-    public static class ActorCodeGenerationScope
-        extends ptolemy.data.expr.ModelScope implements CodeGenerationScope {
+    public static class ActorCodeGenerationScope extends
+            ptolemy.data.expr.ModelScope implements CodeGenerationScope {
         public ActorCodeGenerationScope(Entity entity, SootClass entityClass,
                 Map nameToFieldOrLocal, Map nameToType, JimpleBody body,
                 Unit insertPoint) {
@@ -182,8 +181,12 @@ public class DataUtilities {
             if (identifierReference instanceof SootField) {
                 SootField portField = (SootField) identifierReference;
 
-                Local portLocal = Jimple.v().newLocal("portToken",
-                        PtolemyUtilities.getSootTypeForTokenType(getType(name)));
+                Local portLocal = Jimple
+                        .v()
+                        .newLocal(
+                                "portToken",
+                                PtolemyUtilities
+                                        .getSootTypeForTokenType(getType(name)));
                 _body.getLocals().add(portLocal);
 
                 Local tokenLocal = Jimple.v().newLocal("portToken",
@@ -191,12 +194,21 @@ public class DataUtilities {
                 _body.getLocals().add(tokenLocal);
 
                 _units.insertBefore(Jimple.v().newAssignStmt(tokenLocal,
-                                            Jimple.v().newInstanceFieldRef(thisLocal, portField)),
+                        Jimple.v().newInstanceFieldRef(thisLocal, portField)),
                         _insertPoint);
-                _units.insertBefore(Jimple.v().newAssignStmt(portLocal,
-                                            Jimple.v().newCastExpr(tokenLocal,
-                                                    PtolemyUtilities.getSootTypeForTokenType(getType(
-                                                                                                     name)))), _insertPoint);
+                _units
+                        .insertBefore(
+                                Jimple
+                                        .v()
+                                        .newAssignStmt(
+                                                portLocal,
+                                                Jimple
+                                                        .v()
+                                                        .newCastExpr(
+                                                                tokenLocal,
+                                                                PtolemyUtilities
+                                                                        .getSootTypeForTokenType(getType(name)))),
+                                _insertPoint);
 
                 return portLocal;
             }
@@ -224,11 +236,11 @@ public class DataUtilities {
                 _body.getLocals().add(tokenLocal);
 
                 Entity entityContainer = FieldsForEntitiesTransformer
-                    .getEntityContainerOfObject(result);
+                        .getEntityContainerOfObject(result);
                 String deepName = result.getName(entityContainer);
 
                 _units.insertBefore(Jimple.v().newAssignStmt(containerLocal,
-                                            thisLocal), _insertPoint);
+                        thisLocal), _insertPoint);
 
                 NamedObj container = _entity;
 
@@ -236,25 +248,29 @@ public class DataUtilities {
                     Local containerLocal2 = Jimple.v().newLocal("container",
                             RefType.v(PtolemyUtilities.namedObjClass));
                     _body.getLocals().add(containerLocal2);
-                    _units.insertBefore(Jimple.v().newAssignStmt(containerLocal2,
-                                                Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                                        PtolemyUtilities.getContainerMethod)),
+                    _units.insertBefore(Jimple.v().newAssignStmt(
+                            containerLocal2,
+                            Jimple.v().newVirtualInvokeExpr(containerLocal,
+                                    PtolemyUtilities.getContainerMethod)),
                             _insertPoint);
                     container = (NamedObj) container.getContainer();
                     containerLocal = containerLocal2;
                 }
 
-                _units.insertBefore(Jimple.v().newAssignStmt(attributeLocal,
-                                            Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                                    PtolemyUtilities.getAttributeMethod,
-                                                    StringConstant.v(deepName))), _insertPoint);
-                _units.insertBefore(Jimple.v().newAssignStmt(attributeLocal,
-                                            Jimple.v().newCastExpr(attributeLocal,
-                                                    RefType.v(PtolemyUtilities.variableClass))),
+                _units.insertBefore(Jimple.v().newAssignStmt(
+                        attributeLocal,
+                        Jimple.v().newVirtualInvokeExpr(containerLocal,
+                                PtolemyUtilities.getAttributeMethod,
+                                StringConstant.v(deepName))), _insertPoint);
+                _units.insertBefore(Jimple.v().newAssignStmt(
+                        attributeLocal,
+                        Jimple.v().newCastExpr(attributeLocal,
+                                RefType.v(PtolemyUtilities.variableClass))),
                         _insertPoint);
-                _units.insertBefore(Jimple.v().newAssignStmt(tokenLocal,
-                                            Jimple.v().newVirtualInvokeExpr(attributeLocal,
-                                                    PtolemyUtilities.variableGetTokenMethod)),
+                _units.insertBefore(Jimple.v().newAssignStmt(
+                        tokenLocal,
+                        Jimple.v().newVirtualInvokeExpr(attributeLocal,
+                                PtolemyUtilities.variableGetTokenMethod)),
                         _insertPoint);
 
                 return tokenLocal;
@@ -322,10 +338,15 @@ public class DataUtilities {
         }
 
         private Map _nameToFieldOrLocal;
+
         private Map _nameToType;
+
         private JimpleBody _body;
+
         private Unit _insertPoint;
+
         private Chain _units;
+
         private Entity _entity;
     }
 }

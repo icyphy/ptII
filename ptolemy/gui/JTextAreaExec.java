@@ -1,29 +1,29 @@
 /* A JTextArea that takes a list of commands and runs them.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.gui;
 
 import java.awt.Color;
@@ -55,22 +55,21 @@ import javax.swing.border.Border;
 
 import ptolemy.util.StringUtilities;
 
-
 /** Execute commands in a subprocess and display them in a JTextArea.
 
-<p>Loosely based on Example1.java from
-http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
-<p>See also
-http://developer.java.sun.com/developer/qow/archive/135/index.jsp
-and
-http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html
+ <p>Loosely based on Example1.java from
+ http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
+ <p>See also
+ http://developer.java.sun.com/developer/qow/archive/135/index.jsp
+ and
+ http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html
 
-@author Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0
-@Pt.ProposedRating Red (cxh)
-@Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class JTextAreaExec extends JPanel {
     /** Create the JTextArea, progress bar, status text field and
      *  optionally Start, Cancel and Clear buttons.
@@ -89,8 +88,8 @@ public class JTextAreaExec extends JPanel {
         JScrollPane jScrollPane = new JScrollPane(_jTextArea);
         add(jScrollPane);
 
-        setBorder(BorderFactory.createTitledBorder(
-                          BorderFactory.createLineBorder(Color.black), name));
+        setBorder(BorderFactory.createTitledBorder(BorderFactory
+                .createLineBorder(Color.black), name));
 
         _progressBar = new JProgressBar();
 
@@ -128,7 +127,7 @@ public class JTextAreaExec extends JPanel {
 
         Border progressBarBorder = _progressBar.getBorder();
         _progressBar.setBorder(BorderFactory.createCompoundBorder(spaceBelow,
-                                       progressBarBorder));
+                progressBarBorder));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -140,16 +139,16 @@ public class JTextAreaExec extends JPanel {
      */
     public void appendJTextArea(final String text) {
         Runnable doAppendJTextArea = new Runnable() {
-                public void run() {
-                    // Oddly, we can just use '\n' here,
-                    // we do not need to call
-                    // System.getProperties("line.separator")
-                    _jTextArea.append(text + '\n');
+            public void run() {
+                // Oddly, we can just use '\n' here,
+                // we do not need to call
+                // System.getProperties("line.separator")
+                _jTextArea.append(text + '\n');
 
-                    // Scroll down as we generate text.
-                    _jTextArea.setCaretPosition(_jTextArea.getText().length());
-                }
-            };
+                // Scroll down as we generate text.
+                _jTextArea.setCaretPosition(_jTextArea.getText().length());
+            }
+        };
 
         SwingUtilities.invokeLater(doAppendJTextArea);
     }
@@ -185,10 +184,10 @@ public class JTextAreaExec extends JPanel {
     public static void main(String[] args) {
         JFrame jFrame = new JFrame("JTextAreaExec Example");
         WindowListener windowListener = new WindowAdapter() {
-                public void windowClosing(WindowEvent e) {
-                    System.exit(0);
-                }
-            };
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        };
 
         jFrame.addWindowListener(windowListener);
 
@@ -206,12 +205,12 @@ public class JTextAreaExec extends JPanel {
         jFrame.show();
 
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    //We can't do this until now
-                    exec.getStartButton().requestFocus();
-                    exec.start();
-                }
-            });
+            public void run() {
+                //We can't do this until now
+                exec.getStartButton().requestFocus();
+                exec.start();
+            }
+        });
     }
 
     /** Set the list of commands.
@@ -232,11 +231,11 @@ public class JTextAreaExec extends JPanel {
      */
     public void updateStatusBar(final String text) {
         Runnable doUpdateStatusBar = new Runnable() {
-                public void run() {
-                    _statusBar.setText(text);
-                    _jTextArea.append(text + '\n');
-                }
-            };
+            public void run() {
+                _statusBar.setText(text);
+                _jTextArea.append(text + '\n');
+            }
+        };
 
         SwingUtilities.invokeLater(doUpdateStatusBar);
     }
@@ -281,7 +280,7 @@ public class JTextAreaExec extends JPanel {
                     // and converting substrings that begin and end
                     // with double quotes into one array element.
                     final String[] commandTokens = StringUtilities
-                        .tokenizeForExec((String) commands.next());
+                            .tokenizeForExec((String) commands.next());
 
                     appendJTextArea("About to execute:\n");
 
@@ -305,20 +304,18 @@ public class JTextAreaExec extends JPanel {
                         statusCommand.append(" . . .");
                     }
 
-                    _statusBar.setText("Executing: "
-                            + statusCommand.toString());
+                    _statusBar
+                            .setText("Executing: " + statusCommand.toString());
 
                     _process = runtime.exec(commandTokens);
 
                     // Set up a Thread to read in any error messages
-                    _StreamReaderThread errorGobbler =
-                        new _StreamReaderThread(_process
-                                .getErrorStream(), "ERROR", this);
+                    _StreamReaderThread errorGobbler = new _StreamReaderThread(
+                            _process.getErrorStream(), "ERROR", this);
 
                     // Set up a Thread to read in any output messages
-                    _StreamReaderThread outputGobbler =
-                        new _StreamReaderThread(_process
-                                .getInputStream(), "OUTPUT", this);
+                    _StreamReaderThread outputGobbler = new _StreamReaderThread(
+                            _process.getInputStream(), "OUTPUT", this);
 
                     // Start up the Threads
                     errorGobbler.start();
@@ -335,8 +332,7 @@ public class JTextAreaExec extends JPanel {
                             break;
                         }
                     } catch (InterruptedException interrupted) {
-                        appendJTextArea("InterruptedException: "
-                                + interrupted);
+                        appendJTextArea("InterruptedException: " + interrupted);
                         throw interrupted;
                     }
                 }
@@ -357,60 +353,60 @@ public class JTextAreaExec extends JPanel {
     // This action listener, called by the Clear button, clears
     // the text area
     private ActionListener _clearListener = new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                Runnable doAppendJTextArea = new Runnable() {
-                        public void run() {
-                            _jTextArea.setText(null);
-                        }
-                    };
+        public void actionPerformed(ActionEvent event) {
+            Runnable doAppendJTextArea = new Runnable() {
+                public void run() {
+                    _jTextArea.setText(null);
+                }
+            };
 
-                SwingUtilities.invokeLater(doAppendJTextArea);
-            }
-        };
+            SwingUtilities.invokeLater(doAppendJTextArea);
+        }
+    };
 
     // This action listener, called by the Cancel button, interrupts
     // the _worker thread which is running this._executeCommands().
     // Note that the _executeCommands() method handles
     // InterruptedExceptions cleanly.
     private ActionListener _interruptListener = new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                _cancelButton.setEnabled(false);
-                appendJTextArea("Cancel button was pressed");
-                _worker.interrupt();
-                _process.destroy();
-                _enableStartButton();
-            }
-        };
+        public void actionPerformed(ActionEvent event) {
+            _cancelButton.setEnabled(false);
+            appendJTextArea("Cancel button was pressed");
+            _worker.interrupt();
+            _process.destroy();
+            _enableStartButton();
+        }
+    };
 
     // This action listener, called by the Start button, effectively
     // forks the thread that does the work.
     private ActionListener _startListener = new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                _startButton.setEnabled(false);
-                _cancelButton.setEnabled(true);
-                _statusBar.setText("Working...");
+        public void actionPerformed(ActionEvent event) {
+            _startButton.setEnabled(false);
+            _cancelButton.setEnabled(true);
+            _statusBar.setText("Working...");
 
-                /* Invoking start() on the SwingWorker causes a new Thread
-                 * to be created that will call construct(), and then
-                 * finished().  Note that finished() is called even if
-                 * the _worker is interrupted because we catch the
-                 * InterruptedException in _executeCommands().
-                 */
-                _worker = new SwingWorker() {
-                        public Object construct() {
-                            return _executeCommands();
-                        }
+            /* Invoking start() on the SwingWorker causes a new Thread
+             * to be created that will call construct(), and then
+             * finished().  Note that finished() is called even if
+             * the _worker is interrupted because we catch the
+             * InterruptedException in _executeCommands().
+             */
+            _worker = new SwingWorker() {
+                public Object construct() {
+                    return _executeCommands();
+                }
 
-                        public void finished() {
-                            _enableStartButton();
-                            _cancelButton.setEnabled(false);
-                            _updateProgressBar(0);
-                            _statusBar.setText(get().toString());
-                        }
-                    };
-                _worker.start();
-            }
-        };
+                public void finished() {
+                    _enableStartButton();
+                    _cancelButton.setEnabled(false);
+                    _updateProgressBar(0);
+                    _statusBar.setText(get().toString());
+                }
+            };
+            _worker.start();
+        }
+    };
 
     // When the _worker needs to update the GUI we do so by queuing a
     // Runnable for the event dispatching thread with
@@ -418,11 +414,11 @@ public class JTextAreaExec extends JPanel {
     // the value of the progress bar.
     private void _updateProgressBar(final int i) {
         Runnable doSetProgressBarValue = new Runnable() {
-                public void run() {
-                    //_jTextArea.append(new Integer(i).toString());
-                    _progressBar.setValue(i);
-                }
-            };
+            public void run() {
+                //_jTextArea.append(new Integer(i).toString());
+                _progressBar.setValue(i);
+            }
+        };
 
         SwingUtilities.invokeLater(doSetProgressBarValue);
     }
@@ -443,13 +439,15 @@ public class JTextAreaExec extends JPanel {
         // JTextArea.
         public void run() {
             try {
-                InputStreamReader inputStreamReader = new InputStreamReader(_inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                InputStreamReader inputStreamReader = new InputStreamReader(
+                        _inputStream);
+                BufferedReader bufferedReader = new BufferedReader(
+                        inputStreamReader);
                 String line = null;
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _jTextAreaExec.appendJTextArea( /*_streamType + ">" +*/
-                            line);
+                    line);
                 }
             } catch (IOException ioe) {
                 _jTextAreaExec.appendJTextArea("IOException: " + ioe);

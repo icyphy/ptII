@@ -1,48 +1,47 @@
 /* A pair of states.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fsm.kernel.ia;
 
 import ptolemy.domains.fsm.kernel.State;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// StatePair
 
 /**
-   A pair of states.
-   This class is used in the representation of alternating simulation.
-   @see InterfaceAutomaton#computeAlternatingSimulation
+ A pair of states.
+ This class is used in the representation of alternating simulation.
+ @see InterfaceAutomaton#computeAlternatingSimulation
 
-   @author Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (yuhong)
-   @Pt.AcceptedRating Red (yuhong)
-*/
+ @author Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Red (yuhong)
+ @Pt.AcceptedRating Red (yuhong)
+ */
 public class StatePair {
     /** Construct an instance with the specified states.
      *  @param first The first state in the pair.
@@ -65,8 +64,8 @@ public class StatePair {
      */
     public boolean equals(Object object) {
         if (object instanceof StatePair) {
-            return ((this.first() == ((StatePair) object).first())
-                    && (this.second() == ((StatePair) object).second()));
+            return ((this.first() == ((StatePair) object).first()) && (this
+                    .second() == ((StatePair) object).second()));
         }
 
         return false;
@@ -108,5 +107,6 @@ public class StatePair {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private State _first;
+
     private State _second;
 }

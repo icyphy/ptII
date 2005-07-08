@@ -1,29 +1,29 @@
 /* A tableau that creates a new run control panel for a ptolemy model.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.awt.Color;
@@ -44,23 +44,22 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// RunTableau
 
 /**
-   A tableau that creates a new run control panel for a ptolemy model.
-   This panel has controls for parameters of the top-level entity
-   and its director, if any, a set of buttons to control execution
-   of the model, and a panel displaying the placeable entities within
-   the model.
+ A tableau that creates a new run control panel for a ptolemy model.
+ This panel has controls for parameters of the top-level entity
+ and its director, if any, a set of buttons to control execution
+ of the model, and a panel displaying the placeable entities within
+ the model.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (neuendor)
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (neuendor)
+ */
 public class RunTableau extends Tableau {
     /** Create a new run control panel for the model with the given
      *  effigy.  The tableau is itself an entity contained by the effigy
@@ -81,8 +80,8 @@ public class RunTableau extends Tableau {
 
         if (!(model instanceof CompositeActor)) {
             throw new IllegalActionException(this,
-                    "Cannot run a model that is not a CompositeActor." + " It is: "
-                    + model);
+                    "Cannot run a model that is not a CompositeActor."
+                            + " It is: " + model);
         }
 
         CompositeActor actor = (CompositeActor) model;
@@ -94,12 +93,14 @@ public class RunTableau extends Tableau {
             try {
                 actor.setManager(new Manager(actor.workspace(), "manager"));
             } catch (IllegalActionException ex) {
-                throw new IllegalActionException(this, ex,
+                throw new IllegalActionException(
+                        this,
+                        ex,
                         "Failed to set manager.  This can occur if "
-                        + "you try to run a non-toplevel model that "
-                        + "is a component of a toplevel model.  "
-                        + "The solution is invoke View -> Run while in a "
-                        + "toplevel window.");
+                                + "you try to run a non-toplevel model that "
+                                + "is a component of a toplevel model.  "
+                                + "The solution is invoke View -> Run while in a "
+                                + "toplevel window.");
             }
 
             manager = actor.getManager();
@@ -143,9 +144,8 @@ public class RunTableau extends Tableau {
             super._addMenus();
 
             JMenuItem[] debugMenuItems = {
-                new JMenuItem("Listen to Manager", KeyEvent.VK_M),
-                new JMenuItem("Listen to Director", KeyEvent.VK_D),
-            };
+                    new JMenuItem("Listen to Manager", KeyEvent.VK_M),
+                    new JMenuItem("Listen to Director", KeyEvent.VK_D), };
 
             // NOTE: This has to be initialized here rather than
             // statically because this method is called by the constructor
@@ -198,16 +198,18 @@ public class RunTableau extends Tableau {
                             Effigy effigy = (Effigy) getContainer();
 
                             // Create a new text effigy inside this one.
-                            Effigy textEffigy = new TextEffigy(effigy,
-                                    effigy.uniqueName("debug listener"));
-                            DebugListenerTableau tableau = new DebugListenerTableau(textEffigy,
-                                    textEffigy.uniqueName("debugListener"));
+                            Effigy textEffigy = new TextEffigy(effigy, effigy
+                                    .uniqueName("debug listener"));
+                            DebugListenerTableau tableau = new DebugListenerTableau(
+                                    textEffigy, textEffigy
+                                            .uniqueName("debugListener"));
                             tableau.setDebuggable(debug);
                         }
                     } catch (KernelException ex) {
                         try {
-                            MessageHandler.warning(
-                                    "Failed to create debug listener: " + ex);
+                            MessageHandler
+                                    .warning("Failed to create debug listener: "
+                                            + ex);
                         } catch (CancelException exception) {
                         }
                     }
@@ -252,7 +254,8 @@ public class RunTableau extends Tableau {
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a RunTableau.
-                RunTableau tableau = (RunTableau) effigy.getEntity("runTableau");
+                RunTableau tableau = (RunTableau) effigy
+                        .getEntity("runTableau");
 
                 if (tableau == null) {
                     tableau = new RunTableau((PtolemyEffigy) effigy,

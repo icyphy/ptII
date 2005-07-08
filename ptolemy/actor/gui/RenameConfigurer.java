@@ -1,30 +1,30 @@
 /* A GUI widget for renaming an object.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import javax.swing.BoxLayout;
@@ -43,22 +43,21 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// RenameConfigurer
 
 /**
-   This class is an editor widget to rename an object.
+ This class is an editor widget to rename an object.
 
-   @see Configurer
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (neuendor)
-*/
+ @see Configurer
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (neuendor)
+ */
 public class RenameConfigurer extends Query implements ChangeListener,
-                                                       QueryListener {
+        QueryListener {
     /** Construct a rename configurer for the specified entity.
      *  @param object The entity to configure.
      */
@@ -115,16 +114,18 @@ public class RenameConfigurer extends Query implements ChangeListener,
 
                 if (showName != previousShowName) {
                     if (showName) {
-                        moml.append("<property name=\"_showName\" "
-                                + "class=\"ptolemy.data.expr.SingletonParameter\""
-                                + " value=\"true\"/>");
+                        moml
+                                .append("<property name=\"_showName\" "
+                                        + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                        + " value=\"true\"/>");
                     } else {
                         if (!(_object.getAttribute("_showName") instanceof Parameter)) {
                             moml.append("<deleteProperty name=\"_showName\"/>");
                         } else {
-                            moml.append("<property name=\"_showName\" "
-                                    + "class=\"ptolemy.data.expr.SingletonParameter\""
-                                    + " value=\"false\"/>");
+                            moml
+                                    .append("<property name=\"_showName\" "
+                                            + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                            + " value=\"false\"/>");
                         }
                     }
                 }
@@ -136,14 +137,16 @@ public class RenameConfigurer extends Query implements ChangeListener,
                         if (!(_object.getAttribute("_hideName") instanceof Parameter)) {
                             moml.append("<deleteProperty name=\"_hideName\"/>");
                         } else {
-                            moml.append("<property name=\"_hideName\" "
-                                    + "class=\"ptolemy.data.expr.SingletonParameter\""
-                                    + " value=\"false\"/>");
+                            moml
+                                    .append("<property name=\"_hideName\" "
+                                            + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                            + " value=\"false\"/>");
                         }
                     } else {
-                        moml.append("<property name=\"_hideName\" "
-                                + "class=\"ptolemy.data.expr.SingletonParameter\""
-                                + " value=\"true\"/>");
+                        moml
+                                .append("<property name=\"_hideName\" "
+                                        + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                        + " value=\"true\"/>");
                     }
                 }
             }

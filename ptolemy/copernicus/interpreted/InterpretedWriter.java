@@ -1,29 +1,29 @@
 /* A transformer that writes an Interpreted version of the model.
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.interpreted;
 
 import java.io.BufferedWriter;
@@ -41,26 +41,25 @@ import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.SceneTransformer;
 
-
 /**
-   A transformer that writes an interpreted version of a model.
-   This transformer is very similar to 'Save As'.  This transformer is
-   used as a control case to compare the effects of other code
-   generators against a purely interpreted (non-code generation) run.
-   This transformer is the smallest standalone Ptolemy II transformer.
+ A transformer that writes an interpreted version of a model.
+ This transformer is very similar to 'Save As'.  This transformer is
+ used as a control case to compare the effects of other code
+ generators against a purely interpreted (non-code generation) run.
+ This transformer is the smallest standalone Ptolemy II transformer.
 
-   <p>For a model called Foo, we generate Foo.xml,
-   in the directory named by the outDir parameter.
+ <p>For a model called Foo, we generate Foo.xml,
+ in the directory named by the outDir parameter.
 
 
-   @author Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
-public class InterpretedWriter extends SceneTransformer
-    implements HasPhaseOptions {
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class InterpretedWriter extends SceneTransformer implements
+        HasPhaseOptions {
     /** Construct a new transformer
      */
     private InterpretedWriter(CompositeActor model) {
@@ -123,20 +122,21 @@ public class InterpretedWriter extends SceneTransformer
         File outDirFile = new File(_outputDirectory);
 
         if (outDirFile.isDirectory()) {
-            System.out.println(" Warning: '" + outDirFile + "' already exists.");
+            System.out
+                    .println(" Warning: '" + outDirFile + "' already exists.");
         }
 
         outDirFile.mkdirs();
 
         // Generate the .xml file.
         String modelFileName = _outputDirectory + "/" + _sanitizedModelName
-            + ".xml";
+                + ".xml";
         System.out.println("InterpretedWriter: about to write '"
                 + modelFileName + "'");
 
         try {
             Writer modelFileWriter = new BufferedWriter(new OutputStreamWriter(
-                                                                new FileOutputStream(modelFileName)));
+                    new FileOutputStream(modelFileName)));
             _model.exportMoML(modelFileWriter);
             modelFileWriter.close();
         } catch (IOException ex) {

@@ -1,31 +1,31 @@
 /* Converts a matrix of doubles into a single-banded JAIImageToken.
 
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.jai;
 
 import java.awt.Point;
@@ -55,28 +55,27 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToJAI
 
 /**
-   Converts a DoubleMatrix to a JAIImageToken.  This JAIImageToken is a
-   single-banded grayscale image.  To assemble multiple band's into one
-   image, use the BandCombine operator on each image and add them
-   together.
+ Converts a DoubleMatrix to a JAIImageToken.  This JAIImageToken is a
+ single-banded grayscale image.  To assemble multiple band's into one
+ image, use the BandCombine operator on each image and add them
+ together.
 
-   <p> If the data was previously normalized, then the data can be rescaled
-   to whichever non-floating data type is chosen.
+ <p> If the data was previously normalized, then the data can be rescaled
+ to whichever non-floating data type is chosen.
 
-   @see JAIBandCombine
-   @see JAIDataConvert
-   @see JAIToDoubleMatrix
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.1
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @see JAIBandCombine
+ @see JAIDataConvert
+ @see JAIToDoubleMatrix
+ @author James Yeh
+ @version $Id$
+ @since Ptolemy II 3.1
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class DoubleMatrixToJAI extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -201,8 +200,8 @@ public class DoubleMatrixToJAI extends Transformer {
             default:
                 throw new InternalErrorException(this, null,
                         "Invalid value for _dataFormat private variable. "
-                        + "DoubleMatrixToJAI actor (" + getFullName()
-                        + ") on data type " + _dataFormat);
+                                + "DoubleMatrixToJAI actor (" + getFullName()
+                                + ") on data type " + _dataFormat);
             }
 
             if ((_dataFormat == _DOUBLE) || (_dataFormat == _FLOAT)) {
@@ -219,10 +218,10 @@ public class DoubleMatrixToJAI extends Transformer {
                         //                         newData[i*height + j] = newData[i*height + j]*2;
                         //                         newData[i*height + j] = newData[i*height + j]*_maxValue;
                         newData[i + (j * width)] = data[i][j];
-                        newData[i + (j * width)] = newData[i + (j * width)]
-                            - 0.5D;
+                        newData[i + (j * width)] = newData[i + (j * width)] - 0.5D;
                         newData[i + (j * width)] = newData[i + (j * width)] * 2;
-                        newData[i + (j * width)] = newData[i + (j * width)] * _maxValue;
+                        newData[i + (j * width)] = newData[i + (j * width)]
+                                * _maxValue;
                     }
                 }
             } else {
@@ -230,8 +229,8 @@ public class DoubleMatrixToJAI extends Transformer {
                     for (int j = 0; j < height; j++) {
                         //                         newData[i*height + j] =
                         //                             data[i][j]*(_maxValue - _minValue) + _minValue;
-                        newData[i + (j * width)] = (data[i][j] * (_maxValue
-                                                            - _minValue)) + _minValue;
+                        newData[i + (j * width)] = (data[i][j] * (_maxValue - _minValue))
+                                + _minValue;
                     }
                 }
             }
@@ -246,8 +245,8 @@ public class DoubleMatrixToJAI extends Transformer {
         }
 
         // Create a new dataBuffer from the array of doubles
-        DataBufferDouble dataBuffer = new DataBufferDouble(newData,
-                width * height);
+        DataBufferDouble dataBuffer = new DataBufferDouble(newData, width
+                * height);
 
         // The length of the bandOffset array indicates how many bands
         // there are.  Since we are just dealing with a single
@@ -260,17 +259,18 @@ public class DoubleMatrixToJAI extends Transformer {
         // Create a ComponentSampleModel, with type double, the same width
         // and height as the matrix, a pixel stride of one (the final image
         // is single-banded), and a scanline stride equal to the width.
-        ComponentSampleModelJAI sampleModel = new ComponentSampleModelJAI(DataBuffer.TYPE_DOUBLE,
-                width, height, 1, width, bandOffset);
+        ComponentSampleModelJAI sampleModel = new ComponentSampleModelJAI(
+                DataBuffer.TYPE_DOUBLE, width, height, 1, width, bandOffset);
 
         // Create a new raster that has its origin at (0, 0).
         Raster raster = Raster.createWritableRaster(sampleModel, dataBuffer,
                 new Point());
 
         // Create a grayscale colormodel.
-        ComponentColorModel colorModel = new ComponentColorModel(new ICC_ColorSpace(
-                                                                         ICC_ProfileGray.getInstance(ColorSpace.CS_GRAY)), false,
-                false, ComponentColorModel.OPAQUE, DataBuffer.TYPE_DOUBLE);
+        ComponentColorModel colorModel = new ComponentColorModel(
+                new ICC_ColorSpace(ICC_ProfileGray
+                        .getInstance(ColorSpace.CS_GRAY)), false, false,
+                ComponentColorModel.OPAQUE, DataBuffer.TYPE_DOUBLE);
         TiledImage tiledImage = new TiledImage(0, 0, width, height, 0, 0,
                 sampleModel, colorModel);
         tiledImage.setData(raster);
@@ -306,8 +306,8 @@ public class DoubleMatrixToJAI extends Transformer {
         default:
             throw new InternalErrorException(this, null,
                     "Invalid value for _dataFormat private variable. "
-                    + "DoubleMatrixToJAI actor (" + getFullName()
-                    + ") on data type " + _dataFormat);
+                            + "DoubleMatrixToJAI actor (" + getFullName()
+                            + ") on data type " + _dataFormat);
         }
 
         RenderedOp newImage = JAI.create("format", parameters);
@@ -335,9 +335,14 @@ public class DoubleMatrixToJAI extends Transformer {
 
     // Constants used for more efficient execution.
     private static final int _BYTE = 0;
+
     private static final int _DOUBLE = 1;
+
     private static final int _FLOAT = 2;
+
     private static final int _INT = 3;
+
     private static final int _SHORT = 4;
+
     private static final int _USHORT = 5;
 }

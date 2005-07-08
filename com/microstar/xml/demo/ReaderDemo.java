@@ -9,19 +9,18 @@ import java.io.StringReader;
 
 import com.microstar.xml.XmlParser;
 
-
 /**
-  * Demonstration application showing &AElig;fred's event stream from a stream.
-  * <p>Usage: <code>java StreamDemo</code>
-  * @author Copyright (c) 1998 by Microstar Software Ltd.;
-  * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
-  * @version 1.1
-  * @since Ptolemy II 0.2
-  * @see com.microstar.xml.XmlParser
-  * @see com.microstar.xml.XmlHandler
-  * @see XmlApp
-  * @see EventDemo
-  */
+ * Demonstration application showing &AElig;fred's event stream from a stream.
+ * <p>Usage: <code>java StreamDemo</code>
+ * @author Copyright (c) 1998 by Microstar Software Ltd.;
+ * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
+ * @version 1.1
+ * @since Ptolemy II 0.2
+ * @see com.microstar.xml.XmlParser
+ * @see com.microstar.xml.XmlHandler
+ * @see XmlApp
+ * @see EventDemo
+ */
 public class ReaderDemo extends EventDemo {
     public static void main(String[] args) throws Exception {
         ReaderDemo handler = new ReaderDemo();

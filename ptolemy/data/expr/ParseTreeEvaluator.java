@@ -1,30 +1,30 @@
 /* A visitor for parse trees of the expression language.
 
-Copyright (c) 1998-2005 The Regents of the University of California
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
 
-*/
+ */
 package ptolemy.data.expr;
 
 import java.util.List;
@@ -45,24 +45,23 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeEvaluator
 
 /**
-   This class evaluates a parse tree given a reference to its root node.
-   It implements a visitor that visits the parse tree in depth-first order,
-   evaluating each node and storing the result as a token in the node.
-   Two exceptions are logic nodes and the ternary if node (the ? : construct),
-   which do not necessarily evaluate all children nodes.
+ This class evaluates a parse tree given a reference to its root node.
+ It implements a visitor that visits the parse tree in depth-first order,
+ evaluating each node and storing the result as a token in the node.
+ Two exceptions are logic nodes and the ternary if node (the ? : construct),
+ which do not necessarily evaluate all children nodes.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-   @see ptolemy.data.expr.ASTPtRootNode
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ @see ptolemy.data.expr.ASTPtRootNode
+ */
 public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -154,7 +153,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             Type valueType = tokens[i].getType();
 
             if (!elementType.equals(valueType)) {
-                elementType = TypeLattice.leastUpperBound(elementType, valueType);
+                elementType = TypeLattice.leastUpperBound(elementType,
+                        valueType);
             }
         }
 
@@ -207,7 +207,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
             if (!(nextToken instanceof BitwiseOperationToken)) {
                 throw new IllegalActionException("Operation "
-                        + node.getOperator().image + " not defined on " + result
+                        + node.getOperator().image + " not defined on "
+                        + result
                         + " which does not support bitwise operations.");
             }
 
@@ -332,7 +333,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 // the value cannot be indexed or applied
                 // throw exception
                 throw new IllegalActionException(
-                        "Cannot index or apply arguments to " + value.toString());
+                        "Cannot index or apply arguments to "
+                                + value.toString());
             }
 
             _evaluatedChildToken = (result);
@@ -347,8 +349,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     // Note that we do not want to store a reference to
                     // the parser, because parsers take up alot of memory.
                     PtParser parser = new PtParser();
-                    ASTPtRootNode tree = parser.generateParseTree(((StringToken) token)
-                            .stringValue());
+                    ASTPtRootNode tree = parser
+                            .generateParseTree(((StringToken) token)
+                                    .stringValue());
 
                     // Note that we evaluate the recursed parse tree
                     // in the same scope as this parse tree.
@@ -373,16 +376,18 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             if (token instanceof StringToken) {
                 String expression = ((StringToken) token).stringValue();
                 ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
-                Set freeVariables = collector.collectFreeVariables(node, _scope);
+                Set freeVariables = collector
+                        .collectFreeVariables(node, _scope);
                 _evaluatedChildToken = MatlabUtilities.evaluate(expression,
                         freeVariables, _scope);
                 return;
             } else {
-                throw new IllegalActionException("The function \"matlab\" is"
-                        + " reserved for invoking the matlab engine, and takes"
-                        + " a string matlab expression argument followed by"
-                        + " a list of variable names that the matlab expression"
-                        + " refers to.");
+                throw new IllegalActionException(
+                        "The function \"matlab\" is"
+                                + " reserved for invoking the matlab engine, and takes"
+                                + " a string matlab expression argument followed by"
+                                + " a list of variable names that the matlab expression"
+                                + " refers to.");
             }
         }
 
@@ -403,8 +408,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ASTPtRootNode cloneTree;
 
         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
-        cloneTree = specializer.specialize(node.getExpressionTree(),
-                node.getArgumentNameList(), _scope);
+        cloneTree = specializer.specialize(node.getExpressionTree(), node
+                .getArgumentNameList(), _scope);
 
         // Infer the return type.
         if (_typeInference == null) {
@@ -415,8 +420,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         FunctionType type = (FunctionType) node.getType();
         ExpressionFunction definedFunction = new ExpressionFunction(node
-                .getArgumentNameList(), node.getArgumentTypes(),
-                cloneTree);
+                .getArgumentNameList(), node.getArgumentTypes(), cloneTree);
         FunctionToken result = new FunctionToken(definedFunction, type);
         _evaluatedChildToken = (result);
         return;
@@ -442,7 +446,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             // tree.
             throw new InternalErrorException(
                     "PtParser error: a functional-if node does not have "
-                    + "three children in the parse tree.");
+                            + "three children in the parse tree.");
         }
 
         // evaluate the first sub-expression
@@ -453,8 +457,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         if (!(test instanceof BooleanToken)) {
             throw new IllegalActionException(
                     "Functional-if must branch on a boolean, but instead was "
-                    + test.toString() + " an instance of "
-                    + test.getClass().getName());
+                            + test.toString() + " an instance of "
+                            + test.getClass().getName());
         }
 
         boolean value = ((BooleanToken) test).booleanValue();
@@ -481,8 +485,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token token = _evaluatedChildToken;
         Type type = _typeInference.inferTypes(typeChild, _scope);
 
-        Type conversionType = (Type) TypeLattice.lattice().leastUpperBound(type,
-                token.getType());
+        Type conversionType = (Type) TypeLattice.lattice().leastUpperBound(
+                type, token.getType());
 
         token = conversionType.convert(token);
         _evaluatedChildToken = (token);
@@ -616,20 +620,21 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         if (node.getForm() == 1) {
             //int numChildren = node.jjtGetNumChildren();
-            result = MatrixToken.arrayToMatrix(tokens, node.getRowCount(),
-                    node.getColumnCount());
+            result = MatrixToken.arrayToMatrix(tokens, node.getRowCount(), node
+                    .getColumnCount());
         } else if (node.getForm() == 2) {
             try {
-                int columnCount = MatrixToken.determineSequenceLength((ScalarToken) tokens[0],
-                        (ScalarToken) tokens[1], (ScalarToken) tokens[2]);
+                int columnCount = MatrixToken.determineSequenceLength(
+                        (ScalarToken) tokens[0], (ScalarToken) tokens[1],
+                        (ScalarToken) tokens[2]);
 
                 // Make sure that all following rows have the same number
                 // of columns.
                 for (int i = 1; i < node.getRowCount(); ++i) {
                     if (columnCount != MatrixToken.determineSequenceLength(
-                                (ScalarToken) tokens[3 * i],
-                                (ScalarToken) tokens[(3 * i) + 1],
-                                (ScalarToken) tokens[(3 * i) + 2])) {
+                            (ScalarToken) tokens[3 * i],
+                            (ScalarToken) tokens[(3 * i) + 1],
+                            (ScalarToken) tokens[(3 * i) + 2])) {
                         throw new IllegalActionException("Matrix "
                                 + "should have the same number of columns "
                                 + "for all rows.");
@@ -637,17 +642,20 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                        .getRowCount() * columnCount];
+                        .getRowCount()
+                        * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
-                    ptolemy.data.Token[] newTokens = MatrixToken.createSequence((ScalarToken) tokens[3 * i],
-                            (ScalarToken) tokens[(3 * i) + 1], columnCount);
-                    System.arraycopy(newTokens, 0, matrixTokens,
-                            columnCount * i, columnCount);
+                    ptolemy.data.Token[] newTokens = MatrixToken
+                            .createSequence((ScalarToken) tokens[3 * i],
+                                    (ScalarToken) tokens[(3 * i) + 1],
+                                    columnCount);
+                    System.arraycopy(newTokens, 0, matrixTokens, columnCount
+                            * i, columnCount);
                 }
 
-                result = MatrixToken.arrayToMatrix(matrixTokens,
-                        node.getRowCount(), columnCount);
+                result = MatrixToken.arrayToMatrix(matrixTokens, node
+                        .getRowCount(), columnCount);
             } catch (IllegalActionException ex) {
                 // FIXME: better detail message that includes the thing
                 // we were parsing.
@@ -737,9 +745,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             if (!(token instanceof ScalarToken)) {
                 throw new IllegalActionException(
                         "Exponent must be ScalarToken and have a valid "
-                        + "lossless conversion to integer. Integer or "
-                        + "unsigned byte meet these criteria.\n"
-                        + "Use pow(10, 3.5) for non-integer exponents");
+                                + "lossless conversion to integer. Integer or "
+                                + "unsigned byte meet these criteria.\n"
+                                + "Use pow(10, 3.5) for non-integer exponents");
             }
 
             try {
@@ -779,7 +787,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 "The number of child nodes must be greater than zero");
         _assert(numChildren == (lexicalTokenList.size() + 1), node,
                 "The number of child nodes is "
-                + "not equal to number of operators plus one");
+                        + "not equal to number of operators plus one");
 
         ptolemy.data.Token result = tokens[0];
 
@@ -823,9 +831,10 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         _assert(node.getFieldNames().size() == numChildren, node,
                 "The number of labels and values does not "
-                + "match in parsing a record expression.");
+                        + "match in parsing a record expression.");
 
-        String[] labels = (String[]) node.getFieldNames().toArray(new String[numChildren]);
+        String[] labels = (String[]) node.getFieldNames().toArray(
+                new String[numChildren]);
 
         _evaluatedChildToken = (new RecordToken(labels, tokens));
 
@@ -856,8 +865,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
             result = leftToken.isEqualTo(rightToken).not();
         } else {
-            if (!((leftToken instanceof ScalarToken)
-                        && (rightToken instanceof ScalarToken))) {
+            if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
                 throw new IllegalActionException("The " + operator.image
                         + " operator can only be applied between scalars.");
             }
@@ -911,12 +919,14 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         if (!(token instanceof ScalarToken)) {
             throw new IllegalActionException("The " + operator
-                    + " operator requires " + "the left operand to be a scalar.");
+                    + " operator requires "
+                    + "the left operand to be a scalar.");
         }
 
         if (!(bitsToken instanceof ScalarToken)) {
             throw new IllegalActionException("The " + operator
-                    + " operator requires " + "the right operand to be a scalar.");
+                    + " operator requires "
+                    + "the right operand to be a scalar.");
         }
 
         // intValue() is used rather than testing for IntToken
@@ -924,14 +934,14 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         // we need a try...catch to generate a proper error message.
         try {
             if (operator.kind == PtParserConstants.SHL) {
-                result = ((ScalarToken) token).leftShift(((ScalarToken) bitsToken)
-                        .intValue());
+                result = ((ScalarToken) token)
+                        .leftShift(((ScalarToken) bitsToken).intValue());
             } else if (operator.kind == PtParserConstants.SHR) {
-                result = ((ScalarToken) token).rightShift(((ScalarToken) bitsToken)
-                        .intValue());
+                result = ((ScalarToken) token)
+                        .rightShift(((ScalarToken) bitsToken).intValue());
             } else if (operator.kind == PtParserConstants.LSHR) {
-                result = ((ScalarToken) token).logicalRightShift(((ScalarToken) bitsToken)
-                        .intValue());
+                result = ((ScalarToken) token)
+                        .logicalRightShift(((ScalarToken) bitsToken).intValue());
             } else {
                 _assert(false, node, "Invalid operation");
             }
@@ -965,7 +975,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 "The number of child nodes must be greater than zero");
         _assert(numChildren == (lexicalTokenList.size() + 1), node,
                 "The number of child nodes is "
-                + "not equal to number of operators plus one");
+                        + "not equal to number of operators plus one");
 
         ptolemy.data.Token result = tokens[0];
 
@@ -1013,7 +1023,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             } else {
                 throw new IllegalActionException(
                         "Not operator not support for non-boolean token: "
-                        + result.toString());
+                                + result.toString());
             }
         } else if (node.isBitwiseNot()) {
             if (!(result instanceof BitwiseOperationToken)) {
@@ -1023,7 +1033,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
 
             result = (ptolemy.data.Token) ((BitwiseOperationToken) result)
-                .bitwiseNot();
+                    .bitwiseNot();
         } else {
             _assert(false, node, "Unrecognized unary node");
         }
@@ -1067,7 +1077,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[numChildren];
 
         for (int i = 0; i < numChildren; i++) {
-            /* ASTPtRootNode child = (ASTPtRootNode) */ node.jjtGetChild(i);
+            /* ASTPtRootNode child = (ASTPtRootNode) */node.jjtGetChild(i);
             tokens[i] = _evaluateChild(node, i);
         }
 
@@ -1088,7 +1098,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         if (!(value instanceof ArrayToken)) {
             throw new IllegalActionException(
                     "Array indexing cannot be applied to '" + value.toString()
-                    + "' because its value is not an array.");
+                            + "' because its value is not an array.");
         }
 
         if (!(index instanceof IntToken)) {
@@ -1134,7 +1144,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         if (!(value instanceof MatrixToken)) {
             throw new IllegalActionException(
                     "Matrix indexing cannot be applied to '" + value.toString()
-                    + "' because its value is not a matrix.");
+                            + "' because its value is not a matrix.");
         }
 
         if (!(rowIndex instanceof IntToken)) {
@@ -1144,7 +1154,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         if (!(columnIndex instanceof IntToken)) {
             throw new IllegalActionException(
-                    "Matrix column index must be an integer. Got: " + columnIndex);
+                    "Matrix column index must be an integer. Got: "
+                            + columnIndex);
         }
 
         int integerRowIndex = ((IntToken) rowIndex).intValue();
@@ -1155,8 +1166,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     integerColumnIndex);
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException("The index (" + rowIndex + ","
-                    + columnIndex + ") is out of bounds on the matrix '" + value
-                    + "'.");
+                    + columnIndex + ") is out of bounds on the matrix '"
+                    + value + "'.");
         }
     }
 
@@ -1275,8 +1286,12 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     // Temporary storage for the result of evaluating a child node.
     // This is protected so that derived classes can access it.
     protected ptolemy.data.Token _evaluatedChildToken = null;
+
     private ParserScope _scope = null;
+
     private ParseTreeTypeInference _typeInference = null;
+
     private StringBuffer _trace = null;
+
     private int _depth = 0;
 }

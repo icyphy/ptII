@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.gui.toolbox;
 
 import java.awt.Color;
@@ -51,7 +51,6 @@ import javax.swing.event.ChangeListener;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.JCanvas;
 import diva.canvas.TransformContext;
-
 
 /**
  * A panner is a window that provides a mechanism to visualize and
@@ -111,7 +110,8 @@ public class JPanner extends JPanel {
      */
     public void setPosition(int x, int y) {
         Dimension viewSize = _target.getView().getSize();
-        Rectangle viewRect = new Rectangle(0, 0, viewSize.width, viewSize.height);
+        Rectangle viewRect = new Rectangle(0, 0, viewSize.width,
+                viewSize.height);
         Rectangle myRect = _getInsetBounds();
 
         AffineTransform forward = CanvasUtilities.computeFitTransform(viewRect,
@@ -192,13 +192,12 @@ public class JPanner extends JPanel {
 
             Rectangle myRect = _getInsetBounds();
 
-            AffineTransform forward = CanvasUtilities.computeFitTransform(viewRect,
-                    myRect);
+            AffineTransform forward = CanvasUtilities.computeFitTransform(
+                    viewRect, myRect);
 
             // Also invert the current transform on the canvas.
             AffineTransform current = canvas.getCanvasPane()
-                .getTransformContext()
-                .getTransform();
+                    .getTransformContext().getTransform();
             AffineTransform inverse;
 
             try {
@@ -218,10 +217,10 @@ public class JPanner extends JPanel {
             g.drawRect(r.x, r.y, r.width, r.height);
 
             /* NOTE: No longer meaningful, since always full space.
-               g.setColor(Color.blue);
-               Dimension d = canvas.getSize();
-               g.drawRect(0, 0, d.width, d.height);
-            */
+             g.setColor(Color.blue);
+             Dimension d = canvas.getSize();
+             g.drawRect(0, 0, d.width, d.height);
+             */
             g2d.transform(inverse);
         } else {
             Rectangle r = _getInsetBounds();
@@ -233,9 +232,9 @@ public class JPanner extends JPanel {
     private Rectangle _getInsetBounds() {
         Dimension mySize = getSize();
         Insets insets = getInsets();
-        Rectangle myRect = new Rectangle(insets.left, insets.top,
-                mySize.width - insets.top - insets.bottom,
-                mySize.height - insets.left - insets.right);
+        Rectangle myRect = new Rectangle(insets.left, insets.top, mySize.width
+                - insets.top - insets.bottom, mySize.height - insets.left
+                - insets.right);
         return myRect;
     }
 
@@ -248,8 +247,8 @@ public class JPanner extends JPanel {
 
     private Point _p;
 
-    private class PanMouseListener extends MouseAdapter
-        implements MouseMotionListener {
+    private class PanMouseListener extends MouseAdapter implements
+            MouseMotionListener {
         public void mousePressed(MouseEvent evt) {
             if ((_target != null)
                     && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
@@ -268,10 +267,12 @@ public class JPanner extends JPanel {
         }
     }
 
-    private class ScaleMouseListener extends MouseAdapter
-        implements MouseMotionListener {
+    private class ScaleMouseListener extends MouseAdapter implements
+            MouseMotionListener {
         public Point2D origin = null;
+
         public Point2D scaled = null;
+
         public AffineTransform transformOrigin = null;
 
         public void setScale(int x, int y) {
@@ -300,8 +301,7 @@ public class JPanner extends JPanel {
             JCanvas canvas = (JCanvas) _target.getView();
 
             AffineTransform current = canvas.getCanvasPane()
-                .getTransformContext()
-                .getTransform();
+                    .getTransformContext().getTransform();
             current.setTransform(transformOrigin);
             current.translate(scaled.getX(), scaled.getY());
             current.scale(scale, scale);
@@ -317,12 +317,12 @@ public class JPanner extends JPanel {
 
                 JCanvas canvas = ((JCanvas) _target.getView());
                 TransformContext context = canvas.getCanvasPane()
-                    .getTransformContext();
+                        .getTransformContext();
 
                 // clone the transform that is in the context, so we can
                 // avoid a lot of repeated scaling of the same transform.
                 transformOrigin = (AffineTransform) context.getTransform()
-                    .clone();
+                        .clone();
 
                 // Take the event and first transform it from the panner
                 // coordinates into the view coordinates.
@@ -331,13 +331,13 @@ public class JPanner extends JPanel {
                         viewSize.height);
                 Rectangle myRect = _getInsetBounds();
 
-                AffineTransform forward = CanvasUtilities.computeFitTransform(viewRect,
-                        myRect);
+                AffineTransform forward = CanvasUtilities.computeFitTransform(
+                        viewRect, myRect);
 
-                double xScaled = (origin.getX() - myRect.getX()) / forward
-                    .getScaleX();
-                double yScaled = (origin.getY() - myRect.getY()) / forward
-                    .getScaleY();
+                double xScaled = (origin.getX() - myRect.getX())
+                        / forward.getScaleX();
+                double yScaled = (origin.getY() - myRect.getY())
+                        / forward.getScaleY();
                 scaled = new Point2D.Double(xScaled, yScaled);
 
                 // Now transform from the view coordinates into the
@@ -363,12 +363,9 @@ public class JPanner extends JPanel {
 
     public static void main(String[] argv) {
         JFrame f = new JFrame();
-        String[] data = {
-            "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-            "twoooooooooooooooooooooooooooooooooooooooo",
-            "threeeeeeeeeeeeeeeee",
-            "fourrrrrrrrrrrrrrrrrrrrrrrrr"
-        };
+        String[] data = { "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                "twoooooooooooooooooooooooooooooooooooooooo",
+                "threeeeeeeeeeeeeeeee", "fourrrrrrrrrrrrrrrrrrrrrrrrr" };
         JList dataList = new JList(data);
         JScrollPane p = new JScrollPane(dataList);
         p.setSize(200, 200);

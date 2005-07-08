@@ -1,30 +1,30 @@
 /* The graph controller for the vergil viewer
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.actor;
 
 import javax.swing.JMenu;
@@ -54,32 +54,31 @@ import diva.graph.GraphPane;
 import diva.graph.NodeController;
 import diva.gui.GUIUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ActorViewerGraphController
 
 /**
-   A graph controller for the Ptolemy II schematic viewer.
-   This controller contains a set of default node controllers for attributes,
-   entities, links, ports, and relations.  Those default controllers can
-   be overridden by attributes of type NodeControllerFactory.
-   The getNodeController() method determines which controller to return
-   for each node.
-   <p>
-   In addition, this controller provides graph-wide operations that allow
-   nodes to be moved and context menus to be created.  It does
-   not provide interaction for adding or removing nodes; those are provided
-   by a derived class.  If does provide toolbar buttons for executing
-   the model (or if this is not the top level, delegating to the top
-   level to execute). Right-clicking on the background will
-   create a context-sensitive menu for the graph.
+ A graph controller for the Ptolemy II schematic viewer.
+ This controller contains a set of default node controllers for attributes,
+ entities, links, ports, and relations.  Those default controllers can
+ be overridden by attributes of type NodeControllerFactory.
+ The getNodeController() method determines which controller to return
+ for each node.
+ <p>
+ In addition, this controller provides graph-wide operations that allow
+ nodes to be moved and context menus to be created.  It does
+ not provide interaction for adding or removing nodes; those are provided
+ by a derived class.  If does provide toolbar buttons for executing
+ the model (or if this is not the top level, delegating to the top
+ level to execute). Right-clicking on the background will
+ create a context-sensitive menu for the graph.
 
-   @author Steve Neuendorffer, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class ActorViewerGraphController extends RunnableGraphController {
     /** Create a new basic controller with default
      *  terminal and edge interactors and default context menus.
@@ -146,7 +145,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                         }
 
                         FiringEvent.FiringEventType type = ((FiringEvent) event)
-                            .getType();
+                                .getType();
 
                         if ((type == FiringEvent.BEFORE_ITERATE)
                                 || (type == FiringEvent.BEFORE_FIRE)) {

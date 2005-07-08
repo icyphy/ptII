@@ -1,31 +1,31 @@
 /* A token that contains a 2-D int matrix.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -44,19 +44,18 @@ import ptolemy.math.IntegerArrayMath;
 import ptolemy.math.IntegerMatrixMath;
 import ptolemy.math.LongMatrixMath;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// IntMatrixToken
 
 /**
-   A token that contains a 2-D int matrix.
+ A token that contains a 2-D int matrix.
 
-   @author Yuhong Xiong, Jeff Tsay, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (wbwu)
-*/
+ @author Yuhong Xiong, Jeff Tsay, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (wbwu)
+ */
 public class IntMatrixToken extends MatrixToken {
     /** Construct an IntMatrixToken with a one by one matrix. The
      *  only element in the matrix has value 0.0
@@ -239,8 +238,8 @@ public class IntMatrixToken extends MatrixToken {
         int compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "[int]"));
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(token, "[int]"));
         }
 
         // try int
@@ -261,7 +260,7 @@ public class IntMatrixToken extends MatrixToken {
         // The argument is below IntMatrixToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "[int]"));
+                "[int]"));
     }
 
     /** Convert the specified scalar token into an instance of
@@ -291,7 +290,7 @@ public class IntMatrixToken extends MatrixToken {
         }
 
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "[int]"));
+                "[int]"));
     }
 
     /** Return the content of this token as a 2-D double matrix.
@@ -421,8 +420,8 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A 2-D long matrix.
      */
     public long[][] longMatrix() {
-        return LongMatrixMath.toMatrixFromArray(IntegerArrayMath.toLongArray(
-                                                        _value), _rowCount, _columnCount);
+        return LongMatrixMath.toMatrixFromArray(IntegerArrayMath
+                .toLongArray(_value), _rowCount, _columnCount);
     }
 
     /** Return a new Token representing the left multiplicative
@@ -622,8 +621,8 @@ public class IntMatrixToken extends MatrixToken {
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         IntMatrixToken convertedArgument = (IntMatrixToken) rightArgument;
-        int[] result = IntegerArrayMath.subtract(_value,
-                convertedArgument._getInternalIntArray());
+        int[] result = IntegerArrayMath.subtract(_value, convertedArgument
+                ._getInternalIntArray());
         return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
@@ -656,7 +655,7 @@ public class IntMatrixToken extends MatrixToken {
             throws IllegalActionException {
         int scalar = ((IntToken) rightArgument).intValue();
         int[] result = IntegerArrayMath.negative(IntegerArrayMath.add(_value,
-                                                         -scalar));
+                -scalar));
         return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
@@ -673,6 +672,8 @@ public class IntMatrixToken extends MatrixToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int[] _value;
+
     private int _rowCount;
+
     private int _columnCount;
 }

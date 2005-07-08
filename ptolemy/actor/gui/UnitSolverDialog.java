@@ -1,29 +1,29 @@
 /* A top-level dialog window for editing Unit constraints.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
@@ -76,19 +76,18 @@ import diva.graph.GraphPane;
 import diva.graph.GraphUtilities;
 import diva.graph.JGraph;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// UnitSolverDialog
 
 /**
-   @author Rowland R Johnson
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (rowland)
-   @Pt.AcceptedRating Red (rowland)
-*/
+ @author Rowland R Johnson
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (rowland)
+ @Pt.AcceptedRating Red (rowland)
+ */
 public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
-                                                               ListSelectionListener, SelectionListener {
+        ListSelectionListener, SelectionListener {
     /**
      * @param dialogTableau The DialogTableau.
      * @param owner The object that, per the user, appears to be generating the
@@ -115,11 +114,12 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
         _selectionModel = _controller.getSelectionModel();
 
         Interactor interactor = _controller.getEdgeController(new Object())
-            .getEdgeInteractor();
+                .getEdgeInteractor();
         _graphModel = (AbstractBasicGraphModel) _controller.getGraphModel();
         _selectionInteractor = (SelectionInteractor) interactor;
         _defaultSelectionRenderer = _selectionInteractor.getSelectionRenderer();
-        tempSelectionRenderer = new BasicSelectionRenderer(new BasicEdgeHighlighter());
+        tempSelectionRenderer = new BasicSelectionRenderer(
+                new BasicEdgeHighlighter());
 
         if (_model == getTarget()) {
             _entities = _getSelectedNodes();
@@ -142,10 +142,10 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
 
         JPanel fullSolverPanel = new JPanel();
         fullSolverPanel.setLayout(new BoxLayout(fullSolverPanel,
-                                          BoxLayout.Y_AXIS));
+                BoxLayout.Y_AXIS));
         fullSolverPanel.setBorder(BorderFactory.createCompoundBorder(
-                                          BorderFactory.createTitledBorder("Full Solution"),
-                                          BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                BorderFactory.createTitledBorder("Full Solution"),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         _runFullSolverButton.addActionListener(this);
         fullSolverPanel.add(_runFullSolverButton);
         _fullSolutionResult.setOpaque(true);
@@ -154,10 +154,10 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
 
         JPanel componentsPanel = new JPanel();
         componentsPanel.setLayout(new BoxLayout(componentsPanel,
-                                          BoxLayout.Y_AXIS));
+                BoxLayout.Y_AXIS));
         componentsPanel.setBorder(BorderFactory.createCompoundBorder(
-                                          BorderFactory.createTitledBorder("Components"),
-                                          BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                BorderFactory.createTitledBorder("Components"), BorderFactory
+                        .createEmptyBorder(5, 5, 5, 5)));
         _setToSelectedButton.setEnabled(false);
         componentsPanel.add(_setToSelectedButton);
         _setToSelectedButton.addActionListener(this);
@@ -171,8 +171,8 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
 
         JPanel minimalSpanPanel = new JPanel(new BorderLayout());
         minimalSpanPanel.setBorder(BorderFactory.createCompoundBorder(
-                                           BorderFactory.createTitledBorder("Minimal Spanning Solutions"),
-                                           BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                BorderFactory.createTitledBorder("Minimal Spanning Solutions"),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         minimalSpanPanel.add(_runMinimalSpanSolverButton, BorderLayout.NORTH);
         _runMinimalSpanSolverButton.addActionListener(this);
         _solutionsListModel = new SolutionListModel();
@@ -362,7 +362,8 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
     }
 
     protected URL _getHelpURL() {
-        URL helpURL = getClass().getClassLoader().getResource("ptolemy/actor/gui/doc/unitConstraintsSolver.htm");
+        URL helpURL = getClass().getClassLoader().getResource(
+                "ptolemy/actor/gui/doc/unitConstraintsSolver.htm");
         return helpURL;
     }
 
@@ -375,7 +376,7 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
 
         if ((color != null) && (explanation != null)) {
             retv = "<deleteProperty name=\"_color\"/>"
-                + "<deleteProperty name=\"_explanation\"/>";
+                    + "<deleteProperty name=\"_explanation\"/>";
         }
 
         return retv;
@@ -395,7 +396,8 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
             for (int i = 0; i < selection.length; i++) {
                 if (selection[i] instanceof Figure) {
                     Object userObject = ((Figure) selection[i]).getUserObject();
-                    NamedObj actual = (NamedObj) _graphModel.getSemanticObject(userObject);
+                    NamedObj actual = (NamedObj) _graphModel
+                            .getSemanticObject(userObject);
 
                     if (actual instanceof ComponentEntity) {
                         nodes.add(actual);
@@ -421,7 +423,8 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
             for (int i = 0; i < selection.length; i++) {
                 if (selection[i] instanceof Figure) {
                     Object userObject = ((Figure) selection[i]).getUserObject();
-                    NamedObj actual = (NamedObj) _graphModel.getSemanticObject(userObject);
+                    NamedObj actual = (NamedObj) _graphModel
+                            .getSemanticObject(userObject);
 
                     if ((actual instanceof Relation)
                             && (!relations.contains(actual))) {
@@ -490,21 +493,38 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     GraphController _controller = null;
+
     SelectionRenderer _defaultSelectionRenderer = null;
+
     Vector _entities = null;
+
     JLabel _fullSolutionResult = new JLabel("Not Run");
+
     JButton _setToSelectedButton = new JButton("Set To Selected");
+
     JButton _showComponentsButton = new JButton("Show Components");
+
     TypedCompositeActor _model = null;
+
     SelectionModel _selectionModel = null;
+
     AbstractBasicGraphModel _graphModel = null;
+
     Vector _relations = null;
+
     SelectionInteractor _selectionInteractor = null;
+
     Vector _solutions = new Vector();
+
     JList _solutionsList = null;
+
     SolutionListModel _solutionsListModel = null;
+
     JButton _runMinimalSpanSolverButton = new JButton("Run");
+
     JButton _runFullSolverButton = new JButton("Run");
+
     Tableau _tableau = null;
+
     UnitConstraints _uConstraints = null;
 }

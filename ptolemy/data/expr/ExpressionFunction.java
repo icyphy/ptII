@@ -1,30 +1,30 @@
 /* A visitor for parse trees of the expression language.
 
-Copyright (c) 1998-2005 The Regents of the University of California
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
 
-*/
+ */
 package ptolemy.data.expr;
 
 import java.util.ArrayList;
@@ -37,23 +37,22 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionFunction
 
 /**
-   An implementation of a function closure that encapsulates an
-   expression tree.  Instances of this class are created during the
-   evaluation of function closure expressions in the expression language,
-   like "function(x:int, y:int) x+y".
+ An implementation of a function closure that encapsulates an
+ expression tree.  Instances of this class are created during the
+ evaluation of function closure expressions in the expression language,
+ like "function(x:int, y:int) x+y".
 
-   @author Steve Neuendorffer, Xiaojun Liu
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Red (neuendor)
-   @see ptolemy.data.expr.ASTPtRootNode
-*/
+ @author Steve Neuendorffer, Xiaojun Liu
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Red (neuendor)
+ @see ptolemy.data.expr.ASTPtRootNode
+ */
 public class ExpressionFunction implements Function {
     public ExpressionFunction(List argumentNames, Type[] argumentTypes,
             ASTPtRootNode exprRoot) {
@@ -121,26 +120,26 @@ public class ExpressionFunction implements Function {
         // SN - 4/18/2003
 
         /**
-           if (!(function instanceof ExpressionFunction)) {
-           return false;
-           }
-           ExpressionFunction expressionFunction = (ExpressionFunction)function;
-           // The functions must have the same number of arguments.
-           if (getNumberOfArguments() != function.getNumberOfArguments()) {
-           return false;
-           }
-           // Construct the renaming map.
-           Map renaming = new HashMap();
-           Iterator argNames = expressionFunction._argumentNames.iterator();
-           for (Iterator names = _argumentNames.iterator();
-           names.hasNext();) {
-           String name = (String)names.next();
-           String argName = (String)argNames.next();
-           renaming.put(name, argName);
-           }
-           return _exprRoot.isCongruent(expressionFunction._exprRoot,
-           renaming);
-        */
+         if (!(function instanceof ExpressionFunction)) {
+         return false;
+         }
+         ExpressionFunction expressionFunction = (ExpressionFunction)function;
+         // The functions must have the same number of arguments.
+         if (getNumberOfArguments() != function.getNumberOfArguments()) {
+         return false;
+         }
+         // Construct the renaming map.
+         Map renaming = new HashMap();
+         Iterator argNames = expressionFunction._argumentNames.iterator();
+         for (Iterator names = _argumentNames.iterator();
+         names.hasNext();) {
+         String name = (String)names.next();
+         String argName = (String)argNames.next();
+         renaming.put(name, argName);
+         }
+         return _exprRoot.isCongruent(expressionFunction._exprRoot,
+         renaming);
+         */
     }
 
     /** Return a string representation of this function.

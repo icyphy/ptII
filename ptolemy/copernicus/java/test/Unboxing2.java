@@ -5,10 +5,11 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 
-
 public class Unboxing2 {
     static IntToken intToken = new IntToken(1);
+
     static DoubleToken doubleToken = new DoubleToken(2.0);
+
     static Token token;
 
     public static void main(String[] strings) {

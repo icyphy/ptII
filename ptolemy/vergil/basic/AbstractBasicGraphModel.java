@@ -1,30 +1,30 @@
 /* A graph model for basic ptolemy models.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.basic;
 
 import ptolemy.data.ObjectToken;
@@ -49,28 +49,27 @@ import diva.graph.modular.NodeModel;
 
 import java.util.List;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AbstractBasicGraphModel
 
 /**
-   This base class provides some common services for visual notations for
-   Ptolemy II models. It assumes that the semantic object of a particular
-   graph object is fixed, and provides facilities for making changes to the
-   model via a change request. It supports visible attributes.
-   <p>
-   This class uses a change listener to detect changes to the Ptolemy model
-   that do not originate from this class.  These changes are propagated
-   as structure changed graph events to all graphListeners registered with this
-   model.  This mechanism allows a graph visualization of a ptolemy model to
-   remain synchronized with the state of a mutating model.
+ This base class provides some common services for visual notations for
+ Ptolemy II models. It assumes that the semantic object of a particular
+ graph object is fixed, and provides facilities for making changes to the
+ model via a change request. It supports visible attributes.
+ <p>
+ This class uses a change listener to detect changes to the Ptolemy model
+ that do not originate from this class.  These changes are propagated
+ as structure changed graph events to all graphListeners registered with this
+ model.  This mechanism allows a graph visualization of a ptolemy model to
+ remain synchronized with the state of a mutating model.
 
-   @author Steve Neuendorffer, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public abstract class AbstractBasicGraphModel extends ModularGraphModel {
     /** Create a graph model for the specified Ptolemy II model.
      *  Note that the argument need not be a CompositeEntity, although
@@ -375,9 +374,8 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
                 // Notify any graph listeners
                 // that the graph might have
                 // completely changed.
-                dispatchGraphEvent(new GraphEvent(
-                                           AbstractBasicGraphModel.this,
-                                           GraphEvent.STRUCTURE_CHANGED, getRoot()));
+                dispatchGraphEvent(new GraphEvent(AbstractBasicGraphModel.this,
+                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
             }
         }
 
@@ -397,9 +395,8 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
 
             // update the graph model.
             if (_update()) {
-                dispatchGraphEvent(new GraphEvent(
-                                           AbstractBasicGraphModel.this,
-                                           GraphEvent.STRUCTURE_CHANGED, getRoot()));
+                dispatchGraphEvent(new GraphEvent(AbstractBasicGraphModel.this,
+                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
             }
         }
     }

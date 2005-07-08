@@ -1,31 +1,31 @@
 /* A polymorphic switch with boolean select.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-This is similar to Switch and could be design/code reviewed at the same time.
-*/
+ This is similar to Switch and could be design/code reviewed at the same time.
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -38,30 +38,29 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// BooleanSwitch
 
 /**
-   A type polymorphic switch with boolean valued control.  In an
-   iteration, if an input token is available at the <i>control</i> input,
-   that token is read, and its value is noted.  Its value specifies the
-   input port that should be read next. If the <i>control</i> input is
-   true, then if an input token is available on the <i>input</i> port,
-   then it is is read and sent to the <i>trueOutput</i>.  Likewise with a
-   false input and the <i>falseOutput</i> port.  Because tokens are
-   immutable, the same Token is sent to the output, rather than a copy.
-   The <i>input</i> port may receive Tokens of any type.
+ A type polymorphic switch with boolean valued control.  In an
+ iteration, if an input token is available at the <i>control</i> input,
+ that token is read, and its value is noted.  Its value specifies the
+ input port that should be read next. If the <i>control</i> input is
+ true, then if an input token is available on the <i>input</i> port,
+ then it is is read and sent to the <i>trueOutput</i>.  Likewise with a
+ false input and the <i>falseOutput</i> port.  Because tokens are
+ immutable, the same Token is sent to the output, rather than a copy.
+ The <i>input</i> port may receive Tokens of any type.
 
-   <p>If no token has ever been received on the <i>control</i> port, then
-   <i>falseOutput</i> is assumed to be the one to receive data.
+ <p>If no token has ever been received on the <i>control</i> port, then
+ <i>falseOutput</i> is assumed to be the one to receive data.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Red (neuendor)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Red (neuendor)
+ */
 public class BooleanSwitch extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.

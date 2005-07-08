@@ -1,29 +1,29 @@
 /* A tableau representing a text window.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.lang.reflect.Constructor;
@@ -36,25 +36,24 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TextEditorTableau
 
 /**
-   A tableau representing a text window. The constructor of this
-   class creates the window. The text window itself is an instance
-   of TextEditor, and can be accessed using the getFrame() method.
-   As with other tableaux, this is an entity that is contained by
-   an effigy of a model.
-   There can be any number of instances of this class in an effigy.
+ A tableau representing a text window. The constructor of this
+ class creates the window. The text window itself is an instance
+ of TextEditor, and can be accessed using the getFrame() method.
+ As with other tableaux, this is an entity that is contained by
+ an effigy of a model.
+ There can be any number of instances of this class in an effigy.
 
-   @author  Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-   @see Effigy
-*/
+ @author  Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ @see Effigy
+ */
 public class TextEditorTableau extends Tableau {
     /** Construct a new tableau for the model represented by the given effigy.
      *  @param container The container.
@@ -79,8 +78,8 @@ public class TextEditorTableau extends Tableau {
      *   attribute already in the container.
      */
     public TextEditorTableau(TextEffigy container, String name,
-            TextEditor editor)
-            throws IllegalActionException, NameDuplicationException {
+            TextEditor editor) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
 
         String title = "Unnamed";
@@ -138,8 +137,8 @@ public class TextEditorTableau extends Tableau {
             String editorPreference = ".";
 
             try {
-                editorPreference = System.getProperty("ptolemy.user.texteditor",
-                        ".");
+                editorPreference = System.getProperty(
+                        "ptolemy.user.texteditor", ".");
             } catch (SecurityException security) {
                 // Ignore, we are probably running in a sandbox or as
                 // an applet
@@ -150,31 +149,23 @@ public class TextEditorTableau extends Tableau {
 
             try {
                 if (editorPreference.equals("emacs")) {
-                    tableauClass = Class.forName(
-                            "ptolemy.actor.gui.ExternalTextTableau");
-                    effigyClass = Class.forName(
-                            "ptolemy.actor.gui.ExternalTextEffigy");
+                    tableauClass = Class
+                            .forName("ptolemy.actor.gui.ExternalTextTableau");
+                    effigyClass = Class
+                            .forName("ptolemy.actor.gui.ExternalTextEffigy");
                 } else {
-                    tableauClass = Class.forName(
-                            "ptolemy.actor.gui.TextEditorTableau");
+                    tableauClass = Class
+                            .forName("ptolemy.actor.gui.TextEditorTableau");
                     effigyClass = Class.forName("ptolemy.actor.gui.TextEffigy");
                 }
 
                 _tableauConstructor = tableauClass.getConstructor(new Class[] {
-                    TextEffigy.class,
-                    String.class
-                });
+                        TextEffigy.class, String.class });
                 _newTextEffigyText = effigyClass.getMethod("newTextEffigy",
-                        new Class[] {
-                            CompositeEntity.class,
-                            String.class
-                        });
+                        new Class[] { CompositeEntity.class, String.class });
                 _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
-                        new Class[] {
-                            CompositeEntity.class,
-                            URL.class,
-                            URL.class
-                        });
+                        new Class[] { CompositeEntity.class, URL.class,
+                                URL.class });
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (NoSuchMethodException ex) {
@@ -213,14 +204,11 @@ public class TextEditorTableau extends Tableau {
                 // First see whether the effigy already contains a
                 // TextEditorTableau with the appropriate name.
                 TextEditorTableau tableau = (TextEditorTableau) effigy
-                    .getEntity("textTableau");
+                        .getEntity("textTableau");
 
                 if (tableau == null) {
                     tableau = (TextEditorTableau) _tableauConstructor
-                        .newInstance(new Object[] {
-                            effigy,
-                            "textTableau"
-                        });
+                            .newInstance(new Object[] { effigy, "textTableau" });
                 }
 
                 tableau.setEditable(effigy.isModifiable());
@@ -230,7 +218,7 @@ public class TextEditorTableau extends Tableau {
                 // See whether it contains an instance of TextEffigy
                 // named "textEffigy", and if it does return that instance.
                 Iterator effigies = effigy.entityList(TextEffigy.class)
-                    .iterator();
+                        .iterator();
 
                 while (effigies.hasNext()) {
                     TextEffigy textEffigy = (TextEffigy) effigies.next();
@@ -253,12 +241,9 @@ public class TextEditorTableau extends Tableau {
                     // sense for the Effigy base class to have a method
                     // that gives a textual description of the data?
                     String moml = ((PtolemyEffigy) effigy).getModel()
-                        .exportMoML();
+                            .exportMoML();
                     textEffigy = (TextEffigy) _newTextEffigyText.invoke(null,
-                            new Object[] {
-                                effigy,
-                                moml
-                            });
+                            new Object[] { effigy, moml });
 
                     // FIXME: Eventually, it would be nice that this be
                     // editable if the PtolemyEffigy is modifiable.
@@ -268,11 +253,7 @@ public class TextEditorTableau extends Tableau {
                 } else {
                     // The View Source choice of the HTMLViewer runs this code.
                     textEffigy = (TextEffigy) _newTextEffigyURL.invoke(null,
-                            new Object[] {
-                                effigy,
-                                url,
-                                url
-                            });
+                            new Object[] { effigy, url, url });
                     textEffigy.setName("textEffigy");
                 }
 
@@ -287,7 +268,9 @@ public class TextEditorTableau extends Tableau {
         }
 
         private Constructor _tableauConstructor;
+
         private Method _newTextEffigyText;
+
         private Method _newTextEffigyURL;
     }
 }

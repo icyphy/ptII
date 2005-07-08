@@ -1,30 +1,30 @@
 /** Represent an native function argument
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package jni;
 
 import java.io.IOException;
@@ -39,19 +39,18 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Argument
 
 /**
-   An Argument is a native function argument associated to a GenericJNIActor
-   @author V.Arnould, Thales
-   @version $Id$
-   @since Ptolemy II 2.2
-   @Pt.ProposedRating Red (vincent.arnould)
-   @Pt.AcceptedRating Red (vincent.arnould)
-   @see jni.GenericJNIActor
-*/
+ An Argument is a native function argument associated to a GenericJNIActor
+ @author V.Arnould, Thales
+ @version $Id$
+ @since Ptolemy II 2.2
+ @Pt.ProposedRating Red (vincent.arnould)
+ @Pt.AcceptedRating Red (vincent.arnould)
+ @see jni.GenericJNIActor
+ */
 public class Argument extends AbstractSettableAttribute {
     /** Creates a new instance of Argument with the given name
      * for the given GenericJNIActor
@@ -156,8 +155,8 @@ public class Argument extends AbstractSettableAttribute {
      */
     public String getExpression() {
         String ret = Boolean.valueOf(isInput()).toString() + ","
-            + Boolean.valueOf(isOutput()).toString() + ","
-            + Boolean.valueOf(isReturn()).toString() + "," + getCType();
+                + Boolean.valueOf(isOutput()).toString() + ","
+                + Boolean.valueOf(isReturn()).toString() + "," + getCType();
         return ret;
     }
 
@@ -371,8 +370,8 @@ public class Argument extends AbstractSettableAttribute {
      *  @exception NameDuplicationException If the name of this entity
      *   collides with a name already in the container.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         if ((container != null) && (_workspace != container.workspace())) {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
@@ -444,8 +443,8 @@ public class Argument extends AbstractSettableAttribute {
      */
     public void setExpression() {
         String ret = Boolean.valueOf(isInput()).toString() + ","
-            + Boolean.valueOf(isOutput()).toString() + ","
-            + Boolean.valueOf(isReturn()).toString() + "," + getCType();
+                + Boolean.valueOf(isOutput()).toString() + ","
+                + Boolean.valueOf(isReturn()).toString() + "," + getCType();
         setExpression(ret);
     }
 
@@ -549,8 +548,8 @@ public class Argument extends AbstractSettableAttribute {
         if (!(container instanceof GenericJNIActor)) {
             throw new IllegalActionException(this, container,
                     "Cannot place arguments on entities "
-                    + container.getClass().getName()
-                    + ", which are not GenericJNIActor.");
+                            + container.getClass().getName()
+                            + ", which are not GenericJNIActor.");
         }
     }
 
@@ -561,8 +560,7 @@ public class Argument extends AbstractSettableAttribute {
      */
     protected void _checkType() {
         if (_cType.startsWith("char") || _cType.startsWith("long")
-                || _cType.startsWith("short")
-                || _cType.startsWith("double")) {
+                || _cType.startsWith("short") || _cType.startsWith("double")) {
             if (isOutput() && !isInput() && !_cType.endsWith("[]")) {
                 MessageHandler.error("An argument can't be "
                         + "output with a simple type.");

@@ -1,31 +1,31 @@
 /*
-  @Copyright (c) 2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 /*
  * Created on Feb 22, 2005
  *
@@ -41,7 +41,6 @@ import java.util.Iterator;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
-
 
 /**
  * @author Jackie
@@ -60,8 +59,7 @@ public class CodeStream {
         _actorHelper = helper;
         if (_debug) {
             _filePath = _testingFilePath;
-        }
-        else {  
+        } else {
             // FIXME: There should be a more proper way to 
             // access the filepath
             //_filePath = "$CLASSPATH/" + 
@@ -69,12 +67,12 @@ public class CodeStream {
             //+ ".";
             //_filePath = _filePath.replaceFirst("package ", "");
             //_filePath = _filePath.replace('.', '/');
-    
+
             // FIXME: need to test the following 2 lines
-            String classNamePath = 
-                helper.getClass().getName().replace('.', '/');
-            _filePath = "$CLASSPATH/" + classNamePath + ".c";        
-        }        
+            String classNamePath = helper.getClass().getName()
+                    .replace('.', '/');
+            _filePath = "$CLASSPATH/" + classNamePath + ".c";
+        }
     }
 
     /** To append the content of the CodeStream to this code stream
@@ -96,14 +94,13 @@ public class CodeStream {
      */
     public void append(StringBuffer codeBlock) {
         _stream.append(codeBlock);
-    }  
-    
+    }
+
     /** To append an specific code block.
      * @param blockName the name of the code block
      * @exception IllegalActionException If an error occurs during parsing.
      */
-    public void appendCodeBlock(String blockName) 
-        throws IllegalActionException {
+    public void appendCodeBlock(String blockName) throws IllegalActionException {
         appendCodeBlock(blockName, null);
     }
 
@@ -114,8 +111,8 @@ public class CodeStream {
      * @param blockName the name of the code block
      * @exception IllegalActionException If an error occurs during parsing.
      */
-    public void appendCodeBlock(String blockName, Object argument) 
-        throws IllegalActionException {
+    public void appendCodeBlock(String blockName, Object argument)
+            throws IllegalActionException {
         if (_codeBlockTable == null) {
             _constructCodeTable();
         }
@@ -125,23 +122,22 @@ public class CodeStream {
             throw new IllegalActionException("Cannot find code block: "
                     + blockName + " in " + _filePath);
         }
-        
+
         String parameter = (String) _parameterTable.get(blockName);
-        if (parameter != null) {    
+        if (parameter != null) {
             if (argument == null) {
                 throw new IllegalActionException(
-                        "Incorrect number of arguments: " + blockName 
-                        + " in " + _filePath);
+                        "Incorrect number of arguments: " + blockName + " in "
+                                + _filePath);
             }
             // We need to do some substitution
             codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
                     "parameter", argument.toString()));
         } else if (argument != null) {
-            throw new IllegalActionException(
-                    "Incorrect number of arguments: " + blockName
-                    + " in " + _filePath);            
+            throw new IllegalActionException("Incorrect number of arguments: "
+                    + blockName + " in " + _filePath);
         }
-        
+
         _stream.append(codeBlock);
     }
 
@@ -152,17 +148,15 @@ public class CodeStream {
      * @exception IOException If an error occurs when reading user inputs.
      * @exception IllegalActionException If an error occurs during parsing.
      */
-    public static void main(String[] arg)
-            throws IOException, IllegalActionException {
+    public static void main(String[] arg) throws IOException,
+            IllegalActionException {
         _debug = true;
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(System.in));
-        System.out.println(
-                "----------Testing--------------------------------");
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("----------Testing--------------------------------");
         System.out.print("please input file path: ");
         _testingFilePath = in.readLine();
-        System.out.println(
-                "\n----------Result--------------------------------");
+        System.out
+                .println("\n----------Result--------------------------------");
         System.out.println(CodeStream._testing());
     }
 
@@ -198,12 +192,11 @@ public class CodeStream {
      *
      * @exception IllegalActionException If an error occurs during parsing.
      */
-    private void _constructCodeTable() 
-        throws IllegalActionException {
+    private void _constructCodeTable() throws IllegalActionException {
 
         _codeBlockTable = new Hashtable();
         _parameterTable = new Hashtable();
-        
+
         BufferedReader reader = null;
 
         try {
@@ -213,8 +206,8 @@ public class CodeStream {
             StringBuffer codeInFile = new StringBuffer();
 
             // create a string of all code in the file
-            for (String line = reader.readLine(); line != null;
-                 line = reader.readLine()) {
+            for (String line = reader.readLine(); line != null; line = reader
+                    .readLine()) {
                 codeInFile.append(line + "\n");
             }
 
@@ -224,11 +217,11 @@ public class CodeStream {
             }
         } catch (IOException e) {
             if (reader == null) {
-                throw new IllegalActionException(
-                        null, e, "Cannot open file: " + _filePath);
+                throw new IllegalActionException(null, e, "Cannot open file: "
+                        + _filePath);
             } else {
-                throw new IllegalActionException(
-                        null, e, "Error reading file: " + _filePath);
+                throw new IllegalActionException(null, e,
+                        "Error reading file: " + _filePath);
             }
         }
     }
@@ -263,16 +256,15 @@ public class CodeStream {
         }
 
         if (endIndex == -1) {
-            throw new IllegalActionException(
-                    "Missing close block in " + _filePath);
+            throw new IllegalActionException("Missing close block in "
+                    + _filePath);
         }
 
-        StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex, 
-                                                     endIndex));
+        StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex,
+                endIndex));
 
         // Recursively parsing for nested code blocks
-        for (String subBlockKey = _parseCodeBlock(body);
-             subBlockKey != null;) {
+        for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;) {
             // FIXME: do we include the nested code block into 
             // the current block??
             //body.append((StringBuffer) _codeBlockTable.get(subBlockKey));
@@ -303,8 +295,8 @@ public class CodeStream {
         if (name != null) {
             if (_codeBlockTable.containsKey(name)) {
                 throw new IllegalActionException(
-                        "Multiple code blocks have the same name: " + name 
-                        + " in " + _filePath);
+                        "Multiple code blocks have the same name: " + name
+                                + " in " + _filePath);
             }
 
             StringBuffer body = _parseBody(codeInFile);
@@ -342,15 +334,14 @@ public class CodeStream {
 
         int parameterIndex = codeInFile.indexOf("(", _parseIndex);
         if (parameterIndex != -1 && parameterIndex < endIndex) {
-            name = _checkCodeHeader(
-                    codeInFile.substring(_parseIndex, parameterIndex));
+            name = _checkCodeHeader(codeInFile.substring(_parseIndex,
+                    parameterIndex));
 
             int parameterEndIndex = codeInFile.indexOf(")", _parseIndex);
-            _parameterTable.put(name, codeInFile.substring(
-                    parameterIndex, parameterEndIndex).trim());
+            _parameterTable.put(name, codeInFile.substring(parameterIndex,
+                    parameterEndIndex).trim());
         } else {
-            name = _checkCodeHeader(
-                    codeInFile.substring(_parseIndex, endIndex));            
+            name = _checkCodeHeader(codeInFile.substring(_parseIndex, endIndex));
         }
         _parseIndex = _HEADEREND.length() + endIndex;
         return name;
@@ -370,8 +361,8 @@ public class CodeStream {
             stream._constructCodeTable();
         }
 
-        for (Iterator keys = stream._codeBlockTable.keySet().iterator();
-             keys.hasNext();) {
+        for (Iterator keys = stream._codeBlockTable.keySet().iterator(); keys
+                .hasNext();) {
             String key = (String) keys.next();
             buffer.append(key + ": \n");
             buffer.append((StringBuffer) stream._codeBlockTable.get(key));
@@ -384,7 +375,7 @@ public class CodeStream {
     ///////////////////////////////////////////////////////////////////////
     // private variables declarations
     ///////////////////////////////////////////////////////////////////////
-    
+
     /**
      * String pattern which represents the end of a code block.
      * Both _BLOCKSTART and _BLOCKEND cannot be the prefix of the other.
@@ -416,7 +407,7 @@ public class CodeStream {
      * Debugging flag, which is turned on during debug mode
      */
     private static boolean _debug = false;
-    
+
     /**
      * File path to the .c files associated with this CodeStream's helper
      */

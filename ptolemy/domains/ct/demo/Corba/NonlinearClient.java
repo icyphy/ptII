@@ -1,32 +1,32 @@
 /* The square wave response of a second order system with nonlinear effect.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-@ProposedRating Red
-@AcceptedRating Red (cxh)
-*/
+ @ProposedRating Red
+ @AcceptedRating Red (cxh)
+ */
 package ptolemy.domains.ct.demo.Corba;
 
 import ptolemy.actor.IORelation;
@@ -47,22 +47,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NonlinearClient
 
 /**
-   The square wave response of a second order CT system with a CORBA
-   actor in the feedback. . This simple
-   CT system demonstrate the use of CORBA actor solvers over the network.
-   The query box allow the users to input the ORB initialization parameter
-   and the name of the CORBA actor.
-   @author  Jie Liu
-   @version $Id$
-*/
+ The square wave response of a second order CT system with a CORBA
+ actor in the feedback. . This simple
+ CT system demonstrate the use of CORBA actor solvers over the network.
+ The query box allow the users to input the ORB initialization parameter
+ and the name of the CORBA actor.
+ @author  Jie Liu
+ @version $Id$
+ */
 public class NonlinearClient extends TypedCompositeActor {
-    public NonlinearClient(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public NonlinearClient(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         setName("NonlinearSystem");
 
@@ -135,6 +134,8 @@ public class NonlinearClient extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                           parameters                    ////
     public Parameter ORBInitProperties;
+
     public Parameter remoteActorName;
+
     public Parameter stopTime;
 }

@@ -1,30 +1,30 @@
 /* A parameter with type double with a limited range.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.parameters;
 
 import ptolemy.data.DoubleToken;
@@ -36,29 +36,28 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DoubleRangeParameter
 
 /**
-   This is a parameter with type double with a limited range and
-   limited precision.
-   Its value is an double token that is constrained to lie
-   within the boundaries specified by its two parameters,
-   <i>min</i> and <i>max</i>, inclusive.  Moreover, the values
-   are quantized so that there are exactly <i>precision</i>
-   values, uniformly spaced in the range.
-   A user interface will typically use this
-   information to represent the parameter value using a slider.
-   The default values for <i>min</i> and <i>max</i> are 0.0 and 1.0,
-   with a default value of 0.5.  The default <i>precision</i> is 100.
-   <p>
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ This is a parameter with type double with a limited range and
+ limited precision.
+ Its value is an double token that is constrained to lie
+ within the boundaries specified by its two parameters,
+ <i>min</i> and <i>max</i>, inclusive.  Moreover, the values
+ are quantized so that there are exactly <i>precision</i>
+ values, uniformly spaced in the range.
+ A user interface will typically use this
+ information to represent the parameter value using a slider.
+ The default values for <i>min</i> and <i>max</i> are 0.0 and 1.0,
+ with a default value of 0.5.  The default <i>precision</i> is 100.
+ <p>
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class DoubleRangeParameter extends Parameter {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -96,8 +95,7 @@ public class DoubleRangeParameter extends Parameter {
         // setExpression("0.5");
         setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-2\" "
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-2\" "
                 + "width=\"60\" height=\"4\" " + "style=\"fill:white\"/>\n"
                 + "<rect x=\"15\" y=\"-10\" " + "width=\"4\" height=\"20\" "
                 + "style=\"fill:grey\"/>\n" + "</svg>\n");
@@ -196,8 +194,8 @@ public class DoubleRangeParameter extends Parameter {
                 }
 
                 throw new IllegalActionException(this,
-                        "Value is required to lie between " + min + " and " + max
-                        + ".");
+                        "Value is required to lie between " + min + " and "
+                                + max + ".");
             } finally {
                 _inCheck = false;
             }

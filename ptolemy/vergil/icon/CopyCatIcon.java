@@ -1,30 +1,30 @@
 /* An icon that copies the icon of an entity with the same container.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -43,21 +43,20 @@ import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CopyCatIcon
 
 /**
-   This is an icon that copies the icon of the last entity contained by
-   the same container, if there is one, and behaves like the base class
-   if not.
+ This is an icon that copies the icon of the last entity contained by
+ the same container, if there is one, and behaves like the base class
+ if not.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class CopyCatIcon extends XMLIcon {
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
@@ -113,7 +112,7 @@ public class CopyCatIcon extends XMLIcon {
                     // Look for an icon within the entity.
                     EditorIcon icon = null;
                     Iterator icons = entity.attributeList(EditorIcon.class)
-                        .iterator();
+                            .iterator();
 
                     while (icons.hasNext()) {
                         icon = (EditorIcon) icons.next();
@@ -125,25 +124,26 @@ public class CopyCatIcon extends XMLIcon {
                         // If there is no icon, then maybe there is an
                         // _iconDescription attribute.
                         SingletonConfigurableAttribute description = (SingletonConfigurableAttribute) entity
-                            .getAttribute("_iconDescription",
-                                    SingletonConfigurableAttribute.class);
+                                .getAttribute("_iconDescription",
+                                        SingletonConfigurableAttribute.class);
 
                         if (description != null) {
                             // Look for an icon description in my container.
                             SingletonConfigurableAttribute myDescription = (SingletonConfigurableAttribute) myContainer
-                                .getAttribute("_iconDescription",
-                                        SingletonConfigurableAttribute.class);
+                                    .getAttribute(
+                                            "_iconDescription",
+                                            SingletonConfigurableAttribute.class);
 
                             if (myDescription != null) {
                                 // Save my original description, in case I go
                                 // back to having nothing inside.
                                 if (_originalDescription == null) {
                                     _originalDescription = myDescription
-                                        .getConfigureText();
+                                            .getConfigureText();
                                 }
 
-                                myDescription.configure(null, null,
-                                        description.getConfigureText());
+                                myDescription.configure(null, null, description
+                                        .getConfigureText());
                             }
                         }
                     }
@@ -154,8 +154,8 @@ public class CopyCatIcon extends XMLIcon {
                         // Restore the original icon description.
                         // Look for an icon description in my container.
                         SingletonConfigurableAttribute myDescription = (SingletonConfigurableAttribute) myContainer
-                            .getAttribute("_iconDescription",
-                                    SingletonConfigurableAttribute.class);
+                                .getAttribute("_iconDescription",
+                                        SingletonConfigurableAttribute.class);
 
                         if (myDescription != null) {
                             myDescription.configure(null, null,
@@ -188,9 +188,8 @@ public class CopyCatIcon extends XMLIcon {
                 Color.white);
         composite.add(rectangle2);
 
-        BasicRectangle rectangle3 = new BasicRectangle(bounds.getX(),
-                bounds.getY(), bounds.getWidth(), bounds.getHeight(),
-                Color.white);
+        BasicRectangle rectangle3 = new BasicRectangle(bounds.getX(), bounds
+                .getY(), bounds.getWidth(), bounds.getHeight(), Color.white);
         composite.add(rectangle3);
         composite.add(result);
         return composite;

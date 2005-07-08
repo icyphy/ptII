@@ -7,10 +7,11 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 public class Unboxing10 {
     ArrayToken arraytoken;
+
     ArrayToken arraytoken2;
+
     public final ArrayToken initialOutputs_CGToken;
 
     public static void main(String[] strings) throws IllegalActionException {
@@ -23,7 +24,8 @@ public class Unboxing10 {
         ((Unboxing10) this).arraytoken = new ArrayToken(inttokens);
 
         ArrayType arraytype = new ArrayType(BaseType.INT);
-        ptolemy.data.Token[] tokens = ((Unboxing10) this).arraytoken.arrayValue();
+        ptolemy.data.Token[] tokens = ((Unboxing10) this).arraytoken
+                .arrayValue();
         IntToken[] inttokens_0_ = new IntToken[tokens.length];
 
         for (int i = 0; i < tokens.length; i++) {

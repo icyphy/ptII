@@ -1,32 +1,32 @@
 /*
-  @Copyright (c) 2003-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
 
-*/
+ */
 package ptolemy.caltrop.ddi;
 
 import java.util.HashMap;
@@ -49,22 +49,21 @@ import caltrop.interpreter.ast.InputPattern;
 import caltrop.interpreter.ast.OutputExpression;
 import caltrop.interpreter.environment.Environment;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DataflowWithRates
 
 /**
-   A base class that provides support for dataflow models that publish
-   external rate information.  This includes SDF (where the rates are
-   constant) and DDF (where the rates are published once an action is
-   selected.
-   
-   @author Christopher Chang, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ A base class that provides support for dataflow models that publish
+ external rate information.  This includes SDF (where the rates are
+ constant) and DDF (where the rates are published once an action is
+ selected.
+ 
+ @author Christopher Chang, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class DataflowWithRates extends Dataflow {
     /**
      * Create an new DataflowWithRates DDI.
@@ -74,13 +73,12 @@ public class DataflowWithRates extends Dataflow {
      * @param context The context that the plugin will use.
      * @param env The environment that the plugin will use.
      */
-    public DataflowWithRates(TypedAtomicActor ptActor, Actor actor, Context context,
-            Environment env) {
+    public DataflowWithRates(TypedAtomicActor ptActor, Actor actor,
+            Context context, Environment env) {
         super(ptActor, actor, context, env);
         _eval = new ExprEvaluator(_context, _env);
-        _actorInterpreter = new DataflowWithRatesActorInterpreter(
-                _actor, _context,
-                _env, _inputPorts, _outputPorts);
+        _actorInterpreter = new DataflowWithRatesActorInterpreter(_actor,
+                _context, _env, _inputPorts, _outputPorts);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,15 +87,15 @@ public class DataflowWithRates extends Dataflow {
     /** Annotate the given list of TypedIOPorts with rate parameters
      * according to the given map.
      */
-    protected void _annotatePortsWithRates(
-            List ports, Map rateMap, String varName) {
+    protected void _annotatePortsWithRates(List ports, Map rateMap,
+            String varName) {
         for (Iterator iterator = ports.iterator(); iterator.hasNext();) {
             IOPort port = (IOPort) iterator.next();
 
             try {
                 Integer integerRate = (Integer) rateMap.get(port.getName());
                 int rate;
-                if(integerRate == null) {
+                if (integerRate == null) {
                     rate = 0;
                 } else {
                     rate = integerRate.intValue();
@@ -149,9 +147,8 @@ public class DataflowWithRates extends Dataflow {
     // cannot be computed.
     protected ActionRateSignature[] _computeActionRates(Action[] actions)
             throws Exception {
-        ActionRateSignature[] signatures = 
-            new ActionRateSignature[actions.length];
-        
+        ActionRateSignature[] signatures = new ActionRateSignature[actions.length];
+
         for (int i = 0; i < actions.length; i++) {
             signatures[i] = _computeActionRates(actions[i]);
         }
@@ -159,31 +156,32 @@ public class DataflowWithRates extends Dataflow {
         return signatures;
     }
 
-
     // Compute the rate signature of the given action.  Throw an
     // exception if the rate cannot be computed.
     protected ActionRateSignature _computeActionRates(Action action)
             throws Exception {
         ActionRateSignature signature = new ActionRateSignature();
-        
+
         InputPattern[] inputPatterns = action.getInputPatterns();
-        
+
         for (int j = 0; j < inputPatterns.length; j++) {
             InputPattern inputPattern = inputPatterns[j];
             Expression repeatExpr = inputPattern.getRepeatExpr();
             int repeatVal = _computeRepeatExpression(repeatExpr, action);
-            signature.addInputRate(inputPattern.getPortname(),
-                    inputPattern.getVariables().length * repeatVal);
+            signature.addInputRate(inputPattern.getPortname(), inputPattern
+                    .getVariables().length
+                    * repeatVal);
         }
-        
+
         OutputExpression[] outputexps = action.getOutputExpressions();
-        
+
         for (int j = 0; j < outputexps.length; j++) {
             OutputExpression outputexp = outputexps[j];
             Expression repeatExpr = outputexp.getRepeatExpr();
             int repeatVal = _computeRepeatExpression(repeatExpr, action);
-            signature.addOutputRate(outputexp.getPortname(),
-                    outputexp.getExpressions().length * repeatVal);
+            signature.addOutputRate(outputexp.getPortname(), outputexp
+                    .getExpressions().length
+                    * repeatVal);
         }
         return signature;
     }
@@ -290,8 +288,10 @@ public class DataflowWithRates extends Dataflow {
                 return true;
             } else {
                 if (o instanceof ActionRateSignature) {
-                    return inputRates.equals(((ActionRateSignature) o).inputRates)
-                        && outputRates.equals(((ActionRateSignature) o).outputRates);
+                    return inputRates
+                            .equals(((ActionRateSignature) o).inputRates)
+                            && outputRates
+                                    .equals(((ActionRateSignature) o).outputRates);
                 } else {
                     return false;
                 }
@@ -319,6 +319,7 @@ public class DataflowWithRates extends Dataflow {
         }
 
         private Map inputRates = new HashMap();
+
         private Map outputRates = new HashMap();
     }
 }

@@ -1,30 +1,30 @@
 /* A CORBA server for Ptolemy actors.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.jxta.demo.corba;
 
 import java.io.FileInputStream;
@@ -53,18 +53,17 @@ import net.jxta.protocol.ResolverResponseMsg;
 import net.jxta.resolver.QueryHandler;
 import net.jxta.resolver.ResolverService;
 
-
 //import ptolemy.domains.ct.demo.Corba.NonlinearServant;
 //////////////////////////////////////////////////////////////////////////
 //// ModelServer
 
 /**
-   A model server register the servant to the name server and wait for calls.
-   @author Jie Liu
-   @version $Id$
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ A model server register the servant to the name server and wait for calls.
+ @author Jie Liu
+ @version $Id$
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class ModelServer implements QueryHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -109,9 +108,9 @@ public class ModelServer implements QueryHandler {
         }
 
         /*PropertyConfigurator.configure(System.getProperties());
-          String Dir = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta";
-          //String _actorListFileName = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/actors.xml";
-          */
+         String Dir = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta";
+         //String _actorListFileName = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/actors.xml";
+         */
         _properties = new Properties(System.getProperties());
 
         try {
@@ -120,9 +119,9 @@ public class ModelServer implements QueryHandler {
             _properties.load(configProperties);
             configProperties.close();
         } catch (IOException e) {
-            System.out.println(
-                    "Warning: Can't find configuration propertiees file. ' "
-                    + e.getMessage() + "'");
+            System.out
+                    .println("Warning: Can't find configuration propertiees file. ' "
+                            + e.getMessage() + "'");
         }
 
         PeerGroup netPeerGroup = null;
@@ -138,17 +137,16 @@ public class ModelServer implements QueryHandler {
         String groupAdvFileName = _properties.getProperty("GroupAdvFileName");
 
         if (groupAdvFileName == null) {
-            System.out.println(
-                    "Error: property undefined - GroupAdvFileName.\n");
+            System.out
+                    .println("Error: property undefined - GroupAdvFileName.\n");
         }
 
         PeerGroupAdvertisement groupAdv = null;
 
         try {
             groupAdv = (PeerGroupAdvertisement) AdvertisementFactory
-                .newAdvertisement(XML_MIME_TYPE,
-                        new FileInputStream(_configDir + "/"
-                                + groupAdvFileName));
+                    .newAdvertisement(XML_MIME_TYPE, new FileInputStream(
+                            _configDir + "/" + groupAdvFileName));
         } catch (FileNotFoundException ex) {
             System.out.println("Error: cannot find group adv file.\n"
                     + ex.getMessage());
@@ -178,8 +176,8 @@ public class ModelServer implements QueryHandler {
         StructuredDocument identityInfo = null;
 
         try {
-            AuthenticationCredential authCred = new AuthenticationCredential(_group,
-                    null, identityInfo);
+            AuthenticationCredential authCred = new AuthenticationCredential(
+                    _group, null, identityInfo);
             MembershipService membershipService = _group.getMembershipService();
             _authenticator = membershipService.apply(authCred);
 
@@ -204,8 +202,8 @@ public class ModelServer implements QueryHandler {
         StringBuffer queryTextBuffer = new StringBuffer();
 
         /*queryTextBuffer = queryTextBuffer.append("<CorbaActorResponse>\n");
-          queryTextBuffer = queryTextBuffer.append("<CorbaActor>"
-          + _remoteActorName + "</CorbaActor>\n");  */
+         queryTextBuffer = queryTextBuffer.append("<CorbaActor>"
+         + _remoteActorName + "</CorbaActor>\n");  */
         queryTextBuffer = queryTextBuffer.append(ior);
 
         //queryTextBuffer = queryTextBuffer.append("</CorbaActorResponse>\n");
@@ -217,8 +215,8 @@ public class ModelServer implements QueryHandler {
      * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
      */
     public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-            throws NoResponseException, ResendQueryException, DiscardQueryException,
-            IOException {
+            throws NoResponseException, ResendQueryException,
+            DiscardQueryException, IOException {
         String qry = query.getQuery();
 
         if (qry.startsWith("<CorbaActorQuery>")) {
@@ -245,18 +243,32 @@ public class ModelServer implements QueryHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private Properties _properties;
+
     private PeerGroup _group;
+
     private ResolverService _resolverService;
+
     private Authenticator _authenticator;
+
     private Credential _credential;
+
     private ResolverQueryMsg _actorQueryMessage;
+
     private ResolverResponseMsg _actorQueryResponse;
+
     private String _configDir;
+
     private static String _CONFIG_DIR = "pae.config.dir";
+
     private String _CONFIG_FILE = "Peer.properties";
+
     private String _actorListFileName;
+
     private String _ACTOR_QUERY_HANDLER_NAME = "ActorQueryHandler";
+
     private MimeMediaType XML_MIME_TYPE = new MimeMediaType("text/xml");
+
     private String _ior = null;
+
     private String _remoteActorName = "Nonlinear";
 }

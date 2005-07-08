@@ -1,30 +1,30 @@
 /* An actor that converts polar coordinates to a complex token.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,24 +37,23 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Complex;
 
-
 ///////////////////////////////////////////////////////////////
 /// PolarToComplex
 
 /**
 
-This actor reads two double tokens (magnitude and angle) and outputs
-a single complex token. The output is a complex token representation of
-the coordinates given at the inputs in polar form. The angle input is
-assumed to be in radians. If either input is NaN or infinity,
-then the output is NaN or infinity.
+ This actor reads two double tokens (magnitude and angle) and outputs
+ a single complex token. The output is a complex token representation of
+ the coordinates given at the inputs in polar form. The angle input is
+ assumed to be in radians. If either input is NaN or infinity,
+ then the output is NaN or infinity.
 
-@author Michael Leung, Edward A. Lee, Paul Whitaker
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Green (pwhitake)
-@Pt.AcceptedRating Green (pwhitake)
-*/
+ @author Michael Leung, Edward A. Lee, Paul Whitaker
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (pwhitake)
+ @Pt.AcceptedRating Green (pwhitake)
+ */
 public class PolarToComplex extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -77,8 +76,8 @@ public class PolarToComplex extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.COMPLEX);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
@@ -86,11 +85,11 @@ public class PolarToComplex extends TypedAtomicActor {
     ////                         public variables                  ////
 
     /** The input port for the magnitude component, which has type
-        DoubleToken. */
+     DoubleToken. */
     public TypedIOPort magnitude;
 
     /** The input port for the angle component (in radians), which has
-        type DoubleToken. */
+     type DoubleToken. */
     public TypedIOPort angle;
 
     /** The port for the output, which has type ComplexToken. */
@@ -107,7 +106,8 @@ public class PolarToComplex extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        double magnitudeValue = ((DoubleToken) (magnitude.get(0))).doubleValue();
+        double magnitudeValue = ((DoubleToken) (magnitude.get(0)))
+                .doubleValue();
         double angleValue = ((DoubleToken) (angle.get(0))).doubleValue();
 
         double xValue = magnitudeValue * Math.cos(angleValue);

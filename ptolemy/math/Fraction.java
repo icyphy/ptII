@@ -1,50 +1,49 @@
 /* A Fraction.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.math;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// Fraction
 
 /**
-   A class for representing fractions.  Fractions are immutable and
-   maintained in lowest terms, with a positive denominator.   Thus,
-   1/2 and 2/4 are interpreted as different names for the same number.
-   Any fraction with the value zero is expressed as 0/1 in lowest terms.
-   <p>This class only represents fractions with a determined value,
-   so fractions with a zero in the denominator are not allowed (including 0/0).
+ A class for representing fractions.  Fractions are immutable and
+ maintained in lowest terms, with a positive denominator.   Thus,
+ 1/2 and 2/4 are interpreted as different names for the same number.
+ Any fraction with the value zero is expressed as 0/1 in lowest terms.
+ <p>This class only represents fractions with a determined value,
+ so fractions with a zero in the denominator are not allowed (including 0/0).
 
-   @author Stephen Neuendorffer, Adam Cataldo
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Stephen Neuendorffer, Adam Cataldo
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class Fraction extends Object {
     /** Create a new fraction with the value zero (0/1).
      */
@@ -100,8 +99,8 @@ public class Fraction extends Object {
      *  @return The answer as another fraction in lowest terms.
      */
     public Fraction add(Fraction b) {
-        Fraction f = new Fraction((_num * b._den) + (_den * b._num),
-                _den * b._den);
+        Fraction f = new Fraction((_num * b._den) + (_den * b._num), _den
+                * b._den);
         return f;
     }
 
@@ -127,8 +126,7 @@ public class Fraction extends Object {
         // The Fractions are already in lowest terms, so we just compare the
         // numerator and denominator
         if (b instanceof Fraction) {
-            return ((_num == ((Fraction) b)._num)
-                    && (_den == ((Fraction) b)._den));
+            return ((_num == ((Fraction) b)._num) && (_den == ((Fraction) b)._den));
         } else {
             return false;
         }
@@ -152,10 +150,11 @@ public class Fraction extends Object {
      * @return True if this Fraction is greater than the input.
      */
     public boolean greaterThan(Fraction testInput) {
-        int gcd = ExtendedMath.gcd(testInput.getDenominator(),
-                this.getDenominator());
+        int gcd = ExtendedMath.gcd(testInput.getDenominator(), this
+                .getDenominator());
         int thisScaled = this.multiply(new Fraction(gcd, 1)).getNumerator();
-        int inputScaled = testInput.multiply(new Fraction(gcd, 1)).getNumerator();
+        int inputScaled = testInput.multiply(new Fraction(gcd, 1))
+                .getNumerator();
 
         if (thisScaled > inputScaled) {
             return true;
@@ -211,8 +210,8 @@ public class Fraction extends Object {
      *  @return The answer as another fraction in lowest terms
      */
     public Fraction subtract(Fraction b) {
-        Fraction f = new Fraction((_num * b._den) - (_den * b._num),
-                _den * b._den);
+        Fraction f = new Fraction((_num * b._den) - (_den * b._num), _den
+                * b._den);
         return f;
     }
 
@@ -266,5 +265,6 @@ public class Fraction extends Object {
     }
 
     private int _num;
+
     private int _den;
 }

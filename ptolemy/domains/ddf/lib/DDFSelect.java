@@ -1,30 +1,30 @@
 /* A type polymorphic select used in the DDF domain.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ddf.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -44,30 +44,29 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-
 /**
-   A type polymorphic select, which routes specified input channels to
-   the output, used in the DDF domain. In the first iteration, an input
-   token at the <i>control</i> port is read and its value is recorded.
-   In the second iteration, an input token is read from the input port
-   channel specified by the most recently seen token at the <i>control</i>
-   port and sent to the output. It alternates between these two kinds of
-   iterations until stopped. The <i>control</i> port must receive IntTokens.
-   The input port may receive tokens of any type. Because tokens are
-   immutable, the same token is sent to the output, rather than a copy.
-   Note that as for any multiport, the channel number starts from 0 and
-   increments by 1 for each additional channel in the order the channel
-   is created (e.g., when a connection is drawn in Vergil).
-   <p>
-   Note this actor sends an output token every two iterations. Contrast
-   this with Select which sends an output token every iteration.
+ A type polymorphic select, which routes specified input channels to
+ the output, used in the DDF domain. In the first iteration, an input
+ token at the <i>control</i> port is read and its value is recorded.
+ In the second iteration, an input token is read from the input port
+ channel specified by the most recently seen token at the <i>control</i>
+ port and sent to the output. It alternates between these two kinds of
+ iterations until stopped. The <i>control</i> port must receive IntTokens.
+ The input port may receive tokens of any type. Because tokens are
+ immutable, the same token is sent to the output, rather than a copy.
+ Note that as for any multiport, the channel number starts from 0 and
+ increments by 1 for each additional channel in the order the channel
+ is created (e.g., when a connection is drawn in Vergil).
+ <p>
+ Note this actor sends an output token every two iterations. Contrast
+ this with Select which sends an output token every iteration.
 
-   @author Gang Zhou
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (zgang)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Gang Zhou
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (zgang)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class DDFSelect extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -89,7 +88,8 @@ public class DDFSelect extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(input);
 
-        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input,
+                "tokenConsumptionRate");
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
 
@@ -207,9 +207,9 @@ public class DDFSelect extends TypedAtomicActor {
             } else {
                 // If the value of the received control token is out of
                 // range, throw an IllegalActionException.
-                throw new IllegalActionException(this,
-                        "The width of the " + "input port is " + input.getWidth()
-                        + " , but " + "the value of the received control token: "
+                throw new IllegalActionException(this, "The width of the "
+                        + "input port is " + input.getWidth() + " , but "
+                        + "the value of the received control token: "
                         + _control + " is out of range.");
             }
         }

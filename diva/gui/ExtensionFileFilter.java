@@ -35,7 +35,6 @@ import java.util.Hashtable;
 
 import javax.swing.filechooser.FileFilter;
 
-
 /**
  * A convenience implementation of FileFilter that filters out
  * all files except for those type extensions that it knows about.
@@ -57,10 +56,15 @@ import javax.swing.filechooser.FileFilter;
  */
 public class ExtensionFileFilter extends FileFilter {
     private static String TYPE_UNKNOWN = "Type Unknown";
+
     private static String HIDDEN_FILE = "Hidden File";
+
     private Hashtable filters = null;
+
     private String description = null;
+
     private String fullDescription = null;
+
     private boolean useExtensionsInDescription = true;
 
     /**
@@ -93,9 +97,7 @@ public class ExtensionFileFilter extends FileFilter {
      * @see #addExtension(String)
      */
     public ExtensionFileFilter(String extension, String description) {
-        this(new String[] {
-            extension
-        }, description);
+        this(new String[] { extension }, description);
     }
 
     /**
@@ -236,8 +238,8 @@ public class ExtensionFileFilter extends FileFilter {
                     fullDescription += ("." + (String) extensions.nextElement());
 
                     while (extensions.hasMoreElements()) {
-                        fullDescription += (", "
-                                + (String) extensions.nextElement());
+                        fullDescription += (", " + (String) extensions
+                                .nextElement());
                     }
                 }
 

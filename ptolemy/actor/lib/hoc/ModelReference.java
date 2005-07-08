@@ -1,31 +1,31 @@
 /* An atomic actor that executes a model specified by a file or URL.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.lib.hoc;
 
 import java.io.File;
@@ -60,123 +60,122 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ModelReference
 
 /**
-   This is an atomic actor that can execute a model specified by
-   a file or URL. This can be used to define an actor whose firing behavior
-   is given by a complete execution of another model.
-   <p>
-   An instance of this actor can have ports added to it.  If it has
-   input ports, then on each firing, before executing the referenced
-   model, this actor will read an input token from the input port, if
-   there is one, and use it to set the value of a top-level parameter
-   in the referenced model that has the same name as the port, if there
-   is one. The simplest way to ensure that there is a matching parameter
-   is to use a PortParameter for inputs.  However, this actor will work
-   also for ordinary ports. In this case, if there is a top-level
-   parameter of the referenced model with the same name as the port, and
-   it is an instance of Variable (or its derived class Parameter), then
-   the token read at the input is moved into it using its setToken() method.
-   Otherwise, if it is an instance of Settable, then a string representation
-   of the token is copied using the setExpression() method.
-   Input ports should not be multiports, and if they are, then
-   all but the first channel will be ignored.
-   <p>
-   If this actor has output ports and the referenced model is executed,
-   then upon completion of that execution, this actor looks for top-level
-   parameters in the referenced model whose names match those of the output
-   ports. If there are such parameters, then the final value of those
-   parameters is sent to the output ports. If such a parameter is an
-   instance of Variable (or its derived class Parameter), then its
-   contained token is sent to the output. Otherwise, if it is an
-   instance of Settable, then a string token is produced on the output
-   with its value equal to that returned by getExpression() of the
-   Settable.  If the model is executed in the calling thread, then
-   the outputs will be produced before the fire() method returns.
-   If the model is executed in a new thread, then the outputs will
-   be produced whenever that thread completes execution of the model.
-   Output ports should not be multiports. If they are, then all but
-   the first channel will be ignored.
-   Normally, when you create output ports for this actor, you will have
-   to manually set the type.  There is no type inference from the
-   parameter of the referenced model.
-   <p>
-   A typical use of this actor will use the SetVariable actor
-   inside to define the value of the output port.
-   <p>
-   A suite of parameters is provided to control what happens when this
-   actor executes:
-   <ul>
-   <li> <i>executionOnFiring</i>:
-   The value of this string attribute determines what execution
-   happens when the fire() method is invoked.  The recognized
-   values are:
-   <ul>
-   <li> "run in calling thread" (the default)
-   <li> "run in a new thread"
-   <li> "do nothing".
-   </ul>
-   If execution in a separate thread is selected, then the execution can
-   optionally be stopped by the postfire() method (see below). If the model
-   is still executing the next time fire() is called on this actor, then
-   the fire() method will wait for completion of the first execution.
-   If an exception occurs during a run in another thread, then it will
-   be reported at the next invocation of fire(), postfire(), or wrapup().
-   Note that if you select "run in a new thread" and this actor has
-   output ports, the data is produced to those output ports when
-   the execution completes, whenever that might be.  This may make
-   output ports difficult to use in some domains.
+ This is an atomic actor that can execute a model specified by
+ a file or URL. This can be used to define an actor whose firing behavior
+ is given by a complete execution of another model.
+ <p>
+ An instance of this actor can have ports added to it.  If it has
+ input ports, then on each firing, before executing the referenced
+ model, this actor will read an input token from the input port, if
+ there is one, and use it to set the value of a top-level parameter
+ in the referenced model that has the same name as the port, if there
+ is one. The simplest way to ensure that there is a matching parameter
+ is to use a PortParameter for inputs.  However, this actor will work
+ also for ordinary ports. In this case, if there is a top-level
+ parameter of the referenced model with the same name as the port, and
+ it is an instance of Variable (or its derived class Parameter), then
+ the token read at the input is moved into it using its setToken() method.
+ Otherwise, if it is an instance of Settable, then a string representation
+ of the token is copied using the setExpression() method.
+ Input ports should not be multiports, and if they are, then
+ all but the first channel will be ignored.
+ <p>
+ If this actor has output ports and the referenced model is executed,
+ then upon completion of that execution, this actor looks for top-level
+ parameters in the referenced model whose names match those of the output
+ ports. If there are such parameters, then the final value of those
+ parameters is sent to the output ports. If such a parameter is an
+ instance of Variable (or its derived class Parameter), then its
+ contained token is sent to the output. Otherwise, if it is an
+ instance of Settable, then a string token is produced on the output
+ with its value equal to that returned by getExpression() of the
+ Settable.  If the model is executed in the calling thread, then
+ the outputs will be produced before the fire() method returns.
+ If the model is executed in a new thread, then the outputs will
+ be produced whenever that thread completes execution of the model.
+ Output ports should not be multiports. If they are, then all but
+ the first channel will be ignored.
+ Normally, when you create output ports for this actor, you will have
+ to manually set the type.  There is no type inference from the
+ parameter of the referenced model.
+ <p>
+ A typical use of this actor will use the SetVariable actor
+ inside to define the value of the output port.
+ <p>
+ A suite of parameters is provided to control what happens when this
+ actor executes:
+ <ul>
+ <li> <i>executionOnFiring</i>:
+ The value of this string attribute determines what execution
+ happens when the fire() method is invoked.  The recognized
+ values are:
+ <ul>
+ <li> "run in calling thread" (the default)
+ <li> "run in a new thread"
+ <li> "do nothing".
+ </ul>
+ If execution in a separate thread is selected, then the execution can
+ optionally be stopped by the postfire() method (see below). If the model
+ is still executing the next time fire() is called on this actor, then
+ the fire() method will wait for completion of the first execution.
+ If an exception occurs during a run in another thread, then it will
+ be reported at the next invocation of fire(), postfire(), or wrapup().
+ Note that if you select "run in a new thread" and this actor has
+ output ports, the data is produced to those output ports when
+ the execution completes, whenever that might be.  This may make
+ output ports difficult to use in some domains.
 
-   <li> <i>lingerTime</i>:
-   The amount of time (in milliseconds) to linger in the fire()
-   method of this actor.  This is a long that defaults to 0L.
-   If the model is run in the calling thread, then the linger
-   occurs after the run is complete. If the model is run in a
-   new thread, then the linger occurs after the run starts,
-   and the run is stopped after the linger time expires.
-   This can be used, for example, to run a model for a specified
-   amount of time, then ask it to finish() and continue.
+ <li> <i>lingerTime</i>:
+ The amount of time (in milliseconds) to linger in the fire()
+ method of this actor.  This is a long that defaults to 0L.
+ If the model is run in the calling thread, then the linger
+ occurs after the run is complete. If the model is run in a
+ new thread, then the linger occurs after the run starts,
+ and the run is stopped after the linger time expires.
+ This can be used, for example, to run a model for a specified
+ amount of time, then ask it to finish() and continue.
 
-   <li> <i>modelFileOrURL</i>:
-   The file name or URL of the model that this actor will execute.
-   This can be specified either by setting the parameter or by
-   providing a string at the input port.
+ <li> <i>modelFileOrURL</i>:
+ The file name or URL of the model that this actor will execute.
+ This can be specified either by setting the parameter or by
+ providing a string at the input port.
 
-   <li> <i>postfireAction</i>:
-   The value of this string attribute determines what happens
-   in the postfire() method.  The recognized values are:
-   <ul>
-   <li> "do nothing" (the default)
-   <li> "stop executing"
-   </ul>
-   The "stop executing" choices will only have an effect if
-   if <i>executionOnFiring</i> is set to "run in a new thread".
-   This can be used, for example, to run a model for a specified
-   amount of time, and then stop it.
-   </ul>
-   <p>
-   There are currently some limitations:
-   <ul>
-   <li>
-   FIXME: Pausing the referring model doesn't pause the referenced model.
-   <li>
-   FIXME: Need options for error handling.
-   </ul>
-   <P>
+ <li> <i>postfireAction</i>:
+ The value of this string attribute determines what happens
+ in the postfire() method.  The recognized values are:
+ <ul>
+ <li> "do nothing" (the default)
+ <li> "stop executing"
+ </ul>
+ The "stop executing" choices will only have an effect if
+ if <i>executionOnFiring</i> is set to "run in a new thread".
+ This can be used, for example, to run a model for a specified
+ amount of time, and then stop it.
+ </ul>
+ <p>
+ There are currently some limitations:
+ <ul>
+ <li>
+ FIXME: Pausing the referring model doesn't pause the referenced model.
+ <li>
+ FIXME: Need options for error handling.
+ </ul>
+ <P>
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @see RunCompositeActor
-   @see ptolemy.actor.lib.SetVariable
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
-public class ModelReference extends TypedAtomicActor
-    implements ExecutionListener {
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @see RunCompositeActor
+ @see ptolemy.actor.lib.SetVariable
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
+public class ModelReference extends TypedAtomicActor implements
+        ExecutionListener {
     /** Construct a ModelReference with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -289,8 +288,8 @@ public class ModelReference extends TypedAtomicActor
                     File asFile = modelFileOrURL.asFile();
 
                     if (!asFile.isFile()) {
-                        throw new IllegalActionException(this,
-                                "Not a file: " + url);
+                        throw new IllegalActionException(this, "Not a file: "
+                                + url);
                     }
                 }
 
@@ -339,7 +338,7 @@ public class ModelReference extends TypedAtomicActor
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized option for executionOnFiring: "
-                        + executionOnFiringValue);
+                                + executionOnFiringValue);
             }
         } else if (attribute == postfireAction) {
             String postfireActionValue = postfireAction.stringValue();
@@ -351,7 +350,7 @@ public class ModelReference extends TypedAtomicActor
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized value for postfireAction: "
-                        + postfireActionValue);
+                                + postfireActionValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -440,7 +439,7 @@ public class ModelReference extends TypedAtomicActor
             _throwable = null;
             throw new IllegalActionException(this, throwable,
                     "Run in a new thread threw an exception "
-                    + "on the previous firing.");
+                            + "on the previous firing.");
         }
 
         // Read the inputs. This should be done even if there is
@@ -490,8 +489,7 @@ public class ModelReference extends TypedAtomicActor
                     while (_executing) {
                         try {
                             if (_debugging) {
-                                _debug(
-                                        "** Waiting for previous execution to finish.");
+                                _debug("** Waiting for previous execution to finish.");
                             }
 
                             // Use workspace version of wait to release
@@ -512,8 +510,7 @@ public class ModelReference extends TypedAtomicActor
 
             if (_executionOnFiringValue == _RUN_IN_CALLING_THREAD) {
                 if (_debugging) {
-                    _debug(
-                            "** Executing referenced model in the calling thread.");
+                    _debug("** Executing referenced model in the calling thread.");
                 }
 
                 try {
@@ -538,8 +535,9 @@ public class ModelReference extends TypedAtomicActor
                 // because we need to write outputs upon completion.
                 if (_manager.getState() != Manager.IDLE) {
                     throw new IllegalActionException(this,
-                            "Cannot start an execution. " + "Referenced model is "
-                            + _manager.getState().getDescription());
+                            "Cannot start an execution. "
+                                    + "Referenced model is "
+                                    + _manager.getState().getDescription());
                 }
 
                 // NOTE: There is a possible race condition. We would like to
@@ -548,27 +546,26 @@ public class ModelReference extends TypedAtomicActor
                 // actually starts up. But the variable is not accessible.
                 // _manager._finishRequested = false;
                 Thread thread = new Thread() {
-                        public void run() {
-                            try {
-                                if (_debugging) {
-                                    _debug(
-                                            "** Executing model in a new thread.");
-                                }
-
-                                _manager.execute();
-                                _writeOutputs();
-                            } catch (Throwable throwable) {
-                                // If running tried to load in some native code using JNI
-                                // then we may get an Error here
-                                _manager.notifyListenersOfThrowable(throwable);
-
-                                // } finally {
-                                // NOTE: Race condition!  postfire() sets _manager to null.
-                                // So now we do this in postfire.
-                                // _manager.removeExecutionListener(ModelReference.this);
+                    public void run() {
+                        try {
+                            if (_debugging) {
+                                _debug("** Executing model in a new thread.");
                             }
+
+                            _manager.execute();
+                            _writeOutputs();
+                        } catch (Throwable throwable) {
+                            // If running tried to load in some native code using JNI
+                            // then we may get an Error here
+                            _manager.notifyListenersOfThrowable(throwable);
+
+                            // } finally {
+                            // NOTE: Race condition!  postfire() sets _manager to null.
+                            // So now we do this in postfire.
+                            // _manager.removeExecutionListener(ModelReference.this);
                         }
-                    };
+                    }
+                };
 
                 // Priority set to the minimum to get responsive UI during execution.
                 thread.setPriority(Thread.MIN_PRIORITY);
@@ -576,7 +573,7 @@ public class ModelReference extends TypedAtomicActor
             }
 
             long lingerTimeValue = ((LongToken) lingerTime.getToken())
-                .longValue();
+                    .longValue();
 
             if (lingerTimeValue > 0L) {
                 try {
@@ -615,8 +612,7 @@ public class ModelReference extends TypedAtomicActor
     public boolean postfire() throws IllegalActionException {
         if ((_postfireActionValue == _STOP_EXECUTING) && (_manager != null)) {
             if (_debugging) {
-                _debug(
-                        "** Calling finish() on the Manager to request termination.");
+                _debug("** Calling finish() on the Manager to request termination.");
             }
 
             _manager.finish();
@@ -755,7 +751,7 @@ public class ModelReference extends TypedAtomicActor
                         }
 
                         ((Settable) attribute).setExpression(token.toString());
-                    }                	
+                    }
                 }
             }
         }
@@ -795,13 +791,12 @@ public class ModelReference extends TypedAtomicActor
                     port.send(0, ((Variable) attribute).getToken());
                 } else if (attribute instanceof Settable) {
                     if (_debugging) {
-                        _debug(
-                                "** Transferring parameter as string to output: "
+                        _debug("** Transferring parameter as string to output: "
                                 + port.getName());
                     }
 
-                    port.send(0,
-                            new StringToken(((Settable) attribute).getExpression()));
+                    port.send(0, new StringToken(((Settable) attribute)
+                            .getExpression()));
                 }
             }
         }
@@ -817,7 +812,9 @@ public class ModelReference extends TypedAtomicActor
     ////                         private variables                 ////
     // Possible values for executionOnFiring.
     private static int _DO_NOTHING = 0;
+
     private static int _RUN_IN_CALLING_THREAD = 1;
+
     private static int _RUN_IN_A_NEW_THREAD = 2;
 
     /** The value of the executionOnFiring parameter. */

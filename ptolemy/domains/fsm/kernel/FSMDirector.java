@@ -1,29 +1,29 @@
 /* An FSMDirector governs the execution of a modal model.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fsm.kernel;
 
 import java.util.HashMap;
@@ -60,64 +60,63 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FSMDirector
 
 /**
-   An FSMDirector governs the execution of a modal model. A modal model is
-   a TypedCompositeActor with a FSMDirector as local director. The mode
-   control logic is captured by a mode controller, an instance of FSMActor
-   contained by the composite actor. Each state of the mode controller
-   represents a mode of operation and can be refined by an opaque CompositeActor
-   contained by the same composite actor.
-   <p>
-   When a modal model is fired, this director first transfers the input tokens
-   from the outside domain to the mode controller and the refinement of its
-   current state. The preemptive transitions from the current state of the mode
-   controller are examined. If there is more than one transition enabled, an
-   exception is thrown. If there is exactly one preemptive transition enabled
-   then it is chosen. The choice actions contained by the transition are
-   executed. Any output token produced by the mode controller is transferred to
-   both the output ports of the modal model and the input ports of the mode
-   controller. Then the refinements associated with the enabled transition are
-   executed. Any output token produced by the refinements is transferred to
-   both the output ports of the modal model and the input ports of the mode
-   controller. The refinements of the current state will not be fired.
-   <p>
-   If no preemptive transition is enabled, the refinements of the current state
-   are fired. Any output token produced by the refinements is transferred to
-   both the output ports of the modal model and the input ports of the mode
-   controller. After this, the non-preemptive transitions from the current
-   state of the mode controller are examined. If there is more than one
-   transition enabled, an exception is thrown. If there is exactly one
-   non-preemptive transition enabled then it is chosen and the choice actions
-   contained by the transition are executed. Any output token produced by the
-   mode controller is transferred to the output ports of the modal model and
-   the input ports of the mode controller. Then, the refinements of the
-   enabled transition are executed. Any output token produced by the refinements
-   is transferred to both the output ports of the modal model and the input
-   ports of the mode controller.
-   <p>
-   At the end of one firing, the modal model transfer its outputs to outside
-   domain. The mode controller does not change state during successive firings
-   in one iteration of the top level in order to support upper level domains
-   that iterate to a fixed point.
-   <p>
-   When the modal model is postfired, the chosen transition of the latest
-   firing is committed. The commit actions contained by the transition are
-   executed and the current state of the mode controller is set to the
-   destination state of the transition.
+ An FSMDirector governs the execution of a modal model. A modal model is
+ a TypedCompositeActor with a FSMDirector as local director. The mode
+ control logic is captured by a mode controller, an instance of FSMActor
+ contained by the composite actor. Each state of the mode controller
+ represents a mode of operation and can be refined by an opaque CompositeActor
+ contained by the same composite actor.
+ <p>
+ When a modal model is fired, this director first transfers the input tokens
+ from the outside domain to the mode controller and the refinement of its
+ current state. The preemptive transitions from the current state of the mode
+ controller are examined. If there is more than one transition enabled, an
+ exception is thrown. If there is exactly one preemptive transition enabled
+ then it is chosen. The choice actions contained by the transition are
+ executed. Any output token produced by the mode controller is transferred to
+ both the output ports of the modal model and the input ports of the mode
+ controller. Then the refinements associated with the enabled transition are
+ executed. Any output token produced by the refinements is transferred to
+ both the output ports of the modal model and the input ports of the mode
+ controller. The refinements of the current state will not be fired.
+ <p>
+ If no preemptive transition is enabled, the refinements of the current state
+ are fired. Any output token produced by the refinements is transferred to
+ both the output ports of the modal model and the input ports of the mode
+ controller. After this, the non-preemptive transitions from the current
+ state of the mode controller are examined. If there is more than one
+ transition enabled, an exception is thrown. If there is exactly one
+ non-preemptive transition enabled then it is chosen and the choice actions
+ contained by the transition are executed. Any output token produced by the
+ mode controller is transferred to the output ports of the modal model and
+ the input ports of the mode controller. Then, the refinements of the
+ enabled transition are executed. Any output token produced by the refinements
+ is transferred to both the output ports of the modal model and the input
+ ports of the mode controller.
+ <p>
+ At the end of one firing, the modal model transfer its outputs to outside
+ domain. The mode controller does not change state during successive firings
+ in one iteration of the top level in order to support upper level domains
+ that iterate to a fixed point.
+ <p>
+ When the modal model is postfired, the chosen transition of the latest
+ firing is committed. The commit actions contained by the transition are
+ executed and the current state of the mode controller is set to the
+ destination state of the transition.
 
-   @author Xiaojun Liu, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
-   @see FSMActor
-*/
+ @author Xiaojun Liu, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (hyzheng)
+ @Pt.AcceptedRating Red (hyzheng)
+ @see FSMActor
+ */
 public class FSMDirector extends Director implements ModelErrorHandler,
-                                                     ExplicitChangeContext {
+        ExplicitChangeContext {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -232,9 +231,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         FSMActor ctrl = getController();
 
         if (_debugging && _verbose) {
-            _debug(getFullName(),
-                    " find FSMActor " + ctrl.getName() + " at time: "
-                    + getModelTime());
+            _debug(getFullName(), " find FSMActor " + ctrl.getName()
+                    + " at time: " + getModelTime());
         }
 
         ctrl._readInputs();
@@ -276,7 +274,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                 if (actors[i].prefire()) {
                     if (_debugging) {
                         _debug(getFullName(), " fire refinement",
-                                ((ptolemy.kernel.util.NamedObj) actors[i]).getName());
+                                ((ptolemy.kernel.util.NamedObj) actors[i])
+                                        .getName());
                     }
 
                     actors[i].fire();
@@ -306,7 +305,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                             _debug(getFullName(),
                                     " fire transition refinement",
                                     ((ptolemy.kernel.util.NamedObj) actors[i])
-                                    .getName());
+                                            .getName());
                         }
 
                         actors[i].fire();
@@ -382,8 +381,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             String name = controllerName.getExpression();
 
             if (name == null) {
-                throw new IllegalActionException(this,
-                        "No name for mode " + "controller is set.");
+                throw new IllegalActionException(this, "No name for mode "
+                        + "controller is set.");
             }
 
             Nameable container = getContainer();
@@ -396,8 +395,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             Entity entity = cont.getEntity(name);
 
             if (entity == null) {
-                throw new IllegalActionException(this,
-                        "No controller found " + "with name " + name);
+                throw new IllegalActionException(this, "No controller found "
+                        + "with name " + name);
             }
 
             if (!(entity instanceof FSMActor)) {
@@ -434,23 +433,21 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         List list = new LinkedList();
 
         // Collect assignments from FSM transitions
-        for (Iterator states = getController().entityList().iterator();
-             states.hasNext();) {
+        for (Iterator states = getController().entityList().iterator(); states
+                .hasNext();) {
             State state = (State) states.next();
 
             for (Iterator transitions = state.outgoingPort.linkedRelationList()
-                     .iterator();
-                 transitions.hasNext();) {
+                    .iterator(); transitions.hasNext();) {
                 Transition transition = (Transition) transitions.next();
 
-                for (Iterator actions = transition.choiceActionList().iterator();
-                     actions.hasNext();) {
+                for (Iterator actions = transition.choiceActionList()
+                        .iterator(); actions.hasNext();) {
                     AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                        .next();
+                            .next();
 
                     for (Iterator names = action.getDestinationNameList()
-                             .iterator();
-                         names.hasNext();) {
+                            .iterator(); names.hasNext();) {
                         String name = (String) names.next();
                         NamedObj object = action.getDestination(name);
 
@@ -460,14 +457,13 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                     }
                 }
 
-                for (Iterator actions = transition.commitActionList().iterator();
-                     actions.hasNext();) {
+                for (Iterator actions = transition.commitActionList()
+                        .iterator(); actions.hasNext();) {
                     AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                        .next();
+                            .next();
 
                     for (Iterator names = action.getDestinationNameList()
-                             .iterator();
-                         names.hasNext();) {
+                            .iterator(); names.hasNext();) {
                         String name = (String) names.next();
                         NamedObj object = action.getDestination(name);
 
@@ -512,9 +508,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             for (int i = 0; i < actors.length; ++i) {
                 if (actors[i].getDirector() != this) {
                     // The refinement has a local director.
-                    result = Math.min(result,
-                            actors[i].getDirector().getModelNextIterationTime()
-                            .getDoubleValue());
+                    result = Math.min(result, actors[i].getDirector()
+                            .getModelNextIterationTime().getDoubleValue());
                     givenByRefinement = true;
                 }
             }
@@ -619,26 +614,26 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      */
     public Receiver newReceiver() {
         return new Mailbox() {
-                public boolean hasRoom() {
-                    return true;
-                }
+            public boolean hasRoom() {
+                return true;
+            }
 
-                public void put(Token token) {
-                    try {
-                        if (hasToken() == true) {
-                            get();
-                        }
-
-                        super.put(token);
-                    } catch (NoRoomException ex) {
-                        throw new InternalErrorException("One-place buffer: "
-                                + ex.getMessage());
-                    } catch (NoTokenException ex) {
-                        throw new InternalErrorException("One-place buffer: "
-                                + ex.getMessage());
+            public void put(Token token) {
+                try {
+                    if (hasToken() == true) {
+                        get();
                     }
+
+                    super.put(token);
+                } catch (NoRoomException ex) {
+                    throw new InternalErrorException("One-place buffer: "
+                            + ex.getMessage());
+                } catch (NoTokenException ex) {
+                    throw new InternalErrorException("One-place buffer: "
+                            + ex.getMessage());
                 }
-            };
+            }
+        };
     }
 
     /** Return true if the mode controller wishes to be scheduled for
@@ -673,10 +668,10 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         if (_mutationEnabled && (_enabledTransition != null)) {
             ChangeRequest request = new ChangeRequest(this,
                     "increment workspace version by 1") {
-                    protected void _execute() throws KernelException {
-                        ((NamedObj) getContainer()).workspace().incrVersion();
-                    }
-                };
+                protected void _execute() throws KernelException {
+                    ((NamedObj) getContainer()).workspace().incrVersion();
+                }
+            };
 
             request.setPersistent(false);
             getContainer().requestChange(request);
@@ -745,8 +740,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *  @exception NameDuplicationException If the name of this entity
      *  collides with a name already in the container.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         super.setContainer(container);
 
         if (container != null) {
@@ -784,7 +779,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque"
-                    + "input port.");
+                            + "input port.");
         }
 
         boolean transferredToken = false;
@@ -807,9 +802,11 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                             if (_debugging) {
                                 _debug(getFullName(),
                                         "transferring input from "
-                                        + port.getFullName() + " to "
-                                        + (insideReceivers[i][j]).getContainer()
-                                        .getFullName());
+                                                + port.getFullName()
+                                                + " to "
+                                                + (insideReceivers[i][j])
+                                                        .getContainer()
+                                                        .getFullName());
                             }
                         }
 
@@ -829,7 +826,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                 // this shouldn't happen.
                 throw new InternalErrorException(
                         "Director.transferInputs: Internal error: "
-                        + ex.getMessage());
+                                + ex.getMessage());
             }
         }
 
@@ -885,43 +882,45 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                         for (int j = 0; j < allReceivers[i].length; ++j) {
                             Receiver receiver = allReceivers[i][j];
                             Nameable cont = receiver.getContainer()
-                                .getContainer();
+                                    .getContainer();
 
                             if (cont == controller) {
                                 resultsList.add(receiver);
                             } else {
                                 // check transitions
-                                Iterator transitions = state.nonpreemptiveTransitionList()
-                                    .iterator();
+                                Iterator transitions = state
+                                        .nonpreemptiveTransitionList()
+                                        .iterator();
 
                                 while (transitions.hasNext()) {
                                     Transition transition = (Transition) transitions
-                                        .next();
+                                            .next();
                                     _checkActorsForReceiver(transition
-                                            .getRefinement(), cont,
-                                            receiver, resultsList);
+                                            .getRefinement(), cont, receiver,
+                                            resultsList);
                                 }
 
                                 // check refinements
                                 List stateList = new LinkedList();
                                 stateList.add(state);
                                 transitions = state.preemptiveTransitionList()
-                                    .iterator();
+                                        .iterator();
 
                                 while (transitions.hasNext()) {
                                     Transition transition = (Transition) transitions
-                                        .next();
-                                    stateList.add(transition.destinationState());
+                                            .next();
+                                    stateList
+                                            .add(transition.destinationState());
                                     _checkActorsForReceiver(transition
-                                            .getRefinement(), cont,
-                                            receiver, resultsList);
+                                            .getRefinement(), cont, receiver,
+                                            resultsList);
                                 }
 
                                 Iterator nextStates = stateList.iterator();
 
                                 while (nextStates.hasNext()) {
                                     actors = ((State) nextStates.next())
-                                        .getRefinement();
+                                            .getRefinement();
                                     _checkActorsForReceiver(actors, cont,
                                             receiver, resultsList);
                                 }

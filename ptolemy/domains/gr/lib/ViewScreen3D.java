@@ -1,30 +1,30 @@
 /* A GR 3D scene viewer.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.lib;
 
 import java.awt.Container;
@@ -69,23 +69,22 @@ import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ViewScreen3D
 
 /** A sink actor that renders the 3D GR geometry into a display screen.
 
-@author C. Fong, Adam Cataldo, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 4.1
-@Pt.ProposedRating Green (eal)
-@Pt.AcceptedRating Green (acataldo)
-*/
-public class ViewScreen3D extends GRActor3D
-        implements Placeable, ViewScreenInterface {
-    
+ @author C. Fong, Adam Cataldo, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (acataldo)
+ */
+public class ViewScreen3D extends GRActor3D implements Placeable,
+        ViewScreenInterface {
+
     // FIXME: Need a reset button to reset the viewpoint to the original.
-    
+
     /** Construct a ViewScreen in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -121,8 +120,8 @@ public class ViewScreen3D extends GRActor3D
         scalable = new Parameter(this, "scalable", new BooleanToken(false));
         scalable.setTypeEquals(BaseType.BOOLEAN);
 
-        translatable = new Parameter(this, "translatable",
-                new BooleanToken(false));
+        translatable = new Parameter(this, "translatable", new BooleanToken(
+                false));
         translatable.setTypeEquals(BaseType.BOOLEAN);
 
         showAxes = new Parameter(this, "showAxes", new BooleanToken(false));
@@ -152,7 +151,7 @@ public class ViewScreen3D extends GRActor3D
      *  is ignored.
      */
     public ColorAttribute backgroundColor;
-    
+
     // FIXME: Need a backgroundTexture attribute.
 
     /** The width in pixels of the display screen.
@@ -213,27 +212,27 @@ public class ViewScreen3D extends GRActor3D
 
     /** Fire this actor.*/
     public void fire() throws IllegalActionException {
-               
+
         boolean _hasToken = sceneGraphIn.hasToken(0);
         if (_debugging) {
             _debug("Called fire()");
             //_debug("hasToken = " + _hasToken);
         }
-                 
+
         if (!_isSceneGraphInitialized) {
             _makeSceneGraphConnection();
-        } else{
-            if(_hasToken != false){
-            	_makeNodeConnection();
+        } else {
+            if (_hasToken != false) {
+                _makeNodeConnection();
             }
         }
-      
+
         if (_iterationSynchronized) {
             _canvas.swap();
             _canvas.startRenderer();
             _canvas.stopRenderer();
         }
-      //  _counter = _counter + 1;
+        //  _counter = _counter + 1;
     }
 
     /** Return the root Java 3D rendering group used by this view screen.
@@ -254,7 +253,7 @@ public class ViewScreen3D extends GRActor3D
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-      //  _counter =1;
+        //  _counter =1;
         //boolean _hasToken = sceneGraphIn.hasToken(0);
         // Create a frame, if necessary, along with the canvas and
         // simple universe.
@@ -287,12 +286,12 @@ public class ViewScreen3D extends GRActor3D
         _userTransformation.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
         _branchRoot.addChild(_userTransformation);
         //To allow multiple shapes to be added
-/*        _root = new BranchGroup();
-        _root.setCapability(BranchGroup.ALLOW_DETACH);
-        _root.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
-        _root.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
-        _root.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
-        _userTransformation.addChild(_root); */
+        /*        _root = new BranchGroup();
+         _root.setCapability(BranchGroup.ALLOW_DETACH);
+         _root.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
+         _root.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
+         _root.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
+         _userTransformation.addChild(_root); */
 
         _bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
 
@@ -362,7 +361,7 @@ public class ViewScreen3D extends GRActor3D
         BranchGroup lightRoot = new BranchGroup();
 
         AmbientLight lightAmbient = new AmbientLight(new Color3f(0.8f, 0.8f,
-                                                             0.8f));
+                0.8f));
         lightAmbient.setInfluencingBounds(_bounds);
         lightRoot.addChild(lightAmbient);
 
@@ -410,7 +409,7 @@ public class ViewScreen3D extends GRActor3D
 
         _createViewScreen();
     }
-    
+
     public boolean postfire() throws IllegalActionException {
         //boolean _hasToken = sceneGraphIn.hasToken(0);
         if (_debugging) {
@@ -418,7 +417,7 @@ public class ViewScreen3D extends GRActor3D
         }
 
         return !_stopRequested;
-           
+
     }
 
     /** Wrapup an execution
@@ -450,7 +449,7 @@ public class ViewScreen3D extends GRActor3D
     protected void _addChild(Node node) {
         if (_debugging) {
             _debug("Called _addChild(Node node)");
-            
+
         }
         _userTransformation.addChild(node);
         //_root.addChild(node);
@@ -461,7 +460,8 @@ public class ViewScreen3D extends GRActor3D
      * frame and use that.
      */
     protected void _createViewScreen() {
-        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
+        GraphicsConfiguration config = SimpleUniverse
+                .getPreferredConfiguration();
 
         int horizontalDimension = 400;
         int verticalDimension = 400;
@@ -505,20 +505,20 @@ public class ViewScreen3D extends GRActor3D
         _container.validate();
 
         /* FIXME: experimental code for changing views.
-           TransformGroup VPTG = new TransformGroup();
-           VPTG = _simpleUniverse.getViewingPlatform()
-           .getMultiTransformGroup().getTransformGroup(0);
-           Transform3D VPT3D = new Transform3D();
-           //VPT3D.lookAt(new Point3d(0.0, 0.0, 10.0),
-           //      new Point3d(0.0, 0.0, 0.0),
-           //      new Vector3d(0.0, 1.0, 0.0));
-           //VPT3D.setTranslation(new Vector3f(0.0f, 0.0f, 10.0f));
-           //VPT3D.rotX(Math.PI/2.0);
-           VPT3D.rotX(Math.PI/2);
-           VPT3D.setTranslation(new Vector3f(0.0f, -10.0f, 0.0f));
+         TransformGroup VPTG = new TransformGroup();
+         VPTG = _simpleUniverse.getViewingPlatform()
+         .getMultiTransformGroup().getTransformGroup(0);
+         Transform3D VPT3D = new Transform3D();
+         //VPT3D.lookAt(new Point3d(0.0, 0.0, 10.0),
+         //      new Point3d(0.0, 0.0, 0.0),
+         //      new Vector3d(0.0, 1.0, 0.0));
+         //VPT3D.setTranslation(new Vector3f(0.0f, 0.0f, 10.0f));
+         //VPT3D.rotX(Math.PI/2.0);
+         VPT3D.rotX(Math.PI/2);
+         VPT3D.setTranslation(new Vector3f(0.0f, -10.0f, 0.0f));
 
-           VPTG.setTransform(VPT3D);
-        */
+         VPTG.setTransform(VPT3D);
+         */
     }
 
     /** Get the number of horizontal pixels in the rendered image.
@@ -552,8 +552,8 @@ public class ViewScreen3D extends GRActor3D
         return new Background(color);
     }
 
-    protected void _makeNodeConnection() throws IllegalActionException{
-        
+    protected void _makeNodeConnection() throws IllegalActionException {
+
         if (_debugging) {
             _debug("Called _makeNodeConnection()");
         }
@@ -564,8 +564,9 @@ public class ViewScreen3D extends GRActor3D
             Node node = (Node) objectToken.getSceneGraphNode();
             _addChild(node);
         }
-        
+
     }
+
     /** Setup the scene graph connections of this actor.
      */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
@@ -578,11 +579,11 @@ public class ViewScreen3D extends GRActor3D
             SceneGraphToken objectToken = (SceneGraphToken) sceneGraphIn.get(i);
             // node = objectToken.getSceneGraphNode();
             Node node = (Node) objectToken.getSceneGraphNode();
-           //((BranchGroup) node).detach();
-           /* if (_debugging) {
-                _debug("Node parent = " + node.getParent());
-                
-            }*/
+            //((BranchGroup) node).detach();
+            /* if (_debugging) {
+             _debug("Node parent = " + node.getParent());
+             
+             }*/
             //System.out.println("Node parent = " + node.getParent());
             _addChild(node);
         }
@@ -642,14 +643,14 @@ public class ViewScreen3D extends GRActor3D
             }
 
             /* FIXME: experimental code for changing xforms
-               double[] db = new double[16];
+             double[] db = new double[16];
 
-               db[0] = 1.0; db[1] = db[2] = db[3] = 0.0;
-               db[4] = 0.0; db[5] = 1.0; db[6] = db[7] = 0.0;
-               db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
-               db[12] = db[13] = db[14] = 0.0; db[15] = 1.0;
-               currXform.set(db);
-            */
+             db[0] = 1.0; db[1] = db[2] = db[3] = 0.0;
+             db[4] = 0.0; db[5] = 1.0; db[6] = db[7] = 0.0;
+             db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
+             db[12] = db[13] = db[14] = 0.0; db[15] = 1.0;
+             currXform.set(db);
+             */
             super.processStimulus(criteria);
 
             if (stopped != true) {
@@ -662,18 +663,19 @@ public class ViewScreen3D extends GRActor3D
         }
 
         /* FIXME experimental code for changing xforms
-           public void transformChanged(Transform3D transform) {
-           double[] db = new double[16];
+         public void transformChanged(Transform3D transform) {
+         double[] db = new double[16];
 
-           transform.get(db);
-           for (int i = 0; i < 16; i++) {
-           db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
-           db[12] = db[13] = db[14] = 0.0; db[15] = 1.0;
-           Transform3D td = new Transform3D();
-           td.set(db);
-           //currXform.set(db);
-           }*/
+         transform.get(db);
+         for (int i = 0; i < 16; i++) {
+         db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
+         db[12] = db[13] = db[14] = 0.0; db[15] = 1.0;
+         Transform3D td = new Transform3D();
+         td.set(db);
+         //currXform.set(db);
+         }*/
         boolean stopped = false;
+
         ViewScreen3D _viewContainer;
     }
 
@@ -681,7 +683,7 @@ public class ViewScreen3D extends GRActor3D
 
     // The main connection branch that connects to the universe
     protected BranchGroup _branchRoot;
-    
+
     // The connection branch that incoming nodes connect to
     protected BranchGroup _root;
 
@@ -698,12 +700,15 @@ public class ViewScreen3D extends GRActor3D
     // True for manual rendering, false for default rendering.
     // Steve doesn't think this is entirely necessary.
     protected boolean _iterationSynchronized = false;
+
     protected Transform3D _lastTransform = new Transform3D();
+
     protected MouseRotateView _mouseRotate;
 
     // The Java3D universe, displayed inside the canvas.
     protected SimpleUniverse _simpleUniverse;
+
     protected TransformGroup _userTransformation = new TransformGroup();
-  //  protected int _counter;
+    //  protected int _counter;
     //protected boolean _hasToken;
 }

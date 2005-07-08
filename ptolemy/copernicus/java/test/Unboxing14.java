@@ -6,14 +6,19 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 public class Unboxing14 {
     private Token _stateToken;
+
     private Token[] _resultArray;
+
     protected int _firingCountLimit;
+
     protected int _iterationCount = 0;
+
     public final IntToken firingCountLimit_CGToken;
+
     public final IntToken init_CGToken;
+
     public final IntToken step_CGToken;
 
     public void initialize() throws IllegalActionException {

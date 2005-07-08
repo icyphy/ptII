@@ -1,31 +1,31 @@
 /* An actor that adds a border to an image.
 
-@Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.renderable.ParameterBlock;
@@ -47,35 +47,34 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// JAIBorder
 
 /**
-   Adds a border to an image.  The amount to pad must be specified for all
-   four sides.  There are five different borders to choose from.
-   <p>
-   Constant - A constant border adds constant values to the sides of the
-   image.  The user may specify either one constant to be applied to all
-   bands, or one constant for each band.
-   <p>
-   Copy - This border copys the edges of the original image, and uses it
-   to fill in the border values.
-   <p>
-   Reflect - This border reflects the edge of the image, and keeps
-   flipping until it reaches the edge of the new image.
-   <p>
-   Wrap - This border periodically repeats the image and clamps the size
-   to only include what is specified.
-   <p>
-   Zero - This border fills in the borders with zeros in each band.
+ Adds a border to an image.  The amount to pad must be specified for all
+ four sides.  There are five different borders to choose from.
+ <p>
+ Constant - A constant border adds constant values to the sides of the
+ image.  The user may specify either one constant to be applied to all
+ bands, or one constant for each band.
+ <p>
+ Copy - This border copys the edges of the original image, and uses it
+ to fill in the border values.
+ <p>
+ Reflect - This border reflects the edge of the image, and keeps
+ flipping until it reaches the edge of the new image.
+ <p>
+ Wrap - This border periodically repeats the image and clamps the size
+ to only include what is specified.
+ <p>
+ Zero - This border fills in the borders with zeros in each band.
 
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author James Yeh
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class JAIBorder extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -98,8 +97,8 @@ public class JAIBorder extends Transformer {
         borderType.setExpression("Zero");
         _borderType = _BORDER_ZERO;
 
-        constants = new Parameter(this, "constants",
-                new ArrayToken(_initialArray));
+        constants = new Parameter(this, "constants", new ArrayToken(
+                _initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -201,23 +200,23 @@ public class JAIBorder extends Transformer {
             break;
 
         case _BORDER_COPY:
-            parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_COPY));
+            parameters.add(BorderExtender
+                    .createInstance(BorderExtender.BORDER_COPY));
             break;
 
         case _BORDER_REFLECT:
-            parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_REFLECT));
+            parameters.add(BorderExtender
+                    .createInstance(BorderExtender.BORDER_REFLECT));
             break;
 
         case _BORDER_WRAP:
-            parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_WRAP));
+            parameters.add(BorderExtender
+                    .createInstance(BorderExtender.BORDER_WRAP));
             break;
 
         case _BORDER_ZERO:
-            parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_ZERO));
+            parameters.add(BorderExtender
+                    .createInstance(BorderExtender.BORDER_ZERO));
             break;
 
         default:
@@ -238,20 +237,25 @@ public class JAIBorder extends Transformer {
     private int _borderType;
 
     /** An initial array that simply copies a three banded image. */
-    private DoubleToken[] _initialArray = {
-        new DoubleToken(0)
-    };
+    private DoubleToken[] _initialArray = { new DoubleToken(0) };
 
     /** The amount to pad on the four sides. */
     private int _bottomPadding;
+
     private int _leftPadding;
+
     private int _rightPadding;
+
     private int _topPadding;
 
     // Constants for more efficient execution.
     private static final int _BORDER_CONSTANT = 0;
+
     private static final int _BORDER_COPY = 1;
+
     private static final int _BORDER_REFLECT = 2;
+
     private static final int _BORDER_WRAP = 3;
+
     private static final int _BORDER_ZERO = 4;
 }

@@ -1,30 +1,30 @@
 /* Produce a Hadamard codeword by selecting a row from a Hadamard matrix.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Source;
@@ -38,43 +38,42 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// HadamardCode
 
 /**
-   Produce a Hadamard codeword by selecting a row from a Hadamard matrix.
-   The log base 2 of the matrix dimension is given by the <i>log2Length</i>
-   parameter, which should be a non-negative integer smaller than 32.
-   The row index is given by the <i>index</i> parameter or by the associated
-   <i>index</i> port, which should be a non-negative integer smaller
-   than the matrix dimension. If the index changes value when the actor is
-   in the middle of producing a sequence of Hadamard codeword, the actor
-   will take on the new index value, and start to produce the new codeword
-   from the beginning.
-   <p>
-   A Hadamard matrix is defined in the following way:
-   <p>
-   <i>H</i><sub>1</sub> = [1, 1; 1, -1]
-   <p>
-   <i>H</i><sub><i>n</i>+1</sub> = [<i>H</i><sub><i>n</i></sub>,
-   <i>H</i><sub><i>n</i></sub>;
-   <i>H</i><sub><i>n</i></sub>, -<i>H</i><sub><i>n</i></sub>]
-   <p>
-   where <i>n</i> is a positive integer.
-   Therefore, H<sub><i>n</i></sub> is a 2<sup><i>n</i></sup> by
-   2<sup><i>n</i></sup> square matrix.
-   The codeword length is 2<sup><i>n</i></sup>.
-   <p>
-   The actor produces Hadamard codeword in booleans. Therefore, 1 is treated
-   as "true" and -1 is treated as "false".
-   <p>
-   @author Edward A. Lee and Ye Zhou
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ Produce a Hadamard codeword by selecting a row from a Hadamard matrix.
+ The log base 2 of the matrix dimension is given by the <i>log2Length</i>
+ parameter, which should be a non-negative integer smaller than 32.
+ The row index is given by the <i>index</i> parameter or by the associated
+ <i>index</i> port, which should be a non-negative integer smaller
+ than the matrix dimension. If the index changes value when the actor is
+ in the middle of producing a sequence of Hadamard codeword, the actor
+ will take on the new index value, and start to produce the new codeword
+ from the beginning.
+ <p>
+ A Hadamard matrix is defined in the following way:
+ <p>
+ <i>H</i><sub>1</sub> = [1, 1; 1, -1]
+ <p>
+ <i>H</i><sub><i>n</i>+1</sub> = [<i>H</i><sub><i>n</i></sub>,
+ <i>H</i><sub><i>n</i></sub>;
+ <i>H</i><sub><i>n</i></sub>, -<i>H</i><sub><i>n</i></sub>]
+ <p>
+ where <i>n</i> is a positive integer.
+ Therefore, H<sub><i>n</i></sub> is a 2<sup><i>n</i></sup> by
+ 2<sup><i>n</i></sup> square matrix.
+ The codeword length is 2<sup><i>n</i></sup>.
+ <p>
+ The actor produces Hadamard codeword in booleans. Therefore, 1 is treated
+ as "true" and -1 is treated as "false".
+ <p>
+ @author Edward A. Lee and Ye Zhou
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class HadamardCode extends Source {
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
@@ -147,14 +146,15 @@ public class HadamardCode extends Source {
             if (log2LengthValue <= 0) {
                 throw new IllegalActionException(this,
                         "log2Length parameter is required to be "
-                        + "strictly positive.");
+                                + "strictly positive.");
             }
 
             // Assuming an int is 32 bits, our implementation will only
             // work if this is less than 32.
             if (log2LengthValue >= 32) {
                 throw new IllegalActionException(this,
-                        "log2Length parameter is required to be " + "less than 32.");
+                        "log2Length parameter is required to be "
+                                + "less than 32.");
             }
 
             // Set a flag indicating that the private variable _row
@@ -264,7 +264,8 @@ public class HadamardCode extends Source {
                 indexIntoHalfMatrix -= halfDimension;
             }
 
-            boolean[] halfRow = _calculateRow(halfDimension, indexIntoHalfMatrix);
+            boolean[] halfRow = _calculateRow(halfDimension,
+                    indexIntoHalfMatrix);
             System.arraycopy(halfRow, 0, result, 0, halfDimension);
 
             if (index >= halfDimension) {
@@ -295,14 +296,9 @@ public class HadamardCode extends Source {
     private boolean[] _row;
 
     // Rows of H<sub>1</sub>.
-    private static boolean[] _row0 = {
-        true,
-        true
-    };
-    private static boolean[] _row1 = {
-        true,
-        false
-    };
+    private static boolean[] _row0 = { true, true };
+
+    private static boolean[] _row1 = { true, false };
 
     // A flag indicating that the private variable _row is invalid.
     private transient boolean _rowValueInvalid = true;

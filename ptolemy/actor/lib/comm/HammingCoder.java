@@ -1,30 +1,30 @@
 /* Hamming Coder.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
@@ -38,49 +38,48 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// HammingCoder
 
 /**
-   Encode the information symbols into Hamming code.
-   Let <i>k</i> denotes parameter <i>uncodedRate</i> and <i>n</i> denotes
-   parameter <i>codedRate</i>. During each firing, the actor consumes
-   <i>k</i> bits and encode them into a block of code with length <i>n</i>.
-   The rate of the code is <i>k/n</i>.
-   <p>
-   For a Hamming code, <i>k</i> and <i>n</i> must satisfy the following:
-   <i>n</i> = 2<i><sup>m</sup></i> - 1
-   <i>k</i> = 2<sup><i>m</i></sup> - 1 - <i>m</i>;
-   where <i>m</i> is any positive integer. Note <i>m</i> = <i>n</i> - <i>k</i>.
-   It is called the order of the Hamming code. The lowest order is <i>m</i> = 2,
-   and (<i>n</i>, <i>k</i>) = (3, 1).
-   <p>
-   The generator matrix G is defined as:
-   G<i><sub>k*n</sub></i> = [I<i><sub>k</sub></i> | P<i><sub>k*(n-k)</sub></i> ]
-   where P is called the parity matrix.
-   The subscript of a matrix indicates its dimension.
-   <p>
-   The parity check matrix H is defined as:
-   H<sub><i>(n-k)*n</i></sub> = [P<sup>T</sup> | I<sub><i>n-k</i></sub> ]
-   Each column of H must be one of the non-zero <i>n</i> = 2<sup><i>m</i></sup> - 1
-   combinations of <i>m</i> bits.
-   <p>
-   To generate a Hamming code, the <i>k</i> information bits is considered
-   as a row vector <i><u>X</u></i>. Its Hamming code is
-   <i><u>Y</u></i> = <i><u>X</u></i> * G.
-   Hence <i><u>Y</u></i> is a row vector of length <i>n</i>. The result is
-   then sent to the output port in sequence.
-   <p>
-   For more information on Hamming codes, see Proakis, Digital
-   Communications, Fourth Edition, McGraw-Hill, 2001, pp. 416-424.
-   <p>
-   @author Ye Zhou
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ Encode the information symbols into Hamming code.
+ Let <i>k</i> denotes parameter <i>uncodedRate</i> and <i>n</i> denotes
+ parameter <i>codedRate</i>. During each firing, the actor consumes
+ <i>k</i> bits and encode them into a block of code with length <i>n</i>.
+ The rate of the code is <i>k/n</i>.
+ <p>
+ For a Hamming code, <i>k</i> and <i>n</i> must satisfy the following:
+ <i>n</i> = 2<i><sup>m</sup></i> - 1
+ <i>k</i> = 2<sup><i>m</i></sup> - 1 - <i>m</i>;
+ where <i>m</i> is any positive integer. Note <i>m</i> = <i>n</i> - <i>k</i>.
+ It is called the order of the Hamming code. The lowest order is <i>m</i> = 2,
+ and (<i>n</i>, <i>k</i>) = (3, 1).
+ <p>
+ The generator matrix G is defined as:
+ G<i><sub>k*n</sub></i> = [I<i><sub>k</sub></i> | P<i><sub>k*(n-k)</sub></i> ]
+ where P is called the parity matrix.
+ The subscript of a matrix indicates its dimension.
+ <p>
+ The parity check matrix H is defined as:
+ H<sub><i>(n-k)*n</i></sub> = [P<sup>T</sup> | I<sub><i>n-k</i></sub> ]
+ Each column of H must be one of the non-zero <i>n</i> = 2<sup><i>m</i></sup> - 1
+ combinations of <i>m</i> bits.
+ <p>
+ To generate a Hamming code, the <i>k</i> information bits is considered
+ as a row vector <i><u>X</u></i>. Its Hamming code is
+ <i><u>Y</u></i> = <i><u>X</u></i> * G.
+ Hence <i><u>Y</u></i> is a row vector of length <i>n</i>. The result is
+ then sent to the output port in sequence.
+ <p>
+ For more information on Hamming codes, see Proakis, Digital
+ Communications, Fourth Edition, McGraw-Hill, 2001, pp. 416-424.
+ <p>
+ @author Ye Zhou
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class HammingCoder extends Transformer {
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
@@ -105,8 +104,8 @@ public class HammingCoder extends Transformer {
 
         // Declare data types, consumption rate and production rate.
         input.setTypeEquals(BaseType.BOOLEAN);
-        _inputRate = new Parameter(input, "tokenConsumptionRate",
-                new IntToken(1));
+        _inputRate = new Parameter(input, "tokenConsumptionRate", new IntToken(
+                1));
         output.setTypeEquals(BaseType.BOOLEAN);
         _outputRate = new Parameter(output, "tokenProductionRate",
                 new IntToken(1));
@@ -228,8 +227,7 @@ public class HammingCoder extends Transformer {
         for (int i = 0; i < _uncodeSizeValue; i++) {
             for (int j = 0; j < _order; j++) {
                 parity[j] = parity[j]
-                    ^ ((result[i].booleanValue() ? 1 : 0)
-                            & _parityMatrix[i][j]);
+                        ^ ((result[i].booleanValue() ? 1 : 0) & _parityMatrix[i][j]);
             }
         }
 

@@ -1,29 +1,29 @@
 /* An analysis for detecting objects that must be aliased to each other.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.kernel;
 
 import java.util.Collection;
@@ -55,17 +55,16 @@ import soot.jimple.toolkits.callgraph.ReachableMethods;
 import soot.jimple.toolkits.callgraph.Sources;
 import soot.util.queue.ChunkedQueue;
 
-
 /**
-   An analysis that determines which methods in a given call graph
-   have no side effects.
+ An analysis that determines which methods in a given call graph
+ have no side effects.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class SideEffectAnalysis {
     public SideEffectAnalysis() {
         _methodToEffectFlow = new HashMap();
@@ -76,13 +75,13 @@ public class SideEffectAnalysis {
         Scene.v().releaseCallGraph();
 
         CallGraph callGraph = Scene.v().getCallGraph();
-        _reachables = new ReachableMethods(callGraph,
-                EntryPoints.v().application());
+        _reachables = new ReachableMethods(callGraph, EntryPoints.v()
+                .application());
         _reachables.update();
 
         // Process all the reachableMethods.
-        for (Iterator reachableMethods = _reachables.listener();
-             reachableMethods.hasNext();) {
+        for (Iterator reachableMethods = _reachables.listener(); reachableMethods
+                .hasNext();) {
             _addMethod((SootMethod) reachableMethods.next());
         }
 
@@ -96,8 +95,8 @@ public class SideEffectAnalysis {
             if (!in.equals(out)) {
                 _setEffectFlow(nextMethod, out);
 
-                for (Iterator invokers = new Sources(callGraph.edgesInto(
-                                                             nextMethod)); invokers.hasNext();) {
+                for (Iterator invokers = new Sources(callGraph
+                        .edgesInto(nextMethod)); invokers.hasNext();) {
                     SootMethod invoker = (SootMethod) invokers.next();
 
                     if (_reachables.contains(invoker)) {
@@ -250,15 +249,15 @@ public class SideEffectAnalysis {
                 System.out.println("unit = " + unit);
             }
 
-            for (Iterator boxes = unit.getDefBoxes().iterator();
-                 boxes.hasNext();) {
+            for (Iterator boxes = unit.getDefBoxes().iterator(); boxes
+                    .hasNext();) {
                 ValueBox box = (ValueBox) boxes.next();
                 Value value = box.getValue();
 
                 if (value instanceof FieldRef) {
                     if (_debug) {
-                        System.out.println(
-                                "SideEffectAnalysis: assigns to field");
+                        System.out
+                                .println("SideEffectAnalysis: assigns to field");
                     }
 
                     out.addSideEffect(((FieldRef) value).getField());
@@ -266,8 +265,8 @@ public class SideEffectAnalysis {
 
                 if (value instanceof ArrayRef) {
                     if (_debug) {
-                        System.out.println(
-                                "SideEffectAnalysis: assigns to array.");
+                        System.out
+                                .println("SideEffectAnalysis: assigns to array.");
                     }
 
                     // Escape analysis might help in this case.
@@ -286,8 +285,8 @@ public class SideEffectAnalysis {
             // assume that they have side effects.
             Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
-            for (Iterator boxes = unit.getUseBoxes().iterator();
-                 boxes.hasNext();) {
+            for (Iterator boxes = unit.getUseBoxes().iterator(); boxes
+                    .hasNext();) {
                 ValueBox box = (ValueBox) boxes.next();
                 Value expr = box.getValue();
 
@@ -295,12 +294,12 @@ public class SideEffectAnalysis {
                     SootMethod invokedMethod = ((InvokeExpr) expr).getMethod();
 
                     if (expr instanceof SpecialInvokeExpr) {
-                        SootMethod target = hierarchy.resolveSpecialDispatch((SpecialInvokeExpr) expr,
-                                invokedMethod);
+                        SootMethod target = hierarchy.resolveSpecialDispatch(
+                                (SpecialInvokeExpr) expr, invokedMethod);
                         _mergeFlow(out, target);
                     } else if (expr instanceof InstanceInvokeExpr) {
                         Type baseType = ((InstanceInvokeExpr) expr).getBase()
-                            .getType();
+                                .getType();
 
                         if (!(baseType instanceof RefType)) {
                             // We can invoke methods on arrays...
@@ -308,16 +307,18 @@ public class SideEffectAnalysis {
                             continue;
                         }
 
-                        List list = hierarchy.resolveAbstractDispatch(((RefType) baseType)
-                                .getSootClass(), invokedMethod);
+                        List list = hierarchy.resolveAbstractDispatch(
+                                ((RefType) baseType).getSootClass(),
+                                invokedMethod);
 
-                        for (Iterator targets = list.iterator();
-                             targets.hasNext();) {
+                        for (Iterator targets = list.iterator(); targets
+                                .hasNext();) {
                             SootMethod target = (SootMethod) targets.next();
                             _mergeFlow(out, target);
                         }
                     } else if (expr instanceof StaticInvokeExpr) {
-                        SootMethod target = ((StaticInvokeExpr) expr).getMethod();
+                        SootMethod target = ((StaticInvokeExpr) expr)
+                                .getMethod();
                         _mergeFlow(out, target);
                     }
                 }
@@ -429,11 +430,15 @@ public class SideEffectAnalysis {
         }
 
         private boolean _hasEffects;
+
         private Set _effectSet;
     }
 
     private boolean _debug = false;
+
     private ReachableMethods _reachables = null;
+
     private ChunkedQueue _unprocessedMethods = null;
+
     private HashMap _methodToEffectFlow = null;
 }

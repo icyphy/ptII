@@ -1,29 +1,29 @@
 /* Director for the synchronous dataflow model of computation.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.kernel;
 
 import java.util.Iterator;
@@ -36,7 +36,6 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.Time;
@@ -54,105 +53,104 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SDFDirector
 
 /**
-   Director for the synchronous dataflow (SDF) model of computation.
+ Director for the synchronous dataflow (SDF) model of computation.
 
-   <h1>SDF overview</h1>
-   The Synchronous Dataflow(SDF) domain supports the efficient
-   execution of Dataflow graphs that
-   lack control structures.   Dataflow graphs that contain control structures
-   should be executed using the Process Networks(PN) domain instead.
-   SDF allows efficient execution, with very little overhead at runtime.  It
-   requires that the rates on the ports of all actors be known before hand.
-   SDF also requires that the rates on the ports not change during
-   execution.  In addition, in some cases (namely systems with feedback) delays,
-   which are represented by initial tokens on relations must be explicitly
-   noted.  SDF uses this rate and delay information to determine
-   the execution sequence of the actors before execution begins.
-   <h2>Schedule Properties</h2>
-   <ul>
-   <li>The number of tokens accumulated on every relation is bounded, given
-   an infinite number of executions of the schedule.
-   <li>Deadlock will never occur, given an infinite number of executions of
-   the schedule.
-   </ul>
-   <h1>Class comments</h1>
-   An SDFDirector is the class that controls execution of actors under the
-   SDF domain.  By default, actor scheduling is handled by the SDFScheduler
-   class.  Furthermore, the newReceiver method creates Receivers of type
-   SDFReceiver, which extends QueueReceiver to support optimized gets
-   and puts of arrays of tokens.
-   <p>
-   Actors are assumed to consume and produce exactly one token per channel on
-   each firing.  Actors that do not follow this convention should set
-   the appropriate parameters on input and output ports to declare the number
-   of tokens they produce or consume.  See the
-   @link ptolemy.domains.sdf.kernel.SDFScheduler for more information.
-   The @link ptolemy.domains.sdf.lib.SampleDelay actor is usually used
-   in a model to specify the delay across a relation.
-   <p>
-   The <i>allowDisconnectedGraphs</i> parameter of this director determines
-   whether disconnected graphs are permitted.
-   A model may have two or more graphs of actors that
-   are not connected.  The schedule can jump from one graph to
-   another among the disconnected graphs. There is nothing to
-   force the scheduler to finish executing all actors on one
-   graph before firing actors on another graph. However, the
-   order of execution within an graph should be correct.
-   Usually, disconnected graphs in an SDF model indicates an
-   error.
-   The default value of the allowDisconnectedGraphs parameter is a
-   BooleanToken with the value false.
-   <p>
-   The <i>iterations</i> parameter of this director corresponds to a
-   limit on the number of times the director will fire its hierarchy
-   before it returns false in postfire.  If this number is not greater
-   than zero, then no limit is set and postfire will always return true.
-   The default value of the iterations parameter is an IntToken with value zero.
-   <p>
-   The <i>vectorizationFactor</i> parameter of this director sets the number
-   of times that the basic schedule is executed during each firing of this
-   director.  This might allow the director to execute the model more efficiently,
-   by combining multiple firings of each actor.  The default value of the
-   vectorizationFactor parameter is an IntToken with value one.
-   <p>
-   The SDF director has a <i>period</i> parameter which specifies the
-   amount of model time that elapses per iteration. If the value of
-   <i>period</i> is 0.0 (the default), then it has no effect, and
-   this director never increments time nor calls fireAt() on the
-   enclosing director. If the period is greater than 0.0, then
-   if this director is at the top level, it increments
-   time by this amount in each invocation of postfire().
-   If it is not at the top level, then it calls
-   fireAt(currentTime + period) in postfire().
-   <p>
-   This behavior gives an interesting use of SDF within DE:
-   You can "kick start" an SDF submodel with a single
-   event, and then if the director of that SDF submodel
-   has a period greater than 0.0, then it will continue to fire
-   periodically with the specified period.
-   <p>
-   If <i>period</i> is greater than 0.0 and the parameter
-   <i>synchronizeToRealTime</i> is set to <code>true</code>,
-   then the prefire() method stalls until the real time elapsed
-   since the model started matches the period multiplied by
-   the iteration count.
-   This ensures that the director does not get ahead of real time. However,
-   of course, this does not ensure that the director keeps up with real time.
+ <h1>SDF overview</h1>
+ The Synchronous Dataflow(SDF) domain supports the efficient
+ execution of Dataflow graphs that
+ lack control structures.   Dataflow graphs that contain control structures
+ should be executed using the Process Networks(PN) domain instead.
+ SDF allows efficient execution, with very little overhead at runtime.  It
+ requires that the rates on the ports of all actors be known before hand.
+ SDF also requires that the rates on the ports not change during
+ execution.  In addition, in some cases (namely systems with feedback) delays,
+ which are represented by initial tokens on relations must be explicitly
+ noted.  SDF uses this rate and delay information to determine
+ the execution sequence of the actors before execution begins.
+ <h2>Schedule Properties</h2>
+ <ul>
+ <li>The number of tokens accumulated on every relation is bounded, given
+ an infinite number of executions of the schedule.
+ <li>Deadlock will never occur, given an infinite number of executions of
+ the schedule.
+ </ul>
+ <h1>Class comments</h1>
+ An SDFDirector is the class that controls execution of actors under the
+ SDF domain.  By default, actor scheduling is handled by the SDFScheduler
+ class.  Furthermore, the newReceiver method creates Receivers of type
+ SDFReceiver, which extends QueueReceiver to support optimized gets
+ and puts of arrays of tokens.
+ <p>
+ Actors are assumed to consume and produce exactly one token per channel on
+ each firing.  Actors that do not follow this convention should set
+ the appropriate parameters on input and output ports to declare the number
+ of tokens they produce or consume.  See the
+ @link ptolemy.domains.sdf.kernel.SDFScheduler for more information.
+ The @link ptolemy.domains.sdf.lib.SampleDelay actor is usually used
+ in a model to specify the delay across a relation.
+ <p>
+ The <i>allowDisconnectedGraphs</i> parameter of this director determines
+ whether disconnected graphs are permitted.
+ A model may have two or more graphs of actors that
+ are not connected.  The schedule can jump from one graph to
+ another among the disconnected graphs. There is nothing to
+ force the scheduler to finish executing all actors on one
+ graph before firing actors on another graph. However, the
+ order of execution within an graph should be correct.
+ Usually, disconnected graphs in an SDF model indicates an
+ error.
+ The default value of the allowDisconnectedGraphs parameter is a
+ BooleanToken with the value false.
+ <p>
+ The <i>iterations</i> parameter of this director corresponds to a
+ limit on the number of times the director will fire its hierarchy
+ before it returns false in postfire.  If this number is not greater
+ than zero, then no limit is set and postfire will always return true.
+ The default value of the iterations parameter is an IntToken with value zero.
+ <p>
+ The <i>vectorizationFactor</i> parameter of this director sets the number
+ of times that the basic schedule is executed during each firing of this
+ director.  This might allow the director to execute the model more efficiently,
+ by combining multiple firings of each actor.  The default value of the
+ vectorizationFactor parameter is an IntToken with value one.
+ <p>
+ The SDF director has a <i>period</i> parameter which specifies the
+ amount of model time that elapses per iteration. If the value of
+ <i>period</i> is 0.0 (the default), then it has no effect, and
+ this director never increments time nor calls fireAt() on the
+ enclosing director. If the period is greater than 0.0, then
+ if this director is at the top level, it increments
+ time by this amount in each invocation of postfire().
+ If it is not at the top level, then it calls
+ fireAt(currentTime + period) in postfire().
+ <p>
+ This behavior gives an interesting use of SDF within DE:
+ You can "kick start" an SDF submodel with a single
+ event, and then if the director of that SDF submodel
+ has a period greater than 0.0, then it will continue to fire
+ periodically with the specified period.
+ <p>
+ If <i>period</i> is greater than 0.0 and the parameter
+ <i>synchronizeToRealTime</i> is set to <code>true</code>,
+ then the prefire() method stalls until the real time elapsed
+ since the model started matches the period multiplied by
+ the iteration count.
+ This ensures that the director does not get ahead of real time. However,
+ of course, this does not ensure that the director keeps up with real time.
 
-   @see ptolemy.domains.sdf.kernel.SDFScheduler
-   @see ptolemy.domains.sdf.kernel.SDFReceiver
+ @see ptolemy.domains.sdf.kernel.SDFScheduler
+ @see ptolemy.domains.sdf.kernel.SDFReceiver
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Green (neuendor)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Green (neuendor)
+ */
 public class SDFDirector extends StaticSchedulingDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -164,8 +162,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SDFDirector()
-            throws IllegalActionException, NameDuplicationException {
+    public SDFDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
         _init();
     }
@@ -181,8 +179,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SDFDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public SDFDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -255,7 +253,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
-    
+
     /** The time period of each iteration.  This parameter has type double
      *  and default value 0.0, which means that this director does not
      *  increment model time and does not request firings by calling
@@ -268,7 +266,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  specified period.
      */
     public Parameter period;
-    
+
     /** Specify whether the execution should synchronize to the
      *  real time. This parameter has type boolean and defaults
      *  to false. If set to true, then this director stalls in the
@@ -326,8 +324,8 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CompositeActor container = (CompositeActor) getContainer();
 
-        for (Iterator ports = container.outputPortList().iterator();
-             ports.hasNext();) {
+        for (Iterator ports = container.outputPortList().iterator(); ports
+                .hasNext();) {
             IOPort port = (IOPort) ports.next();
 
             // Create external initial production.
@@ -339,8 +337,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                             Token t = port.getInside(i);
 
                             if (_debugging) {
-                                _debug(getName(),
-                                        "transferring output from "
+                                _debug(getName(), "transferring output from "
                                         + port.getName());
                             }
 
@@ -348,8 +345,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                         } else {
                             throw new IllegalActionException(this, port,
                                     "Port should produce " + rate
-                                    + " tokens, but there were only " + k
-                                    + " tokens available.");
+                                            + " tokens, but there were only "
+                                            + k + " tokens available.");
                         }
                     }
                 } catch (NoTokenException ex) {
@@ -380,43 +377,44 @@ public class SDFDirector extends StaticSchedulingDirector {
     public boolean prefire() throws IllegalActionException {
         // Set current time based on the enclosing model.
         super.prefire();
-        
-        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
-        boolean synchronizeValue = ((BooleanToken)synchronizeToRealTime.getToken()).booleanValue();
+
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+        boolean synchronizeValue = ((BooleanToken) synchronizeToRealTime
+                .getToken()).booleanValue();
         if (periodValue > 0.0 && synchronizeValue) {
-        	synchronized(this) {
-        		while (true) {
-        			long elapsedTime = System.currentTimeMillis() - _realStartTime;
-        			
-        			// NOTE: We assume that the elapsed time can be
-        			// safely cast to a double.  This means that
-        			// the SDF domain has an upper limit on running
-        			// time of Double.MAX_VALUE milliseconds.
-        			double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
-        			double currentTime = getModelTime().getDoubleValue();
-        			
-        			if (currentTime <= elapsedTimeInSeconds) {
-        				break;
-        			}
-        			
-        			long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
-        			if (_debugging) {
-        				_debug("Waiting for real time to pass: "
-        						+ timeToWait);
-        			}
-        			
-        			try {
-        				// NOTE: The built-in Java wait() method
-        				// does not release the
-        				// locks on the workspace, which would block
-        				// UI interactions and may cause deadlocks.
-        				// SOLUTION: workspace.wait(object, long).
-        				_workspace.wait(this, timeToWait);
-        			} catch (InterruptedException ex) {
-        				// Continue executing.
-        			}
-        		}
-        	}
+            synchronized (this) {
+                while (true) {
+                    long elapsedTime = System.currentTimeMillis()
+                            - _realStartTime;
+
+                    // NOTE: We assume that the elapsed time can be
+                    // safely cast to a double.  This means that
+                    // the SDF domain has an upper limit on running
+                    // time of Double.MAX_VALUE milliseconds.
+                    double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+                    double currentTime = getModelTime().getDoubleValue();
+
+                    if (currentTime <= elapsedTimeInSeconds) {
+                        break;
+                    }
+
+                    long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
+                    if (_debugging) {
+                        _debug("Waiting for real time to pass: " + timeToWait);
+                    }
+
+                    try {
+                        // NOTE: The built-in Java wait() method
+                        // does not release the
+                        // locks on the workspace, which would block
+                        // UI interactions and may cause deadlocks.
+                        // SOLUTION: workspace.wait(object, long).
+                        _workspace.wait(this, timeToWait);
+                    } catch (InterruptedException ex) {
+                        // Continue executing.
+                    }
+                }
+            }
         }
 
         TypedCompositeActor container = ((TypedCompositeActor) getContainer());
@@ -520,19 +518,20 @@ public class SDFDirector extends StaticSchedulingDirector {
             _iterationCount = 0;
             return false;
         }
-        
-        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
         if (periodValue > 0.0) {
-        	Actor container = (Actor) getContainer();
-        	Director executiveDirector = container.getExecutiveDirector();
-        	Time currentTime = getModelTime();
-        	if (executiveDirector != null) {
-        		// Not at the top level.
-        		executiveDirector.fireAt(container, currentTime.add(periodValue));
-        	} else {
-        		// At the top level.
-        		setModelTime(currentTime.add(periodValue));
-        	}
+            Actor container = (Actor) getContainer();
+            Director executiveDirector = container.getExecutiveDirector();
+            Time currentTime = getModelTime();
+            if (executiveDirector != null) {
+                // Not at the top level.
+                executiveDirector.fireAt(container, currentTime
+                        .add(periodValue));
+            } else {
+                // At the top level.
+                setModelTime(currentTime.add(periodValue));
+            }
         }
 
         return super.postfire();
@@ -553,11 +552,9 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
-        return new String[] {
-            "ptolemy.domains.fsm.kernel.FSMDirector",
-            "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
-            "ptolemy.domains.hdf.kernel.HDFFSMDirector"
-        };
+        return new String[] { "ptolemy.domains.fsm.kernel.FSMDirector",
+                "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
+                "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
     }
 
     /** Override the base class method to transfer enough tokens to
@@ -578,7 +575,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "Attempted to transferInputs on a port is not an opaque"
-                    + "input port.");
+                            + "input port.");
         }
 
         // The number of tokens depends on the schedule, so make sure
@@ -596,8 +593,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                             Token t = port.get(i);
 
                             if (_debugging) {
-                                _debug(getName(),
-                                        "transferring input from " + port.getName());
+                                _debug(getName(), "transferring input from "
+                                        + port.getName());
                             }
 
                             port.sendInside(i, t);
@@ -605,16 +602,16 @@ public class SDFDirector extends StaticSchedulingDirector {
                         } else {
                             throw new IllegalActionException(this, port,
                                     "Port should consume " + rate
-                                    + " tokens, but there were only " + k
-                                    + " tokens available.");
+                                            + " tokens, but there were only "
+                                            + k + " tokens available.");
                         }
                     }
                 } else {
                     // No inside connection to transfer tokens to.
                     // In this case, consume one input token if there is one.
                     if (_debugging) {
-                        _debug(getName(),
-                                "Dropping single input from " + port.getName());
+                        _debug(getName(), "Dropping single input from "
+                                + port.getName());
                     }
 
                     if (port.hasToken(i)) {
@@ -650,7 +647,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "Attempted to transferOutputs on a port that "
-                    + "is not an opaque input port.");
+                            + "is not an opaque input port.");
         }
 
         int rate = DFUtilities.getTokenProductionRate(port);
@@ -663,8 +660,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                         Token t = port.getInside(i);
 
                         if (_debugging) {
-                            _debug(getName(),
-                                    "transferring output from " + port.getName());
+                            _debug(getName(), "transferring output from "
+                                    + port.getName());
                         }
 
                         port.send(i, t);
@@ -672,8 +669,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                     } else {
                         throw new IllegalActionException(this, port,
                                 "Port should produce " + rate
-                                + " tokens, but there were only " + k
-                                + " tokens available.");
+                                        + " tokens, but there were only " + k
+                                        + " tokens available.");
                     }
                 }
             } catch (NoTokenException ex) {
@@ -692,8 +689,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  default scheduler of the class SDFScheduler, an iterations
      *  parameter and a vectorizationFactor parameter.
      */
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
 
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
@@ -710,7 +707,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         allowRateChanges = new Parameter(this, "allowRateChanges");
         allowRateChanges.setTypeEquals(BaseType.BOOLEAN);
         allowRateChanges.setExpression("false");
-        
+
         constrainBufferSizes = new Parameter(this, "constrainBufferSizes");
         constrainBufferSizes.setTypeEquals(BaseType.BOOLEAN);
         constrainBufferSizes.setExpression("true");
@@ -718,7 +715,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         period = new Parameter(this, "period", new DoubleToken(1.0));
         period.setTypeEquals(BaseType.DOUBLE);
         period.setExpression("0.0");
-        
+
         synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
         synchronizeToRealTime.setExpression("false");
         synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
@@ -733,10 +730,10 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The iteration count. */
     private int _iterationCount = 0;
-    
+
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0L;
 }

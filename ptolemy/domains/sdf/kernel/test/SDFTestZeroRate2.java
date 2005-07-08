@@ -1,30 +1,30 @@
 /* An SDF test actor.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.kernel.test;
 
 import ptolemy.actor.TypedIOPort;
@@ -38,22 +38,21 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SDFTestZeroRate2
 
 /**
-   A test actor for HDF. This actor contains parameters that make it
-   easy to set the rates of the input and output ports. This actor
-   simply discards whatever it reads in and outputs the contents of
-   the <i>value</i> parameter.
+ A test actor for HDF. This actor contains parameters that make it
+ easy to set the rates of the input and output ports. This actor
+ simply discards whatever it reads in and outputs the contents of
+ the <i>value</i> parameter.
 
-   @author Brian K. Vogel
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (vogel)
-   @Pt.AcceptedRating Red (vogel)
-*/
+ @author Brian K. Vogel
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (vogel)
+ @Pt.AcceptedRating Red (vogel)
+ */
 public class SDFTestZeroRate2 extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -75,14 +74,16 @@ public class SDFTestZeroRate2 extends Transformer {
         input2_rate = new Parameter(this, "input2_rate", new IntToken(1));
         output2_rate = new Parameter(this, "output2_rate", new IntToken(1));
 
-        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input,
+                "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("input_rate");
 
         input2_tokenConsumptionRate = new Parameter(input2,
                 "tokenConsumptionRate");
         input2_tokenConsumptionRate.setExpression("input2_rate");
 
-        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output,
+                "tokenProductionRate");
         output_tokenProductionRate.setExpression("output_rate");
 
         output2_tokenProductionRate = new Parameter(output2,
@@ -103,15 +104,25 @@ public class SDFTestZeroRate2 extends Transformer {
      *  then the director will be asked to redo type resolution.
      */
     public Parameter value;
+
     public Parameter input_rate;
+
     public Parameter input2_rate;
+
     public Parameter output_rate;
+
     public Parameter output2_rate;
+
     public Parameter input_tokenConsumptionRate;
+
     public Parameter input2_tokenConsumptionRate;
+
     public Parameter output_tokenProductionRate;
+
     public Parameter output2_tokenProductionRate;
+
     public TypedIOPort input2;
+
     public TypedIOPort output2;
 
     ///////////////////////////////////////////////////////////////////
@@ -137,23 +148,19 @@ public class SDFTestZeroRate2 extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        for (int i = 0; i < ((IntToken) input_rate.getToken()).intValue();
-             i++) {
+        for (int i = 0; i < ((IntToken) input_rate.getToken()).intValue(); i++) {
             input.get(0);
         }
 
-        for (int i = 0; i < ((IntToken) input2_rate.getToken()).intValue();
-             i++) {
+        for (int i = 0; i < ((IntToken) input2_rate.getToken()).intValue(); i++) {
             input2.get(0);
         }
 
-        for (int i = 0; i < ((IntToken) output_rate.getToken()).intValue();
-             i++) {
+        for (int i = 0; i < ((IntToken) output_rate.getToken()).intValue(); i++) {
             output.send(0, value.getToken());
         }
 
-        for (int i = 0; i < ((IntToken) output2_rate.getToken()).intValue();
-             i++) {
+        for (int i = 0; i < ((IntToken) output2_rate.getToken()).intValue(); i++) {
             output2.send(0, value.getToken());
         }
     }

@@ -47,7 +47,6 @@ import diva.canvas.toolbox.BasicController;
 import diva.canvas.toolbox.VectorFigure;
 import diva.gui.BasicFrame;
 
-
 /** An example showing how to use VectorFigure.
  *
  * <p>
@@ -85,7 +84,7 @@ public class VectorFigureTutorial {
         // Create a controller to do the work.
         BasicController controller = new BasicController(graphicsPane);
         SelectionInteractor defaultInteractor = controller
-            .getSelectionInteractor();
+                .getSelectionInteractor();
         BoundsManipulator manip = new BoundsManipulator();
         defaultInteractor.setPrototypeDecorator(manip);
 
@@ -129,9 +128,9 @@ public class VectorFigureTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    new VectorFigureTutorial();
-                }
-            });
+            public void run() {
+                new VectorFigureTutorial();
+            }
+        });
     }
 }

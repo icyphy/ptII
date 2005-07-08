@@ -1,30 +1,30 @@
 /* A clock source where the period is given as an input.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -35,39 +35,38 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// VariableClock
 
 /**
-   This actor is identical to Clock except that it has an additional
-   input port, <i>periodControl</i>.  If this port has a token when the actor
-   fires, then the value read from that port is used to set the parameter
-   value.  The initial value of the <i>period</i> parameter is used before
-   any input is observed on <i>periodControl</i>.
-   <p>
-   This actor can be fairly tricky to use with multiple values and
-   offsets because of the constraint that all offsets must be less
-   than the period.  Thus, the default values and offsets are different
-   from those of the base class.  The output value, by default, is
-   just the constant integer 1, and the offset is 0.0.  The default
-   value of <i>period</i> is changed to 1.0. This gives
-   a very simply behavior, where the output is always the same, but
-   the time between outputs is controlled by the <i>periodControl</i>
-   input.
-   <p>
-   In some domains, such as DE, an input at <i>periodControl</i>
-   is sufficient to trigger a firing.  This can be somewhat counterintuitive,
-   since an output from the clock may not be expected at that time.
-   To avoid this, simple ensure that events at <i>periodControl</i>
-   arrive only at times when an output is expected.
+ This actor is identical to Clock except that it has an additional
+ input port, <i>periodControl</i>.  If this port has a token when the actor
+ fires, then the value read from that port is used to set the parameter
+ value.  The initial value of the <i>period</i> parameter is used before
+ any input is observed on <i>periodControl</i>.
+ <p>
+ This actor can be fairly tricky to use with multiple values and
+ offsets because of the constraint that all offsets must be less
+ than the period.  Thus, the default values and offsets are different
+ from those of the base class.  The output value, by default, is
+ just the constant integer 1, and the offset is 0.0.  The default
+ value of <i>period</i> is changed to 1.0. This gives
+ a very simply behavior, where the output is always the same, but
+ the time between outputs is controlled by the <i>periodControl</i>
+ input.
+ <p>
+ In some domains, such as DE, an input at <i>periodControl</i>
+ is sufficient to trigger a firing.  This can be somewhat counterintuitive,
+ since an output from the clock may not be expected at that time.
+ To avoid this, simple ensure that events at <i>periodControl</i>
+ arrive only at times when an output is expected.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (yuhong)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Yellow (yuhong)
+ */
 public class VariableClock extends Clock {
     /** Construct an actor with the specified container and name.
      *  @param container The container.

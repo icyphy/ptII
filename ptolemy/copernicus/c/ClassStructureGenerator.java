@@ -1,28 +1,28 @@
 /*  A file that generates code for the C structure corresponding to a
-    class.
+ class.
 
-    Copyright (c) 2003-2005 The University of Maryland.
-    All rights reserved.
-    Permission is hereby granted, without written agreement and without
-    license or royalty fees, to use, copy, modify, and distribute this
-    software and its documentation for any purpose, provided that the above
-    copyright notice and the following two paragraphs appear in all copies
-    of this software.
+ Copyright (c) 2003-2005 The University of Maryland.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-    IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-    FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-    ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-    THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-    SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-    THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-    PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-    MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-    ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -38,19 +38,18 @@ import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ClassStructureGenerator
 
 /**
-   A file that generates code for the C structure corresponding to a class.
+ A file that generates code for the C structure corresponding to a class.
 
-   @author Ankush Varma
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (<your email address>)
-   @Pt.AcceptedRating Red (ssb)
-*/
+ @author Ankush Varma
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (<your email address>)
+ @Pt.AcceptedRating Red (ssb)
+ */
 public class ClassStructureGenerator extends CodeGenerator {
     /** Default constructor.
      * @param context The context to use for the generated code.
@@ -85,17 +84,15 @@ public class ClassStructureGenerator extends CodeGenerator {
         }
 
         String inheritedMethods = _generateMethodPointers(MethodListGenerator
-                .getInheritedMethods(source),
-                "Inherited/overridden methods");
+                .getInheritedMethods(source), "Inherited/overridden methods");
         _context.clearDisableImports();
 
         String introducedMethods = _generateMethodPointers(MethodListGenerator
-                .getNewMethods(source),
-                "New public and protected methods")
-            + _generateMethodPointers(MethodListGenerator.getConstructors(
-                                              source), "Constructors")
-            + _generateMethodPointers(MethodListGenerator.getPrivateMethods(
-                                              source), "Private methods");
+                .getNewMethods(source), "New public and protected methods")
+                + _generateMethodPointers(MethodListGenerator
+                        .getConstructors(source), "Constructors")
+                + _generateMethodPointers(MethodListGenerator
+                        .getPrivateMethods(source), "Private methods");
 
         if ((Context.getSingleClassMode() || inheritedMethods.equals(""))
                 && introducedMethods.equals("")) {
@@ -166,15 +163,14 @@ public class ClassStructureGenerator extends CodeGenerator {
         code.append(_indent(1));
 
         if (source.hasSuperclass() && !Context.getSingleClassMode()
-                && RequiredFileGenerator.isRequired(
-                        source.getSuperclass())) {
+                && RequiredFileGenerator.isRequired(source.getSuperclass())) {
             code.append(_comment("Pointer to superclass structure"));
             code.append(_indent(1));
             code.append(CNames.classNameOf(source.getSuperclass()));
             code.append(" ");
         } else {
             code.append(_comment("Placeholder for pointer to superclass"
-                                + " structure"));
+                    + " structure"));
             code.append(_indent(1));
             code.append("void *");
         }
@@ -195,9 +191,10 @@ public class ClassStructureGenerator extends CodeGenerator {
             code.append(_indent(1) + _openComment);
         }
 
-        code.append(_indent(1)
-                + CNames.classNameOf(Scene.v().getSootClass("java.lang.Object"))
-                + " array_class;\n");
+        code
+                .append(_indent(1)
+                        + CNames.classNameOf(Scene.v().getSootClass(
+                                "java.lang.Object")) + " array_class;\n");
 
         if (Context.getSingleClassMode()) {
             code.append(_indent(1) + _closeComment);
@@ -302,8 +299,8 @@ public class ClassStructureGenerator extends CodeGenerator {
                 // Add the method's return type to the context as a
                 // required type if it is an array.
                 if (method.getReturnType() instanceof ArrayType) {
-                    _context.addArrayInstance(CNames.typeNameOf(
-                                                      method.getReturnType()));
+                    _context.addArrayInstance(CNames.typeNameOf(method
+                            .getReturnType()));
                 }
             }
         }
@@ -372,12 +369,12 @@ public class ClassStructureGenerator extends CodeGenerator {
 
     // The end of a comment for generated code that is to be
     // commented-out.
-    private static final String _closeComment =
-    "**********************************" + _commentEnd + "\n";
+    private static final String _closeComment = "**********************************"
+            + _commentEnd + "\n";
 
     // The beginning of a comment for generated code that is to be
     // The beginning of a comment for generated code that is to be
     // commented-out.
     private static final String _openComment = _commentStart
-    + "**********************************\n";
+            + "**********************************\n";
 }

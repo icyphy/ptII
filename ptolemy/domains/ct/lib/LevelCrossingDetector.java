@@ -1,30 +1,30 @@
 /* A CT actor that detects level crossings of its trigger input signal.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -45,36 +45,35 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LevelCrossingDetector
 
 /**
-   An event detector that converts continuous signals to discrete events when
-   the continuous signal crosses a level threshold.
-   <p>
-   The <i>direction</i> parameter
-   can constrain the actor to detect only rising or falling transitions.
-   It has three possible values, "rising", "falling", and "both", where
-   "both" is the default.
-   <p>
-   When the <i>trigger</i> equals the level threshold (within the specified
-   <i>errorTolerance</i>), this actor outputs a discrete event with value
-   <i>defaultEventValue</i> if <i>useEventValue</i> is selected. Otherwise, the
-   actor outputs a discrete event with the value as the level threshold.
-   <p>
-   This actor controls the step size such that level crossings never
-   occur during an integration. So, this actor is only used in Continuous-Time
-   domain.
+ An event detector that converts continuous signals to discrete events when
+ the continuous signal crosses a level threshold.
+ <p>
+ The <i>direction</i> parameter
+ can constrain the actor to detect only rising or falling transitions.
+ It has three possible values, "rising", "falling", and "both", where
+ "both" is the default.
+ <p>
+ When the <i>trigger</i> equals the level threshold (within the specified
+ <i>errorTolerance</i>), this actor outputs a discrete event with value
+ <i>defaultEventValue</i> if <i>useEventValue</i> is selected. Otherwise, the
+ actor outputs a discrete event with the value as the level threshold.
+ <p>
+ This actor controls the step size such that level crossings never
+ occur during an integration. So, this actor is only used in Continuous-Time
+ domain.
 
-   @author Jie Liu, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
-*/
-public class LevelCrossingDetector extends TypedAtomicActor
-    implements CTStepSizeControlActor, CTEventGenerator {
+ @author Jie Liu, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Yellow (hyzheng)
+ @Pt.AcceptedRating Red (hyzheng)
+ */
+public class LevelCrossingDetector extends TypedAtomicActor implements
+        CTStepSizeControlActor, CTEventGenerator {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -124,8 +123,8 @@ public class LevelCrossingDetector extends TypedAtomicActor
         useDefaultEventValue.setToken(BooleanToken.FALSE);
 
         _errorTolerance = (double) 1e-4;
-        errorTolerance = new Parameter(this, "errorTolerance",
-                new DoubleToken(_errorTolerance));
+        errorTolerance = new Parameter(this, "errorTolerance", new DoubleToken(
+                _errorTolerance));
         errorTolerance.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -182,7 +181,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
             throws IllegalActionException {
         if (attribute == errorTolerance) {
             double tolerance = ((DoubleToken) errorTolerance.getToken())
-                .doubleValue();
+                    .doubleValue();
 
             if (tolerance <= 0.0) {
                 throw new IllegalActionException(this,
@@ -222,7 +221,8 @@ public class LevelCrossingDetector extends TypedAtomicActor
      *  an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        LevelCrossingDetector newObject = (LevelCrossingDetector) super.clone(workspace);
+        LevelCrossingDetector newObject = (LevelCrossingDetector) super
+                .clone(workspace);
 
         // Set the type constraints.
         newObject.output.setTypeAtLeast(newObject.defaultEventValue);
@@ -447,9 +447,9 @@ public class LevelCrossingDetector extends TypedAtomicActor
             // NOTE: we always to get a little overshoot to make sure the
             // level crossing happens. The little overshoot chosen here
             // is half of the error toelrance.
-            refinedStep = ((Math.abs(_lastTrigger - _level)
-                                   + (_errorTolerance / 2)) * dir.getCurrentStepSize()) / Math.abs(_thisTrigger
-                                           - _lastTrigger);
+            refinedStep = ((Math.abs(_lastTrigger - _level) + (_errorTolerance / 2)) * dir
+                    .getCurrentStepSize())
+                    / Math.abs(_thisTrigger - _lastTrigger);
 
             if (_debugging) {
                 _debug(getFullName() + " Event Missed: refined step to "

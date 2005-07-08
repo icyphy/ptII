@@ -1,30 +1,30 @@
 /* The graph controller for models that can be executed.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.basic;
 
 import java.awt.Toolkit;
@@ -48,24 +48,23 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.gui.GUIUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// RunnableGraphController
 
 /**
-   A graph controller for models that can be executed.
-   This controller provides toolbar buttons for executing
-   the model.  If the model being controlled is not a top-level
-   model, then execution commands are propagated up to the top level.
+ A graph controller for models that can be executed.
+ This controller provides toolbar buttons for executing
+ the model.  If the model being controlled is not a top-level
+ model, then execution commands are propagated up to the top level.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public abstract class RunnableGraphController extends WithIconGraphController
-    implements ExecutionListener {
+        implements ExecutionListener {
     /** Create a new controller.
      */
     public RunnableGraphController() {
@@ -200,7 +199,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource("/ptolemy/vergil/actor/img/run.gif");
+            URL img = getClass().getResource(
+                    "/ptolemy/vergil/actor/img/run.gif");
 
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
@@ -208,9 +208,9 @@ public abstract class RunnableGraphController extends WithIconGraphController
             }
 
             putValue("tooltip", description + " (Ctrl+R)");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_R,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_R, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
         }
 
         /** Run the model. */
@@ -247,7 +247,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource("/ptolemy/vergil/actor/img/pause.gif");
+            URL img = getClass().getResource(
+                    "/ptolemy/vergil/actor/img/pause.gif");
 
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
@@ -255,9 +256,9 @@ public abstract class RunnableGraphController extends WithIconGraphController
             }
 
             putValue("tooltip", description + " (Ctrl+U)");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_U,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_U, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
         }
 
         /** Pause the model. */
@@ -289,7 +290,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource("/ptolemy/vergil/actor/img/stop.gif");
+            URL img = getClass().getResource(
+                    "/ptolemy/vergil/actor/img/stop.gif");
 
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
@@ -297,9 +299,9 @@ public abstract class RunnableGraphController extends WithIconGraphController
             }
 
             putValue("tooltip", description + " (Ctrl+H)");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_H,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_H, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
         }
 
         /** Stop the model. */

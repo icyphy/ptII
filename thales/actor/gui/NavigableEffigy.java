@@ -1,25 +1,25 @@
 /*
-  Copyright (c) 2003-2005 THALES.
-  All rights reserved.
+ Copyright (c) 2003-2005 THALES.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-  SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
-  OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
-  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+ SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+ OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-  THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-  BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-  UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package thales.actor.gui;
 
 import java.io.BufferedReader;
@@ -49,20 +49,19 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import thales.vergil.navigable.NavigationTreeModel;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NavigableEffigy
 
 /**
-   An effigy for navigable models.
+ An effigy for navigable models.
 
 
-   @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
-   @version $Id$
-   @since Ptolemy II 3.1
-   @Pt.ProposedRating Yellow (jerome.blanc)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
+ @version $Id$
+ @since Ptolemy II 3.1
+ @Pt.ProposedRating Yellow (jerome.blanc)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class NavigableEffigy extends PtolemyEffigy {
     // FIXME: This class has a huge amount of code duplication
     // with PtolemyEffigy.  This makes it very difficult to maintain.
@@ -205,8 +204,8 @@ public class NavigableEffigy extends PtolemyEffigy {
                 // Create a blank effigy.
                 // Use the strategy pattern so derived classes can
                 // override this.
-                PtolemyEffigy effigy = _newEffigy(container,
-                        container.uniqueName("effigy"));
+                PtolemyEffigy effigy = _newEffigy(container, container
+                        .uniqueName("effigy"));
 
                 // If this factory contains an entity called "blank", then
                 // clone that.
@@ -241,7 +240,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                 // Checking to see if there already is a _parser attribute
                 // might be overkill, but it is safer.
                 ParserAttribute parserAttribute = (ParserAttribute) newModel
-                    .getAttribute("_parser", ParserAttribute.class);
+                        .getAttribute("_parser", ParserAttribute.class);
 
                 if (parserAttribute == null) {
                     parserAttribute = new ParserAttribute(newModel, "_parser");
@@ -284,8 +283,8 @@ public class NavigableEffigy extends PtolemyEffigy {
                 // THALES MODIF
                 if (checkFile(input)) {
                     // Create a blank effigy.
-                    PtolemyEffigy effigy = _newEffigy(container,
-                            container.uniqueName("effigy"));
+                    PtolemyEffigy effigy = _newEffigy(container, container
+                            .uniqueName("effigy"));
 
                     MoMLParser parser = new MoMLParser();
 
@@ -308,8 +307,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                                 // might have a URL that refers to another
                                 // jar file.
                                 URL anotherURL = ClassUtilities
-                                    .jarURLEntryResource(input
-                                            .toString());
+                                        .jarURLEntryResource(input.toString());
 
                                 if (anotherURL != null) {
                                     toplevel = parser.parse(base, anotherURL);
@@ -333,8 +331,8 @@ public class NavigableEffigy extends PtolemyEffigy {
                                 // Identify the URI from which the model was read
                                 // by inserting an attribute into both the model
                                 // and the effigy.
-                                URIAttribute uriAttribute = new URIAttribute(toplevel,
-                                        "_uri");
+                                URIAttribute uriAttribute = new URIAttribute(
+                                        toplevel, "_uri");
                                 URI inputURI = null;
 
                                 try {
@@ -350,19 +348,21 @@ public class NavigableEffigy extends PtolemyEffigy {
                                     // is a %20 instead of a space.  This could
                                     // cause problems in Web Start
                                     String inputExternalFormFixed = StringUtilities
-                                        .substitute(input
-                                                .toExternalForm(), " ",
-                                                "%20");
+                                            .substitute(input.toExternalForm(),
+                                                    " ", "%20");
 
                                     try {
-                                        inputURI = new URI(inputExternalFormFixed);
+                                        inputURI = new URI(
+                                                inputExternalFormFixed);
                                     } catch (Exception ex2) {
                                         throw new Exception(
                                                 "Failed to generate "
-                                                + "a URI from '"
-                                                + input.toExternalForm()
-                                                + "' and from '"
-                                                + inputExternalFormFixed + "'", ex);
+                                                        + "a URI from '"
+                                                        + input
+                                                                .toExternalForm()
+                                                        + "' and from '"
+                                                        + inputExternalFormFixed
+                                                        + "'", ex);
                                     }
                                 }
 
@@ -380,25 +380,25 @@ public class NavigableEffigy extends PtolemyEffigy {
                             if (throwable instanceof StackOverflowError) {
                                 Throwable newThrowable = new StackOverflowError(
                                         "StackOverflowError: "
-                                        + "Which often indicates that a class "
-                                        + "could not be found, but there was "
-                                        + "possibly a moml file with that same "
-                                        + "name in the directory that referred "
-                                        + "to the class, so we got into a loop."
-                                        + "For example: We had "
-                                        + "actor/lib/joystick/Joystick.java "
-                                        + "and "
-                                        + "actor/lib/joystick/joystick.xml, "
-                                        + "but "
-                                        + "the .class file would not load "
-                                        + "because of a classpath problem, "
-                                        + "so we kept "
-                                        + "loading joystick.xml which "
-                                        + "referred to Joystick and because "
-                                        + "of Windows "
-                                        + "filename case insensitivity, "
-                                        + "we found joystick.xml, which put "
-                                        + "us in a loop.");
+                                                + "Which often indicates that a class "
+                                                + "could not be found, but there was "
+                                                + "possibly a moml file with that same "
+                                                + "name in the directory that referred "
+                                                + "to the class, so we got into a loop."
+                                                + "For example: We had "
+                                                + "actor/lib/joystick/Joystick.java "
+                                                + "and "
+                                                + "actor/lib/joystick/joystick.xml, "
+                                                + "but "
+                                                + "the .class file would not load "
+                                                + "because of a classpath problem, "
+                                                + "so we kept "
+                                                + "loading joystick.xml which "
+                                                + "referred to Joystick and because "
+                                                + "of Windows "
+                                                + "filename case insensitivity, "
+                                                + "we found joystick.xml, which put "
+                                                + "us in a loop.");
                                 newThrowable.initCause(throwable);
                                 throwable = newThrowable;
                             }
@@ -410,8 +410,8 @@ public class NavigableEffigy extends PtolemyEffigy {
                             // effigies open.  We check for that condition,
                             // and report the error here.  Otherwise, we
                             // pass the error to the caller.
-                            ModelDirectory dir = (ModelDirectory) effigy.topEffigy()
-                                .getContainer();
+                            ModelDirectory dir = (ModelDirectory) effigy
+                                    .topEffigy().getContainer();
                             List effigies = dir.entityList(Effigy.class);
 
                             // We might get to here if we are running a
@@ -479,17 +479,15 @@ public class NavigableEffigy extends PtolemyEffigy {
             BufferedReader reader = null;
 
             try {
-                reader = new BufferedReader(new InputStreamReader(
-                                                    url.openStream()));
+                reader = new BufferedReader(new InputStreamReader(url
+                        .openStream()));
 
                 String aLine = "";
 
                 while ((aLine = reader.readLine()) != null) {
                     if ((aLine.indexOf("<property") != -1)
-                            && ((aLine.indexOf("name=\"" + _tagToCheck
-                                         + "\"") != -1)
-                                    || (aLine.indexOf("name='" + _tagToCheck
-                                                + "'") != -1))) {
+                            && ((aLine.indexOf("name=\"" + _tagToCheck + "\"") != -1) || (aLine
+                                    .indexOf("name='" + _tagToCheck + "'") != -1))) {
                         answer = true;
                         break;
                     }
@@ -517,8 +515,8 @@ public class NavigableEffigy extends PtolemyEffigy {
          *  @return A new effigy.
          */
         protected NavigableEffigy _newEffigy(CompositeEntity container,
-                String name)
-                throws IllegalActionException, NameDuplicationException {
+                String name) throws IllegalActionException,
+                NameDuplicationException {
             return new NavigableEffigy(container, name);
         }
     }

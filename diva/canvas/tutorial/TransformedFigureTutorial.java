@@ -51,7 +51,6 @@ import diva.canvas.interactor.Interactor;
 import diva.gui.BasicFrame;
 import diva.util.java2d.ShapeUtilities;
 
-
 /** This tutorial shows how to make custom figures that contain
  * their own TransformContext.
  *
@@ -202,11 +201,11 @@ public class TransformedFigureTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    TransformedFigureTutorial ex = new TransformedFigureTutorial();
-                    ex.createFigures();
-                }
-            });
+            public void run() {
+                TransformedFigureTutorial ex = new TransformedFigureTutorial();
+                ex.createFigures();
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -335,8 +334,8 @@ public class TransformedFigureTutorial {
             _transformContext.push(g);
 
             // Paint the big cloud
-            AlphaComposite c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-                    0.3f);
+            AlphaComposite c = AlphaComposite.getInstance(
+                    AlphaComposite.SRC_OVER, 0.3f);
             g.setComposite(c);
             g.setPaint(Color.magenta);
             g.fill(_shape);

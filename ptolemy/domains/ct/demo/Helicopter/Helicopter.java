@@ -1,30 +1,30 @@
 /* An applet that uses Ptolemy II CT and DE domains.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.demo.Helicopter;
 
 import java.util.Iterator;
@@ -59,22 +59,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
-
 ///////////////////////////////////////////////////////////
 ////  Helicopter
 
 /**
-   An applet that models a 2-D helicopter control system.
+ An applet that models a 2-D helicopter control system.
 
-   @author Jie Liu, Xiaojun Liu
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Jie Liu, Xiaojun Liu
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class Helicopter extends TypedCompositeActor {
-    public Helicopter(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public Helicopter(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         // Creating the model.
         super(workspace);
 
@@ -169,15 +168,15 @@ public class Helicopter extends TypedCompositeActor {
         State cruise2State = new State(hsctrl, "Cruise2State");
         hsctrl.initialStateName.setExpression("HoverState");
 
-        /* CTCompositeActor linHover = */ _createLinearizer(sub, 0);
+        /* CTCompositeActor linHover = */_createLinearizer(sub, 0);
 
-        /* CTCompositeActor linAccel = */ _createLinearizer(sub, 1);
+        /* CTCompositeActor linAccel = */_createLinearizer(sub, 1);
 
-        /* CTCompositeActor linCruise1 = */ _createLinearizer(sub, 2);
+        /* CTCompositeActor linCruise1 = */_createLinearizer(sub, 2);
 
-        /* CTCompositeActor linClimb = */ _createLinearizer(sub, 3);
+        /* CTCompositeActor linClimb = */_createLinearizer(sub, 3);
 
-        /* CTCompositeActor linCruise2 = */ _createLinearizer(sub, 4);
+        /* CTCompositeActor linCruise2 = */_createLinearizer(sub, 4);
         hoverState.refinementName.setExpression("HoverCTSub");
         accelState.refinementName.setExpression("AccelCTSub");
         cruise1State.refinementName.setExpression("Cruise1CTSub");
@@ -656,49 +655,49 @@ public class Helicopter extends TypedCompositeActor {
         }
 
         /*
-          ZeroOrderHold hPx = new ZeroOrderHold(sub, "HPx");
-          ZeroOrderHold hDPx = new ZeroOrderHold(sub, "HDPx");
-          ZeroOrderHold hDDPx = new ZeroOrderHold(sub, "HDDPx");
-          ZeroOrderHold hD3Px = new ZeroOrderHold(sub, "HD3Px");
-          ZeroOrderHold hD4Px = new ZeroOrderHold(sub, "HD4Px");
-          ZeroOrderHold hPz = new ZeroOrderHold(sub, "HPz");
-          ZeroOrderHold hDPz = new ZeroOrderHold(sub, "HDPz");
-          ZeroOrderHold hDDPz = new ZeroOrderHold(sub, "HDDPz");
-          ZeroOrderHold hD3Pz = new ZeroOrderHold(sub, "HD3Pz");
-          ZeroOrderHold hD4Pz = new ZeroOrderHold(sub, "HD4Pz");
+         ZeroOrderHold hPx = new ZeroOrderHold(sub, "HPx");
+         ZeroOrderHold hDPx = new ZeroOrderHold(sub, "HDPx");
+         ZeroOrderHold hDDPx = new ZeroOrderHold(sub, "HDDPx");
+         ZeroOrderHold hD3Px = new ZeroOrderHold(sub, "HD3Px");
+         ZeroOrderHold hD4Px = new ZeroOrderHold(sub, "HD4Px");
+         ZeroOrderHold hPz = new ZeroOrderHold(sub, "HPz");
+         ZeroOrderHold hDPz = new ZeroOrderHold(sub, "HDPz");
+         ZeroOrderHold hDDPz = new ZeroOrderHold(sub, "HDDPz");
+         ZeroOrderHold hD3Pz = new ZeroOrderHold(sub, "HD3Pz");
+         ZeroOrderHold hD4Pz = new ZeroOrderHold(sub, "HD4Pz");
 
-          sub.connect(hPx.input, subinPx);
-          sub.connect(hDPx.input, subinDPx);
-          sub.connect(hDDPx.input, subinDDPx);
-          sub.connect(hD3Px.input, subinD3Px);
-          sub.connect(hD4Px.input, subinD4Px);
+         sub.connect(hPx.input, subinPx);
+         sub.connect(hDPx.input, subinDPx);
+         sub.connect(hDDPx.input, subinDDPx);
+         sub.connect(hD3Px.input, subinD3Px);
+         sub.connect(hD4Px.input, subinD4Px);
 
-          Relation rInPz = sub.connect(hPz.input, subinPz);
-          sub.connect(hDPz.input, subinDPz);
-          sub.connect(hDDPz.input, subinDDPz);
-          sub.connect(hD3Pz.input, subinD3Pz);
-          sub.connect(hD4Pz.input, subinD4Pz);
+         Relation rInPz = sub.connect(hPz.input, subinPz);
+         sub.connect(hDPz.input, subinDPz);
+         sub.connect(hDDPz.input, subinDDPz);
+         sub.connect(hD3Pz.input, subinD3Pz);
+         sub.connect(hD4Pz.input, subinD4Pz);
 
-          sub.connect(hPx.output, (ComponentPort)lin.getPort("inputPx"));
-          sub.connect(hDPx.output, (ComponentPort)lin.getPort("inputDPx"));
-          sub.connect(hDDPx.output, (ComponentPort)lin.getPort("inputDDPx"));
-          sub.connect(hD3Px.output, (ComponentPort)lin.getPort("inputD3Px"));
-          sub.connect(hD4Px.output, (ComponentPort)lin.getPort("inputD4Px"));
+         sub.connect(hPx.output, (ComponentPort)lin.getPort("inputPx"));
+         sub.connect(hDPx.output, (ComponentPort)lin.getPort("inputDPx"));
+         sub.connect(hDDPx.output, (ComponentPort)lin.getPort("inputDDPx"));
+         sub.connect(hD3Px.output, (ComponentPort)lin.getPort("inputD3Px"));
+         sub.connect(hD4Px.output, (ComponentPort)lin.getPort("inputD4Px"));
 
-          sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
-          sub.connect(hDPz.output, (ComponentPort)lin.getPort("inputDPz"));
-          sub.connect(hDDPz.output, (ComponentPort)lin.getPort("inputDDPz"));
-          sub.connect(hD3Pz.output, (ComponentPort)lin.getPort("inputD3Pz"));
-          sub.connect(hD4Pz.output, (ComponentPort)lin.getPort("inputD4Pz"));
-        */
+         sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
+         sub.connect(hDPz.output, (ComponentPort)lin.getPort("inputDPz"));
+         sub.connect(hDDPz.output, (ComponentPort)lin.getPort("inputDDPz"));
+         sub.connect(hD3Pz.output, (ComponentPort)lin.getPort("inputD3Pz"));
+         sub.connect(hD4Pz.output, (ComponentPort)lin.getPort("inputD4Pz"));
+         */
         sub.connect(subinPx, (ComponentPort) lin.getPort("inputPx"));
         sub.connect(subinDPx, (ComponentPort) lin.getPort("inputDPx"));
         sub.connect(subinDDPx, (ComponentPort) lin.getPort("inputDDPx"));
         sub.connect(subinD3Px, (ComponentPort) lin.getPort("inputD3Px"));
         sub.connect(subinD4Px, (ComponentPort) lin.getPort("inputD4Px"));
 
-        Relation rInPz = sub.connect(subinPz,
-                (ComponentPort) lin.getPort("inputPz"));
+        Relation rInPz = sub.connect(subinPz, (ComponentPort) lin
+                .getPort("inputPz"));
 
         //sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
         sub.connect(subinDPz, (ComponentPort) lin.getPort("inputDPz"));
@@ -709,10 +708,10 @@ public class Helicopter extends TypedCompositeActor {
         sub.connect(suboutVx, (ComponentPort) lin.getPort("outputVx"));
         sub.connect(suboutVz, (ComponentPort) lin.getPort("outputVz"));
 
-        Relation rV = sub.connect(suboutV,
-                (ComponentPort) lin.getPort("outputV"));
-        Relation rR = sub.connect(suboutR,
-                (ComponentPort) lin.getPort("outputR"));
+        Relation rV = sub.connect(suboutV, (ComponentPort) lin
+                .getPort("outputV"));
+        Relation rR = sub.connect(suboutR, (ComponentPort) lin
+                .getPort("outputR"));
 
         // connect and set the monitors
         Parameter p = null;

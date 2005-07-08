@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.graph.layout;
 
 import java.awt.geom.Line2D;
@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.Random;
 
 import diva.graph.GraphModel;
-
 
 /**
  * A simple layout which places nodes on a grid using a cost function.
@@ -266,7 +265,8 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
                     double y;
                     x = placeX[i];
                     y = placeY[j];
-                    LayoutUtilities.placeNoReroute(getLayoutTarget(), node, x, y);
+                    LayoutUtilities.placeNoReroute(getLayoutTarget(), node, x,
+                            y);
 
                     //debug("Assigning: " + x + ", " + y + " to node " + n);
                 }
@@ -327,7 +327,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
         double heightCost = HEIGHT_FACTOR * Math.abs(phead[1] - ptail[1]);
         double widthCost = WIDTH_FACTOR * Math.abs(phead[0] - ptail[0]);
         double elbowCost = ((heightCost == 0) || (widthCost == 0)) ? 0
-            : ELBOW_PENALTY;
+                : ELBOW_PENALTY;
         double overlapCost = numOverlaps(edge, _graph) * EDGE_OVERLAP_PENALTY;
         double crossingCost = numCrossings(edge, _graph) * CROSSING_PENALTY;
         return heightCost + widthCost + elbowCost + overlapCost + crossingCost;
@@ -522,8 +522,8 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
                 int[] headPt = getXY(head);
 
                 if (Line2D.linesIntersect(inTailPt[0], inTailPt[1],
-                            inHeadPt[0], inHeadPt[1], tailPt[0],
-                            tailPt[1], headPt[0], headPt[1])) {
+                        inHeadPt[0], inHeadPt[1], tailPt[0], tailPt[1],
+                        headPt[0], headPt[1])) {
                     num++;
                 }
             }
@@ -606,9 +606,8 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
      */
     public void setCoolingFactor(double val) {
         if ((val <= 0) || (val > 1)) {
-            String err =
-                "Cooling factor must be greater than 0 and less or equal to 1: "
-                + val;
+            String err = "Cooling factor must be greater than 0 and less or equal to 1: "
+                    + val;
             throw new IllegalArgumentException(err);
         }
 

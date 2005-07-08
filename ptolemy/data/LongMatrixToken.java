@@ -1,30 +1,30 @@
 /* A token that contains a 2-D long matrix.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -39,19 +39,18 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.LongArrayMath;
 import ptolemy.math.LongMatrixMath;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LongMatrixToken
 
 /**
-   A token that contains a 2-D long matrix.
+ A token that contains a 2-D long matrix.
 
-   @author Yuhong Xiong, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Yuhong Xiong, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class LongMatrixToken extends MatrixToken {
     /** Construct an LongMatrixToken with a one by one matrix. The
      *  only element in the matrix has value 0
@@ -226,8 +225,8 @@ public class LongMatrixToken extends MatrixToken {
         int compare = TypeLattice.compare(BaseType.LONG_MATRIX, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "[long]"));
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(token, "[long]"));
         }
 
         // try long
@@ -250,7 +249,7 @@ public class LongMatrixToken extends MatrixToken {
         // The argument is below LongMatrixToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "[long]"));
+                "[long]"));
     }
 
     /** Convert the specified scalar token into an instance of
@@ -280,7 +279,7 @@ public class LongMatrixToken extends MatrixToken {
         }
 
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "[long]"));
+                "[long]"));
     }
 
     /** Return true if the argument is an instance of LongMatrixToken
@@ -394,7 +393,8 @@ public class LongMatrixToken extends MatrixToken {
      *  @return A 2-D long matrix.
      */
     public long[][] longMatrix() {
-        return LongMatrixMath.toMatrixFromArray(_value, _rowCount, _columnCount);
+        return LongMatrixMath
+                .toMatrixFromArray(_value, _rowCount, _columnCount);
     }
 
     /** Return a new Token representing the left multiplicative
@@ -594,8 +594,8 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken) rightArgument;
-        long[] result = LongArrayMath.subtract(_value,
-                convertedArgument._getInternalLongArray());
+        long[] result = LongArrayMath.subtract(_value, convertedArgument
+                ._getInternalLongArray());
         return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
@@ -627,7 +627,8 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
         long scalar = ((LongToken) rightArgument).longValue();
-        long[] result = LongArrayMath.negative(LongArrayMath.add(_value, -scalar));
+        long[] result = LongArrayMath.negative(LongArrayMath.add(_value,
+                -scalar));
         return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
@@ -644,6 +645,8 @@ public class LongMatrixToken extends MatrixToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private long[] _value;
+
     private int _rowCount;
+
     private int _columnCount;
 }

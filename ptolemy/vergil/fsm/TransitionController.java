@@ -1,30 +1,30 @@
 /* The edge controller for transitions in an FSM.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.fsm;
 
 import java.awt.Color;
@@ -73,19 +73,18 @@ import diva.graph.GraphController;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.MenuCreator;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TransitionController
 
 /**
-   This class provides interaction techniques for transitions in an FSM.
+ This class provides interaction techniques for transitions in an FSM.
 
-   @author Steve Neuendorffer, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class TransitionController extends BasicEdgeController {
     /** Create a transition controller associated with the specified graph
      *  controller.
@@ -121,11 +120,13 @@ public class TransitionController extends BasicEdgeController {
         // menu factory, which is a protected member of this class.
         // Derived classes can add menu items to it.
         _menuFactory = new PtolemyMenuFactory(controller);
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(_configureAction));
+        _menuFactory
+                .addMenuItemFactory(new MenuActionFactory(_configureAction));
         _menuCreator.setMenuFactory(_menuFactory);
 
         // Add a double click interactor.
-        ActionInteractor doubleClickInteractor = new ActionInteractor(_configureAction);
+        ActionInteractor doubleClickInteractor = new ActionInteractor(
+                _configureAction);
         doubleClickInteractor.setConsuming(false);
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 
@@ -135,7 +136,7 @@ public class TransitionController extends BasicEdgeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _lookInsideAction));
+                    _lookInsideAction));
         }
     }
 
@@ -153,7 +154,7 @@ public class TransitionController extends BasicEdgeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _lookInsideAction));
+                    _lookInsideAction));
         }
     }
 
@@ -193,7 +194,8 @@ public class TransitionController extends BasicEdgeController {
             Figure f = evt.getTarget();
             Object edge = c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
-            FSMGraphModel model = (FSMGraphModel) getController().getGraphModel();
+            FSMGraphModel model = (FSMGraphModel) getController()
+                    .getGraphModel();
 
             switch (evt.getEnd()) {
             case ConnectorEvent.HEAD_END:
@@ -223,8 +225,8 @@ public class TransitionController extends BasicEdgeController {
                 // Set the new exitAngle and gamma parameter values based
                 // on the current arc.
                 String moml = "<group><property name=\"exitAngle\" value=\""
-                    + angle + "\"/>" + "<property name=\"gamma\" value=\""
-                    + gamma + "\"/></group>";
+                        + angle + "\"/>" + "<property name=\"gamma\" value=\""
+                        + gamma + "\"/></group>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         transition, moml);
                 transition.requestChange(request);
@@ -259,7 +261,7 @@ public class TransitionController extends BasicEdgeController {
 
                 try {
                     double exitAngle = ((DoubleToken) (transition.exitAngle
-                                                .getToken())).doubleValue();
+                            .getToken())).doubleValue();
 
                     // If the angle is too large, then truncate it to
                     // a reasonable value.
@@ -288,7 +290,7 @@ public class TransitionController extends BasicEdgeController {
 
                     // Set the gamma angle
                     double gamma = ((DoubleToken) (transition.gamma.getToken()))
-                        .doubleValue();
+                            .doubleValue();
                     c.setGamma(gamma);
                 } catch (IllegalActionException ex) {
                     // Ignore, accepting the default.
@@ -341,15 +343,15 @@ public class TransitionController extends BasicEdgeController {
 
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
-                MessageHandler.error(
-                        "Cannot look inside without a configuration.");
+                MessageHandler
+                        .error("Cannot look inside without a configuration.");
                 return;
             }
 

@@ -1,30 +1,30 @@
 /* A graph model for ptolemy fsm models.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.fsm;
 
 import ptolemy.actor.TypedActor;
@@ -60,19 +60,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphModel
 
 /**
-   A graph model for graphically manipulating ptolemy FSM models.
+ A graph model for graphically manipulating ptolemy FSM models.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class FSMGraphModel extends AbstractBasicGraphModel {
     /** Construct a new graph model whose root is the given composite entity.
      *  @param composite The top-level composite entity for the model.
@@ -299,9 +298,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 // will trigger the ChangeRequest listener to
                 // redraw the graph again.
                 MoMLChangeRequest request = new MoMLChangeRequest(container,
-                        container,
-                        "<deleteRelation name=\"" + relation.getName(container)
-                        + "\"/>\n");
+                        container, "<deleteRelation name=\""
+                                + relation.getName(container) + "\"/>\n");
 
                 // Need to merge the undo for this request in with one that
                 // triggered it
@@ -313,8 +311,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         }
 
         // Now create Links for links that may be new
-        Iterator relations = ((CompositeEntity) getPtolemyModel()).relationList()
-            .iterator();
+        Iterator relations = ((CompositeEntity) getPtolemyModel())
+                .relationList().iterator();
 
         while (relations.hasNext()) {
             _updateLinks((ComponentRelation) relations.next());
@@ -390,7 +388,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
     // The models of the different types of nodes and edges.
     private ArcModel _arcModel = new ArcModel();
+
     private PortModel _portModel = new PortModel();
+
     private StateModel _stateModel = new StateModel();
 
     ///////////////////////////////////////////////////////////////////
@@ -459,7 +459,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             // See whether refinement(s) need to be removed.
             CompositeEntity master = (CompositeEntity) linkRelation
-                .getContainer();
+                    .getContainer();
 
             // Nothing to do if there is no container.
             if (master != null) {
@@ -481,7 +481,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         // to this refinement, then we will remove it.
                         boolean removeIt = true;
                         Iterator states = master.entityList(State.class)
-                            .iterator();
+                                .iterator();
 
                         while (removeIt && states.hasNext()) {
                             State state = (State) states.next();
@@ -520,7 +520,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                             try {
                                 transitionRefinements = ((Transition) transition)
-                                    .getRefinement();
+                                        .getRefinement();
                             } catch (IllegalActionException e1) {
                                 // Ignore, no refinement to check.
                             }
@@ -529,8 +529,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 continue;
                             }
 
-                            for (int j = 0; j < transitionRefinements.length;
-                                 j++) {
+                            for (int j = 0; j < transitionRefinements.length; j++) {
                                 if (transitionRefinements[j] == refinement) {
                                     removeIt = false;
                                     break;
@@ -540,8 +539,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                         if (removeIt) {
                             moml.append("<deleteEntity name=\""
-                                    + ((NamedObj) refinement).getName(container)
-                                    + "\"/>\n");
+                                    + ((NamedObj) refinement)
+                                            .getName(container) + "\"/>\n");
                         }
                     }
                 }
@@ -585,27 +584,27 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             final NamedObj container = getPtolemyModel();
             moml.append(_deleteRelation(container, linkRelation));
 
-            MoMLChangeRequest request = new MoMLChangeRequest(FSMGraphModel.this,
-                    container, moml.toString()) {
-                    protected void _execute() throws Exception {
-                        super._execute();
-                        link.setHead(null);
-                        link.setTail(null);
-                        link.setRelation(null);
-                    }
-                };
+            MoMLChangeRequest request = new MoMLChangeRequest(
+                    FSMGraphModel.this, container, moml.toString()) {
+                protected void _execute() throws Exception {
+                    super._execute();
+                    link.setHead(null);
+                    link.setTail(null);
+                    link.setRelation(null);
+                }
+            };
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
-                    public void changeFailed(ChangeRequest change,
-                            Exception exception) {
-                        // Ignore... nothing we can do about it anyway.
-                    }
+                public void changeFailed(ChangeRequest change,
+                        Exception exception) {
+                    // Ignore... nothing we can do about it anyway.
+                }
 
-                    public void changeExecuted(ChangeRequest change) {
-                        _linkSet.remove(edge);
-                    }
-                });
+                public void changeExecuted(ChangeRequest change) {
+                    _linkSet.remove(edge);
+                }
+            });
             request.setUndoable(true);
             container.requestChange(request);
         }
@@ -663,49 +662,49 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             failmoml.append("</group>\n");
 
             final String relationNameToAdd = relationName;
-            MoMLChangeRequest request = new MoMLChangeRequest(FSMGraphModel.this,
-                    container, moml.toString()) {
-                    protected void _execute() throws Exception {
-                        super._execute();
-                        link.setHead(newArcHead);
+            MoMLChangeRequest request = new MoMLChangeRequest(
+                    FSMGraphModel.this, container, moml.toString()) {
+                protected void _execute() throws Exception {
+                    super._execute();
+                    link.setHead(newArcHead);
 
-                        if (relationNameToAdd != null) {
-                            ComponentRelation relation = (ComponentRelation) ((CompositeEntity) getPtolemyModel())
+                    if (relationNameToAdd != null) {
+                        ComponentRelation relation = (ComponentRelation) ((CompositeEntity) getPtolemyModel())
                                 .getRelation(relationNameToAdd);
-                            link.setRelation(relation);
-                        }
+                        link.setRelation(relation);
                     }
-                };
+                }
+            };
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
-                    public void changeFailed(ChangeRequest change,
-                            Exception exception) {
-                        // If we fail here, then we remove the link entirely.
-                        _linkSet.remove(link);
-                        link.setHead(null);
-                        link.setTail(null);
-                        link.setRelation(null);
+                public void changeFailed(ChangeRequest change,
+                        Exception exception) {
+                    // If we fail here, then we remove the link entirely.
+                    _linkSet.remove(link);
+                    link.setHead(null);
+                    link.setTail(null);
+                    link.setRelation(null);
 
-                        // and queue a new change request to clean up the model
-                        // Note: JDK1.2.2 requires that this variable not be
-                        // called request or we get a compile error.
-                        MoMLChangeRequest requestChange = new MoMLChangeRequest(FSMGraphModel.this,
-                                container, failmoml.toString());
+                    // and queue a new change request to clean up the model
+                    // Note: JDK1.2.2 requires that this variable not be
+                    // called request or we get a compile error.
+                    MoMLChangeRequest requestChange = new MoMLChangeRequest(
+                            FSMGraphModel.this, container, failmoml.toString());
 
-                        // Fail moml execution not undoable
-                        container.requestChange(requestChange);
+                    // Fail moml execution not undoable
+                    container.requestChange(requestChange);
+                }
+
+                public void changeExecuted(ChangeRequest change) {
+                    if (GraphUtilities.isPartiallyContainedEdge(edge,
+                            getRoot(), FSMGraphModel.this)) {
+                        _linkSet.add(edge);
+                    } else {
+                        _linkSet.remove(edge);
                     }
-
-                    public void changeExecuted(ChangeRequest change) {
-                        if (GraphUtilities.isPartiallyContainedEdge(edge,
-                                    getRoot(), FSMGraphModel.this)) {
-                            _linkSet.add(edge);
-                        } else {
-                            _linkSet.remove(edge);
-                        }
-                    }
-                });
+                }
+            });
             request.setUndoable(true);
             container.requestChange(request);
         }
@@ -764,48 +763,48 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             final String relationNameToAdd = relationName;
 
-            MoMLChangeRequest request = new MoMLChangeRequest(FSMGraphModel.this,
-                    container, moml.toString()) {
-                    protected void _execute() throws Exception {
-                        super._execute();
-                        link.setTail(newArcTail);
+            MoMLChangeRequest request = new MoMLChangeRequest(
+                    FSMGraphModel.this, container, moml.toString()) {
+                protected void _execute() throws Exception {
+                    super._execute();
+                    link.setTail(newArcTail);
 
-                        if (relationNameToAdd != null) {
-                            link.setRelation(((CompositeEntity) getPtolemyModel())
-                                    .getRelation(relationNameToAdd));
-                        }
+                    if (relationNameToAdd != null) {
+                        link.setRelation(((CompositeEntity) getPtolemyModel())
+                                .getRelation(relationNameToAdd));
                     }
-                };
+                }
+            };
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
-                    public void changeFailed(ChangeRequest change,
-                            Exception exception) {
-                        // If we fail here, then we remove the link entirely.
-                        _linkSet.remove(link);
-                        link.setHead(null);
-                        link.setTail(null);
-                        link.setRelation(null);
+                public void changeFailed(ChangeRequest change,
+                        Exception exception) {
+                    // If we fail here, then we remove the link entirely.
+                    _linkSet.remove(link);
+                    link.setHead(null);
+                    link.setTail(null);
+                    link.setRelation(null);
 
-                        // and queue a new change request to clean up the model
-                        // Note: JDK1.2.2 requires that this variable not be
-                        // called request or we get a compile error.
-                        MoMLChangeRequest requestChange = new MoMLChangeRequest(FSMGraphModel.this,
-                                container, failmoml.toString());
+                    // and queue a new change request to clean up the model
+                    // Note: JDK1.2.2 requires that this variable not be
+                    // called request or we get a compile error.
+                    MoMLChangeRequest requestChange = new MoMLChangeRequest(
+                            FSMGraphModel.this, container, failmoml.toString());
 
-                        // fail moml execution not undaoble
-                        container.requestChange(requestChange);
+                    // fail moml execution not undaoble
+                    container.requestChange(requestChange);
+                }
+
+                public void changeExecuted(ChangeRequest change) {
+                    if (GraphUtilities.isPartiallyContainedEdge(edge,
+                            getRoot(), FSMGraphModel.this)) {
+                        _linkSet.add(edge);
+                    } else {
+                        _linkSet.remove(edge);
                     }
-
-                    public void changeExecuted(ChangeRequest change) {
-                        if (GraphUtilities.isPartiallyContainedEdge(edge,
-                                    getRoot(), FSMGraphModel.this)) {
-                            _linkSet.add(edge);
-                        } else {
-                            _linkSet.remove(edge);
-                        }
-                    }
-                });
+                }
+            });
             request.setUndoable(true);
             container.requestChange(request);
         }
@@ -817,7 +816,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          */
         private String _deleteRelation(NamedObj container, Relation relation) {
             return "<deleteRelation name=\"" + relation.getName(container)
-                + "\"/>\n";
+                    + "\"/>\n";
         }
 
         /** Append moml to the given buffer that connects a link with the
@@ -849,7 +848,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     // then we need to set the context correctly.
                     if (ptolemyModel != container) {
                         String contextString = "<entity name=\""
-                            + ptolemyModel.getName(container) + "\">\n";
+                                + ptolemyModel.getName(container) + "\">\n";
                         moml.append(contextString);
                         failmoml.append(contextString);
                     }
@@ -870,7 +869,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         // Count the number of connections between the
                         // headPort and the tailPort.
                         Iterator ports = tailPort.deepConnectedPortList()
-                            .iterator();
+                                .iterator();
                         int count = 0;
 
                         while (ports.hasNext()) {
@@ -888,10 +887,10 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                         if (headPort.getContainer() != tailPort.getContainer()) {
                             angle = (Math.PI / 5.0)
-                                + (1.5 * Math.atan(0.3 * count));
+                                    + (1.5 * Math.atan(0.3 * count));
                         } else {
                             angle = (Math.PI / 3.0)
-                                - (0.75 * Math.atan(0.3 * count));
+                                    - (0.75 * Math.atan(0.3 * count));
                         }
 
                         // Create the new relation.
@@ -901,8 +900,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 + "\"><property name=\"exitAngle\" value=\""
                                 + angle + "\"/></relation>\n");
                         moml.append("<link port=\""
-                                + tailPort.getName(ptolemyModel) + "\" relation=\""
-                                + relationName + "\"/>\n");
+                                + tailPort.getName(ptolemyModel)
+                                + "\" relation=\"" + relationName + "\"/>\n");
                     }
 
                     moml.append("<link port=\""
@@ -917,8 +916,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                     if (linkRelation == null) {
                         failmoml.append("<unlink port=\""
-                                + tailPort.getName(ptolemyModel) + "\" relation=\""
-                                + relationName + "\"/>\n");
+                                + tailPort.getName(ptolemyModel)
+                                + "\" relation=\"" + relationName + "\"/>\n");
                         failmoml.append("<deleteRelation name=\""
                                 + relationName + "\"/>\n");
                     }
@@ -937,7 +936,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 } else {
                     throw new RuntimeException(
                             "Attempt to create a link between non-states: "
-                            + "Head = " + head + ", Tail = " + tail);
+                                    + "Head = " + head + ", Tail = " + tail);
                 }
             } else {
                 // No Linking to do.
@@ -977,7 +976,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     // then we need to set the context correctly.
                     if (ptolemyModel != container) {
                         String contextString = "<entity name=\""
-                            + ptolemyModel.getName(container) + "\">\n";
+                                + ptolemyModel.getName(container) + "\">\n";
                         moml.append(contextString);
                         failmoml.append(contextString);
                     }
@@ -999,8 +998,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         moml.append("<relation name=\"" + relationName
                                 + "\"/>\n");
                         moml.append("<link port=\""
-                                + headPort.getName(ptolemyModel) + "\" relation=\""
-                                + relationName + "\"/>\n");
+                                + headPort.getName(ptolemyModel)
+                                + "\" relation=\"" + relationName + "\"/>\n");
                     }
 
                     moml.append("<link port=\""
@@ -1015,8 +1014,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                     if (linkRelation == null) {
                         failmoml.append("<unlink port=\""
-                                + headPort.getName(ptolemyModel) + "\" relation=\""
-                                + relationName + "\"/>\n");
+                                + headPort.getName(ptolemyModel)
+                                + "\" relation=\"" + relationName + "\"/>\n");
                         failmoml.append("<deleteRelation name=\""
                                 + relationName + "\"/>\n");
                     }
@@ -1035,7 +1034,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 } else {
                     throw new RuntimeException(
                             "Attempt to create a link between non-states: "
-                            + "Head = " + head + ", Tail = " + tail);
+                                    + "Head = " + head + ", Tail = " + tail);
                 }
             } else {
                 // No Linking to do.
@@ -1052,7 +1051,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             State headState = (State) head;
             ComponentPort headPort = (ComponentPort) headState.incomingPort;
             return "<unlink port=\"" + headPort.getName(container)
-                + "\" relation=\"" + relation.getName(container) + "\"/>\n";
+                    + "\" relation=\"" + relation.getName(container) + "\"/>\n";
         }
 
         /** Return moml to unlink a relation with the given tail in the
@@ -1064,7 +1063,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             State tailState = (State) tail;
             ComponentPort tailPort = (ComponentPort) tailState.outgoingPort;
             return "<unlink port=\"" + tailPort.getName(container)
-                + "\" relation=\"" + relation.getName(container) + "\"/>\n";
+                    + "\" relation=\"" + relation.getName(container) + "\"/>\n";
         }
     }
 
@@ -1080,7 +1079,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
             String moml = "<deletePort name=\"" + deleteObj.getName()
-                + "\"/>\n";
+                    + "\"/>\n";
             return moml;
         }
 
@@ -1134,32 +1133,32 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             } else {
                 throw new InternalErrorException(
                         "Attempt to remove a node that is not an Entity. "
-                        + "node = " + node);
+                                + "node = " + node);
             }
 
             String moml = "<" + elementName + " name=\""
-                + ((NamedObj) deleteObj).getName() + "\"/>\n";
+                    + ((NamedObj) deleteObj).getName() + "\"/>\n";
 
             // Make the request in the context of the container.
             NamedObj container = (NamedObj) deleteObj.getContainer();
-            MoMLChangeRequest request = new MoMLChangeRequest(FSMGraphModel.this,
-                    container, moml);
+            MoMLChangeRequest request = new MoMLChangeRequest(
+                    FSMGraphModel.this, container, moml);
             request.setUndoable(true);
             request.addChangeListener(new ChangeListener() {
-                    public void changeFailed(ChangeRequest change,
-                            Exception exception) {
-                        // If we fail, then issue structureChanged.
-                        dispatchGraphEvent(new GraphEvent(eventSource,
-                                                   GraphEvent.STRUCTURE_CHANGED, getRoot()));
-                    }
+                public void changeFailed(ChangeRequest change,
+                        Exception exception) {
+                    // If we fail, then issue structureChanged.
+                    dispatchGraphEvent(new GraphEvent(eventSource,
+                            GraphEvent.STRUCTURE_CHANGED, getRoot()));
+                }
 
-                    public void changeExecuted(ChangeRequest change) {
-                        // If we succeed, then issue structureChanged, since
-                        // this is likely connected to something.
-                        dispatchGraphEvent(new GraphEvent(eventSource,
-                                                   GraphEvent.STRUCTURE_CHANGED, getRoot()));
-                    }
-                });
+                public void changeExecuted(ChangeRequest change) {
+                    // If we succeed, then issue structureChanged, since
+                    // this is likely connected to something.
+                    dispatchGraphEvent(new GraphEvent(eventSource,
+                            GraphEvent.STRUCTURE_CHANGED, getRoot()));
+                }
+            });
             request.setUndoable(true);
             container.requestChange(request);
         }
@@ -1205,7 +1204,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         // to this refinement, then we will remove it.
                         boolean removeIt = true;
                         Iterator states = master.entityList(State.class)
-                            .iterator();
+                                .iterator();
 
                         while (removeIt && states.hasNext()) {
                             State state = (State) states.next();
@@ -1248,7 +1247,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                             try {
                                 transitionRefinements = ((Transition) transition)
-                                    .getRefinement();
+                                        .getRefinement();
                             } catch (IllegalActionException e) {
                                 // Ignore, no refinement to check.
                             }
@@ -1257,8 +1256,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 continue;
                             }
 
-                            for (int j = 0; j < transitionRefinements.length;
-                                 j++) {
+                            for (int j = 0; j < transitionRefinements.length; j++) {
                                 if (transitionRefinements[j] == refinement) {
                                     removeIt = false;
                                     break;
@@ -1268,8 +1266,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                         if (removeIt) {
                             moml.append("<deleteEntity name=\""
-                                    + ((NamedObj) refinement).getName(container)
-                                    + "\"/>\n");
+                                    + ((NamedObj) refinement)
+                                            .getName(container) + "\"/>\n");
                         }
                     }
                 }
@@ -1374,31 +1372,31 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             } else {
                 throw new InternalErrorException(
                         "Attempt to remove a node that is not an Entity. "
-                        + "node = " + node);
+                                + "node = " + node);
             }
 
             String moml = "<" + elementName + " name=\""
-                + ((NamedObj) deleteObj).getName() + "\"/>\n";
+                    + ((NamedObj) deleteObj).getName() + "\"/>\n";
 
             // Make the request in the context of the container.
             NamedObj container = (NamedObj) deleteObj.getContainer();
-            MoMLChangeRequest request = new MoMLChangeRequest(FSMGraphModel.this,
-                    container, moml);
+            MoMLChangeRequest request = new MoMLChangeRequest(
+                    FSMGraphModel.this, container, moml);
             request.addChangeListener(new ChangeListener() {
-                    public void changeFailed(ChangeRequest change,
-                            Exception exception) {
-                        // If we fail, then issue structureChanged.
-                        dispatchGraphEvent(new GraphEvent(eventSource,
-                                                   GraphEvent.STRUCTURE_CHANGED, getRoot()));
-                    }
+                public void changeFailed(ChangeRequest change,
+                        Exception exception) {
+                    // If we fail, then issue structureChanged.
+                    dispatchGraphEvent(new GraphEvent(eventSource,
+                            GraphEvent.STRUCTURE_CHANGED, getRoot()));
+                }
 
-                    public void changeExecuted(ChangeRequest change) {
-                        // If we succeed, then issue structureChanged, since
-                        // this is likely connected to something.
-                        dispatchGraphEvent(new GraphEvent(eventSource,
-                                                   GraphEvent.STRUCTURE_CHANGED, getRoot()));
-                    }
-                });
+                public void changeExecuted(ChangeRequest change) {
+                    // If we succeed, then issue structureChanged, since
+                    // this is likely connected to something.
+                    dispatchGraphEvent(new GraphEvent(eventSource,
+                            GraphEvent.STRUCTURE_CHANGED, getRoot()));
+                }
+            });
             request.setUndoable(true);
             container.requestChange(request);
         }

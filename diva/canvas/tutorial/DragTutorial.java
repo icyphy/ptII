@@ -48,7 +48,6 @@ import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;
 
-
 /** An example showing how to make figures draggable with interactors.
  *
  * <img src="doc-files/DragTutorial.gif" align="right">
@@ -124,7 +123,8 @@ public class DragTutorial {
         dragger.setMouseFilter(MouseFilter.defaultFilter);
 
         // Create a rectangle and make it draggable
-        BasicFigure blue = new BasicRectangle(10.0, 10.0, 50.0, 50.0, Color.blue);
+        BasicFigure blue = new BasicRectangle(10.0, 10.0, 50.0, 50.0,
+                Color.blue);
         layer.add(blue);
         blue.setInteractor(dragger);
 
@@ -151,7 +151,7 @@ public class DragTutorial {
 
         // Create a green rectangle that stays inside the boundary
         BasicFigure green = new BasicFigure(new Rectangle2D.Double(110.0,
-                                                    110.0, 50.0, 50.0), Color.green);
+                110.0, 50.0, 50.0), Color.green);
         layer.add(green);
         green.setInteractor(boundedDragger);
     }
@@ -161,12 +161,12 @@ public class DragTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    DragTutorial ex = new DragTutorial();
-                    ex.createDraggableFigures();
-                    ex.createBoundedDraggableFigure();
-                    ex.canvas.repaint();
-                }
-            });
+            public void run() {
+                DragTutorial ex = new DragTutorial();
+                ex.createDraggableFigures();
+                ex.createBoundedDraggableFigure();
+                ex.canvas.repaint();
+            }
+        });
     }
 }

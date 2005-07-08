@@ -1,30 +1,30 @@
 /* A GR Shape consisting of a text string.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.lib;
 
 import java.awt.Font;
@@ -51,28 +51,27 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TextString3D
 
 /**
 
-An actor that encapsulates 3D text shapes in the GR domain.
-The <i>text</i> port/parameter gives the text to be displayed.
-The <i>fontSize<i> parameter gives the size of the font.
-The <i>extrusionDepth</i> parameter specifies how deep the 3-D
-rendering of the text should be.
-The <i>alignment</i> parameter gives the alignment of the text
-relative to the position of the object.
-The <i>fontFamily</i> parameter specifies the font family.
-The rest of the parameters are described in the base class.
+ An actor that encapsulates 3D text shapes in the GR domain.
+ The <i>text</i> port/parameter gives the text to be displayed.
+ The <i>fontSize<i> parameter gives the size of the font.
+ The <i>extrusionDepth</i> parameter specifies how deep the 3-D
+ rendering of the text should be.
+ The <i>alignment</i> parameter gives the alignment of the text
+ relative to the position of the object.
+ The <i>fontFamily</i> parameter specifies the font family.
+ The rest of the parameters are described in the base class.
 
-@author C. Fong and Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Green (eal)
-@Pt.AcceptedRating Green (liuxj)
-*/
+ @author C. Fong and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (liuxj)
+ */
 public class TextString3D extends GRShadedShape {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -96,7 +95,7 @@ public class TextString3D extends GRShadedShape {
         // This includes logical font names, per Font class in Java:
         // Dialog, DialogInput, Monospaced, Serif, SansSerif, or Symbol.
         String[] families = GraphicsEnvironment.getLocalGraphicsEnvironment()
-            .getAvailableFontFamilyNames();
+                .getAvailableFontFamilyNames();
 
         for (int i = 0; i < families.length; i++) {
             fontFamily.addChoice(families[i]);
@@ -172,12 +171,12 @@ public class TextString3D extends GRShadedShape {
             // NOTE: The extrusion can, in principle, follow a more complicated
             // path. However, it's not clear what user interface to provide for this.
             double depth = ((DoubleToken) extrusionDepth.getToken())
-                .doubleValue();
+                    .doubleValue();
             FontExtrusion extrusion = new FontExtrusion(new Line2D.Double(0.0,
-                                                                0.0, depth, 0.0));
+                    0.0, depth, 0.0));
 
-            Font3D font3D = new Font3D(new Font(fontFamilyValue, Font.PLAIN, 1),
-                    extrusion);
+            Font3D font3D = new Font3D(
+                    new Font(fontFamilyValue, Font.PLAIN, 1), extrusion);
             _textGeometry.setFont3D(font3D);
         } else if ((attribute == alignment) && (_textGeometry != null)
                 && _changesAllowedNow) {
@@ -235,7 +234,7 @@ public class TextString3D extends GRShadedShape {
         // path. However, it's not clear what user interface to provide for this.
         double depth = ((DoubleToken) extrusionDepth.getToken()).doubleValue();
         FontExtrusion extrusion = new FontExtrusion(new Line2D.Double(0.0, 0.0,
-                                                            depth, 0.0));
+                depth, 0.0));
 
         Font3D font3D = new Font3D(new Font(fontFamilyValue, Font.PLAIN, 1),
                 extrusion);

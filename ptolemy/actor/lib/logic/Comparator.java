@@ -1,30 +1,30 @@
 /* An actor that compares two doubles.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.logic;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -40,42 +40,41 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 // NOTE: If you update the list of comparisons, then you will want
 // to update the list in actor/lib/logic/logic.xml.
 //////////////////////////////////////////////////////////////////////////
 //// Comparator
 
 /**
-   Compare two double-valued inputs, and output the boolean result
-   of the comparison.  The exact comparison performed is given by the
-   <i>comparison</i> attribute, which can take any of the following
-   values:
-   <ul>
-   <li> <b>&gt;</b>: <i>left</i> &gt; <i>right</i></li>
-   <li> <b>&gt;=</b>: <i>left</i> &gt;= <i>right</i></li>
-   <li> <b>&lt;</b>: <i>left</i> &lt; <i>right</i></li>
-   <li> <b>&lt;=</b>: <i>left</i> &lt;= <i>right</i></li>
-   <li> <b>==</b>: <i>left</i> == <i>right</i></li>
-   </ul>
-   The default is "&gt;".
-   The input ports are named <i>left</i> and <i>right</i> to indicate
-   which side of the comparison operator their value appears on.
-   <p>
-   The <i>tolerance</i> parameter, which defaults to zero, defines
-   an error tolerance.  That is, the actor may produce true even if
-   the specified test is not exactly satisfied, but rather is almost
-   satisfied, within the specified tolerance.
-   <p>
-   Note that this actor will work with any data type that can be losslessly
-   converted to doubles, such as integers.
+ Compare two double-valued inputs, and output the boolean result
+ of the comparison.  The exact comparison performed is given by the
+ <i>comparison</i> attribute, which can take any of the following
+ values:
+ <ul>
+ <li> <b>&gt;</b>: <i>left</i> &gt; <i>right</i></li>
+ <li> <b>&gt;=</b>: <i>left</i> &gt;= <i>right</i></li>
+ <li> <b>&lt;</b>: <i>left</i> &lt; <i>right</i></li>
+ <li> <b>&lt;=</b>: <i>left</i> &lt;= <i>right</i></li>
+ <li> <b>==</b>: <i>left</i> == <i>right</i></li>
+ </ul>
+ The default is "&gt;".
+ The input ports are named <i>left</i> and <i>right</i> to indicate
+ which side of the comparison operator their value appears on.
+ <p>
+ The <i>tolerance</i> parameter, which defaults to zero, defines
+ an error tolerance.  That is, the actor may produce true even if
+ the specified test is not exactly satisfied, but rather is almost
+ satisfied, within the specified tolerance.
+ <p>
+ Note that this actor will work with any data type that can be losslessly
+ converted to doubles, such as integers.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (neuendor)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (neuendor)
+ */
 public class Comparator extends TypedAtomicActor {
     /** Construct an actor with the given container and name.  Set the
      *  comparison to the default ("&gt;").  Set the types of
@@ -107,9 +106,9 @@ public class Comparator extends TypedAtomicActor {
         right.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
-                + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-15\" " + "width=\"60\" height=\"30\" "
+                + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"-30,-10, -10,-10, -10,0\" "
                 + "style=\"stroke:grey\"/>\n"
                 + "<polyline points=\"-30,10, 10,10, 10,0\" "
@@ -228,8 +227,8 @@ public class Comparator extends TypedAtomicActor {
         default:
             throw new InternalErrorException(
                     "Invalid value for _comparison private variable. "
-                    + "Comparator actor (" + getFullName() + ")"
-                    + " on comparison type " + _comparison);
+                            + "Comparator actor (" + getFullName() + ")"
+                            + " on comparison type " + _comparison);
         }
 
         output.send(0, result);
@@ -259,8 +258,12 @@ public class Comparator extends TypedAtomicActor {
 
     // Constants used for more efficient execution.
     private static final int _LT = 0;
+
     private static final int _LE = 1;
+
     private static final int _GT = 2;
+
     private static final int _GE = 3;
+
     private static final int _EQ = 4;
 }

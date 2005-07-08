@@ -1,30 +1,30 @@
 /* Implements a physical layer (PHY)
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above=
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above=
 
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.wireless.lib.network;
 
 import java.util.Iterator;
@@ -49,31 +49,30 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ////////////////////////////////////////////////////////////////////////=
 //
 //// PHY
 
 /**
-   The PHY class implements a physical layer which does the following:
-   1) collision detection;
-   2) carrier sense;
-   3) send TxStartConfirm to the MAC when TxStart is received; send TxEnd to
-   the MAC when transmission is completed; send RxStart to the MAC when
-   reception starts; send RxData and RxEnd to the MAC when reception ends.
+ The PHY class implements a physical layer which does the following:
+ 1) collision detection;
+ 2) carrier sense;
+ 3) send TxStartConfirm to the MAC when TxStart is received; send TxEnd to
+ the MAC when transmission is completed; send RxStart to the MAC when
+ reception starts; send RxData and RxEnd to the MAC when reception ends.
 
-   Things that can be added:
-   1) not send channel status in the transmit state;
-   2) The first received signal is above the sensitivity, so the PHY decides
-   to receive it. If the second signal is much stronger, the PHY can
-   abort the reception of the 1st one and receive the 2nd one instead.
+ Things that can be added:
+ 1) not send channel status in the transmit state;
+ 2) The first received signal is above the sensitivity, so the PHY decides
+ to receive it. If the second signal is much stronger, the PHY can
+ abort the reception of the 1st one and receive the 2nd one instead.
 
-   @author Charlie Zhong
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (czhong)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ @author Charlie Zhong
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (czhong)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class PHY extends NetworkActorBase {
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
@@ -128,7 +127,7 @@ public class PHY extends NetworkActorBase {
 
         toChannel = new TypedIOPort(this, "toChannel", false, true);
         toChannel.setTypeEquals(BaseType.GENERAL);
-        
+
         _setUnionType();
     }
 
@@ -216,7 +215,7 @@ public class PHY extends NetworkActorBase {
 
             if (fromChannel.hasToken(0)) {
                 _data = (RecordToken) fromChannel.get(0);
-                
+
                 if (_debugging) {
                     _debug(getFullName() + "Receiving a message."
                             + _data.toString());
@@ -224,7 +223,8 @@ public class PHY extends NetworkActorBase {
 
                 // the input port may not be a WirelessIOPort, but the port it is
                 // connected to is
-                Iterator connectedPorts = fromChannel.sourcePortList().iterator();
+                Iterator connectedPorts = fromChannel.sourcePortList()
+                        .iterator();
 
                 while (connectedPorts.hasNext()) {
                     IOPort port = (IOPort) connectedPorts.next();
@@ -232,23 +232,22 @@ public class PHY extends NetworkActorBase {
                     if (port.isInput() && port instanceof WirelessIOPort) {
                         // Found the port.
                         RecordToken properties = (RecordToken) ((WirelessIOPort) port)
-                            .getProperties(0);
+                                .getProperties(0);
                         power = ((DoubleToken) properties.get("power"))
-                            .doubleValue();
+                                .doubleValue();
                         duration = ((DoubleToken) properties.get("duration"))
-                            .doubleValue();
+                                .doubleValue();
                         break;
                     }
                 }
 
                 // let us be a little picky about receiving a message
                 if ((power > _sensitivity)
-                        && ((_interference == 0.0)
-                                || ((power / _interference) > _SNRThresholdInDB))) {
+                        && ((_interference == 0.0) || ((power / _interference) > _SNRThresholdInDB))) {
                     if (_debugging) {
                         //Token dbg = new DoubleToken(power / _interference);
-                        _debug(getFullName() + "Receiving a message with power: "
-                                + power);
+                        _debug(getFullName()
+                                + "Receiving a message with power: " + power);
                     }
 
                     // The PHY will receive this message
@@ -258,15 +257,15 @@ public class PHY extends NetworkActorBase {
                     _numBusyTimers++;
 
                     if (_numBusyTimers == 1) {
-                        RecordToken ChannelStatusMsg = new RecordToken(SignalMsgFields,
-                                new Token[] { new IntToken(Busy) });
+                        RecordToken ChannelStatusMsg = new RecordToken(
+                                SignalMsgFields, new Token[] { new IntToken(
+                                        Busy) });
                         channelStatus.send(0, ChannelStatusMsg);
                     }
 
                     // send RxStart to the MAC
-                    Token[] RxStartValues = {
-                        new IntToken(RxStart), _data.get("rate")
-                    };
+                    Token[] RxStartValues = { new IntToken(RxStart),
+                            _data.get("rate") };
                     RecordToken RxStartMsg = new RecordToken(RxStartMsgFields,
                             RxStartValues);
                     UnionToken t = new UnionToken("RxStart", RxStartMsg);
@@ -278,12 +277,14 @@ public class PHY extends NetworkActorBase {
                 } else {
                     if (_debugging) {
                         //Token dbg = new DoubleToken(power / _interference);
-                        _debug(getFullName() + "Receiving an interfrence message with power: "
+                        _debug(getFullName()
+                                + "Receiving an interfrence message with power: "
                                 + power);
-                    }                    
+                    }
                     // this is also an interference
                     // add every conversation in the network to this giant table
-                    setTimer2(InterferenceDone, currentTime.add(duration), power);
+                    setTimer2(InterferenceDone, currentTime.add(duration),
+                            power);
 
                     // update interference
                     _interference = _interference + power;
@@ -301,116 +302,118 @@ public class PHY extends NetworkActorBase {
         case Receive:
 
             if (kind == RxDone) // MUST check the timer first
-                {
-                    if (_debugging) {
-                        //Token dbg = new DoubleToken(power / _interference);
-                        _debug(getFullName() + "about to send RxData to MAC.");
-                    }
-                    // send RxData to the MAC
-                    RecordToken data = (RecordToken) _data.get("data");
-                    Token[] RxDataValues = { new IntToken(RxData), data };
-                    RecordToken RxDataMsg = new RecordToken(RxDataMsgFields,
-                            RxDataValues);
-                    IntToken subType = (IntToken) data.get("Subtype");
-                    if (subType.intValue() == Data) { //dataPacket
-                        toMAC.send(0, new UnionToken("RxData", RxDataMsg));
-                    } else if (subType.intValue() == Rts) {
-                        toMAC.send(0, new UnionToken("RxRts", RxDataMsg));
-                    } else if (subType.intValue() == Cts || subType.intValue() == Ack) {
-                        toMAC.send(0, new UnionToken("CsRts", RxDataMsg)); 
-                    } else {
-                        throw new IllegalActionException(this, "trying to send a message with" 
-                            + "not compatable type : "
-                            + _data.toString());
-                    }
-                    
+            {
+                if (_debugging) {
+                    //Token dbg = new DoubleToken(power / _interference);
+                    _debug(getFullName() + "about to send RxData to MAC.");
+                }
+                // send RxData to the MAC
+                RecordToken data = (RecordToken) _data.get("data");
+                Token[] RxDataValues = { new IntToken(RxData), data };
+                RecordToken RxDataMsg = new RecordToken(RxDataMsgFields,
+                        RxDataValues);
+                IntToken subType = (IntToken) data.get("Subtype");
+                if (subType.intValue() == Data) { //dataPacket
+                    toMAC.send(0, new UnionToken("RxData", RxDataMsg));
+                } else if (subType.intValue() == Rts) {
+                    toMAC.send(0, new UnionToken("RxRts", RxDataMsg));
+                } else if (subType.intValue() == Cts
+                        || subType.intValue() == Ack) {
+                    toMAC.send(0, new UnionToken("CsRts", RxDataMsg));
+                } else {
+                    throw new IllegalActionException(this,
+                            "trying to send a message with"
+                                    + "not compatable type : "
+                                    + _data.toString());
+                }
 
-                    if (_debugging) {
-                        //Token dbg = new DoubleToken(power / _interference);
-                        _debug(getFullName() + "have sent RxData to MAC.");
-                    }
-                    
-                    // send RxEnd to the MAC
-                    Token[] RxEndValues = {
-                        new IntToken(RxEnd), new IntToken(_rxStatus)
-                    };
+                if (_debugging) {
+                    //Token dbg = new DoubleToken(power / _interference);
+                    _debug(getFullName() + "have sent RxData to MAC.");
+                }
+
+                // send RxEnd to the MAC
+                Token[] RxEndValues = { new IntToken(RxEnd),
+                        new IntToken(_rxStatus) };
+                RecordToken RxEndMsg = new RecordToken(RxEndMsgFields,
+                        RxEndValues);
+                toMAC.send(0, new UnionToken("RxEnd", RxEndMsg));
+
+                _currentState = PHY_Idle;
+            } else if (fromChannel.hasToken(0)) { // This message is an interference
+
+                _handleInterference();
+
+                // check collision
+                if ((_receivedPower / _interference) <= _SNRThresholdInDB) {
+                    _rxStatus = Error;
+                }
+            } else if (fromMAC.hasToken(0)) {
+                msg = (RecordToken) fromMAC.get(0);
+                if (_debugging) {
+                    //Token dbg = new DoubleToken(power / _interference);
+                    _debug(getFullName()
+                            + "about to about the current recption.");
+                }
+                if (((IntToken) msg.get("kind")).intValue() == TxStart) {
+                    _startTransmission(msg);
+
+                    // abort the current reception and send RxEnd to the MAC
+                    Token[] RxEndValues = { new IntToken(RxEnd),
+                            new IntToken(Error) }; // set the status to Error
                     RecordToken RxEndMsg = new RecordToken(RxEndMsgFields,
                             RxEndValues);
-                    toMAC.send(0, new UnionToken("RxEnd", RxEndMsg));
-
-                    _currentState = PHY_Idle;
-                } else if (fromChannel.hasToken(0)) { // This message is an interference
-                  
-                    _handleInterference();
-
-                    // check collision
-                    if ((_receivedPower / _interference) <= _SNRThresholdInDB) {
-                        _rxStatus = Error;
-                    }
-                } else if (fromMAC.hasToken(0)) {
-                    msg = (RecordToken) fromMAC.get(0);
-                    if (_debugging) {
-                        //Token dbg = new DoubleToken(power / _interference);
-                        _debug(getFullName() + "about to about the current recption.");
-                    }  
-                    if (((IntToken) msg.get("kind")).intValue() == TxStart) {
-                        _startTransmission(msg);
-
-                        // abort the current reception and send RxEnd to the MAC
-                        Token[] RxEndValues = {
-                            new IntToken(RxEnd), new IntToken(Error)
-                        }; // set the status to Error
-                        RecordToken RxEndMsg = new RecordToken(RxEndMsgFields,
-                                RxEndValues);
-                        UnionToken t = new UnionToken("RxEnd", RxEndMsg);
-                        toMAC.send(0, t);
-                    }
+                    UnionToken t = new UnionToken("RxEnd", RxEndMsg);
+                    toMAC.send(0, t);
                 }
+            }
 
             break;
 
         case Transmit:
 
             if (kind == TxDone) // MUST check the timer first
-                {                                                           
-                    if (_debugging) {
-                        //Token dbg = new DoubleToken(power / _interference);
-                        _debug(getFullName() + "about to send phy confirm to MAC.");
-                    } 
-                    // send TxEnd to the MAC
-                    RecordToken TxEndMsg = new RecordToken(SignalMsgFields,
-                            new Token[] { new IntToken(TxEnd) });
-                    PHYConfirm.send(0, TxEndMsg);
-
-                    _currentState = PHY_Idle;
-                } else if (fromChannel.hasToken(0)) { // This message is an interference
-                    if (_debugging) {
-                        //Token dbg = new DoubleToken(power / _interference);
-                        _debug(getFullName() + "about to handle interference.");
-                    } 
-                    _handleInterference();
-                } else if (fromMAC.hasToken(0)) {
-                    msg = (RecordToken) fromMAC.get(0);
-
-                    if (((IntToken) msg.get("kind")).intValue() == TxData) {
-                        // send the data to the channel
-                        Token[] ChMsgValues = { new IntToken(_txRate), msg.get(
-                                                        "pdu") };
-                        RecordToken ChMsg = new RecordToken(ChMsgFields, ChMsgValues);
-                        if (_debugging) {
-                            //Token dbg = new DoubleToken(power / _interference);
-                            _debug(getFullName() + "about to transmit msg: " + ChMsg.toString());
-                        } 
-                        toChannel.send(0, ChMsg);
-
-                        // update the parameter: duration
-                        _duration = (Variable) getContainer().getContainer()
-                            .getAttribute("duration");
-                        _duration.setToken(new DoubleToken(_txDuration));
-
-                        setTimer2(TxDone, currentTime.add(_txDuration), 0.0);
-                    }
+            {
+                if (_debugging) {
+                    //Token dbg = new DoubleToken(power / _interference);
+                    _debug(getFullName() + "about to send phy confirm to MAC.");
                 }
+                // send TxEnd to the MAC
+                RecordToken TxEndMsg = new RecordToken(SignalMsgFields,
+                        new Token[] { new IntToken(TxEnd) });
+                PHYConfirm.send(0, TxEndMsg);
+
+                _currentState = PHY_Idle;
+            } else if (fromChannel.hasToken(0)) { // This message is an interference
+                if (_debugging) {
+                    //Token dbg = new DoubleToken(power / _interference);
+                    _debug(getFullName() + "about to handle interference.");
+                }
+                _handleInterference();
+            } else if (fromMAC.hasToken(0)) {
+                msg = (RecordToken) fromMAC.get(0);
+
+                if (((IntToken) msg.get("kind")).intValue() == TxData) {
+                    // send the data to the channel
+                    Token[] ChMsgValues = { new IntToken(_txRate),
+                            msg.get("pdu") };
+                    RecordToken ChMsg = new RecordToken(ChMsgFields,
+                            ChMsgValues);
+                    if (_debugging) {
+                        //Token dbg = new DoubleToken(power / _interference);
+                        _debug(getFullName() + "about to transmit msg: "
+                                + ChMsg.toString());
+                    }
+                    toChannel.send(0, ChMsg);
+
+                    // update the parameter: duration
+                    _duration = (Variable) getContainer().getContainer()
+                            .getAttribute("duration");
+                    _duration.setToken(new DoubleToken(_txDuration));
+
+                    setTimer2(TxDone, currentTime.add(_txDuration), 0.0);
+                }
+            }
 
             break;
         }
@@ -448,7 +451,7 @@ public class PHY extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "preamble Length is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _aPreambleLength = temp;
             }
@@ -458,7 +461,7 @@ public class PHY extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "PLCPHeader Length is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _aPlcpHeaderLength = temp;
             }
@@ -474,7 +477,7 @@ public class PHY extends NetworkActorBase {
             if (_sensitivity < 0.0) {
                 throw new IllegalActionException(this,
                         "sensitivity is required to be nonnegative. "
-                        + "Attempt to set it to: " + _sensitivity);
+                                + "Attempt to set it to: " + _sensitivity);
             }
         } else {
             super.attributeChanged(attribute);
@@ -489,6 +492,7 @@ public class PHY extends NetworkActorBase {
         removeDependency(fromMAC, channelStatus);
         removeDependency(fromMAC, PHYConfirm);
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     protected ExtendedTimer setTimer2(int kind, Time expirationTime,
@@ -537,7 +541,7 @@ public class PHY extends NetworkActorBase {
 
         while (timers.hasNext()) {
             ExtendedTimer timer = (ExtendedTimer) timers.next();
-            
+
             if (timer.expirationTime.equals(getDirector().getModelTime())) {
                 // update interference
                 if (timer.kind == InterferenceDone) {
@@ -573,9 +577,9 @@ public class PHY extends NetworkActorBase {
         Token t = fromChannel.get(0); // consume the token
         if (_debugging) {
             //Token dbg = new DoubleToken(power / _interference);
-            _debug(getFullName() + "gets a collison with message: " +
-            t.toString());
-        }  
+            _debug(getFullName() + "gets a collison with message: "
+                    + t.toString());
+        }
         Iterator connectedPorts = fromChannel.sourcePortList().iterator();
 
         while (connectedPorts.hasNext()) {
@@ -584,10 +588,10 @@ public class PHY extends NetworkActorBase {
             if (port.isInput() && port instanceof WirelessIOPort) {
                 // Found the port.
                 RecordToken properties = (RecordToken) ((WirelessIOPort) port)
-                    .getProperties(0);
+                        .getProperties(0);
                 power = ((DoubleToken) properties.get("power")).doubleValue();
                 duration = ((DoubleToken) properties.get("duration"))
-                    .doubleValue();
+                        .doubleValue();
                 break;
             }
         }
@@ -612,59 +616,60 @@ public class PHY extends NetworkActorBase {
             channelStatus.send(0, ChannelStatusMsg);
         }
     }
-    
+
     /** Return the type constraints of this actor. The type constraint is
      *  that the output type is the union of the types of input ports.
      *  @return a list of Inequality.
      */
     private void _setUnionType() {
-        String[] labels = {"RxStart", "RxData", "RxEnd", "RxRts", "CsRts"};
+        String[] labels = { "RxStart", "RxData", "RxEnd", "RxRts", "CsRts" };
         RecordType[] types = new RecordType[5];
-        Type[] controlType = {BaseType.INT, BaseType.INT};
+        Type[] controlType = { BaseType.INT, BaseType.INT };
         types[0] = new RecordType(RxStartMsgFields, controlType);
         types[2] = new RecordType(RxEndMsgFields, controlType);
-        
+
         Type[] pduType = new Type[DataPacket.length];
         for (int i = 0; i < DataPacket.length; i++) {
             pduType[i] = BaseType.INT;
         }
-        
+
         //FIXME: currently, assume the payload is a the following Record type.
         // it should be infered from the application layer...
-        String[] payload = {"Length", "kind", "payload", "toMACAddr"};
-        Type[] payloadType = {BaseType.INT, BaseType.INT, BaseType.STRING, BaseType.INT};
-        
+        String[] payload = { "Length", "kind", "payload", "toMACAddr" };
+        Type[] payloadType = { BaseType.INT, BaseType.INT, BaseType.STRING,
+                BaseType.INT };
+
         //If the labels of the DataPacket changes and the "payload" is
         //not the second last one any more, then we need to change the 
         //code here.
         pduType[DataPacket.length - 2] = new RecordType(payload, payloadType);
-        Type[] dataType = {BaseType.INT, new RecordType(DataPacket, pduType)};
+        Type[] dataType = { BaseType.INT, new RecordType(DataPacket, pduType) };
         types[1] = new RecordType(RxDataMsgFields, dataType);
-        
+
         Type[] rtsduType = new Type[RtsPacket.length];
         for (int i = 0; i < RtsPacket.length; i++) {
             rtsduType[i] = BaseType.INT;
         }
-        
-        Type[] rtsType = {BaseType.INT, new RecordType(RtsPacket, rtsduType)};
+
+        Type[] rtsType = { BaseType.INT, new RecordType(RtsPacket, rtsduType) };
         types[3] = new RecordType(RxDataMsgFields, rtsType);
-        
+
         Type[] csduType = new Type[AckPacket.length];
         for (int i = 0; i < AckPacket.length; i++) {
             csduType[i] = BaseType.INT;
         }
-        
-        Type[] csType = {BaseType.INT, new RecordType(AckPacket, csduType)};
+
+        Type[] csType = { BaseType.INT, new RecordType(AckPacket, csduType) };
         types[4] = new RecordType(RxDataMsgFields, csType);
-        
+
         /*Type[] RxType = new Type[RxPacket.length];
-        for (int i = 0; i < RxPacket.length; i++) {
-            RxType[i] = BaseType.INT;
-        }
-        
-        Type[] dataType = {BaseType.INT, new RecordType(RxPacket, RxType)};
-        types[1] = new RecordType(RxDataMsgFields, dataType);*/
-        
+         for (int i = 0; i < RxPacket.length; i++) {
+         RxType[i] = BaseType.INT;
+         }
+         
+         Type[] dataType = {BaseType.INT, new RecordType(RxPacket, RxType)};
+         types[1] = new RecordType(RxDataMsgFields, dataType);*/
+
         UnionType declaredType = new UnionType(labels, types);
         toMAC.setTypeEquals(declaredType);
     }
@@ -677,7 +682,7 @@ public class PHY extends NetworkActorBase {
 
         // compute the duration of this packet ( with the PHY overhead added)
         _txDuration = ((double) length / _txRate)
-            + ((_aPreambleLength + _aPlcpHeaderLength) * 1e-6);
+                + ((_aPreambleLength + _aPlcpHeaderLength) * 1e-6);
 
         // send TxStartConfirm to the MAC
         RecordToken TxStartConfirmMsg = new RecordToken(SignalMsgFields,
@@ -691,7 +696,9 @@ public class PHY extends NetworkActorBase {
     // extend the default timer to link the additional info (e.g. power) to a timer
     protected class ExtendedTimer {
         public int kind;
+
         public Time expirationTime;
+
         public double power;
     }
 
@@ -699,15 +706,22 @@ public class PHY extends NetworkActorBase {
     ////                         protected variables               ////
     //the local varibles for the parameters of this actor.
     protected int _aPreambleLength;
+
     protected int _aPlcpHeaderLength;
+
     protected double _sensitivity;
+
     protected double _SNRThresholdInDB;
 
     // message formats
     protected static final String[] RxStartMsgFields = { "kind", "rxRate" };
+
     protected static final String[] RxEndMsgFields = { "kind", "status" };
+
     protected static final String[] RxDataMsgFields = { "kind", "pdu" };
+
     protected static final String[] SignalMsgFields = { "kind" };
+
     protected static final String[] ChMsgFields = { "rate", "data" };
 
     // time that a packet uses the channel
@@ -716,24 +730,36 @@ public class PHY extends NetworkActorBase {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private RecordToken _data;
+
     private ExtendedTimer _chMsg;
+
     private double _txDuration;
+
     private double _receivedPower;
+
     private int _rxStatus;
+
     private int _txRate;
+
     private double _interference;
+
     private int _numBusyTimers;
-    
+
     //private RecordToken _txMsg;
 
     // define states in FSM
     private static final int PHY_Idle = 0; // not use Idle as state name
+
     private static final int Receive = 1;
+
     private static final int Transmit = 2;
+
     private int _currentState = PHY_Idle;
 
     // timer types
     private static final int RxDone = 1;
+
     private static final int InterferenceDone = 2;
+
     private static final int TxDone = 3;
 }

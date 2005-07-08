@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.canvas.toolbox;
 
 import java.awt.BasicStroke;
@@ -38,7 +38,6 @@ import java.awt.geom.Rectangle2D;
 
 import diva.canvas.CanvasLayer;
 import diva.canvas.VisibleComponent;
-
 
 /**
  * A grid layer displays a rectangular grid. It can be made to display
@@ -149,52 +148,52 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
      */
 
     /*
-      public void paint (Graphics2D g) {
-      Point2D paneSize = getCanvasPane().getSize();
-      if (!isVisible()) {
-      return;
-      }
+     public void paint (Graphics2D g) {
+     Point2D paneSize = getCanvasPane().getSize();
+     if (!isVisible()) {
+     return;
+     }
 
-      double originX = _origin.getX();
-      double originY = _origin.getY();
-      double sizeX = _size.getX();
-      double sizeY = _size.getY();
-      double paneX = paneSize.getX();
-      double paneY = paneSize.getY();
+     double originX = _origin.getX();
+     double originY = _origin.getY();
+     double sizeX = _size.getX();
+     double sizeY = _size.getY();
+     double paneX = paneSize.getX();
+     double paneY = paneSize.getY();
 
-      if (_gridPaint != null) {
-      g.setPaint(_gridPaint);
-      g.setStroke(_gridStroke);
+     if (_gridPaint != null) {
+     g.setPaint(_gridPaint);
+     g.setStroke(_gridStroke);
 
-      Line2D.Double vline = new Line2D.Double();
-      Line2D.Double hline = new Line2D.Double();
+     Line2D.Double vline = new Line2D.Double();
+     Line2D.Double hline = new Line2D.Double();
 
-      double x = originX;
-      double y;
+     double x = originX;
+     double y;
 
-      vline.y1 = originY;
-      vline.y2 = paneY;
+     vline.y1 = originY;
+     vline.y2 = paneY;
 
-      hline.x1 = originY;
-      hline.x2 = paneX;
+     hline.x1 = originY;
+     hline.x2 = paneX;
 
-      while (x < paneX) {
-      vline.x1 = x;
-      vline.x2 = x;
-      g.draw(vline);
+     while (x < paneX) {
+     vline.x1 = x;
+     vline.x2 = x;
+     g.draw(vline);
 
-      y = originY;
-      while (y < paneY) {
-      hline.y1 = y;
-      hline.y2 = y;
-      g.draw(hline);
-      y += sizeY;
-      }
-      x += sizeX;
-      }
-      }
-      }
-    */
+     y = originY;
+     while (y < paneY) {
+     hline.y1 = y;
+     hline.y2 = y;
+     g.draw(hline);
+     y += sizeY;
+     }
+     x += sizeX;
+     }
+     }
+     }
+     */
     public void paint(Graphics2D g) {
         Point2D paneSize = getCanvasPane().getSize();
 

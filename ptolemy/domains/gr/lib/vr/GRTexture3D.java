@@ -1,30 +1,30 @@
 /* An abstract base class for shaded GR Actors.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.lib.vr;
 
 import java.net.URL;
@@ -64,54 +64,53 @@ import vendors.vr.Texture2DVolume;
 import vendors.vr.VolFile;
 import vendors.vr.Volume;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture3D
 
 /** An abstract base class for GR Actors that have material and color
-    properties.
-    <p>
-    The parameter <i>diffuseColor</i> determines
-    the color of the object in the usual sense that it determines the
-    color of light reflected off the object. The default is gray.
-    The parameter <i>emissiveColor</i> specifies a color that is
-    emitted by the object, and hence does not depend on illumination.
-    It is black by default, which means that the object does not emit
-    any light and will be invisible without illumination. The
-    parameter <i>specularColor</i> determines the color of highlights
-    that are reflected by the object if the object is set to be shiny.
-    <p>
-    The parameter <i>shininess</i> determines the shininess of the object.
-    It ranges from 1.0 (the default) to 128.0, meaning not shiny to very
-    shiny. A shiny object reflects the <i>specularColor</i>, unless
-    it is black, in which case shininess has no effect.
-    <p>
-    The <i>texture</i> parameter can be used to specify an image file.
-    The specified image will be mapped onto the shape.
-    <p>
-    The parameter <i>transparency</i> determines the transparency of the
-    object. It ranges from 0.0 (the default) to 1.0, meaning opaque to
-    fully transparent (which makes the object invisible).
-    <p>
-    The <i>wireFrame</i> parameter can be used to view only the lines
-    that outline the polygons of the object and not the surface.
-    The <i>flat</i> parameter can be set to make rendered polygons
-    flat rather than rounded at the corners.
-    <p>
-    The <i>allowRuntimeChanges</i> parameter, if true, specifies
-    that changes to parameter values during the execution of the model
-    take effect immediately. By default, this parameter is false,
-    which means that changes to parameter values take effect only
-    on the next run of the model. A value of false yields better
-    performance, but less interactivity.  Changing this to true will
-    only have an effect on the next run of the model.
+ properties.
+ <p>
+ The parameter <i>diffuseColor</i> determines
+ the color of the object in the usual sense that it determines the
+ color of light reflected off the object. The default is gray.
+ The parameter <i>emissiveColor</i> specifies a color that is
+ emitted by the object, and hence does not depend on illumination.
+ It is black by default, which means that the object does not emit
+ any light and will be invisible without illumination. The
+ parameter <i>specularColor</i> determines the color of highlights
+ that are reflected by the object if the object is set to be shiny.
+ <p>
+ The parameter <i>shininess</i> determines the shininess of the object.
+ It ranges from 1.0 (the default) to 128.0, meaning not shiny to very
+ shiny. A shiny object reflects the <i>specularColor</i>, unless
+ it is black, in which case shininess has no effect.
+ <p>
+ The <i>texture</i> parameter can be used to specify an image file.
+ The specified image will be mapped onto the shape.
+ <p>
+ The parameter <i>transparency</i> determines the transparency of the
+ object. It ranges from 0.0 (the default) to 1.0, meaning opaque to
+ fully transparent (which makes the object invisible).
+ <p>
+ The <i>wireFrame</i> parameter can be used to view only the lines
+ that outline the polygons of the object and not the surface.
+ The <i>flat</i> parameter can be set to make rendered polygons
+ flat rather than rounded at the corners.
+ <p>
+ The <i>allowRuntimeChanges</i> parameter, if true, specifies
+ that changes to parameter values during the execution of the model
+ take effect immediately. By default, this parameter is false,
+ which means that changes to parameter values take effect only
+ on the next run of the model. A value of false yields better
+ performance, but less interactivity.  Changing this to true will
+ only have an effect on the next run of the model.
 
-    @author
-    @version
-    @since
-    @Pt.ProposedRating Red
-    @Pt.AcceptedRating Red
-*/
+ @author
+ @version
+ @since
+ @Pt.ProposedRating Red
+ @Pt.AcceptedRating Red
+ */
 public class GRTexture3D extends GRActor3D {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -271,9 +270,11 @@ public class GRTexture3D extends GRActor3D {
                             .getToken()).doubleValue();
 
                     if (transparent > 0.0) {
-                        _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NICEST);
+                        _transparencyAttributes
+                                .setTransparencyMode(TransparencyAttributes.NICEST);
                     } else {
-                        _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NONE);
+                        _transparencyAttributes
+                                .setTransparencyMode(TransparencyAttributes.NONE);
                     }
 
                     _transparencyAttributes.setTransparency(transparent);
@@ -281,7 +282,7 @@ public class GRTexture3D extends GRActor3D {
 
                 if ((attribute == flat) && (_coloringAttributes != null)) {
                     boolean flatValue = ((BooleanToken) flat.getToken())
-                        .booleanValue();
+                            .booleanValue();
                     int shadeModel = ColoringAttributes.SHADE_GOURAUD;
 
                     if (flatValue) {
@@ -302,27 +303,27 @@ public class GRTexture3D extends GRActor3D {
                         Color3f color = new Color3f(specularColor.asColor());
                         _material.setSpecularColor(color);
                     } else if (attribute == shininess) {
-                        float shine = (float) ((DoubleToken) shininess.getToken())
-                            .doubleValue();
+                        float shine = (float) ((DoubleToken) shininess
+                                .getToken()).doubleValue();
                         _material.setShininess(shine);
                     }
                 }
 
                 /*    if ((attribute == texture) && (_appearance != null)) {
-                      URL textureURL = texture.asURL();
+                 URL textureURL = texture.asURL();
 
-                      if ((_viewScreen != null) && (textureURL != null)) {
-                      TextureLoader loader;
-                      loader = new TextureLoader(textureURL,
-                      _viewScreen.getCanvas());
+                 if ((_viewScreen != null) && (textureURL != null)) {
+                 TextureLoader loader;
+                 loader = new TextureLoader(textureURL,
+                 _viewScreen.getCanvas());
 
-                      Texture loadedTexture = loader.getTexture();
+                 Texture loadedTexture = loader.getTexture();
 
-                      if (loadedTexture != null) {
-                      _appearance.setTexture(loadedTexture);
-                      }
-                      }
-                      } */
+                 if (loadedTexture != null) {
+                 _appearance.setTexture(loadedTexture);
+                 }
+                 }
+                 } */
                 if ((attribute == wireFrame) && (_polygonAttributes != null)) {
                     int mode = PolygonAttributes.POLYGON_FILL;
 
@@ -370,24 +371,24 @@ public class GRTexture3D extends GRActor3D {
         }
 
         /* //Read in .vol file
-        //FIXME: Make it so that port is updated when neccessary
-        _fileURL = volFile.asURL();
+         //FIXME: Make it so that port is updated when neccessary
+         _fileURL = volFile.asURL();
 
-        //FIXME: Is this neccessary, bad coding?
-        try {
-        _imageVol = new VolFile(_fileURL);
-        } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-        }
+         //FIXME: Is this neccessary, bad coding?
+         try {
+         _imageVol = new VolFile(_fileURL);
+         } catch (IOException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+         }
 
-        //Create texture space  ???
-        _volume = new Volume(_context);
+         //Create texture space  ???
+         _volume = new Volume(_context);
 
-        //Load Texture
+         //Load Texture
 
-        //Get access to the Shape3D to send to Viewcreen3D
-        _renderedVolume = new Axis2DRenderer(_view, _context, _volume); */
+         //Get access to the Shape3D to send to Viewcreen3D
+         _renderedVolume = new Axis2DRenderer(_view, _context, _volume); */
         if (_isSceneGraphInitialized) {
             return false;
         } else {
@@ -437,7 +438,7 @@ public class GRTexture3D extends GRActor3D {
         _appearance = new Appearance();
 
         boolean allowChanges = ((BooleanToken) allowRuntimeChanges.getToken())
-            .booleanValue();
+                .booleanValue();
 
         Color3f color = new Color3f(emissiveColor.asColor());
         _material.setEmissiveColor(color);
@@ -448,7 +449,8 @@ public class GRTexture3D extends GRActor3D {
         color = new Color3f(specularColor.asColor());
         _material.setSpecularColor(color);
 
-        float shine = (float) ((DoubleToken) shininess.getToken()).doubleValue();
+        float shine = (float) ((DoubleToken) shininess.getToken())
+                .doubleValue();
 
         if (shine > 1.0) {
             _material.setShininess(shine);
@@ -458,7 +460,7 @@ public class GRTexture3D extends GRActor3D {
 
         // Deal with transparent attributes.
         float transparent = (float) ((DoubleToken) transparency.getToken())
-            .doubleValue();
+                .doubleValue();
 
         if ((transparent > 0.0) || allowChanges) {
             int mode = TransparencyAttributes.NICEST;
@@ -505,12 +507,16 @@ public class GRTexture3D extends GRActor3D {
         // If runtime changes are allowed, we need to set the
         // appropriate capabilities.
         if (allowChanges) {
-            _transparencyAttributes.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
-            _transparencyAttributes.setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
+            _transparencyAttributes
+                    .setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+            _transparencyAttributes
+                    .setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
             _material.setCapability(Material.ALLOW_COMPONENT_WRITE);
-            _coloringAttributes.setCapability(ColoringAttributes.ALLOW_SHADE_MODEL_WRITE);
+            _coloringAttributes
+                    .setCapability(ColoringAttributes.ALLOW_SHADE_MODEL_WRITE);
             _appearance.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
-            _polygonAttributes.setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
+            _polygonAttributes
+                    .setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
         }
 
         _changesAllowedNow = allowChanges;
@@ -548,31 +554,31 @@ public class GRTexture3D extends GRActor3D {
         super._setViewScreen(actor);
 
         /* URL textureURL = texture.asURL();
-           TextureAttributes attributes = null;
+         TextureAttributes attributes = null;
 
-           if (textureURL != null) {
-           TextureLoader loader;
-           loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
+         if (textureURL != null) {
+         TextureLoader loader;
+         loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
 
-           Texture loadedTexture = loader.getTexture();
+         Texture loadedTexture = loader.getTexture();
 
-           if (loadedTexture != null) {
-           attributes = new TextureAttributes();
-           attributes.setTextureMode(TextureAttributes.MODULATE);
-           _appearance.setTextureAttributes(attributes);
+         if (loadedTexture != null) {
+         attributes = new TextureAttributes();
+         attributes.setTextureMode(TextureAttributes.MODULATE);
+         _appearance.setTextureAttributes(attributes);
 
-           _appearance.setTexture(loadedTexture);
-           }
-           }
+         _appearance.setTexture(loadedTexture);
+         }
+         }
 
-           // If runtime changes are allowed, then we need to set texture
-           // attributes even if not needed now.
-           if ((attributes == null)
-           && ((BooleanToken) allowRuntimeChanges.getToken()).booleanValue()) {
-           attributes = new TextureAttributes();
-           attributes.setTextureMode(TextureAttributes.MODULATE);
-           _appearance.setTextureAttributes(attributes);
-           } */
+         // If runtime changes are allowed, then we need to set texture
+         // attributes even if not needed now.
+         if ((attributes == null)
+         && ((BooleanToken) allowRuntimeChanges.getToken()).booleanValue()) {
+         attributes = new TextureAttributes();
+         attributes.setTextureMode(TextureAttributes.MODULATE);
+         _appearance.setTextureAttributes(attributes);
+         } */
     }
 
     ///////////////////////////////////////////////////////////////////

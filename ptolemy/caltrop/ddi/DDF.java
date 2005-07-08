@@ -1,32 +1,32 @@
 /*
-  @Copyright (c) 2003-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
 
-*/
+ */
 package ptolemy.caltrop.ddi;
 
 import java.util.Iterator;
@@ -42,27 +42,26 @@ import caltrop.interpreter.ast.AttributeKeys;
 import caltrop.interpreter.ast.Expression;
 import caltrop.interpreter.environment.Environment;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DDF
 
 /**
-   A plugin for the DDF domain. In DDF, a CAL actor is valid if:
-   <p>
-   <ol>
-   <li> The guards of each action do not depend on the inputs.
-   <li> The rates of each action do not depend on the inputs.
-   </ol>
+ A plugin for the DDF domain. In DDF, a CAL actor is valid if:
+ <p>
+ <ol>
+ <li> The guards of each action do not depend on the inputs.
+ <li> The rates of each action do not depend on the inputs.
+ </ol>
 
-   This plugin also adds attributes containing rate information to the
-   ports of the actor.
+ This plugin also adds attributes containing rate information to the
+ ports of the actor.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class DDF extends DataflowWithRates {
     /**
      * Create an new DDF DDI.
@@ -88,20 +87,19 @@ public class DDF extends DataflowWithRates {
 
         try {
             int action = _selectAction();
-            if(action == -1) {
+            if (action == -1) {
                 _currentSignature = _zeroRateSignature;
             } else {
-                _currentSignature =
-                    _computeActionRates(_actions[action]);
+                _currentSignature = _computeActionRates(_actions[action]);
             }
-            _annotatePortsWithRates(_ptActor.inputPortList(),
-                    _currentSignature.getInputRates(), "tokenConsumptionRate");
+            _annotatePortsWithRates(_ptActor.inputPortList(), _currentSignature
+                    .getInputRates(), "tokenConsumptionRate");
             _annotatePortsWithRates(_ptActor.outputPortList(),
                     _currentSignature.getOutputRates(), "tokenProductionRate");
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Error during action selection in actor '" + _actor.getName()
-                    + "'");
+                    "Error during action selection in actor '"
+                            + _actor.getName() + "'");
         }
     }
 
@@ -141,22 +139,21 @@ public class DDF extends DataflowWithRates {
         super.postfire();
         try {
             int action = _selectAction();
-            
-            if(action == -1) {
+
+            if (action == -1) {
                 _currentSignature = _zeroRateSignature;
             } else {
-                _currentSignature =
-                    _computeActionRates(_actions[action]);
+                _currentSignature = _computeActionRates(_actions[action]);
             }
-            _annotatePortsWithRates(_ptActor.inputPortList(),
-                    _currentSignature.getInputRates(), "tokenConsumptionRate");
+            _annotatePortsWithRates(_ptActor.inputPortList(), _currentSignature
+                    .getInputRates(), "tokenConsumptionRate");
             _annotatePortsWithRates(_ptActor.outputPortList(),
                     _currentSignature.getOutputRates(), "tokenProductionRate");
             return true;
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Error during action selection in actor '" + _actor.getName()
-                    + "'");
+                    "Error during action selection in actor '"
+                            + _actor.getName() + "'");
         }
     }
 
@@ -170,38 +167,39 @@ public class DDF extends DataflowWithRates {
      */
     public boolean prefire() throws IllegalActionException {
         _lastFiredAction = null;
-        if(_currentSignature == null) {
- try {
-            int action = _selectAction();
-            if(action == -1) {
-                _currentSignature = null;
-            } else {
-                _currentSignature =
-                    _computeActionRates(_actions[action]);
-                
-                _annotatePortsWithRates(_ptActor.inputPortList(),
-                        _currentSignature.getInputRates(), "tokenConsumptionRate");
-                _annotatePortsWithRates(_ptActor.outputPortList(),
-                        _currentSignature.getOutputRates(), "tokenProductionRate");
+        if (_currentSignature == null) {
+            try {
+                int action = _selectAction();
+                if (action == -1) {
+                    _currentSignature = null;
+                } else {
+                    _currentSignature = _computeActionRates(_actions[action]);
+
+                    _annotatePortsWithRates(_ptActor.inputPortList(),
+                            _currentSignature.getInputRates(),
+                            "tokenConsumptionRate");
+                    _annotatePortsWithRates(_ptActor.outputPortList(),
+                            _currentSignature.getOutputRates(),
+                            "tokenProductionRate");
+                }
+            } catch (Exception ex) {
+                throw new IllegalActionException(null, ex,
+                        "Error during action selection in actor '"
+                                + _actor.getName() + "'");
             }
-        } catch (Exception ex) {
-            throw new IllegalActionException(null, ex,
-                    "Error during action selection in actor '" + _actor.getName()
-                    + "'");
-        }
             return false;
         }
-        for (Iterator iterator = _ptActor.inputPortList().iterator(); 
-             iterator.hasNext();) {
+        for (Iterator iterator = _ptActor.inputPortList().iterator(); iterator
+                .hasNext();) {
             IOPort port = (IOPort) iterator.next();
-            Integer integerRate = (Integer) 
-                _currentSignature.getInputRates().get(port.getName());
-            if(integerRate != null && 
-                    !port.hasToken(0, integerRate.intValue())) {
+            Integer integerRate = (Integer) _currentSignature.getInputRates()
+                    .get(port.getName());
+            if (integerRate != null
+                    && !port.hasToken(0, integerRate.intValue())) {
                 return false;
             }
         }
-              
+
         return true;
     }
 
@@ -224,14 +222,16 @@ public class DDF extends DataflowWithRates {
     protected boolean _hasInputDependentGuard() {
         for (int i = 0; i < _actions.length; i++) {
             Action action = _actions[i];
-            
+
             Expression[] guards = action.getGuards();
             for (int j = 0; j < guards.length; j++) {
-                List freeVars = (List) guards[j].getAttribute(AttributeKeys.KEYFREEVAR);
-                
-                for (Iterator iterator = freeVars.iterator(); iterator.hasNext();) {
+                List freeVars = (List) guards[j]
+                        .getAttribute(AttributeKeys.KEYFREEVAR);
+
+                for (Iterator iterator = freeVars.iterator(); iterator
+                        .hasNext();) {
                     String name = (String) iterator.next();
-                    
+
                     if (_isBoundByPortVar(name, action)) {
                         return true;
                     }
@@ -246,6 +246,6 @@ public class DDF extends DataflowWithRates {
     ////                        private members                    ////
 
     private ActionRateSignature _currentSignature;
-    private static ActionRateSignature _zeroRateSignature = 
-        new ActionRateSignature();
+
+    private static ActionRateSignature _zeroRateSignature = new ActionRateSignature();
 }

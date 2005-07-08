@@ -1,29 +1,29 @@
 /* A transformer that writes a makefile that that can be used to run a model
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.kernel;
 
 import java.io.BufferedReader;
@@ -43,19 +43,18 @@ import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.SceneTransformer;
 
-
 /**
-   A transformer that writes a makefile that can be used to run a model
-   that has been code generated.
-   <p>For a model called Foo, we generate Foo/makefile.
-   in the directory named by the outDir parameter.
+ A transformer that writes a makefile that can be used to run a model
+ that has been code generated.
+ <p>For a model called Foo, we generate Foo/makefile.
+ in the directory named by the outDir parameter.
 
-   @author Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class MakefileWriter extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
@@ -78,7 +77,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
     public String getDefaultOptions() {
         return "templateDirectory:" + TEMPLATE_DIRECTORY_DEFAULT
-            + " overwrite:true";
+                + " overwrite:true";
     }
 
     public String getDeclaredOptions() {
@@ -146,8 +145,8 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
                             while (start2 != -1) {
                                 buffer2.append("/..");
-                                start2 = outputDirectory.indexOf('/', start2
-                                        + 1);
+                                start2 = outputDirectory.indexOf('/',
+                                        start2 + 1);
                             }
 
                             codeBase = buffer2.toString();
@@ -253,27 +252,28 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
                 // We don't call parseFile() here because it calls gets
                 // the user.dir property.
-                toplevel = (CompositeActor) parser.parse(null,
-                        new File(_generatorAttributeFileName).toURL());
+                toplevel = (CompositeActor) parser.parse(null, new File(
+                        _generatorAttributeFileName).toURL());
             } finally {
                 // Restore the saved momlfilters
                 parser.setMoMLFilters(oldFilters);
             }
 
-            generatorAttribute = (GeneratorAttribute) toplevel.getAttribute(Copernicus.GENERATOR_NAME,
-                    GeneratorAttribute.class);
+            generatorAttribute = (GeneratorAttribute) toplevel.getAttribute(
+                    Copernicus.GENERATOR_NAME, GeneratorAttribute.class);
 
             if (generatorAttribute == null) {
                 System.out.println("MakefileWriter: Warning, parsing '"
                         + _generatorAttributeFileName
                         + "' did not contain an attribute " + " called '"
-                        + Copernicus.GENERATOR_NAME + "'" + toplevel.exportMoML());
+                        + Copernicus.GENERATOR_NAME + "'"
+                        + toplevel.exportMoML());
                 generatorAttribute = new GeneratorAttribute(toplevel,
                         Copernicus.GENERATOR_NAME);
             }
         } catch (Exception ex) {
-            throw new InternalErrorException(_model, ex,
-                    "Problem getting the" + " _generator attribute");
+            throw new InternalErrorException(_model, ex, "Problem getting the"
+                    + " _generator attribute");
         }
 
         _outputDirectory = PhaseOptions.getString(options, "outDir");
@@ -291,7 +291,8 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
         _targetPackage = PhaseOptions.getString(options, "targetPackage");
 
-        _templateDirectory = PhaseOptions.getString(options, "templateDirectory");
+        _templateDirectory = PhaseOptions.getString(options,
+                "templateDirectory");
 
         if (!_templateDirectory.endsWith("/")) {
             _templateDirectory = _templateDirectory + "/";
@@ -308,7 +309,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(_model, ex,
                     "Problem generating substitution map from "
-                    + generatorAttribute);
+                            + generatorAttribute);
         }
 
         if (overwrite || !(new File(_outputDirectory + "makefile")).isFile()) {
@@ -334,7 +335,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
         // Obfuscation script is optional
         BufferedReader inputFile = null;
         String obfuscateTemplate = _templateDirectory
-            + "obfuscateScript.jos.in";
+                + "obfuscateScript.jos.in";
 
         try {
             inputFile = Copernicus.openAsFileOrURL(obfuscateTemplate);
@@ -376,7 +377,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
         String parentCanonical = parentFile.getCanonicalPath();
         String possibleSubdirectoryCanonical = possibleSubdirectoryFile
-            .getCanonicalPath();
+                .getCanonicalPath();
 
         // System.out.println("\n\n_isSubdirectory: \n\t"
         //                   + parentCanonical + "\n\t"

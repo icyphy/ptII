@@ -1,29 +1,29 @@
 /* Class for representing a solution.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_3
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_3
+ COPYRIGHTENDKEY
+ */
 package ptolemy.data.unit;
 
 import java.text.DecimalFormat;
@@ -40,79 +40,78 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Solution
 
 /** An instance of this class contains a "solution" of Unit constraints.
-    In essence, the solution represents the constraints between a set of Unit
-    variables, and a set of Units.
-    The table below illustrates this.
-    <TABLE BORDER = "1">
-    <TR>
-    <TH></TH>
-    <TH>V1</TH>
-    <TH>V2</TH>
-    <TH>...</TH>
-    <TH>Vl</TH>
-    <TH></TH>
-    </TR>
+ In essence, the solution represents the constraints between a set of Unit
+ variables, and a set of Units.
+ The table below illustrates this.
+ <TABLE BORDER = "1">
+ <TR>
+ <TH></TH>
+ <TH>V1</TH>
+ <TH>V2</TH>
+ <TH>...</TH>
+ <TH>Vl</TH>
+ <TH></TH>
+ </TR>
 
-    <TR>
-    <TD>C1</TD>
-    <TD>P11</TD>
-    <TD>P12</TD>
-    <TD>...</TD>
-    <TD>P1l</TD>
-    <TD>U1</TD>
-    </TR>
+ <TR>
+ <TD>C1</TD>
+ <TD>P11</TD>
+ <TD>P12</TD>
+ <TD>...</TD>
+ <TD>P1l</TD>
+ <TD>U1</TD>
+ </TR>
 
-    <TR>
-    <TD>C2</TD>
-    <TD>P21</TD>
-    <TD>P22</TD>
-    <TD>...</TD>
-    <TD>P2l</TD>
-    <TD>U2</TD>
-    </TR>
+ <TR>
+ <TD>C2</TD>
+ <TD>P21</TD>
+ <TD>P22</TD>
+ <TD>...</TD>
+ <TD>P2l</TD>
+ <TD>U2</TD>
+ </TR>
 
-    <TR>
-    <TD>:</TD>
-    <TD>:</TD>
-    <TD>:</TD>
-    <TD>...</TD>
-    <TD>:</TD>
-    <TD>:</TD>
-    </TR>
+ <TR>
+ <TD>:</TD>
+ <TD>:</TD>
+ <TD>:</TD>
+ <TD>...</TD>
+ <TD>:</TD>
+ <TD>:</TD>
+ </TR>
 
-    <TR>
-    <TD>Ck</TD>
-    <TD>Pk1</TD>
-    <TD>Pk2</TD>
-    <TD>...</TD>
-    <TD>Pkl</TD>
-    <TD>Uk</TD>
-    </TR>
-    </TABLE>
-    Here, the columns V1, V2, ..., Vl represent l variables.
-    The columns C1, C2, ..., Ck represent k constraints.
-    The U1, U2, ..., Uk on the right represent Units.
-    The meaning of the ith row is that V1^Pi1 + V2^pi2 + .. +Vk^pik = Uk.
-    <p>
-    Generally, this class is used by creating an instance that is derived from
-    the Units specifications of a model.
-    Then, a method is invoked that results in other instances being created that
-    are transformations of the original instance. These transformed instances
-    are equivalent, in a sense, to the original instance. The difference is that
-    they provide a different perspective than that of the original instance. In
-    particular, some of the transformed instances can be used to highlight
-    inconsistencies not apparent in the original instance.
-    @author Rowland R Johnson
-    @version $Id$
-    @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (rowland)
-    @Pt.AcceptedRating Red (rowland)
-*/
+ <TR>
+ <TD>Ck</TD>
+ <TD>Pk1</TD>
+ <TD>Pk2</TD>
+ <TD>...</TD>
+ <TD>Pkl</TD>
+ <TD>Uk</TD>
+ </TR>
+ </TABLE>
+ Here, the columns V1, V2, ..., Vl represent l variables.
+ The columns C1, C2, ..., Ck represent k constraints.
+ The U1, U2, ..., Uk on the right represent Units.
+ The meaning of the ith row is that V1^Pi1 + V2^pi2 + .. +Vk^pik = Uk.
+ <p>
+ Generally, this class is used by creating an instance that is derived from
+ the Units specifications of a model.
+ Then, a method is invoked that results in other instances being created that
+ are transformations of the original instance. These transformed instances
+ are equivalent, in a sense, to the original instance. The difference is that
+ they provide a different perspective than that of the original instance. In
+ particular, some of the transformed instances can be used to highlight
+ inconsistencies not apparent in the original instance.
+ @author Rowland R Johnson
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (rowland)
+ @Pt.AcceptedRating Red (rowland)
+ */
 public class Solution {
     /** Construct an empty solution.
      * This constructor is used only by the copy() method, and, can therefore,
@@ -149,9 +148,9 @@ public class Solution {
             _done[i] = false;
         }
 
-        for (int constraintNum = 0; constraintNum < _numConstraints;
-             constraintNum++) {
-            UnitEquation constraint = (UnitEquation) (constraints.elementAt(constraintNum));
+        for (int constraintNum = 0; constraintNum < _numConstraints; constraintNum++) {
+            UnitEquation constraint = (UnitEquation) (constraints
+                    .elementAt(constraintNum));
             UnitEquation canonicalEquation = constraint.canonicalize();
             Vector rightUTerms = canonicalEquation.getRhs().getUTerms();
 
@@ -230,8 +229,7 @@ public class Solution {
                     + "value = \"" + explanation + "\"/>" + "</port>");
         }
 
-        for (int constraintNum = 0; constraintNum < _numConstraints;
-             constraintNum++) {
+        for (int constraintNum = 0; constraintNum < _numConstraints; constraintNum++) {
             NamedObj source = _source[constraintNum];
             String expression = _constraintExplanations[constraintNum];
 
@@ -375,10 +373,13 @@ public class Solution {
 
         for (int i = 0; i < _numConstraints; i++) {
             NamedObj source = _source[i];
-            retv.append("" + _vNumFormat.format(i) + "         "
-                    + source.toString() + " "
-                    + ((UnitEquation) _constraints.elementAt(i)).descriptiveForm()
-                    + "\n");
+            retv.append(""
+                    + _vNumFormat.format(i)
+                    + "         "
+                    + source.toString()
+                    + " "
+                    + ((UnitEquation) _constraints.elementAt(i))
+                            .descriptiveForm() + "\n");
         }
 
         retv.append("\\Header\n");
@@ -476,7 +477,8 @@ public class Solution {
 
             retv.append("" + _vectorA[i] + " " + _vectorA[i].descriptiveForm());
             retv.append(" "
-                    + ((UnitEquation) _constraints.elementAt(i)).descriptiveForm());
+                    + ((UnitEquation) _constraints.elementAt(i))
+                            .descriptiveForm());
             retv.append("\n");
         }
 
@@ -596,8 +598,7 @@ public class Solution {
                             .getContainer());
                 }
 
-                inconsistencyDesc += (" " + sourceName + " "
-                        + _constraintExplanations[i]);
+                inconsistencyDesc += (" " + sourceName + " " + _constraintExplanations[i]);
                 break;
             }
 
@@ -615,8 +616,7 @@ public class Solution {
         for (int j = 0; j < _numVariables; j++) {
             if (_varState[j] == _INCONSISTENT) {
                 stateInconsistent = true;
-                inconsistencyDesc += (" " + _variables[j] + "="
-                        + _varBindings[j]);
+                inconsistencyDesc += (" " + _variables[j] + "=" + _varBindings[j]);
             }
         }
 
@@ -835,22 +835,23 @@ public class Solution {
     private String _momlAnnotate(NamedObj entity, String color,
             String expression) {
         String colorProperty = null;
-        StringAttribute currentColor = (StringAttribute) (entity.getAttribute(
-                                                                  "_color"));
+        StringAttribute currentColor = (StringAttribute) (entity
+                .getAttribute("_color"));
 
         if ((currentColor != null) && (color == null)) {
             colorProperty = "<deleteProperty _name=_color/>";
         } else if (color != null) {
             colorProperty = "<property name=\"_color\" "
-                + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                + "value = \"" + color + "\"/>";
+                    + "class = \"ptolemy.kernel.util.StringAttribute\" "
+                    + "value = \"" + color + "\"/>";
         }
 
         return "<" + entity.getElementName() + " name=\"" + entity.getName()
-            + "\" class=\"" + entity.getClassName() + "\">" + colorProperty
-            + "<property name=\"_explanation\" "
-            + "class = \"ptolemy.kernel.util.StringAttribute\" " + "value = \""
-            + expression + "\"/></" + entity.getElementName() + ">";
+                + "\" class=\"" + entity.getClassName() + "\">" + colorProperty
+                + "<property name=\"_explanation\" "
+                + "class = \"ptolemy.kernel.util.StringAttribute\" "
+                + "value = \"" + expression + "\"/></"
+                + entity.getElementName() + ">";
     }
 
     private Vector _partialSolveRecursively(int level, Index g) {
@@ -874,7 +875,8 @@ public class Solution {
                 System.out.print("\nRemaining BranchPoints");
 
                 for (int a = 0; a < _branchPoints.size(); a++) {
-                    System.out.print(" " + (Index) (_branchPoints.elementAt(a)));
+                    System.out
+                            .print(" " + (Index) (_branchPoints.elementAt(a)));
                 }
 
                 System.out.print("\n");
@@ -905,29 +907,53 @@ public class Solution {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private static final int _UNKNOWN = -1;
+
     private static final int _CONSISTENT = 0;
+
     private static final int _INCONSISTENT = 1;
+
     private static final int _NONUNIQUE = 2;
+
     double[][] _arrayP;
+
     Index _branchPoint = null;
+
     Vector _branchPoints = null;
+
     Vector _constraints = null;
+
     String[] _constraintExplanations = null;
+
     int[] _constraintState = null;
+
     boolean _debug = false;
+
     boolean[] _done;
+
     TypedCompositeActor _model;
+
     int _numConstraints = 0;
+
     int _numVariables = 0;
+
     private static final DecimalFormat _pFormat = new DecimalFormat(" 0;-0");
+
     private int _solveState = _UNKNOWN;
+
     NamedObj[] _source;
+
     String _stateDescription = "No description";
+
     Solution _upper = null;
+
     String[] _varBindings = null;
+
     String[] _variables;
+
     int[] _varState = null;
+
     Unit[] _vectorA;
+
     private static final DecimalFormat _vNumFormat = new DecimalFormat("00");
 
     ///////////////////////////////////////////////////////////////////
@@ -939,6 +965,7 @@ public class Solution {
      */
     private class Index {
         int k;
+
         int l;
 
         private Index(int k1, int l1) {

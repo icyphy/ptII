@@ -1,30 +1,30 @@
 /* The site for ports.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.toolbox;
 
 import java.awt.geom.Rectangle2D;
@@ -35,17 +35,16 @@ import ptolemy.kernel.util.StringAttribute;
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
 
-
 /**
-   A site that locates itself on the bounds of a figure's shape, designed
-   for placing ports.
+ A site that locates itself on the bounds of a figure's shape, designed
+ for placing ports.
 
-   @version $Id$
-   @author Edward A. Lee
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @version $Id$
+ @author Edward A. Lee
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class PortSite extends AbstractSite {
     /** Create a new site on the given figure with the given ID
      *  port type, and port number.
@@ -60,8 +59,8 @@ public class PortSite extends AbstractSite {
         _number = number;
         _count = count;
 
-        StringAttribute cardinalAttribute = (StringAttribute) port.getAttribute(
-                "_cardinal");
+        StringAttribute cardinalAttribute = (StringAttribute) port
+                .getAttribute("_cardinal");
 
         if (cardinalAttribute != null) {
             _cardinal = cardinalAttribute.getExpression();
@@ -112,7 +111,7 @@ public class PortSite extends AbstractSite {
                 // neither an input and an output, or is
                 // both an input and output.
                 double offset = (bounds.getWidth() / 2.0)
-                    - ((_count / 2) * _snap);
+                        - ((_count / 2) * _snap);
 
                 // If there are an even number of ports, skip the middle
                 // position to get symmetry.
@@ -134,7 +133,7 @@ public class PortSite extends AbstractSite {
             } else {
                 // Port is on the top or bottom side.
                 double offset = (bounds.getWidth() / 2.0)
-                    - ((_count / 2) * _snap);
+                        - ((_count / 2) * _snap);
 
                 // If there are an even number of ports, skip the middle
                 // position to get symmetry.
@@ -163,7 +162,7 @@ public class PortSite extends AbstractSite {
                             .isOutput())) {
                 // Port is an input or output only.
                 double offset = (bounds.getHeight() / 2.0)
-                    - ((_count / 2) * _snap);
+                        - ((_count / 2) * _snap);
 
                 // If there are an even number of ports, skip the middle
                 // position to get symmetry.
@@ -190,7 +189,7 @@ public class PortSite extends AbstractSite {
             } else {
                 // Port is on the left or right.
                 double offset = (bounds.getHeight() / 2.0)
-                    - ((_count / 2) * _snap);
+                        - ((_count / 2) * _snap);
 
                 // If there are an even number of ports, skip the middle
                 // position to get symmetry.

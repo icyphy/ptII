@@ -1,30 +1,30 @@
 /* A director that uses a static schedule.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.sched;
 
 import java.util.Iterator;
@@ -40,34 +40,33 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// StaticSchedulingDirector
 
 /**
-   A director that uses static scheduling to govern the execution of the
-   CompositeActor it belongs to. <p>
+ A director that uses static scheduling to govern the execution of the
+ CompositeActor it belongs to. <p>
 
-   This class does not directly implement a scheduling algorithm, but
-   defers to its contained scheduler.  The contained scheduler creates an
-   instance of the Schedule class which determines the number of times
-   each actor should be fired and their firing order.  This allows new
-   scheduling algorithms to be easily created for existing domains.<p>
+ This class does not directly implement a scheduling algorithm, but
+ defers to its contained scheduler.  The contained scheduler creates an
+ instance of the Schedule class which determines the number of times
+ each actor should be fired and their firing order.  This allows new
+ scheduling algorithms to be easily created for existing domains.<p>
 
-   This class is generally useful for statically scheduled domains where
-   a schedule can be constructed once and used to repeatedly execute the
-   model.  The Scheduler class caches the schedule until the model changes
-   so that the schedule does not have to be recomputed.
+ This class is generally useful for statically scheduled domains where
+ a schedule can be constructed once and used to repeatedly execute the
+ model.  The Scheduler class caches the schedule until the model changes
+ so that the schedule does not have to be recomputed.
 
-   @author Jie Liu, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-   @see ptolemy.actor.Director
-   @see Scheduler
-   @see Schedule
-*/
+ @author Jie Liu, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ @see ptolemy.actor.Director
+ @see Scheduler
+ @see Schedule
+ */
 public class StaticSchedulingDirector extends Director {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -163,7 +162,7 @@ public class StaticSchedulingDirector extends Director {
 
             if (_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_ITERATE,
-                               iterationCount));
+                        iterationCount));
             }
 
             int returnValue = actor.iterate(iterationCount);
@@ -177,7 +176,7 @@ public class StaticSchedulingDirector extends Director {
 
             if (_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE,
-                               iterationCount));
+                        iterationCount));
             }
         }
     }

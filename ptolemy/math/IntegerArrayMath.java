@@ -1,49 +1,48 @@
 /* A library for mathematical operations on arrays of ints.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.math;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// IntegerArrayMath
 
 /**
-   This class provides a library for mathematical operations on int arrays.
-   Unless explicitly noted otherwise, all array arguments are assumed to be
-   non-null. If a null array is passed to a method, a NullPointerException
-   will be thrown in the method or called methods.
+ This class provides a library for mathematical operations on int arrays.
+ Unless explicitly noted otherwise, all array arguments are assumed to be
+ non-null. If a null array is passed to a method, a NullPointerException
+ will be thrown in the method or called methods.
 
-   @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (ctsay)
-   @Pt.AcceptedRating Yellow (ctsay)
-*/
+ @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (ctsay)
+ @Pt.AcceptedRating Yellow (ctsay)
+ */
 public class IntegerArrayMath {
     // Protected constructor prevents construction of this class.
     protected IntegerArrayMath() {
@@ -118,7 +117,8 @@ public class IntegerArrayMath {
      *  @return A new array of ints.
      */
     public static final int[] append(final int[] array1, final int idx1,
-            final int length1, final int[] array2, final int idx2, final int length2) {
+            final int length1, final int[] array2, final int idx2,
+            final int length2) {
         int[] returnValue = new int[length1 + length2];
 
         if (length1 > 0) {
@@ -229,7 +229,8 @@ public class IntegerArrayMath {
      *  IllegalArgumentException.
      */
     public static final int[] bitwiseAnd(final int[] array1, final int[] array2) {
-        int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseAnd");
+        int length = _commonLength(array1, array2,
+                "IntegerArrayMath.bitwiseAnd");
         int[] returnValue = new int[length];
 
         for (int i = 0; i < length; i++) {
@@ -308,7 +309,8 @@ public class IntegerArrayMath {
      *  IllegalArgumentException.
      */
     public static final int[] bitwiseXor(final int[] array1, final int[] array2) {
-        int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseXor");
+        int length = _commonLength(array1, array2,
+                "IntegerArrayMath.bitwiseXor");
         int[] returnValue = new int[length];
 
         for (int i = 0; i < length; i++) {
@@ -361,7 +363,8 @@ public class IntegerArrayMath {
      *  IllegalArgumentException.
      */
     public static final int dotProduct(final int[] array1, final int[] array2) {
-        int length = _commonLength(array1, array2, "IntegerArrayMath.dotProduct");
+        int length = _commonLength(array1, array2,
+                "IntegerArrayMath.dotProduct");
 
         int sum = 0;
 
@@ -513,8 +516,8 @@ public class IntegerArrayMath {
 
         System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array, halfLengthFloor, returnValue,
-                newLength - halfLengthCeil, halfLengthCeil);
+        System.arraycopy(array, halfLengthFloor, returnValue, newLength
+                - halfLengthCeil, halfLengthCeil);
 
         return returnValue;
     }
@@ -554,7 +557,8 @@ public class IntegerArrayMath {
 
         if ((startIdx >= array.length) && (copySize > 0)) {
             throw new IllegalArgumentException("resize():  the start index '"
-                    + startIdx + "' is greather than equal to the array length '"
+                    + startIdx
+                    + "' is greather than equal to the array length '"
                     + array.length + "' and the number of items to be copied '"
                     + copySize + "' is greater than zero.");
         }

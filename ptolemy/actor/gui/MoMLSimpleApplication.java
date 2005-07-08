@@ -1,31 +1,31 @@
 /* An application that executes non-graphical
-   models specified on the command line.
+ models specified on the command line.
 
-   Copyright (c) 2001-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -39,30 +39,29 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MoMLSimpleApplication
 
 /** A simple application that reads in a .xml file as a command
-    line argument and runs it.
+ line argument and runs it.
 
-    <p>MoMLApplication sets the look and feel, which starts up Swing,
-    so we can't use MoMLApplication for non-graphical simulations.
+ <p>MoMLApplication sets the look and feel, which starts up Swing,
+ so we can't use MoMLApplication for non-graphical simulations.
 
-    <p>We implement the ChangeListener interface so that this
-    class will get exceptions thrown by failed change requests.
+ <p>We implement the ChangeListener interface so that this
+ class will get exceptions thrown by failed change requests.
 
-    For example to use this class, try:
-    <pre>
-    java -classpath $PTII ptolemy.actor.gui.MoMLSimpleApplication ../../../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
-    </pre>
+ For example to use this class, try:
+ <pre>
+ java -classpath $PTII ptolemy.actor.gui.MoMLSimpleApplication ../../../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
+ </pre>
 
-    @author Christopher Hylands
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (eal)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class MoMLSimpleApplication implements ChangeListener, ExecutionListener {
     /** A Nullary constructor is necessary so that we can extends this
      *  base class with a subclass
@@ -99,8 +98,8 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
-        CompositeActor toplevel = (CompositeActor) parser.parse(null,
-                new File(xmlFileName).toURL());
+        CompositeActor toplevel = (CompositeActor) parser.parse(null, new File(
+                xmlFileName).toURL());
 
         _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
         toplevel.setManager(_manager);

@@ -1,30 +1,30 @@
 /* An icon that displays a specified java.awt.Image.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.icon;
 
 import java.awt.Image;
@@ -42,19 +42,18 @@ import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.ImageFigure;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ImageIcon
 
 /**
-   An icon that displays a specified java.awt.Image.
+ An icon that displays a specified java.awt.Image.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
@@ -169,22 +168,22 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
             // Trigger this by issuing a change request.
 
             /* FIXME
-               requestChange(new ChangeRequest(this, "Dummy change request") {
-               protected void _execute() {}
-               });
-            */
+             requestChange(new ChangeRequest(this, "Dummy change request") {
+             protected void _execute() {}
+             });
+             */
             /* NOTE: Probably not needed. */
             Runnable doRepaint = new Runnable() {
-                    public void run() {
-                        // If this was called for any other reason, repaint.
-                        Iterator figures = _liveFigureIterator();
+                public void run() {
+                    // If this was called for any other reason, repaint.
+                    Iterator figures = _liveFigureIterator();
 
-                        while (figures.hasNext()) {
-                            Object figure = figures.next();
-                            ((ImageFigure) figure).repaint();
-                        }
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((ImageFigure) figure).repaint();
                     }
-                };
+                }
+            };
 
             SwingUtilities.invokeLater(doRepaint);
 
@@ -221,56 +220,58 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
 
         // This needs to be in the swing thread.
         Runnable doScale = new Runnable() {
-                public void run() {
-                    if (_image == null) {
-                        // No image has been set yet, so return.
-                        return;
-                    }
+            public void run() {
+                if (_image == null) {
+                    // No image has been set yet, so return.
+                    return;
+                }
 
-                    // NOTE: Oddly, the following two calls below may not
-                    // return the correct sizes unless the image is
-                    // already loaded.  Although it is not documented, it
-                    // appears that if the the returned size is not
-                    // positive, then it is not correct, and imageUpdate()
-                    // will be called later. So in that case, we do
-                    // nothing.
-                    int width = _image.getWidth(ImageIcon.this);
-                    int height = _image.getHeight(ImageIcon.this);
+                // NOTE: Oddly, the following two calls below may not
+                // return the correct sizes unless the image is
+                // already loaded.  Although it is not documented, it
+                // appears that if the the returned size is not
+                // positive, then it is not correct, and imageUpdate()
+                // will be called later. So in that case, we do
+                // nothing.
+                int width = _image.getWidth(ImageIcon.this);
+                int height = _image.getHeight(ImageIcon.this);
 
-                    if ((width < 0) || (height < 0)) {
-                        // Try the locally saved values from imageUpdate.
-                        width = _width;
-                        height = _height;
-                    }
+                if ((width < 0) || (height < 0)) {
+                    // Try the locally saved values from imageUpdate.
+                    width = _width;
+                    height = _height;
+                }
 
-                    if ((width > 0) && (height > 0)) {
-                        int newWidth = (int) Math.round((width * _scalePercentage) / 100.0);
-                        int newHeight = (int) Math.round((height * _scalePercentage) / 100.0);
+                if ((width > 0) && (height > 0)) {
+                    int newWidth = (int) Math
+                            .round((width * _scalePercentage) / 100.0);
+                    int newHeight = (int) Math
+                            .round((height * _scalePercentage) / 100.0);
 
-                        _scaledImage = _image.getScaledInstance(newWidth,
-                                newHeight, Image.SCALE_SMOOTH);
+                    _scaledImage = _image.getScaledInstance(newWidth,
+                            newHeight, Image.SCALE_SMOOTH);
 
-                        // To get notified of updates:
-                        _scaledImage.getWidth(ImageIcon.this);
-                        _scaledImage.getHeight(ImageIcon.this);
+                    // To get notified of updates:
+                    _scaledImage.getWidth(ImageIcon.this);
+                    _scaledImage.getHeight(ImageIcon.this);
 
-                        Iterator figures = _liveFigureIterator();
+                    Iterator figures = _liveFigureIterator();
 
-                        while (figures.hasNext()) {
-                            Object figure = figures.next();
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
 
-                            // Repaint twice since the scale has changed
-                            // and we need to cover the damage area prior
-                            // the change as well as after.
-                            // ((ImageFigure)figure).repaint();
-                            ((ImageFigure) figure).setCentered(false);
-                            ((ImageFigure) figure).setImage(_scaledImage);
+                        // Repaint twice since the scale has changed
+                        // and we need to cover the damage area prior
+                        // the change as well as after.
+                        // ((ImageFigure)figure).repaint();
+                        ((ImageFigure) figure).setCentered(false);
+                        ((ImageFigure) figure).setImage(_scaledImage);
 
-                            // ((ImageFigure)figure).repaint();
-                        }
+                        // ((ImageFigure)figure).repaint();
                     }
                 }
-            };
+            }
+        };
 
         SwingUtilities.invokeLater(doScale);
     }
@@ -298,22 +299,22 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         // is also called in the Swing thread, there is no possibility of
         // conflict here in adding the figure to the list of live figures.
         Runnable doSet = new Runnable() {
-                public void run() {
-                    Iterator figures = _liveFigureIterator();
+            public void run() {
+                Iterator figures = _liveFigureIterator();
 
-                    while (figures.hasNext()) {
-                        Object figure = figures.next();
-                        ((ImageFigure) figure).setImage(_scaledImage);
+                while (figures.hasNext()) {
+                    Object figure = figures.next();
+                    ((ImageFigure) figure).setImage(_scaledImage);
 
-                        if (_scalePercentage != 100.0) {
-                            // FIXME: The following is a no-op. Forcing it to execute,
-                            // however, causes the image to be continually repainted,
-                            // and causes a stack overflow on opening the library.
-                            scaleImage(_scalePercentage);
-                        }
+                    if (_scalePercentage != 100.0) {
+                        // FIXME: The following is a no-op. Forcing it to execute,
+                        // however, causes the image to be continually repainted,
+                        // and causes a stack overflow on opening the library.
+                        scaleImage(_scalePercentage);
                     }
                 }
-            };
+            }
+        };
 
         SwingUtilities.invokeLater(doSet);
     }

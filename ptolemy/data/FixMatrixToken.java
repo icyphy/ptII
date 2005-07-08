@@ -1,31 +1,31 @@
 /* A token that contains a 2-D FixPoint matrix.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-This class does not handle operations well, because the result may have
-unusual precision.
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ This class does not handle operations well, because the result may have
+ unusual precision.
+ */
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -41,20 +41,19 @@ import ptolemy.math.FixPoint;
 import ptolemy.math.Precision;
 import ptolemy.math.Quantizer;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FixMatrixToken
 
 /**
-   A token that contains a 2-D FixToken matrix.
+ A token that contains a 2-D FixToken matrix.
 
-   @author Bart Kienhuis, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Yellow (kienhuis)
-   @see ptolemy.math.FixPoint
-*/
+ @author Bart Kienhuis, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Yellow (kienhuis)
+ @see ptolemy.math.FixPoint
+ */
 public class FixMatrixToken extends MatrixToken {
     /** Construct a FixMatrixToken with a one by one matrix. The only
      *  element present in the matrix has value 0.0 and a precision of
@@ -140,7 +139,7 @@ public class FixMatrixToken extends MatrixToken {
 
             if (token instanceof ScalarToken) {
                 _value[i / columns][i % columns] = ((ScalarToken) token)
-                    .fixValue();
+                        .fixValue();
             } else {
                 throw new IllegalActionException("FixMatrixToken: Element " + i
                         + " in the array with value " + token
@@ -174,8 +173,8 @@ public class FixMatrixToken extends MatrixToken {
         int compare = TypeLattice.compare(BaseType.FIX_MATRIX, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "[fix]"));
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(token, "[fix]"));
         }
 
         // try Fix
@@ -189,7 +188,7 @@ public class FixMatrixToken extends MatrixToken {
         // The argument is below FixMatrixToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "[fix]"));
+                "[fix]"));
     }
 
     /** Return true if the argument is an instance of FixMatrixToken
@@ -464,11 +463,12 @@ public class FixMatrixToken extends MatrixToken {
 
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < convertedArgument._columnCount; j++) {
-                FixPoint sum = _value[i][0].multiply(convertedArgument._value[0][j]);
+                FixPoint sum = _value[i][0]
+                        .multiply(convertedArgument._value[0][j]);
 
                 for (int k = 1; k < _columnCount; k++) {
-                    sum = sum.add(_value[i][k].multiply(
-                                          convertedArgument._value[k][j]));
+                    sum = sum.add(_value[i][k]
+                            .multiply(convertedArgument._value[k][j]));
                 }
 
                 result[i][j] = sum;
@@ -595,7 +595,7 @@ public class FixMatrixToken extends MatrixToken {
                 if ((_precision != null) && !_precision.equals(precision)) {
                     throw new IllegalActionException(
                             "Attempt to create a FixMatrixToken"
-                            + " with unequal precisions.");
+                                    + " with unequal precisions.");
                 }
 
                 _precision = precision;

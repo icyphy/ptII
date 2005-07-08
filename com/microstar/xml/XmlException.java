@@ -23,50 +23,49 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
-@ProposedRating Red (cxh)
-@AcceptedRating Red (cxh)
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ @ProposedRating Red (cxh)
+ @AcceptedRating Red (cxh)
+ */
 package com.microstar.xml;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-
 /**
-Convenience exception class for reporting XML parsing errors.
-<p>This is an exception class that you can use to encapsulate all
-of the information from &AElig;lfred's <code>error</code> callback.
-This is not necessary for routine use of &AElig;lfred, but it
-is used by the optional <code>HandlerBase</code> class.
+ Convenience exception class for reporting XML parsing errors.
+ <p>This is an exception class that you can use to encapsulate all
+ of the information from &AElig;lfred's <code>error</code> callback.
+ This is not necessary for routine use of &AElig;lfred, but it
+ is used by the optional <code>HandlerBase</code> class.
 
-<p>Note that the core &AElig;lfred classes do <em>not</em>
-use this exception.
+ <p>Note that the core &AElig;lfred classes do <em>not</em>
+ use this exception.
 
-<p>JDK1.4 supports exception chaining.  We are implementing a version of
-exception chaining here ourselves so that we can use JVMs earlier
-than JDK1.4.
+ <p>JDK1.4 supports exception chaining.  We are implementing a version of
+ exception chaining here ourselves so that we can use JVMs earlier
+ than JDK1.4.
 
-<p>In this implementation, we have the following differences from
-the JDK1.4 exception chaining implementation:
+ <p>In this implementation, we have the following differences from
+ the JDK1.4 exception chaining implementation:
 
-<menu>
-<li>In this implementation, the detail message includes the detail
-message from the cause argument.
-<li>In this implementation, we implement a protected _setCause()
-method, but not the public initCause() method that JDK1.4 has
-</menu>
+ <menu>
+ <li>In this implementation, the detail message includes the detail
+ message from the cause argument.
+ <li>In this implementation, we implement a protected _setCause()
+ method, but not the public initCause() method that JDK1.4 has
+ </menu>
 
-@author Copyright (c) 1998 by Microstar Software Ltd.
-@author written by David Megginson &lt;dmeggins@microstar.com&gt;
-@author Exception Chaining added by Christopher Hylands
-@version 1.1
-@since Ptolemy II 0.2
-@see XmlHandler#error
-@see HandlerBase
-*/
+ @author Copyright (c) 1998 by Microstar Software Ltd.
+ @author written by David Megginson &lt;dmeggins@microstar.com&gt;
+ @author Exception Chaining added by Christopher Hylands
+ @version 1.1
+ @since Ptolemy II 0.2
+ @see XmlHandler#error
+ @see HandlerBase
+ */
 public class XmlException extends Exception {
     /** Construct a new XML parsing exception.
      * @param message The error message from the parser.
@@ -87,14 +86,14 @@ public class XmlException extends Exception {
     }
 
     /** Construct a new XML parsing exception.
-    * @param message The error message from the parser.
-    * @param systemId The URI of the entity containing the error.
-    * @param line The line number where the error appeared.
-    * @param column The column number where the error appeared.
-    * @param cause The cause of this exception, if any
-    */
+     * @param message The error message from the parser.
+     * @param systemId The URI of the entity containing the error.
+     * @param line The line number where the error appeared.
+     * @param column The column number where the error appeared.
+     * @param cause The cause of this exception, if any
+     */
     public XmlException(String message, String systemId, int line, int column,
-        Throwable cause) {
+            Throwable cause) {
         _message = message;
         _systemId = systemId;
         _line = line;
@@ -103,43 +102,46 @@ public class XmlException extends Exception {
     }
 
     /** Get the cause of this exception.
-    *  @return The cause that was passed in as an argument to the
-    *  constructor, or null of no cause was specified.
-    */
+     *  @return The cause that was passed in as an argument to the
+     *  constructor, or null of no cause was specified.
+     */
     public Throwable getCause() {
         return _cause;
     }
 
     /**
-    * Get the error message from the parser.
-    * @return A string describing the error.
-    */
+     * Get the error message from the parser.
+     * @return A string describing the error.
+     */
     public String getMessage() {
         // Modified by Steve Neuendorffer because the message didn't tell what
         // the location was.
-        return _message + " in " + _systemId
-        + ((_line == -1) ? "unknown line " : (" at line " + _line))
-        + ((_column == -1) ? " and unknown column " : (" and column " + _column))
-        + ((_cause == null) ? "" : ("\nCaused by:\n " + _cause));
+        return _message
+                + " in "
+                + _systemId
+                + ((_line == -1) ? "unknown line " : (" at line " + _line))
+                + ((_column == -1) ? " and unknown column "
+                        : (" and column " + _column))
+                + ((_cause == null) ? "" : ("\nCaused by:\n " + _cause));
     }
 
     /** Get the URI of the entity containing the error.
-    * @return The URI as a string.
-    */
+     * @return The URI as a string.
+     */
     public String getSystemId() {
         return _systemId;
     }
 
     /** Get the line number containing the error.
-    * @return The line number as an integer.
-    */
+     * @return The line number as an integer.
+     */
     public int getLine() {
         return _line;
     }
 
     /** Get the column number containing the error.
-    * @return The column number as an integer.
-    */
+     * @return The column number as an integer.
+     */
     public int getColumn() {
         return _column;
     }
@@ -209,7 +211,10 @@ public class XmlException extends Exception {
 
     // The cause of this exception.
     private Throwable _cause;
+
     private String _systemId;
+
     private int _line = -1;
+
     private int _column = -1;
 }

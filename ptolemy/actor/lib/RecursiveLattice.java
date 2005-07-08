@@ -1,30 +1,30 @@
 /* A recursive (all pole) lattice filter.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -36,78 +36,77 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// RecursiveLattice
 
 /**
-   A recursive (all-pole) filter with a lattice structure.
-   The coefficients of such a filter are called "reflection coefficients."
-   Recursive lattice filters are typically used as synthesis filters for
-   random processes because it is easy to ensure that they are stable.
-   A recursive lattice filter is stable if its reflection
-   coefficients are all less than unity in magnitude.  To get the
-   reflection coefficients for a linear predictor for a particular
-   random process, you can use the LevinsonDurbin actor.
-   The inputs and outputs are of type double.
-   <p>
-   The default reflection coefficients correspond to the following
-   transfer function:
-   <pre>
-   1
-   H(z) =  --------------------------------------
-   1 - 2z<sup>-1</sup> + 1.91z<sup>-2</sup> - 0.91z<sup>-3</sup> + 0.205z<sup>-4</sup>
-   </pre>
-   <p>
-   The structure of the filter is as follows:
-   <pre>
-   y[0]          y[1]                 y[n-1]           y[n]
-   X(n) ---(+)-&gt;--o--&gt;----(+)-&gt;--o---&gt;-- ... -&gt;--(+)-&gt;--o---&gt;---o---&gt;  Y(n)
-   \   /          \   /                  \   /        |
-   +Kn /        +Kn-1 /                  +K1 /         |
-   X              X                      X          |
-   -Kn \        -Kn-1 \                  -K1 \         V
-   /   \          /   \                  /   \        |
-   (+)-&lt;--o--[z]--(+)-&lt;--o--[z]- ... -&lt;--(+)-&lt;--o--[z]--/
-   w[1]           w[2]                   w[n]
+ A recursive (all-pole) filter with a lattice structure.
+ The coefficients of such a filter are called "reflection coefficients."
+ Recursive lattice filters are typically used as synthesis filters for
+ random processes because it is easy to ensure that they are stable.
+ A recursive lattice filter is stable if its reflection
+ coefficients are all less than unity in magnitude.  To get the
+ reflection coefficients for a linear predictor for a particular
+ random process, you can use the LevinsonDurbin actor.
+ The inputs and outputs are of type double.
+ <p>
+ The default reflection coefficients correspond to the following
+ transfer function:
+ <pre>
+ 1
+ H(z) =  --------------------------------------
+ 1 - 2z<sup>-1</sup> + 1.91z<sup>-2</sup> - 0.91z<sup>-3</sup> + 0.205z<sup>-4</sup>
+ </pre>
+ <p>
+ The structure of the filter is as follows:
+ <pre>
+ y[0]          y[1]                 y[n-1]           y[n]
+ X(n) ---(+)-&gt;--o--&gt;----(+)-&gt;--o---&gt;-- ... -&gt;--(+)-&gt;--o---&gt;---o---&gt;  Y(n)
+ \   /          \   /                  \   /        |
+ +Kn /        +Kn-1 /                  +K1 /         |
+ X              X                      X          |
+ -Kn \        -Kn-1 \                  -K1 \         V
+ /   \          /   \                  /   \        |
+ (+)-&lt;--o--[z]--(+)-&lt;--o--[z]- ... -&lt;--(+)-&lt;--o--[z]--/
+ w[1]           w[2]                   w[n]
 
-   </pre>
-   where the [z] are unit delays and the (+) are adders
-   and "y" and "w" are variables representing the state of the filter.
-   <p>
-   The reflection (or partial-correlation (PARCOR))
-   coefficients should be specified
-   right to left, K1 to Kn as above.
-   Using exactly the same coefficients in the
-   Lattice actor will result in precisely the inverse transfer function.
-   <p>
-   Note that the definition of reflection coefficients is not quite universal
-   in the literature. The reflection coefficients in reference [2]
-   are the negative of the ones used by this actor, which
-   correspond to the definition in most other texts,
-   and to the definition of partial-correlation (PARCOR)
-   coefficients in the statistics literature.
-   The signs of the coefficients used in this actor are appropriate for values
-   given by the LevinsonDurbin actor.
-   <p>
-   <b>References</b>
-   <p>[1]
-   J. Makhoul, "Linear Prediction: A Tutorial Review",
-   <i>Proc. IEEE</i>, Vol. 63, pp. 561-580, Apr. 1975.
-   <p>[2]
-   S. M. Kay, <i>Modern Spectral Estimation: Theory & Application</i>,
-   Prentice-Hall, Englewood Cliffs, NJ, 1988.
+ </pre>
+ where the [z] are unit delays and the (+) are adders
+ and "y" and "w" are variables representing the state of the filter.
+ <p>
+ The reflection (or partial-correlation (PARCOR))
+ coefficients should be specified
+ right to left, K1 to Kn as above.
+ Using exactly the same coefficients in the
+ Lattice actor will result in precisely the inverse transfer function.
+ <p>
+ Note that the definition of reflection coefficients is not quite universal
+ in the literature. The reflection coefficients in reference [2]
+ are the negative of the ones used by this actor, which
+ correspond to the definition in most other texts,
+ and to the definition of partial-correlation (PARCOR)
+ coefficients in the statistics literature.
+ The signs of the coefficients used in this actor are appropriate for values
+ given by the LevinsonDurbin actor.
+ <p>
+ <b>References</b>
+ <p>[1]
+ J. Makhoul, "Linear Prediction: A Tutorial Review",
+ <i>Proc. IEEE</i>, Vol. 63, pp. 561-580, Apr. 1975.
+ <p>[2]
+ S. M. Kay, <i>Modern Spectral Estimation: Theory & Application</i>,
+ Prentice-Hall, Englewood Cliffs, NJ, 1988.
 
-   @see IIR
-   @see LevinsonDurbin
-   @see Lattice
-   @see ptolemy.domains.sdf.lib.VariableRecursiveLattice
-   @author Edward A. Lee, Christopher Hylands, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @see IIR
+ @see LevinsonDurbin
+ @see Lattice
+ @see ptolemy.domains.sdf.lib.VariableRecursiveLattice
+ @author Edward A. Lee, Christopher Hylands, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class RecursiveLattice extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -127,8 +126,8 @@ public class RecursiveLattice extends Transformer {
         reflectionCoefficients = new Parameter(this, "reflectionCoefficients");
 
         // Note that setExpression() will call attributeChanged().
-        reflectionCoefficients.setExpression(
-                "{0.804534, -0.820577, 0.521934, -0.205}");
+        reflectionCoefficients
+                .setExpression("{0.804534, -0.820577, 0.521934, -0.205}");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -166,7 +165,7 @@ public class RecursiveLattice extends Transformer {
 
             for (int i = 0; i < valueLength; i++) {
                 _reflectionCoefs[i] = ((DoubleToken) value.getElement(i))
-                    .doubleValue();
+                        .doubleValue();
             }
         } else {
             super.attributeChanged(attribute);
@@ -191,7 +190,7 @@ public class RecursiveLattice extends Transformer {
             for (int i = 1; i <= M; i++) {
                 k = _reflectionCoefs[M - i];
                 _forwardCache[i] = (k * _backwardCache[i])
-                    + _forwardCache[i - 1];
+                        + _forwardCache[i - 1];
             }
 
             output.broadcast(new DoubleToken(_forwardCache[M]));
@@ -200,7 +199,7 @@ public class RecursiveLattice extends Transformer {
             for (int i = 1; i < M; i++) {
                 k = -_reflectionCoefs[M - 1 - i];
                 _backwardCache[i] = _backwardCache[i + 1]
-                    + (k * _forwardCache[i + 1]);
+                        + (k * _forwardCache[i + 1]);
             }
 
             _backwardCache[M] = _forwardCache[M];
@@ -222,7 +221,9 @@ public class RecursiveLattice extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        System.arraycopy(_backwardCache, 0, _backward, 0, _backwardCache.length);
+        System
+                .arraycopy(_backwardCache, 0, _backward, 0,
+                        _backwardCache.length);
         System.arraycopy(_forwardCache, 0, _forward, 0, _forwardCache.length);
         return super.postfire();
     }
@@ -232,7 +233,9 @@ public class RecursiveLattice extends Transformer {
      */
     public boolean prefire() throws IllegalActionException {
         // Get a copy of the current filter state that we can modify.
-        System.arraycopy(_backward, 0, _backwardCache, 0, _backwardCache.length);
+        System
+                .arraycopy(_backward, 0, _backwardCache, 0,
+                        _backwardCache.length);
         System.arraycopy(_forward, 0, _forwardCache, 0, _forwardCache.length);
         return super.prefire();
     }

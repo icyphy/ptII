@@ -1,29 +1,29 @@
 /* This actor decompresses a vector quantized signal.
-   @Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the
-   above copyright notice and the following two paragraphs appear in all
-   copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION 2
-   COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.sdf.lib.vq;
 
 import java.io.FileNotFoundException;
@@ -43,22 +43,21 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.IntegerMatrixMath;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// VQDecode
 
 /**
-   This actor decompresses a vector quantized signal.   This operation is simply
-   a table lookup into the codebook.
+ This actor decompresses a vector quantized signal.   This operation is simply
+ a table lookup into the codebook.
 
-   @see HTVQEncode
+ @see HTVQEncode
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Red
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Red
+ */
 
 // FIXME This should be generalized to a Table-lookup actor.
 public class VQDecode extends Transformer {
@@ -79,9 +78,8 @@ public class VQDecode extends Transformer {
 
         output.setTypeEquals(BaseType.INT_MATRIX);
 
-        codeBook = new Parameter(this, "codeBook",
-                new StringToken("/ptolemy/domains/sdf"
-                        + "/lib/vq/data/usc_hvq_s5.dat"));
+        codeBook = new Parameter(this, "codeBook", new StringToken(
+                "/ptolemy/domains/sdf" + "/lib/vq/data/usc_hvq_s5.dat"));
         codeBook.setTypeEquals(BaseType.STRING);
 
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
@@ -93,11 +91,13 @@ public class VQDecode extends Transformer {
         blockHeight = new Parameter(this, "blockHeight", new IntToken("2"));
         blockHeight.setTypeEquals(BaseType.INT);
 
-        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input,
+                "tokenConsumptionRate");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setExpression("blockCount");
 
-        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output,
+                "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setExpression("blockCount");
     }
@@ -150,8 +150,8 @@ public class VQDecode extends Transformer {
         _codewords = input.get(0, _blockCount);
 
         for (j = 0; j < _blockCount; j++) {
-            _blocks[j] = new IntMatrixToken(_codebook[stage][((IntToken) _codewords[j])
-                                                    .intValue()]);
+            _blocks[j] = new IntMatrixToken(
+                    _codebook[stage][((IntToken) _codewords[j]).intValue()]);
         }
 
         output.send(0, _blocks, _blocks.length);
@@ -225,8 +225,8 @@ public class VQDecode extends Transformer {
                         intTemp[x] = temp[x] & 255;
                     }
 
-                    _codebook[i][j] = IntegerMatrixMath.toMatrixFromArray(intTemp,
-                            rows, columns);
+                    _codebook[i][j] = IntegerMatrixMath.toMatrixFromArray(
+                            intTemp, rows, columns);
                 }
 
                 // skip over the lookup tables.
@@ -292,9 +292,14 @@ public class VQDecode extends Transformer {
     }
 
     private int[][][][] _codebook = new int[6][256][][];
+
     private ptolemy.data.Token[] _codewords;
+
     private IntMatrixToken[] _blocks;
+
     private int _blockCount;
+
     private int _blockWidth;
+
     private int _blockHeight;
 }

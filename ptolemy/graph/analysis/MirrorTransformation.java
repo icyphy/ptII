@@ -1,27 +1,27 @@
 /* A mirror transformations on graphs.
 
-Copyright (c) 2003-2005 The University of Maryland. All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The University of Maryland. All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
 
-*/
+ */
 package ptolemy.graph.analysis;
 
 import ptolemy.graph.Graph;
@@ -30,34 +30,33 @@ import ptolemy.graph.analysis.analyzer.MirrorTransformer;
 import ptolemy.graph.analysis.analyzer.Transformer;
 import ptolemy.graph.analysis.strategy.MirrorTransformerStrategy;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MirrorTransformation
 
 /**
-   A mirror transformations on graphs. Creates a mirror of this graph
-   in the form of the type of the associated graph.  The mirror and
-   original graphs are isomorphic(of same topology). However, node and
-   edge objects of the mirror are newly created and therefore not
-   "equal" to those of the original graph.
-   <p>
-   To relate nodes and edges from the original and the mirrored graph
-   the {@link #transformedVersionOf} and {@link #originalVersionOf} methods are
-   provided.
-   Labels can also be used to relate mirror and original
-   nodes(edges).
-   <p>
-   In the {@link #cloneWeight} method, users can also specify whether
-   to clone node and edge weights. For non cloneable weights a {@link
-   java.lang.CloneNotSupportedException} will be thrown by the virtual
-   machine.
+ A mirror transformations on graphs. Creates a mirror of this graph
+ in the form of the type of the associated graph.  The mirror and
+ original graphs are isomorphic(of same topology). However, node and
+ edge objects of the mirror are newly created and therefore not
+ "equal" to those of the original graph.
+ <p>
+ To relate nodes and edges from the original and the mirrored graph
+ the {@link #transformedVersionOf} and {@link #originalVersionOf} methods are
+ provided.
+ Labels can also be used to relate mirror and original
+ nodes(edges).
+ <p>
+ In the {@link #cloneWeight} method, users can also specify whether
+ to clone node and edge weights. For non cloneable weights a {@link
+ java.lang.CloneNotSupportedException} will be thrown by the virtual
+ machine.
 
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (shahrooz)
-   @Pt.AcceptedRating Red (ssb)
-   @author Shahrooz Shahparnia
-   @version $Id$
-*/
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (shahrooz)
+ @Pt.AcceptedRating Red (ssb)
+ @author Shahrooz Shahparnia
+ @version $Id$
+ */
 public class MirrorTransformation extends Analysis {
     /** Construct a transformation for a given graph with a default analyzer.
      *  The default constructor runs in O(N+E) in which N is the number of
@@ -149,7 +148,7 @@ public class MirrorTransformation extends Analysis {
      */
     public String toString() {
         return "Mirror transformation using the following analyzer:\n"
-            + analyzer().toString();
+                + analyzer().toString();
     }
 
     /** Return the transformed version of a given object in the original graph.

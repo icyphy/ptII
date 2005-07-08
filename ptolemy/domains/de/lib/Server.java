@@ -1,30 +1,30 @@
 /* A server with a fixed or variable service time.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.de.lib;
 
 import java.util.LinkedList;
@@ -39,60 +39,59 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Server
 
 /**
-   This actor models a server with a fixed or variable service time.
-   A server is either busy (serving a customer) or not busy at any given time.
-   If an input arrives when the server is not busy, then the input token is
-   produced on the output with a delay given by the <i>newServiceTime</i>
-   parameter. 
-   If an input arrives while the server is busy, then that input is
-   queued until the server becomes free, at which point it is produced
-   on the output with a delay given by the <i>newServiceTime</i> parameter.
-   If several inputs arrive while the server is busy, then they are
-   served on a first-come, first-served basis.
-   <p>
-   If the <i>newServiceTime</i> parameter is not set, it defaults to 1.0.
-   The value of the parameter can be changed at any time during execution
-   of the model by providing an input event at the <i>newServiceTime</i>
-   input port.  The token read at that port replaces the value of the
-   <i>newServiceTime</i> parameter.
-   <p>
-   This actor declares that there is delay between the <i>input</i>
-   and the <i>output</i> ports and between <i>newServiceTime</i>
-   and <i>output</i>.  The director uses this information for
-   assigning priorities to firings.
-   <p>
-   Like the TimedDelay actor, the output is produced with a future
-   time stamp (larger than current time by <i>newServiceTime</i>).  If
-   the service time is always zero and several events arrive at the
-   same time, the server will output the first available input and
-   queue the other inputs to process in the future microsteps. A
-   service time of zero can be usefully viewed as an infinitesimal
-   service time. See {@link TimedDelay}.
-   <p>
-   The key difference between the NonInterruptibleTimer actor and the Server
-   actor is how the service time is specified.  In the NonInterruptibleTimer
-   actor, whenever an input arrives, the value of the input token specifies
-   the service time. This actor will guarantee that much service time to be
-   given to that input.  In the Server actor, service times for inputs ar
-   decided by the ServiceTime parameter, which may change any time during an
-   execution. In particular, how much service time an input actually gets is
-   decided the value of the ServiceTime parameter at the time the server is
-   ready to serve that input.
+ This actor models a server with a fixed or variable service time.
+ A server is either busy (serving a customer) or not busy at any given time.
+ If an input arrives when the server is not busy, then the input token is
+ produced on the output with a delay given by the <i>newServiceTime</i>
+ parameter. 
+ If an input arrives while the server is busy, then that input is
+ queued until the server becomes free, at which point it is produced
+ on the output with a delay given by the <i>newServiceTime</i> parameter.
+ If several inputs arrive while the server is busy, then they are
+ served on a first-come, first-served basis.
+ <p>
+ If the <i>newServiceTime</i> parameter is not set, it defaults to 1.0.
+ The value of the parameter can be changed at any time during execution
+ of the model by providing an input event at the <i>newServiceTime</i>
+ input port.  The token read at that port replaces the value of the
+ <i>newServiceTime</i> parameter.
+ <p>
+ This actor declares that there is delay between the <i>input</i>
+ and the <i>output</i> ports and between <i>newServiceTime</i>
+ and <i>output</i>.  The director uses this information for
+ assigning priorities to firings.
+ <p>
+ Like the TimedDelay actor, the output is produced with a future
+ time stamp (larger than current time by <i>newServiceTime</i>).  If
+ the service time is always zero and several events arrive at the
+ same time, the server will output the first available input and
+ queue the other inputs to process in the future microsteps. A
+ service time of zero can be usefully viewed as an infinitesimal
+ service time. See {@link TimedDelay}.
+ <p>
+ The key difference between the NonInterruptibleTimer actor and the Server
+ actor is how the service time is specified.  In the NonInterruptibleTimer
+ actor, whenever an input arrives, the value of the input token specifies
+ the service time. This actor will guarantee that much service time to be
+ given to that input.  In the Server actor, service times for inputs ar
+ decided by the ServiceTime parameter, which may change any time during an
+ execution. In particular, how much service time an input actually gets is
+ decided the value of the ServiceTime parameter at the time the server is
+ ready to serve that input.
 
-   @see ptolemy.domains.de.lib.TimedDelay
-   @see ptolemy.domains.de.lib.VariableDelay
+ @see ptolemy.domains.de.lib.TimedDelay
+ @see ptolemy.domains.de.lib.VariableDelay
 
-   @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Yellow (hyzheng)
-*/
+ @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Yellow (hyzheng)
+ @Pt.AcceptedRating Yellow (hyzheng)
+ */
 public class Server extends VariableDelay {
     /** Construct an actor with the specified container and name.
      *  @param container The composite entity to contain this one.
@@ -142,7 +141,7 @@ public class Server extends VariableDelay {
         if (_delayedOutputTokens.size() > 0) {
             if (currentTime.compareTo(_nextTimeFree) == 0) {
                 TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens
-                    .get();
+                        .get();
                 Time eventTime = earliestEvent.timeStamp;
 
                 if (!eventTime.equals(currentTime)) {
@@ -194,7 +193,7 @@ public class Server extends VariableDelay {
                 && _delayedOutputTokens.isEmpty()) {
             _nextTimeFree = currentTime.add(_delay);
             _delayedOutputTokens.put(new TimedEvent(_nextTimeFree,
-                                             _delayedInputTokensList.removeFirst()));
+                    _delayedInputTokensList.removeFirst()));
             getDirector().fireAt(this, _nextTimeFree);
         }
 
@@ -206,8 +205,8 @@ public class Server extends VariableDelay {
 
     /** Override the method of the super class to initialize parameters.
      */
-    protected void _init()
-            throws NameDuplicationException, IllegalActionException {
+    protected void _init() throws NameDuplicationException,
+            IllegalActionException {
         super._init();
         delay.getPort().setName("newServiceTime");
 

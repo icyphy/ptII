@@ -1,29 +1,29 @@
 /* Director for the Synchronous Reactive model of computation.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sr.kernel;
 
 import java.lang.reflect.Constructor;
@@ -61,76 +61,75 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SRDirector
 
 /**
-   A director for the Synchronous Reactive (SR) model of computation.  In SR,
-   both computation and communication are considered to happen instantaneously.
-   In models with cycles, this introduces interesting issues involving
-   instantaneous feedback.
-   <p>
-   SR is an untimed domain, so it has no notion of the passage of time.
-   Computation happens in a series of instants.  An instant is one iteration of
-   the director.  If SR is embedded inside a timed domain, the SR director will
-   inherit the current time of the outside director.
-   <p>
-   In SR, each iteration begins with the values on all channels being unknown.
-   To ensure that an iteration converges to final values in finite time, it is
-   required that values change only from unknown to known, and never the other
-   way around.  Once a value is set (or cleared), it must not
-   change again in the course of the iteration.
-   <p>
-   An actor is considered <i>ready to fire</i> if sufficient known inputs are
-   available.  In a sense, an actor firing is triggered by these known inputs,
-   because the director only fires an actor if it is ready to fire.  Unless an
-   actor contains an attribute called "_nonStrictMarker", it is assumed to be a
-   strict actor, meaning that it requires all of its inputs to be known before
-   it is fired.  This is very important since once an actor defines a particular
-   output, it is not allowed to change that value in a subsequent firing in the
-   course of the iteration.  A nonstrict actor can fire even if no inputs are
-   known, and may fire any number of times in the course of an iteration.  Thus,
-   a nonstrict actor can be used to produce an initial token in a cyclic graph.
-   Since strict actors are only fired if all of their inputs are known, a given
-   strict actor is only fired once in a given iteration.  An actor <i>has
-   completed firing</i> if it has defined all of its outputs.
-   <p>
-   An actor is considered <i>allowed to fire</i> if its prefire()
-   method has returned true.  An actor is considered <i>allowed to iterate</i>
-   if its postfire() method has not returned false.
-   <p>
-   A scheduler returns an ordering of the actors.  SR semantics do not
-   require any specific ordering of actor firings, but a particular ordering
-   may be desirable in an attempt to reduce the computation time required for
-   a given iteration to converge.  If the scheduler is an SRRandomizedScheduler,
-   in the course of an iteration, the director cycles through the schedule
-   repeatedly, firing those actors that are allowed to fire and ready to fire.
-   If the scheduler is an SROptimizedScheduler, the director makes only one pass
-   through the schedule, since it guarantees the convergence of the iteration.
-   <p>
-   For an actor to be valid in the SR domain, its prefire() method must be
-   monotonic.  In other words, once the prefire() method of an actor returns
-   true in a given iteration, this method must not return false if it were to be
-   called again in the same iteration.  It is only possible for the number of
-   known inputs of an actor to increase in a given iteration, so, for example,
-   if the prefire() method of an actor returns true and then more inputs become
-   known, the method must return true if it were to be called again.  If this
-   were not the case, the behavior of the model would be nondeterministic since
-   the execution results would depend on the order of the schedule.
-   <p>
-   An iteration <i>has converged</i> if both the total number of known outputs
-   and the number of actors that are allowed to fire have converged.  In other
-   words, the system is executed until the values in the model reach a
-   <i>fixed-point</i>.  Further execution would not result in more defined
-   values, and the iteration has converged.
+ A director for the Synchronous Reactive (SR) model of computation.  In SR,
+ both computation and communication are considered to happen instantaneously.
+ In models with cycles, this introduces interesting issues involving
+ instantaneous feedback.
+ <p>
+ SR is an untimed domain, so it has no notion of the passage of time.
+ Computation happens in a series of instants.  An instant is one iteration of
+ the director.  If SR is embedded inside a timed domain, the SR director will
+ inherit the current time of the outside director.
+ <p>
+ In SR, each iteration begins with the values on all channels being unknown.
+ To ensure that an iteration converges to final values in finite time, it is
+ required that values change only from unknown to known, and never the other
+ way around.  Once a value is set (or cleared), it must not
+ change again in the course of the iteration.
+ <p>
+ An actor is considered <i>ready to fire</i> if sufficient known inputs are
+ available.  In a sense, an actor firing is triggered by these known inputs,
+ because the director only fires an actor if it is ready to fire.  Unless an
+ actor contains an attribute called "_nonStrictMarker", it is assumed to be a
+ strict actor, meaning that it requires all of its inputs to be known before
+ it is fired.  This is very important since once an actor defines a particular
+ output, it is not allowed to change that value in a subsequent firing in the
+ course of the iteration.  A nonstrict actor can fire even if no inputs are
+ known, and may fire any number of times in the course of an iteration.  Thus,
+ a nonstrict actor can be used to produce an initial token in a cyclic graph.
+ Since strict actors are only fired if all of their inputs are known, a given
+ strict actor is only fired once in a given iteration.  An actor <i>has
+ completed firing</i> if it has defined all of its outputs.
+ <p>
+ An actor is considered <i>allowed to fire</i> if its prefire()
+ method has returned true.  An actor is considered <i>allowed to iterate</i>
+ if its postfire() method has not returned false.
+ <p>
+ A scheduler returns an ordering of the actors.  SR semantics do not
+ require any specific ordering of actor firings, but a particular ordering
+ may be desirable in an attempt to reduce the computation time required for
+ a given iteration to converge.  If the scheduler is an SRRandomizedScheduler,
+ in the course of an iteration, the director cycles through the schedule
+ repeatedly, firing those actors that are allowed to fire and ready to fire.
+ If the scheduler is an SROptimizedScheduler, the director makes only one pass
+ through the schedule, since it guarantees the convergence of the iteration.
+ <p>
+ For an actor to be valid in the SR domain, its prefire() method must be
+ monotonic.  In other words, once the prefire() method of an actor returns
+ true in a given iteration, this method must not return false if it were to be
+ called again in the same iteration.  It is only possible for the number of
+ known inputs of an actor to increase in a given iteration, so, for example,
+ if the prefire() method of an actor returns true and then more inputs become
+ known, the method must return true if it were to be called again.  If this
+ were not the case, the behavior of the model would be nondeterministic since
+ the execution results would depend on the order of the schedule.
+ <p>
+ An iteration <i>has converged</i> if both the total number of known outputs
+ and the number of actors that are allowed to fire have converged.  In other
+ words, the system is executed until the values in the model reach a
+ <i>fixed-point</i>.  Further execution would not result in more defined
+ values, and the iteration has converged.
 
-   @author Paul Whitaker, Contributor: Ivan Jeukens
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (pwhitake)
-   @Pt.AcceptedRating Green (pwhitake)
-*/
+ @author Paul Whitaker, Contributor: Ivan Jeukens
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Green (pwhitake)
+ @Pt.AcceptedRating Green (pwhitake)
+ */
 public class SRDirector extends StaticSchedulingDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -205,7 +204,8 @@ public class SRDirector extends StaticSchedulingDirector {
         if (attribute == scheduler) {
             _debug(getFullName() + " updating scheduler...");
 
-            String className = ((StringToken) scheduler.getToken()).stringValue();
+            String className = ((StringToken) scheduler.getToken())
+                    .stringValue();
 
             // For backward compatibility, strip quotation marks that
             // may be left over from when the scheduler parameter was not
@@ -286,7 +286,7 @@ public class SRDirector extends StaticSchedulingDirector {
 
             iterationCount++;
         } while ( //usingRandomizedScheduler &&
-                !_hasIterationConverged() && !_stopRequested);
+        !_hasIterationConverged() && !_stopRequested);
 
         _debug("It takes " + iterationCount
                 + " iterations to find a fixed point.");
@@ -341,8 +341,8 @@ public class SRDirector extends StaticSchedulingDirector {
         // Roda o SR embedded por um instante
         // iterations.setToken(new IntToken(1));
         try {
-            Class sdfDirector = Class.forName(
-                    "ptolemy.domains.sdf.kernel.SDFDirector");
+            Class sdfDirector = Class
+                    .forName("ptolemy.domains.sdf.kernel.SDFDirector");
 
             if (sdfDirector.isInstance(fatherDirector)) {
                 Iterator outputPorts = actor.outputPortList().iterator();
@@ -353,16 +353,18 @@ public class SRDirector extends StaticSchedulingDirector {
                     int initialToken = DFUtilities.getTokenInitProduction(port);
 
                     if (initialToken > 0) {
-                        Parameter parameter = (Parameter) port.getAttribute(
-                                "initialTokens");
+                        Parameter parameter = (Parameter) port
+                                .getAttribute("initialTokens");
 
                         if (parameter != null) {
                             Token token = parameter.getToken();
 
                             if (!(token instanceof ArrayToken)) {
-                                throw new IllegalActionException(port,
-                                        "initialTokens was " + token
-                                        + " which is not an array token.");
+                                throw new IllegalActionException(
+                                        port,
+                                        "initialTokens was "
+                                                + token
+                                                + " which is not an array token.");
                             }
 
                             ArrayToken initValues = (ArrayToken) token;
@@ -370,13 +372,13 @@ public class SRDirector extends StaticSchedulingDirector {
                             if (initValues.length() != initialToken) {
                                 throw new IllegalActionException(port,
                                         "tokenInitProduction '" + initialToken
-                                        + "' does not match "
-                                        + "number of initialTokens '"
-                                        + initValues.length() + "'");
+                                                + "' does not match "
+                                                + "number of initialTokens '"
+                                                + initValues.length() + "'");
                             }
 
-                            port.broadcast(initValues.arrayValue(),
-                                    initValues.length());
+                            port.broadcast(initValues.arrayValue(), initValues
+                                    .length());
                         }
                     }
                 }
@@ -719,14 +721,14 @@ public class SRDirector extends StaticSchedulingDirector {
         int currentNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
 
         if (_debugging) {
-            _debug("  previousNumberOfActorsAllowedToFire is",
-                    String.valueOf(previousNumberOfActorsAllowedToFire));
-            _debug("  currentNumberOfActorsAllowedToFire is",
-                    String.valueOf(currentNumberOfActorsAllowedToFire));
-            _debug("  previousNumberOfKnownReceivers is",
-                    String.valueOf(previousNumberOfKnownReceivers));
-            _debug("  currentNumberOfKnownReceivers is",
-                    String.valueOf(currentNumberOfKnownReceivers));
+            _debug("  previousNumberOfActorsAllowedToFire is", String
+                    .valueOf(previousNumberOfActorsAllowedToFire));
+            _debug("  currentNumberOfActorsAllowedToFire is", String
+                    .valueOf(currentNumberOfActorsAllowedToFire));
+            _debug("  previousNumberOfKnownReceivers is", String
+                    .valueOf(previousNumberOfKnownReceivers));
+            _debug("  currentNumberOfKnownReceivers is", String
+                    .valueOf(currentNumberOfKnownReceivers));
         }
 
         // Update the previous values for use the next time this method
@@ -768,12 +770,12 @@ public class SRDirector extends StaticSchedulingDirector {
     private void _init() {
         try {
             scheduler = new StringParameter(this, "scheduler");
-            scheduler.setExpression(
-                    "ptolemy.domains.sr.kernel.SROptimizedScheduler");
-            scheduler.addChoice(
-                    "ptolemy.domains.sr.kernel.SROptimizedScheduler");
-            scheduler.addChoice(
-                    "ptolemy.domains.sr.kernel.SRRandomizedScheduler");
+            scheduler
+                    .setExpression("ptolemy.domains.sr.kernel.SROptimizedScheduler");
+            scheduler
+                    .addChoice("ptolemy.domains.sr.kernel.SROptimizedScheduler");
+            scheduler
+                    .addChoice("ptolemy.domains.sr.kernel.SRRandomizedScheduler");
             attributeChanged(scheduler);
 
             iterations = new Parameter(this, "iterations", new IntToken(0));
@@ -824,30 +826,30 @@ public class SRDirector extends StaticSchedulingDirector {
 
             Class schedulerClass = Class.forName(className);
             Constructor schedulerConstructor = schedulerClass
-                .getDeclaredConstructor(constructorParameters);
+                    .getDeclaredConstructor(constructorParameters);
 
             Object[] constructorArguments = new Object[2];
             constructorArguments[0] = this;
             constructorArguments[1] = uniqueName("Scheduler");
 
-            newScheduler = (Scheduler) schedulerConstructor.newInstance(constructorArguments);
+            newScheduler = (Scheduler) schedulerConstructor
+                    .newInstance(constructorArguments);
         } catch (ClassNotFoundException e) {
-            throw new IllegalActionException(this,
-                    "Scheduler: " + className + " not found.");
+            throw new IllegalActionException(this, "Scheduler: " + className
+                    + " not found.");
         } catch (InstantiationException e) {
-            throw new IllegalActionException(this,
-                    "Scheduler: " + className + " instantiation failed.");
+            throw new IllegalActionException(this, "Scheduler: " + className
+                    + " instantiation failed.");
         } catch (IllegalAccessException e) {
-            throw new IllegalActionException(this,
-                    "Scheduler: " + className + " not accessible.");
+            throw new IllegalActionException(this, "Scheduler: " + className
+                    + " not accessible.");
         } catch (NoSuchMethodException e) {
-            throw new IllegalActionException(this,
-                    "Scheduler: " + className + " has no constructor that takes a "
+            throw new IllegalActionException(this, "Scheduler: " + className
+                    + " has no constructor that takes a "
                     + "Director and a String.");
         } catch (InvocationTargetException e) {
-            throw new IllegalActionException(this,
-                    "Scheduler: " + className + " constructor threw exception: "
-                    + e.getMessage());
+            throw new IllegalActionException(this, "Scheduler: " + className
+                    + " constructor threw exception: " + e.getMessage());
         }
 
         return newScheduler;
@@ -905,15 +907,15 @@ public class SRDirector extends StaticSchedulingDirector {
      *  the prefire method of the actor has returned true.
      */
     private boolean _isFiringAllowed(Actor actor) {
-        return (!(_actorsAllowedToFire == null)
-                && _actorsAllowedToFire.contains(actor));
+        return (!(_actorsAllowedToFire == null) && _actorsAllowedToFire
+                .contains(actor));
     }
 
     /** Return true if the specified actor is allowed to iterate.
      */
     private boolean _isIterationAllowed(Actor actor) {
-        return ((_actorsNotAllowedToIterate == null)
-                || !_actorsNotAllowedToIterate.contains(actor));
+        return ((_actorsNotAllowedToIterate == null) || !_actorsNotAllowedToIterate
+                .contains(actor));
     }
 
     /** Return true if the specified actor is a nonstrict actor.
@@ -922,7 +924,8 @@ public class SRDirector extends StaticSchedulingDirector {
         // This information is not cached, since there is no semantic reason
         // that the strictness of an actor could not change during execution,
         // so long as that change happened between iterations.
-        Attribute nonStrictAttribute = ((NamedObj) actor).getAttribute(NON_STRICT_ATTRIBUTE_NAME);
+        Attribute nonStrictAttribute = ((NamedObj) actor)
+                .getAttribute(NON_STRICT_ATTRIBUTE_NAME);
 
         return (nonStrictAttribute != null);
     }
@@ -946,7 +949,8 @@ public class SRDirector extends StaticSchedulingDirector {
     private boolean _isValidSchedulerClassName(String name) {
         if (name.equals("ptolemy.domains.sr.kernel.SRRandomizedScheduler")) {
             return true;
-        } else if (name.equals("ptolemy.domains.sr.kernel.SROptimizedScheduler")) {
+        } else if (name
+                .equals("ptolemy.domains.sr.kernel.SROptimizedScheduler")) {
             return true;
         }
 
@@ -1034,8 +1038,8 @@ public class SRDirector extends StaticSchedulingDirector {
             Scheduler newScheduler = _instantiateScheduler(className);
             setScheduler(newScheduler);
         } catch (NameDuplicationException ex) {
-            throw new IllegalActionException(this,
-                    "SRDirector cannot" + " set scheduler to " + className + ".");
+            throw new IllegalActionException(this, "SRDirector cannot"
+                    + " set scheduler to " + className + ".");
         }
     }
 

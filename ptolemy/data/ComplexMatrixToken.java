@@ -1,30 +1,30 @@
 /* A token that contains a 2-D Complex matrix.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -39,20 +39,19 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
 import ptolemy.math.ComplexMatrixMath;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ComplexMatrixToken
 
 /**
-   A token that contains a 2-D Complex matrix.
+ A token that contains a 2-D Complex matrix.
 
-   @see ptolemy.math.Complex
-   @author Yuhong Xiong, Christopher Hylands, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @see ptolemy.math.Complex
+ @author Yuhong Xiong, Christopher Hylands, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class ComplexMatrixToken extends MatrixToken {
     /** Construct an ComplexMatrixToken with a one by one matrix. The
      *  only element in the matrix has value 0.0
@@ -147,7 +146,7 @@ public class ComplexMatrixToken extends MatrixToken {
         if (tokens.length != (rows * columns)) {
             throw new IllegalActionException(
                     "ComplexMatrixToken: The specified"
-                    + " array is not of the correct length");
+                            + " array is not of the correct length");
         }
 
         _rowCount = rows;
@@ -159,7 +158,7 @@ public class ComplexMatrixToken extends MatrixToken {
 
             if (token instanceof ScalarToken) {
                 _value[i / columns][i % columns] = ((ScalarToken) token)
-                    .complexValue();
+                        .complexValue();
             } else {
                 throw new IllegalActionException("ComplexMatrixToken: Element "
                         + i + " in the array with value " + token
@@ -200,8 +199,9 @@ public class ComplexMatrixToken extends MatrixToken {
         int compare = TypeLattice.compare(BaseType.COMPLEX_MATRIX, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "[complex]"));
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(token,
+                            "[complex]"));
         }
 
         // try Complex
@@ -223,7 +223,7 @@ public class ComplexMatrixToken extends MatrixToken {
         // The argument is below ComplexMatrixToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "[complex]"));
+                "[complex]"));
     }
 
     /** Return true if the argument is an instance of ComplexMatrixToken
@@ -342,8 +342,8 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     public Token one() {
         try {
-            return new ComplexMatrixToken(ComplexMatrixMath.identity(_rowCount),
-                    DO_NOT_COPY);
+            return new ComplexMatrixToken(
+                    ComplexMatrixMath.identity(_rowCount), DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("ComplexMatrixToken.one: "
@@ -360,8 +360,8 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     public Token oneRight() {
         try {
-            return new ComplexMatrixToken(ComplexMatrixMath.identity(
-                                                  _columnCount), DO_NOT_COPY);
+            return new ComplexMatrixToken(ComplexMatrixMath
+                    .identity(_columnCount), DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("ComplexMatrixToken.oneRight: "
@@ -378,7 +378,7 @@ public class ComplexMatrixToken extends MatrixToken {
     public Token zero() {
         try {
             return new ComplexMatrixToken(ComplexMatrixMath.zero(_rowCount,
-                                                  _columnCount), DO_NOT_COPY);
+                    _columnCount), DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("ComplexMatrixToken.zero: "
@@ -401,8 +401,8 @@ public class ComplexMatrixToken extends MatrixToken {
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         ComplexMatrixToken convertedArgument = (ComplexMatrixToken) rightArgument;
-        Complex[][] result = ComplexMatrixMath.add(_value,
-                convertedArgument._getInternalComplexMatrix());
+        Complex[][] result = ComplexMatrixMath.add(_value, convertedArgument
+                ._getInternalComplexMatrix());
         return new ComplexMatrixToken(result);
     }
 
@@ -525,7 +525,7 @@ public class ComplexMatrixToken extends MatrixToken {
             throws IllegalActionException {
         Complex scalar = ((ComplexToken) rightArgument).complexValue();
         Complex[][] result = ComplexMatrixMath.negative(ComplexMatrixMath.add(
-                                                                _value, scalar.negate()));
+                _value, scalar.negate()));
         return new ComplexMatrixToken(result);
     }
 
@@ -547,6 +547,8 @@ public class ComplexMatrixToken extends MatrixToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Complex[][] _value = null;
+
     private int _rowCount = 0;
+
     private int _columnCount = 0;
 }

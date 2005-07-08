@@ -1,52 +1,51 @@
 /* A library of statistical operations on arrays of doubles.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.math;
 
 import java.util.Random;
-
 
 ///////////////////////////////////////////////////////////////
 //// DoubleArrayStat
 
 /**
-   This class provides a library for statistical operations on arrays of
-   doubles.
-   Unless explicitly noted otherwise, all array arguments are assumed to be
-   non-null. If a null array is passed to a method, a NullPointerException
-   will be thrown in the method or called methods.
+ This class provides a library for statistical operations on arrays of
+ doubles.
+ Unless explicitly noted otherwise, all array arguments are assumed to be
+ non-null. If a null array is passed to a method, a NullPointerException
+ will be thrown in the method or called methods.
 
-   @author Jeff Tsay
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (ctsay)
-   @Pt.AcceptedRating Red (ctsay)
-*/
+ @author Jeff Tsay
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Yellow (ctsay)
+ @Pt.AcceptedRating Red (ctsay)
+ */
 public class DoubleArrayStat extends DoubleArrayMath {
     // Protected constructor prevents construction of this class.
     protected DoubleArrayStat() {
@@ -217,7 +216,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             if (p[i] < 0.0) {
                 throw new IllegalArgumentException(
                         "ptolemy.math.DoubleArrayStat.entropy() : "
-                        + "Negative probability encountered.");
+                                + "Negative probability encountered.");
             } else if (p[i] == 0.0) {
                 // do nothing
             } else {
@@ -278,10 +277,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             }
         }
 
-        return new Object[] {
-            new Double(maxElement),
-            new Integer(maxIndex)
-        };
+        return new Object[] { new Double(maxElement), new Integer(maxIndex) };
     }
 
     /** Return the arithmetic mean of the elements in the array.
@@ -323,10 +319,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             }
         }
 
-        return new Object[] {
-            new Double(minElement),
-            new Integer(minIndex)
-        };
+        return new Object[] { new Double(minElement), new Integer(minIndex) };
     }
 
     /** Return the product of all of the elements in the array.
@@ -400,7 +393,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
         for (int i = 0; i < N; i++) {
             returnValue[i] = mean
-                + (_random.nextGaussian() * standardDeviation);
+                    + (_random.nextGaussian() * standardDeviation);
         }
 
         return returnValue;
@@ -489,7 +482,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             if ((p[i] < 0.0) || (q[i] < 0.0)) {
                 throw new IllegalArgumentException(
                         "ptolemy.math.DoubleArrayStat.relativeEntropy() : "
-                        + "Negative probability encountered.");
+                                + "Negative probability encountered.");
             } else if (p[i] == 0.0) {
                 // do nothing
             } else if (q[i] == 0.0) {
@@ -578,8 +571,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
         if (sample && (array.length < 2)) {
             throw new IllegalArgumentException(
                     "ptolemy.math.DoubleArrayStat.variance() : "
-                    + "sample variance and standard deviation of an array "
-                    + "of length less than 2 are not defined.");
+                            + "sample variance and standard deviation of an array "
+                            + "of length less than 2 are not defined.");
         }
 
         double ex2 = 0.0;

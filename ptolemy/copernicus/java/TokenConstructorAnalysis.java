@@ -1,29 +1,29 @@
 /* An analysis for extracting the constructors of tokens.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.HashMap;
@@ -48,20 +48,19 @@ import soot.jimple.Stmt;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.scalar.LocalDefs;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForAttributesTransformer
 
 /**
-   An analysis that establishes a constant value, if possible, of a token
-   constructed at a particular statement.
+ An analysis that establishes a constant value, if possible, of a token
+ constructed at a particular statement.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class TokenConstructorAnalysis {
     public TokenConstructorAnalysis(JimpleBody body, LocalDefs localDefs) {
         _constructorToValue = new HashMap();
@@ -72,14 +71,14 @@ public class TokenConstructorAnalysis {
             if (unit.containsInvokeExpr()
                     && unit.getInvokeExpr() instanceof InstanceInvokeExpr) {
                 InstanceInvokeExpr invokeExpr = (InstanceInvokeExpr) unit
-                    .getInvokeExpr();
+                        .getInvokeExpr();
                 SootMethod invokedMethod = invokeExpr.getMethod();
 
                 // If we invoke a Token class initializer
                 if (invokedMethod.getName().equals("<init>")
-                        && SootUtilities.isSubtypeOf(
-                                invokeExpr.getBase().getType(),
-                                RefType.v(PtolemyUtilities.tokenClass))) {
+                        && SootUtilities.isSubtypeOf(invokeExpr.getBase()
+                                .getType(), RefType
+                                .v(PtolemyUtilities.tokenClass))) {
                     // System.out.println("found token initializer: " + unit);
                     Unit constructor = _findConstructor((Local) invokeExpr
                             .getBase(), unit, localDefs);
@@ -89,7 +88,8 @@ public class TokenConstructorAnalysis {
                         continue;
                     }
 
-                    Token token = _evaluateInitializer(invokeExpr, invokedMethod);
+                    Token token = _evaluateInitializer(invokeExpr,
+                            invokedMethod);
 
                     if (token != null) {
                         _constructorToValue.put(constructor, token);
@@ -107,7 +107,8 @@ public class TokenConstructorAnalysis {
 
     private Token _evaluateInitializer(InvokeExpr invokeExpr,
             SootMethod invokedMethod) {
-        Value[] argValues = (Value[]) invokeExpr.getArgs().toArray(new Value[0]);
+        Value[] argValues = (Value[]) invokeExpr.getArgs()
+                .toArray(new Value[0]);
 
         for (int i = 0; i < argValues.length; i++) {
             if (Evaluator.isValueConstantValued(argValues[i])) {
@@ -118,8 +119,8 @@ public class TokenConstructorAnalysis {
         }
 
         try {
-            return (Token) SootUtilities.reflectAndInvokeConstructor(invokedMethod,
-                    argValues);
+            return (Token) SootUtilities.reflectAndInvokeConstructor(
+                    invokedMethod, argValues);
         } catch (Exception ex) {
             return null;
         }

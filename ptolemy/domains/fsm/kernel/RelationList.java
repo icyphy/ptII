@@ -1,30 +1,30 @@
 /* A RelationList object contains the information of the relations of a
-   guard expression.
+ guard expression.
 
-   Copyright (c) 2003-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fsm.kernel;
 
 import java.util.LinkedList;
@@ -34,43 +34,42 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// RelationList
 
 /**
-   A RelationList object contains a list of relations of a guard expression.
-   It provides facilities to access the previous and current information of
-   each relation of a guard expression during its evaluation. The information
-   includes relation type and the difference information. (See
-   {@link ParseTreeEvaluatorForGuardExpression} for the detailed explanation
-   of relation type and difference.) This attribute is non-persistent and will
-   not be exported into MoML.
-   <p>
-   This class is designed to be used with ParseTreeEvaluatorForGuardExpression.
-   The common usage would be like:
-   <p>
-   <i>Construct a relation list for a transition with the first argument of the
-   constructor as that transition.</i>
-   <pre>
-   _relationList = new RelationList(this, "relationList");
-   </pre>
-   <p>
-   <i>Associate the relation list with the an object of
-   ParseTreeEvaluatorForGuardExpression</i>
-   <pre>
-   _parseTreeEvaluator =
-   new ParseTreeEvaluatorForGuardExpression(_relationList);
-   </pre>
-   <p>
-   See {@link Transition} for the detailed usage.
+ A RelationList object contains a list of relations of a guard expression.
+ It provides facilities to access the previous and current information of
+ each relation of a guard expression during its evaluation. The information
+ includes relation type and the difference information. (See
+ {@link ParseTreeEvaluatorForGuardExpression} for the detailed explanation
+ of relation type and difference.) This attribute is non-persistent and will
+ not be exported into MoML.
+ <p>
+ This class is designed to be used with ParseTreeEvaluatorForGuardExpression.
+ The common usage would be like:
+ <p>
+ <i>Construct a relation list for a transition with the first argument of the
+ constructor as that transition.</i>
+ <pre>
+ _relationList = new RelationList(this, "relationList");
+ </pre>
+ <p>
+ <i>Associate the relation list with the an object of
+ ParseTreeEvaluatorForGuardExpression</i>
+ <pre>
+ _parseTreeEvaluator =
+ new ParseTreeEvaluatorForGuardExpression(_relationList);
+ </pre>
+ <p>
+ See {@link Transition} for the detailed usage.
 
-   @author Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
-*/
+ @author Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (hyzheng)
+ @Pt.AcceptedRating Red (hyzheng)
+ */
 public class RelationList extends Attribute {
     /** Construct a relation list with the given name contained by
      *  the specified transition. The transition argument must not be
@@ -140,7 +139,7 @@ public class RelationList extends Attribute {
      */
     public double getPreviousMaximumDistance() {
         return ((RelationNode) _relationList.get(_maximumDifferenceIndex))
-            .gePreviousDifference();
+                .gePreviousDifference();
     }
 
     /** Return true if there exists an event caused by the type change of
@@ -213,7 +212,8 @@ public class RelationList extends Attribute {
      *  @param difference The current difference of the relation.
      */
     public void setRelation(int relationIndex, int type, double difference) {
-        RelationNode relationNode = (RelationNode) _relationList.get(relationIndex);
+        RelationNode relationNode = (RelationNode) _relationList
+                .get(relationIndex);
         relationNode.setType(type);
         relationNode.setDifference(difference);
     }
@@ -306,7 +306,9 @@ public class RelationList extends Attribute {
         ///////////////////////////////////////////////////////////////
         ////                       private inner fields            ////
         private int _currentType;
+
         private double _difference;
+
         private double _previousDifference;
 
         // a relation has 5 possible types represented with 5 integer values:

@@ -1,33 +1,33 @@
 /*
 
-A class that handles generation and management of native methods.
+ A class that handles generation and management of native methods.
 
-Copyright (c) 2002-2005 The University of Maryland.
-All rights reserved.
+ Copyright (c) 2002-2005 The University of Maryland.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.io.File;
@@ -37,32 +37,31 @@ import soot.RefLikeType;
 import soot.SootMethod;
 import soot.Type;
 
-
 /** A class that handles generation and management of native methods. It
-    uses stub files.  A "stub" file for a native method contains an
-    appropriate definition and returns data of the appropriate type, but
-    does not encapsulate any functionality. It is there to allow the code
-    to be compiled.
+ uses stub files.  A "stub" file for a native method contains an
+ appropriate definition and returns data of the appropriate type, but
+ does not encapsulate any functionality. It is there to allow the code
+ to be compiled.
 
-    The approach taken is that when a native method's code is asked for, it
-    returns the pre-defined C code for the method from a library. However,
-    if the body of the method has not been defined, then it simply
-    generates a stub for the method.
+ The approach taken is that when a native method's code is asked for, it
+ returns the pre-defined C code for the method from a library. However,
+ if the body of the method has not been defined, then it simply
+ generates a stub for the method.
 
-    The native method code is stored in a directory (nativeLib). However,
-    this does not contain any body code for the methods. The body codes for
-    methods are stored in the directory nativeBodyLib. If a method's body
-    code exists in nativeBodyLib, then its code in nativeLib will just
-    have a #include for the file containing the body code. If the method's
-    body code does not exist in nativeBodyLib, then its code in nativeLib
-    will be a stub.
+ The native method code is stored in a directory (nativeLib). However,
+ this does not contain any body code for the methods. The body codes for
+ methods are stored in the directory nativeBodyLib. If a method's body
+ code exists in nativeBodyLib, then its code in nativeLib will just
+ have a #include for the file containing the body code. If the method's
+ body code does not exist in nativeBodyLib, then its code in nativeLib
+ will be a stub.
 
-    @author Ankush Varma
-    @version $Id$
-    @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (ankush)
-    @Pt.AcceptedRating Red (ankush)
-*/
+ @author Ankush Varma
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (ankush)
+ @Pt.AcceptedRating Red (ankush)
+ */
 public class NativeMethodGenerator {
     /** The location of the native library methods.
      */
@@ -84,15 +83,16 @@ public class NativeMethodGenerator {
      */
     public static void generateStub(SootMethod method) {
         if (!method.isNative()) {
-            System.err.println(
-                    "NativeMethodGenerator.generateStub(SootMethod):"
-                    + "\n\tWARNING: " + method.toString() + " is not native.\n");
+            System.err
+                    .println("NativeMethodGenerator.generateStub(SootMethod):"
+                            + "\n\tWARNING: " + method.toString()
+                            + " is not native.\n");
         }
 
         // Leading Comment.
         StringBuffer code = new StringBuffer(
                 "/* PCCG: Function that implements native method\n"
-                + method.getSignature() + "\n" + "*/\n");
+                        + method.getSignature() + "\n" + "*/\n");
 
         code.append(_getStubHeader(method) + " {\n");
 
@@ -100,7 +100,7 @@ public class NativeMethodGenerator {
 
         // Add a #include if the method body exists.
         if (FileHandler.exists(Options.v().get("runtimeDir")
-                    + "/native_bodies/" + fileContainingCodeFor(method))) {
+                + "/native_bodies/" + fileContainingCodeFor(method))) {
             code.append(_indent(1) + "#include \"native_bodies/"
                     + fileContainingCodeFor(method) + "\"\n");
         }

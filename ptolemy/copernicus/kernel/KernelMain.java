@@ -1,30 +1,30 @@
 /* Abstract base class that provides common main() functionality
-   to be used by various backends.
+ to be used by various backends.
 
-   Copyright (c) 2001-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.kernel;
 
 import java.util.Iterator;
@@ -38,7 +38,6 @@ import ptolemy.actor.Manager;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -60,25 +59,24 @@ import soot.jimple.toolkits.scalar.UnconditionalBranchFolder;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.toolkits.scalar.UnusedLocalEliminator;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Main
 
 /**
-   Base class that provides common functionality to be used by various
-   code generators.  Particular code generators should extend this class
-   and generally override the addTransforms method to instantiate the
-   correct transforms and the _parseArgs method to extract arguments.
-   These subclasses should be not be instantiated directly, but will
-   instead be instantiated by the Copernicus class according to a
-   selected code generator.
+ Base class that provides common functionality to be used by various
+ code generators.  Particular code generators should extend this class
+ and generally override the addTransforms method to instantiate the
+ correct transforms and the _parseArgs method to extract arguments.
+ These subclasses should be not be instantiated directly, but will
+ instead be instantiated by the Copernicus class according to a
+ selected code generator.
 
-   @author Stephen Neuendorffer, Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Stephen Neuendorffer, Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public abstract class KernelMain {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -94,8 +92,10 @@ public abstract class KernelMain {
             HasPhaseOptions options = (HasPhaseOptions) transformer;
 
             // Note: First appearance of an option has precendence
-            t.setDefaultOptions(defaultOptions + " "
-                    + options.getDefaultOptions() + " " + t.getDefaultOptions());
+            t
+                    .setDefaultOptions(defaultOptions + " "
+                            + options.getDefaultOptions() + " "
+                            + t.getDefaultOptions());
             t.setDeclaredOptions(options.getDeclaredOptions() + " "
                     + t.getDeclaredOptions());
         } else {
@@ -134,7 +134,7 @@ public abstract class KernelMain {
             throw new Exception("The outputDirectory contains one or more "
                     + "spaces.  Unfortunately, the Soot option passing "
                     + "mechanism does not handle spaces.  The value of "
-                    + "the outputDirectory parameter was: \"" 
+                    + "the outputDirectory parameter was: \""
                     + attribute.getParameter("outputDirectory") + "\"");
         }
         // Parse any copernicus args.
@@ -217,18 +217,18 @@ public abstract class KernelMain {
         if ((topLevelDirector != null)
                 && topLevelDirector instanceof SDFDirector) {
             SDFDirector director = (SDFDirector) topLevelDirector;
-            Parameter iterations = (Parameter) director.getAttribute(
-                    "iterations");
-            Parameter copernicus_iterations = (Parameter) director.getAttribute(
-                    "copernicus_iterations");
+            Parameter iterations = (Parameter) director
+                    .getAttribute("iterations");
+            Parameter copernicus_iterations = (Parameter) director
+                    .getAttribute("copernicus_iterations");
 
             // Set to be a large number of iterations, unless
             // copernicus_iterations is set.
             if (copernicus_iterations != null) {
                 iterations.setToken(copernicus_iterations.getToken());
             } else {
-                String copernicusIterations = StringUtilities.getProperty(
-                        "ptolemy.ptII.copernicusIterations");
+                String copernicusIterations = StringUtilities
+                        .getProperty("ptolemy.ptII.copernicusIterations");
 
                 if (copernicusIterations.length() > 0) {
                     System.out.println("KernelMain: "
@@ -287,7 +287,7 @@ public abstract class KernelMain {
             throws Exception {
         return new String[0];
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -314,8 +314,7 @@ public abstract class KernelMain {
             PtolemyUtilities.objectClass.setSuperclass(null);
 
             for (Iterator classes = Scene.v().getApplicationClasses()
-                     .snapshotIterator();
-                 classes.hasNext();) {
+                    .snapshotIterator(); classes.hasNext();) {
                 SootClass theClass = (SootClass) classes.next();
                 theClass.setLibraryClass();
             }

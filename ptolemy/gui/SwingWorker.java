@@ -1,51 +1,50 @@
 /* Abstract class to perform GUI-related work in a dedicated thread.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.gui;
 
 import javax.swing.SwingUtilities;
 
-
 /**
-   This is the 3rd version of SwingWorker (also known as
-   SwingWorker 3), an abstract class that you subclass to
-   perform GUI-related work in a dedicated thread.  For
-   instructions on using this class, see:
+ This is the 3rd version of SwingWorker (also known as
+ SwingWorker 3), an abstract class that you subclass to
+ perform GUI-related work in a dedicated thread.  For
+ instructions on using this class, see:
 
-   <a href="http://java.sun.com/docs/books/tutorial/uiswing/misc/threads.html">http://java.sun.com/docs/books/tutorial/uiswing/misc/threads.html</a>
+ <a href="http://java.sun.com/docs/books/tutorial/uiswing/misc/threads.html">http://java.sun.com/docs/books/tutorial/uiswing/misc/threads.html</a>
 
-   Note that the API changed slightly in the 3rd version:
-   You must now invoke start() on the SwingWorker after
-   creating it.
-   @author Sun Microsystems
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ Note that the API changed slightly in the 3rd version:
+ You must now invoke start() on the SwingWorker after
+ creating it.
+ @author Sun Microsystems
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public abstract class SwingWorker {
     /**
      * Start a thread that will call the <code>construct</code> method
@@ -53,22 +52,22 @@ public abstract class SwingWorker {
      */
     public SwingWorker() {
         final Runnable doFinished = new Runnable() {
-                public void run() {
-                    finished();
-                }
-            };
+            public void run() {
+                finished();
+            }
+        };
 
         Runnable doConstruct = new Runnable() {
-                public void run() {
-                    try {
-                        setValue(construct());
-                    } finally {
-                        _threadVar.clear();
-                    }
-
-                    SwingUtilities.invokeLater(doFinished);
+            public void run() {
+                try {
+                    setValue(construct());
+                } finally {
+                    _threadVar.clear();
                 }
-            };
+
+                SwingUtilities.invokeLater(doFinished);
+            }
+        };
 
         Thread thread = new Thread(doConstruct);
         _threadVar = new ThreadVar(thread);
@@ -186,5 +185,6 @@ public abstract class SwingWorker {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private ThreadVar _threadVar;
+
     private Object _value; // see getValue(), setValue()
 }

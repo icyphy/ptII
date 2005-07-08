@@ -5,12 +5,15 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 public class Unboxing1d {
     static IntToken intToken = new IntToken(1);
+
     static Token[] tokens;
+
     static Token[] tokens2;
+
     static ArrayToken intArrayToken;
+
     static ArrayToken intArrayArrayToken;
 
     public static void main(String[] strings) throws IllegalActionException {

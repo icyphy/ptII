@@ -1,30 +1,30 @@
 /* Read in a keystore from a FileParameter and output a Key.
 
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.security;
 
 import java.security.KeyStoreException;
@@ -43,29 +43,28 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// KeyReader
 
 /**
-   Read in a keystore from a FileParameter and output a Key.
+ Read in a keystore from a FileParameter and output a Key.
 
-   <p>Keystores are ways to manage keys and certificates.
-   See the {@link KeyStoreActor} documentation for more information about
-   keystores.
+ <p>Keystores are ways to manage keys and certificates.
+ See the {@link KeyStoreActor} documentation for more information about
+ keystores.
 
-   <p>This class has many parameters, derived classes usually set some
-   of the parameters to reasonable defaults and then hide them
-   by setting the visibility to EXPERT.
+ <p>This class has many parameters, derived classes usually set some
+ of the parameters to reasonable defaults and then hide them
+ by setting the visibility to EXPERT.
 
-   @see PrivateKeyReader
-   @see PublicKeyReader
-   @author  Christopher Hylands Brooks
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @see PrivateKeyReader
+ @see PublicKeyReader
+ @author  Christopher Hylands Brooks
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class KeyReader extends KeyStoreActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -79,8 +78,8 @@ public class KeyReader extends KeyStoreActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        getPublicKey = new Parameter(this, "getPublicKey",
-                new BooleanToken(true));
+        getPublicKey = new Parameter(this, "getPublicKey", new BooleanToken(
+                true));
         getPublicKey.setTypeEquals(BaseType.BOOLEAN);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -95,7 +94,8 @@ public class KeyReader extends KeyStoreActor {
         trigger.setMultiport(true);
 
         signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");
-        signatureAlgorithm.setExpression("Unknown, will be set after first run");
+        signatureAlgorithm
+                .setExpression("Unknown, will be set after first run");
         signatureAlgorithm.setVisibility(Settable.NOT_EDITABLE);
         signatureAlgorithm.setPersistent(false);
 
@@ -158,11 +158,11 @@ public class KeyReader extends KeyStoreActor {
         if (attribute == getPublicKey) {
             _updateKeyNeeded = true;
             _getPublicKey = ((BooleanToken) getPublicKey.getToken())
-                .booleanValue();
+                    .booleanValue();
         } else if (attribute == verifyCertificate) {
             _updateKeyNeeded = true;
             _verifyCertificate = ((BooleanToken) verifyCertificate.getToken())
-                .booleanValue();
+                    .booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -211,11 +211,12 @@ public class KeyReader extends KeyStoreActor {
             try {
                 if (!_verifyCertificate) {
                     if (_getPublicKey) {
-                        throw new IllegalActionException(this,
+                        throw new IllegalActionException(
+                                this,
                                 "To get the public key, one must use "
-                                + "certificates, so the verifyCertificate "
-                                + "parameter must be set to true if the "
-                                + "getPublicKey parameter is true.");
+                                        + "certificates, so the verifyCertificate "
+                                        + "parameter must be set to true if the "
+                                        + "getPublicKey parameter is true.");
                     }
                 } else {
                     Certificate certificate = _keyStore.getCertificate(_alias);
@@ -233,11 +234,12 @@ public class KeyReader extends KeyStoreActor {
                     certificate.verify(publicKey);
 
                     if (certificate instanceof X509Certificate) {
-                        signatureAlgorithm.setExpression(((X509Certificate) certificate)
-                                .getSigAlgName());
+                        signatureAlgorithm
+                                .setExpression(((X509Certificate) certificate)
+                                        .getSigAlgName());
                     } else {
-                        signatureAlgorithm.setExpression(
-                                "Unknown, certificate was not a X509 cert.");
+                        signatureAlgorithm
+                                .setExpression("Unknown, certificate was not a X509 cert.");
                     }
 
                     _key = publicKey;
@@ -249,7 +251,8 @@ public class KeyReader extends KeyStoreActor {
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to get key store alias '" + _alias
-                        + "' or certificate from " + fileOrURLDescription());
+                                + "' or certificate from "
+                                + fileOrURLDescription());
             }
         }
     }

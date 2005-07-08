@@ -1,30 +1,30 @@
 /* The graph controller for the ptolemy schematic editor ports
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
@@ -58,28 +58,27 @@ import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ExternalIOPortController
 
 /**
-   This class provides interaction with nodes that represent Ptolemy II
-   ports inside a composite.  It provides a double click binding and context
-   menu entry to edit the parameters of the port ("Configure") and a
-   command to get documentation.
-   It can have one of two access levels, FULL or PARTIAL.
-   If the access level is FULL, the the context menu also
-   contains a command to rename the node.
-   Note that whether the port is an input or output or multiport cannot
-   be controlled via this interface.  The "Configure Ports" command of
-   the container should be invoked instead.
+ This class provides interaction with nodes that represent Ptolemy II
+ ports inside a composite.  It provides a double click binding and context
+ menu entry to edit the parameters of the port ("Configure") and a
+ command to get documentation.
+ It can have one of two access levels, FULL or PARTIAL.
+ If the access level is FULL, the the context menu also
+ contains a command to rename the node.
+ Note that whether the port is an input or output or multiport cannot
+ be controlled via this interface.  The "Configure Ports" command of
+ the container should be invoked instead.
 
-   @author Steve Neuendorffer and Edward A. Lee, Elaine Cheong
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer and Edward A. Lee, Elaine Cheong
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class ExternalIOPortController extends AttributeController {
     /** Create a port controller associated with the specified graph
      *  controller.  The controller is given full access.
@@ -159,8 +158,8 @@ public class ExternalIOPortController extends AttributeController {
      */
     protected boolean _hide(java.lang.Object node) {
         if (node instanceof Locatable) {
-            if (((NamedObj) ((Locatable) node).getContainer()).getAttribute(
-                        "_hideInside") != null) {
+            if (((NamedObj) ((Locatable) node).getContainer())
+                    .getAttribute("_hideInside") != null) {
                 return true;
             }
         }
@@ -296,40 +295,40 @@ public class ExternalIOPortController extends AttributeController {
                 }
 
                 figure = new TerminalFigure(figure, tsite) {
-                        // Override this because the tooltip may
-                        // change over time.  I.e., the port may
-                        // change from being an input or output, etc.
-                        public String getToolTipText() {
-                            String tipText = port.getName();
+                    // Override this because the tooltip may
+                    // change over time.  I.e., the port may
+                    // change from being an input or output, etc.
+                    public String getToolTipText() {
+                        String tipText = port.getName();
 
-                            if (port instanceof IOPort) {
-                                IOPort ioport = (IOPort) port;
+                        if (port instanceof IOPort) {
+                            IOPort ioport = (IOPort) port;
 
-                                if (ioport.isInput()) {
-                                    tipText += ", Input";
-                                }
-
-                                if (ioport.isOutput()) {
-                                    tipText += ", Output";
-                                }
-
-                                if (ioport.isMultiport()) {
-                                    tipText += ", Multiport";
-                                }
-
-                                try {
-                                    tipText = tipText + ", type:"
-                                        + ((Typeable) port).getType();
-                                } catch (ClassCastException ex) {
-                                    // Do nothing.
-                                } catch (IllegalActionException ex) {
-                                    // Do nothing.
-                                }
+                            if (ioport.isInput()) {
+                                tipText += ", Input";
                             }
 
-                            return tipText;
+                            if (ioport.isOutput()) {
+                                tipText += ", Output";
+                            }
+
+                            if (ioport.isMultiport()) {
+                                tipText += ", Multiport";
+                            }
+
+                            try {
+                                tipText = tipText + ", type:"
+                                        + ((Typeable) port).getType();
+                            } catch (ClassCastException ex) {
+                                // Do nothing.
+                            } catch (IllegalActionException ex) {
+                                // Do nothing.
+                            }
                         }
-                    };
+
+                        return tipText;
+                    }
+                };
 
                 // Have to do this as well or awt will not render a tooltip.
                 figure.setToolTipText(port.getName());

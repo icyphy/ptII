@@ -1,30 +1,30 @@
 /* A DDE application illustrating localized Zeno conditions.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.dde.demo.LocalZeno;
 
 import java.awt.BorderLayout;
@@ -73,7 +73,6 @@ import diva.graph.basic.BasicGraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LayoutTarget;
 import diva.graph.layout.LevelLayout;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// LocalZenoApplet
@@ -198,8 +197,7 @@ public class LocalZenoApplet extends PtolemyApplet {
     /** Construct the Ptolemy model; instantiate all
      *  actors and make connections.
      */
-    protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
+    protected NamedObj _createModel(Workspace workspace) throws Exception {
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
         _toplevel = toplevel;
 
@@ -262,8 +260,8 @@ public class LocalZenoApplet extends PtolemyApplet {
      *  different.
      */
     protected void _createView() {
-        getContentPane().setLayout(new BoxLayout(getContentPane(),
-                                           BoxLayout.Y_AXIS));
+        getContentPane().setLayout(
+                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         // Create control panels.
         super._createView();
@@ -329,15 +327,15 @@ public class LocalZenoApplet extends PtolemyApplet {
             final GraphController gc = gp.getGraphController();
             final GraphPane pane = gp;
             SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        // Layout is a bit stupid
-                        LayoutTarget target = new BasicLayoutTarget(gc);
-                        LevelLayout staticLayout = new LevelLayout(target);
-                        staticLayout.setOrientation(LevelLayout.HORIZONTAL);
-                        staticLayout.layout(layoutGraph.getRoot());
-                        pane.repaint();
-                    }
-                });
+                public void run() {
+                    // Layout is a bit stupid
+                    LayoutTarget target = new BasicLayoutTarget(gc);
+                    LevelLayout staticLayout = new LevelLayout(target);
+                    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
+                    staticLayout.layout(layoutGraph.getRoot());
+                    pane.repaint();
+                }
+            });
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -347,17 +345,29 @@ public class LocalZenoApplet extends PtolemyApplet {
     ////                         private variables                 ////
     // The Actors
     private ListenClock _clock;
+
     private ListenWire _join1;
+
     private ListenFork _fork1;
+
     private ListenFeedBackDelay _fBack1;
+
     private ListenSink _rcvr1;
+
     private ListenWire _join2;
+
     private ListenFork _fork2;
+
     private ZenoDelay _fBack2;
+
     private ListenSink _rcvr2;
+
     private Const _upperTime;
+
     private Const _lowerTime;
+
     private TimedPlotter _upperPlotter;
+
     private TimedPlotter _lowerPlotter;
 
     // Plot Panel
@@ -422,8 +432,8 @@ public class LocalZenoApplet extends PtolemyApplet {
             StraightConnector c = new StraightConnector(tailSite, headSite);
 
             // Create an arrow at the head
-            Arrowhead headArrow = new Arrowhead(headSite.getX(),
-                    headSite.getY(), headSite.getNormal());
+            Arrowhead headArrow = new Arrowhead(headSite.getX(), headSite
+                    .getY(), headSite.getNormal());
             c.setHeadEnd(headArrow);
             c.setUserObject(edge);
             return c;
@@ -467,25 +477,25 @@ public class LocalZenoApplet extends PtolemyApplet {
 
             // Get the corresponding graph node and its figure
             Object node = (Object) _nodeMap.get(actor);
-            LabelWrapper wrapper = (LabelWrapper) _graphPane.getGraphController()
-                .getFigure(node);
+            LabelWrapper wrapper = (LabelWrapper) _graphPane
+                    .getGraphController().getFigure(node);
             final BasicFigure figure = (BasicFigure) wrapper.getChild();
 
             // Color the graph
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
-                        public void run() {
-                            if (state == ExecEvent.WAITING) {
-                                figure.setFillPaint(Color.yellow);
-                            } else if (state == ExecEvent.ACCESSING) {
-                                figure.setFillPaint(Color.green);
-                            } else if (state == ExecEvent.BLOCKED) {
-                                figure.setFillPaint(Color.red);
-                            } else {
-                                System.err.println("Unknown state: " + state);
-                            }
+                    public void run() {
+                        if (state == ExecEvent.WAITING) {
+                            figure.setFillPaint(Color.yellow);
+                        } else if (state == ExecEvent.ACCESSING) {
+                            figure.setFillPaint(Color.green);
+                        } else if (state == ExecEvent.BLOCKED) {
+                            figure.setFillPaint(Color.red);
+                        } else {
+                            System.err.println("Unknown state: " + state);
                         }
-                    });
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -515,14 +525,14 @@ public class LocalZenoApplet extends PtolemyApplet {
          * Return the rendered visual representation of this node.
          */
         public Figure render(Object n) {
-            ComponentEntity actor = (ComponentEntity) _controller.getGraphModel()
-                .getSemanticObject(n);
+            ComponentEntity actor = (ComponentEntity) _controller
+                    .getGraphModel().getSemanticObject(n);
 
             boolean isEllipse = actor instanceof ListenWire
-                || actor instanceof ListenFork
-                || actor instanceof ListenClock
-                || actor instanceof ListenSink
-                || actor instanceof ListenFeedBackDelay;
+                    || actor instanceof ListenFork
+                    || actor instanceof ListenClock
+                    || actor instanceof ListenSink
+                    || actor instanceof ListenFeedBackDelay;
 
             BasicFigure f;
 

@@ -1,35 +1,35 @@
 /* An object for synchronization and version tracking of groups of objects.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-Made _writer, _lastReader, _lastReaderRecord, and _readerRecords
-transient so that object would be serializable. However, serialization
-is probably not right if there are outstanding read or write permissions.
--- eal
+ Made _writer, _lastReader, _lastReaderRecord, and _readerRecords
+ transient so that object would be serializable. However, serialization
+ is probably not right if there are outstanding read or write permissions.
+ -- eal
 
-*/
+ */
 package ptolemy.kernel.util;
 
 import java.io.Serializable;
@@ -40,71 +40,70 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Workspace
 
 /**
-   An instance of Workspace is used for synchronization and version tracking
-   of interdependent groups of objects.  These objects are said to be in the
-   workspace. This is not the same as the <i>container</i> association
-   in Ptolemy II.  A workspace is never returned by a getContainer() method.
-   <p>
-   The workspace provides a rudimentary directory service that can
-   be used to keep track of the objects within it.  It is not required to use
-   it in order to use the workspace for synchronization. Items are added
-   to the directory by calling add().
-   The names of the items in the directory are not required to be unique.
-   <p>
-   The synchronization model of the workspace is a multiple-reader,
-   single-writer model. Any number of threads can simultaneously read the
-   workspace. Only one thread at a time can have write access to the workspace,
-   and while the write access is held, no other thread can get read access.
-   <p>
-   When reading the state of objects in the workspace, a thread must
-   ensure that no other thread is simultaneously modifying the objects in the
-   workspace. To read-synchronize on a workspace, use the following code:
-   <pre>
-   try {
-   _workspace.getReadAccess();
-   // ... code that reads
-   } finally {
-   _workspace.doneReading();
-   }
-   </pre>
-   We assume that the _workspace variable references the workspace, as for example
-   in the NamedObj class. The getReadAccess() method suspends the current thread
-   if another thread is currently modifying the workspace, and otherwise
-   returns immediately. Note that multiple readers can simultaneously have
-   read access. The finally clause is executed even if
-   an exception occurs.  This is essential because without the call
-   to doneReading(), the workspace will never again allow any thread
-   to modify it.
-   <p>
-   To make safe changes to the objects in a workspace, a thread must
-   write-synchronize using the following code:
-   <pre>
-   try {
-   _workspace.getWriteAccess();
-   // ... code that writes
-   } finally {
-   _workspace.doneWriting();
-   }
-   </pre>
-   Again, the call to doneWriting() is essential, or the workspace
-   will remain permanently locked to either reading or writing.
-   <p>
-   Note that it is not necessary to obtain a write lock just to add
-   an item to the workspace directory.  The methods for accessing
-   the directory are all synchronized, so there is no risk of any
-   thread reading an inconsistent state.
+ An instance of Workspace is used for synchronization and version tracking
+ of interdependent groups of objects.  These objects are said to be in the
+ workspace. This is not the same as the <i>container</i> association
+ in Ptolemy II.  A workspace is never returned by a getContainer() method.
+ <p>
+ The workspace provides a rudimentary directory service that can
+ be used to keep track of the objects within it.  It is not required to use
+ it in order to use the workspace for synchronization. Items are added
+ to the directory by calling add().
+ The names of the items in the directory are not required to be unique.
+ <p>
+ The synchronization model of the workspace is a multiple-reader,
+ single-writer model. Any number of threads can simultaneously read the
+ workspace. Only one thread at a time can have write access to the workspace,
+ and while the write access is held, no other thread can get read access.
+ <p>
+ When reading the state of objects in the workspace, a thread must
+ ensure that no other thread is simultaneously modifying the objects in the
+ workspace. To read-synchronize on a workspace, use the following code:
+ <pre>
+ try {
+ _workspace.getReadAccess();
+ // ... code that reads
+ } finally {
+ _workspace.doneReading();
+ }
+ </pre>
+ We assume that the _workspace variable references the workspace, as for example
+ in the NamedObj class. The getReadAccess() method suspends the current thread
+ if another thread is currently modifying the workspace, and otherwise
+ returns immediately. Note that multiple readers can simultaneously have
+ read access. The finally clause is executed even if
+ an exception occurs.  This is essential because without the call
+ to doneReading(), the workspace will never again allow any thread
+ to modify it.
+ <p>
+ To make safe changes to the objects in a workspace, a thread must
+ write-synchronize using the following code:
+ <pre>
+ try {
+ _workspace.getWriteAccess();
+ // ... code that writes
+ } finally {
+ _workspace.doneWriting();
+ }
+ </pre>
+ Again, the call to doneWriting() is essential, or the workspace
+ will remain permanently locked to either reading or writing.
+ <p>
+ Note that it is not necessary to obtain a write lock just to add
+ an item to the workspace directory.  The methods for accessing
+ the directory are all synchronized, so there is no risk of any
+ thread reading an inconsistent state.
 
-   @author Edward A. Lee, Mudit Goel, Lukito Muliadi, Xiaojun Liu
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuxj)
-   @Pt.AcceptedRating Green (liuxj)
-*/
+ @author Edward A. Lee, Mudit Goel, Lukito Muliadi, Xiaojun Liu
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (liuxj)
+ @Pt.AcceptedRating Green (liuxj)
+ */
 public final class Workspace implements Nameable, Serializable {
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
@@ -144,13 +143,13 @@ public final class Workspace implements Nameable, Serializable {
         if (item.workspace() != this) {
             throw new IllegalActionException(this, item,
                     "Cannot add an item to the directory of a workspace "
-                    + "that it is not in.");
+                            + "that it is not in.");
         }
 
         if (item.getContainer() != null) {
             throw new IllegalActionException(this, item,
                     "Cannot add an object with a container to a workspace "
-                    + "directory.");
+                            + "directory.");
         }
 
         if (_directory.indexOf(item) >= 0) {
@@ -229,7 +228,7 @@ public final class Workspace implements Nameable, Serializable {
         if (record == null) {
             throw new InvalidStateException(this,
                     "Workspace: doneReading() called without a prior "
-                    + "matching call to getReadAccess()!");
+                            + "matching call to getReadAccess()!");
         }
 
         if (record.readDepth > 0) {
@@ -250,7 +249,7 @@ public final class Workspace implements Nameable, Serializable {
         } else {
             throw new InvalidStateException(this,
                     "Workspace: doneReading() called without a prior "
-                    + "matching call to getReadAccess()!");
+                            + "matching call to getReadAccess()!");
         }
     }
 
@@ -281,7 +280,7 @@ public final class Workspace implements Nameable, Serializable {
             } else {
                 throw new InvalidStateException(this,
                         "Workspace: doneWriting called without a prior "
-                        + "matching call to getWriteAccess().");
+                                + "matching call to getWriteAccess().");
             }
         } else {
             if (_writeDepth > 0) {
@@ -294,7 +293,7 @@ public final class Workspace implements Nameable, Serializable {
             } else {
                 throw new InvalidStateException(this,
                         "Workspace: doneWriting called without a prior "
-                        + "matching call to getWriteAccess().");
+                                + "matching call to getWriteAccess().");
             }
         }
     }
@@ -478,8 +477,7 @@ public final class Workspace implements Nameable, Serializable {
                 if (_writer == null) {
                     // There are no writers. Are there any readers?
                     if ((_numReaders == 0)
-                            || ((_numReaders == 1)
-                                    && (record.readDepth > 0))) {
+                            || ((_numReaders == 1) && (record.readDepth > 0))) {
                         // No readers
                         // or the only reader is the current thread
                         _writer = current;
@@ -776,8 +774,8 @@ public final class Workspace implements Nameable, Serializable {
         }
 
         if ((record == null) || (count > record.failedReadAttempts)) {
-            throw new InvalidStateException(this,
-                    "Trying to reacquire " + "read permission not in record.");
+            throw new InvalidStateException(this, "Trying to reacquire "
+                    + "read permission not in record.");
         }
 
         // Go into an infinite 'while (true)' loop, and each time through
@@ -789,8 +787,7 @@ public final class Workspace implements Nameable, Serializable {
             // If the current thread has write permission, or if there
             // are no pending write requests, then grant read permission.
             if ((current == _writer)
-                    || ((_waitingWriteRequests == 0)
-                            && (_writer == null))) {
+                    || ((_waitingWriteRequests == 0) && (_writer == null))) {
                 _numReaders++;
                 record.failedReadAttempts -= count;
                 record.readDepth = count;
@@ -802,7 +799,7 @@ public final class Workspace implements Nameable, Serializable {
             } catch (InterruptedException ex) {
                 throw new InternalErrorException(
                         "Thread interrupted while waiting for read access!"
-                        + ex.getMessage());
+                                + ex.getMessage());
             }
         }
     }
@@ -865,7 +862,9 @@ public final class Workspace implements Nameable, Serializable {
     /** @serial The last thread that acquires/releases read permission.
      */
     private transient Thread _lastReader = null;
+
     private transient AccessRecord _lastReaderRecord = null;
+
     private transient HashMap _readerRecords = new HashMap();
 
     /** @serial The number of readers.

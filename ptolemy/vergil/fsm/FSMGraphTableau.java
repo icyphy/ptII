@@ -1,30 +1,30 @@
 /* An FSM graph view for Ptolemy models
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.fsm;
 
 import java.awt.Color;
@@ -41,18 +41,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphTableau
 
 /** An editor tableau for finite state machines.
 
-@author  Steve Neuendorffer and Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
-@Pt.ProposedRating Red (neuendor)
-@Pt.AcceptedRating Red (johnr)
-*/
+ @author  Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class FSMGraphTableau extends Tableau {
     /** Create a new FSM editor tableau with the specified container
      *  and name, with no default library.
@@ -79,8 +78,8 @@ public class FSMGraphTableau extends Tableau {
      *   contains an object with the specified name.
      */
     public FSMGraphTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary)
-            throws IllegalActionException, NameDuplicationException {
+            LibraryAttribute defaultLibrary) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
@@ -168,11 +167,12 @@ public class FSMGraphTableau extends Tableau {
             if (model instanceof FSMActor) {
                 // Check to see whether this factory contains a
                 // default library.
-                LibraryAttribute library = (LibraryAttribute) getAttribute("_library",
-                        LibraryAttribute.class);
+                LibraryAttribute library = (LibraryAttribute) getAttribute(
+                        "_library", LibraryAttribute.class);
 
-                FSMGraphTableau tableau = new FSMGraphTableau((PtolemyEffigy) effigy,
-                        effigy.uniqueName("tableau"), library);
+                FSMGraphTableau tableau = new FSMGraphTableau(
+                        (PtolemyEffigy) effigy, effigy.uniqueName("tableau"),
+                        library);
                 return tableau;
             } else {
                 return null;

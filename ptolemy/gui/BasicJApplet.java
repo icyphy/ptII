@@ -1,30 +1,30 @@
 /* Base class for swing applets.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.gui;
 
 import java.awt.Color;
@@ -35,31 +35,30 @@ import javax.swing.JApplet;
 
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// BasicJApplet
 
 /**
-   Base class for swing applets.  This class provides basic management
-   for background colors, a standardized mechanism for reporting errors
-   and exceptions, and a minimal amount of information about the
-   applet.
-   <p>
-   The applet parameter is:
-   <ul>
-   <li>
-   <i>background</i>: The background color, typically given as a hex
-   number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
-   component, <i>gg</i> gives the green component, and <i>bb</i> gives
-   the blue component.
-   </ul>
+ Base class for swing applets.  This class provides basic management
+ for background colors, a standardized mechanism for reporting errors
+ and exceptions, and a minimal amount of information about the
+ applet.
+ <p>
+ The applet parameter is:
+ <ul>
+ <li>
+ <i>background</i>: The background color, typically given as a hex
+ number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
+ component, <i>gg</i> gives the green component, and <i>bb</i> gives
+ the blue component.
+ </ul>
 
-   @author  Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author  Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class BasicJApplet extends JApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -69,8 +68,8 @@ public class BasicJApplet extends JApplet {
      */
     public String getAppletInfo() {
         return "Ptolemy II swing-based applet.\n"
-            + "Ptolemy II comes from UC Berkeley, Department of EECS.\n"
-            + "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
+                + "Ptolemy II comes from UC Berkeley, Department of EECS.\n"
+                + "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
     }
 
     /** Describe the applet parameters. Derived classes should override
@@ -79,13 +78,8 @@ public class BasicJApplet extends JApplet {
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String[][] pinfo = {
-            {
-                "background",
-                "#RRGGBB",
-                "color of the background"
-            },
-        };
+        String[][] pinfo = { { "background", "#RRGGBB",
+                "color of the background" }, };
         return pinfo;
     }
 
@@ -184,8 +178,7 @@ public class BasicJApplet extends JApplet {
      *  @param second The second string array.
      *  @return A concatenated string array.
      */
-    protected String[][] _concatStringArrays(String[][] first,
-            String[][] second) {
+    protected String[][] _concatStringArrays(String[][] first, String[][] second) {
         String[][] newInfo = new String[first.length + second.length][];
         System.arraycopy(first, 0, newInfo, 0, first.length);
         System.arraycopy(second, 0, newInfo, first.length, second.length);

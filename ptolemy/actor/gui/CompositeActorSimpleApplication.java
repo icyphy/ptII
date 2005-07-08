@@ -1,31 +1,31 @@
 /* A Ptolemy application that instantiates class names given on the command
-   line.
+ line.
 
-   Copyright (c) 2004-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.util.Iterator;
@@ -42,43 +42,42 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.moml.MoMLParser;
 
-
 /////////////////////////////////////////////////////////////////
 //// CompositeActorSimpleApplication
 
 /**
-   This application creates one or more Ptolemy II models given a
-   classname on the command line, and then executes those models, each in
-   its own thread.  Each specified class should be derived from
-   CompositeActor, and should have a constructor that takes a single
-   argument, an instance of Workspace.  If the model does not contain
-   a manager, then one will be created for it. The model is not displayed,
-   models that have actors that extend Placeable should instead use
-   {@link ptolemy.actor.gui.CompositeActorApplication}.
-   <p>
-   The command-line arguments can also set parameter values for any
-   parameter in the models, with the name given relative to the top-level
-   entity.  For example, to specify the iteration count in an SDF model,
-   you can invoke this on the command line as follows:
-   <pre>
-   CLASSPATH=$PTII
-   export CLASSPATH
-   java ptolemy.actor.gui.CompositeActorSimpleApplication \
-   -director.iterations 1000 \
-   -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
-   </pre>
-   This assumes that the model given by the specified class name has a director
-   named "director" with a parameter named "iterations".  If more than
-   one model is given on the command line, then the parameter values will
-   be set for all models that have such a parameter.
+ This application creates one or more Ptolemy II models given a
+ classname on the command line, and then executes those models, each in
+ its own thread.  Each specified class should be derived from
+ CompositeActor, and should have a constructor that takes a single
+ argument, an instance of Workspace.  If the model does not contain
+ a manager, then one will be created for it. The model is not displayed,
+ models that have actors that extend Placeable should instead use
+ {@link ptolemy.actor.gui.CompositeActorApplication}.
+ <p>
+ The command-line arguments can also set parameter values for any
+ parameter in the models, with the name given relative to the top-level
+ entity.  For example, to specify the iteration count in an SDF model,
+ you can invoke this on the command line as follows:
+ <pre>
+ CLASSPATH=$PTII
+ export CLASSPATH
+ java ptolemy.actor.gui.CompositeActorSimpleApplication \
+ -director.iterations 1000 \
+ -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
+ </pre>
+ This assumes that the model given by the specified class name has a director
+ named "director" with a parameter named "iterations".  If more than
+ one model is given on the command line, then the parameter values will
+ be set for all models that have such a parameter.
 
-   @see ptolemy.actor.gui.CompositeActorApplication
-   @author Christopher Brooks
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (vogel)
-*/
+ @see ptolemy.actor.gui.CompositeActorApplication
+ @author Christopher Brooks
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (vogel)
+ */
 public class CompositeActorSimpleApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -180,8 +179,8 @@ public class CompositeActorSimpleApplication {
             if (object instanceof Placeable) {
                 throw new IllegalActionException(
                         "CompositeActorSimpleApplication does not support "
-                        + "actors that are instances of placeable, "
-                        + "object was: " + object);
+                                + "actors that are instances of placeable, "
+                                + "object was: " + object);
             }
         }
 
@@ -255,8 +254,10 @@ public class CompositeActorSimpleApplication {
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version " + VersionAttribute.CURRENT_VERSION
-                    + ", Build $Id$");
+            System.out
+                    .println("Version "
+                            + VersionAttribute.CURRENT_VERSION
+                            + ", Build $Id$");
 
             // quit the program if the user asked for the version
             // Don't call System.exit(0) here, it will break the test suites
@@ -268,13 +269,13 @@ public class CompositeActorSimpleApplication {
 
                 MoMLParser parser = new MoMLParser();
                 String string = "<entity name=\"toplevel\" class=\"" + arg
-                    + "\"/>";
+                        + "\"/>";
                 CompositeActor model = (CompositeActor) parser.parse(string);
 
                 // Temporary hack because cloning doesn't properly clone
                 // type constraints.
                 CompositeActor modelClass = (CompositeActor) parser
-                    .searchForClass(arg, model.getSource());
+                        .searchForClass(arg, model.getSource());
 
                 if (modelClass != null) {
                     model = modelClass;
@@ -375,7 +376,7 @@ public class CompositeActorSimpleApplication {
      */
     protected String _usage() {
         String result = "Usage: " + _commandTemplate + "\n\n"
-            + "Options that take values:\n";
+                + "Options that take values:\n";
 
         int i;
 
@@ -397,23 +398,11 @@ public class CompositeActorSimpleApplication {
     ////                         protected variables               ////
 
     /** The command-line options that are either present or not. */
-    protected String[] _commandFlags = {
-        "-help",
-        "-test",
-        "-version",
-    };
+    protected String[] _commandFlags = { "-help", "-test", "-version", };
 
     /** The command-line options that take arguments. */
-    protected String[][] _commandOptions = {
-        {
-            "-class",
-            "<classname>"
-        },
-        {
-            "-<parameter name>",
-            "<parameter value>"
-        },
-    };
+    protected String[][] _commandOptions = { { "-class", "<classname>" },
+            { "-<parameter name>", "<parameter value>" }, };
 
     /** The form of the command line. */
     protected String _commandTemplate = "ptolemy [ options ]";

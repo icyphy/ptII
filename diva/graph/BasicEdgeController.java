@@ -1,31 +1,31 @@
 /*
-  @Copyright (c) 1998-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package diva.graph;
 
 import java.awt.geom.Rectangle2D;
@@ -49,7 +49,6 @@ import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionModel;
 
-
 /**
  * A basic implementation of EdgeController, which works with
  * graphs that have edges connecting simple nodes.
@@ -66,8 +65,11 @@ public class BasicEdgeController implements EdgeController {
     /** The connector target
      */
     private ConnectorTarget _connectorTarget;
+
     private Interactor _interactor;
+
     private EdgeRenderer _renderer;
+
     private GraphController _controller;
 
     /**
@@ -98,48 +100,48 @@ public class BasicEdgeController implements EdgeController {
 
         // Create and set up the target for connectors
         PerimeterTarget ct = new PerimeterTarget() {
-                // Accept the head if the model graph model allows it.
-                public boolean acceptHead(Connector c, Figure f) {
-                    Object node = f.getUserObject();
-                    Object edge = c.getUserObject();
-                    MutableGraphModel model = (MutableGraphModel) _controller
+            // Accept the head if the model graph model allows it.
+            public boolean acceptHead(Connector c, Figure f) {
+                Object node = f.getUserObject();
+                Object edge = c.getUserObject();
+                MutableGraphModel model = (MutableGraphModel) _controller
                         .getGraphModel();
 
-                    if (model.isNode(node) && model.isEdge(edge)
-                            && model.acceptHead(edge, node)) {
-                        return super.acceptHead(c, f);
-                    } else {
-                        return false;
-                    }
+                if (model.isNode(node) && model.isEdge(edge)
+                        && model.acceptHead(edge, node)) {
+                    return super.acceptHead(c, f);
+                } else {
+                    return false;
                 }
+            }
 
-                // Accept the tail if the model graph model allows it.
-                public boolean acceptTail(Connector c, Figure f) {
-                    Object node = f.getUserObject();
-                    Object edge = c.getUserObject();
-                    MutableGraphModel model = (MutableGraphModel) _controller
+            // Accept the tail if the model graph model allows it.
+            public boolean acceptTail(Connector c, Figure f) {
+                Object node = f.getUserObject();
+                Object edge = c.getUserObject();
+                MutableGraphModel model = (MutableGraphModel) _controller
                         .getGraphModel();
 
-                    if (model.isNode(node) && model.isEdge(edge)
-                            && model.acceptTail(edge, node)) {
-                        return super.acceptTail(c, f);
-                    } else {
-                        return false;
-                    }
+                if (model.isNode(node) && model.isEdge(edge)
+                        && model.acceptTail(edge, node)) {
+                    return super.acceptTail(c, f);
+                } else {
+                    return false;
                 }
+            }
 
-                /** If we have any terminals, then return the connection
-                 *  site of the terminal instead of a new perimeter site.
-                 */
-                public Site getHeadSite(Figure f, double x, double y) {
-                    if (f instanceof Terminal) {
-                        Site site = ((Terminal) f).getConnectSite();
-                        return site;
-                    } else {
-                        return super.getHeadSite(f, x, y);
-                    }
+            /** If we have any terminals, then return the connection
+             *  site of the terminal instead of a new perimeter site.
+             */
+            public Site getHeadSite(Figure f, double x, double y) {
+                if (f instanceof Terminal) {
+                    Site site = ((Terminal) f).getConnectSite();
+                    return site;
+                } else {
+                    return super.getHeadSite(f, x, y);
                 }
-            };
+            }
+        };
 
         setConnectorTarget(ct);
     }
@@ -153,7 +155,8 @@ public class BasicEdgeController implements EdgeController {
      * valid site on the node's figure.
      */
     public void addEdge(Object edge, Object node, int end, double x, double y) {
-        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller
+                .getGraphModel();
         Figure nf = _controller.getFigure(node);
         FigureLayer layer = _controller.getGraphPane().getForegroundLayer();
         Site headSite;
@@ -203,7 +206,8 @@ public class BasicEdgeController implements EdgeController {
      */
     public void addEdge(Object edge, Object tail, Object head) {
         // Connect the edge
-        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller
+                .getGraphModel();
         model.connectEdge(_controller, edge, tail, head);
 
         drawEdge(edge);
@@ -293,7 +297,7 @@ public class BasicEdgeController implements EdgeController {
         // Create the figure
         Connector c = render(edge, layer, tailSite, headSite);
         _controller.dispatch(new GraphViewEvent(this,
-                                     GraphViewEvent.EDGE_DRAWN, edge));
+                GraphViewEvent.EDGE_DRAWN, edge));
         return c;
     }
 
@@ -331,7 +335,8 @@ public class BasicEdgeController implements EdgeController {
     public void removeEdge(Object edge) {
         clearEdge(edge);
 
-        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller
+                .getGraphModel();
         model.setEdgeHead(_controller, edge, null);
         model.setEdgeTail(_controller, edge, null);
         _controller.getGraphPane().repaint();
@@ -349,9 +354,9 @@ public class BasicEdgeController implements EdgeController {
         // FIXME: This is rather dangerous because it assumes a
         // basic selection renderer.
         BasicSelectionRenderer selectionRenderer = (BasicSelectionRenderer) ((EdgeInteractor) _interactor)
-            .getSelectionRenderer();
+                .getSelectionRenderer();
         ConnectorManipulator manipulator = (ConnectorManipulator) selectionRenderer
-            .getDecorator();
+                .getDecorator();
         manipulator.setConnectorTarget(t);
     }
 
@@ -399,7 +404,7 @@ public class BasicEdgeController implements EdgeController {
             Object edge = c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
             MutableGraphModel model = (MutableGraphModel) _controller
-                .getGraphModel();
+                    .getGraphModel();
 
             try {
                 switch (evt.getEnd()) {

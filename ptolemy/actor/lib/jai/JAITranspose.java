@@ -1,31 +1,31 @@
 /* An actor that transposes a javax.media.jai.RenderedOp
 
-@Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.jai;
 
 import javax.media.jai.JAI;
@@ -41,27 +41,26 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// JAITranspose
 
 /**
-   Transpose a RenderedOp.  The user can choose among six different
-   transpositions.
+ Transpose a RenderedOp.  The user can choose among six different
+ transpositions.
 
-   <i>flip antidiagonal</i> flips an image along the antidiagonal.
-   <i>flip diagonal</i> flips an image along the diagonal.
-   <i>flip horizontal</i> flips an image along the horizontal.
-   <i>flip vertical</i> flips an image along the vertical.
-   <i>rotate 90</i>, <i>rotate 180</i>, <i>rotate 270</i>, rotate an image
-   90, 180, and 270 degrees respectively.
+ <i>flip antidiagonal</i> flips an image along the antidiagonal.
+ <i>flip diagonal</i> flips an image along the diagonal.
+ <i>flip horizontal</i> flips an image along the horizontal.
+ <i>flip vertical</i> flips an image along the vertical.
+ <i>rotate 90</i>, <i>rotate 180</i>, <i>rotate 270</i>, rotate an image
+ 90, 180, and 270 degrees respectively.
 
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author James Yeh
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class JAITranspose extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -145,11 +144,18 @@ public class JAITranspose extends Transformer {
 
     /** An indicator for the type of transposition to use */
     private TransposeType _transposeType;
+
     private static final int _FLIP_ANTIDIAGONAL = 3;
+
     private static final int _FLIP_DIAGONAL = 2;
+
     private static final int _FLIP_HORIZONTAL = 1;
+
     private static final int _FLIP_VERTICAL = 0;
+
     private static final int _ROTATE_90 = 4;
+
     private static final int _ROTATE_180 = 5;
+
     private static final int _ROTATE_270 = 6;
 }

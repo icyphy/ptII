@@ -1,30 +1,30 @@
 /* An actor that reads in audio samples and plays the audio data.
 
-@Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.javasound;
 
 import java.io.IOException;
@@ -39,70 +39,69 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.media.javasound.LiveSound;
 
-
 /////////////////////////////////////////////////////////
 //// AudioPlayer
 
 /**
-   This actor reads audio samples and plays them. Specifically,
-   the input stream that this actor reads is interpreted as
-   consisting of audio samples. This actor writes this stream
-   of audio samples to the audio output port of the computer,
-   which typically consists of the computer speaker or the
-   headphones output. The audio samples that are supplied to
-   this actor should be doubles in the range [-1.0, 1.0]. Thus,
-   the input port of this actor is of type DoubleToken. Any input
-   tokens that are outside of the valid range will be hard-clipped
-   to fall within the range [-1.0, 1.0] before they are written
-   to the audio output port of the computer.
-   <p>
-   This actor should be fired often enough to prevent underflow of
-   the internal audio playback buffer. Underflow should be avoided,
-   since it will result in audio discontinuities (heard as clicks)
-   in the output. No exception will be thrown if underflow occurs.
-   <p>
-   The following parameters should be set accordingly. In all cases,
-   an exception is thrown if an illegal parameter value is used.
-   Note that these parameters may be changed while audio capture is
-   active. If this actor is used in conjunction with an AudioCapture
-   actor, changing a parameter of this actor will cause the
-   corresponding parameter value of the AudioCapture actor to
-   automatically be set to the same value. This behavior is required
-   because the AudioCapture and AudioPlayer actors both share access
-   to the audio hardware, which is associated with a single sample rate,
-   bit resolution, and number of channels.
-   <p>
-   <ul>
-   <li><i>sampleRate</i> should be set to desired sample rate, in Hz.
-   The default value is 8000. Allowable values are 8000, 11025,
-   22050, 44100, and 48000 Hz. Some sound cards support 96000 Hz
-   operation, but this is not supported in Java.
-   <li><i>bitsPerSample</i> should be set to desired bit
-   resolution. The default value is 16. Allowable values are 8 and 16.
-   Some sound cards support 20 and 24 bit audio, but this is not
-   supported in Java.
-   <li><i>channels</i> should be set to desired number of audio
-   channels. Allowable values are 1 (for mono) and 2 (for stereo).
-   The default value is 1. Some sound cards support more than two
-   audio channels, but this is not supported in Java.
-   </ul>
-   <p>
-   It should be noted that at most one AudioCapture and one AudioPlayer
-   actor may be used simultaneously. Otherwise, an exception will
-   occur. This restriction may be lifted in a future version of
-   this actor.
-   <p>
-   Note: Requires Java 2 v1.3.0 or later.
-   @author  Brian K. Vogel, Steve Neuendorffer
-   @version  $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (chf)
-   @see ptolemy.media.javasound.LiveSound
-   @see AudioCapture
-   @see AudioReader
-   @see AudioWriter
-*/
+ This actor reads audio samples and plays them. Specifically,
+ the input stream that this actor reads is interpreted as
+ consisting of audio samples. This actor writes this stream
+ of audio samples to the audio output port of the computer,
+ which typically consists of the computer speaker or the
+ headphones output. The audio samples that are supplied to
+ this actor should be doubles in the range [-1.0, 1.0]. Thus,
+ the input port of this actor is of type DoubleToken. Any input
+ tokens that are outside of the valid range will be hard-clipped
+ to fall within the range [-1.0, 1.0] before they are written
+ to the audio output port of the computer.
+ <p>
+ This actor should be fired often enough to prevent underflow of
+ the internal audio playback buffer. Underflow should be avoided,
+ since it will result in audio discontinuities (heard as clicks)
+ in the output. No exception will be thrown if underflow occurs.
+ <p>
+ The following parameters should be set accordingly. In all cases,
+ an exception is thrown if an illegal parameter value is used.
+ Note that these parameters may be changed while audio capture is
+ active. If this actor is used in conjunction with an AudioCapture
+ actor, changing a parameter of this actor will cause the
+ corresponding parameter value of the AudioCapture actor to
+ automatically be set to the same value. This behavior is required
+ because the AudioCapture and AudioPlayer actors both share access
+ to the audio hardware, which is associated with a single sample rate,
+ bit resolution, and number of channels.
+ <p>
+ <ul>
+ <li><i>sampleRate</i> should be set to desired sample rate, in Hz.
+ The default value is 8000. Allowable values are 8000, 11025,
+ 22050, 44100, and 48000 Hz. Some sound cards support 96000 Hz
+ operation, but this is not supported in Java.
+ <li><i>bitsPerSample</i> should be set to desired bit
+ resolution. The default value is 16. Allowable values are 8 and 16.
+ Some sound cards support 20 and 24 bit audio, but this is not
+ supported in Java.
+ <li><i>channels</i> should be set to desired number of audio
+ channels. Allowable values are 1 (for mono) and 2 (for stereo).
+ The default value is 1. Some sound cards support more than two
+ audio channels, but this is not supported in Java.
+ </ul>
+ <p>
+ It should be noted that at most one AudioCapture and one AudioPlayer
+ actor may be used simultaneously. Otherwise, an exception will
+ occur. This restriction may be lifted in a future version of
+ this actor.
+ <p>
+ Note: Requires Java 2 v1.3.0 or later.
+ @author  Brian K. Vogel, Steve Neuendorffer
+ @version  $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (chf)
+ @see ptolemy.media.javasound.LiveSound
+ @see AudioCapture
+ @see AudioReader
+ @see AudioWriter
+ */
 public class AudioPlayer extends LiveSoundActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -119,7 +118,8 @@ public class AudioPlayer extends LiveSoundActor {
         input.setTypeEquals(BaseType.DOUBLE);
         input.setMultiport(true);
 
-        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input,
+                "tokenConsumptionRate");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setExpression("transferSize");
     }
@@ -152,11 +152,12 @@ public class AudioPlayer extends LiveSoundActor {
         // Stop playback. Close any open sound files. Free
         // up audio system resources.
         if (LiveSound.isPlaybackActive()) {
-            throw new IllegalActionException(this,
+            throw new IllegalActionException(
+                    this,
                     "This actor cannot start audio playback because "
-                    + "another actor currently has access to the audio "
-                    + "playback resource. Only one AudioPlayer actor may "
-                    + "be used at a time.");
+                            + "another actor currently has access to the audio "
+                            + "playback resource. Only one AudioPlayer actor may "
+                            + "be used at a time.");
         }
 
         try {
@@ -212,7 +213,7 @@ public class AudioPlayer extends LiveSoundActor {
             // Convert to doubles.
             for (int element = 0; element < count; element++) {
                 _audioPutArray[j][element] = ((DoubleToken) inputArray[element])
-                    .doubleValue();
+                        .doubleValue();
             }
         }
 

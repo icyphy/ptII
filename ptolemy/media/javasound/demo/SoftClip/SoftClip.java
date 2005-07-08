@@ -1,53 +1,52 @@
 /* A simple application that demonstrates the use of LiveSound by performing
-   soft clipping in real-time.
+ soft clipping in real-time.
 
-   Copyright (c) 2000-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.media.javasound.demo.SoftClip;
 
 import ptolemy.media.javasound.LiveSound;
 
-
 ////////////////////////////////////////////////////
 
 /**
-   A simple application that demonstrates the use of LiveSound by
-   performing soft clipping in real-time.  This application performs
-   real-time capture, processing, and playback of audio data.  Sound
-   samples are captured from the computer's audio input port. The
-   processing consists of a simple soft-clipping function (the arc
-   tangent is used). The soft-clipped audio data is then played out
-   the speaker.
+ A simple application that demonstrates the use of LiveSound by
+ performing soft clipping in real-time.  This application performs
+ real-time capture, processing, and playback of audio data.  Sound
+ samples are captured from the computer's audio input port. The
+ processing consists of a simple soft-clipping function (the arc
+ tangent is used). The soft-clipped audio data is then played out
+ the speaker.
 
-   @author Brian K. Vogel
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (vogel)
-   @Pt.AcceptedRating Red (vogel)
-*/
+ @author Brian K. Vogel
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (vogel)
+ @Pt.AcceptedRating Red (vogel)
+ */
 public class SoftClip {
     public static void main(String[] args) {
         // Create a sound capture object that captures audio
@@ -71,22 +70,21 @@ public class SoftClip {
         int getSamplesSize = 256;
 
         /*
-          SoundCapture soundCapture =
-          new SoundCapture(sampleRate, sampleSizeInBits,
-          channels, inBufferSize,
-          getSamplesSize);
-        */
+         SoundCapture soundCapture =
+         new SoundCapture(sampleRate, sampleSizeInBits,
+         channels, inBufferSize,
+         getSamplesSize);
+         */
 
         // Construct a sound playback object that plays audio
         //through the computer's speaker.
-
         /*
-          SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
-          sampleSizeInBits,
-          channels,
-          outBufferSize,
-          putSamplesSize);
-        */
+         SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
+         sampleSizeInBits,
+         channels,
+         outBufferSize,
+         putSamplesSize);
+         */
 
         // Initialize and begin real-time capture and playback.
         try {
@@ -137,7 +135,8 @@ public class SoftClip {
                     for (int i = 0; i < getSamplesSize; i++) {
                         //  ********** PROCESSING CODE HERE **********
                         // Perform soft clipping using the arc tangent.
-                        capturedSamplesArray[j][i] = java.lang.Math.atan(capturedSamplesArray[j][i]) * 0.6;
+                        capturedSamplesArray[j][i] = java.lang.Math
+                                .atan(capturedSamplesArray[j][i]) * 0.6;
                     }
                 }
 

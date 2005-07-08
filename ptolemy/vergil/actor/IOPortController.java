@@ -1,29 +1,29 @@
 /* The node controller for ports contained in entities.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
@@ -66,28 +66,27 @@ import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 import diva.util.java2d.ShapeUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// IOPortController
 
 /**
-   This class provides interaction with nodes that represent Ptolemy II
-   ports on an actor.  It provides a double click binding and context
-   menu entry to edit the parameters of the port ("Configure") and a
-   command to get documentation.
-   It can have one of two access levels, FULL or PARTIAL.
-   If the access level is FULL, the the context menu also
-   contains a command to rename the node.
-   Note that whether the port is an input or output or multiport cannot
-   be controlled via this interface.  The "Configure Ports" command of
-   the container should be invoked instead.
+ This class provides interaction with nodes that represent Ptolemy II
+ ports on an actor.  It provides a double click binding and context
+ menu entry to edit the parameters of the port ("Configure") and a
+ command to get documentation.
+ It can have one of two access levels, FULL or PARTIAL.
+ If the access level is FULL, the the context menu also
+ contains a command to rename the node.
+ Note that whether the port is an input or output or multiport cannot
+ be controlled via this interface.  The "Configure Ports" command of
+ the container should be invoked instead.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class IOPortController extends AttributeController {
     /** Create a port controller associated with the specified graph
      *  controller.  The controller is given full access.
@@ -108,7 +107,7 @@ public class IOPortController extends AttributeController {
 
         // "Listen to Actor"
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                new ListenToPortAction()));
+                new ListenToPortAction()));
 
         // Ports of entities do not use a selection interactor with
         // the same selection model as the rest of the first level figures.
@@ -205,8 +204,8 @@ public class IOPortController extends AttributeController {
                 fill = Color.black;
             }
 
-            StringAttribute _colorAttr = (StringAttribute) (port.getAttribute(
-                                                                    "_color"));
+            StringAttribute _colorAttr = (StringAttribute) (port
+                    .getAttribute("_color"));
 
             if (_colorAttr != null) {
                 String _color = _colorAttr.getExpression();
@@ -214,14 +213,14 @@ public class IOPortController extends AttributeController {
             }
 
             ActorGraphModel model = (ActorGraphModel) getController()
-                .getGraphModel();
+                    .getGraphModel();
 
             // Wrap the figure in a TerminalFigure to set the direction that
             // connectors exit the port. Note that this direction is the
             // same direction that is used to layout the port in the
             // Entity Controller.
-            StringAttribute cardinal = (StringAttribute) port.getAttribute(
-                    "_cardinal");
+            StringAttribute cardinal = (StringAttribute) port
+                    .getAttribute("_cardinal");
 
             int direction;
             double rotation;
@@ -277,28 +276,28 @@ public class IOPortController extends AttributeController {
             shape = ShapeUtilities.transformModify(shape, transform);
 
             Figure figure = new BasicFigure(shape, fill, (float) 1.5) {
-                    // Override this because we want to show the type.
-                    // It doesn't work to set it once because the type
-                    // has not been resolved, and anyway, it may
-                    // change.
-                    public String getToolTipText() {
-                        String tipText = port.getName();
-                        StringAttribute _explAttr = (StringAttribute) (port
-                                .getAttribute("_explanation"));
+                // Override this because we want to show the type.
+                // It doesn't work to set it once because the type
+                // has not been resolved, and anyway, it may
+                // change.
+                public String getToolTipText() {
+                    String tipText = port.getName();
+                    StringAttribute _explAttr = (StringAttribute) (port
+                            .getAttribute("_explanation"));
 
-                        if (_explAttr != null) {
-                            tipText = _explAttr.getExpression();
-                        } else if (port instanceof Typeable) {
-                            try {
-                                tipText = tipText + ", type:"
+                    if (_explAttr != null) {
+                        tipText = _explAttr.getExpression();
+                    } else if (port instanceof Typeable) {
+                        try {
+                            tipText = tipText + ", type:"
                                     + ((Typeable) port).getType();
-                            } catch (IllegalActionException ex) {
-                            }
+                        } catch (IllegalActionException ex) {
                         }
-
-                        return tipText;
                     }
-                };
+
+                    return tipText;
+                }
+            };
 
             // Have to do this also, or the awt doesn't display any
             // tooltip at all.
@@ -321,8 +320,8 @@ public class IOPortController extends AttributeController {
 
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
-                MessageHandler.error(
-                        "Cannot listen to port without a configuration.");
+                MessageHandler
+                        .error("Cannot listen to port without a configuration.");
                 return;
             }
 
@@ -344,11 +343,11 @@ public class IOPortController extends AttributeController {
                 // child of the model window.  So, we create a new text
                 // effigy inside this one.  Specify model's effigy as
                 // a container for this new effigy.
-                Effigy textEffigy = new TextEffigy(effigy,
-                        effigy.uniqueName("debugListener" + object.getName()));
+                Effigy textEffigy = new TextEffigy(effigy, effigy
+                        .uniqueName("debugListener" + object.getName()));
 
-                DebugListenerTableau debugTableau = new DebugListenerTableau(textEffigy,
-                        textEffigy.uniqueName("debugListener"
+                DebugListenerTableau debugTableau = new DebugListenerTableau(
+                        textEffigy, textEffigy.uniqueName("debugListener"
                                 + object.getName()));
                 debugTableau.setDebuggable(object);
             } catch (KernelException ex) {

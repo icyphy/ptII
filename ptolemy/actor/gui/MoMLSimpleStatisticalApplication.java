@@ -1,31 +1,31 @@
 /* An application that executes non-graphical
-   models specified on the command line and prints out statistics.
+ models specified on the command line and prints out statistics.
 
-   Copyright (c) 2001-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.lang.reflect.Constructor;
@@ -47,35 +47,33 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.StreamErrorHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MoMLSimpleStatisticalApplication
 
 /** A simple application that reads in a .xml file as a command
-    line argument, runs it and prints out time and memory statistics
+ line argument, runs it and prints out time and memory statistics
 
-    <p>MoMLApplication sets the look and feel, which starts up Swing,
-    so we can't use MoMLApplication for non-graphical simulations.
+ <p>MoMLApplication sets the look and feel, which starts up Swing,
+ so we can't use MoMLApplication for non-graphical simulations.
 
-    <p>We implement the ChangeListener interface so that this
-    class will get exceptions thrown by failed change requests.
+ <p>We implement the ChangeListener interface so that this
+ class will get exceptions thrown by failed change requests.
 
-    <p>Below is an example use of this class:
-    <pre>
-    java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication -iterations 2 ../../../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
-    </pre>
+ <p>Below is an example use of this class:
+ <pre>
+ java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication -iterations 2 ../../../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
+ </pre>
 
-    @author Christopher Hylands
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (eal)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     /** Parse the xml file and run it.
      */
-    public MoMLSimpleStatisticalApplication(String[] args)
-            throws Exception {
+    public MoMLSimpleStatisticalApplication(String[] args) throws Exception {
         _parser = new MoMLParser();
 
         MoMLParser.setErrorHandler(new StreamErrorHandler());
@@ -166,8 +164,10 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version " + VersionAttribute.CURRENT_VERSION
-                    + ", Build $Id$");
+            System.out
+                    .println("Version "
+                            + VersionAttribute.CURRENT_VERSION
+                            + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
             System.exit(0);
@@ -317,7 +317,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
      */
     protected String _usage() {
         String result = "Usage: " + _commandTemplate + "\n\n"
-            + "Options that take values:\n";
+                + "Options that take values:\n";
 
         int i;
 
@@ -339,23 +339,11 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     ////                         protected variables               ////
 
     /** The command-line options that are either present or not. */
-    protected String[] _commandFlags = {
-        "-help",
-        "-test",
-        "-version",
-    };
+    protected String[] _commandFlags = { "-help", "-test", "-version", };
 
     /** The command-line options that take arguments. */
-    protected String[][] _commandOptions = {
-        {
-            "-class",
-            "<classname>"
-        },
-        {
-            "-<parameter name>",
-            "<parameter value>"
-        },
-    };
+    protected String[][] _commandOptions = { { "-class", "<classname>" },
+            { "-<parameter name>", "<parameter value>" }, };
 
     /** The form of the command line. */
     protected String _commandTemplate = "java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication [ options ] [file ...]";

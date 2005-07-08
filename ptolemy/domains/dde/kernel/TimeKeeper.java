@@ -1,31 +1,31 @@
 /* A TimeKeeper manages an actor's local value of time in the DDE domain.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.dde.kernel;
 
 import java.util.Collections;
@@ -40,57 +40,56 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TimeKeeper
 
 /**
-   A TimeKeeper manages an actor's local value of time in the DDE domain.
-   A TimeKeeper is instantiated by a DDEThread and is used by the thread
-   to manage time for the thread's actor. A TimeKeeper has a list of
-   DDEReceivers that are contained by the actor that the thread controls.
-   As tokens flow through the DDEReceivers, the TimeKeeper keeps track
-   of the advancement of time local to the actor.
-   <P>
-   DDEReceivers each have three important variables: <I>receiver time</I>,
-   <I>last time</I> and <I>priority</I>. The receiver time of a DDEReceiver
-   is equal to the time of the oldest event that resides in the receiver.
-   The last time is equal to the time of the newest event residing on the
-   receiver.
-   <P>
-   A TimeKeeper manages the DDEReceivers of its actor by keeping track of
-   the receiver with the minimum receiver time. The actor is allowed to
-   consume a token from a receiver if that receiver has the unique, minimum
-   receiver time of all receivers managed by the TimeKeeper. The TimeKeeper
-   keeps track of its receivers' priorities as well. The receiver with the
-   highest priority is enabled to have its token consumed if the receiver
-   shares a common minimum receive time with one or more additional receivers.
-   <P>
-   The receiver priorities are set using the method _setReceiverPriorities() in
-   the following manner. All of the input receivers associated with a given
-   TimeKeeper are prioritized according to the inverse order in which they
-   were connected in the model topology. I.e., if two input receivers (rA
-   and rB) of an actor are connected such that receiver rA is connected
-   before receiver rB, then rB will have a higher priority than rA.
-   <P>
-   The above approach provides each receiver associated with a given
-   TimeKeeper with a unique priority, such that the set of receiver
-   priorities of the associated TimeKeeper is totally ordered.
-   <P>
-   A TimeKeeper manages the ordering of receivers by keeping track of
-   its receivers and their corresponding receiver times and priorities.
-   As tokens are placed in and taken out of the receivers of an actor,
-   the TimeKeeper's receiver list is updated. The receiver list is sorted
-   by ReceiverComparator. This same information allows the TimeKeeper to
-   determine what the current time is local to the actor.
+ A TimeKeeper manages an actor's local value of time in the DDE domain.
+ A TimeKeeper is instantiated by a DDEThread and is used by the thread
+ to manage time for the thread's actor. A TimeKeeper has a list of
+ DDEReceivers that are contained by the actor that the thread controls.
+ As tokens flow through the DDEReceivers, the TimeKeeper keeps track
+ of the advancement of time local to the actor.
+ <P>
+ DDEReceivers each have three important variables: <I>receiver time</I>,
+ <I>last time</I> and <I>priority</I>. The receiver time of a DDEReceiver
+ is equal to the time of the oldest event that resides in the receiver.
+ The last time is equal to the time of the newest event residing on the
+ receiver.
+ <P>
+ A TimeKeeper manages the DDEReceivers of its actor by keeping track of
+ the receiver with the minimum receiver time. The actor is allowed to
+ consume a token from a receiver if that receiver has the unique, minimum
+ receiver time of all receivers managed by the TimeKeeper. The TimeKeeper
+ keeps track of its receivers' priorities as well. The receiver with the
+ highest priority is enabled to have its token consumed if the receiver
+ shares a common minimum receive time with one or more additional receivers.
+ <P>
+ The receiver priorities are set using the method _setReceiverPriorities() in
+ the following manner. All of the input receivers associated with a given
+ TimeKeeper are prioritized according to the inverse order in which they
+ were connected in the model topology. I.e., if two input receivers (rA
+ and rB) of an actor are connected such that receiver rA is connected
+ before receiver rB, then rB will have a higher priority than rA.
+ <P>
+ The above approach provides each receiver associated with a given
+ TimeKeeper with a unique priority, such that the set of receiver
+ priorities of the associated TimeKeeper is totally ordered.
+ <P>
+ A TimeKeeper manages the ordering of receivers by keeping track of
+ its receivers and their corresponding receiver times and priorities.
+ As tokens are placed in and taken out of the receivers of an actor,
+ the TimeKeeper's receiver list is updated. The receiver list is sorted
+ by ReceiverComparator. This same information allows the TimeKeeper to
+ determine what the current time is local to the actor.
 
-   @author John S. Davis II
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Green (davisj)
-   @Pt.AcceptedRating Green (kienhuis)
-   @see ptolemy.domains.dde.kernel.DDEThread
-*/
+ @author John S. Davis II
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Green (davisj)
+ @Pt.AcceptedRating Green (kienhuis)
+ @see ptolemy.domains.dde.kernel.DDEThread
+ */
 public class TimeKeeper {
     /** Construct a time keeper to manage the local time of an actor
      *  in the DDE domain. Set the receiver priorities of all receivers
@@ -162,7 +161,7 @@ public class TimeKeeper {
         }
 
         return ((PrioritizedTimedQueue) _receiverList.getFirst())
-            .getReceiverTime();
+                .getReceiverTime();
     }
 
     /** Return the current value of the output time associated with
@@ -225,8 +224,8 @@ public class TimeKeeper {
 
             for (int i = 0; i < receivers.length; i++) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    if (time.compareTo(
-                                ((DDEReceiver) receivers[i][j])._lastTime) > 0) {
+                    if (time
+                            .compareTo(((DDEReceiver) receivers[i][j])._lastTime) > 0) {
                         ((DDEReceiver) receivers[i][j]).put(new NullToken(),
                                 time);
                     }
@@ -328,7 +327,7 @@ public class TimeKeeper {
      }
      System.out.println("###End of printReceiverList()\n");
      }
-    */
+     */
     /** Set the output time associated with this time keeper.
      * @param outputTime The output time of this time keeper.
      * @exception IllegalActionException If the output time is

@@ -1,30 +1,30 @@
 /* An icon that displays a specified java.awt.Shape.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -42,19 +42,18 @@ import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ShapeIcon
 
 /**
-   An icon that displays a specified java.awt.Shape.
+ An icon that displays a specified java.awt.Shape.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class ShapeIcon extends DynamicEditorIcon {
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
@@ -133,7 +132,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         } else {
             // Create a white rectangle.
             newFigure = new BasicFigure(new Rectangle2D.Double(0.0, 0.0, 20.0,
-                                                20.0));
+                    20.0));
         }
 
         // By default, the origin should be the upper left.
@@ -176,15 +175,15 @@ public class ShapeIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
-                public void run() {
-                    Iterator figures = _liveFigureIterator();
+            public void run() {
+                Iterator figures = _liveFigureIterator();
 
-                    while (figures.hasNext()) {
-                        Object figure = figures.next();
-                        ((BasicFigure) figure).setCentered(_centered);
-                    }
+                while (figures.hasNext()) {
+                    Object figure = figures.next();
+                    ((BasicFigure) figure).setCentered(_centered);
                 }
-            };
+            }
+        };
 
         SwingUtilities.invokeLater(doSet);
     }
@@ -208,15 +207,15 @@ public class ShapeIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
-                public void run() {
-                    Iterator figures = _liveFigureIterator();
+            public void run() {
+                Iterator figures = _liveFigureIterator();
 
-                    while (figures.hasNext()) {
-                        Object figure = figures.next();
-                        ((BasicFigure) figure).setFillPaint(_fillColor);
-                    }
+                while (figures.hasNext()) {
+                    Object figure = figures.next();
+                    ((BasicFigure) figure).setFillPaint(_fillColor);
                 }
-            };
+            }
+        };
 
         SwingUtilities.invokeLater(doSet);
     }
@@ -240,15 +239,15 @@ public class ShapeIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
-                public void run() {
-                    Iterator figures = _liveFigureIterator();
+            public void run() {
+                Iterator figures = _liveFigureIterator();
 
-                    while (figures.hasNext()) {
-                        Object figure = figures.next();
-                        ((BasicFigure) figure).setStrokePaint(_lineColor);
-                    }
+                while (figures.hasNext()) {
+                    Object figure = figures.next();
+                    ((BasicFigure) figure).setStrokePaint(_lineColor);
                 }
-            };
+            }
+        };
 
         SwingUtilities.invokeLater(doSet);
     }
@@ -272,15 +271,15 @@ public class ShapeIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
-                public void run() {
-                    Iterator figures = _liveFigureIterator();
+            public void run() {
+                Iterator figures = _liveFigureIterator();
 
-                    while (figures.hasNext()) {
-                        Object figure = figures.next();
-                        ((BasicFigure) figure).setLineWidth(_lineWidth);
-                    }
+                while (figures.hasNext()) {
+                    Object figure = figures.next();
+                    ((BasicFigure) figure).setLineWidth(_lineWidth);
                 }
-            };
+            }
+        };
 
         SwingUtilities.invokeLater(doSet);
     }
@@ -299,15 +298,15 @@ public class ShapeIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
-                public void run() {
-                    Iterator figures = _liveFigureIterator();
+            public void run() {
+                Iterator figures = _liveFigureIterator();
 
-                    while (figures.hasNext()) {
-                        Object figure = figures.next();
-                        ((BasicFigure) figure).setPrototypeShape(_shape);
-                    }
+                while (figures.hasNext()) {
+                    Object figure = figures.next();
+                    ((BasicFigure) figure).setPrototypeShape(_shape);
                 }
-            };
+            }
+        };
 
         Top.deferIfNecessary(doSet);
     }

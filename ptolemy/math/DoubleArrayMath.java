@@ -1,52 +1,51 @@
 /*
-  A library for mathematical operations on arrays of doubles.
+ A library for mathematical operations on arrays of doubles.
 
-  This file was automatically generated with a preprocessor, so that
-  similar array operations are supported on ints, longs, floats, and doubles.
+ This file was automatically generated with a preprocessor, so that
+ similar array operations are supported on ints, longs, floats, and doubles.
 
-  Copyright (c) 1998-2005 The Regents of the University of California.
-  All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.math;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleArrayMath
 
 /**
-   This class provides a library for mathematical operations on double arrays.
-   unless explicitly noted otherwise, all array arguments are assumed to be
-   non-null. If a null array is passed to a method, a NullPointerException
-   will be thrown in the method or called methods.
-   @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (ctsay)
-   @Pt.AcceptedRating Yellow (ctsay)
-*/
+ This class provides a library for mathematical operations on double arrays.
+ unless explicitly noted otherwise, all array arguments are assumed to be
+ non-null. If a null array is passed to a method, a NullPointerException
+ will be thrown in the method or called methods.
+ @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Yellow (ctsay)
+ @Pt.AcceptedRating Yellow (ctsay)
+ */
 public class DoubleArrayMath {
     // Protected constructor prevents construction of this class.
     protected DoubleArrayMath() {
@@ -145,8 +144,8 @@ public class DoubleArrayMath {
      *  as the right operand in all cases. (op.operate(array[i], z)).
      *  If the length of the array is 0, return a new array of length 0.
      */
-    public static final double[] applyBinaryOperation(
-            DoubleBinaryOperation op, final double[] array, final double z) {
+    public static final double[] applyBinaryOperation(DoubleBinaryOperation op,
+            final double[] array, final double z) {
         int length = array.length;
         double[] returnValue = new double[length];
 
@@ -163,8 +162,8 @@ public class DoubleArrayMath {
      *  as the right operands (op.operate(z, array[i])).
      *  If the length of the array is 0, return a new array of length 0.
      */
-    public static final double[] applyBinaryOperation(
-            DoubleBinaryOperation op, final double z, final double[] array) {
+    public static final double[] applyBinaryOperation(DoubleBinaryOperation op,
+            final double z, final double[] array) {
         int length = array.length;
         double[] returnValue = new double[length];
 
@@ -184,8 +183,8 @@ public class DoubleArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final double[] applyBinaryOperation(
-            DoubleBinaryOperation op, final double[] array1, final double[] array2) {
+    public static final double[] applyBinaryOperation(DoubleBinaryOperation op,
+            final double[] array1, final double[] array2) {
         int length = _commonLength(array1, array2,
                 "DoubleArrayMath.applyBinaryOperation");
         double[] returnValue = new double[length];
@@ -416,8 +415,8 @@ public class DoubleArrayMath {
 
         System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array, halfLengthFloor, returnValue,
-                newLength - halfLengthCeil, halfLengthCeil);
+        System.arraycopy(array, halfLengthFloor, returnValue, newLength
+                - halfLengthCeil, halfLengthCeil);
 
         return returnValue;
     }
@@ -460,7 +459,8 @@ public class DoubleArrayMath {
 
         if ((startIdx >= array.length) && (copySize > 0)) {
             throw new IllegalArgumentException("resize():  the start index '"
-                    + startIdx + "' is greather than equal to the array length '"
+                    + startIdx
+                    + "' is greather than equal to the array length '"
                     + array.length + "' and the number of items to be copied '"
                     + copySize + "' is greater than zero.");
         }

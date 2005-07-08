@@ -1,30 +1,30 @@
 /* Director of the component interaction domain.
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ci.kernel;
 
 import java.util.HashSet;
@@ -48,54 +48,53 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CIDirector
 
 /**
-   Director of the component interaction (CI) domain. The CI domain supports
-   two styles of interaction between actors, push and pull. In push interaction,
-   the actor that produces data initiates the interaction. The receiving actor
-   reacts to the data. The computation proceeds as data-driven. In pull
-   interaction, the actor that consumes data decides when the interaction
-   takes place, and the computation proceeds as demand-driven.
-   <p>
-   When a relation connects the push(pull) output port of one actor with the
-   push(pull) input port of another, the style of interaction between the two
-   actors is push(pull). To configure a port as a push port, add a parameter
-   named <i>push</i> to the port, and give the value "true" to the parameter.
-   Ports are pull ports by default. Relations connecting both push and pull
-   ports are not supported. (TODO: add check in the director.)
-   <p>
-   Actors in a CI model are classified as either active or inactive. Each
-   active actor is controlled by an {@link ActiveActorManager actor manager},
-   which runs asynchronously with respect to the director (i.e. not in the
-   same thread of control). Active actors include:
-   <ul>
-   <li> source actors with push output ports </li>
-   <li> sink actors with pull input ports </li>
-   <li> actors with pull input ports and push output ports </li>
-   </ul>
-   These actors initiate all the computation in a CI model. The director
-   controls the execution of inactive actors by maintaining a task queue.
-   A task in the queue is an inactive actor that either receives a token
-   from an active actor via the push interaction, or is requested to
-   produce a token by an active actor via the pull interaction. In one
-   iteration of the CI model, the director removes the first actor from
-   the queue. If the actor is pushed, the computation proceeds as
-   data-driven from the actor, until the produced data reach actors that
-   are either not ready to fire or with pull output ports and no pending
-   pull request. If the actor is pulled, then the computation proceeds
-   as demand-driven from the actor, until either the actor is fired or
-   the pull request reaches actors that have push input ports and are not
-   ready to fire.
+ Director of the component interaction (CI) domain. The CI domain supports
+ two styles of interaction between actors, push and pull. In push interaction,
+ the actor that produces data initiates the interaction. The receiving actor
+ reacts to the data. The computation proceeds as data-driven. In pull
+ interaction, the actor that consumes data decides when the interaction
+ takes place, and the computation proceeds as demand-driven.
+ <p>
+ When a relation connects the push(pull) output port of one actor with the
+ push(pull) input port of another, the style of interaction between the two
+ actors is push(pull). To configure a port as a push port, add a parameter
+ named <i>push</i> to the port, and give the value "true" to the parameter.
+ Ports are pull ports by default. Relations connecting both push and pull
+ ports are not supported. (TODO: add check in the director.)
+ <p>
+ Actors in a CI model are classified as either active or inactive. Each
+ active actor is controlled by an {@link ActiveActorManager actor manager},
+ which runs asynchronously with respect to the director (i.e. not in the
+ same thread of control). Active actors include:
+ <ul>
+ <li> source actors with push output ports </li>
+ <li> sink actors with pull input ports </li>
+ <li> actors with pull input ports and push output ports </li>
+ </ul>
+ These actors initiate all the computation in a CI model. The director
+ controls the execution of inactive actors by maintaining a task queue.
+ A task in the queue is an inactive actor that either receives a token
+ from an active actor via the push interaction, or is requested to
+ produce a token by an active actor via the pull interaction. In one
+ iteration of the CI model, the director removes the first actor from
+ the queue. If the actor is pushed, the computation proceeds as
+ data-driven from the actor, until the produced data reach actors that
+ are either not ready to fire or with pull output ports and no pending
+ pull request. If the actor is pulled, then the computation proceeds
+ as demand-driven from the actor, until either the actor is fired or
+ the pull request reaches actors that have push input ports and are not
+ ready to fire.
 
-   @author Xiaojun Liu, Yang Zhao
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Yellow (liuxj)
-   @Pt.AcceptedRating Red (liuxj)
-*/
+ @author Xiaojun Liu, Yang Zhao
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Yellow (liuxj)
+ @Pt.AcceptedRating Red (liuxj)
+ */
 public class CIDirector extends Director {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -241,7 +240,7 @@ public class CIDirector extends Director {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
+                    .iterator();
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
@@ -304,7 +303,7 @@ public class CIDirector extends Director {
             return true;
         } else {
             return (_asyncPushedActors.size() > 0)
-                || (_asyncPulledActors.size() > 0);
+                    || (_asyncPulledActors.size() > 0);
         }
     }
 
@@ -424,7 +423,7 @@ public class CIDirector extends Director {
         _stopRequested = true;
 
         Iterator actors = ((CompositeEntity) getContainer()).entityList()
-            .iterator();
+                .iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -542,7 +541,7 @@ public class CIDirector extends Director {
         }
 
         return (!hasInput && outputIsPush) || (!hasOutput && !inputIsPush)
-            || (!inputIsPush && outputIsPush);
+                || (!inputIsPush && outputIsPush);
     }
 
     /** Return true if the given actor has a pending pull request.

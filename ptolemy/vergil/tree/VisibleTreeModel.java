@@ -1,30 +1,30 @@
 /* A tree model for the Vergil library panel.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.tree;
 
 import java.util.Collections;
@@ -42,28 +42,27 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.icon.EditorIcon;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// VisibleTreeModel
 
 /**
 
-A tree model for the Vergil library panel.  This is a tree model that
-shows all entities and some ports, relations, and attributes.  The ports,
-relations, and attributes that it shows are those that
-contains an attribute of class EditorIcon, or that contain an
-attribute named "_iconDescription" or "_smallIconDescription".
-A composite entity that contains an attribute with name "_libraryMarker"
-is treated as a sublibrary. A composite entity without such an attribute
-is treated as an atomic entity.
-This is designed for use with JTree, which renders the hierarchy.
+ A tree model for the Vergil library panel.  This is a tree model that
+ shows all entities and some ports, relations, and attributes.  The ports,
+ relations, and attributes that it shows are those that
+ contains an attribute of class EditorIcon, or that contain an
+ attribute named "_iconDescription" or "_smallIconDescription".
+ A composite entity that contains an attribute with name "_libraryMarker"
+ is treated as a sublibrary. A composite entity without such an attribute
+ is treated as an atomic entity.
+ This is designed for use with JTree, which renders the hierarchy.
 
-@author Steve Neuendorffer and Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Red (eal)
-@Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class VisibleTreeModel extends FullTreeModel {
     /** Create a new tree model with the specified root.
      *  @param root The root of the tree.
@@ -93,8 +92,8 @@ public class VisibleTreeModel extends FullTreeModel {
         // contain an attribute named "_libraryMarker", then treat it as an
         // atomic entity.
         if (object instanceof CompositeEntity) {
-            Attribute marker = ((CompositeEntity) object).getAttribute(
-                    "_libraryMarker");
+            Attribute marker = ((CompositeEntity) object)
+                    .getAttribute("_libraryMarker");
 
             if (marker == null) {
                 return true;
@@ -225,7 +224,8 @@ public class VisibleTreeModel extends FullTreeModel {
 
         // Cache is not valid.
         List result = new LinkedList();
-        Iterator relations = ((CompositeEntity) object).relationList().iterator();
+        Iterator relations = ((CompositeEntity) object).relationList()
+                .iterator();
 
         while (relations.hasNext()) {
             NamedObj relation = (NamedObj) relations.next();
@@ -244,8 +244,11 @@ public class VisibleTreeModel extends FullTreeModel {
     ////                         private variables                 ////
     // Workspace and version information.
     private Workspace _workspace;
+
     private long _workspaceAttributeVersion;
+
     private long _workspacePortVersion;
+
     private long _workspaceRelationVersion;
 
     // Cache for visible attributes.

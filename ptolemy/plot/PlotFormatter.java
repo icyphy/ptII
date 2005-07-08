@@ -1,29 +1,29 @@
 /* A panel for controlling the format of a plotter.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.plot;
 
 import java.awt.BorderLayout;
@@ -37,23 +37,22 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PlotFormatter
 
 /**
 
-PlotFormatter is a panel that controls the format of a plotter object
-passed to the constructor.
+ PlotFormatter is a panel that controls the format of a plotter object
+ passed to the constructor.
 
-@see Plot
-@see PlotBox
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Yellow (eal)
-@Pt.AcceptedRating Red (cxh)
-*/
+ @see Plot
+ @see PlotBox
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class PlotFormatter extends JPanel {
     /** Construct a plot formatter for the specified plot object.
      */
@@ -76,19 +75,13 @@ public class PlotFormatter extends JPanel {
         _originalYLabel = plot.getYLabel();
         _wideQuery.addLine("ylabel", "Y Label", _originalYLabel);
         _originalXRange = plot.getXRange();
-        _wideQuery.addLine("xrange", "X Range",
-                "" + _originalXRange[0] + ", " + _originalXRange[1]);
+        _wideQuery.addLine("xrange", "X Range", "" + _originalXRange[0] + ", "
+                + _originalXRange[1]);
         _originalYRange = plot.getYRange();
-        _wideQuery.addLine("yrange", "Y Range",
-                "" + _originalYRange[0] + ", " + _originalYRange[1]);
+        _wideQuery.addLine("yrange", "Y Range", "" + _originalYRange[0] + ", "
+                + _originalYRange[1]);
 
-        String[] marks = {
-            "none",
-            "points",
-            "dots",
-            "various",
-            "pixels"
-        };
+        String[] marks = { "none", "points", "dots", "various", "pixels" };
         _originalMarks = "none";
 
         if (plot instanceof Plot) {
@@ -151,8 +144,8 @@ public class PlotFormatter extends JPanel {
             _originalStems = ((Plot) plot).getImpulses();
             _narrowQuery.addCheckBox("stems", "Stems", _originalStems);
             _saveConnected();
-            _narrowQuery.addCheckBox("connected", "Connect",
-                    ((Plot) plot).getConnected());
+            _narrowQuery.addCheckBox("connected", "Connect", ((Plot) plot)
+                    .getConnected());
         }
 
         _originalColor = plot.getColor();
@@ -178,76 +171,78 @@ public class PlotFormatter extends JPanel {
         //}
         // Attach listeners.
         _wideQuery.addQueryListener(new QueryListener() {
-                public void changed(String name) {
-                    if (name.equals("title")) {
-                        _plot.setTitle(_wideQuery.getStringValue("title"));
-                    } else if (name.equals("xlabel")) {
-                        _plot.setXLabel(_wideQuery.getStringValue("xlabel"));
-                    } else if (name.equals("ylabel")) {
-                        _plot.setYLabel(_wideQuery.getStringValue("ylabel"));
-                    } else if (name.equals("xrange")) {
-                        _plot.read("XRange: "
-                                + _wideQuery.getStringValue("xrange"));
-                    } else if (name.equals("xticks")) {
-                        String spec = _wideQuery.getStringValue("xticks").trim();
-                        _plot.read("XTicks: " + spec);
+            public void changed(String name) {
+                if (name.equals("title")) {
+                    _plot.setTitle(_wideQuery.getStringValue("title"));
+                } else if (name.equals("xlabel")) {
+                    _plot.setXLabel(_wideQuery.getStringValue("xlabel"));
+                } else if (name.equals("ylabel")) {
+                    _plot.setYLabel(_wideQuery.getStringValue("ylabel"));
+                } else if (name.equals("xrange")) {
+                    _plot
+                            .read("XRange: "
+                                    + _wideQuery.getStringValue("xrange"));
+                } else if (name.equals("xticks")) {
+                    String spec = _wideQuery.getStringValue("xticks").trim();
+                    _plot.read("XTicks: " + spec);
 
-                        // FIXME: log axis format temporarily
-                        // disabled, see above.
-                        // if (spec.equals("")) {
-                        //    _narrowQuery.setEnabled("xlog", true);
-                        // } else {
-                        //    _narrowQuery.setBoolean("xlog", false);
-                        //    _narrowQuery.setEnabled("xlog", false);
-                        // }
-                    } else if (name.equals("yticks")) {
-                        String spec = _wideQuery.getStringValue("yticks").trim();
-                        _plot.read("YTicks: " + spec);
+                    // FIXME: log axis format temporarily
+                    // disabled, see above.
+                    // if (spec.equals("")) {
+                    //    _narrowQuery.setEnabled("xlog", true);
+                    // } else {
+                    //    _narrowQuery.setBoolean("xlog", false);
+                    //    _narrowQuery.setEnabled("xlog", false);
+                    // }
+                } else if (name.equals("yticks")) {
+                    String spec = _wideQuery.getStringValue("yticks").trim();
+                    _plot.read("YTicks: " + spec);
 
-                        // FIXME: log axis format temporarily
-                        // disabled, see above.
-                        // if (spec.equals("")) {
-                        //    _narrowQuery.setEnabled("ylog", true);
-                        // } else {
-                        //    _narrowQuery.setBoolean("ylog", false);
-                        //    _narrowQuery.setEnabled("ylog", false);
-                        // }
-                    } else if (name.equals("yrange")) {
-                        _plot.read("YRange: "
-                                + _wideQuery.getStringValue("yrange"));
-                    } else if (name.equals("marks")) {
-                        ((Plot) _plot).setMarksStyle(_wideQuery.getStringValue(
-                                                             "marks"));
-                    }
-
-                    _plot.repaint();
+                    // FIXME: log axis format temporarily
+                    // disabled, see above.
+                    // if (spec.equals("")) {
+                    //    _narrowQuery.setEnabled("ylog", true);
+                    // } else {
+                    //    _narrowQuery.setBoolean("ylog", false);
+                    //    _narrowQuery.setEnabled("ylog", false);
+                    // }
+                } else if (name.equals("yrange")) {
+                    _plot
+                            .read("YRange: "
+                                    + _wideQuery.getStringValue("yrange"));
+                } else if (name.equals("marks")) {
+                    ((Plot) _plot).setMarksStyle(_wideQuery
+                            .getStringValue("marks"));
                 }
-            });
+
+                _plot.repaint();
+            }
+        });
 
         _narrowQuery.addQueryListener(new QueryListener() {
-                public void changed(String name) {
-                    if (name.equals("grid")) {
-                        _plot.setGrid(_narrowQuery.getBooleanValue("grid"));
-                    } else if (name.equals("stems")) {
-                        ((Plot) _plot).setImpulses(_narrowQuery.getBooleanValue(
-                                                           "stems"));
-                        _plot.repaint();
-                    } else if (name.equals("color")) {
-                        _plot.setColor(_narrowQuery.getBooleanValue("color"));
-
-                        // FIXME: log axis format temporarily
-                        // disabled, see above.
-                        // } else if (name.equals("xlog")) {
-                        //    _plot.setXLog(_narrowQuery.getBooleanValue("xlog"));
-                        // } else if (name.equals("ylog")) {
-                        //    _plot.setYLog(_narrowQuery.getBooleanValue("ylog"));
-                    } else if (name.equals("connected")) {
-                        _setConnected(_narrowQuery.getBooleanValue("connected"));
-                    }
-
+            public void changed(String name) {
+                if (name.equals("grid")) {
+                    _plot.setGrid(_narrowQuery.getBooleanValue("grid"));
+                } else if (name.equals("stems")) {
+                    ((Plot) _plot).setImpulses(_narrowQuery
+                            .getBooleanValue("stems"));
                     _plot.repaint();
+                } else if (name.equals("color")) {
+                    _plot.setColor(_narrowQuery.getBooleanValue("color"));
+
+                    // FIXME: log axis format temporarily
+                    // disabled, see above.
+                    // } else if (name.equals("xlog")) {
+                    //    _plot.setXLog(_narrowQuery.getBooleanValue("xlog"));
+                    // } else if (name.equals("ylog")) {
+                    //    _plot.setYLog(_narrowQuery.getBooleanValue("ylog"));
+                } else if (name.equals("connected")) {
+                    _setConnected(_narrowQuery.getBooleanValue("connected"));
                 }
-            });
+
+                _plot.repaint();
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -299,10 +294,7 @@ public class PlotFormatter extends JPanel {
     /** Open a format control window as a top-level, modal dialog.
      */
     public void openModal() {
-        String[] buttons = {
-            "Apply",
-            "Cancel"
-        };
+        String[] buttons = { "Apply", "Cancel" };
 
         // NOTE: If the plot is in a top-level container that is a Frame
         // (as opposed to an applet), then tell the dialog that the Frame
@@ -462,13 +454,22 @@ public class PlotFormatter extends JPanel {
 
     // Original configuration of the plot.
     private String _originalYTicksSpec;
+
     private double[] _originalXRange;
+
     private double[] _originalYRange;
+
     private Vector[] _originalXTicks;
+
     private Vector[] _originalYTicks;
+
     private boolean _originalGrid;
+
     private boolean _originalStems;
+
     private boolean _originalColor;
+
     private boolean[][] _originalConnected;
+
     private PlotPoint[][] _originalPoints;
 }

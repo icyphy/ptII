@@ -1,30 +1,30 @@
 /* An actor that provides the common interface for MAC actors.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib.network.mac;
 
 import ptolemy.data.IntToken;
@@ -40,28 +40,27 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MACActorBase
 
 /**
-   This is a base class designed for the MAC actors. Since these actors
-   largely share a set of parameters, we would like to declare them here
-   to avoid repeatly do the same amount of work in every MAC actor.
-   FIXME: Currently, the parameters in this actor are extracted from
-   the ChannelState component...
+ This is a base class designed for the MAC actors. Since these actors
+ largely share a set of parameters, we would like to declare them here
+ to avoid repeatly do the same amount of work in every MAC actor.
+ FIXME: Currently, the parameters in this actor are extracted from
+ the ChannelState component...
 
-   This actor also defines a set of constant that are widely used in
-   the OMNET c++ classes.
+ This actor also defines a set of constant that are widely used in
+ the OMNET c++ classes.
 
-   Based on this, it is relatively easy to translate a OMNET class
-   to a actor here.
-   @author Yang Zhao
-   @version MACActorBase.java,v 1.22 2004/04/22 19:46:17 ellen_zh Exp
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (pjb2e)
-*/
+ Based on this, it is relatively easy to translate a OMNET class
+ to a actor here.
+ @author Yang Zhao
+ @version MACActorBase.java,v 1.22 2004/04/22 19:46:17 ellen_zh Exp
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (pjb2e)
+ */
 public class MACActorBase extends NetworkActorBase {
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
@@ -228,7 +227,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "aSifsTime is required to be positive. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _aSifsTime = temp;
             }
@@ -238,7 +237,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "preamble Length is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _aPreambleLength = temp;
             }
@@ -248,7 +247,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "PLCPHeader Length is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _aPlcpHeaderLength = temp;
             }
@@ -258,7 +257,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "aRxTxTurnaroundTime is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _aRxTxTurnaroundTime = temp;
             }
@@ -268,7 +267,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "sAckCtsLng is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _sAckCtsLng = temp;
             }
@@ -278,7 +277,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "mBrate is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _mBrate = temp;
             }
@@ -288,7 +287,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "aSlotTime is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _aSlotTime = temp;
             }
@@ -298,7 +297,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "aRxRfDelay is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _aRxRfDelay = temp;
             }
@@ -308,7 +307,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "aRxPlcpDelay is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _aRxPlcpDelay = temp;
             }
@@ -318,7 +317,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "aCWmin is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _aCWmin = temp;
             }
@@ -328,7 +327,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "aCWmax is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _aCWmax = temp;
             }
@@ -338,7 +337,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "dot11ShortRetryLimit is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _dot11ShortRetryLimit = temp;
             }
@@ -348,7 +347,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "dot11LongRetryLimit is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _dot11LongRetryLimit = temp;
             }
@@ -358,7 +357,7 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                         "dotllRTSThreshold is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                                + "Attempt to set it to: " + temp);
             } else {
                 _dotllRTSThreshold = temp;
             }
@@ -373,18 +372,31 @@ public class MACActorBase extends NetworkActorBase {
     ////                         protected variables               ////
     //the local varibles for the parameters of this actor.
     protected int _aSifsTime;
+
     protected int _aPreambleLength;
+
     protected int _aPlcpHeaderLength;
+
     protected int _aRxTxTurnaroundTime;
+
     protected int _sAckCtsLng;
+
     protected int _mBrate;
+
     protected int _aSlotTime;
+
     protected int _aRxRfDelay;
+
     protected int _aRxPlcpDelay;
+
     protected int _aCWmin;
+
     protected int _aCWmax;
+
     protected int _dot11ShortRetryLimit;
+
     protected int _dot11LongRetryLimit;
+
     protected int _dotllRTSThreshold;
 
     // the pointers to the remote variables contained by
@@ -399,87 +411,104 @@ public class MACActorBase extends NetworkActorBase {
     protected Attribute _mBkIP = null;
 
     // message formats
-    protected static final String[] TxStartMsgFields = {
-        "kind", 
-        "length", 
-        "rate" 
-    };
-    protected static final String[] TxDataMsgFields = { 
-        "kind", 
-        "pdu" 
-    };
-    protected static final String[] RtsTimeoutMsgFields = {
-        "kind" 
-    };
-    protected static final String[] RxMpduMsgFields = {
-        "kind", "pdu", "endRx", "rxRate"
-    };
-    protected static final String[] UseIfsMsgFields = { 
-        "kind", "tRxEnd" 
-    };
-    protected static final String[] RxIndicateMessageFields = {
-        "kind", "pdu", "endRx", "rxRate"
-    };
-    protected static final String[] NeedAckMessageFields = {
-        "kind", "ackto", "endRx", "rxRate", "dAck"
-    };
-    protected static final String[] SetNavMessageFields = {
-        "kind", "tRef", "dNav", "src"
-    };
-    protected static final String[] CSMsgFields = {"kind" };
+    protected static final String[] TxStartMsgFields = { "kind", "length",
+            "rate" };
+
+    protected static final String[] TxDataMsgFields = { "kind", "pdu" };
+
+    protected static final String[] RtsTimeoutMsgFields = { "kind" };
+
+    protected static final String[] RxMpduMsgFields = { "kind", "pdu", "endRx",
+            "rxRate" };
+
+    protected static final String[] UseIfsMsgFields = { "kind", "tRxEnd" };
+
+    protected static final String[] RxIndicateMessageFields = { "kind", "pdu",
+            "endRx", "rxRate" };
+
+    protected static final String[] NeedAckMessageFields = { "kind", "ackto",
+            "endRx", "rxRate", "dAck" };
+
+    protected static final String[] SetNavMessageFields = { "kind", "tRef",
+            "dNav", "src" };
+
+    protected static final String[] CSMsgFields = { "kind" };
 
     // the value for the pdu field is a record with fields
     // as DataPacket's fields.
-    protected static final String[] TxRequestMsgFields = { 
-        "kind", "pdu", "rate" 
-    };
-    protected static final String[] TxConfirmMsgFields = { 
-        "kind"
-    };
+    protected static final String[] TxRequestMsgFields = { "kind", "pdu",
+            "rate" };
 
-    protected static final String[] BackoffDoneMsgFields = { 
-        "kind", "cnt" 
-    };
-    protected static final String[] getBackoffMsgFields = { 
-        "kind", "ccw", "cnt" 
-    };
-    protected static final String[] GotCtsMsgFields = {
-        "kind", "endRx"
-    };
+    protected static final String[] TxConfirmMsgFields = { "kind" };
+
+    protected static final String[] BackoffDoneMsgFields = { "kind", "cnt" };
+
+    protected static final String[] getBackoffMsgFields = { "kind", "ccw",
+            "cnt" };
+
+    protected static final String[] GotCtsMsgFields = { "kind", "endRx" };
 
     // message types
     protected static final int NeedAck = 1;
+
     protected static final int RxIndicate = 2;
+
     protected static final int TxConfirm = 3;
+
     protected static final int PduRequest = 4;
+
     protected static final int BkDone = 5;
+
     protected static final int Backoff = 6;
+
     protected static final int Slot = 7;
+
     protected static final int Cancel = 10;
+
     protected static final int TxRequest = 21;
+
     protected static final int UseEifs = 22;
+
     protected static final int UseDifs = 23;
+
     protected static final int SetNav = 24;
+
     protected static final int ClearNav = 25;
+
     protected static final int RtsTimeout = 26;
+
     protected static final int nosrc = 27;
+
     protected static final int misc = 28;
+
     protected static final int RxMpdu = 29;
+
     protected static final int startRsp = 43;
+
     protected static final int PCresponse = 44;
+
     protected static final int PCrequest = 45;
+
     protected static final int PCcheck = 46;
+
     protected static final int PCremove = 47;
+
     protected static final int PCremove2 = 48;
+
     protected static final int PCmax = 48;
+
     protected static final int PCmin = 44;
-   
 
     protected static final int ControlType = 1;
+
     protected static final int DataType = 2;
+
     protected static final int GotAckMsg = 1;
+
     protected static final int GotCts = 2;
+
     protected static final int ControlCh = 0;
+
     protected static final int DataCh = 1;
 
     /** Check whether this has a <i>id<i> attribute. If yes, return

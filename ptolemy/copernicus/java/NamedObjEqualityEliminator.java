@@ -1,29 +1,29 @@
 /* Replace method calls on parameter objects.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -64,21 +64,20 @@ import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjEqualityEliminator
 
 /**
 
 
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
-@Pt.ProposedRating Red (cxh)
-@Pt.AcceptedRating Red (cxh)
-*/
-public class NamedObjEqualityEliminator extends SceneTransformer
-    implements HasPhaseOptions {
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class NamedObjEqualityEliminator extends SceneTransformer implements
+        HasPhaseOptions {
     /** Construct a new transformer
      */
     private NamedObjEqualityEliminator(CompositeActor model) {
@@ -118,15 +117,15 @@ public class NamedObjEqualityEliminator extends SceneTransformer
 
     private void _eliminateAllComparisons(CompositeActor model) {
         // Loop over all the actor instance classes.
-        for (Iterator entities = model.deepEntityList().iterator();
-             entities.hasNext();) {
+        for (Iterator entities = model.deepEntityList().iterator(); entities
+                .hasNext();) {
             Entity entity = (Entity) entities.next();
             String className = ModelTransformer.getInstanceClassName(entity,
                     _options);
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
-            for (Iterator methods = entityClass.getMethods().iterator();
-                 methods.hasNext();) {
+            for (Iterator methods = entityClass.getMethods().iterator(); methods
+                    .hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
                 eliminateNamedObjComparisons(method, _debug);
             }
@@ -155,12 +154,12 @@ public class NamedObjEqualityEliminator extends SceneTransformer
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
 
-        for (Iterator units = body.getUnits().snapshotIterator();
-             units.hasNext();) {
+        for (Iterator units = body.getUnits().snapshotIterator(); units
+                .hasNext();) {
             Stmt stmt = (Stmt) units.next();
 
-            for (Iterator boxes = stmt.getUseBoxes().iterator();
-                 boxes.hasNext();) {
+            for (Iterator boxes = stmt.getUseBoxes().iterator(); boxes
+                    .hasNext();) {
                 ValueBox box = (ValueBox) boxes.next();
                 Value value = box.getValue();
 
@@ -180,10 +179,11 @@ public class NamedObjEqualityEliminator extends SceneTransformer
                         SootClass leftClass = leftType.getSootClass();
 
                         if (SootUtilities.derivesFrom(leftClass,
-                                    PtolemyUtilities.namedObjClass)) {
+                                PtolemyUtilities.namedObjClass)) {
                             try {
                                 leftObject = getNamedObjValue(method,
-                                        (Local) left, stmt, localDefs, localUses);
+                                        (Local) left, stmt, localDefs,
+                                        localUses);
                             } catch (Exception ex) {
                                 // Ignore... We cannot determine the
                                 // value of the object.
@@ -203,7 +203,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer
                         SootClass rightClass = rightType.getSootClass();
 
                         if (SootUtilities.derivesFrom(rightClass,
-                                    PtolemyUtilities.namedObjClass)) {
+                                PtolemyUtilities.namedObjClass)) {
                             try {
                                 rightObject = getNamedObjValue(method,
                                         (Local) right, stmt, localDefs,
@@ -257,9 +257,8 @@ public class NamedObjEqualityEliminator extends SceneTransformer
                 return getNamedObjValue(method, (Local) value, stmt, localDefs,
                         localUses);
             } else if (value instanceof CastExpr) {
-                return getNamedObjValue(method,
-                        (Local) ((CastExpr) value).getOp(), stmt, localDefs,
-                        localUses);
+                return getNamedObjValue(method, (Local) ((CastExpr) value)
+                        .getOp(), stmt, localDefs, localUses);
             } else if (value instanceof FieldRef) {
                 SootField field = ((FieldRef) value).getField();
                 ValueTag tag = (ValueTag) field.getTag("_CGValue");
@@ -268,7 +267,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer
                     // return null;
                     throw new RuntimeException(
                             "Could not determine the static value of " + local
-                            + " in " + method);
+                                    + " in " + method);
                 } else {
                     return (NamedObj) tag.getObject();
                 }
@@ -281,11 +280,12 @@ public class NamedObjEqualityEliminator extends SceneTransformer
                     UnitValueBoxPair pair = (UnitValueBoxPair) pairs.next();
 
                     if (pair.getUnit() instanceof DefinitionStmt) {
-                        DefinitionStmt useStmt = (DefinitionStmt) pair.getUnit();
+                        DefinitionStmt useStmt = (DefinitionStmt) pair
+                                .getUnit();
 
                         if (useStmt.getLeftOp() instanceof FieldRef) {
                             SootField field = ((FieldRef) useStmt.getLeftOp())
-                                .getField();
+                                    .getField();
                             ValueTag tag = (ValueTag) field.getTag("_CGValue");
 
                             if (tag == null) {
@@ -319,6 +319,8 @@ public class NamedObjEqualityEliminator extends SceneTransformer
     }
 
     private Map _options;
+
     private boolean _debug;
+
     private CompositeActor _model;
 }

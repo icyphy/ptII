@@ -1,30 +1,30 @@
 /* An application for editing ptolemy models visually.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package jni;
 
 import java.net.URL;
@@ -38,27 +38,26 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.VergilErrorHandler;
 
-
 // Java imports
 //////////////////////////////////////////////////////////////////////////
 //// VergilApplication
 
 /**
-   This application opens run control panels for models specified on the
-   command line.  The exact facilities that are available are determined
-   by the configuration file ptolemy/configs/vergilConfiguration.xml,
-   which is loaded before any command-line arguments are processed.
-   If there are no command-line arguments at all, then the configuration
-   file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
+ This application opens run control panels for models specified on the
+ command line.  The exact facilities that are available are determined
+ by the configuration file ptolemy/configs/vergilConfiguration.xml,
+ which is loaded before any command-line arguments are processed.
+ If there are no command-line arguments at all, then the configuration
+ file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
 
-   @author Edward A. Lee and Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-   @see ptolemy.actor.gui.ModelFrame
-   @see ptolemy.actor.gui.RunTableau
-*/
+ @author Edward A. Lee and Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ @see ptolemy.actor.gui.ModelFrame
+ @see ptolemy.actor.gui.RunTableau
+ */
 public class VergilApplication extends MoMLApplication {
     /** Parse the specified command-line arguments, creating models
      *  and frames to interact with them.
@@ -108,8 +107,7 @@ public class VergilApplication extends MoMLApplication {
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
-    protected Configuration _createDefaultConfiguration()
-            throws Exception {
+    protected Configuration _createDefaultConfiguration() throws Exception {
         URL configurationURL = new URL("ptolemy/configs/jni/configuration.xml");
         return _readConfiguration(configurationURL);
     }
@@ -120,8 +118,7 @@ public class VergilApplication extends MoMLApplication {
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
-    protected Configuration _createEmptyConfiguration()
-            throws Exception {
+    protected Configuration _createEmptyConfiguration() throws Exception {
         Configuration configuration = _createDefaultConfiguration();
 
         // FIXME: This code is Dog slow for some reason.
@@ -149,14 +146,14 @@ public class VergilApplication extends MoMLApplication {
         // weird things happens at the user interface level.  This
         // seems to prevent occasional errors rending HTML.
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    try {
-                        VergilApplication.super._parseArgs(args);
-                    } catch (Exception ex) {
-                        MessageHandler.error("Command failed", ex);
-                        System.exit(0);
-                    }
+            public void run() {
+                try {
+                    VergilApplication.super._parseArgs(args);
+                } catch (Exception ex) {
+                    MessageHandler.error("Command failed", ex);
+                    System.exit(0);
                 }
-            });
+            }
+        });
     }
 }

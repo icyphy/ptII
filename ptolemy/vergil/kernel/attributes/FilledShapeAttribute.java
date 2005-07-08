@@ -1,30 +1,30 @@
 /* An attribute with a reference to a filled two-dimensional shape.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Color;
@@ -42,23 +42,22 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ResizableAttributeControllerFactory;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FilledShapeAttribute
 
 /**
-   This is an abstract attribute that is rendered as a filled shape.
-   Concrete subclasses produce particular shapes, such as rectangles
-   and circles. Derived classes need to react to changes in the
-   <i>width</i> and <i>height</i> parameters in the attributeChanged()
-   method by calling setShape() on the protected member _icon.
-   <p>
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ This is an abstract attribute that is rendered as a filled shape.
+ Concrete subclasses produce particular shapes, such as rectangles
+ and circles. Derived classes need to react to changes in the
+ <i>width</i> and <i>height</i> parameters in the attributeChanged()
+ method by calling setShape() on the protected member _icon.
+ <p>
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public abstract class FilledShapeAttribute extends ShapeAttribute {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -144,9 +143,9 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
                 _inAttributeChanged = true;
 
                 double widthValue = ((DoubleToken) width.getToken())
-                    .doubleValue();
+                        .doubleValue();
                 double heightValue = ((DoubleToken) height.getToken())
-                    .doubleValue();
+                        .doubleValue();
 
                 if ((widthValue != _widthValue)
                         || (heightValue != _heightValue)) {
@@ -159,7 +158,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
             }
         } else if (attribute == centered) {
             boolean centeredValue = ((BooleanToken) centered.getToken())
-                .booleanValue();
+                    .booleanValue();
 
             if (centeredValue != _centeredValue) {
                 _centeredValue = centeredValue;
@@ -187,7 +186,8 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FilledShapeAttribute newObject = (FilledShapeAttribute) super.clone(workspace);
+        FilledShapeAttribute newObject = (FilledShapeAttribute) super
+                .clone(workspace);
         newObject._inAttributeChanged = false;
         return newObject;
     }

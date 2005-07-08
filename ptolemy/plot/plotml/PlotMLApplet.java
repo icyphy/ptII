@@ -1,34 +1,34 @@
 /* Plotter applet that is capable of reading PlotML files.
 
-@Author: Edward A. Lee
+ @Author: Edward A. Lee
 
-@Version: $Id$
+ @Version: $Id$
 
-@Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.plot.plotml;
 
 import java.io.BufferedInputStream;
@@ -41,29 +41,29 @@ import ptolemy.plot.PlotApplet;
 
 import com.microstar.xml.XmlException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PlotMLApplet
 
 /**
-   An Applet that can plot data in PlotML format from a URL.
-   The URL should be specified using the dataurl applet parameter.
+ An Applet that can plot data in PlotML format from a URL.
+ The URL should be specified using the dataurl applet parameter.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating red (eal)
-   @Pt.AcceptedRating red (cxh)
-   @see ptolemy.plot.PlotBox
-   @see ptolemy.plot.Plot
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating red (eal)
+ @Pt.AcceptedRating red (cxh)
+ @see ptolemy.plot.PlotBox
+ @see ptolemy.plot.Plot
+ */
 public class PlotMLApplet extends PlotApplet {
     /** Return a string describing this applet.
      */
     public String getAppletInfo() {
         return "PlotMLApplet 2.0: A data plotter.\n"
-            + "By: Edward A. Lee and\n " + "Christopher Hylands\n"
-            + "($Id$)";
+                + "By: Edward A. Lee and\n "
+                + "Christopher Hylands\n"
+                + "($Id$)";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,9 +101,9 @@ public class PlotMLApplet extends PlotApplet {
                 if (ex instanceof XmlException) {
                     XmlException xmlex = (XmlException) ex;
                     msg = "PlotMLApplet: failed to parse PlotML data:\n"
-                        + "line: " + xmlex.getLine() + ", column: "
-                        + xmlex.getColumn() + "\nIn entity: "
-                        + xmlex.getSystemId() + "\n";
+                            + "line: " + xmlex.getLine() + ", column: "
+                            + xmlex.getColumn() + "\nIn entity: "
+                            + xmlex.getSystemId() + "\n";
                 } else {
                     msg = "PlotMLApplet: failed to parse PlotML data:\n";
                 }

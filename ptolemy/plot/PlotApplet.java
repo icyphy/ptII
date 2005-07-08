@@ -1,34 +1,34 @@
 /* Appletable Plotter
 
-@Author: Edward A. Lee and Christopher Hylands
+ @Author: Edward A. Lee and Christopher Hylands
 
-@Version: $Id$
+ @Version: $Id$
 
-@Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.plot;
 
 import java.awt.BorderLayout;
@@ -42,25 +42,24 @@ import java.net.URL;
 import javax.swing.JApplet;
 import javax.swing.SwingUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplet
 
 /**
-   An Applet that can plot data from a URL.
-   The URL should be specified using the dataurl applet parameter.
-   The formatting commands are included in the file with the
-   the data.
-   If no URL is given, then a sample plot is generated.
+ An Applet that can plot data from a URL.
+ The URL should be specified using the dataurl applet parameter.
+ The formatting commands are included in the file with the
+ the data.
+ If no URL is given, then a sample plot is generated.
 
-   @author Edward A. Lee, Christopher Hylands, Contributor: Roger Robins
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-   @see PlotBox
-   @see Plot
-*/
+ @author Edward A. Lee, Christopher Hylands, Contributor: Roger Robins
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ @see PlotBox
+ @see Plot
+ */
 public class PlotApplet extends JApplet {
     //     /** Construct a Plot applet */
     //     public PlotApplet() {
@@ -80,8 +79,8 @@ public class PlotApplet extends JApplet {
      */
     public String getAppletInfo() {
         return "PlotApplet " + PlotBox.PTPLOT_RELEASE + ": A data plotter.\n"
-            + "By: Edward A. Lee and\n " + "Christopher Hylands\n"
-            + "($Id$)";
+                + "By: Edward A. Lee and\n " + "Christopher Hylands\n"
+                + "($Id$)";
     }
 
     /** Return information about parameters.
@@ -90,129 +89,107 @@ public class PlotApplet extends JApplet {
      */
     public String[][] getParameterInfo() {
         String[][] pinfo = {
-            {
-                "background",
-                "hexcolor value",
-                "background color"
-            },
-            {
-                "foreground",
-                "hexcolor value",
-                "foreground color"
-            },
-            {
-                "dataurl",
-                "url",
-                "the URL of the data to plot"
-            },
-            {
-                "height",
-                "integer",
-                "100"
-            },
-            {
-                "width",
-                "integer",
-                "100"
-            },
-        };
+                { "background", "hexcolor value", "background color" },
+                { "foreground", "hexcolor value", "foreground color" },
+                { "dataurl", "url", "the URL of the data to plot" },
+                { "height", "integer", "100" }, { "width", "integer", "100" }, };
         return pinfo;
     }
 
     /** Initialize the applet.  Read the applet parameters.
 
-    *  Subclasses that extend this method and call Swing UI methods
-    *  should do so in the Swing Event thread by calling
-    *  SwingUtilities.invokeAndWait().
-    *  Note that some Plot methods will automatically run in the
-    *  Swing Event thread, some will not.
-    *  For details about SwingUtilities.invokeAndWait(), see
-    *  <a href="http://java.sun.com/docs/books/tutorial/uiswing/components/applet.html#thread">The Sun Applet Tutorial</a>
-    */
+     *  Subclasses that extend this method and call Swing UI methods
+     *  should do so in the Swing Event thread by calling
+     *  SwingUtilities.invokeAndWait().
+     *  Note that some Plot methods will automatically run in the
+     *  Swing Event thread, some will not.
+     *  For details about SwingUtilities.invokeAndWait(), see
+     *  <a href="http://java.sun.com/docs/books/tutorial/uiswing/components/applet.html#thread">The Sun Applet Tutorial</a>
+     */
     public void init() {
         super.init();
 
         // FIXME: having the mutex causes applets to hang.
         //synchronized (_mutex) {
         Runnable doActions = new Runnable() {
-                public void run() {
-                    if (_plot == null) {
-                        _plot = newPlot();
-                    }
+            public void run() {
+                if (_plot == null) {
+                    _plot = newPlot();
+                }
 
-                    getContentPane().add(plot(), BorderLayout.NORTH);
+                getContentPane().add(plot(), BorderLayout.NORTH);
 
-                    // Process the width and height applet parameters
-                    int width;
+                // Process the width and height applet parameters
+                int width;
 
-                    // Process the width and height applet parameters
-                    int height;
-                    String widthspec = getParameter("width");
+                // Process the width and height applet parameters
+                int height;
+                String widthspec = getParameter("width");
 
-                    if (widthspec != null) {
-                        width = Integer.parseInt(widthspec);
-                    } else {
-                        width = 400;
-                    }
+                if (widthspec != null) {
+                    width = Integer.parseInt(widthspec);
+                } else {
+                    width = 400;
+                }
 
-                    String heightspec = getParameter("height");
+                String heightspec = getParameter("height");
 
-                    if (heightspec != null) {
-                        height = Integer.parseInt(heightspec);
-                    } else {
-                        height = 400;
-                    }
+                if (heightspec != null) {
+                    height = Integer.parseInt(heightspec);
+                } else {
+                    height = 400;
+                }
 
-                    _setPlotSize(width, height);
-                    plot().setButtons(true);
+                _setPlotSize(width, height);
+                plot().setButtons(true);
 
-                    // Process the background parameter.
-                    Color background = Color.white;
-                    String colorspec = getParameter("background");
+                // Process the background parameter.
+                Color background = Color.white;
+                String colorspec = getParameter("background");
 
-                    if (colorspec != null) {
-                        background = PlotBox.getColorByName(colorspec);
-                    }
+                if (colorspec != null) {
+                    background = PlotBox.getColorByName(colorspec);
+                }
 
-                    setBackground(background);
-                    plot().setBackground(background);
-                    getContentPane().setBackground(background);
+                setBackground(background);
+                plot().setBackground(background);
+                getContentPane().setBackground(background);
 
-                    // Process the foreground parameter.
-                    Color foreground = Color.black;
-                    colorspec = getParameter("foreground");
+                // Process the foreground parameter.
+                Color foreground = Color.black;
+                colorspec = getParameter("foreground");
 
-                    if (colorspec != null) {
-                        foreground = PlotBox.getColorByName(colorspec);
-                    }
+                if (colorspec != null) {
+                    foreground = PlotBox.getColorByName(colorspec);
+                }
 
-                    setForeground(foreground);
-                    plot().setForeground(foreground);
-                    plot().setVisible(true);
+                setForeground(foreground);
+                plot().setForeground(foreground);
+                plot().setVisible(true);
 
-                    // Process the dataurl parameter.
-                    String dataurlspec = getParameter("dataurl");
+                // Process the dataurl parameter.
+                String dataurlspec = getParameter("dataurl");
 
-                    if (dataurlspec != null) {
-                        try {
-                            showStatus("Reading data");
+                if (dataurlspec != null) {
+                    try {
+                        showStatus("Reading data");
 
-                            URL dataurl = new URL(getDocumentBase(), dataurlspec);
-                            InputStream in = dataurl.openStream();
-                            _read(in);
-                            showStatus("Done");
-                        } catch (MalformedURLException e) {
-                            System.err.println(e.toString());
-                        } catch (FileNotFoundException e) {
-                            System.err.println("PlotApplet: file not found: "
-                                    + e);
-                        } catch (IOException e) {
-                            System.err.println(
-                                    "PlotApplet: error reading input file: " + e);
-                        }
+                        URL dataurl = new URL(getDocumentBase(), dataurlspec);
+                        InputStream in = dataurl.openStream();
+                        _read(in);
+                        showStatus("Done");
+                    } catch (MalformedURLException e) {
+                        System.err.println(e.toString());
+                    } catch (FileNotFoundException e) {
+                        System.err.println("PlotApplet: file not found: " + e);
+                    } catch (IOException e) {
+                        System.err
+                                .println("PlotApplet: error reading input file: "
+                                        + e);
                     }
                 }
-            };
+            }
+        };
 
         try {
             // NOTE: Using invokeAndWait() here risks causing

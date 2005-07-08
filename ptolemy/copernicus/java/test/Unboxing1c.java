@@ -5,7 +5,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 public class Unboxing1c {
     public static void main(String[] strings) throws IllegalActionException {
         IntToken inttoken = new IntToken(1);

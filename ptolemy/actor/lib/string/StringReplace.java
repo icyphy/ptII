@@ -1,31 +1,31 @@
 /* Replace an instance of a string with another input string according
-   to a regular expression.
+ to a regular expression.
 
-   Copyright (c) 2003-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.string;
 
 import java.util.regex.Matcher;
@@ -45,28 +45,27 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// StringReplace
 
 /**
-   On each firing, look for instances of the pattern specified by <i>pattern</i>
-   in <i>stringToEdit</i> and replace them with the string given by
-   <i>replacement</i>.  If <i>replaceAll</i> is true, then replace
-   all instances that match <i>pattern</i>.  Otherwise, replace only
-   the first instance that matches.  If there is no match, then the
-   output is the string provided by <i>stringToEdit</i>, unchanged.
-   The <i>pattern</i> is given by a regular expression.
-   For a reference on regular expression syntax see:
-   <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
-   http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>
+ On each firing, look for instances of the pattern specified by <i>pattern</i>
+ in <i>stringToEdit</i> and replace them with the string given by
+ <i>replacement</i>.  If <i>replaceAll</i> is true, then replace
+ all instances that match <i>pattern</i>.  Otherwise, replace only
+ the first instance that matches.  If there is no match, then the
+ output is the string provided by <i>stringToEdit</i>, unchanged.
+ The <i>pattern</i> is given by a regular expression.
+ For a reference on regular expression syntax see:
+ <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
+ http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>
 
-   @author Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (djstone)
-   @Pt.AcceptedRating Green (net)
-*/
+ @author Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (djstone)
+ @Pt.AcceptedRating Green (net)
+ */
 public class StringReplace extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -85,7 +84,8 @@ public class StringReplace extends TypedAtomicActor {
         pattern = new PortParameter(this, "pattern");
         pattern.setStringMode(true);
         pattern.setExpression("");
-        (new SingletonParameter(pattern.getPort(), "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(pattern.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         replaceAll = new Parameter(this, "replaceAll");
         replaceAll.setExpression("true");
@@ -94,12 +94,14 @@ public class StringReplace extends TypedAtomicActor {
         replacement = new PortParameter(this, "replacement");
         replacement.setStringMode(true);
         replacement.setExpression("");
-        (new SingletonParameter(replacement.getPort(), "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(replacement.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         stringToEdit = new PortParameter(this, "stringToEdit");
         stringToEdit.setStringMode(true);
         stringToEdit.setExpression("");
-        (new SingletonParameter(stringToEdit.getPort(), "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(stringToEdit.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
@@ -149,14 +151,14 @@ public class StringReplace extends TypedAtomicActor {
         if (attribute == pattern) {
             try {
                 String patternValue = ((StringToken) pattern.getToken())
-                    .stringValue();
+                        .stringValue();
                 _pattern = Pattern.compile(patternValue);
             } catch (PatternSyntaxException ex) {
                 String patternValue = ((StringToken) pattern.getToken())
-                    .stringValue();
+                        .stringValue();
                 throw new IllegalActionException(this, ex,
-                        "Failed to compile regular expression \"" + patternValue
-                        + "\"");
+                        "Failed to compile regular expression \""
+                                + patternValue + "\"");
             }
         } else {
             super.attributeChanged(attribute);
@@ -175,11 +177,11 @@ public class StringReplace extends TypedAtomicActor {
         pattern.update();
 
         String replacementValue = ((StringToken) replacement.getToken())
-            .stringValue();
+                .stringValue();
         String stringToEditValue = ((StringToken) stringToEdit.getToken())
-            .stringValue();
+                .stringValue();
         boolean replaceAllTokens = ((BooleanToken) replaceAll.getToken())
-            .booleanValue();
+                .booleanValue();
 
         Matcher match = _pattern.matcher(stringToEditValue);
         String outputString;

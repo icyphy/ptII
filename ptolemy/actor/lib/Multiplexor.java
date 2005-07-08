@@ -1,30 +1,30 @@
 /* A polymorphic multiplexor.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -35,32 +35,31 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Multiplexor
 
 /**
-   This actor selects from the channels on the
-   <i>input</i> port, copying the input from one channel to the output,
-   based on the most recently received value on the <i>select</i> input.
-   If the selected channel has no token, then no output is produced.
-   The <i>select</i> input is required to be an integer between 0 and
-   <i>n</i>-1, where <i>n</i> is the width of the <i>input</i> port.
-   If no token has been received on the <i>select</i> port, then channel
-   0 is sent to the output.  The <i>input</i> port may
-   receive Tokens of any type, but all channels must have the same type.
-   <p>
-   One token is consumed from each input channel that has a token.
-   Compare this with the Select actor, which only consumes a token on
-   the selected channel.
+ This actor selects from the channels on the
+ <i>input</i> port, copying the input from one channel to the output,
+ based on the most recently received value on the <i>select</i> input.
+ If the selected channel has no token, then no output is produced.
+ The <i>select</i> input is required to be an integer between 0 and
+ <i>n</i>-1, where <i>n</i> is the width of the <i>input</i> port.
+ If no token has been received on the <i>select</i> port, then channel
+ 0 is sent to the output.  The <i>input</i> port may
+ receive Tokens of any type, but all channels must have the same type.
+ <p>
+ One token is consumed from each input channel that has a token.
+ Compare this with the Select actor, which only consumes a token on
+ the selected channel.
 
-   @author Jeff Tsay and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (ctsay)
-   @Pt.AcceptedRating Yellow (cxh)
-   @see ptolemy.actor.lib.Select
-*/
+ @author Jeff Tsay and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (ctsay)
+ @Pt.AcceptedRating Yellow (cxh)
+ @see ptolemy.actor.lib.Select
+ */
 public class Multiplexor extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.

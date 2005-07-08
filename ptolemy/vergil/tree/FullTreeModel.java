@@ -1,30 +1,30 @@
 /* A tree model for Ptolemy II objects, for use with JTree.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.tree;
 
 import java.util.Collections;
@@ -34,33 +34,32 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FullTreeModel
 
 /**
-   A tree model for Ptolemy II models.  Nodes in this tree contain
-   the following child elements, in this order:
-   <ul>
-   <li> attributes
-   <li> ports
-   <li> relations
-   <li> class definitions
-   <li> contained entities
-   </ul>
-   The indexes of the attributes are 0 to a-1, where a is the
-   number of attributes.  The indexes of the ports are a to a+p-1,
-   where p is the number of ports, and so on.
-   Subclasses may return a subset of the attributes, ports, and
-   relations by overriding the protected methods that list these
-   contained objects.
+ A tree model for Ptolemy II models.  Nodes in this tree contain
+ the following child elements, in this order:
+ <ul>
+ <li> attributes
+ <li> ports
+ <li> relations
+ <li> class definitions
+ <li> contained entities
+ </ul>
+ The indexes of the attributes are 0 to a-1, where a is the
+ number of attributes.  The indexes of the ports are a to a+p-1,
+ where p is the number of ports, and so on.
+ Subclasses may return a subset of the attributes, ports, and
+ relations by overriding the protected methods that list these
+ contained objects.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class FullTreeModel extends ClassAndEntityTreeModel {
     /** Create a new tree model with the specified root.
      *  @param root The root of the tree.
@@ -89,8 +88,8 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
         int numRelations = relations.size();
 
         if (index >= (numAttributes + numPorts + numRelations)) {
-            return super.getChild(parent,
-                    index - numAttributes - numPorts - numRelations);
+            return super.getChild(parent, index - numAttributes - numPorts
+                    - numRelations);
         } else if (index >= (numAttributes + numPorts)) {
             return relations.get(index - numAttributes - numPorts);
         } else if (index >= numAttributes) {
@@ -120,7 +119,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
         int numRelations = relations.size();
 
         return numAttributes + numPorts + numRelations
-            + super.getChildCount(parent);
+                + super.getChildCount(parent);
     }
 
     /** Return the index of the given child within the given parent.

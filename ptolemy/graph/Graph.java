@@ -1,31 +1,31 @@
 /* A graph with optionally-weighted nodes and edges.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.graph;
 
 import java.util.ArrayList;
@@ -39,64 +39,63 @@ import ptolemy.graph.analysis.Analysis;
 import ptolemy.graph.analysis.SelfLoopAnalysis;
 import ptolemy.graph.analysis.strategy.CachedStrategy;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Graph
 
 /**
-   A graph with optionally-weighted nodes and edges.
+ A graph with optionally-weighted nodes and edges.
 
-   <p>Each node or edge may have a weight associated with it
-   (see {@link Edge} and {@link Node}).
-   The nodes (edges) in a graph are always distinct, but their weights
-   need not be.
+ <p>Each node or edge may have a weight associated with it
+ (see {@link Edge} and {@link Node}).
+ The nodes (edges) in a graph are always distinct, but their weights
+ need not be.
 
-   <p>Each node (edge) has a unique, integer label associated with it.
-   These labels can be used, for example, to index arrays and matrixes
-   whose rows/columns correspond to nodes (edges). See {@link #nodeLabel(Node)}
-   ({@link #edgeLabel(Edge)}) for details.
+ <p>Each node (edge) has a unique, integer label associated with it.
+ These labels can be used, for example, to index arrays and matrixes
+ whose rows/columns correspond to nodes (edges). See {@link #nodeLabel(Node)}
+ ({@link #edgeLabel(Edge)}) for details.
 
-   <p>Both directed and undirected graphs can be implemented using this
-   class. In directed graphs, the order of nodes specified to the
-   <code>addEdge</code> method is relevant, whereas in undirected graphs, the
-   order is unimportant. Support for both undirected and directed graphs
-   follows from the combined support for these in the underlying {@link
-   Node} and {@link Edge} classes. For more thorough support for directed
-   graphs, see {@link DirectedGraph}.
+ <p>Both directed and undirected graphs can be implemented using this
+ class. In directed graphs, the order of nodes specified to the
+ <code>addEdge</code> method is relevant, whereas in undirected graphs, the
+ order is unimportant. Support for both undirected and directed graphs
+ follows from the combined support for these in the underlying {@link
+ Node} and {@link Edge} classes. For more thorough support for directed
+ graphs, see {@link DirectedGraph}.
 
-   <p>The same node can exist in multiple graphs, but any given graph can
-   contain only one instance of the node. Node labels, however, are local to
-   individual graphs. Thus, the same node may have different labels in different
-   graphs.
-   Furthermore, the label assigned in a given graph to a node may change over
-   time (if the set of nodes in the graph changes). If a node is contained in
-   multiple graphs, it has the same weight in all of the graphs.
-   All of this holds for edges
-   as well. The same weight may be shared among multiple nodes and edges.
+ <p>The same node can exist in multiple graphs, but any given graph can
+ contain only one instance of the node. Node labels, however, are local to
+ individual graphs. Thus, the same node may have different labels in different
+ graphs.
+ Furthermore, the label assigned in a given graph to a node may change over
+ time (if the set of nodes in the graph changes). If a node is contained in
+ multiple graphs, it has the same weight in all of the graphs.
+ All of this holds for edges
+ as well. The same weight may be shared among multiple nodes and edges.
 
-   <p> Multiple edges in a graph can connect the same pair of nodes.
-   Thus, multigraphs are supported.
+ <p> Multiple edges in a graph can connect the same pair of nodes.
+ Thus, multigraphs are supported.
 
-   <p>Once assigned, node and edge weights should not be changed in ways that
-   affect comparison under the <code>equals</code> method.
-   Otherwise, unpredictable behavior may result.
+ <p>Once assigned, node and edge weights should not be changed in ways that
+ affect comparison under the <code>equals</code> method.
+ Otherwise, unpredictable behavior may result.
 
-   <p>In discussions of complexity, <em>n</em> and <em>e</em> refers to the
-   number of graph nodes and edges, respectively.
+ <p>In discussions of complexity, <em>n</em> and <em>e</em> refers to the
+ number of graph nodes and edges, respectively.
 
-   <p>In derived classes, the following methods need special
-   attention regarding whether or not they should be overridden:
-   <br>{@link #validEdgeWeight(Object)} {@link #validNodeWeight(Object)}
+ <p>In derived classes, the following methods need special
+ attention regarding whether or not they should be overridden:
+ <br>{@link #validEdgeWeight(Object)} {@link #validNodeWeight(Object)}
 
-   @author Shuvra S. Bhattacharyya, Ming-Yung Ko, Fuat Keceli,
-   Shahrooz Shahparnia, Yuhong Xiong, Jie Liu.
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.graph.Edge
-   @see ptolemy.graph.Node
-*/
+ @author Shuvra S. Bhattacharyya, Ming-Yung Ko, Fuat Keceli,
+ Shahrooz Shahparnia, Yuhong Xiong, Jie Liu.
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.graph.Edge
+ @see ptolemy.graph.Node
+ */
 public class Graph implements Cloneable {
     /** Construct an empty graph.
      */
@@ -1190,7 +1189,7 @@ public class Graph implements Cloneable {
             if (!containsNode(node)) {
                 throw new GraphElementException(node, this,
                         "Attempt to form an induced subgraph containing a "
-                        + "node that is not in the 'parent' graph.");
+                                + "node that is not in the 'parent' graph.");
             }
 
             Iterator incidentEdges = incidentEdges(node).iterator();
@@ -1235,7 +1234,7 @@ public class Graph implements Cloneable {
             if (!containsNode(node)) {
                 throw new GraphElementException(node, this,
                         "Attempt to form a subgraph containing a node "
-                        + "that is not in the 'parent' graph.");
+                                + "that is not in the 'parent' graph.");
             }
         }
 
@@ -1247,7 +1246,7 @@ public class Graph implements Cloneable {
             if (!containsEdge(edge)) {
                 throw new GraphElementException(edge, this,
                         "Attempt to form a subgraph containing an edge "
-                        + "that is not in the 'parent' graph.");
+                                + "that is not in the 'parent' graph.");
             }
         }
 
@@ -1520,8 +1519,8 @@ public class Graph implements Cloneable {
             } catch (ClassCastException exception) {
                 throw new GraphElementException("Illegal graph element "
                         + "(neither a Node nor an Edge) specified.\n"
-                        + "The element's type is: " + element.getClass().getName()
-                        + ".\n");
+                        + "The element's type is: "
+                        + element.getClass().getName() + ".\n");
             }
 
             return result;
@@ -1586,7 +1585,7 @@ public class Graph implements Cloneable {
         if (_incidentEdgeList(node).contains(edge)) {
             throw new GraphConstructionException(
                     "Attempt to connect the same edge multiple times."
-                    + GraphException.elementDump(edge, this));
+                            + GraphException.elementDump(edge, this));
         } else {
             _incidentEdgeList(node).add(edge);
         }

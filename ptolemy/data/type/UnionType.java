@@ -1,29 +1,29 @@
 /** A class representing the type of a UnionToken.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.data.type;
 
 import java.util.HashMap;
@@ -39,29 +39,28 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// UnionType
 
 /**
-   A class representing the type of a UnionToken.
-   To set the type of a typeable object (such as a port or parameter)
-   to a union with particular fields, create an instance of this
-   class and call setTypeEquals() with that instance as an argument.
-   <p>
-   Note that an union type with more fields is a supertype of a union
-   type with a subset of the fields.  For example, {|x = double, y = int}
-   is a supertype of {|x = double}. When an union of type
-   {|x = double} is converted to one of type {|x = double, y = int},
-   an extra field is added, but a value with the lower type will not
-   have the type of this extra field.
+ A class representing the type of a UnionToken.
+ To set the type of a typeable object (such as a port or parameter)
+ to a union with particular fields, create an instance of this
+ class and call setTypeEquals() with that instance as an argument.
+ <p>
+ Note that an union type with more fields is a supertype of a union
+ type with a subset of the fields.  For example, {|x = double, y = int}
+ is a supertype of {|x = double}. When an union of type
+ {|x = double} is converted to one of type {|x = double, y = int},
+ an extra field is added, but a value with the lower type will not
+ have the type of this extra field.
 
-   @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (yuhongx)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (yuhongx)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class UnionType extends StructuredType {
     /** Construct a new UnionType with the specified labels and types.
      *  To leave the types of some fields undeclared, use BaseType.UNKNOWN.
@@ -138,8 +137,7 @@ public class UnionType extends StructuredType {
     public Token convert(Token token) throws IllegalActionException {
         if (!isCompatible(token.getType())) {
             throw new IllegalArgumentException(Token
-                    .notSupportedConversionMessage(token,
-                            this.toString()));
+                    .notSupportedConversionMessage(token, this.toString()));
         }
 
         UnionToken unionToken = (UnionToken) token;
@@ -521,7 +519,7 @@ public class UnionType extends StructuredType {
         if (!(type instanceof UnionType)) {
             throw new IllegalArgumentException(
                     "UnionType.greatestLowerBound: The argument is not a "
-                    + "UnionType.");
+                            + "UnionType.");
         }
 
         UnionType unionType = (UnionType) type;
@@ -546,7 +544,7 @@ public class UnionType extends StructuredType {
             Type type1 = this.get(labels[i]);
             Type type2 = unionType.get(labels[i]);
             types[i] = (Type) TypeLattice.lattice().greatestLowerBound(type1,
-                                                                 type2);
+                    type2);
         }
 
         return new UnionType(labels, types);
@@ -593,9 +591,8 @@ public class UnionType extends StructuredType {
             } else if (type2 == null) {
                 types[i] = type1;
             } else {
-                types[i] =
-                       (Type) TypeLattice.lattice().greatestLowerBound(type1,
-                                                                    type2);
+                types[i] = (Type) TypeLattice.lattice().greatestLowerBound(
+                        type1, type2);
             }
         }
 
@@ -632,7 +629,7 @@ public class UnionType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
- 
+
     // Mapping from label to field information.
     private Map _fields = new HashMap();
 
@@ -738,7 +735,7 @@ public class UnionType extends StructuredType {
             if (!isSettable()) {
                 throw new IllegalActionException(
                         "UnionType$FieldType.setValue: The type is not "
-                        + "settable.");
+                                + "settable.");
             }
 
             if (!_declaredType.isSubstitutionInstance((Type) e)) {
@@ -755,7 +752,7 @@ public class UnionType extends StructuredType {
                 } catch (CloneNotSupportedException cnse) {
                     throw new InternalErrorException(
                             "UnionType$FieldType.setValue: "
-                            + "The specified type cannot be cloned.");
+                                    + "The specified type cannot be cloned.");
                 }
             } else {
                 ((StructuredType) _resolvedType).updateType((StructuredType) e);
@@ -772,7 +769,7 @@ public class UnionType extends StructuredType {
         ///////////////////////////////////////////////////////////////
         ////                  private inner variables              ////
         private Type _declaredType = null;
+
         private Type _resolvedType = null;
     }
 }
-

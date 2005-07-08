@@ -1,30 +1,30 @@
 /* An HSDirector governs the execution of the discrete dynamics of a
-   hybrid system model.
+ hybrid system model.
 
-   Copyright (c) 1999-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fsm.kernel;
 
 import java.util.Iterator;
@@ -53,28 +53,27 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// HSDirector
 
 /**
-   An HSDirector governs the execution of the discrete dynamics of a hybrid
-   system model.
-   <p>
-   <a href="
-   http://ptolemy.eecs.berkeley.edu/publications/papers/99/hybridsimu/">
-   Hierarchical Hybrid System Simulation</a> describes how hybrid system models
-   are built and simulated in Ptolemy II. A detailed discussion about the
-   underlying semantics can be found at <a href="
-   http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics
-   ">Operational Semantics of Hybrid Systems</a>.
+ An HSDirector governs the execution of the discrete dynamics of a hybrid
+ system model.
+ <p>
+ <a href="
+ http://ptolemy.eecs.berkeley.edu/publications/papers/99/hybridsimu/">
+ Hierarchical Hybrid System Simulation</a> describes how hybrid system models
+ are built and simulated in Ptolemy II. A detailed discussion about the
+ underlying semantics can be found at <a href="
+ http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics
+ ">Operational Semantics of Hybrid Systems</a>.
 
-   @author Xiaojun Liu, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (liuxj)
-*/
+ @author Xiaojun Liu, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (hyzheng)
+ @Pt.AcceptedRating Red (liuxj)
+ */
 public class HSDirector extends FSMDirector implements CTTransparentDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -229,8 +228,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // Check whether there exits some enabled preemptive transition.
             // If so, we need to skip the firing of refinements and return
             // immediately.
-            List enabledPreemptiveTransitions = _ctrl._checkTransition(_currentState
-                    .preemptiveTransitionList());
+            List enabledPreemptiveTransitions = _ctrl
+                    ._checkTransition(_currentState.preemptiveTransitionList());
 
             if (enabledPreemptiveTransitions.size() > 0) {
                 return;
@@ -245,8 +244,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 Actor actor = (Actor) actors.next();
 
                 if (_debugging && _verbose) {
-                    _debug(getName(), " fire refinement",
-                            ((NamedObj) actor).getName());
+                    _debug(getName(), " fire refinement", ((NamedObj) actor)
+                            .getName());
                 }
 
                 // If this is the first time this state is visited, check
@@ -258,7 +257,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
                     if (director instanceof CTEmbeddedDirector) {
                         ((CTEmbeddedDirector) director)
-                            .setInitialStatesNotReady();
+                                .setInitialStatesNotReady();
                     }
                 }
 
@@ -315,10 +314,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
                         if (transitionActors[i].prefire()) {
                             if (_debugging) {
-                                _debug(getFullName(),
+                                _debug(
+                                        getFullName(),
                                         " fire transition refinement",
                                         ((ptolemy.kernel.util.NamedObj) transitionActors[i])
-                                        .getName());
+                                                .getName());
                             }
 
                             transitionActors[i].fire();
@@ -563,8 +563,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
                 if (refinement instanceof CTStepSizeControlActor) {
                     result = result
-                        && ((CTStepSizeControlActor) refinement)
-                        .isOutputAccurate();
+                            && ((CTStepSizeControlActor) refinement)
+                                    .isOutputAccurate();
                 }
             }
         }
@@ -580,8 +580,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         // transitions never even get a chance to be evaluated.
         try {
             // Check if there is any preemptive transition enabled.
-            List preemptiveEnabledTransitions = _ctrl._checkTransition(_currentState
-                    .preemptiveTransitionList());
+            List preemptiveEnabledTransitions = _ctrl
+                    ._checkTransition(_currentState.preemptiveTransitionList());
 
             if (preemptiveEnabledTransitions.size() != 0) {
                 if (_debugging && _verbose) {
@@ -590,8 +590,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
 
             // Check if there is any non-preemptive transition enabled.
-            List nonpreemptiveEnabledTransitions = _ctrl._checkTransition(_currentState
-                    .nonpreemptiveTransitionList());
+            List nonpreemptiveEnabledTransitions = _ctrl
+                    ._checkTransition(_currentState
+                            .nonpreemptiveTransitionList());
 
             if (nonpreemptiveEnabledTransitions.size() != 0) {
                 if (_debugging && _verbose) {
@@ -648,12 +649,13 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     Transition transition = (Transition) iterator.next();
                     RelationList relationList = transition.getRelationList();
 
-                    double distanceToBoundary = relationList.maximumDifference();
+                    double distanceToBoundary = relationList
+                            .maximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
                         _lastDistanceToBoundary = relationList
-                            .getPreviousMaximumDistance();
+                                .getPreviousMaximumDistance();
                         enabledTransition = transition;
                     }
                 }
@@ -664,38 +666,41 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     Transition transition = (Transition) iterator.next();
                     RelationList relationList = transition.getRelationList();
 
-                    double distanceToBoundary = relationList.maximumDifference();
+                    double distanceToBoundary = relationList
+                            .maximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
                         _lastDistanceToBoundary = relationList
-                            .getPreviousMaximumDistance();
+                                .getPreviousMaximumDistance();
                         enabledTransition = transition;
                     }
                 }
 
                 if (preemptiveTrWithEvent != null) {
                     RelationList relationList = preemptiveTrWithEvent
-                        .getRelationList();
-                    double distanceToBoundary = relationList.maximumDifference();
+                            .getRelationList();
+                    double distanceToBoundary = relationList
+                            .maximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
                         _lastDistanceToBoundary = relationList
-                            .getPreviousMaximumDistance();
+                                .getPreviousMaximumDistance();
                         enabledTransition = preemptiveTrWithEvent;
                     }
                 }
 
                 if (nonPreemptiveTrWithEvent != null) {
                     RelationList relationList = nonPreemptiveTrWithEvent
-                        .getRelationList();
-                    double distanceToBoundary = relationList.maximumDifference();
+                            .getRelationList();
+                    double distanceToBoundary = relationList
+                            .maximumDifference();
 
                     if (distanceToBoundary > _distanceToBoundary) {
                         _distanceToBoundary = distanceToBoundary;
                         _lastDistanceToBoundary = relationList
-                            .getPreviousMaximumDistance();
+                                .getPreviousMaximumDistance();
                         enabledTransition = nonPreemptiveTrWithEvent;
                     }
                 }
@@ -744,8 +749,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
                 if (refinement instanceof CTStepSizeControlActor) {
                     result = result
-                        && ((CTStepSizeControlActor) refinement)
-                        .isStateAccurate();
+                            && ((CTStepSizeControlActor) refinement)
+                                    .isStateAccurate();
                 }
             }
         }
@@ -829,7 +834,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // relation list since after this breakpoint, no history
             // information is valid.
             Iterator iterator = _currentState.nonpreemptiveTransitionList()
-                .listIterator();
+                    .listIterator();
 
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
@@ -887,7 +892,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 // Only commit the current states of the relationlists
                 // of all the transitions during these execution phases.
                 Iterator iterator = _currentState.nonpreemptiveTransitionList()
-                    .listIterator();
+                        .listIterator();
 
                 while (iterator.hasNext()) {
                     Transition transition = (Transition) iterator.next();
@@ -895,7 +900,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 }
 
                 iterator = _currentState.preemptiveTransitionList()
-                    .listIterator();
+                        .listIterator();
 
                 while (iterator.hasNext()) {
                     Transition transition = (Transition) iterator.next();
@@ -931,7 +936,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 if (refinement instanceof CTStepSizeControlActor) {
                     result = Math.min(result,
                             ((CTStepSizeControlActor) refinement)
-                            .predictedStepSize());
+                                    .predictedStepSize());
                 }
             }
         }
@@ -951,8 +956,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         _currentState = _ctrl.currentState();
 
         if (_debugging) {
-            _debug(getName(),
-                    " find FSMActor " + _ctrl.getName()
+            _debug(getName(), " find FSMActor " + _ctrl.getName()
                     + " and the current state is " + _currentState.getName());
         }
 
@@ -988,8 +992,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
                 if (refinement instanceof CTCompositeActor) {
                     result = result
-                        && ((CTCompositeActor) refinement)
-                        .prefireDynamicActors();
+                            && ((CTCompositeActor) refinement)
+                                    .prefireDynamicActors();
                 }
             }
         }
@@ -1022,7 +1026,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 if (refinement instanceof CTStepSizeControlActor) {
                     result = Math.min(result,
                             ((CTStepSizeControlActor) refinement)
-                            .refinedStepSize());
+                                    .refinedStepSize());
                 }
             }
         }
@@ -1035,9 +1039,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // Linear interpolation to refine the step size.
             // Note the step size is refined such that the distanceToBoundary
             // is half of errorTolerance.
-            refinedStepSize = (currentStepSize * (_lastDistanceToBoundary
-                                       + (errorTolerance / 2))) / (_lastDistanceToBoundary
-                                               + _distanceToBoundary);
+            refinedStepSize = (currentStepSize * (_lastDistanceToBoundary + (errorTolerance / 2)))
+                    / (_lastDistanceToBoundary + _distanceToBoundary);
 
             result = Math.min(result, refinedStepSize);
         }

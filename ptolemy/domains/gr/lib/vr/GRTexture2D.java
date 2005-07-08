@@ -1,30 +1,30 @@
 /* An actor that performs volume rendering using 2D textures.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.lib.vr;
 
 import java.awt.Image;
@@ -60,39 +60,38 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture2D
 
 /** An abstract base class for GR Actors that have material and color
-    properties.
+ properties.
 
-    The <i>texture</i> parameter can be used to specify an image file.
-    The specified image will be mapped onto the shape.
-    <p>
-    The parameter <i>transparency</i> determines the transparency of the
-    object. It ranges from 0.0 (the default) to 1.0, meaning opaque to
-    fully transparent (which makes the object invisible).
-    <p>
-    The <i>wireFrame</i> parameter can be used to view only the lines
-    that outline the polygons of the object and not the surface.
-    The <i>flat</i> parameter can be set to make rendered polygons
-    flat rather than rounded at the corners.
-    <p>
-    The <i>allowRuntimeChanges</i> parameter, if true, specifies
-    that changes to parameter values during the execution of the model
-    take effect immediately. By default, this parameter is false,
-    which means that changes to parameter values take effect only
-    on the next run of the model. A value of false yields better
-    performance, but less interactivity.  Changing this to true will
-    only have an effect on the next run of the model.
+ The <i>texture</i> parameter can be used to specify an image file.
+ The specified image will be mapped onto the shape.
+ <p>
+ The parameter <i>transparency</i> determines the transparency of the
+ object. It ranges from 0.0 (the default) to 1.0, meaning opaque to
+ fully transparent (which makes the object invisible).
+ <p>
+ The <i>wireFrame</i> parameter can be used to view only the lines
+ that outline the polygons of the object and not the surface.
+ The <i>flat</i> parameter can be set to make rendered polygons
+ flat rather than rounded at the corners.
+ <p>
+ The <i>allowRuntimeChanges</i> parameter, if true, specifies
+ that changes to parameter values during the execution of the model
+ take effect immediately. By default, this parameter is false,
+ which means that changes to parameter values take effect only
+ on the next run of the model. A value of false yields better
+ performance, but less interactivity.  Changing this to true will
+ only have an effect on the next run of the model.
 
-    @author Tiffany Crawford
-    @version
-    @since
-    @Pt.ProposedRating Red
-    @Pt.AcceptedRating Red
-*/
+ @author Tiffany Crawford
+ @version
+ @since
+ @Pt.ProposedRating Red
+ @Pt.AcceptedRating Red
+ */
 public class GRTexture2D extends GRGeometry {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -105,7 +104,6 @@ public class GRTexture2D extends GRGeometry {
     public GRTexture2D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
 
         //voxelFile = new FilePortParameter(this, "voxelFile");
         //voxelFile.setExpression("$CLASSPATH/doc/img/brainMRI.jpg");
@@ -139,8 +137,6 @@ public class GRTexture2D extends GRGeometry {
      */
     // public FilePortParameter voxelFile;
 
-
-
     public void initialize() throws IllegalActionException {
         super.initialize();
         /** Initialize some variables */
@@ -157,52 +153,52 @@ public class GRTexture2D extends GRGeometry {
      * @throws
      */
     /*public boolean prefire() throws IllegalActionException {
-      if (_debugging) {
-      _debug("Called prefire()");
-      _debug("_isSceneGraphInitialized = " + _isSceneGraphInitialized);
-      _debug("Does port have token?" + _parameterPort.hasToken(0));
-      }
+     if (_debugging) {
+     _debug("Called prefire()");
+     _debug("_isSceneGraphInitialized = " + _isSceneGraphInitialized);
+     _debug("Does port have token?" + _parameterPort.hasToken(0));
+     }
 
-      if (_parameterPort.hasToken(0)){
-      texture.update();
+     if (_parameterPort.hasToken(0)){
+     texture.update();
 
-      /** Set _isSceneGraphInitialized back to false so
-      * node can be sent. fire() will set it back to true
-      */
+     /** Set _isSceneGraphInitialized back to false so
+     * node can be sent. fire() will set it back to true
+     */
 
     /*       _createModel();
-    //FIXME: Problem with name of variable, talk to Edward
-    _isSceneGraphInitialized = false;
+     //FIXME: Problem with name of variable, talk to Edward
+     _isSceneGraphInitialized = false;
 
-    if (_debugging) {
-    _debug("Prefire returned true");
-    _debug("texture = " + texture);
-    }
-    return true;
-    }else {
+     if (_debugging) {
+     _debug("Prefire returned true");
+     _debug("texture = " + texture);
+     }
+     return true;
+     }else {
 
-    return false;
-    }
-    } */
+     return false;
+     }
+     } */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     /** Create the geometry for the Node that will hold the texture.
      */
     protected void _createGeometry() throws IllegalActionException {
-        _plane = new QuadArray(4, GeometryArray.COORDINATES|
-                GeometryArray.TEXTURE_COORDINATE_2);
+        _plane = new QuadArray(4, GeometryArray.COORDINATES
+                | GeometryArray.TEXTURE_COORDINATE_2);
 
         if (_debugging) {
             _debug("inside _createGeometry");
             _debug("_axis = " + _axis);
         }
 
-        _quadCoords = new double [12];
-        _texCoords = new float [8];
+        _quadCoords = new double[12];
+        _texCoords = new float[8];
 
-        if(_axis == 1){
-            double curY = _counter * _planeSpacing -.5;
+        if (_axis == 1) {
+            double curY = _counter * _planeSpacing - .5;
 
             if (_debugging) {
                 _debug("counter = " + _counter);
@@ -218,33 +214,30 @@ public class GRTexture2D extends GRGeometry {
             _quadCoords[0] = -0.5;
             _quadCoords[1] = curY;
             _quadCoords[2] = 0.5;
-            _texCoords[0]= 0;
-            _texCoords[1]= 0;
-
+            _texCoords[0] = 0;
+            _texCoords[1] = 0;
 
             // lower right
             _quadCoords[3] = 0.5;
             _quadCoords[4] = curY;
             _quadCoords[5] = 0.5;
-            _texCoords[2]= 1;
-            _texCoords[3]= 0;
-
+            _texCoords[2] = 1;
+            _texCoords[3] = 0;
 
             // upper right
             _quadCoords[6] = 0.5;
             _quadCoords[7] = curY;
             _quadCoords[8] = -0.5;
-            _texCoords[4]= 1;
-            _texCoords[5]= 1;
-
+            _texCoords[4] = 1;
+            _texCoords[5] = 1;
 
             // upper left
             _quadCoords[9] = -0.5;
             _quadCoords[10] = curY;
             _quadCoords[11] = -0.5;
-            _texCoords[6]= 0;
-            _texCoords[7]= 1;
-        } else if (_axis == 2){
+            _texCoords[6] = 0;
+            _texCoords[7] = 1;
+        } else if (_axis == 2) {
 
             double curZ = _counter * _planeSpacing - .5;
             /** Set coordinates for the plane.  These coordinates assume
@@ -255,34 +248,31 @@ public class GRTexture2D extends GRGeometry {
             _quadCoords[0] = -0.5;
             _quadCoords[1] = -0.5;
             _quadCoords[2] = curZ;
-            _texCoords[0]= 0;
-            _texCoords[1]= 0;
-
+            _texCoords[0] = 0;
+            _texCoords[1] = 0;
 
             // lower right
             _quadCoords[3] = 0.5;
             _quadCoords[4] = -0.5;
             _quadCoords[5] = curZ;
-            _texCoords[2]= 1;
-            _texCoords[3]= 0;
-
+            _texCoords[2] = 1;
+            _texCoords[3] = 0;
 
             // upper right
             _quadCoords[6] = 0.5;
             _quadCoords[7] = 0.5;
             _quadCoords[8] = curZ;
-            _texCoords[4]= 1;
-            _texCoords[5]= 1;
-
+            _texCoords[4] = 1;
+            _texCoords[5] = 1;
 
             // upper left
             _quadCoords[9] = -0.5;
             _quadCoords[10] = 0.5;
             _quadCoords[11] = curZ;
-            _texCoords[6]= 0;
-            _texCoords[7]= 1;
-        }else if (_axis == 0){
-            double curX = _counter * _planeSpacing -.5;
+            _texCoords[6] = 0;
+            _texCoords[7] = 1;
+        } else if (_axis == 0) {
+            double curX = _counter * _planeSpacing - .5;
             /** Set coordinates for the plane.  These coordinates assume
              * that the the image's origin is at the lower left and the planes
              * are aligned accordingly
@@ -291,54 +281,48 @@ public class GRTexture2D extends GRGeometry {
             _quadCoords[0] = curX;
             _quadCoords[1] = -0.5;
             _quadCoords[2] = 0.5;
-            _texCoords[0]= 0;
-            _texCoords[1]= 0;
-
+            _texCoords[0] = 0;
+            _texCoords[1] = 0;
 
             // lower right
             _quadCoords[3] = curX;
             _quadCoords[4] = -0.5;
             _quadCoords[5] = -0.5;
-            _texCoords[2]= 1;
-            _texCoords[3]= 0;
-
+            _texCoords[2] = 1;
+            _texCoords[3] = 0;
 
             // upper right
             _quadCoords[6] = curX;
             _quadCoords[7] = 0.5;
             _quadCoords[8] = -0.5;
-            _texCoords[4]= 1;
-            _texCoords[5]= 1;
-
+            _texCoords[4] = 1;
+            _texCoords[5] = 1;
 
             // upper left
             _quadCoords[9] = curX;
             _quadCoords[10] = 0.5;
             _quadCoords[11] = 0.5;
-            _texCoords[6]= 0;
-            _texCoords[7]= 1;
+            _texCoords[6] = 0;
+            _texCoords[7] = 1;
 
-
-        }else {
+        } else {
             if (_debugging) {
                 _debug("chose none of them");
 
             }
         }
 
-
         _plane.setCoordinates(0, _quadCoords);
-        _plane.setTextureCoordinates(0, 0,_texCoords);
+        _plane.setTextureCoordinates(0, 0, _texCoords);
         _geometry = _plane;
     }
 
-    protected void _createModel()throws IllegalActionException {
+    protected void _createModel() throws IllegalActionException {
         _readImage();
         _counter++;
         super._createModel();
         _loadTexture();
     }
-
 
     /** Create the texture used for this 3D object.
      * Define the texture coordinates and textureAttributes.
@@ -353,44 +337,44 @@ public class GRTexture2D extends GRGeometry {
         TextureAttributes attributes = null;
 
         /*int arrayLength = _sSize*_tSize;
-          double fraction = 1/255;
+         double fraction = 1/255;
 
-          if (_debugging) {
-          _debug("arrayLength = " + arrayLength);
-          _debug("fraction = " + fraction);
-          }
-          double[] pixelArray = new double[arrayLength];
-          double[] alphaArray = new double[arrayLength]; */
+         if (_debugging) {
+         _debug("arrayLength = " + arrayLength);
+         _debug("fraction = " + fraction);
+         }
+         double[] pixelArray = new double[arrayLength];
+         double[] alphaArray = new double[arrayLength]; */
 
         /*  try {
-            _bufferedImage = (BufferedImage)ImageIO.read (new File(_fileRoot));
-            } catch (IOException e) {
-            System.err.println(e);
-            _bufferedImage = null;
-            }*/
+         _bufferedImage = (BufferedImage)ImageIO.read (new File(_fileRoot));
+         } catch (IOException e) {
+         System.err.println(e);
+         _bufferedImage = null;
+         }*/
         /* _alphaRaster = _bufferedImage.getAlphaRaster();
-           if (_debugging){
-           _debug("_bufferedImage = " + _bufferedImage);
-           _debug("Number of bands in _alphaRaster = " + _alphaRaster.getNumBands());
-           }
+         if (_debugging){
+         _debug("_bufferedImage = " + _bufferedImage);
+         _debug("Number of bands in _alphaRaster = " + _alphaRaster.getNumBands());
+         }
 
-           _dataRaster = (WritableRaster)_bufferedImage.getData();
-           _dataRaster.getPixels(0,0,_sSize,_tSize,pixelArray );
+         _dataRaster = (WritableRaster)_bufferedImage.getData();
+         _dataRaster.getPixels(0,0,_sSize,_tSize,pixelArray );
 
-           if (_debugging){
-           _debug("Number of bands in _dataRaster = " + _dataRaster.getNumBands());
-           }
+         if (_debugging){
+         _debug("Number of bands in _dataRaster = " + _dataRaster.getNumBands());
+         }
 
-           for (int i=0; i < arrayLength; i ++){
-           alphaArray[i] = 1 - pixelArray[i]*fraction;
-           }
+         for (int i=0; i < arrayLength; i ++){
+         alphaArray[i] = 1 - pixelArray[i]*fraction;
+         }
 
-           _dataRaster.setSamples(0,0,_sSize,_tSize,4, alphaArray); */
+         _dataRaster.setSamples(0,0,_sSize,_tSize,4, alphaArray); */
 
         //if (_fileURL != null) {
         /*     MyTextureLoader loader;
-        //String format = "LUMINANCE_ALPHA";
-        loader = new MyTextureLoader(_bufferedImage,_viewScreen.getCanvas());*/
+         //String format = "LUMINANCE_ALPHA";
+         loader = new MyTextureLoader(_bufferedImage,_viewScreen.getCanvas());*/
         if (_debugging) {
             _debug("Loaded texture");
         }
@@ -408,10 +392,6 @@ public class GRTexture2D extends GRGeometry {
             _debug("Texture format is = " + loadedTexture.getFormat());
         }
 
-
-
-
-
         if (loadedTexture != null) {
             attributes = new TextureAttributes();
             attributes.setTextureMode(TextureAttributes.MODULATE);
@@ -424,23 +404,22 @@ public class GRTexture2D extends GRGeometry {
 
     }
 
-
     /**Read in file. */
     protected void _readImage() throws IllegalActionException {
         /*
-          _url = texture.asURL();
-          /**Read in image containing data to be mapped
-          if (_url == null) {
-          throw new IllegalActionException("sourceURL was null");
-          }
-          _fileRoot = _url.getFile();
-          if (_imagePlus == null) {
-          _imagePlus = new ImagePlus(_fileRoot);
-          } */
+         _url = texture.asURL();
+         /**Read in image containing data to be mapped
+         if (_url == null) {
+         throw new IllegalActionException("sourceURL was null");
+         }
+         _fileRoot = _url.getFile();
+         if (_imagePlus == null) {
+         _imagePlus = new ImagePlus(_fileRoot);
+         } */
 
         _token = input.get(0);
 
-        if (_token.getClass().toString() == "class ptolemy.data.AWTImageToken"){
+        if (_token.getClass().toString() == "class ptolemy.data.AWTImageToken") {
             System.out.println("If returned true");
             ImageToken imageToken;
             imageToken = (ImageToken) _token;
@@ -454,28 +433,19 @@ public class GRTexture2D extends GRGeometry {
         System.out.println("token = " + _token.getType());
         System.out.println("token = " + _token.getClass().toString());
         /* }/*else{
-           StringToken stringToken;
-           stringToken = (StringToken) _token;
-           _fileRoot = stringToken.stringValue();
-           }*/
+         StringToken stringToken;
+         stringToken = (StringToken) _token;
+         _fileRoot = stringToken.stringValue();
+         }*/
     }
-
-
-
-
-
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
 
     /** ?????? */
     protected View _view;
 
     protected Image _image;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -546,16 +516,5 @@ public class GRTexture2D extends GRGeometry {
     private int _counter;
 
     private String _eof;
-
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -1,31 +1,31 @@
 /* Generates acknowledgements, routes data frames to the network layer
-   and indicates receipt of Ack and Cts to TxCoordination process.
+ and indicates receipt of Ack and Cts to TxCoordination process.
 
-   Copyright (c) 2004-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above=
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above=
 
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.wireless.lib.network.mac;
 
 import ptolemy.actor.TypedIOPort;
@@ -41,25 +41,24 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ////////////////////////////////////////////////////////////////////////=
 //
 //// RxCoordination
 
 /**
-   RxCoordination class is responsible for the sequence of events in response
-   to a session setup request. When a RTS packet is received, RxCoordination
-   sends a CTS back after SIFS seconds if NAV is zero (i.e. channel is available);
-   when a data packet is received, a Ack is sent back after SIFS seconds and
-   the data packet received will be forwarded to the network layer. RxCoordination
-   also notifies TxCoordination process of the receipt of either CTS or Ack.
+ RxCoordination class is responsible for the sequence of events in response
+ to a session setup request. When a RTS packet is received, RxCoordination
+ sends a CTS back after SIFS seconds if NAV is zero (i.e. channel is available);
+ when a data packet is received, a Ack is sent back after SIFS seconds and
+ the data packet received will be forwarded to the network layer. RxCoordination
+ also notifies TxCoordination process of the receipt of either CTS or Ack.
 
-   @author Charlie Zhong
-   @version RxCoordination.java,v 1.11 2004/04/22 19:46:17 ellen_zh Exp
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (czhong)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ @author Charlie Zhong
+ @version RxCoordination.java,v 1.11 2004/04/22 19:46:17 ellen_zh Exp
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (czhong)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class RxCoordination extends MACActorBase {
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
@@ -152,8 +151,8 @@ public class RxCoordination extends MACActorBase {
 
                     dAck = ((IntToken) msg.get("dAck")).intValue();
                     ackto = ((IntToken) msg.get("ackto")).intValue();
-                    endRx = new Time(getDirector(),
-                            ((DoubleToken) msg.get("endRx")).doubleValue());
+                    endRx = new Time(getDirector(), ((DoubleToken) msg
+                            .get("endRx")).doubleValue());
 
                     if (dAck > 0) {
                         dAck = dAck - _dRsp;
@@ -169,8 +168,8 @@ public class RxCoordination extends MACActorBase {
 
                 case RxIndicate:
                     pdu = (RecordToken) msg.get("pdu");
-                    endRx = new Time(getDirector(),
-                            ((DoubleToken) msg.get("endRx")).doubleValue());
+                    endRx = new Time(getDirector(), ((DoubleToken) msg
+                            .get("endRx")).doubleValue());
 
                     int Type = ((IntToken) pdu.get("Type")).intValue();
                     int Subtype = ((IntToken) pdu.get("Subtype")).intValue();
@@ -183,12 +182,10 @@ public class RxCoordination extends MACActorBase {
                         switch (Subtype) {
                         case Ack:
 
-                            Token[] GotAckvalues = {
-                                new IntToken(GotAckMsg),
-                                new DoubleToken(endRx.getDoubleValue())
-                            };
-                            RecordToken GotAckmsg = new RecordToken(GotCtsMsgFields,
-                                    GotAckvalues);
+                            Token[] GotAckvalues = { new IntToken(GotAckMsg),
+                                    new DoubleToken(endRx.getDoubleValue()) };
+                            RecordToken GotAckmsg = new RecordToken(
+                                    GotCtsMsgFields, GotAckvalues);
 
                             // send the message to the TxCoordination process
                             GotAck.send(0, GotAckmsg);
@@ -196,12 +193,10 @@ public class RxCoordination extends MACActorBase {
 
                         case Cts:
 
-                            Token[] GotCtsvalues = {
-                                new IntToken(GotCts),
-                                new DoubleToken(endRx.getDoubleValue())
-                            };
-                            RecordToken GotCtsmsg = new RecordToken(GotCtsMsgFields,
-                                    GotCtsvalues);
+                            Token[] GotCtsvalues = { new IntToken(GotCts),
+                                    new DoubleToken(endRx.getDoubleValue()) };
+                            RecordToken GotCtsmsg = new RecordToken(
+                                    GotCtsMsgFields, GotCtsvalues);
 
                             // send the message to the TxCoordination process
                             GotAck.send(0, GotCtsmsg);
@@ -222,10 +217,11 @@ public class RxCoordination extends MACActorBase {
                             if (navEnd.compareTo(currentTime) <= 0) {
                                 // generate Cts
                                 int Addr2 = ((IntToken) pdu.get("Addr2"))
-                                    .intValue();
-                                _rspdu = _createPacket(Cts, durId - _dRsp, Addr2);
-                                setTimer(SifsTimeout,
-                                        endRx.add(_dSifsDly * 1e-6));
+                                        .intValue();
+                                _rspdu = _createPacket(Cts, durId - _dRsp,
+                                        Addr2);
+                                setTimer(SifsTimeout, endRx
+                                        .add(_dSifsDly * 1e-6));
                                 _currentState = Wait_Sifs;
                             }
 
@@ -237,10 +233,10 @@ public class RxCoordination extends MACActorBase {
                     case DataType:
 
                         if (Subtype == Data) {
-                            RecordToken payload = (RecordToken) pdu.get(
-                                    "payload");
+                            RecordToken payload = (RecordToken) pdu
+                                    .get("payload");
                             int payload_kind = ((IntToken) payload.get("kind"))
-                                .intValue();
+                                    .intValue();
 
                             // except power control messages, all others are sent
                             // to the network layer
@@ -266,11 +262,8 @@ public class RxCoordination extends MACActorBase {
             int kind = whoTimeout(); // check if a timer times out and which
 
             if (kind == SifsTimeout) {
-                Token[] TXRequestvalues = {
-                    new IntToken(TxRequest),
-                    _rspdu,
-                    new IntToken(_rate)
-                };
+                Token[] TXRequestvalues = { new IntToken(TxRequest), _rspdu,
+                        new IntToken(_rate) };
                 RecordToken txrq = new RecordToken(TxRequestMsgFields,
                         TXRequestvalues);
 
@@ -299,7 +292,7 @@ public class RxCoordination extends MACActorBase {
         super.initialize();
         _dSifsDly = _aSifsTime - _aRxTxTurnaroundTime;
         _dRsp = _aSifsTime + _aPreambleLength + _aPlcpHeaderLength
-            + (_sAckCtsLng / _mBrate);
+                + (_sAckCtsLng / _mBrate);
         _currentState = RxC_Idle;
 
         NamedObj macComposite = getContainer().getContainer();
@@ -315,23 +308,12 @@ public class RxCoordination extends MACActorBase {
 
     private RecordToken _createPacket(int subtype, int duration, int RA)
             throws IllegalActionException {
-        Token[] AckPacketValues = {
-            new IntToken(0),
-            new IntToken(ControlType),
-            new IntToken(subtype),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(123),
-            new IntToken(duration),
-            new IntToken(RA),
-            new IntToken(14 * 8)
-        };
+        Token[] AckPacketValues = { new IntToken(0), new IntToken(ControlType),
+                new IntToken(subtype), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                new IntToken(123), new IntToken(duration), new IntToken(RA),
+                new IntToken(14 * 8) };
         RecordToken pkt = new RecordToken(AckPacket, AckPacketValues);
         return pkt;
     }
@@ -347,12 +329,17 @@ public class RxCoordination extends MACActorBase {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int _rate;
+
     private RecordToken _rspdu;
+
     private static final int SifsTimeout = 1;
 
     // define states in FSM
     private static final int RxC_Idle = 0;
+
     private static final int Wait_Sifs = 1;
+
     private static final int Wait_TxDone = 2;
+
     private int _currentState = RxC_Idle;
 }

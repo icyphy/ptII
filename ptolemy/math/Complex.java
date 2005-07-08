@@ -1,66 +1,65 @@
 /* A data type representing a complex number.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-isCloseTo(t), isCloseTo(t, e), EPSILON
+ isCloseTo(t), isCloseTo(t, e), EPSILON
 
-*/
+ */
 package ptolemy.math;
 
 import java.io.Serializable;
 
-
 /** This class provides a complex data type and a library of functions that
-    operate on and return complex numbers.  An instance of the class is
-    immutable, meaning that its value is set in the constructor and
-    cannot then be modified.  This is similar to the Java built-in classes
-    like Double, Integer, etc.
-    <p>
-    Although this code is written from scratch, I looked at several designs
-    and borrowed elements from each of them:
-    <ul>
-    <li> The ComplexSubset class in Ptolemy 0.x, written by Joe Buck,
-    which borrowed design elements from the cfront and libg++
-    Complex classes.
-    <li> Version 1.0 of the Complex class by Alma services, dated Fri
-    29-Aug-97, written by Sandy Anderson and Priyantha Jayanetti,
-    and obtained from the <a href="http://www.netlib.org/">
-    Netlib Repository</a>.
-    <li> The Complex class in JNL, a Java Numerical Library, dated 1997,
-    by Visual Numerics, Inc.  This was used for interface design only,
-    to compare the choice of method names and method templates.
-    <li> Matlab, which was used to validate the results in the test
-    suite, and influenced some of the method name choices.
-    </ul>
-    @author Edward A. Lee, Jeff Tsay, Steve Neuendorffer, Adam Cataldo
-    @version $Id$
-    @since Ptolemy II 0.2
-    @Pt.ProposedRating Yellow (eal)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ operate on and return complex numbers.  An instance of the class is
+ immutable, meaning that its value is set in the constructor and
+ cannot then be modified.  This is similar to the Java built-in classes
+ like Double, Integer, etc.
+ <p>
+ Although this code is written from scratch, I looked at several designs
+ and borrowed elements from each of them:
+ <ul>
+ <li> The ComplexSubset class in Ptolemy 0.x, written by Joe Buck,
+ which borrowed design elements from the cfront and libg++
+ Complex classes.
+ <li> Version 1.0 of the Complex class by Alma services, dated Fri
+ 29-Aug-97, written by Sandy Anderson and Priyantha Jayanetti,
+ and obtained from the <a href="http://www.netlib.org/">
+ Netlib Repository</a>.
+ <li> The Complex class in JNL, a Java Numerical Library, dated 1997,
+ by Visual Numerics, Inc.  This was used for interface design only,
+ to compare the choice of method names and method templates.
+ <li> Matlab, which was used to validate the results in the test
+ suite, and influenced some of the method name choices.
+ </ul>
+ @author Edward A. Lee, Jeff Tsay, Steve Neuendorffer, Adam Cataldo
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class Complex implements Cloneable, Serializable {
     /** Construct a Complex equal to zero.
      *  @deprecated Use Complex.ZERO instead.
@@ -113,8 +112,8 @@ public class Complex implements Cloneable, Serializable {
      *  arc cosine of the given complex number.
      */
     public final Complex acos() {
-        Complex c1 = new Complex(1.0 - (real * real) + (imag * imag),
-                -2.0 * real * imag);
+        Complex c1 = new Complex(1.0 - (real * real) + (imag * imag), -2.0
+                * real * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = new Complex(real - c2.imag, imag + c2.real);
         Complex c4 = c3.log();
@@ -147,8 +146,8 @@ public class Complex implements Cloneable, Serializable {
      *  principal hyperbolic arc cosine of this complex number.
      */
     public final Complex acosh() {
-        Complex c1 = new Complex((real * real) - (imag * imag) - 1.0,
-                2.0 * real * imag);
+        Complex c1 = new Complex((real * real) - (imag * imag) - 1.0, 2.0
+                * real * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = add(c2);
         return c3.log();
@@ -204,8 +203,8 @@ public class Complex implements Cloneable, Serializable {
      *  of this complex number.
      */
     public final Complex asin() {
-        Complex c1 = new Complex(1.0 - (real * real) + (imag * imag),
-                -2.0 * real * imag);
+        Complex c1 = new Complex(1.0 - (real * real) + (imag * imag), -2.0
+                * real * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = new Complex(c2.real - imag, c2.imag + real);
         Complex c4 = c3.log();
@@ -238,8 +237,8 @@ public class Complex implements Cloneable, Serializable {
      *  hyperbolic arc sine of this complex number.
      */
     public final Complex asinh() {
-        Complex c1 = new Complex((1.0 + (real * real)) - (imag * imag),
-                2.0 * real * imag);
+        Complex c1 = new Complex((1.0 + (real * real)) - (imag * imag), 2.0
+                * real * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = add(c2);
         return c3.log();
@@ -272,8 +271,8 @@ public class Complex implements Cloneable, Serializable {
      */
     public final Complex atan() {
         double denominator = (real * real) + ((imag + 1.0) * (imag + 1.0));
-        Complex c1 = new Complex(((-real * real) - (imag * imag) + 1.0) / denominator,
-                (2.0 * real) / denominator);
+        Complex c1 = new Complex(((-real * real) - (imag * imag) + 1.0)
+                / denominator, (2.0 * real) / denominator);
         Complex c2 = c1.log();
         return new Complex(c2.imag * 0.5, -c2.real * 0.5);
     }
@@ -305,8 +304,8 @@ public class Complex implements Cloneable, Serializable {
      */
     public final Complex atanh() {
         double denominator = ((1.0 - real) * (1.0 - real)) + (imag * imag);
-        Complex c1 = new Complex(((-real * real) - (imag * imag) + 1.0) / denominator,
-                (2.0 * imag) / denominator);
+        Complex c1 = new Complex(((-real * real) - (imag * imag) + 1.0)
+                / denominator, (2.0 * imag) / denominator);
         Complex c2 = c1.log();
         return new Complex(c2.real * 0.5, c2.imag * 0.5);
     }
@@ -487,8 +486,9 @@ public class Complex implements Cloneable, Serializable {
     public final Complex divide(Complex divisor) {
         // This algorithm results from writing a/b as (ab*)/magSquared(b).
         double denominator = divisor.magnitudeSquared();
-        return new Complex(((real * divisor.real) + (imag * divisor.imag)) / denominator,
-                ((imag * divisor.real) - (real * divisor.imag)) / denominator);
+        return new Complex(((real * divisor.real) + (imag * divisor.imag))
+                / denominator, ((imag * divisor.real) - (real * divisor.imag))
+                / denominator);
     }
 
     /** Return true if the real and imaginary parts of this complex number
@@ -708,8 +708,8 @@ public class Complex implements Cloneable, Serializable {
      *  @see Complex#scale
      */
     public Complex multiply(Complex w) {
-        return new Complex((w.real * real) - (w.imag * imag),
-                (w.real * imag) + (w.imag * real));
+        return new Complex((w.real * real) - (w.imag * imag), (w.real * imag)
+                + (w.imag * real));
     }
 
     /** Negate this complex number.
@@ -750,8 +750,8 @@ public class Complex implements Cloneable, Serializable {
             return Complex.ZERO;
         }
 
-        return new Complex(magnitude * Math.cos(angle),
-                magnitude * Math.sin(angle));
+        return new Complex(magnitude * Math.cos(angle), magnitude
+                * Math.sin(angle));
     }
 
     /** Return a new complex number with value <em>z <sup>y</sup></em>
@@ -1131,10 +1131,10 @@ public class Complex implements Cloneable, Serializable {
     public static String toString(Complex value) {
         if (value.imag >= 0) {
             return Double.toString(value.real) + " + "
-                + Double.toString(value.imag) + "i";
+                    + Double.toString(value.imag) + "i";
         } else {
             return Double.toString(value.real) + " - "
-                + Double.toString(-value.imag) + "i";
+                    + Double.toString(-value.imag) + "i";
         }
     }
 
@@ -1162,15 +1162,15 @@ public class Complex implements Cloneable, Serializable {
      *  that both the real and imaginary parts are equal to
      *  Double.NEGATIVE_INFINITY.
      */
-    public static final Complex NEGATIVE_INFINITY = new Complex(Double.NEGATIVE_INFINITY,
-            Double.NEGATIVE_INFINITY);
+    public static final Complex NEGATIVE_INFINITY = new Complex(
+            Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
 
     /** A Complex number representing positive infinity, by which we mean
      *  that both the real and imaginary parts are equal to
      *  Double.POSITIVE_INFINITY.
      */
-    public static final Complex POSITIVE_INFINITY = new Complex(Double.POSITIVE_INFINITY,
-            Double.POSITIVE_INFINITY);
+    public static final Complex POSITIVE_INFINITY = new Complex(
+            Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
 
     /** A Complex number representing zero. Reference this to save
      *  memory usage and construction overhead.

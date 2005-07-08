@@ -1,28 +1,28 @@
 /* Manager that handles and eases the discovery of services using JINI.
 
-@Copyright (c) 2005 The Regents of Aalborg University.
-All rights reserved.
+ @Copyright (c) 2005 The Regents of Aalborg University.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
-HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
+ HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 
 package ptolemy.distributed.client;
 
@@ -57,23 +57,23 @@ import ptolemy.kernel.util.KernelException;
 //////////////////////////////////////////////////////////////////////////
 ////ClientServerInteractionManager
 /**
-   Manager that handles and eases the discovery of services using JINI.
-   Helps the client service discovery. It discovers the lookup service.
-   A configuration file can be provided in the constructor to specify unicast
-   locators, groups to join and the service to be located. After discovering
-   a lookup service it queries for the given service and filters the dead
-   services.
+ Manager that handles and eases the discovery of services using JINI.
+ Helps the client service discovery. It discovers the lookup service.
+ A configuration file can be provided in the constructor to specify unicast
+ locators, groups to join and the service to be located. After discovering
+ a lookup service it queries for the given service and filters the dead
+ services.
 
-   @author Daniel Lázaro Cuadrado (kapokasa@kom.aau.dk)
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating Red (cxh)
-   @see "Jini Documentation"
-*/
+ @author Daniel Lázaro Cuadrado (kapokasa@kom.aau.dk)
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (kapokasa)
+ @Pt.AcceptedRating Red (cxh)
+ @see "Jini Documentation"
+ */
 
 public class ClientServerInteractionManager implements DiscoveryListener,
-                                                   ServiceDiscoveryListener {
+        ServiceDiscoveryListener {
 
     /** Construct a ClientServerInteractionManager inializing it with a given
      *  VERBOSE option.
@@ -87,7 +87,6 @@ public class ClientServerInteractionManager implements DiscoveryListener,
 
     ///////////////////////////////////////////////////////////////////
     ////                         prublic methods                   ////
-
 
     /** Required by DiscoveryListener interface.
      *  Called when one or more lookup service registrars has been discarded.
@@ -118,8 +117,8 @@ public class ClientServerInteractionManager implements DiscoveryListener,
         for (int n = 0; n < serviceRegistrars.length; n++) {
             try {
                 if (true) {
-                    System.out.println("Found a service locator at: " +
-                                       serviceRegistrars[n].getLocator());
+                    System.out.println("Found a service locator at: "
+                            + serviceRegistrars[n].getLocator());
                 }
             } catch (RemoteException e) {
                 KernelException.stackTraceToString(e);
@@ -150,13 +149,11 @@ public class ClientServerInteractionManager implements DiscoveryListener,
     public void init(String configFileName) {
         if (VERBOSE) {
             try {
-                System.out.println("Starting ClientServerInteractionManager " +
-                                   "in: ");
-                System.out.println("    " +
-                                   InetAddress.getLocalHost().getHostName() +
-                                   " (" +
-                                   InetAddress.getLocalHost().getHostAddress()
-                                   + ")");
+                System.out.println("Starting ClientServerInteractionManager "
+                        + "in: ");
+                System.out.println("    "
+                        + InetAddress.getLocalHost().getHostName() + " ("
+                        + InetAddress.getLocalHost().getHostAddress() + ")");
             } catch (UnknownHostException e) {
                 KernelException.stackTraceToString(e);
             }
@@ -169,25 +166,24 @@ public class ClientServerInteractionManager implements DiscoveryListener,
 
         try {
             LookupDiscoveryManager mgr = new LookupDiscoveryManager(groups,
-                    unicastLocators,  // unicast locators
+                    unicastLocators, // unicast locators
                     this); // DiscoveryListener
             clientMgr = new ServiceDiscoveryManager(mgr,
-                                                   new LeaseRenewalManager());
-        } catch(Exception ex) {
+                    new LeaseRenewalManager());
+        } catch (Exception ex) {
             throw new RuntimeException("Failed to initialize "
                     + "ClientServerInteractionManager using \""
                     + configFileName + "\"", ex);
         }
 
         // This is the class of the service we are looking for...
-        Class [] classes = new Class[] {DistributedActor.class};
+        Class[] classes = new Class[] { DistributedActor.class };
         ServiceTemplate template = new ServiceTemplate(null, classes, null);
 
         try {
-            cache = clientMgr.createLookupCache(template,
-                    null,  // no filter
+            cache = clientMgr.createLookupCache(template, null, // no filter
                     this); // no listener
-        } catch(Exception e) {
+        } catch (Exception e) {
             KernelException.stackTraceToString(e);
         }
 
@@ -196,20 +192,19 @@ public class ClientServerInteractionManager implements DiscoveryListener,
         while (aliveServices.size() < requiredServices) {
 
             if (VERBOSE) {
-                System.out.println("Not enough services yet, found: " +
-                                   aliveServices.size() +
-                                   " required: " + requiredServices);
+                System.out.println("Not enough services yet, found: "
+                        + aliveServices.size() + " required: "
+                        + requiredServices);
             }
             try {
                 Thread.sleep(WAITFOR);
-            } catch(java.lang.InterruptedException e) {
+            } catch (java.lang.InterruptedException e) {
                 // do nothing
             }
 
             filterCacheServices();
 
         }
-
 
     }
 
@@ -229,9 +224,9 @@ public class ClientServerInteractionManager implements DiscoveryListener,
     public void serviceAdded(ServiceDiscoveryEvent evt) {
         ServiceItem postItem = evt.getPostEventServiceItem();
         if (VERBOSE) {
-            System.out.println("Service appeared: " +
-                               postItem.service.getClass().toString() +
-                               " with ID: " + postItem.serviceID.toString());
+            System.out.println("Service appeared: "
+                    + postItem.service.getClass().toString() + " with ID: "
+                    + postItem.serviceID.toString());
         }
     }
 
@@ -252,9 +247,9 @@ public class ClientServerInteractionManager implements DiscoveryListener,
     public void serviceChanged(ServiceDiscoveryEvent evt) {
         ServiceItem postItem = evt.getPostEventServiceItem();
         if (VERBOSE) {
-            System.out.println("Service changed: " +
-                               postItem.service.getClass().toString() +
-                               " with ID: " + postItem.serviceID.toString());
+            System.out.println("Service changed: "
+                    + postItem.service.getClass().toString() + " with ID: "
+                    + postItem.serviceID.toString());
         }
     }
 
@@ -274,9 +269,9 @@ public class ClientServerInteractionManager implements DiscoveryListener,
     public void serviceRemoved(ServiceDiscoveryEvent evt) {
         ServiceItem preItem = evt.getPreEventServiceItem();
         if (VERBOSE) {
-            System.out.println("Service removed: " +
-                               preItem.service.getClass().toString() +
-                               " with ID: " + preItem.serviceID.toString());
+            System.out.println("Service removed: "
+                    + preItem.service.getClass().toString() + " with ID: "
+                    + preItem.serviceID.toString());
         }
     }
 
@@ -303,8 +298,9 @@ public class ClientServerInteractionManager implements DiscoveryListener,
             }
             try {
                 if (VERBOSE) {
-                    System.out.println(" is alive in: " +
-                         ((DistributedActor)items[i].service).getAddress());
+                    System.out.println(" is alive in: "
+                            + ((DistributedActor) items[i].service)
+                                    .getAddress());
                 }
                 aliveServices.add(items[i]);
             } catch (RemoteException e) {
@@ -329,17 +325,16 @@ public class ClientServerInteractionManager implements DiscoveryListener,
      */
     private void getConfiguration(String configFileName) {
         if (VERBOSE) {
-            System.out.println("Opening configuration file: " +
-                                configFileName);
+            System.out.println("Opening configuration file: " + configFileName);
             System.out.println("Entry: " + CLIENT);
         }
         Configuration configuration = null;
 
         // We have to get a configuration file or we can't continue
         try {
-            configuration = ConfigurationProvider.getInstance(new String[]
-                                                         {configFileName});
-        } catch(ConfigurationException e) {
+            configuration = ConfigurationProvider
+                    .getInstance(new String[] { configFileName });
+        } catch (ConfigurationException e) {
             KernelException.stackTraceToString(e);
         }
 
@@ -348,15 +343,14 @@ public class ClientServerInteractionManager implements DiscoveryListener,
             if (VERBOSE) {
                 System.out.print("Reading service: " + CLIENT);
             }
-            service = (Remote) configuration.getEntry(CLIENT,
-                    "service",
+            service = (Remote) configuration.getEntry(CLIENT, "service",
                     Remote.class);
             if (VERBOSE) {
                 System.out.println(service);
             }
-        } catch(NoSuchEntryException  e) {
+        } catch (NoSuchEntryException e) {
             System.err.println("No config entry for " + e);
-        } catch(Exception e) {
+        } catch (Exception e) {
             KernelException.stackTraceToString(e);
         }
 
@@ -365,11 +359,8 @@ public class ClientServerInteractionManager implements DiscoveryListener,
             if (VERBOSE) {
                 System.out.println("Reading unicastLocators: ");
             }
-            unicastLocators = (LookupLocator[])
-                configuration.getEntry( CLIENT,
-                        "unicastLocators",
-                        LookupLocator[].class,
-                        null); // default
+            unicastLocators = (LookupLocator[]) configuration.getEntry(CLIENT,
+                    "unicastLocators", LookupLocator[].class, null); // default
 
             if (VERBOSE) {
                 for (int i = 0; i < unicastLocators.length; i++) {
@@ -377,11 +368,8 @@ public class ClientServerInteractionManager implements DiscoveryListener,
                 }
                 System.out.println("Reading entries: ");
             }
-            entries = (Entry[])
-                configuration.getEntry(CLIENT,
-                        "entries",
-                        Entry[].class,
-                        null); // default
+            entries = (Entry[]) configuration.getEntry(CLIENT, "entries",
+                    Entry[].class, null); // default
             if (VERBOSE) {
                 for (int i = 0; i < entries.length; i++) {
                     System.out.println("    " + entries[i]);
@@ -389,10 +377,8 @@ public class ClientServerInteractionManager implements DiscoveryListener,
                 System.out.println("Reading groups: ");
             }
 
-            groups = (String[]) configuration.getEntry(CLIENT,
-                    "groups",
-                    String[].class,
-                    null); // default
+            groups = (String[]) configuration.getEntry(CLIENT, "groups",
+                    String[].class, null); // default
             if (groups.length != 0) {
                 if (VERBOSE) {
                     for (int i = 0; i < groups.length; i++) {
@@ -401,11 +387,11 @@ public class ClientServerInteractionManager implements DiscoveryListener,
                 }
             } else {
                 groups = LookupDiscovery.ALL_GROUPS;
-                System.out.println("    No groups specified, " +
-                        "using LookupDiscovery.ALL_GROUPS.");
+                System.out.println("    No groups specified, "
+                        + "using LookupDiscovery.ALL_GROUPS.");
             }
 
-        } catch(ConfigurationException e) {
+        } catch (ConfigurationException e) {
             KernelException.stackTraceToString(e);
         }
     }

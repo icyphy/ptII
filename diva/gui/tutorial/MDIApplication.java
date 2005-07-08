@@ -27,7 +27,7 @@
  COPYRIGHTENDKEY
 
 
-*/
+ */
 package diva.gui.tutorial;
 
 import java.util.HashMap;
@@ -39,7 +39,6 @@ import diva.gui.MDIContext;
 import diva.gui.View;
 import diva.gui.ViewAdapter;
 import diva.gui.ViewEvent;
-
 
 /**
  * An abstract superclass for applications that use an MDI (multiple

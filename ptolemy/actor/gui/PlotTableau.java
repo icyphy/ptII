@@ -1,29 +1,29 @@
 /* A tableau representing a plot window.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.io.InputStream;
@@ -44,32 +44,31 @@ import ptolemy.plot.PlotBox;
 import ptolemy.plot.plotml.PlotMLParser;
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PlotTableau
 
 /**
-   A tableau representing a plot in a toplevel window.
-   The URL that is viewed is given by the <i>uri</i> parameter, and
-   can be either an absolute URL, a system fileName, or a resource that
-   can be loaded relative to the classpath.  For more information about how
-   the URL is specified, see MoMLApplication.specToURL().
-   <p>
-   The plot frame itself must be an instance of PlotTableauFrame,
-   and must be created by the caller.
-   As with other tableaux, this is an entity that is contained by
-   an effigy of a model.
-   There can be any number of instances of this class in an effigy.
+ A tableau representing a plot in a toplevel window.
+ The URL that is viewed is given by the <i>uri</i> parameter, and
+ can be either an absolute URL, a system fileName, or a resource that
+ can be loaded relative to the classpath.  For more information about how
+ the URL is specified, see MoMLApplication.specToURL().
+ <p>
+ The plot frame itself must be an instance of PlotTableauFrame,
+ and must be created by the caller.
+ As with other tableaux, this is an entity that is contained by
+ an effigy of a model.
+ There can be any number of instances of this class in an effigy.
 
-   @author  Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-   @see Effigy
-   @see PlotTableauFrame
-   @see MoMLApplication#specToURL(String)
-*/
+ @author  Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ @see Effigy
+ @see PlotTableauFrame
+ @see MoMLApplication#specToURL(String)
+ */
 public class PlotTableau extends Tableau {
     /** Construct a new tableau for the model represented by the given effigy.
      *  Use setFrame() to specify the plot frame after construction.
@@ -126,7 +125,7 @@ public class PlotTableau extends Tableau {
         if (!(frame instanceof PlotTableauFrame)) {
             throw new IllegalActionException(this,
                     "Frame for PlotTableau must be an instance of "
-                    + "PlotTableauFrame.");
+                            + "PlotTableauFrame.");
         }
 
         super.setFrame(frame);
@@ -240,19 +239,20 @@ public class PlotTableau extends Tableau {
 
                 // First see whether the effigy already contains an
                 // PlotTableau.
-                PlotTableau tableau = (PlotTableau) effigy.getEntity(
-                        "plotTableau");
+                PlotTableau tableau = (PlotTableau) effigy
+                        .getEntity("plotTableau");
 
                 if (tableau == null) {
-                    tableau = new PlotTableau((PlotEffigy) effigy, "plotTableau");
+                    tableau = new PlotTableau((PlotEffigy) effigy,
+                            "plotTableau");
                 }
 
                 PlotBox plotBox = ((PlotEffigy) effigy).getPlot();
 
                 if (plotBox != null) {
                     // Hook into the existing plot.
-                    PlotTableauFrame plotterFrame = new PlotTableauFrame(tableau,
-                            plotBox);
+                    PlotTableauFrame plotterFrame = new PlotTableauFrame(
+                            tableau, plotBox);
                     tableau.setFrame(plotterFrame);
                 }
 

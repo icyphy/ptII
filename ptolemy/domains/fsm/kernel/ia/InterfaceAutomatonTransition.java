@@ -1,29 +1,29 @@
 /* A transition in an Interface Automaton.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fsm.kernel.ia;
 
 import ptolemy.data.expr.Parameter;
@@ -36,47 +36,46 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomatonTransition
 
 /**
-   A Transition for Interface Automaton. In the Interface Automata paper
-   written by Luca de Alfaro and Henzinger, transitions are called actions.
-   However, the name action conflicts with the Action class in this package,
-   so this class uses the name transition.  There are three types of transitions:
-   input, output, and internal. Each transition has a label. The labels for
-   input, output, and internal transitions end with "?", "!", and ";",
-   respectively. The type of transition is determined by the ending character
-   of the label this way. Each input transition corresponds to an input port of
-   the InterfaceAutomaton that contains it, and its label, excluding the
-   ending "?", must be the same as the input port name; Similarly, each output
-   transition corresponds to an output port, and its label, excluding the
-   ending "!", must be the same as the output port name;  Each internal
-   transitions corresponds to a parameter of the InterfaceAutomaton that
-   contains it, and its label, excluding the ending ";", must be the same as
-   the parameter name.
-   <p>
-   The guard of each transition is set automatically. Users should not set
-   the guard. For an input transition, the guard is set to &lt;inputPort&gt;
-   _isPresent,
-   where &lt;inputPort&gt; is the port corresponding to this transition; For output
-   and internal transitions, the guard is set to true. Each of the output
-   and internal transitions contain an Action. The expression of the Action
-   is also set automatically. For output transition, the action is set to
-   &lt;outputPort&gt;=true, where &lt;outputPort&gt; is the output port
-   corresponding to this transition; for internal transition, the action is set
-   to &lt;parameter&gt;=true, where &lt;parameter&gt; is the parameter
-   corresponding to this transition.
+ A Transition for Interface Automaton. In the Interface Automata paper
+ written by Luca de Alfaro and Henzinger, transitions are called actions.
+ However, the name action conflicts with the Action class in this package,
+ so this class uses the name transition.  There are three types of transitions:
+ input, output, and internal. Each transition has a label. The labels for
+ input, output, and internal transitions end with "?", "!", and ";",
+ respectively. The type of transition is determined by the ending character
+ of the label this way. Each input transition corresponds to an input port of
+ the InterfaceAutomaton that contains it, and its label, excluding the
+ ending "?", must be the same as the input port name; Similarly, each output
+ transition corresponds to an output port, and its label, excluding the
+ ending "!", must be the same as the output port name;  Each internal
+ transitions corresponds to a parameter of the InterfaceAutomaton that
+ contains it, and its label, excluding the ending ";", must be the same as
+ the parameter name.
+ <p>
+ The guard of each transition is set automatically. Users should not set
+ the guard. For an input transition, the guard is set to &lt;inputPort&gt;
+ _isPresent,
+ where &lt;inputPort&gt; is the port corresponding to this transition; For output
+ and internal transitions, the guard is set to true. Each of the output
+ and internal transitions contain an Action. The expression of the Action
+ is also set automatically. For output transition, the action is set to
+ &lt;outputPort&gt;=true, where &lt;outputPort&gt; is the output port
+ corresponding to this transition; for internal transition, the action is set
+ to &lt;parameter&gt;=true, where &lt;parameter&gt; is the parameter
+ corresponding to this transition.
 
-   @author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (yuhong)
-   @Pt.AcceptedRating Red (yuhong)
-   @see InterfaceAutomaton
-   @see Action
-*/
+ @author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (yuhong)
+ @Pt.AcceptedRating Red (yuhong)
+ @see InterfaceAutomaton
+ @see Action
+ */
 public class InterfaceAutomatonTransition extends Transition {
     /** Construct a transition with the specified container and name.
      *  The container argument must not be null, or a NullPointerException
@@ -91,7 +90,8 @@ public class InterfaceAutomatonTransition extends Transition {
      *   any relation already in the container.
      */
     public InterfaceAutomatonTransition(InterfaceAutomaton container,
-            String name) throws IllegalActionException, NameDuplicationException {
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
         label = new StringAttribute(this, "label");
         outputActions.setVisibility(Settable.NONE);
@@ -151,9 +151,10 @@ public class InterfaceAutomatonTransition extends Transition {
                         // should not happen
                         throw new InternalErrorException(
                                 "InterfaceAutomatonTransition."
-                                + "attributeChanged:\n"
-                                + "Cannot create Parameter for internal "
-                                + "transition:\n" + exception.getMessage());
+                                        + "attributeChanged:\n"
+                                        + "Cannot create Parameter for internal "
+                                        + "transition:\n"
+                                        + exception.getMessage());
                     }
                 }
 
@@ -162,8 +163,8 @@ public class InterfaceAutomatonTransition extends Transition {
             } else {
                 throw new IllegalActionException(
                         "InterfaceAutomatonTransition.attributeChanged: "
-                        + "The argument " + label + " does not end with ? "
-                        + "or ! or ;");
+                                + "The argument " + label
+                                + " does not end with ? " + "or ! or ;");
             }
         }
     }
@@ -198,7 +199,7 @@ public class InterfaceAutomatonTransition extends Transition {
         } else {
             throw new InternalErrorException(
                     "InterfaceAutomatonTransition.getType: "
-                    + "The label does not end with ? or ! or ;");
+                            + "The label does not end with ? or ! or ;");
         }
     }
 
@@ -220,7 +221,7 @@ public class InterfaceAutomatonTransition extends Transition {
         if (!(container instanceof InterfaceAutomaton) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "Transition can only be contained by instances of "
-                    + "InterfaceAutomaton.");
+                            + "InterfaceAutomaton.");
         }
 
         super.setContainer(container);
@@ -234,8 +235,8 @@ public class InterfaceAutomatonTransition extends Transition {
     public void setTriggerExpression(String expression) {
         throw new UnsupportedOperationException(
                 "InterfaceAutomatonTransition.setTriggerExpression: "
-                + "The trigger expression is not used in InterfaceAutomaton, "
-                + "so this method should not be called.");
+                        + "The trigger expression is not used in InterfaceAutomaton, "
+                        + "so this method should not be called.");
     }
 
     ///////////////////////////////////////////////////////////////////

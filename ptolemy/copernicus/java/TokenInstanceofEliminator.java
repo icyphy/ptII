@@ -1,29 +1,29 @@
 /* A transformer that tried to statically instanceof token expressions.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.HashSet;
@@ -50,24 +50,23 @@ import soot.jimple.InstanceOfExpr;
 import soot.jimple.JimpleBody;
 import soot.toolkits.graph.CompleteUnitGraph;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TokenInstanceofEliminator
 
 /**
-   A transformer that removes unnecessary instanceof checks for tokens.
-   This is similar to CastAndInstanceofEliminator, except here
-   we use a stronger type inference algorithm that is aware of
-   Ptolemy token types.
+ A transformer that removes unnecessary instanceof checks for tokens.
+ This is similar to CastAndInstanceofEliminator, except here
+ we use a stronger type inference algorithm that is aware of
+ Ptolemy token types.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
-public class TokenInstanceofEliminator extends BodyTransformer
-    implements HasPhaseOptions {
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class TokenInstanceofEliminator extends BodyTransformer implements
+        HasPhaseOptions {
     private static TokenInstanceofEliminator instance = new TokenInstanceofEliminator();
 
     private TokenInstanceofEliminator() {
@@ -108,8 +107,8 @@ public class TokenInstanceofEliminator extends BodyTransformer
         for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
             Unit unit = (Unit) units.next();
 
-            for (Iterator boxes = unit.getUseBoxes().iterator();
-                 boxes.hasNext();) {
+            for (Iterator boxes = unit.getUseBoxes().iterator(); boxes
+                    .hasNext();) {
                 ValueBox box = (ValueBox) boxes.next();
                 Value value = box.getValue();
 
@@ -127,8 +126,8 @@ public class TokenInstanceofEliminator extends BodyTransformer
 
                     // Use the token type inference to get the actual
                     // type of the argument.
-                    ptolemy.data.type.Type type = tokenTypes.getTypeOfBefore((Local) op,
-                            unit);
+                    ptolemy.data.type.Type type = tokenTypes.getTypeOfBefore(
+                            (Local) op, unit);
 
                     if (debug) {
                         System.out.println("checking cast in " + unit);
@@ -150,7 +149,8 @@ public class TokenInstanceofEliminator extends BodyTransformer
                         continue;
                     }
 
-                    Type opType = PtolemyUtilities.getSootTypeForTokenType(type);
+                    Type opType = PtolemyUtilities
+                            .getSootTypeForTokenType(type);
 
                     //                     // Skip locals that are unsafe.
                     //                     if (castType.equals(opType) &&
@@ -184,11 +184,12 @@ public class TokenInstanceofEliminator extends BodyTransformer
 
                     // Use the token type inference to get the actual
                     // type of the argument.
-                    ptolemy.data.type.Type type = tokenTypes.getTypeOfBefore((Local) op,
-                            unit);
+                    ptolemy.data.type.Type type = tokenTypes.getTypeOfBefore(
+                            (Local) op, unit);
 
                     if (debug) {
-                        System.out.println("Checking instanceof check: " + expr);
+                        System.out
+                                .println("Checking instanceof check: " + expr);
                     }
 
                     if (debug) {
@@ -207,14 +208,16 @@ public class TokenInstanceofEliminator extends BodyTransformer
                         continue;
                     }
 
-                    Type opType = PtolemyUtilities.getSootTypeForTokenType(type);
+                    Type opType = PtolemyUtilities
+                            .getSootTypeForTokenType(type);
 
                     if (debug) {
                         System.out.println("opType = " + opType);
                     }
 
                     CastAndInstanceofEliminator.replaceInstanceofCheck(box,
-                            Scene.v().getActiveHierarchy(), checkType, opType, debug);
+                            Scene.v().getActiveHierarchy(), checkType, opType,
+                            debug);
                 }
             }
         }

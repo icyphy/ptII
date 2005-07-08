@@ -27,7 +27,7 @@
  COPYRIGHTENDKEY
 
 
-*/
+ */
 package diva.gui.tutorial;
 
 import java.awt.FlowLayout;
@@ -39,7 +39,6 @@ import javax.swing.Icon;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.filechooser.FileFilter;
@@ -53,7 +52,6 @@ import diva.gui.Document;
 import diva.gui.GUIUtilities;
 import diva.gui.View;
 import diva.resource.RelativeBundle;
-
 
 /**
  * A simple MDI text editor.  This application uses the MDIApplication base
@@ -77,7 +75,6 @@ public class MDIApplicationTutorial extends MDIApplication {
      */
 
     //FIXME    private PropertyChangeListener _titleChanger = new TitleChanger();
-
     /**
      * Construct a new instance of the Tutorial, running in a new
      * application context.
@@ -138,15 +135,15 @@ public class MDIApplicationTutorial extends MDIApplication {
             setStoragePolicy(storage);
 
             FileFilter ff = new FileFilter() {
-                    public boolean accept(File file) {
-                        return GUIUtilities.getFileExtension(file).toLowerCase()
+                public boolean accept(File file) {
+                    return GUIUtilities.getFileExtension(file).toLowerCase()
                             .equals("txt");
-                    }
+                }
 
-                    public String getDescription() {
-                        return "Text files";
-                    }
-                };
+                public String getDescription() {
+                    return "Text files";
+                }
+            };
 
             JFileChooser fc;
             fc = storage.getOpenFileChooser();
@@ -179,7 +176,8 @@ public class MDIApplicationTutorial extends MDIApplication {
 
         action = DefaultActions.openAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'O', "Open a graph document");
+        GUIUtilities
+                .addMenuItem(menuFile, action, 'O', "Open a graph document");
 
         action = DefaultActions.closeAction(this);
         addAction(action);
@@ -222,16 +220,16 @@ public class MDIApplicationTutorial extends MDIApplication {
 
         // Conventional new/open/save buttons
         action = getAction("New");
-        GUIUtilities.addToolBarButton(tb, action, null,
-                resources.getImageIcon("NewImage"));
+        GUIUtilities.addToolBarButton(tb, action, null, resources
+                .getImageIcon("NewImage"));
 
         action = getAction("Open");
-        GUIUtilities.addToolBarButton(tb, action, null,
-                resources.getImageIcon("OpenImage"));
+        GUIUtilities.addToolBarButton(tb, action, null, resources
+                .getImageIcon("OpenImage"));
 
         action = getAction("Save");
-        GUIUtilities.addToolBarButton(tb, action, null,
-                resources.getImageIcon("SaveImage"));
+        GUIUtilities.addToolBarButton(tb, action, null, resources
+                .getImageIcon("SaveImage"));
     }
 
     /**

@@ -1,31 +1,31 @@
 /*
-  @Copyright (c) 1998-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package diva.graph;
 
 import java.util.HashMap;
@@ -38,7 +38,6 @@ import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.interactor.BasicSelectionModel;
 import diva.canvas.interactor.SelectionModel;
-
 
 /**
  * An abstract implementation of the GraphController interface.
@@ -294,8 +293,8 @@ public abstract class AbstractGraphController implements GraphController {
             Object object = figure.getUserObject();
 
             if (_model.isEdge(object)) {
-                if (!GraphUtilities.isPartiallyContainedEdge(object,
-                            _model.getRoot(), _model)) {
+                if (!GraphUtilities.isPartiallyContainedEdge(object, _model
+                        .getRoot(), _model)) {
                     if (_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }
@@ -319,7 +318,7 @@ public abstract class AbstractGraphController implements GraphController {
 
             if (_model.isNode(object)) {
                 if (!GraphUtilities.isContainedNode(object, _model.getRoot(),
-                            _model)) {
+                        _model)) {
                     if (_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }
@@ -351,7 +350,7 @@ public abstract class AbstractGraphController implements GraphController {
 
         // Save the selected nodes.
         Iterator nodes = (GraphUtilities.nodeSet(_model.getRoot(), _model))
-            .iterator();
+                .iterator();
 
         while (nodes.hasNext()) {
             Object node = nodes.next();
@@ -386,7 +385,8 @@ public abstract class AbstractGraphController implements GraphController {
         }
 
         // draw the edges that are connected to any of the above nodes.
-        edges = GraphUtilities.partiallyContainedEdges(_model.getRoot(), _model);
+        edges = GraphUtilities
+                .partiallyContainedEdges(_model.getRoot(), _model);
 
         while (edges.hasNext()) {
             Object edge = edges.next();
@@ -408,16 +408,16 @@ public abstract class AbstractGraphController implements GraphController {
         rerender();
 
         /*
-          Figure oldFigure = getFigure(edge);
-          boolean selected = _selectionModel.containsSelection(oldFigure);
-          if (selected) {
-          _selectionModel.removeSelection(oldFigure);
-          }
-          clearEdge(edge);
-          Figure newFigure = drawEdge(edge);
-          if (selected)
-          _selectionModel.addSelection(newFigure);
-        */
+         Figure oldFigure = getFigure(edge);
+         boolean selected = _selectionModel.containsSelection(oldFigure);
+         if (selected) {
+         _selectionModel.removeSelection(oldFigure);
+         }
+         clearEdge(edge);
+         Figure newFigure = drawEdge(edge);
+         if (selected)
+         _selectionModel.addSelection(newFigure);
+         */
     }
 
     /**
@@ -430,29 +430,29 @@ public abstract class AbstractGraphController implements GraphController {
         rerender();
 
         /*
-          Figure oldFigure = getFigure(node);
-          boolean selected = _selectionModel.containsSelection(oldFigure);
-          if (selected) {
-          _selectionModel.removeSelection(oldFigure);
-          }
-          Point2D center;
-          if (oldFigure != null) {
-          center = CanvasUtilities.getCenterPoint(oldFigure.getBounds());
-          clearNode(node);
-          } else {
-          // no previous figure.  which means that we are probably
-          // rendering for the first time.
-          center = null; //FIXME: layout?
-          }
-          Figure newFigure = drawNode(node);
-          if (center != null) {
-          // place the new figure where the old one was.
-          CanvasUtilities.translateTo(newFigure,
-          center.getX(), center.getY());
-          }
-          if (selected)
-          _selectionModel.addSelection(newFigure);
-        */
+         Figure oldFigure = getFigure(node);
+         boolean selected = _selectionModel.containsSelection(oldFigure);
+         if (selected) {
+         _selectionModel.removeSelection(oldFigure);
+         }
+         Point2D center;
+         if (oldFigure != null) {
+         center = CanvasUtilities.getCenterPoint(oldFigure.getBounds());
+         clearNode(node);
+         } else {
+         // no previous figure.  which means that we are probably
+         // rendering for the first time.
+         center = null; //FIXME: layout?
+         }
+         Figure newFigure = drawNode(node);
+         if (center != null) {
+         // place the new figure where the old one was.
+         CanvasUtilities.translateTo(newFigure,
+         center.getX(), center.getY());
+         }
+         if (selected)
+         _selectionModel.addSelection(newFigure);
+         */
     }
 
     /**
@@ -637,18 +637,18 @@ public abstract class AbstractGraphController implements GraphController {
 
                 /* Object root = e.getTarget();
 
-                //FIXME - this could be optimized--
-                //        we may not need to rerender every
-                //        node.
+                 //FIXME - this could be optimized--
+                 //        we may not need to rerender every
+                 //        node.
 
-                for (Iterator i = _model.nodes(root); i.hasNext(); ) {
-                rerenderNode(i.next());
-                }
-                for (Iterator i = GraphUtilities.localEdges(root, _model);
-                i.hasNext(); ) {
-                rerenderEdge(i.next());
-                }
-                */
+                 for (Iterator i = _model.nodes(root); i.hasNext(); ) {
+                 rerenderNode(i.next());
+                 }
+                 for (Iterator i = GraphUtilities.localEdges(root, _model);
+                 i.hasNext(); ) {
+                 rerenderEdge(i.next());
+                 }
+                 */
             }
         }
     }

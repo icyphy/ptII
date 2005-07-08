@@ -27,7 +27,7 @@
  COPYRIGHTENDKEY
 
 
-*/
+ */
 package diva.gui.tutorial;
 
 import java.awt.datatransfer.Clipboard;
@@ -56,7 +56,6 @@ import diva.gui.View;
 import diva.gui.toolbox.ListDataModel;
 import diva.resource.DefaultBundle;
 import diva.resource.RelativeBundle;
-
 
 /**
  * An abstract implementation of the Application interface.  This

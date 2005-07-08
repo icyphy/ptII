@@ -1,28 +1,28 @@
 /* An analyzer for computing the maximum/minimum cycle mean of a graph which
-   uses Karp's algorithm.
+ uses Karp's algorithm.
 
-   Copyright (c) 2003-2005 The University of Maryland. All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2003-2005 The University of Maryland. All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
 
-*/
+ */
 package ptolemy.graph.analysis.strategy;
 
 import java.util.ArrayList;
@@ -39,30 +39,29 @@ import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
 import ptolemy.graph.analysis.analyzer.CycleMeanAnalyzer;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// KarpCycleMeanAnalyzer
 
 /**
-   An analyzer for computing the maximum/minimum cycle mean of a graph.
-   This implementation uses the Karp's algorithm described in:
-   <p>
-   A.Dasdan, R.K. Gupta, "Faster Maximum and Minimum Mean Cycle Algorithms
-   for System Performance".
-   <p>
-   Note that the mathematical definition of maximum cycle mean and maximum profit
-   to cost are different, though some time the name "maximum cycle mean" is used to
-   refer to the maximum profit to cost ratio.
-   <p>
-   @see ptolemy.graph.analysis.CycleMeanAnalysis
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (shahrooz)
-   @Pt.AcceptedRating Red (ssb)
-   @author Shahrooz Shahparnia
-   @version $Id$
-*/
-public class KarpCycleMeanStrategy extends CachedStrategy
-    implements CycleMeanAnalyzer {
+ An analyzer for computing the maximum/minimum cycle mean of a graph.
+ This implementation uses the Karp's algorithm described in:
+ <p>
+ A.Dasdan, R.K. Gupta, "Faster Maximum and Minimum Mean Cycle Algorithms
+ for System Performance".
+ <p>
+ Note that the mathematical definition of maximum cycle mean and maximum profit
+ to cost are different, though some time the name "maximum cycle mean" is used to
+ refer to the maximum profit to cost ratio.
+ <p>
+ @see ptolemy.graph.analysis.CycleMeanAnalysis
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (shahrooz)
+ @Pt.AcceptedRating Red (ssb)
+ @author Shahrooz Shahparnia
+ @version $Id$
+ */
+public class KarpCycleMeanStrategy extends CachedStrategy implements
+        CycleMeanAnalyzer {
     /** Construct a maximum cycle mean analyzer for a given graph, using the
      *  Karp's algorithm.
      *
@@ -133,7 +132,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy
      */
     public String toString() {
         return "All pair shortest path analyzer"
-            + " based on Karp's algorithm.";
+                + " based on Karp's algorithm.";
     }
 
     /** Check for compatibility between the analysis and the given
@@ -147,7 +146,8 @@ public class KarpCycleMeanStrategy extends CachedStrategy
         boolean result = false;
 
         if (graph() instanceof DirectedGraph) {
-            CycleExistenceAnalyzer analyzer = new FloydWarshallCycleExistenceStrategy(graph());
+            CycleExistenceAnalyzer analyzer = new FloydWarshallCycleExistenceStrategy(
+                    graph());
             result = analyzer.hasCycle();
         }
 
@@ -227,15 +227,15 @@ public class KarpCycleMeanStrategy extends CachedStrategy
             while (nodes.hasNext()) {
                 Node node = (Node) nodes.next();
                 Collection predecessorCollection = directedCyclicGraph
-                    .predecessors(node);
+                        .predecessors(node);
                 Iterator predecessors = predecessorCollection.iterator();
 
                 while (predecessors.hasNext()) {
                     Node nodePredecessor = (Node) predecessors.next();
                     double dKOfV = ((Double) maximumPathLength[k].get(node))
-                        .doubleValue();
-                    double dKMinusOneU = ((Double) maximumPathLength[k - 1].get(nodePredecessor))
-                        .doubleValue();
+                            .doubleValue();
+                    double dKMinusOneU = ((Double) maximumPathLength[k - 1]
+                            .get(nodePredecessor)).doubleValue();
                     double distance = _getCost(nodePredecessor, node);
                     double cost = dKMinusOneU + distance;
 
@@ -260,9 +260,8 @@ public class KarpCycleMeanStrategy extends CachedStrategy
                 double maximumPathLengthToLevelN = ((Double) maximumPathLength[n]
                         .get(node)).doubleValue();
                 double cycleMeanValue = ((Double) (cycleMean.get(node)))
-                    .doubleValue();
-                double testValue = ((maximumPathLengthToLevelN
-                                            - maximumPathLengthToLevelK) / (n - k));
+                        .doubleValue();
+                double testValue = ((maximumPathLengthToLevelN - maximumPathLengthToLevelK) / (n - k));
 
                 if (cycleMeanValue > testValue) {
                     cycleMean.put(node, new Double(testValue));
@@ -271,7 +270,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy
             }
 
             double cycleMeanValue = ((Double) (cycleMean.get(node)))
-                .doubleValue();
+                    .doubleValue();
 
             if (result < cycleMeanValue) {
                 result = cycleMeanValue;
@@ -281,7 +280,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy
 
         // _dumpVariable(maximumPathLength, directedCyclicGraph);
         int lambdaCycleMeanLevel = ((Integer) cycleMeanLevel.get(resultNode))
-            .intValue();
+                .intValue();
         Node firstNode = resultNode;
         Node secondNode = firstNode;
         int firstNodeLevel = 0;
@@ -368,7 +367,10 @@ public class KarpCycleMeanStrategy extends CachedStrategy
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private boolean _maximumAnalysis = true;
+
     private ArrayList _nodesOnCycle = new ArrayList();
+
     private ArrayList _cycle;
+
     private ToDoubleMapping _edgeLengths;
 }

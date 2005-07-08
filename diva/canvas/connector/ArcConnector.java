@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.canvas.connector;
 
 import java.awt.geom.Arc2D;
@@ -34,7 +34,6 @@ import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.TransformContext;
 import diva.canvas.toolbox.LabelFigure;
-
 
 /** A Connector that draws itself in an arc. The connector
  * draws itself approximately through the center of the figures
@@ -93,9 +92,13 @@ public class ArcConnector extends AbstractConnector {
     /** The calculated parameters of the arc
      */
     private double _centerX;
+
     private double _centerY;
+
     private double _radius;
+
     private double _startAngle;
+
     private double _extentAngle;
 
     /** The angle between the two ends of the arc.
@@ -115,7 +118,6 @@ public class ArcConnector extends AbstractConnector {
      */
 
     //// private double _displacement = 20.0;
-
     /** Create a new arc connector between the given
      * sites. The connector is drawn with a width of one
      * and in black, and at the default incident angle of
@@ -149,10 +151,9 @@ public class ArcConnector extends AbstractConnector {
         // Hm... I don't know why I need the PI/2 here -- johnr
         return new Point2D.Double(_centerX
                 + (_radius * Math.sin(_startAngle + (_extentAngle / 2)
-                           + (Math.PI / 2))),
-                _centerY
+                        + (Math.PI / 2))), _centerY
                 + (_radius * Math.cos(_startAngle + (_extentAngle / 2)
-                           + (Math.PI / 2))));
+                        + (Math.PI / 2))));
     }
 
     /** Get the site that marks the midpoint of the connector.
@@ -343,9 +344,8 @@ public class ArcConnector extends AbstractConnector {
         }
 
         // Set the arc
-        _arc.setArcByCenter(centerX, centerY, radius,
-                _startAngle / Math.PI * 180, _extentAngle / Math.PI * 180,
-                Arc2D.OPEN);
+        _arc.setArcByCenter(centerX, centerY, radius, _startAngle / Math.PI
+                * 180, _extentAngle / Math.PI * 180, Arc2D.OPEN);
 
         // Move the label
         repositionLabel();

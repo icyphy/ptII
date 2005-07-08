@@ -1,28 +1,28 @@
 /* Utilities for the distributed package.
 
-@Copyright (c) 2005 The Regents of Aalborg University.
-All rights reserved.
+ @Copyright (c) 2005 The Regents of Aalborg University.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
-HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
+ HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 
 package ptolemy.distributed.util;
 
@@ -35,15 +35,15 @@ import ptolemy.distributed.domains.sdf.kernel.DistributedSDFReceiver;
 //// DistributedUtilities
 
 /**
-   Utilities for the distributed package. This includes different conversions
-   and printing facilities.
+ Utilities for the distributed package. This includes different conversions
+ and printing facilities.
 
-   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (kapokasa)
+ @Pt.AcceptedRating Red (cxh)
+ */
 
 public class DistributedUtilities {
 
@@ -57,8 +57,7 @@ public class DistributedUtilities {
      *  @return LinkedList A list.
      */
 
-    public static LinkedList convertIntegersToList(
-                                    Integer[][] receiversIntegers) {
+    public static LinkedList convertIntegersToList(Integer[][] receiversIntegers) {
         // System.out.println("convertIntegersToList: \n" +
         // integersArrayToString(receiversIntegers));
         LinkedList list = new LinkedList();
@@ -79,15 +78,14 @@ public class DistributedUtilities {
      *  @return Integer[][] A bidimensional array of receivers IDs.
      */
 
-    public static Integer[][] convertReceiversToIntegers(
-                                                Receiver[][] receivers) {
+    public static Integer[][] convertReceiversToIntegers(Receiver[][] receivers) {
         Integer[][] receiversIntegers = new Integer[receivers.length][];
         for (int i = 0; i < receivers.length; i++) {
             receiversIntegers[i] = new Integer[receivers[i].length];
             for (int j = 0; j < receivers[i].length; j++) {
                 if (receivers[i][j] != null) {
-                    receiversIntegers[i][j] = ((DistributedSDFReceiver)
-                            receivers[i][j]).getID();
+                    receiversIntegers[i][j] = ((DistributedSDFReceiver) receivers[i][j])
+                            .getID();
                 } else {
                     receiversIntegers[i][j] = null;
                 }
@@ -131,7 +129,7 @@ public class DistributedUtilities {
         String print = "";
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
-                print += ((DistributedSDFReceiver)array[i][j]).getID() + " ";
+                print += ((DistributedSDFReceiver) array[i][j]).getID() + " ";
             }
             print += "\n";
         }

@@ -1,30 +1,30 @@
 /* Base class for code generator helper.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.codegen.kernel;
 
 import java.util.HashMap;
@@ -46,7 +46,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// CodeGeneratorHelper
@@ -155,12 +154,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @return A string of the preinitialize code for the helper.
      *  @exception IllegalActionException Subclass may throw it.
      */
-    public String generatePreinitializeCode() 
-            throws IllegalActionException {
+    public String generatePreinitializeCode() throws IllegalActionException {
         createBufferAndOffsetMap();
         return "";
     }
-    
+
     /** Do nothing. Subclasses may extend this method to generate
      *  the wrapup code of the associated component and append the
      *  code to the given string buffer.
@@ -252,8 +250,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         Attribute attribute = _component.getAttribute(name);
 
         if (attribute == null) {
-            throw new IllegalActionException(_component,
-                    "No attribute named: " + name);
+            throw new IllegalActionException(_component, "No attribute named: "
+                    + name);
         }
 
         if (attribute instanceof Variable) {
@@ -321,9 +319,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                     if (getOffset(port, channelNumber) instanceof Integer) {
                         int offset = ((Integer) getOffset(port, channelNumber))
-                            .intValue();
+                                .intValue();
                         offset = offset
-                            + (new Integer(channelAndOffset[1])).intValue();
+                                + (new Integer(channelAndOffset[1])).intValue();
                         offset = offset % getBufferSize(port, channelNumber);
                         temp = new Integer(offset).toString();
                     } else {
@@ -337,8 +335,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         int modulo = getBufferSize(port, channelNumber) - 1;
                         temp = (String) getOffset(port, channelNumber);
                         temp = "(" + temp
-                            + (new Integer(channelAndOffset[1])).intValue()
-                            + ")&" + modulo;
+                                + (new Integer(channelAndOffset[1])).intValue()
+                                + ")&" + modulo;
                     }
 
                     result.append("[" + temp + "]");
@@ -349,7 +347,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                     if (getOffset(port, channelNumber) instanceof Integer) {
                         int offset = ((Integer) getOffset(port, channelNumber))
-                            .intValue();
+                                .intValue();
                         offset = offset % getBufferSize(port, channelNumber);
                         temp = new Integer(offset).toString();
                     } else {
@@ -387,7 +385,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 int channelNumber = 0;
 
                 if (!channelAndOffset[0].equals("")) {
-                    channelNumber = (new Integer(channelAndOffset[0])).intValue();
+                    channelNumber = (new Integer(channelAndOffset[0]))
+                            .intValue();
                 }
 
                 sinkChannels = getSinkChannels(port, channelNumber);
@@ -416,18 +415,19 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                         if (getOffset(port, 0) instanceof Integer) {
                             int offset = ((Integer) (getOffset(port,
-                                                             channelNumber))).intValue()
-                                + (new Integer(channelAndOffset[1])).intValue();
-                            offset = offset % getBufferSize(sinkPort,
-                                    sinkChannelNumber);
+                                    channelNumber))).intValue()
+                                    + (new Integer(channelAndOffset[1]))
+                                            .intValue();
+                            offset = offset
+                                    % getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
                         } else {
                             int modulo = getBufferSize(sinkPort,
                                     sinkChannelNumber) - 1;
                             temp = "("
-                                + (String) getOffset(port, channelNumber)
-                                + (new Integer(channelAndOffset[1])).intValue()
-                                + ")&" + modulo;
+                                    + (String) getOffset(port, channelNumber)
+                                    + (new Integer(channelAndOffset[1]))
+                                            .intValue() + ")&" + modulo;
                         }
 
                         result.append("[" + temp + "]");
@@ -438,15 +438,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                         if (getOffset(port, channelNumber) instanceof Integer) {
                             int offset = ((Integer) getOffset(port, 0))
-                                .intValue();
-                            offset = offset % getBufferSize(sinkPort,
-                                    sinkChannelNumber);
+                                    .intValue();
+                            offset = offset
+                                    % getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
                         } else {
                             int modulo = getBufferSize(sinkPort,
                                     sinkChannelNumber) - 1;
                             temp = (String) getOffset(port, channelNumber)
-                                + "&" + modulo;
+                                    + "&" + modulo;
                         }
 
                         result.append("[" + temp + "]");
@@ -481,8 +481,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             return result.toString();
         }
 
-        throw new IllegalActionException(_component,
-                "Reference not found: " + name);
+        throw new IllegalActionException(_component, "Reference not found: "
+                + name);
     }
 
     /** Return a list that contains the parameters referenced in the code.
@@ -556,8 +556,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
         }
 
-        throw new IllegalActionException(_component,
-                "Attribute not found: " + name);
+        throw new IllegalActionException(_component, "Attribute not found: "
+                + name);
     }
 
     /** Process the specified code, replacing macros with their values.
@@ -607,9 +607,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             macro = macro.trim();
 
             if ((macro.equals("ref") || macro.equals("val")
-                        || macro.equals("actorSymbol")
-                        || macro.equals("size"))) {
-                String name = code.substring(openParenIndex + 1, closeParenIndex);
+                    || macro.equals("actorSymbol") || macro.equals("size"))) {
+                String name = code.substring(openParenIndex + 1,
+                        closeParenIndex);
                 name = name.trim();
 
                 if (macro.equals("ref")) {
@@ -712,7 +712,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         if (string.charAt(pos) != '(') {
             throw new IllegalActionException(_component,
                     "The character at index " + pos + " of string: " + string
-                    + " is not a open parenthesis.");
+                            + " is not a open parenthesis.");
         }
 
         int nextOpenParen = string.indexOf("(", pos + 1);
@@ -772,10 +772,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     private String[] _getChannelAndOffset(String name)
             throws IllegalActionException {
-        String[] result = {
-            "",
-            ""
-        };
+        String[] result = { "", "" };
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
         tokenizer.nextToken();
 

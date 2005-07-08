@@ -1,30 +1,30 @@
 /* A composite actor designed for the CT domain.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.Director;
@@ -34,48 +34,47 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CTCompositeActor
 
 /**
-   A composite actor designed for the CT domain. This class
-   extends TypedCompositeActor and implements the following interfaces:
-   CTDynamicActor, CTEventGenerator, CTStatefulActor, CTStepSizeControlActor,
-   and CTWaveformGenerator.
-   <p>
-   In the CT domain, normal opaque composite actors are not fired
-   in every iteration. They are only fired in the discrete phase of execution
-   and when they have trigger events. On the other hand, CTCompositeActors
-   are fired in both discrete and continuous phases of execution in each
-   iteration.
-   <p>
-   The key task of this actor is to implement step-size control methods.
-   If the local director of this actor is an instance of CTTransparentDirector,
-   then any step-size control methods called on this actor will be delegated
-   to the local director. If the local director is not a CTTransparentDirector,
-   the implementations of the step-size control methods do not affect
-   the current step size.
-   <P>
-   This composite actor should be used when a CT subsystem needs to transfer
-   its step size control information to the outer domain. Typical usage
-   includes CT inside CT or CT inside FSM inside CT.
+ A composite actor designed for the CT domain. This class
+ extends TypedCompositeActor and implements the following interfaces:
+ CTDynamicActor, CTEventGenerator, CTStatefulActor, CTStepSizeControlActor,
+ and CTWaveformGenerator.
+ <p>
+ In the CT domain, normal opaque composite actors are not fired
+ in every iteration. They are only fired in the discrete phase of execution
+ and when they have trigger events. On the other hand, CTCompositeActors
+ are fired in both discrete and continuous phases of execution in each
+ iteration.
+ <p>
+ The key task of this actor is to implement step-size control methods.
+ If the local director of this actor is an instance of CTTransparentDirector,
+ then any step-size control methods called on this actor will be delegated
+ to the local director. If the local director is not a CTTransparentDirector,
+ the implementations of the step-size control methods do not affect
+ the current step size.
+ <P>
+ This composite actor should be used when a CT subsystem needs to transfer
+ its step size control information to the outer domain. Typical usage
+ includes CT inside CT or CT inside FSM inside CT.
 
-   @author  Jie Liu, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (hyzheng)
-   @Pt.AcceptedRating Green (hyzheng)
-   @see ptolemy.domains.ct.kernel.CTDynamicActor
-   @see ptolemy.domains.ct.kernel.CTEventGenerator
-   @see ptolemy.domains.ct.kernel.CTStatefulActor
-   @see ptolemy.domains.ct.kernel.CTStepSizeControlActor
-   @see ptolemy.domains.ct.kernel.CTWaveformGenerator
-   @see CTTransparentDirector
-*/
-public class CTCompositeActor extends TypedCompositeActor
-    implements CTDynamicActor, CTEventGenerator, CTStatefulActor,
-               CTStepSizeControlActor, CTWaveformGenerator {
+ @author  Jie Liu, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Green (hyzheng)
+ @see ptolemy.domains.ct.kernel.CTDynamicActor
+ @see ptolemy.domains.ct.kernel.CTEventGenerator
+ @see ptolemy.domains.ct.kernel.CTStatefulActor
+ @see ptolemy.domains.ct.kernel.CTStepSizeControlActor
+ @see ptolemy.domains.ct.kernel.CTWaveformGenerator
+ @see CTTransparentDirector
+ */
+public class CTCompositeActor extends TypedCompositeActor implements
+        CTDynamicActor, CTEventGenerator, CTStatefulActor,
+        CTStepSizeControlActor, CTWaveformGenerator {
     /** Construct a CTCompositeActor in the default workspace with
      *  no container and an empty string as its name. Add the actor
      *  to the workspace directory.
@@ -260,6 +259,7 @@ public class CTCompositeActor extends TypedCompositeActor
             return ((CTTransparentDirector) director).refinedStepSize();
         }
 
-        return ((CTGeneralDirector) getExecutiveDirector()).getCurrentStepSize();
+        return ((CTGeneralDirector) getExecutiveDirector())
+                .getCurrentStepSize();
     }
 }

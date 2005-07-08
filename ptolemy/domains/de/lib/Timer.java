@@ -1,30 +1,30 @@
 /* A timer that produces an event with a time delay specified by the input.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.util.CalendarQueue;
@@ -40,33 +40,32 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Timer
 
 /**
-   A timer actor delays an event with a time delay specified by its input.
-   <p>
-   When a timer actor receives an input, if the input value is
-   bigger than 0.0, the timer schedules itself to fire again some time
-   later to generate an output. The amount of delay is specified by the
-   input value. The value of output is specified by the <i>value</i>
-   parameter of this actor. If the input value is 0.0, an output is
-   produced in the next firing with a bigger microstep. If the input is 
-   less than 0.0, an exception will be thrown. 
+ A timer actor delays an event with a time delay specified by its input.
+ <p>
+ When a timer actor receives an input, if the input value is
+ bigger than 0.0, the timer schedules itself to fire again some time
+ later to generate an output. The amount of delay is specified by the
+ input value. The value of output is specified by the <i>value</i>
+ parameter of this actor. If the input value is 0.0, an output is
+ produced in the next firing with a bigger microstep. If the input is 
+ less than 0.0, an exception will be thrown. 
 
-   <p> This actor is different from the {@link
-   ptolemy.domains.de.lib.NonInterruptibleTimer} actor because the
-   NonInterruptibleTimer actor delays the processing of a new input if
-   it has not finished processing a previous input, while the
-   Timer actor begins processing inputs immediately upon their arrival.
+ <p> This actor is different from the {@link
+ ptolemy.domains.de.lib.NonInterruptibleTimer} actor because the
+ NonInterruptibleTimer actor delays the processing of a new input if
+ it has not finished processing a previous input, while the
+ Timer actor begins processing inputs immediately upon their arrival.
 
-   @author Jie Liu, Edward A. Lee, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Yellow (hyzheng)
-*/
+ @author Jie Liu, Edward A. Lee, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (hyzheng)
+ @Pt.AcceptedRating Yellow (hyzheng)
+ */
 public class Timer extends DETransformer {
     /** Construct an actor with the specified container and name.
      *  Declare that the input can only receive double tokens and the output
@@ -160,7 +159,7 @@ public class Timer extends DETransformer {
         _currentInput = null;
         _currentOutput = null;
         _delayedOutputTokens = new CalendarQueue(new TimedEvent.TimeComparator(
-                                                         this.getDirector()));
+                this.getDirector()));
     }
 
     /** Update the internal states of this actor. If the current input
@@ -195,8 +194,8 @@ public class Timer extends DETransformer {
 
         // Schedule a future firing to process the current input.
         if (_currentInput != null) {
-            _delayedOutputTokens.put(new TimedEvent(delayToTime,
-                                             value.getToken()));
+            _delayedOutputTokens.put(new TimedEvent(delayToTime, value
+                    .getToken()));
             getDirector().fireAt(this, delayToTime);
         }
 

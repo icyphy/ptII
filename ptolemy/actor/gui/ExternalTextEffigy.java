@@ -1,33 +1,33 @@
 /* A representative of a text file contained in an external text editor.
 
-Copyright (c) 1998-2005 The Regents of the University of California and
-Research in Motion Limited.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California and
+ Research in Motion Limited.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -41,20 +41,19 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ExternalTextEffigy
 
 /**
-   An external EDITOR-based effigy for a text file (see {@link
-   ExternalTextTableau}).
+ An external EDITOR-based effigy for a text file (see {@link
+ ExternalTextTableau}).
 
-   @author Zoltan Kemenczy, Research in Motion Limited
-   @version $Id$
-   @since Ptolemy II 2.2
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (neuendor)
-*/
+ @author Zoltan Kemenczy, Research in Motion Limited
+ @version $Id$
+ @since Ptolemy II 2.2
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (neuendor)
+ */
 public class ExternalTextEffigy extends TextEffigy {
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
@@ -124,8 +123,8 @@ public class ExternalTextEffigy extends TextEffigy {
     public static TextEffigy newTextEffigy(CompositeEntity container,
             String text) throws Exception {
         // Create a new effigy.
-        ExternalTextEffigy effigy = new ExternalTextEffigy(container,
-                container.uniqueName("effigy"));
+        ExternalTextEffigy effigy = new ExternalTextEffigy(container, container
+                .uniqueName("effigy"));
 
         // Cheat: we'll get the text off the container at
         // show(Content)-time. This get's around the problem of stale
@@ -139,8 +138,8 @@ public class ExternalTextEffigy extends TextEffigy {
     /** Create a new ExternalTextEffigy. */
     public static TextEffigy newTextEffigy(CompositeEntity container, URL base,
             URL in) throws Exception {
-        ExternalTextEffigy effigy = new ExternalTextEffigy(container,
-                container.uniqueName("effigy"));
+        ExternalTextEffigy effigy = new ExternalTextEffigy(container, container
+                .uniqueName("effigy"));
 
         // A URL has been given.  Read it.
         // Note: Here the text editor would be given the in URL to
@@ -159,7 +158,7 @@ public class ExternalTextEffigy extends TextEffigy {
     }
 
     /** Signal the external text editor to (re)display its buffer
-        associated with this effigy. */
+     associated with this effigy. */
     public void show() {
         showContent(_pathName);
     }
@@ -181,11 +180,11 @@ public class ExternalTextEffigy extends TextEffigy {
                 // the current content from the MoML content of the
                 // container
                 String text = ((PtolemyEffigy) getContainer()).getModel()
-                    .exportMoML();
+                        .exportMoML();
                 tmpFile = File.createTempFile("effigy", "");
 
-                String tmpFilePathName = tmpFile.getAbsolutePath().replace('\\',
-                        '/');
+                String tmpFilePathName = tmpFile.getAbsolutePath().replace(
+                        '\\', '/');
                 FileWriter writer = null;
 
                 try {
@@ -198,14 +197,15 @@ public class ExternalTextEffigy extends TextEffigy {
                 }
 
                 todo = "gnudoit (find-file (symbol-name '" + path + "))"
-                    + "(setq buffer-read-only nil)" + "(erase-buffer)"
-                    + "(insert-file-contents " + "    (symbol-name '"
-                    + tmpFilePathName + "))" + "(set-buffer-modified-p nil)"
-                    + "(setq buffer-read-only t)" + "(buffer-name)";
+                        + "(setq buffer-read-only nil)" + "(erase-buffer)"
+                        + "(insert-file-contents " + "    (symbol-name '"
+                        + tmpFilePathName + "))"
+                        + "(set-buffer-modified-p nil)"
+                        + "(setq buffer-read-only t)" + "(buffer-name)";
             } else {
                 // Reading file content from storage
                 todo = "gnudoit (find-file (symbol-name '" + path + "))"
-                    + "(buffer-name)";
+                        + "(buffer-name)";
             }
 
             Process process = Runtime.getRuntime().exec(todo);
@@ -239,5 +239,6 @@ public class ExternalTextEffigy extends TextEffigy {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private String _pathName;
+
     private boolean _useContainerMoML;
 }

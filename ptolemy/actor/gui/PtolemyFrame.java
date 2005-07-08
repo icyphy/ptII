@@ -1,29 +1,29 @@
 /* Top-level window for Ptolemy models with a menubar and status bar.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -49,31 +49,30 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyFrame
 
 /**
-   This is a top-level window for Ptolemy models with a menubar and status bar.
-   Derived classes should add components to the content pane using a
-   line like:
-   <pre>
-   getContentPane().add(component, BorderLayout.CENTER);
-   </pre>
-   This extends the base class by associating with it a Ptolemy II model
-   or object and specifying a model error handler for that model
-   that handles model errors by throwing an exception.
-   <p>
-   If the model contains an instance of FileParameter named "_help", then
-   the file or URL specified by that attribute will be opened when "Help"
-   in the Help menu is invoked.
+ This is a top-level window for Ptolemy models with a menubar and status bar.
+ Derived classes should add components to the content pane using a
+ line like:
+ <pre>
+ getContentPane().add(component, BorderLayout.CENTER);
+ </pre>
+ This extends the base class by associating with it a Ptolemy II model
+ or object and specifying a model error handler for that model
+ that handles model errors by throwing an exception.
+ <p>
+ If the model contains an instance of FileParameter named "_help", then
+ the file or URL specified by that attribute will be opened when "Help"
+ in the Help menu is invoked.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (johnr)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (johnr)
+ */
 public abstract class PtolemyFrame extends TableauFrame {
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -112,8 +111,8 @@ public abstract class PtolemyFrame extends TableauFrame {
         // model specifying them.  Errors are ignored.
         try {
             WindowPropertiesAttribute properties = (WindowPropertiesAttribute) model
-                .getAttribute("_windowProperties",
-                        WindowPropertiesAttribute.class);
+                    .getAttribute("_windowProperties",
+                            WindowPropertiesAttribute.class);
 
             if (properties != null) {
                 properties.setProperties(this);
@@ -212,8 +211,7 @@ public abstract class PtolemyFrame extends TableauFrame {
     protected void _help() {
         try {
             FileParameter helpAttribute = (FileParameter) getModel()
-                .getAttribute("_help",
-                        FileParameter.class);
+                    .getAttribute("_help", FileParameter.class);
             URL doc = helpAttribute.asURL();
             getConfiguration().openModel(null, doc, doc.toExternalForm());
         } catch (Exception ex) {
@@ -229,10 +227,10 @@ public abstract class PtolemyFrame extends TableauFrame {
     protected void _print() {
         if (_model != null) {
             ChangeRequest request = new ChangeRequest(this, "Print") {
-                    protected void _execute() throws Exception {
-                        PtolemyFrame.super._print();
-                    }
-                };
+                protected void _execute() throws Exception {
+                    PtolemyFrame.super._print();
+                }
+            };
 
             _model.requestChange(request);
         } else {
@@ -327,7 +325,7 @@ public abstract class PtolemyFrame extends TableauFrame {
                 // Update all the attributes that need updated.
                 if (_model != null) {
                     Iterator attributes = _model.attributeList(Attribute.class)
-                        .iterator();
+                            .iterator();
 
                     while (attributes.hasNext()) {
                         Attribute attribute = (Attribute) attributes.next();
@@ -348,8 +346,8 @@ public abstract class PtolemyFrame extends TableauFrame {
                 if (_model == null) {
                     effigy = effigy.topEffigy();
                 } else if ((_query == null)
-                        || ((_model.getContainer() != null)
-                                && !_query.getBooleanValue("submodel"))) {
+                        || ((_model.getContainer() != null) && !_query
+                                .getBooleanValue("submodel"))) {
                     effigy = effigy.masterEffigy();
                 }
 

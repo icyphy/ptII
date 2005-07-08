@@ -1,30 +1,30 @@
 /* An actor that produces an array that lists the contents of a directory.
 
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.io;
 
 import java.io.BufferedReader;
@@ -58,46 +58,45 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DirectoryListing
 
 /**
-   Given a URL or directory name, this actor produces an array of file names
-   in that directory that match an (optional) pattern.  The file names that
-   are returned are absolute. The pattern is
-   a regular expression. For a reference on regular expression syntax see:
-   <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
-   http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
-   <p>
-   If <i>directoryOrURL</i> is a local directory (not a URL), then you can
-   optionally list only contained files or directories.
-   If <i>listOnlyDirectories</i> is true, then only directories will be
-   listed on the output.  If <i>listOnlyFiles</i> is true, then only
-   files will be listed on the output. If both are true, then an exception
-   is thrown.
-   <p>
-   If <i>directoryOrURL</i> is a URL, then this actor assumes that the
-   server will list the contents of the referenced directory in an
-   HTML file where each file listed will have the following form:
-   <pre>
-   &lt;a href="filename"&gt;filename&lt;/a&gt;
-   </pre>
-   If the filename is longer than 20 characters, then only the first
-   20 characters of the two appearances of the filename are compared,
-   since some servers truncate the file names.
+ Given a URL or directory name, this actor produces an array of file names
+ in that directory that match an (optional) pattern.  The file names that
+ are returned are absolute. The pattern is
+ a regular expression. For a reference on regular expression syntax see:
+ <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
+ http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
+ <p>
+ If <i>directoryOrURL</i> is a local directory (not a URL), then you can
+ optionally list only contained files or directories.
+ If <i>listOnlyDirectories</i> is true, then only directories will be
+ listed on the output.  If <i>listOnlyFiles</i> is true, then only
+ files will be listed on the output. If both are true, then an exception
+ is thrown.
+ <p>
+ If <i>directoryOrURL</i> is a URL, then this actor assumes that the
+ server will list the contents of the referenced directory in an
+ HTML file where each file listed will have the following form:
+ <pre>
+ &lt;a href="filename"&gt;filename&lt;/a&gt;
+ </pre>
+ If the filename is longer than 20 characters, then only the first
+ 20 characters of the two appearances of the filename are compared,
+ since some servers truncate the file names.
 
-   <p>Note that DirectoryListing returns the contents of the directory
-   in a different order depending on whether one is using the Sun JVM
-   or the IBM JVM.  Thus, you may want to connect the output to an
-   ArraySort actor.
+ <p>Note that DirectoryListing returns the contents of the directory
+ in a different order depending on whether one is using the Sun JVM
+ or the IBM JVM.  Thus, you may want to connect the output to an
+ ArraySort actor.
 
-   @author  Christopher Hylands, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (liuj)
-*/
+ @author  Christopher Hylands, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (liuj)
+ */
 public class DirectoryListing extends SequenceSource implements FilenameFilter {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -193,10 +192,10 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 _pattern = Pattern.compile(pattern.stringValue());
             } catch (PatternSyntaxException ex) {
                 String patternValue = ((StringToken) pattern.getToken())
-                    .stringValue();
+                        .stringValue();
                 throw new IllegalActionException(this, ex,
-                        "Failed to compile regular expression \"" + patternValue
-                        + "\"");
+                        "Failed to compile regular expression \""
+                                + patternValue + "\"");
             }
         }
 
@@ -219,10 +218,10 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
             throw new IllegalActionException(this, "directoryOrURL is empty.");
         }
 
-        boolean directoriesOnly = ((BooleanToken) listOnlyDirectories.getToken())
-            .booleanValue();
+        boolean directoriesOnly = ((BooleanToken) listOnlyDirectories
+                .getToken()).booleanValue();
         boolean filesOnly = ((BooleanToken) listOnlyFiles.getToken())
-            .booleanValue();
+                .booleanValue();
 
         if (sourceURL.getProtocol().equals("file")) {
             File sourceFile = directoryOrURL.asFile();
@@ -297,8 +296,8 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
     /** Read the URL and produce output.
      *  @param sourceURL The source URL.
      */
-    private void _readURL(URL sourceURL)
-            throws IOException, IllegalActionException {
+    private void _readURL(URL sourceURL) throws IOException,
+            IllegalActionException {
         // Handle urls here.
         if (_debugging) {
             _debug("Reading URL: " + sourceURL);
@@ -309,9 +308,10 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
         if (!contentType.startsWith("text/html")
                 && !contentType.startsWith("text/plain")) {
-            throw new IllegalActionException(this,
-                    "Could not parse '" + directoryOrURL.stringValue()
-                    + "'; it is not \"text/html\", " + "or \"text/plain\", it is: "
+            throw new IllegalActionException(this, "Could not parse '"
+                    + directoryOrURL.stringValue()
+                    + "'; it is not \"text/html\", "
+                    + "or \"text/plain\", it is: "
                     + urlConnection.getContentType());
         }
 
@@ -319,16 +319,16 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         BufferedReader in = null;
 
         try {
-            in = new BufferedReader(new InputStreamReader(
-                                            urlConnection.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(urlConnection
+                    .getInputStream()));
 
             if (!contentType.startsWith("text/plain")
                     && !urlConnection.getURL().toString().endsWith("/")) {
                 // text/plain urls need not end with /, but
                 // text/html urls _must_ end with / since the web server
                 // will rewrite them for us.
-                throw new IllegalActionException(this,
-                        "Could not parse '" + directoryOrURL.stringValue()
+                throw new IllegalActionException(this, "Could not parse '"
+                        + directoryOrURL.stringValue()
                         + "'; it needs to end with '/'");
             }
 
@@ -386,7 +386,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                                             if (accept(null, target)) {
                                                 // Make sure directoryOrURL ends with a slash.
                                                 String base = directoryOrURL
-                                                    .stringValue();
+                                                        .stringValue();
 
                                                 if (!base.endsWith("/")) {
                                                     base = base + "/";
@@ -394,8 +394,9 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
                                                 // FIXME: Is there any way to tell whether
                                                 // the result is a directory or file?
-                                                resultsList.add(new StringToken(base
-                                                                        + target));
+                                                resultsList
+                                                        .add(new StringToken(
+                                                                base + target));
                                             }
 
                                             sawHREF = false;
@@ -425,8 +426,8 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         }
 
         StringToken[] results = new StringToken[resultsList.size()];
-        output.broadcast(new ArrayToken(
-                                 (StringToken[]) (resultsList.toArray(results))));
+        output.broadcast(new ArrayToken((StringToken[]) (resultsList
+                .toArray(results))));
     }
 
     ///////////////////////////////////////////////////////////////////

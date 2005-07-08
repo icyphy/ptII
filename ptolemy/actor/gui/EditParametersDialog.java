@@ -1,29 +1,29 @@
 /* A top-level dialog window for editing parameters of a NamedObj.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.awt.Frame;
@@ -47,42 +47,41 @@ import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// EditParametersDialog
 
 /**
-   This class is a modal dialog box for editing the parameters of a
-   target object, which is an instance of NamedObj. All attributes that
-   implement the Settable interface and have visibility FULL or
-   NOT_EDITABLE are included in the dialog. An instance of this class
-   contains an instance of Configurer, which examines the target for
-   attributes of type EditorPaneFactory.  Those attributes, if they are
-   present, define the panels that are used to edit the parameters of the
-   target.  If they are not present, then a default panel is created.
+ This class is a modal dialog box for editing the parameters of a
+ target object, which is an instance of NamedObj. All attributes that
+ implement the Settable interface and have visibility FULL or
+ NOT_EDITABLE are included in the dialog. An instance of this class
+ contains an instance of Configurer, which examines the target for
+ attributes of type EditorPaneFactory.  Those attributes, if they are
+ present, define the panels that are used to edit the parameters of the
+ target.  If they are not present, then a default panel is created.
 
-   <p> If the panels returned by EditorPaneFactory implement the
-   CloseListener interface, then they are notified when this dialog
-   is closed, and are informed of which button (if any) was used to
-   close the dialog.
+ <p> If the panels returned by EditorPaneFactory implement the
+ CloseListener interface, then they are notified when this dialog
+ is closed, and are informed of which button (if any) was used to
+ close the dialog.
 
-   <p> The dialog is modal, so that (in lieu of a proper undo mechanism)
-   the Cancel button can properly undo any modifications that are made.
-   This means that the statement that creates the dialog will not return
-   until the user dismisses the dialog.  The method buttonPressed() can
-   then be called to find out whether the user clicked the Commit button
-   or the Cancel button (or any other button specified in the
-   constructor).  Then you can access the component to determine what
-   values were set by the user.
+ <p> The dialog is modal, so that (in lieu of a proper undo mechanism)
+ the Cancel button can properly undo any modifications that are made.
+ This means that the statement that creates the dialog will not return
+ until the user dismisses the dialog.  The method buttonPressed() can
+ then be called to find out whether the user clicked the Commit button
+ or the Cancel button (or any other button specified in the
+ constructor).  Then you can access the component to determine what
+ values were set by the user.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
-public class EditParametersDialog extends ComponentDialog
-    implements ChangeListener {
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
+public class EditParametersDialog extends ComponentDialog implements
+        ChangeListener {
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.
      *  The dialog is placed relative to the owner.
@@ -91,8 +90,8 @@ public class EditParametersDialog extends ComponentDialog
      *  @param target The object whose parameters are being edited.
      */
     public EditParametersDialog(Frame owner, NamedObj target) {
-        super(owner, "Edit parameters for " + target.getName(),
-                new Configurer(target), _moreButtons);
+        super(owner, "Edit parameters for " + target.getName(), new Configurer(
+                target), _moreButtons);
 
         // Once we get to here, the dialog has already been dismissed.
         _owner = owner;
@@ -180,17 +179,19 @@ public class EditParametersDialog extends ComponentDialog
             }
         } else if (buttonPressed().equals("Help")) {
             try {
-                URL doc = getClass().getClassLoader().getResource("doc/expressions.htm");
+                URL doc = getClass().getClassLoader().getResource(
+                        "doc/expressions.htm");
 
                 // Try to use the configuration, if we can.
                 boolean success = false;
 
                 if (_owner instanceof TableauFrame) {
                     Configuration configuration = ((TableauFrame) _owner)
-                        .getConfiguration();
+                            .getConfiguration();
 
                     if (configuration != null) {
-                        configuration.openModel(null, doc, doc.toExternalForm());
+                        configuration
+                                .openModel(null, doc, doc.toExternalForm());
                         success = true;
                     }
                 }
@@ -232,10 +233,10 @@ public class EditParametersDialog extends ComponentDialog
         // NOTE: Do this in the event thread, since this might be invoked
         // in whatever thread is processing mutations.
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    new EditParametersDialog(_owner, _target);
-                }
-            });
+            public void run() {
+                new EditParametersDialog(_owner, _target);
+            }
+        });
         _target.removeChangeListener(this);
     }
 
@@ -261,34 +262,32 @@ public class EditParametersDialog extends ComponentDialog
         // NOTE: Do this in the event thread, since this might be invoked
         // in whatever thread is processing mutations.
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    // When a parameter is removed, and something depends on
-                    // it, this gets called when _query is null.
-                    // FIXME: Is this the right thing to do?
-                    if (_query == null) {
-                        return;
-                    }
-
-                    String newName = _query.getStringValue("name");
-                    ComponentDialog dialog = _openAddDialog(exception
-                            .getMessage()
-                            + "\n\nPlease enter a new default value:", newName,
-                            _query.getStringValue("default"),
-                            _query.getStringValue("class"));
-                    _target.removeChangeListener(EditParametersDialog.this);
-
-                    if (!dialog.buttonPressed().equals("OK")) {
-                        // Remove the parameter, since it seems to be erroneous
-                        // and the user hit cancel or close.
-                        String moml = "<deleteProperty name=\"" + newName
-                            + "\"/>";
-                        MoMLChangeRequest request = new MoMLChangeRequest(this,
-                                _target, moml);
-                        request.setUndoable(true);
-                        _target.requestChange(request);
-                    }
+            public void run() {
+                // When a parameter is removed, and something depends on
+                // it, this gets called when _query is null.
+                // FIXME: Is this the right thing to do?
+                if (_query == null) {
+                    return;
                 }
-            });
+
+                String newName = _query.getStringValue("name");
+                ComponentDialog dialog = _openAddDialog(exception.getMessage()
+                        + "\n\nPlease enter a new default value:", newName,
+                        _query.getStringValue("default"), _query
+                                .getStringValue("class"));
+                _target.removeChangeListener(EditParametersDialog.this);
+
+                if (!dialog.buttonPressed().equals("OK")) {
+                    // Remove the parameter, since it seems to be erroneous
+                    // and the user hit cancel or close.
+                    String moml = "<deleteProperty name=\"" + newName + "\"/>";
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            _target, moml);
+                    request.setUndoable(true);
+                    _target.requestChange(request);
+                }
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -342,13 +341,13 @@ public class EditParametersDialog extends ComponentDialog
         String newName = _query.getStringValue("name");
 
         // Need to escape quotes in default value.
-        String newDefValue = StringUtilities.escapeForXML(_query.getStringValue(
-                                                                  "default"));
+        String newDefValue = StringUtilities.escapeForXML(_query
+                .getStringValue("default"));
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
             String moml = "<property name=\"" + newName + "\" value=\""
-                + newDefValue + "\" class=\"" + _query.getStringValue("class")
-                + "\"/>";
+                    + newDefValue + "\" class=\""
+                    + _query.getStringValue("class") + "\"/>";
             _target.addChangeListener(this);
 
             MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
@@ -368,14 +367,14 @@ public class EditParametersDialog extends ComponentDialog
     private void _reOpen() {
         ChangeRequest reOpen = new ChangeRequest(this,
                 "Re-open configure dialog") {
-                protected void _execute() throws Exception {
-                    SwingUtilities.invokeLater(new Runnable() {
-                            public void run() {
-                                new EditParametersDialog(_owner, _target);
-                            }
-                        });
-                }
-            };
+            protected void _execute() throws Exception {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        new EditParametersDialog(_owner, _target);
+                    }
+                });
+            }
+        };
 
         _target.requestChange(reOpen);
     }
@@ -383,15 +382,8 @@ public class EditParametersDialog extends ComponentDialog
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Button labels.
-    private static String[] _moreButtons = {
-        "Commit",
-        "Add",
-        "Remove",
-        "Restore Defaults",
-        "Preferences",
-        "Help",
-        "Cancel"
-    };
+    private static String[] _moreButtons = { "Commit", "Add", "Remove",
+            "Restore Defaults", "Preferences", "Help", "Cancel" };
 
     // The owner window.
     private Frame _owner;

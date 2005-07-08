@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.util.java2d;
 
 import java.awt.BasicStroke;
@@ -37,14 +37,13 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 
-
 /** A set of utilities on Java2D shapes.
  *
  * @version $Id$
  * @author  John Reekie
  * @author  Michael Shilman
 
-*/
+ */
 public final class ShapeUtilities {
     private static boolean _jdk12beta4 = System.getProperty("java.version")
             .equals("1.2beta4");
@@ -177,9 +176,9 @@ public final class ShapeUtilities {
             // necessary with JDK1.3.
             Rectangle2D rect = shape.getBounds2D();
             int width = (int) ((BasicStroke) stroke).getLineWidth() + 2;
-            return new Rectangle2D.Double(rect.getX() - width,
-                    rect.getY() - width, rect.getWidth() + width + width,
-                    rect.getHeight() + width + width);
+            return new Rectangle2D.Double(rect.getX() - width, rect.getY()
+                    - width, rect.getWidth() + width + width, rect.getHeight()
+                    + width + width);
         } else {
             // For some reason (antialiasing?) the bounds returned by
             // BasicStroke is off by one.  This code works around it.
@@ -264,9 +263,7 @@ public final class ShapeUtilities {
      */
     public static boolean isOrthogonal(AffineTransform at) {
         int t = at.getType();
-        return (t
-                & (AffineTransform.TYPE_MASK_ROTATION
-                        | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
+        return (t & (AffineTransform.TYPE_MASK_ROTATION | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
     }
 
     /** Print a Shape to a String, as a code fragment that creates
@@ -352,8 +349,8 @@ public final class ShapeUtilities {
             coords[2] = r.x + r.width;
             coords[3] = r.y + r.height;
             at.transform(coords, 0, coords, 0, 2);
-            return new Rectangle2D.Double(coords[0], coords[1],
-                    coords[2] - coords[0], coords[3] - coords[1]);
+            return new Rectangle2D.Double(coords[0], coords[1], coords[2]
+                    - coords[0], coords[3] - coords[1]);
         } else if (rect instanceof Rectangle2D.Float) {
             Rectangle2D.Float r = (Rectangle2D.Float) rect;
             float[] coords = new float[4];
@@ -362,8 +359,8 @@ public final class ShapeUtilities {
             coords[2] = r.x + r.width;
             coords[3] = r.y + r.height;
             at.transform(coords, 0, coords, 0, 2);
-            return new Rectangle2D.Float(coords[0], coords[1],
-                    coords[2] - coords[0], coords[3] - coords[1]);
+            return new Rectangle2D.Float(coords[0], coords[1], coords[2]
+                    - coords[0], coords[3] - coords[1]);
         } else {
             // i.e. it is a java.awt.Rectangle.
             double[] coords = new double[4];
@@ -372,8 +369,8 @@ public final class ShapeUtilities {
             coords[2] = coords[0] + rect.getWidth();
             coords[3] = coords[1] + rect.getHeight();
             at.transform(coords, 0, coords, 0, 2);
-            return new Rectangle2D.Double(coords[0], coords[1],
-                    coords[2] - coords[0], coords[3] - coords[1]);
+            return new Rectangle2D.Double(coords[0], coords[1], coords[2]
+                    - coords[0], coords[3] - coords[1]);
         }
     }
 

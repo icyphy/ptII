@@ -1,30 +1,30 @@
 /* An actor that computes a specified rounded value of the input.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.lib.Transformer;
@@ -39,33 +39,32 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/math.xml.
 //////////////////////////////////////////////////////////////////////////
 //// Round
 
 /**
-   Produce an output token on each firing with a value that is
-   equal to the specified rounded value of the input.
-   The input type is DoubleToken. The output type is IntToken.
-   The functions are a subset of those in the java.lang.Math class.
-   They are:
-   <ul>
-   <li> <b>ceil</b>: Round towards positive infinity.
-   <li> <b>floor</b>: Round towards negative infinity.
-   <li> <b>round</b>: Round towards nearest integer.
-   <li> <b>truncate</b>: Round towards zero.
-   </ul>
+ Produce an output token on each firing with a value that is
+ equal to the specified rounded value of the input.
+ The input type is DoubleToken. The output type is IntToken.
+ The functions are a subset of those in the java.lang.Math class.
+ They are:
+ <ul>
+ <li> <b>ceil</b>: Round towards positive infinity.
+ <li> <b>floor</b>: Round towards negative infinity.
+ <li> <b>round</b>: Round towards nearest integer.
+ <li> <b>truncate</b>: Round towards zero.
+ </ul>
 
-   If the argument is NaN, then the result is NaN.  The default is "round".
+ If the argument is NaN, then the result is NaN.  The default is "round".
 
-   @author C. Fong
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (chf)
-   @Pt.AcceptedRating Green (janneck)
-*/
+ @author C. Fong
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (chf)
+ @Pt.AcceptedRating Green (janneck)
+ */
 public class Round extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -88,8 +87,8 @@ public class Round extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.INT);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<circle cx=\"0\" cy=\"0\" r=\"17\""
+        _attachText("_iconDescription", "<svg>\n"
+                + "<circle cx=\"0\" cy=\"0\" r=\"17\""
                 + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
@@ -228,8 +227,8 @@ public class Round extends Transformer {
         default:
             throw new InvalidStateException(
                     "Invalid value for _function private variable. "
-                    + "Round actor (" + getFullName() + ")" + " on function type "
-                    + _function);
+                            + "Round actor (" + getFullName() + ")"
+                            + " on function type " + _function);
         }
 
         return result;
@@ -245,7 +244,10 @@ public class Round extends Transformer {
 
     // Constants used for more efficient execution.
     private static final int _CEIL = 0;
+
     private static final int _FLOOR = 1;
+
     private static final int _ROUND = 2;
+
     private static final int _TRUNCATE = 3;
 }

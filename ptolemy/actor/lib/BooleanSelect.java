@@ -1,32 +1,32 @@
 /* A polymorphic multiplexor with boolean select.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-(This is similar to Select and BooleanMultiplexor and could be
-design/code reviewed at the same time.
-*/
+ (This is similar to Select and BooleanMultiplexor and could be
+ design/code reviewed at the same time.
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -38,39 +38,38 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// BooleanSelect
 
 /**
-   A type polymorphic select with boolean valued control.  In an
-   iteration, if an input token is available at the <i>control</i> input,
-   that token is read, and its value is noted.  Its value specifies the
-   input port that should be read next. If the <i>control</i> input is
-   true, then if an input token is available on the <i>trueInput</i>
-   port, then it is is read and sent to the output.  Likewise with a
-   false input and the <i>falseInput</i> port.  The token sent to the
-   output is determined by the <i>control</i> input, which must be a
-   boolean value.  Because tokens are immutable, the same Token is sent
-   to the output, rather than a copy.  The <i>trueInput</i> and
-   <i>falseInput</i> port may receive Tokens of any type.
+ A type polymorphic select with boolean valued control.  In an
+ iteration, if an input token is available at the <i>control</i> input,
+ that token is read, and its value is noted.  Its value specifies the
+ input port that should be read next. If the <i>control</i> input is
+ true, then if an input token is available on the <i>trueInput</i>
+ port, then it is is read and sent to the output.  Likewise with a
+ false input and the <i>falseInput</i> port.  The token sent to the
+ output is determined by the <i>control</i> input, which must be a
+ boolean value.  Because tokens are immutable, the same Token is sent
+ to the output, rather than a copy.  The <i>trueInput</i> and
+ <i>falseInput</i> port may receive Tokens of any type.
 
-   <p> The actor indicates a willingness to fire in its prefire() method
-   if there is an input available on the channel specified by the most
-   recently seen token on the <i>control</i> port.  If no token has ever
-   been received on the <i>control</i> port, then <i>falseInput</i> is
-   assumed to be the one to read.
+ <p> The actor indicates a willingness to fire in its prefire() method
+ if there is an input available on the channel specified by the most
+ recently seen token on the <i>control</i> port.  If no token has ever
+ been received on the <i>control</i> port, then <i>falseInput</i> is
+ assumed to be the one to read.
 
-   <p> This actor is similar to the BooleanMultiplexor actor, except that
-   it never discards input tokens.  Tokens on channels that are not
-   selected are not consumed.
+ <p> This actor is similar to the BooleanMultiplexor actor, except that
+ it never discards input tokens.  Tokens on channels that are not
+ selected are not consumed.
 
-   @author Steve Neuendorffer, Adam Cataldo
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Red (neuendor)
-*/
+ @author Steve Neuendorffer, Adam Cataldo
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Red (neuendor)
+ */
 public class BooleanSelect extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -101,14 +100,14 @@ public class BooleanSelect extends TypedAtomicActor {
         /** Make the icon show T, F, and C for trueInput, falseInput
          *  and control.
          */
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
-                + "<text x=\"-17\" y=\"-3\" " + "style=\"font-size:14\">\n"
-                + "T \n" + "</text>\n" + "<text x=\"-17\" y=\"15\" "
-                + "style=\"font-size:14\">\n" + "F \n" + "</text>\n"
-                + "<text x=\"-5\" y=\"16\" " + "style=\"font-size:14\">\n" + "C \n"
-                + "</text>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-17\" y=\"-3\" "
+                + "style=\"font-size:14\">\n" + "T \n" + "</text>\n"
+                + "<text x=\"-17\" y=\"15\" " + "style=\"font-size:14\">\n"
+                + "F \n" + "</text>\n" + "<text x=\"-5\" y=\"16\" "
+                + "style=\"font-size:14\">\n" + "C \n" + "</text>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

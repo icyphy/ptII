@@ -1,30 +1,30 @@
 /* A PN process actor object.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.pn.demo.QR;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,25 +37,24 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ND_2
 
 /**
 
-This class defines a PN actor object. This actor is automatically
-generated, as part of the <A
-HREF="http://www.gigascale.org/compaan">Compaan</A> project. Although
-most of the actor is generated automatically, some parts have been
-manually tuned for this demo especially when reading and writing of
-matrices is involved; they may change in future releases.
+ This class defines a PN actor object. This actor is automatically
+ generated, as part of the <A
+ HREF="http://www.gigascale.org/compaan">Compaan</A> project. Although
+ most of the actor is generated automatically, some parts have been
+ manually tuned for this demo especially when reading and writing of
+ matrices is involved; they may change in future releases.
 
-@author Bart Kienhuis
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Red (kienhuis)
-@Pt.AcceptedRating Red (kienhuis)
-*/
+ @author Bart Kienhuis
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (kienhuis)
+ @Pt.AcceptedRating Red (kienhuis)
+ */
 public class ND_2 extends TypedAtomicActor {
     /** Construct an actor that is an SBF object with the given container
      *  and name.
@@ -88,10 +87,12 @@ public class ND_2 extends TypedAtomicActor {
     ////                     ports and parameters                  ////
     // -- Part of the Actor
     public TypedIOPort WP_4;
+
     public TypedIOPort WP_8;
 
     // -- Public interface of the Actor
     public Parameter parameter_N;
+
     public Parameter parameter_K;
 
     ///////////////////////////////////////////////////////////////////
@@ -140,7 +141,10 @@ public class ND_2 extends TypedAtomicActor {
     ////                         private variables                 ////
     // -- Get private copies of the parameters
     private int N;
+
     private int K;
+
     private double out_0;
+
     private ArrayIndex x_1 = new ArrayIndex();
 }

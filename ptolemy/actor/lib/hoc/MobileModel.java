@@ -1,29 +1,29 @@
 /* A composite actor that applies models dynamically.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.hoc;
 
 import java.io.IOException;
@@ -55,27 +55,26 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MobileModel
 
 /**
-   This is a composite actor with an input port that accepts MoML descriptions
-   of changes that are applied to the contents. Rather than
-   specified before executing, the inside model can be dynamically changed
-   either locally or remotely. Currently, the model that dynamically applied
-   to this actor is specified by a moml string from the <i>modelString</i>
-   input.
+ This is a composite actor with an input port that accepts MoML descriptions
+ of changes that are applied to the contents. Rather than
+ specified before executing, the inside model can be dynamically changed
+ either locally or remotely. Currently, the model that dynamically applied
+ to this actor is specified by a moml string from the <i>modelString</i>
+ input.
 
-   Currently, it only accepts models with one input and one output, and
-   requires the model name its input port as "input", output port as "output".
+ Currently, it only accepts models with one input and one output, and
+ requires the model name its input port as "input", output port as "output".
 
-   @author Yang Zhao
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ @author Yang Zhao
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class MobileModel extends TypedCompositeActor {
     /** Construct an actor in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -199,17 +198,18 @@ public class MobileModel extends TypedCompositeActor {
 
                 if (((BooleanToken) connectPorts.getToken()).booleanValue()) {
                     _moml = "<group>\n" + modelMoML
-                        + "<relation name=\"newR1\" "
-                        + "class=\"ptolemy.actor.TypedIORelation\">\n"
-                        + "</relation>\n" + "<relation name=\"newR2\" "
-                        + "class=\"ptolemy.actor.TypedIORelation\">\n"
-                        + "</relation>\n"
-                        + "<link port=\"input\" relation=\"newR1\"/>\n"
-                        + "<link port=\"" + model.getName()
-                        + ".input\" relation=\"newR1\"/>\n" + "<link port=\""
-                        + model.getName() + ".output\" relation=\"newR2\"/>\n"
-                        + "<link port=\"output\" relation=\"newR2\"/>\n"
-                        + "</group>";
+                            + "<relation name=\"newR1\" "
+                            + "class=\"ptolemy.actor.TypedIORelation\">\n"
+                            + "</relation>\n" + "<relation name=\"newR2\" "
+                            + "class=\"ptolemy.actor.TypedIORelation\">\n"
+                            + "</relation>\n"
+                            + "<link port=\"input\" relation=\"newR1\"/>\n"
+                            + "<link port=\"" + model.getName()
+                            + ".input\" relation=\"newR1\"/>\n"
+                            + "<link port=\"" + model.getName()
+                            + ".output\" relation=\"newR2\"/>\n"
+                            + "<link port=\"output\" relation=\"newR2\"/>\n"
+                            + "</group>";
                 } else {
                     _moml = "<group>\n" + modelMoML + "</group>";
                 }
@@ -218,8 +218,8 @@ public class MobileModel extends TypedCompositeActor {
                     _debug("Problem parsing " + str.stringValue());
                 }
 
-                throw new IllegalActionException(this, ex,
-                        "Problem parsing " + str.stringValue());
+                throw new IllegalActionException(this, ex, "Problem parsing "
+                        + str.stringValue());
             }
         }
 
@@ -314,7 +314,8 @@ public class MobileModel extends TypedCompositeActor {
             // When no model applied, output the default value.
             if (((BooleanToken) connectPorts.getToken()).booleanValue()) {
                 Const constActor = new Const(this, "Const");
-                constActor.value.setExpression(defaultValue.getToken().toString());
+                constActor.value.setExpression(defaultValue.getToken()
+                        .toString());
                 connect(input, constActor.trigger);
                 connect(constActor.output, output);
             } //otherwise, do nothing.
@@ -386,7 +387,7 @@ public class MobileModel extends TypedCompositeActor {
     private void _createDirector() throws IllegalActionException {
         try {
             String directorName = ((StringToken) director.getToken())
-                .stringValue();
+                    .stringValue();
             Class directorClass = Class.forName(directorName);
             Class[] argClasses = new Class[2];
             argClasses[0] = CompositeEntity.class;
@@ -443,8 +444,8 @@ public class MobileModel extends TypedCompositeActor {
             //Mailbox, which can only hold one token. In this case, specify a proper
             //director using the <i>director<i> parameter.
             new Director(this, "defaultDirector");
-            director = new Parameter(this, "director",
-                    new StringToken("ptolemy.actor.Director"));
+            director = new Parameter(this, "director", new StringToken(
+                    "ptolemy.actor.Director"));
             setClassName("ptolemy.actor.lib.hoc.MobileModel");
         } catch (NameDuplicationException e) {
             // This should not be thrown.
@@ -501,5 +502,6 @@ public class MobileModel extends TypedCompositeActor {
      *
      */
     private MoMLParser _parser;
+
     private boolean _modelChanged = false;
 }

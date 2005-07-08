@@ -1,30 +1,30 @@
 /* A polymorphic autocorrelation function.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.lib;
 
 import java.util.LinkedList;
@@ -49,70 +49,69 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Autocorrelation
 
 /**
-   This actor calculates the autocorrelation of a sequence of input tokens.
-   <a name="autocorrelation"></a>
-   It is polymorphic, supporting any input data type that supports
-   multiplication, addition, and division by an integer.
-   However, since integer division will lose the fractional portion of the
-   result, type resolution will resolve the input type to double or double
-   matrix if the input port is connected to an integer or integer matrix source,
-   respectively.
-   <p>
-   Both biased and unbiased autocorrelation estimates are supported.
-   If the parameter <i>biased</i> is true, then
-   the autocorrelation estimate is
-   <a name="unbiased autocorrelation"></a>
-   <pre>
-   N-1-k
-   1  ---
-   r(k) = -  \    x<sup>*</sup>(n)x(n+k)
-   N  /
-   ---
-   n = 0
-   </pre>
-   for <i>k </i>= 0<i>, ... , p</i>, where <i>N</i> is the number of
-   inputs to average (<i>numberOfInputs</i>), <i>p</i> is the number of
-   lags to estimate (<i>numberOfLags</i>), and x<sup>*</sup> is the
-   conjugate of the input (if it is complex).
-   This estimate is biased because the outermost lags have fewer than <i>N</i>
-   <a name="biased autocorrelation"></a>
-   terms in the summation, and yet the summation is still normalized by <i>N</i>.
-   <p>
-   If the parameter <i>biased</i> is false (the default), then the estimate is
-   <pre>
-   N-1-k
-   1   ---
-   r(k) = ---  \    x<sup>*</sup>(n)x(n+k)
-   N-k  /
-   ---
-   n = 0
-   </pre>
-   In this case, the estimate is unbiased.
-   However, note that the unbiased estimate does not guarantee
-   a positive definite sequence, so a power spectral estimate based on this
-   autocorrelation estimate may have negative components.
-   <a name="spectral estimation"></a>
-   <p>
-   The output will be an array of tokens whose type is at least that
-   of the input. If the parameter <i>symmetricOutput</i> is true,
-   then the output will be symmetric and have length equal to twice
-   the number of lags requested plus one.  Otherwise, the output
-   will have length equal to twice the number of lags requested,
-   which will be almost symmetric (insert the last
-   sample into the first position to get the symmetric output that you
-   would get with the <i>symmetricOutput</i> being true).
+ This actor calculates the autocorrelation of a sequence of input tokens.
+ <a name="autocorrelation"></a>
+ It is polymorphic, supporting any input data type that supports
+ multiplication, addition, and division by an integer.
+ However, since integer division will lose the fractional portion of the
+ result, type resolution will resolve the input type to double or double
+ matrix if the input port is connected to an integer or integer matrix source,
+ respectively.
+ <p>
+ Both biased and unbiased autocorrelation estimates are supported.
+ If the parameter <i>biased</i> is true, then
+ the autocorrelation estimate is
+ <a name="unbiased autocorrelation"></a>
+ <pre>
+ N-1-k
+ 1  ---
+ r(k) = -  \    x<sup>*</sup>(n)x(n+k)
+ N  /
+ ---
+ n = 0
+ </pre>
+ for <i>k </i>= 0<i>, ... , p</i>, where <i>N</i> is the number of
+ inputs to average (<i>numberOfInputs</i>), <i>p</i> is the number of
+ lags to estimate (<i>numberOfLags</i>), and x<sup>*</sup> is the
+ conjugate of the input (if it is complex).
+ This estimate is biased because the outermost lags have fewer than <i>N</i>
+ <a name="biased autocorrelation"></a>
+ terms in the summation, and yet the summation is still normalized by <i>N</i>.
+ <p>
+ If the parameter <i>biased</i> is false (the default), then the estimate is
+ <pre>
+ N-1-k
+ 1   ---
+ r(k) = ---  \    x<sup>*</sup>(n)x(n+k)
+ N-k  /
+ ---
+ n = 0
+ </pre>
+ In this case, the estimate is unbiased.
+ However, note that the unbiased estimate does not guarantee
+ a positive definite sequence, so a power spectral estimate based on this
+ autocorrelation estimate may have negative components.
+ <a name="spectral estimation"></a>
+ <p>
+ The output will be an array of tokens whose type is at least that
+ of the input. If the parameter <i>symmetricOutput</i> is true,
+ then the output will be symmetric and have length equal to twice
+ the number of lags requested plus one.  Otherwise, the output
+ will have length equal to twice the number of lags requested,
+ which will be almost symmetric (insert the last
+ sample into the first position to get the symmetric output that you
+ would get with the <i>symmetricOutput</i> being true).
 
-   @author Edward A. Lee and Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
+ @author Edward A. Lee and Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
 public class Autocorrelation extends SDFTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -128,7 +127,8 @@ public class Autocorrelation extends SDFTransformer {
 
         input_tokenConsumptionRate.setExpression("numberOfInputs");
 
-        numberOfInputs = new Parameter(this, "numberOfInputs", new IntToken(256));
+        numberOfInputs = new Parameter(this, "numberOfInputs",
+                new IntToken(256));
         numberOfInputs.setTypeEquals(BaseType.INT);
 
         numberOfLags = new Parameter(this, "numberOfLags", new IntToken(64));
@@ -194,7 +194,7 @@ public class Autocorrelation extends SDFTransformer {
             _numberOfInputs = ((IntToken) numberOfInputs.getToken()).intValue();
             _numberOfLags = ((IntToken) numberOfLags.getToken()).intValue();
             _symmetricOutput = ((BooleanToken) symmetricOutput.getToken())
-                .booleanValue();
+                    .booleanValue();
 
             if (_numberOfInputs <= 0) {
                 throw new IllegalActionException(this,
@@ -202,8 +202,8 @@ public class Autocorrelation extends SDFTransformer {
             }
 
             if (_numberOfLags <= 0) {
-                throw new IllegalActionException(this,
-                        "Invalid numberOfLags: " + _numberOfLags);
+                throw new IllegalActionException(this, "Invalid numberOfLags: "
+                        + _numberOfLags);
             }
 
             if (_symmetricOutput) {
@@ -255,8 +255,9 @@ public class Autocorrelation extends SDFTransformer {
 
             for (int j = 0; j < (_numberOfInputs - i); j++) {
                 if (complex) {
-                    ComplexToken conjugate = new ComplexToken(((ComplexToken) inputValues[j]).complexValue()
-                            .conjugate());
+                    ComplexToken conjugate = new ComplexToken(
+                            ((ComplexToken) inputValues[j]).complexValue()
+                                    .conjugate());
                     sum = sum.add(conjugate.multiply(inputValues[j + i]));
                 } else {
                     sum = sum.add(inputValues[j].multiply(inputValues[j + i]));
@@ -264,11 +265,11 @@ public class Autocorrelation extends SDFTransformer {
             }
 
             if (biasedValue) {
-                _outputs[(i + _numberOfLags) - notSymmetric] = sum.divide(numberOfInputs
-                        .getToken());
+                _outputs[(i + _numberOfLags) - notSymmetric] = sum
+                        .divide(numberOfInputs.getToken());
             } else {
-                _outputs[(i + _numberOfLags) - notSymmetric] = sum.divide(new IntToken(_numberOfInputs
-                                                                                  - i));
+                _outputs[(i + _numberOfLags) - notSymmetric] = sum
+                        .divide(new IntToken(_numberOfInputs - i));
             }
         }
 
@@ -277,8 +278,8 @@ public class Autocorrelation extends SDFTransformer {
         // the input is complex.
         for (int i = _numberOfLags - 1 - notSymmetric; i >= 0; i--) {
             if (complex) {
-                ComplexToken candidate = (ComplexToken) _outputs[(2 * (_numberOfLags
-                                                                          - notSymmetric)) - i];
+                ComplexToken candidate = (ComplexToken) _outputs[(2 * (_numberOfLags - notSymmetric))
+                        - i];
                 _outputs[i] = new ComplexToken(candidate.complexValue()
                         .conjugate());
             } else {
@@ -328,9 +329,13 @@ public class Autocorrelation extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int _numberOfInputs;
+
     private int _numberOfLags;
+
     private int _lengthOfOutput;
+
     private boolean _symmetricOutput;
+
     private Token[] _outputs;
 
     ///////////////////////////////////////////////////////////////////

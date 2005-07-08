@@ -1,29 +1,29 @@
 /** A class representing the type of a RecordToken.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.data.type;
 
 import ptolemy.data.FunctionToken;
@@ -33,19 +33,18 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FunctionType
 
 /**
-   A class representing the type of a FunctionToken.
+ A class representing the type of a FunctionToken.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class FunctionType extends StructuredType {
     /** Construct a new FunctionType with the specified argument types
      *  and the given return type.  To leave the types of some fields
@@ -111,8 +110,7 @@ public class FunctionType extends StructuredType {
     public Token convert(Token token) throws IllegalActionException {
         if (!isCompatible(token.getType())) {
             throw new IllegalArgumentException(Token
-                    .notSupportedConversionMessage(token,
-                            this.toString()));
+                    .notSupportedConversionMessage(token, this.toString()));
         }
 
         // FIXME: This should actually return a new Function that
@@ -123,34 +121,34 @@ public class FunctionType extends StructuredType {
         //   if (false) {
 
         /*FunctionToken functionToken = (FunctionToken)token;
-        // The converted token has the same set of labels as the argument.
-        // That is, fields not in this type are not cut off.
-        Object[] labelArray = functionToken.labelSet().toArray();
+         // The converted token has the same set of labels as the argument.
+         // That is, fields not in this type are not cut off.
+         Object[] labelArray = functionToken.labelSet().toArray();
 
-        // Arrays that will be used to create the new token.
-        String[] labelStringArray = new String[labelArray.length];
-        Token[] values = new Token[labelArray.length];
+         // Arrays that will be used to create the new token.
+         String[] labelStringArray = new String[labelArray.length];
+         Token[] values = new Token[labelArray.length];
 
-        for (int i = 0; i < labelArray.length; i++) {
-        String label = (String)labelArray[i];
+         for (int i = 0; i < labelArray.length; i++) {
+         String label = (String)labelArray[i];
 
-        // Convert each field of the function.
-        Token fieldToken = functionToken.get(label);
-        Type newFieldTypeTerm = get(label);
+         // Convert each field of the function.
+         Token fieldToken = functionToken.get(label);
+         Type newFieldTypeTerm = get(label);
 
-        // If the type of the field is specified, then convert it.
-        if (newFieldTypeTerm != null) {
-        values[i] = newFieldTypeTerm.convert(fieldToken);
-        } else {
-        values[i] = fieldToken;
-        }
+         // If the type of the field is specified, then convert it.
+         if (newFieldTypeTerm != null) {
+         values[i] = newFieldTypeTerm.convert(fieldToken);
+         } else {
+         values[i] = fieldToken;
+         }
 
-        // Store the label for each field.
-        labelStringArray[i] = label;
-        }
+         // Store the label for each field.
+         labelStringArray[i] = label;
+         }
 
-        return new FunctionToken(labelStringArray, values);
-        }*/
+         return new FunctionToken(labelStringArray, values);
+         }*/
     }
 
     /** Determine if the argument represents the same FunctionType as
@@ -371,7 +369,8 @@ public class FunctionType extends StructuredType {
         }
 
         // Check the return type.
-        if (!getReturnType().isSubstitutionInstance(functionType.getReturnType())) {
+        if (!getReturnType().isSubstitutionInstance(
+                functionType.getReturnType())) {
             return false;
         }
 
@@ -497,7 +496,7 @@ public class FunctionType extends StructuredType {
         if (!(type instanceof FunctionType)) {
             throw new IllegalArgumentException(
                     "FunctionType.greatestLowerBound: The argument is not a "
-                    + "FunctionType.");
+                            + "FunctionType.");
         }
 
         FunctionType functionType = (FunctionType) type;
@@ -508,7 +507,7 @@ public class FunctionType extends StructuredType {
         if (functionType.getArgCount() != argCount) {
             throw new IllegalArgumentException(
                     "Types are not comparable because they have"
-                    + " different numbers of arguments");
+                            + " different numbers of arguments");
         }
 
         Type[] types = new Type[argCount];
@@ -522,13 +521,13 @@ public class FunctionType extends StructuredType {
             } else if (type2 == null) {
                 types[i] = type1;
             } else {
-                types[i] = (Type) TypeLattice.lattice().greatestLowerBound(type1,
-                        type2);
+                types[i] = (Type) TypeLattice.lattice().greatestLowerBound(
+                        type1, type2);
             }
         }
 
-        Type returnType = (Type) TypeLattice.lattice().greatestLowerBound(getReturnType(),
-                functionType.getReturnType());
+        Type returnType = (Type) TypeLattice.lattice().greatestLowerBound(
+                getReturnType(), functionType.getReturnType());
 
         return new FunctionType(types, returnType);
     }
@@ -555,7 +554,7 @@ public class FunctionType extends StructuredType {
         if (functionType.getArgCount() != argCount) {
             throw new IllegalArgumentException(
                     "Types are not comparable because they have"
-                    + " different numbers of arguments");
+                            + " different numbers of arguments");
         }
 
         Type[] types = new Type[argCount];
@@ -574,8 +573,8 @@ public class FunctionType extends StructuredType {
             }
         }
 
-        Type returnType = (Type) TypeLattice.lattice().leastUpperBound(getReturnType(),
-                functionType.getReturnType());
+        Type returnType = (Type) TypeLattice.lattice().leastUpperBound(
+                getReturnType(), functionType.getReturnType());
 
         return new FunctionType(types, returnType);
     }
@@ -609,6 +608,7 @@ public class FunctionType extends StructuredType {
     ////                         private variables                 ////
     // Mapping from label to field information.
     private FieldTypeTerm[] _argTypeTerms;
+
     private FieldTypeTerm _returnTypeTerm;
 
     // the representative in the type lattice is the empty function.
@@ -712,14 +712,15 @@ public class FunctionType extends StructuredType {
             if (!isSettable()) {
                 throw new IllegalActionException(
                         "FunctionType$FieldTypeTerm.setValue: The type is not "
-                        + "settable.");
+                                + "settable.");
             }
 
             if (!_declaredType.isSubstitutionInstance((Type) e)) {
                 throw new IllegalActionException("FieldTypeTerm.setValue: "
                         + "Cannot update the field type of this FunctionType "
                         + "to the new type." + " Field type: "
-                        + _declaredType.toString() + ", New type: " + e.toString());
+                        + _declaredType.toString() + ", New type: "
+                        + e.toString());
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
@@ -728,7 +729,7 @@ public class FunctionType extends StructuredType {
                 } catch (CloneNotSupportedException cnse) {
                     throw new InternalErrorException(
                             "FunctionType$FieldTypeTerm.setValue: "
-                            + "The specified type cannot be cloned.");
+                                    + "The specified type cannot be cloned.");
                 }
             } else {
                 ((StructuredType) _resolvedType).updateType((StructuredType) e);
@@ -745,6 +746,7 @@ public class FunctionType extends StructuredType {
         ///////////////////////////////////////////////////////////////
         ////                  private inner variables              ////
         private Type _declaredType = null;
+
         private Type _resolvedType = null;
     }
 }

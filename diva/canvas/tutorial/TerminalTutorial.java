@@ -38,7 +38,6 @@ import javax.swing.SwingUtilities;
 import diva.canvas.FigureLayer;
 import diva.canvas.GraphicsPane;
 import diva.canvas.JCanvas;
-import diva.canvas.Site;
 import diva.canvas.connector.Arrowhead;
 import diva.canvas.connector.Blob;
 import diva.canvas.connector.StraightTerminal;
@@ -47,7 +46,6 @@ import diva.canvas.interactor.Interactor;
 import diva.canvas.toolbox.BasicController;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;
-
 
 /**
  * This tutorial illustrates how to use Terminals.
@@ -95,7 +93,8 @@ public class TerminalTutorial {
         layer.add(square);
 
         // Create a BoundsGeometry to help get sites
-        BoundsGeometry _geometry = new BoundsGeometry(square, square.getBounds());
+        BoundsGeometry _geometry = new BoundsGeometry(square, square
+                .getBounds());
 
         // Create a set of terminals, one by one
         // NORTH
@@ -140,10 +139,10 @@ public class TerminalTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    TerminalTutorial ex = new TerminalTutorial();
-                    ex.createTerminals();
-                }
-            });
+            public void run() {
+                TerminalTutorial ex = new TerminalTutorial();
+                ex.createTerminals();
+            }
+        });
     }
 }

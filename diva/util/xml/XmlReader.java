@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.util.xml;
 
 import java.io.File;
@@ -40,7 +40,6 @@ import com.microstar.xml.XmlParser;
 
 import diva.resource.DefaultBundle;
 import diva.util.LoggableOp;
-
 
 /**
  * An XmlReader reads a character stream and constructs the internal
@@ -132,8 +131,7 @@ public class XmlReader extends LoggableOp {
      * @exception Exception If the parser fails internally. This indicates
      * a severe error, such as an I/O error, not an XML error.
      */
-    public void parse(XmlDocument document, InputStream in)
-            throws Exception {
+    public void parse(XmlDocument document, InputStream in) throws Exception {
         URL url = document.getURL();
         parse(document, url, null, null, in, null);
     }
@@ -146,8 +144,7 @@ public class XmlReader extends LoggableOp {
      * @exception Exception If the parser fails internally. This indicates
      * a severe error, such as an I/O error, not an XML error.
      */
-    public void parse(XmlDocument document, Reader in)
-            throws Exception {
+    public void parse(XmlDocument document, Reader in) throws Exception {
         URL url = document.getURL();
         parse(document, url, null, in, null, null);
     }
@@ -277,8 +274,7 @@ public class XmlReader extends LoggableOp {
          * Append the given character bytes to the character data of
          * the current XML element.
          */
-        public void charData(char[] c, int offset, int length)
-                throws Exception {
+        public void charData(char[] c, int offset, int length) throws Exception {
             String s = new String(c, offset, length);
 
             if (isVerbose()) {
@@ -303,8 +299,8 @@ public class XmlReader extends LoggableOp {
         public void doctypeDecl(String name, String publicId, String systemId)
                 throws java.lang.Exception {
             if (isVerbose()) {
-                logInfo("doctype",
-                        name + " \"" + publicId + "\" \"" + systemId + "\"");
+                logInfo("doctype", name + " \"" + publicId + "\" \"" + systemId
+                        + "\"");
             }
 
             _document.setDocType(name);
@@ -478,8 +474,8 @@ public class XmlReader extends LoggableOp {
          */
         public void startElement(String name) {
             if (isVerbose()) {
-                logInfo("start",
-                        "<" + name + "> (" + printEntityType(name) + ")");
+                logInfo("start", "<" + name + "> (" + printEntityType(name)
+                        + ")");
                 indent();
             }
 

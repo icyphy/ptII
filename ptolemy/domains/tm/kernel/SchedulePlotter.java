@@ -1,30 +1,30 @@
 /* An attribute that displays a plot of a schedule
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.tm.kernel;
 
 import java.awt.Frame;
@@ -48,24 +48,23 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.plot.Plot;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SchedulePlotter
 
 /**
-   This attribute is a visible attribute that when configured (by double
-   clicking on it or by invoking Configure in the context menu) it displays
-   a plot of the schedule while the model is being run.
+ This attribute is a visible attribute that when configured (by double
+ clicking on it or by invoking Configure in the context menu) it displays
+ a plot of the schedule while the model is being run.
 
-   The SchedulePlotter attribute can be found under more libraries -&gt;
-   experimental domains -&gt; timed multitasking
+ The SchedulePlotter attribute can be found under more libraries -&gt;
+ experimental domains -&gt; timed multitasking
 
-   @author Christopher Hylands, Contributor: Johan Ecker
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Christopher Hylands, Contributor: Johan Ecker
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class SchedulePlotter extends Attribute implements ScheduleListener {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
@@ -79,8 +78,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        _attachText("_iconDescription",
-                "<svg>\n"
+        _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"130\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
@@ -138,10 +136,10 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                         // Note: addLegend is not intended to be
                         // called from outside the swing thread.
                         Runnable doAddPoint = new Runnable() {
-                                public void run() {
-                                    plot.addLegend(finalid, actorName);
-                                }
-                            };
+                            public void run() {
+                                plot.addLegend(finalid, actorName);
+                            }
+                        };
 
                         synchronized (plot) {
                             plot.deferIfNecessary(doAddPoint);
@@ -167,6 +165,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private HashMap _taskMap;
+
     private ArrayList _taskState;
 
     ///////////////////////////////////////////////////////////////////
@@ -189,7 +188,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
         public void createEditor(NamedObj object, Frame parent) {
             try {
                 Configuration configuration = ((TableauFrame) parent)
-                    .getConfiguration();
+                        .getConfiguration();
 
                 NamedObj container = (NamedObj) object.getContainer();
 

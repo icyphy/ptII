@@ -22,58 +22,55 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_3
-                                        COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_3
+ COPYRIGHTENDKEY
+ */
 
 package ptolemy.data.unit;
 
 public interface UParserConstants {
 
-  int EOF = 0;
-  int PLUS = 5;
-  int MINUS = 6;
-  int MULTIPLY = 7;
-  int DIVIDE = 8;
-  int POWER = 9;
-  int EQUALS = 10;
-  int LT = 11;
-  int DOLLAR = 12;
-  int SEMICOLON = 13;
-  int INTEGER = 14;
-  int EXPONENT = 15;
-  int DOUBLE = 16;
-  int UNITLABEL = 17;
-  int LETTER = 18;
-  int PORT = 19;
-  int LPAREN = 20;
-  int RPAREN = 21;
+    int EOF = 0;
 
-  int DEFAULT = 0;
+    int PLUS = 5;
 
-  String[] tokenImage = {
-    "<EOF>",
-    "\" \"",
-    "\"\\r\"",
-    "\"\\t\"",
-    "\"\\n\"",
-    "\"+\"",
-    "\"-\"",
-    "\"*\"",
-    "\"/\"",
-    "\"^\"",
-    "\"=\"",
-    "\"<\"",
-    "\"$\"",
-    "\";\"",
-    "<INTEGER>",
-    "<EXPONENT>",
-    "<DOUBLE>",
-    "<UNITLABEL>",
-    "<LETTER>",
-    "<PORT>",
-    "\"(\"",
-    "\")\"",
-  };
+    int MINUS = 6;
+
+    int MULTIPLY = 7;
+
+    int DIVIDE = 8;
+
+    int POWER = 9;
+
+    int EQUALS = 10;
+
+    int LT = 11;
+
+    int DOLLAR = 12;
+
+    int SEMICOLON = 13;
+
+    int INTEGER = 14;
+
+    int EXPONENT = 15;
+
+    int DOUBLE = 16;
+
+    int UNITLABEL = 17;
+
+    int LETTER = 18;
+
+    int PORT = 19;
+
+    int LPAREN = 20;
+
+    int RPAREN = 21;
+
+    int DEFAULT = 0;
+
+    String[] tokenImage = { "<EOF>", "\" \"", "\"\\r\"", "\"\\t\"", "\"\\n\"",
+            "\"+\"", "\"-\"", "\"*\"", "\"/\"", "\"^\"", "\"=\"", "\"<\"",
+            "\"$\"", "\";\"", "<INTEGER>", "<EXPONENT>", "<DOUBLE>",
+            "<UNITLABEL>", "<LETTER>", "<PORT>", "\"(\"", "\")\"", };
 
 }

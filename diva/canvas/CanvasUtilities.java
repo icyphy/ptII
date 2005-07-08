@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.canvas;
 
 import java.awt.Shape;
@@ -40,7 +40,6 @@ import diva.util.Filter;
 import diva.util.FilteredIterator;
 import diva.util.java2d.ShapeUtilities;
 
-
 /** A collection of canvas utilities. These utilities perform
  * useful functions related to the structural aspects of diva.canvas
  * that do not properly belong in any one class. Some of them
@@ -56,10 +55,15 @@ public final class CanvasUtilities {
     ///////////////////////////////////////////////////////////////////
     //// Constants used by transform()
     private final static int m00 = 0;
+
     private final static int m10 = 1;
+
     private final static int m01 = 2;
+
     private final static int m11 = 3;
+
     private final static int m02 = 4;
+
     private final static int m12 = 5;
 
     /** double representation of WEST: 180 degrees (PI) **/
@@ -181,8 +185,8 @@ public final class CanvasUtilities {
         // Get a copy of the bounds of the first child
         Figure f = (Figure) i.next();
         Rectangle2D b = f.getBounds();
-        Rectangle2D bounds = new Rectangle2D.Double(b.getX(), b.getY(),
-                b.getWidth(), b.getHeight());
+        Rectangle2D bounds = new Rectangle2D.Double(b.getX(), b.getY(), b
+                .getWidth(), b.getHeight());
 
         // Scan the rest of the children and take the union
         while (i.hasNext()) {
@@ -382,9 +386,7 @@ public final class CanvasUtilities {
         //return (t &
         //            ( AffineTransform.TYPE_GENERAL_ROTATION
         //            | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
-        return (t
-                & (AffineTransform.TYPE_MASK_ROTATION
-                        | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
+        return (t & (AffineTransform.TYPE_MASK_ROTATION | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
     }
 
     /** Return the angle between -PI and PI that corresponds to the
@@ -486,15 +488,14 @@ public final class CanvasUtilities {
     public static Iterator pickIter(Iterator i, Rectangle2D region) {
         final Rectangle2D rl = region;
 
-        return new FilteredIterator(i,
-                new Filter() {
-                    Rectangle2D _region = rl;
+        return new FilteredIterator(i, new Filter() {
+            Rectangle2D _region = rl;
 
-                    public boolean accept(Object o) {
-                        Figure f = (Figure) o;
-                        return f.hit(_region);
-                    }
-                });
+            public boolean accept(Object o) {
+                Figure f = (Figure) o;
+                return f.hit(_region);
+            }
+        });
     }
 
     /** Reverse a direction flag. The flag must one of the eight
@@ -555,10 +556,8 @@ public final class CanvasUtilities {
             Rectangle2D bounds = at.createTransformedShape(r).getBounds2D();
             r.setFrame(bounds);
             return r;
-        } else if ((at.getType()
-                           & (AffineTransform.TYPE_MASK_SCALE
-                                   | AffineTransform.TYPE_TRANSLATION
-                                   | AffineTransform.TYPE_IDENTITY)) != 0) {
+        } else if ((at.getType() & (AffineTransform.TYPE_MASK_SCALE
+                | AffineTransform.TYPE_TRANSLATION | AffineTransform.TYPE_IDENTITY)) != 0) {
             double x = r.getX();
             double y = r.getY();
             double w = r.getWidth();
@@ -573,11 +572,9 @@ public final class CanvasUtilities {
             at.getMatrix(m);
 
             switch (at.getType()) {
-                case (AffineTransform.TYPE_GENERAL_SCALE
-                        | AffineTransform.TYPE_TRANSLATION):
-                    case (AffineTransform.TYPE_UNIFORM_SCALE
-                            | AffineTransform.TYPE_TRANSLATION):
-                    xdash = (x * m[m00]) + m[m02];
+            case (AffineTransform.TYPE_GENERAL_SCALE | AffineTransform.TYPE_TRANSLATION):
+            case (AffineTransform.TYPE_UNIFORM_SCALE | AffineTransform.TYPE_TRANSLATION):
+                xdash = (x * m[m00]) + m[m02];
                 ydash = (y * m[m11]) + m[m12];
                 wdash = w * m[m00];
                 hdash = h * m[m11];

@@ -1,31 +1,31 @@
 /* An application that executes non-graphical
-   models specified on the command line.
+ models specified on the command line.
 
-   Copyright (c) 2001-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.copernicus.java;
 
 import java.io.File;
@@ -42,25 +42,24 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TestApplication
 
 /** A simple application that reads in a .xml file as a command
-    line argument and runs it.
+ line argument and runs it.
 
-    This is similar to MoMLSimpleApplication, but forces the number of
-    iterations to be 100000.  This makes for good comparison with
-    generated code since it reduces the relative affect of initialization
-    differences between Ptolemy II and the generated code.
+ This is similar to MoMLSimpleApplication, but forces the number of
+ iterations to be 100000.  This makes for good comparison with
+ generated code since it reduces the relative affect of initialization
+ differences between Ptolemy II and the generated code.
 
 
-    @author Christopher Hylands
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (eal)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class TestApplication implements ChangeListener {
     /** Parse the xml file and run it.
      *  If a parameter named "copernicus_iterations" is present, then
@@ -116,10 +115,10 @@ public class TestApplication implements ChangeListener {
         SDFDirector director = (SDFDirector) toplevel.getDirector();
 
         if (director != null) {
-            Parameter iterations = (Parameter) director.getAttribute(
-                    "iterations");
-            Parameter copernicus_iterations = (Parameter) director.getAttribute(
-                    "copernicus_iterations");
+            Parameter iterations = (Parameter) director
+                    .getAttribute("iterations");
+            Parameter copernicus_iterations = (Parameter) director
+                    .getAttribute("copernicus_iterations");
 
             // Set to be a large number of iterations, unless
             // copernicus_iterations is set.

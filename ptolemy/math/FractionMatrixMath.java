@@ -1,48 +1,47 @@
 /* A library for mathematical operations on matrices of Fractions.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.math;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// FractionMatrixMath
 
 /**
-   This class provides a library for mathematical operations on
-   matrices of Fractions.
+ This class provides a library for mathematical operations on
+ matrices of Fractions.
 
-   Rows and column numbers of matrices are specified with zero-based indices.
-   All calls expect matrix arguments to be non-null. In addition, all
-   rows of the matrix are expected to have the same number of columns.
+ Rows and column numbers of matrices are specified with zero-based indices.
+ All calls expect matrix arguments to be non-null. In addition, all
+ rows of the matrix are expected to have the same number of columns.
 
-   @author Adam Cataldo
-   @Pt.ProposedRating Red (acataldo)
-*/
+ @author Adam Cataldo
+ @Pt.ProposedRating Red (acataldo)
+ */
 public class FractionMatrixMath {
     // private constructor prevents construction of this class.
     private FractionMatrixMath() {
@@ -167,8 +166,8 @@ public class FractionMatrixMath {
      *  second matrix.  If the two matrices are not the same size,
      *  throw an IllegalArgumentException.
      */
-    public static final Fraction[][] divideElements(
-            final Fraction[][] matrix1, final Fraction[][] matrix2) {
+    public static final Fraction[][] divideElements(final Fraction[][] matrix1,
+            final Fraction[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -210,8 +209,8 @@ public class FractionMatrixMath {
      *  @param matrix A matrix of Fractions.
      *  @return A new array of Fractions.
      */
-    public static final Fraction[] fromMatrixToArray(
-            final Fraction[][] matrix, int maxRow, int maxCol) {
+    public static final Fraction[] fromMatrixToArray(final Fraction[][] matrix,
+            int maxRow, int maxCol) {
         Fraction[] returnValue = new Fraction[maxRow * maxCol];
 
         for (int i = 0; i < maxRow; i++) {
@@ -281,8 +280,9 @@ public class FractionMatrixMath {
         if (rows != array.length) {
             throw new IllegalArgumentException(
                     "preMultiply : array does not have the same number of "
-                    + "elements (" + array.length + ") as the number of rows "
-                    + "of the matrix (" + rows + ")");
+                            + "elements (" + array.length
+                            + ") as the number of rows " + "of the matrix ("
+                            + rows + ")");
         }
 
         Fraction[] returnValue = new Fraction[columns];
@@ -317,8 +317,9 @@ public class FractionMatrixMath {
         if (columns != array.length) {
             throw new IllegalArgumentException(
                     "postMultiply() : array does not have the same number "
-                    + "of elements (" + array.length + ") as the number of "
-                    + "columns of the matrix (" + columns + ")");
+                            + "of elements (" + array.length
+                            + ") as the number of " + "columns of the matrix ("
+                            + columns + ")");
         }
 
         Fraction[] returnValue = new Fraction[rows];
@@ -606,9 +607,9 @@ public class FractionMatrixMath {
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
             throw new IllegalArgumentException(
                     "ptolemy.math.FractionMatrixMath." + caller
-                    + "() : one matrix " + _dimensionString(matrix1)
-                    + " is not the same size as another matrix "
-                    + _dimensionString(matrix2) + ".");
+                            + "() : one matrix " + _dimensionString(matrix1)
+                            + " is not the same size as another matrix "
+                            + _dimensionString(matrix2) + ".");
         }
     }
 
@@ -623,8 +624,9 @@ public class FractionMatrixMath {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
                     "ptolemy.math.FractionMatrixMath." + caller
-                    + "() : matrix argument " + _dimensionString(matrix)
-                    + " is not a square matrix.");
+                            + "() : matrix argument "
+                            + _dimensionString(matrix)
+                            + " is not a square matrix.");
         }
 
         return _rows(matrix);

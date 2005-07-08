@@ -1,51 +1,50 @@
 /* Representation of a Unit
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_3
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_3
+ COPYRIGHTENDKEY
+ */
 package ptolemy.data.unit;
 
 import java.util.Vector;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// Unit
 
 /**
-   Class that contains the internal representation of a Unit.
-   A Unit has the mathematical notation  <b>S</b>&ltE1, E2, ..., En&gt
-   where <b>S</b> is the
-   <i>scale</i> and &ltE1, E2, ..., En&gt is the <i>type</i> of the Unit.
-   <p>
-   This class also contains methods for operating on Units, such as multiply,
-   divide, etc.
-   @author Rowland R Johnson
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (rowland)
-   @Pt.AcceptedRating Red (rowland)
-*/
+ Class that contains the internal representation of a Unit.
+ A Unit has the mathematical notation  <b>S</b>&ltE1, E2, ..., En&gt
+ where <b>S</b> is the
+ <i>scale</i> and &ltE1, E2, ..., En&gt is the <i>type</i> of the Unit.
+ <p>
+ This class also contains methods for operating on Units, such as multiply,
+ divide, etc.
+ @author Rowland R Johnson
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (rowland)
+ @Pt.AcceptedRating Red (rowland)
+ */
 public class Unit implements UnitPresentation {
     /** Create a Unit with no name and the unitless type.
      *
@@ -135,24 +134,21 @@ public class Unit implements UnitPresentation {
                 retv = "1";
             } else {
                 retv = ((UnitTerm) (numerator.elementAt(0))).getUnit()
-                    .getPrimaryLabel();
+                        .getPrimaryLabel();
 
                 for (int i = 1; i < numerator.size(); i++) {
-                    retv += (" "
-                            + ((UnitTerm) (numerator.elementAt(i))).getUnit()
-                            .getPrimaryLabel());
+                    retv += (" " + ((UnitTerm) (numerator.elementAt(i)))
+                            .getUnit().getPrimaryLabel());
                 }
             }
 
             if (denominator.size() > 0) {
-                retv += ("/"
-                        + ((UnitTerm) (denominator.elementAt(0))).getUnit()
-                        .getPrimaryLabel());
+                retv += ("/" + ((UnitTerm) (denominator.elementAt(0)))
+                        .getUnit().getPrimaryLabel());
 
                 for (int i = 1; i < denominator.size(); i++) {
-                    retv += (" "
-                            + ((UnitTerm) (denominator.elementAt(i))).getUnit()
-                            .getPrimaryLabel());
+                    retv += (" " + ((UnitTerm) (denominator.elementAt(i)))
+                            .getUnit().getPrimaryLabel());
                 }
             }
 
@@ -170,8 +166,7 @@ public class Unit implements UnitPresentation {
                     if (_type[i] == 1) {
                         desc += (" " + baseUnit.getPrimaryLabel());
                     } else {
-                        desc += (" " + baseUnit.getPrimaryLabel() + "^"
-                                + _type[i]);
+                        desc += (" " + baseUnit.getPrimaryLabel() + "^" + _type[i]);
                     }
                 }
             }
@@ -449,7 +444,10 @@ public class Unit implements UnitPresentation {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     Vector _labels = new Vector();
+
     private static int _noLabelCounter = 0;
+
     private double _scale = 1.0;
+
     int[] _type;
 }

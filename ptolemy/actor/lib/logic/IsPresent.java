@@ -1,30 +1,30 @@
 /* Output true if the input is present, false otherwise.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.logic;
 
 import ptolemy.actor.lib.Transformer;
@@ -34,26 +34,25 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// IsPresent
 
 /**
-   On each firing, output true if the input is present and false otherwise.
-   The type of the output port is boolean, and the input is general.
-   The width of the input is expected to match the width of the output.
-   Note that the utility of this actor varies by domain.  In PN, for
-   example, the input is always present (by definition). In SDF, it is
-   expected to be always present, but may not be.  In DE, the actor is
-   only triggered if one of the input channels has data.  The actor is
-   probably most useful in synchronous domains like SR and Giotto.
+ On each firing, output true if the input is present and false otherwise.
+ The type of the output port is boolean, and the input is general.
+ The width of the input is expected to match the width of the output.
+ Note that the utility of this actor varies by domain.  In PN, for
+ example, the input is always present (by definition). In SDF, it is
+ expected to be always present, but may not be.  In DE, the actor is
+ only triggered if one of the input channels has data.  The actor is
+ probably most useful in synchronous domains like SR and Giotto.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class IsPresent extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -72,11 +71,10 @@ public class IsPresent extends Transformer {
         output.setTypeEquals(BaseType.BOOLEAN);
         output.setMultiport(true);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-15\" y=\"-15\" "
-                + "width=\"30\" height=\"30\" " + "style=\"fill:white\"/>\n"
-                + "<text x=\"-4\" y=\"8\"" + "style=\"font-size:24\">?</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-15\" y=\"-15\" " + "width=\"30\" height=\"30\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-4\" y=\"8\""
+                + "style=\"font-size:24\">?</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

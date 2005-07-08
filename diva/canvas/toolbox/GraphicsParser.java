@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.canvas.toolbox;
 
 import java.awt.Color;
@@ -44,7 +44,6 @@ import diva.util.java2d.PaintedShape;
 import diva.util.java2d.PaintedString;
 import diva.util.java2d.Polygon2D;
 import diva.util.java2d.Polyline2D;
-
 
 /** A collection of utilities to help parsing graphics from strings
  * and other kinds of external storage.
@@ -109,12 +108,12 @@ public class GraphicsParser {
 
         if (type.equals("rectangle")) {
             PaintedShape ps = new PaintedShape(new Rectangle2D.Double(
-                                                       coords[0], coords[1], coords[2], coords[3]));
+                    coords[0], coords[1], coords[2], coords[3]));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("ellipse")) {
             PaintedShape ps = new PaintedShape(new Ellipse2D.Double(coords[0],
-                                                       coords[1], coords[2], coords[3]));
+                    coords[1], coords[2], coords[3]));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("polygon")) {
@@ -134,7 +133,8 @@ public class GraphicsParser {
             Shape s;
 
             if (coords.length == 4) {
-                s = new Line2D.Double(coords[0], coords[1], coords[2], coords[3]);
+                s = new Line2D.Double(coords[0], coords[1], coords[2],
+                        coords[3]);
             } else {
                 Polyline2D poly = new Polyline2D.Double();
                 poly.moveTo(coords[0], coords[1]);
@@ -170,12 +170,12 @@ public class GraphicsParser {
 
         if (type.equals("rectangle")) {
             PaintedShape ps = new PaintedShape(new Rectangle2D.Double(
-                                                       coords[0], coords[1], coords[2], coords[3]));
+                    coords[0], coords[1], coords[2], coords[3]));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("ellipse")) {
             PaintedShape ps = new PaintedShape(new Ellipse2D.Double(coords[0],
-                                                       coords[1], coords[2], coords[3]));
+                    coords[1], coords[2], coords[3]));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("polygon")) {
@@ -195,7 +195,8 @@ public class GraphicsParser {
             Shape s;
 
             if (coords.length == 4) {
-                s = new Line2D.Double(coords[0], coords[1], coords[2], coords[3]);
+                s = new Line2D.Double(coords[0], coords[1], coords[2],
+                        coords[3]);
             } else {
                 Polyline2D poly = new Polyline2D.Double();
                 poly.moveTo(coords[0], coords[1]);

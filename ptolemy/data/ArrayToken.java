@@ -1,30 +1,30 @@
 /* A token that contains an array of tokens.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.data;
 
 import java.util.LinkedList;
@@ -39,23 +39,22 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToken
 
 /**
-   A token that contains an array of tokens.  The operations between
-   arrays are defined pointwise, and require that the lengths of the
-   arrays are the same.  The elements of the ArrayToken will be converted
-   to the least upper bound of their input types and zero length array
-   tokens cannot be created.
+ A token that contains an array of tokens.  The operations between
+ arrays are defined pointwise, and require that the lengths of the
+ arrays are the same.  The elements of the ArrayToken will be converted
+ to the least upper bound of their input types and zero length array
+ tokens cannot be created.
 
-   @author Yuhong Xiong, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @author Yuhong Xiong, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class ArrayToken extends AbstractNotConvertibleToken {
     /** Construct an ArrayToken with the specified token array. All
      *  the tokens in the array must have the same type, otherwise an
@@ -100,7 +99,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             } else {
                 throw new IllegalActionException(
                         "Elements of the array do not have the same type:"
-                        + "value[0]=" + value[0] + " value[" + i + "]=" + value[i]);
+                                + "value[0]=" + value[0] + " value[" + i + "]="
+                                + value[i]);
             }
         }
     }
@@ -148,13 +148,12 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      * @param dataArrayToken to be converted to a unsigned byte array.
      * @return dataBytes the resulting unsigned byte array.
      */
-    public static byte[] arrayTokenToUnsignedByteArray(
-            ArrayToken dataArrayToken) {
+    public static byte[] arrayTokenToUnsignedByteArray(ArrayToken dataArrayToken) {
         byte[] dataBytes = new byte[dataArrayToken.length()];
 
         for (int j = 0; j < dataArrayToken.length(); j++) {
             UnsignedByteToken dataToken = (UnsignedByteToken) dataArrayToken
-                .getElement(j);
+                    .getElement(j);
             dataBytes[j] = (byte) dataToken.byteValue();
         }
 
@@ -200,8 +199,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementAdd", this, token));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "elementAdd", this, token));
         }
 
         return new ArrayToken(result);
@@ -223,8 +222,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementDivide", this, token));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "elementDivide", this, token));
         }
 
         return new ArrayToken(result);
@@ -246,8 +245,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementModulo", this, token));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "elementModulo", this, token));
         }
 
         return new ArrayToken(result);
@@ -270,8 +269,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementMultiply", this, token));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "elementMultiply", this, token));
         }
 
         return new ArrayToken(result);
@@ -291,7 +290,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             throws IllegalActionException {
         if (type1 instanceof ArrayType) {
             return new ArrayType(TypeLattice.leastUpperBound(
-                                         ((ArrayType) type1).getElementType(), type2));
+                    ((ArrayType) type1).getElementType(), type2));
         } else {
             return new ArrayType(BaseType.UNKNOWN);
         }
@@ -314,8 +313,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementSubtract", this, token));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "elementSubtract", this, token));
         }
 
         return new ArrayToken(result);
@@ -381,7 +380,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             if (selection.length() != length()) {
                 throw new IllegalActionException(
                         "When the argument is an array of booleans, it must have "
-                        + "the same length as this array.");
+                                + "the same length as this array.");
             }
 
             for (int i = 0; i < selection.length(); i++) {
@@ -753,7 +752,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
         if (length() != length) {
             throw new IllegalActionException("The length of the argument ("
-                    + length + ") is not the same as the length of this token ("
+                    + length
+                    + ") is not the same as the length of this token ("
                     + length() + ").");
         }
     }
@@ -787,7 +787,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             } else {
                 throw new IllegalActionException(
                         "Elements of the array do not have the same type:"
-                        + "value[0]=" + value[0] + " value[" + i + "]=" + value[i]);
+                                + "value[0]=" + value[0] + " value[" + i + "]="
+                                + value[i]);
             }
         }
     }
@@ -795,5 +796,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Token[] _value;
+
     private Token _elementPrototype;
 }

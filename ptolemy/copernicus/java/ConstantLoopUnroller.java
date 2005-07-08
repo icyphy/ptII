@@ -1,29 +1,29 @@
 /* A transformer that unrolls loops where the loop bounds can be statically determined
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -53,22 +53,21 @@ import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.util.Chain;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ConstantLoopUnroller
 
 /**
-   A Transformer that attempts to determine the bounds of a loop at compile
-   time, and then unroll the loop.  In terms of code generation, the primary
-   value of this transformation is that it reduces the control logic of the
-   source code, which can increase the power of other compile-time optimizations.
+ A Transformer that attempts to determine the bounds of a loop at compile
+ time, and then unroll the loop.  In terms of code generation, the primary
+ value of this transformation is that it reduces the control logic of the
+ source code, which can increase the power of other compile-time optimizations.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class ConstantLoopUnroller extends BodyTransformer {
     /** Construct a new transformer
      */
@@ -195,7 +194,8 @@ public class ConstantLoopUnroller extends BodyTransformer {
                     continue;
                 }
 
-                increment = ((IntConstant) Evaluator.getConstantValueOf(incrementValue)).value;
+                increment = ((IntConstant) Evaluator
+                        .getConstantValueOf(incrementValue)).value;
                 System.out.println("increment = " + increment);
             } else {
                 continue;
@@ -228,8 +228,8 @@ public class ConstantLoopUnroller extends BodyTransformer {
             int initial;
 
             if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) {
-                initial = ((IntConstant) Evaluator.getConstantValueOf(counterStmt
-                                   .getRightOp())).value;
+                initial = ((IntConstant) Evaluator
+                        .getConstantValueOf(counterStmt.getRightOp())).value;
                 System.out.println("initial = " + initial);
             } else {
                 continue;
@@ -240,153 +240,153 @@ public class ConstantLoopUnroller extends BodyTransformer {
             System.out.println("limit = " + increment);
 
             /*
-              List conditionalLiveLocals = liveLocals.getLiveLocalsBefore(conditional.getHead());
-              for (Iterator locals = conditionalLiveLocals.iterator();
-              locals.hasNext();) {
-              Local local = (Local)locals.next();
-              System.out.println("local = " + local);
-              System.out.println("stmt = " + block.getTail());
-              List defsList;
-              try {
-              defsList = localDefs.getDefsOfAt(local, block.getTail());
-              } catch (Exception ex) {
-              continue;
-              }
-              if (defsList.size() == 0) {
-              DefinitionStmt counterStmt = (DefinitionStmt)defsList.get(0);
-              if (counterStmt.getRightOp() instanceof AddExpr) {
-              AddExpr addExpr = (AddExpr)counterStmt.getRightOp();
-              Value incrementValue;
-              if (addExpr.getOp1().equals(local)) {
-              incrementValue = addExpr.getOp2();
-              } else {
-              incrementValue = addExpr.getOp1();
-              }
-              if (!Evaluator.isValueConstantValued(incrementValue)) continue;
-              int increment = ((IntConstant)Evaluator.getConstantValueOf(incrementValue)).value;
-              defsList = localDefs.getDefsOfAt(local, whilePredecessor.getTail());
+             List conditionalLiveLocals = liveLocals.getLiveLocalsBefore(conditional.getHead());
+             for (Iterator locals = conditionalLiveLocals.iterator();
+             locals.hasNext();) {
+             Local local = (Local)locals.next();
+             System.out.println("local = " + local);
+             System.out.println("stmt = " + block.getTail());
+             List defsList;
+             try {
+             defsList = localDefs.getDefsOfAt(local, block.getTail());
+             } catch (Exception ex) {
+             continue;
+             }
+             if (defsList.size() == 0) {
+             DefinitionStmt counterStmt = (DefinitionStmt)defsList.get(0);
+             if (counterStmt.getRightOp() instanceof AddExpr) {
+             AddExpr addExpr = (AddExpr)counterStmt.getRightOp();
+             Value incrementValue;
+             if (addExpr.getOp1().equals(local)) {
+             incrementValue = addExpr.getOp2();
+             } else {
+             incrementValue = addExpr.getOp1();
+             }
+             if (!Evaluator.isValueConstantValued(incrementValue)) continue;
+             int increment = ((IntConstant)Evaluator.getConstantValueOf(incrementValue)).value;
+             defsList = localDefs.getDefsOfAt(local, whilePredecessor.getTail());
 
-              if (defsList.size() == 0) {
-              DefinitionStmt initializeStmt =
-              (DefinitionStmt)defsList.get(0);
-              if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) {
-              int initial = ((IntConstant)Evaluator.getConstantValueOf(
-              counterStmt.getRightOp())).value;
-              Value conditionalExpr = jumpStmt.getCondition();
+             if (defsList.size() == 0) {
+             DefinitionStmt initializeStmt =
+             (DefinitionStmt)defsList.get(0);
+             if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) {
+             int initial = ((IntConstant)Evaluator.getConstantValueOf(
+             counterStmt.getRightOp())).value;
+             Value conditionalExpr = jumpStmt.getCondition();
 
-              Value limitValue;
-              if (addExpr.getOp1().equals(local)) {
-              limitValue = addExpr.getOp2();
-              } else {
-              limitValue = addExpr.getOp1();
-              }
-              int limit = ((IntConstant)Evaluator.getConstantValueOf(incrementValue)).value;
+             Value limitValue;
+             if (addExpr.getOp1().equals(local)) {
+             limitValue = addExpr.getOp2();
+             } else {
+             limitValue = addExpr.getOp1();
+             }
+             int limit = ((IntConstant)Evaluator.getConstantValueOf(incrementValue)).value;
 
-              System.out.println("initial = " + initial);
-              System.out.println("increment = " + increment);
-              System.out.println("limit = " + increment);
-              }
-              }
-              }
-              }
-              }
+             System.out.println("initial = " + initial);
+             System.out.println("increment = " + increment);
+             System.out.println("limit = " + increment);
+             }
+             }
+             }
+             }
+             }
 
-              /*
+             /*
 
 
-              List conditionalBoxList = conditionalExpr.getUseBoxes();
+             List conditionalBoxList = conditionalExpr.getUseBoxes();
 
-              List predecessorDefs = new LinkedList();
-              List bodyDefs = new LinkedList();
-              List conditionalDefs = new LinkedList();
-              while (conditionalBoxList.size() > 0) {
-              ValueBox box = (ValueBox)conditionalBoxList.get(0);
-              conditionalBoxList.remove(box);
-              if (!(box.getValue() instanceof Local)) continue;
-              List defsList = localDefs.getDefsOfAt((Local)box.getValue(), jumpStmt);
-              for (Iterator defs = defsList.iterator();
-              defs.hasNext();) {
-              Unit definitionStmt = (Unit)defs.next();
+             List predecessorDefs = new LinkedList();
+             List bodyDefs = new LinkedList();
+             List conditionalDefs = new LinkedList();
+             while (conditionalBoxList.size() > 0) {
+             ValueBox box = (ValueBox)conditionalBoxList.get(0);
+             conditionalBoxList.remove(box);
+             if (!(box.getValue() instanceof Local)) continue;
+             List defsList = localDefs.getDefsOfAt((Local)box.getValue(), jumpStmt);
+             for (Iterator defs = defsList.iterator();
+             defs.hasNext();) {
+             Unit definitionStmt = (Unit)defs.next();
 
-              if (_blockContains(block, definitionStmt)) {
-              bodyDefs.add(definitionStmt);
-              } else if (_blockContains(conditional, definitionStmt)) {
-              // conditionalBoxList.addAll(definitionStmt.getUseBoxes());
-              conditionalDefs.add(definitionStmt);
-              } else {
-              predecessorDefs.add(definitionStmt);
-              }
-              }
-              }
-              System.out.println("predecessorDefs = ");
-              for (Iterator i = predecessorDefs.iterator();
-              i.hasNext();) {
-              System.out.println("stmt = " + i.next());
-              }
-              System.out.println("bodyDefs = ");
-              for (Iterator i = bodyDefs.iterator();
-              i.hasNext();) {
-              System.out.println("stmt = " + i.next());
-              }
+             if (_blockContains(block, definitionStmt)) {
+             bodyDefs.add(definitionStmt);
+             } else if (_blockContains(conditional, definitionStmt)) {
+             // conditionalBoxList.addAll(definitionStmt.getUseBoxes());
+             conditionalDefs.add(definitionStmt);
+             } else {
+             predecessorDefs.add(definitionStmt);
+             }
+             }
+             }
+             System.out.println("predecessorDefs = ");
+             for (Iterator i = predecessorDefs.iterator();
+             i.hasNext();) {
+             System.out.println("stmt = " + i.next());
+             }
+             System.out.println("bodyDefs = ");
+             for (Iterator i = bodyDefs.iterator();
+             i.hasNext();) {
+             System.out.println("stmt = " + i.next());
+             }
 
-              // FINALLY we know we've found something we can unroll... :)
-              // System.out.println("is unrollable...");
+             // FINALLY we know we've found something we can unroll... :)
+             // System.out.println("is unrollable...");
 
-              // There should be a jump from the predecessor to the
-              // condition.  Redirect this jump to the block.
-              /*
-              conditional.getHead().redirectJumpsToThisTo(block.getHead());
+             // There should be a jump from the predecessor to the
+             // condition.  Redirect this jump to the block.
+             /*
+             conditional.getHead().redirectJumpsToThisTo(block.getHead());
 
-              Local thisLocal = body.getThisLocal();
-              Chain units = body.getUnits();
-              List bodyStmtList = new LinkedList();
-              // pull the statements that we are inlining out of the body
-              // so that we can copy them.  Note that this also removes
-              // them from the method body.
-              Unit insertPoint = (Unit)units.getSuccOf(block.getTail());
-              for (Iterator blockStmts = block.iterator();
-              blockStmts.hasNext();) {
-              Stmt original = (Stmt)blockStmts.next();
-              blockStmtList.add(original);
-              blockStmts.remove();
-              }
+             Local thisLocal = body.getThisLocal();
+             Chain units = body.getUnits();
+             List bodyStmtList = new LinkedList();
+             // pull the statements that we are inlining out of the body
+             // so that we can copy them.  Note that this also removes
+             // them from the method body.
+             Unit insertPoint = (Unit)units.getSuccOf(block.getTail());
+             for (Iterator blockStmts = block.iterator();
+             blockStmts.hasNext();) {
+             Stmt original = (Stmt)blockStmts.next();
+             blockStmtList.add(original);
+             blockStmts.remove();
+             }
 
-              // Loop through and unroll the loop block once for
-              // every element of the field list.
-              /*
-              for (int i = 0; i < times; i++) {
-              SootField insertField =
-              (SootField)fields.next();
-              for (Iterator blockStmts = blockStmtList.iterator();
-              blockStmts.hasNext();) {
-              // clone each statement
-              Stmt original = (Stmt)blockStmts.next();
-              Stmt clone = (Stmt)original.clone();
-              // If the statement is a call to the next() method,
-              // then inline it with the next value of the iterator.
-              for (Iterator boxes = clone.getUseBoxes().iterator();
-              boxes.hasNext();) {
-              ValueBox box = (ValueBox)boxes.next();
-              Value value = box.getValue();
-              if (value instanceof InvokeExpr) {
-              InvokeExpr r = (InvokeExpr)value;
-              if (r.getMethod() == iteratorNextMethod) {
-              box.setValue(Jimple.v()
-              .newInstanceFieldRef(thisLocal,
-              insertField));
-              }
-              }
-              }
-              units.insertBefore(clone, insertPoint);
-              }
-              }
+             // Loop through and unroll the loop block once for
+             // every element of the field list.
+             /*
+             for (int i = 0; i < times; i++) {
+             SootField insertField =
+             (SootField)fields.next();
+             for (Iterator blockStmts = blockStmtList.iterator();
+             blockStmts.hasNext();) {
+             // clone each statement
+             Stmt original = (Stmt)blockStmts.next();
+             Stmt clone = (Stmt)original.clone();
+             // If the statement is a call to the next() method,
+             // then inline it with the next value of the iterator.
+             for (Iterator boxes = clone.getUseBoxes().iterator();
+             boxes.hasNext();) {
+             ValueBox box = (ValueBox)boxes.next();
+             Value value = box.getValue();
+             if (value instanceof InvokeExpr) {
+             InvokeExpr r = (InvokeExpr)value;
+             if (r.getMethod() == iteratorNextMethod) {
+             box.setValue(Jimple.v()
+             .newInstanceFieldRef(thisLocal,
+             insertField));
+             }
+             }
+             }
+             units.insertBefore(clone, insertPoint);
+             }
+             }
 
-              // remove the conditional
-              for (Iterator blockStmts = conditional.iterator();
-              blockStmts.hasNext();) {
-              Stmt original = (Stmt)blockStmts.next();
-              blockStmts.remove();
-              }*/
+             // remove the conditional
+             for (Iterator blockStmts = conditional.iterator();
+             blockStmts.hasNext();) {
+             Stmt original = (Stmt)blockStmts.next();
+             blockStmts.remove();
+             }*/
         }
     }
 

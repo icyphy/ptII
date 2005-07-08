@@ -1,31 +1,31 @@
 /* An atomic actor that executes a model specified by a file or URL.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.vergil.actor.lib;
 
 import javax.swing.JFrame;
@@ -51,63 +51,62 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// VisualModelReference
 
 /**
-   This is an atomic actor that can execute and/or open a model specified by
-   a file or URL. This can be used to define an actor whose firing behavior
-   is given by a complete execution of another model. It extends the base
-   class with the following attributes and associated capabilities.
-   <ul>
-   <li> <i>openOnFiring</i>:
-   The value of this string attribute determines what open
-   happens when the fire() method is invoked.  The recognized
-   values are:
-   <ul>
-   <li> "do not open" (the default)
-   <li> "open in Vergil"
-   <li> "open in Vergil (full screen)"
-   </ul>
-   Note that it is dangerous to use the full-screen mode because it
-   becomes difficult to stop execution of the model that contains this
-   actor.  In full-screen mode, the referenced model will consume
-   the entire screen.  Stopping that execution will only serve to
-   stop the current iteration, and very likely, another iteration will
-   begin immediately and again occupy the entire screen.
-   Use this option with care.
+ This is an atomic actor that can execute and/or open a model specified by
+ a file or URL. This can be used to define an actor whose firing behavior
+ is given by a complete execution of another model. It extends the base
+ class with the following attributes and associated capabilities.
+ <ul>
+ <li> <i>openOnFiring</i>:
+ The value of this string attribute determines what open
+ happens when the fire() method is invoked.  The recognized
+ values are:
+ <ul>
+ <li> "do not open" (the default)
+ <li> "open in Vergil"
+ <li> "open in Vergil (full screen)"
+ </ul>
+ Note that it is dangerous to use the full-screen mode because it
+ becomes difficult to stop execution of the model that contains this
+ actor.  In full-screen mode, the referenced model will consume
+ the entire screen.  Stopping that execution will only serve to
+ stop the current iteration, and very likely, another iteration will
+ begin immediately and again occupy the entire screen.
+ Use this option with care.
 
-   <li> <i>closeOnPostfire</i>:
-   The value of this string attribute determines what happens
-   in the postfire() method.  The recognized values are:
-   <ul>
-   <li> "do nothing" (the default)
-   <li> "close Vergil graph"
-   </ul>
+ <li> <i>closeOnPostfire</i>:
+ The value of this string attribute determines what happens
+ in the postfire() method.  The recognized values are:
+ <ul>
+ <li> "do nothing" (the default)
+ <li> "close Vergil graph"
+ </ul>
 
-   </ul>
-   <p>
-   Limitations:
-   <ul>
-   <li>
-   FIXME: Supporting full-screen operation creates a dependence on vergil.
-   Without that, this actor could be in the actor package.  Need to figure
-   out how to remove this dependence.
-   </ul>
-   <P>
+ </ul>
+ <p>
+ Limitations:
+ <ul>
+ <li>
+ FIXME: Supporting full-screen operation creates a dependence on vergil.
+ Without that, this actor could be in the actor package.  Need to figure
+ out how to remove this dependence.
+ </ul>
+ <P>
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-   @see ptolemy.data.expr.Variable
-   @see ptolemy.data.expr.Parameter
-   @see ptolemy.kernel.util.Settable
-*/
-public class VisualModelReference extends ModelReference
-    implements ExecutionListener {
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ @see ptolemy.data.expr.Variable
+ @see ptolemy.data.expr.Parameter
+ @see ptolemy.kernel.util.Settable
+ */
+public class VisualModelReference extends ModelReference implements
+        ExecutionListener {
     /** Construct a VisualModelReference with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -191,7 +190,7 @@ public class VisualModelReference extends ModelReference
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized option for openOnFiring: "
-                        + openOnFiringValue);
+                                + openOnFiringValue);
             }
         } else if (attribute == closeOnPostfire) {
             String closeOnPostfireValue = closeOnPostfire.stringValue();
@@ -203,7 +202,7 @@ public class VisualModelReference extends ModelReference
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized option for closeOnPostfire: "
-                        + closeOnPostfireValue);
+                                + closeOnPostfireValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -219,7 +218,8 @@ public class VisualModelReference extends ModelReference
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        VisualModelReference newActor = (VisualModelReference) super.clone(workspace);
+        VisualModelReference newActor = (VisualModelReference) super
+                .clone(workspace);
         newActor._tableau = null;
         return newActor;
     }
@@ -271,47 +271,46 @@ public class VisualModelReference extends ModelReference
                         // the open is complete, so we use the very dangerous
                         // invokeAndWait() method.
                         Runnable doOpen = new Runnable() {
-                                public void run() {
-                                    Configuration configuration = (Configuration) myEffigy
+                            public void run() {
+                                Configuration configuration = (Configuration) myEffigy
                                         .toplevel();
 
-                                    if (_debugging) {
-                                        _debug(
-                                                "** Using the configuration to open a tableau.");
-                                    }
-
-                                    try {
-                                        // NOTE: Executing this in the event thread averts
-                                        // a race condition... Previous close(), which was
-                                        // deferred to the UI thread, will have completed.
-                                        _exception = null;
-                                        _tableau = configuration.openModel(_model,
-                                                myEffigy);
-
-                                        // Set this tableau to be a master so that when it
-                                        // gets closed, all its subwindows get closed.
-                                        _tableau.setMaster(true);
-                                    } catch (KernelException e) {
-                                        // Record the exception for later reporting.
-                                        _exception = e;
-                                    }
-
-                                    _tableau.show();
-
-                                    JFrame frame = _tableau.getFrame();
-
-                                    if (frame != null) {
-                                        if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
-                                            if (frame instanceof ExtendedGraphFrame) {
-                                                ((ExtendedGraphFrame) frame)
-                                                    .fullScreen();
-                                            }
-                                        }
-
-                                        frame.toFront();
-                                    }
+                                if (_debugging) {
+                                    _debug("** Using the configuration to open a tableau.");
                                 }
-                            };
+
+                                try {
+                                    // NOTE: Executing this in the event thread averts
+                                    // a race condition... Previous close(), which was
+                                    // deferred to the UI thread, will have completed.
+                                    _exception = null;
+                                    _tableau = configuration.openModel(_model,
+                                            myEffigy);
+
+                                    // Set this tableau to be a master so that when it
+                                    // gets closed, all its subwindows get closed.
+                                    _tableau.setMaster(true);
+                                } catch (KernelException e) {
+                                    // Record the exception for later reporting.
+                                    _exception = e;
+                                }
+
+                                _tableau.show();
+
+                                JFrame frame = _tableau.getFrame();
+
+                                if (frame != null) {
+                                    if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
+                                        if (frame instanceof ExtendedGraphFrame) {
+                                            ((ExtendedGraphFrame) frame)
+                                                    .fullScreen();
+                                        }
+                                    }
+
+                                    frame.toFront();
+                                }
+                            }
+                        };
 
                         try {
                             SwingUtilities.invokeAndWait(doOpen);
@@ -339,8 +338,7 @@ public class VisualModelReference extends ModelReference
                         newEffigy.setModifiable(false);
 
                         if (_debugging) {
-                            _debug(
-                                    "** Created new effigy for referenced model.");
+                            _debug("** Created new effigy for referenced model.");
                         }
                     }
                 } catch (NameDuplicationException ex) {
@@ -379,29 +377,27 @@ public class VisualModelReference extends ModelReference
                     // that the next firing, if it opens vergil, will
                     // do so in the event thread.
                     Runnable doClose = new Runnable() {
-                            public void run() {
-                                if (frame instanceof ExtendedGraphFrame) {
-                                    ((ExtendedGraphFrame) frame)
-                                        .cancelFullScreen();
-                                }
-
-                                ((TableauFrame) frame).close();
+                        public void run() {
+                            if (frame instanceof ExtendedGraphFrame) {
+                                ((ExtendedGraphFrame) frame).cancelFullScreen();
                             }
-                        };
+
+                            ((TableauFrame) frame).close();
+                        }
+                    };
 
                     Top.deferIfNecessary(doClose);
                 } else if (frame != null) {
                     // This should be done in the event thread.
                     Runnable doClose = new Runnable() {
-                            public void run() {
-                                if (frame instanceof ExtendedGraphFrame) {
-                                    ((ExtendedGraphFrame) frame)
-                                        .cancelFullScreen();
-                                }
-
-                                frame.hide();
+                        public void run() {
+                            if (frame instanceof ExtendedGraphFrame) {
+                                ((ExtendedGraphFrame) frame).cancelFullScreen();
                             }
-                        };
+
+                            frame.hide();
+                        }
+                    };
 
                     Top.deferIfNecessary(doClose);
                 }
@@ -415,7 +411,9 @@ public class VisualModelReference extends ModelReference
     ////                         private variables                 ////
     // Possible values for openOnFiring.
     private static int _DO_NOT_OPEN = 0;
+
     private static int _OPEN_IN_VERGIL = 1;
+
     private static int _OPEN_IN_VERGIL_FULL_SCREEN = 2;
 
     /** The value of the openOnFiring parameter. */
@@ -423,6 +421,7 @@ public class VisualModelReference extends ModelReference
 
     // Possible values for closeOnPostfire.
     private static int _DO_NOTHING = 0;
+
     private static int _CLOSE_VERGIL_GRAPH = 1;
 
     /** The value of the closeOnPostfire parameter. */

@@ -1,29 +1,29 @@
 /* A tableau representing an image token display.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.image;
 
 import java.awt.BorderLayout;
@@ -47,20 +47,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.media.Picture;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TokenTableau
 
 /**
-   A tableau representing an image displayed in a top-level window.
+ A tableau representing an image displayed in a top-level window.
 
-   @author  Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-   @see TokenEffigy
-*/
+ @author  Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ @see TokenEffigy
+ */
 public class ImageTableau extends TokenTableau {
     /** Construct a new tableau for the model represented by the given effigy.
      *  @param container The container.
@@ -103,8 +102,8 @@ public class ImageTableau extends TokenTableau {
      *   attribute already in the container.
      */
     public ImageTableau(Effigy container, String name, TableauFrame frame,
-            int width, int height)
-            throws IllegalActionException, NameDuplicationException {
+            int width, int height) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name, frame);
         _oldxsize = width;
         _oldysize = height;
@@ -304,8 +303,8 @@ public class ImageTableau extends TokenTableau {
             if (effigy instanceof TokenEffigy) {
                 // First see whether the effigy already contains an
                 // TokenTableau.
-                TokenTableau tableau = (TokenTableau) effigy.getEntity(
-                        "tokenTableau");
+                TokenTableau tableau = (TokenTableau) effigy
+                        .getEntity("tokenTableau");
 
                 if (tableau != null) {
                     return tableau;

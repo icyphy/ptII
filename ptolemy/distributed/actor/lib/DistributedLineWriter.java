@@ -1,5 +1,5 @@
 /* An actor that writes the value of string tokens to the standard output,
-   one per line.
+ one per line.
 
  @Copyright (c) 2005 The Regents of Aalborg University.
  All rights reserved.
@@ -23,7 +23,7 @@
  HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package ptolemy.distributed.actor.lib;
 
 import ptolemy.actor.lib.Sink;
@@ -37,15 +37,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////LineWriter
 
 /**
-   An actor that writes the value of string tokens to the standard output,
-   one per line.
+ An actor that writes the value of string tokens to the standard output,
+ one per line.
 
-   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (kapokasa)
+ @Pt.AcceptedRating Red (cxh)
+ */
 
 public class DistributedLineWriter extends Sink {
 

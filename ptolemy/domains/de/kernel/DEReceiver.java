@@ -1,30 +1,30 @@
 /* Discrete Event (DE) domain receiver.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.de.kernel;
 
 import java.util.LinkedList;
@@ -39,27 +39,26 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DEReceiver
 
 /** An implementation of the ptolemy.actor.Receiver interface for the
-    DE domain.
-    <p>
-    The put() method stores the given token in this receiver and posts a
-    trigger event to the director. The director is responsible to dequeue that
-    trigger event and invoke the actor that contains this receiver.
-    The get() method returns the first available token from the receiver.
-    <p>
-    Before firing an actor, the director is expected to put at least one
-    token into at least one of the receivers contained by the actor.
+ DE domain.
+ <p>
+ The put() method stores the given token in this receiver and posts a
+ trigger event to the director. The director is responsible to dequeue that
+ trigger event and invoke the actor that contains this receiver.
+ The get() method returns the first available token from the receiver.
+ <p>
+ Before firing an actor, the director is expected to put at least one
+ token into at least one of the receivers contained by the actor.
 
-    @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
-    @version $Id$
-    @since Ptolemy II 0.2
-    @Pt.ProposedRating Green (hyzheng)
-    @Pt.AcceptedRating Yellow (hyzheng)
-*/
+ @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Yellow (hyzheng)
+ */
 public class DEReceiver extends AbstractReceiver {
     /** Construct an empty DEReceiver with no container.
      */
@@ -219,6 +218,7 @@ public class DEReceiver extends AbstractReceiver {
     ////                         private variables                 ////
     // The director where this DEReceiver should register for De events.
     private DEDirector _director;
+
     private long _directorVersion = -1;
 
     // List for storing tokens.  Access with clear(), add(), and take().

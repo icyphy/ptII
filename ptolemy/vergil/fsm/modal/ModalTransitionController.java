@@ -1,33 +1,33 @@
 /* The transition controller for modal transitions
 
-Copyright (c) 1998-2005 The Regents of the University of California and
-Research in Motion Limited.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California and
+ Research in Motion Limited.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.fsm.modal;
 
 import java.awt.event.ActionEvent;
@@ -58,21 +58,20 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ModalTransitionController
 
 /**
-   This class provides interaction with relations that contain general purpose
-   refinements that are fired on state transitions in an FSM graph. It's
-   implementation is largely copied from ModalController.
+ This class provides interaction with relations that contain general purpose
+ refinements that are fired on state transitions in an FSM graph. It's
+ implementation is largely copied from ModalController.
 
-   @author David Hermann, Research In Motion Limited
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author David Hermann, Research In Motion Limited
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class ModalTransitionController extends TransitionController {
     /** Create a transition controller associated with the specified graph
      *  controller.
@@ -82,9 +81,9 @@ public class ModalTransitionController extends TransitionController {
         super(controller);
 
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                new AddRefinementAction()));
+                new AddRefinementAction()));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                new RemoveRefinementAction()));
+                new RemoveRefinementAction()));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -103,7 +102,8 @@ public class ModalTransitionController extends TransitionController {
             NamedObj target = getTarget();
 
             if (!(target instanceof Transition)) {
-                MessageHandler.error("Can only add refinements to transitions.");
+                MessageHandler
+                        .error("Can only add refinements to transitions.");
                 return;
             }
 
@@ -118,7 +118,7 @@ public class ModalTransitionController extends TransitionController {
             }
 
             final CompositeEntity container = (CompositeEntity) immediateContainer
-                .getContainer();
+                    .getContainer();
 
             if (container == null) {
                 MessageHandler.error("Transition container has no container!");
@@ -132,23 +132,19 @@ public class ModalTransitionController extends TransitionController {
 
             // See whether the configuration offers transition refinements.
             Configuration configuration = ((FSMGraphController) getController())
-                .getConfiguration();
-            Entity refinements = configuration.getEntity(
-                    "_transitionRefinements");
+                    .getConfiguration();
+            Entity refinements = configuration
+                    .getEntity("_transitionRefinements");
 
             // Default choices.
-            String[] choiceClasses = {
-                "ptolemy.domains.fsm.modal.TransitionRefinement"
-            };
-            String[] choiceNames = {
-                "Default Refinement"
-            };
+            String[] choiceClasses = { "ptolemy.domains.fsm.modal.TransitionRefinement" };
+            String[] choiceNames = { "Default Refinement" };
 
             // Check the configuration to see whether the default is overridden.
             if (refinements instanceof CompositeEntity) {
                 // There is a specification.
                 List refinementList = ((CompositeEntity) refinements)
-                    .entityList();
+                        .entityList();
                 choiceNames = new String[refinementList.size()];
                 choiceClasses = new String[refinementList.size()];
 
@@ -162,7 +158,9 @@ public class ModalTransitionController extends TransitionController {
                 }
             }
 
-            query.addChoice("Class", "Class", choiceNames, choiceNames[0], true);
+            query
+                    .addChoice("Class", "Class", choiceNames, choiceNames[0],
+                            true);
 
             // FIXME: Need a frame owner for first arg.
             // Perhaps calling getController(), which returns a GraphController
@@ -185,7 +183,8 @@ public class ModalTransitionController extends TransitionController {
             int choiceIndex = query.getIntValue("Class");
             String newClass = choiceClasses[choiceIndex];
 
-            String currentRefinements = transition.refinementName.getExpression();
+            String currentRefinements = transition.refinementName
+                    .getExpression();
 
             if ((currentRefinements == null) || currentRefinements.equals("")) {
                 currentRefinements = newName;
@@ -199,97 +198,101 @@ public class ModalTransitionController extends TransitionController {
             // specified a set of prototype refinements.
             if (refinements instanceof CompositeEntity) {
                 String choiceName = choiceNames[choiceIndex];
-                Entity template = ((CompositeEntity) refinements).getEntity(choiceName);
+                Entity template = ((CompositeEntity) refinements)
+                        .getEntity(choiceName);
                 String templateDescription = template.exportMoML(newName);
                 moml = "<group>" + templateDescription + "<relation name=\""
-                    + transition.getName(container)
-                    + "\"><property name=\"refinementName\" value=\""
-                    + currentRefinements + "\"/></relation></group>";
+                        + transition.getName(container)
+                        + "\"><property name=\"refinementName\" value=\""
+                        + currentRefinements + "\"/></relation></group>";
             } else {
                 moml = "<group><entity name=\"" + newName + "\" class=\""
-                    + newClass + "\"/>" + "<relation name=\""
-                    + transition.getName(container)
-                    + "\"><property name=\"refinementName\" value=\""
-                    + currentRefinements + "\"/></relation></group>";
+                        + newClass + "\"/>" + "<relation name=\""
+                        + transition.getName(container)
+                        + "\"><property name=\"refinementName\" value=\""
+                        + currentRefinements + "\"/></relation></group>";
             }
 
             MoMLChangeRequest change = new MoMLChangeRequest(this, container,
                     moml) {
-                    protected void _execute() throws Exception {
-                        super._execute();
+                protected void _execute() throws Exception {
+                    super._execute();
 
-                        // Mirror the ports of the container in the refinement.
-                        // Note that this is done here rather than as part of
-                        // the MoML because we have set protected variables
-                        // in the refinement to prevent it from trying to again
-                        // mirror the changes in the container.
-                        Entity entity = container.getEntity(newName);
+                    // Mirror the ports of the container in the refinement.
+                    // Note that this is done here rather than as part of
+                    // the MoML because we have set protected variables
+                    // in the refinement to prevent it from trying to again
+                    // mirror the changes in the container.
+                    Entity entity = container.getEntity(newName);
 
-                        // Get the initial port configuration from the container.
-                        Iterator ports = container.portList().iterator();
+                    // Get the initial port configuration from the container.
+                    Iterator ports = container.portList().iterator();
 
-                        while (ports.hasNext()) {
-                            Port port = (Port) ports.next();
+                    while (ports.hasNext()) {
+                        Port port = (Port) ports.next();
 
-                            try {
-                                // NOTE: This is awkward.
-                                if (entity instanceof Refinement) {
-                                    ((Refinement) entity).setMirrorDisable(true);
-                                } else if (entity instanceof ModalController) {
-                                    ((ModalController) entity).setMirrorDisable(true);
-                                }
+                        try {
+                            // NOTE: This is awkward.
+                            if (entity instanceof Refinement) {
+                                ((Refinement) entity).setMirrorDisable(true);
+                            } else if (entity instanceof ModalController) {
+                                ((ModalController) entity)
+                                        .setMirrorDisable(true);
+                            }
 
-                                Port newPort = entity.newPort(port.getName());
+                            Port newPort = entity.newPort(port.getName());
 
-                                if (newPort instanceof RefinementPort
-                                        && port instanceof IOPort) {
-                                    try {
-                                        ((RefinementPort) newPort)
+                            if (newPort instanceof RefinementPort
+                                    && port instanceof IOPort) {
+                                try {
+                                    ((RefinementPort) newPort)
                                             .setMirrorDisable(true);
 
-                                        if (((IOPort) port).isInput()) {
-                                            ((RefinementPort) newPort).setInput(true);
-                                        }
-
-                                        if (((IOPort) port).isOutput()) {
-                                            ((RefinementPort) newPort)
-                                                .setOutput(true);
-                                        }
-
-                                        if (((IOPort) port).isMultiport()) {
-                                            ((RefinementPort) newPort)
-                                                .setMultiport(true);
-                                        }
-
-                                        /* No longer needed since Yuhong modified
-                                         * the type system to allow UNKNOWN. EAL
-                                         if (port instanceof TypedIOPort
-                                         && newPort instanceof TypedIOPort) {
-                                         ((TypedIOPort)newPort).setTypeSameAs(
-                                         (TypedIOPort)port);
-                                         }
-                                        */
-                                    } finally {
+                                    if (((IOPort) port).isInput()) {
                                         ((RefinementPort) newPort)
-                                            .setMirrorDisable(false);
+                                                .setInput(true);
                                     }
-                                }
-                            } finally {
-                                // NOTE: This is awkward.
-                                if (entity instanceof Refinement) {
-                                    ((Refinement) entity).setMirrorDisable(false);
-                                } else if (entity instanceof ModalController) {
-                                    ((ModalController) entity).setMirrorDisable(false);
+
+                                    if (((IOPort) port).isOutput()) {
+                                        ((RefinementPort) newPort)
+                                                .setOutput(true);
+                                    }
+
+                                    if (((IOPort) port).isMultiport()) {
+                                        ((RefinementPort) newPort)
+                                                .setMultiport(true);
+                                    }
+
+                                    /* No longer needed since Yuhong modified
+                                     * the type system to allow UNKNOWN. EAL
+                                     if (port instanceof TypedIOPort
+                                     && newPort instanceof TypedIOPort) {
+                                     ((TypedIOPort)newPort).setTypeSameAs(
+                                     (TypedIOPort)port);
+                                     }
+                                     */
+                                } finally {
+                                    ((RefinementPort) newPort)
+                                            .setMirrorDisable(false);
                                 }
                             }
-                        }
-
-                        if (_configuration != null) {
-                            // Look inside.
-                            _configuration.openModel(entity);
+                        } finally {
+                            // NOTE: This is awkward.
+                            if (entity instanceof Refinement) {
+                                ((Refinement) entity).setMirrorDisable(false);
+                            } else if (entity instanceof ModalController) {
+                                ((ModalController) entity)
+                                        .setMirrorDisable(false);
+                            }
                         }
                     }
-                };
+
+                    if (_configuration != null) {
+                        // Look inside.
+                        _configuration.openModel(entity);
+                    }
+                }
+            };
 
             container.requestChange(change);
         }
@@ -307,8 +310,8 @@ public class ModalTransitionController extends TransitionController {
             NamedObj target = getTarget();
 
             if (!(target instanceof Transition)) {
-                MessageHandler.error(
-                        "Can only remove refinements from transitions.");
+                MessageHandler
+                        .error("Can only remove refinements from transitions.");
                 return;
             }
 
@@ -316,7 +319,7 @@ public class ModalTransitionController extends TransitionController {
 
             // Check that all these containers exist.
             CompositeEntity immediateContainer = (CompositeEntity) transition
-                .getContainer();
+                    .getContainer();
 
             if (immediateContainer == null) {
                 MessageHandler.error("Transition has no container!");
@@ -324,7 +327,7 @@ public class ModalTransitionController extends TransitionController {
             }
 
             final CompositeEntity container = (CompositeEntity) immediateContainer
-                .getContainer();
+                    .getContainer();
 
             if (container == null) {
                 MessageHandler.error("Transition container has no container!");
@@ -368,7 +371,8 @@ public class ModalTransitionController extends TransitionController {
 
             String refinementName = query.getStringValue("Refinement");
             StringBuffer newRefinements = new StringBuffer();
-            String currentRefinements = transition.refinementName.getExpression();
+            String currentRefinements = transition.refinementName
+                    .getExpression();
             StringTokenizer tokenizer = new StringTokenizer(currentRefinements,
                     ",");
 
@@ -394,7 +398,7 @@ public class ModalTransitionController extends TransitionController {
 
                 if ((other != transition) && other instanceof Transition) {
                     String refinementList = ((Transition) other).refinementName
-                        .getExpression();
+                            .getExpression();
 
                     if (refinementList == null) {
                         continue;
@@ -425,7 +429,7 @@ public class ModalTransitionController extends TransitionController {
 
                     if (other instanceof State) {
                         String refinementList = ((State) other).refinementName
-                            .getExpression();
+                                .getExpression();
 
                         if (refinementList == null) {
                             continue;
@@ -456,10 +460,10 @@ public class ModalTransitionController extends TransitionController {
             }
 
             String moml = "<group><relation name=\""
-                + transition.getName(container)
-                + "\"><property name=\"refinementName\" value=\""
-                + newRefinements.toString() + "\"/></relation>" + removal
-                + "</group>";
+                    + transition.getName(container)
+                    + "\"><property name=\"refinementName\" value=\""
+                    + newRefinements.toString() + "\"/></relation>" + removal
+                    + "</group>";
             MoMLChangeRequest change = new MoMLChangeRequest(this, container,
                     moml);
             container.requestChange(change);

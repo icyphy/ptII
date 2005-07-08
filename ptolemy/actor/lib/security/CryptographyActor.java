@@ -1,30 +1,30 @@
 /* A base class for cryptographic actors.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.security;
 
 import java.security.Provider;
@@ -46,53 +46,52 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CryptographyActor
 
 /**
-   A base class for cryptographic actors.
+ A base class for cryptographic actors.
 
-   <p>Cryptographic actors are actors that perform encryption or decryption or
-   generate signatures of data.
+ <p>Cryptographic actors are actors that perform encryption or decryption or
+ generate signatures of data.
 
-   <p>Actors extending this class take in an unsigned byte array at the
-   <i>input</i>, process the data based on the <i>algorithm</i> parameter
-   and send an unsigned byte array to the <i>output</i>.  The algorithms
-   that maybe implemented are limited those that are implemented by
-   "providers" following the Java Cryptography Extension (JCE)
-   specifications and installed on the machine being run.
-   If a provider specific instance of an algorithm is
-   needed, the provider may be specified in the <i>provider</i>
-   parameter. The <i>keySize</i> also allows implementations of
-   algorithms using various key sizes.
+ <p>Actors extending this class take in an unsigned byte array at the
+ <i>input</i>, process the data based on the <i>algorithm</i> parameter
+ and send an unsigned byte array to the <i>output</i>.  The algorithms
+ that maybe implemented are limited those that are implemented by
+ "providers" following the Java Cryptography Extension (JCE)
+ specifications and installed on the machine being run.
+ If a provider specific instance of an algorithm is
+ needed, the provider may be specified in the <i>provider</i>
+ parameter. The <i>keySize</i> also allows implementations of
+ algorithms using various key sizes.
 
-   <p>Concrete actors derived from this base class must include a
-   {@link #_process(byte[])} method that processes the data appropriately.
-   The _process() method is called by CryptographyActor.fire().
-   This class takes care of basic initialization of the <i>algorithm</i>
-   and <i>provider</i> parameters for use by the subclasses.
+ <p>Concrete actors derived from this base class must include a
+ {@link #_process(byte[])} method that processes the data appropriately.
+ The _process() method is called by CryptographyActor.fire().
+ This class takes care of basic initialization of the <i>algorithm</i>
+ and <i>provider</i> parameters for use by the subclasses.
 
-   <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
-   Cryptography Extension (JCE).
+ <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
+ Cryptography Extension (JCE).
 
-   <br>Information about JCA can be found at
-   <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html" target="_top">http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html</a>.
-   <br>Information about JCE can be found at
-   <a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/</a>.
+ <br>Information about JCA can be found at
+ <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html" target="_top">http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html</a>.
+ <br>Information about JCE can be found at
+ <a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/</a>.
 
-   <br>The Java 1.2 security tutorial can be found at
-   <a href="http://java.sun.com/docs/books/tutorial/security1.2/index.html" target="_top">http://java.sun.com/docs/books/tutorial/security1.2/index.html</a>
+ <br>The Java 1.2 security tutorial can be found at
+ <a href="http://java.sun.com/docs/books/tutorial/security1.2/index.html" target="_top">http://java.sun.com/docs/books/tutorial/security1.2/index.html</a>
 
-   <br>Another Java security tutorial can be found at
-   <a href="http://developer.java.sun.com/developer/onlineTraining/Security/Fundamentals/index.html" target="_top">http://developer.java.sun.com/developer/onlineTraining/Security/Fundamentals/index.html</a>
+ <br>Another Java security tutorial can be found at
+ <a href="http://developer.java.sun.com/developer/onlineTraining/Security/Fundamentals/index.html" target="_top">http://developer.java.sun.com/developer/onlineTraining/Security/Fundamentals/index.html</a>
 
-   @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 abstract public class CryptographyActor extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  The Java virtual machine is queried for algorithm and provider
@@ -228,11 +227,12 @@ abstract public class CryptographyActor extends TypedAtomicActor {
 
         try {
             if (input.hasToken(0)) {
-                byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray((ArrayToken) input
-                        .get(0));
+                byte[] dataBytes = ArrayToken
+                        .arrayTokenToUnsignedByteArray((ArrayToken) input
+                                .get(0));
                 dataBytes = _process(dataBytes);
-                output.send(0,
-                        ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
+                output.send(0, ArrayToken
+                        .unsignedByteArrayToArrayToken(dataBytes));
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,

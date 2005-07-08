@@ -1,30 +1,30 @@
 /* Validates a received MPDU (MAC Protocol Data Unit).
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above=
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above=
 
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.wireless.lib.network.mac;
 
 import ptolemy.actor.TypedIOPort;
@@ -39,28 +39,27 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ////////////////////////////////////////////////////////////////////////=
 //
 //// ValidateMpdu
 
 /**
-   ValidateMpdu class checks the status field of the RxEnd message. If it indicates
-   no error, the received data is forwarded to FilterMpdu process. Otherwise,
-   the data is dropped and ChannelState process will be notified of using EIFS
-   as IFS (interframe space). In the case of correctly received data, this class
-   also check its data type. If it is a RTS packet, a timer is set. The duration
-   is set to be the time needed to receive a CTS, plus some guard time. If no CTS
-   is received before this timer expires, a RTSTimeout signal is sent to ChannelState
-   process, which will clear the channel reservation made earlier by the above
-   RTS packet.
+ ValidateMpdu class checks the status field of the RxEnd message. If it indicates
+ no error, the received data is forwarded to FilterMpdu process. Otherwise,
+ the data is dropped and ChannelState process will be notified of using EIFS
+ as IFS (interframe space). In the case of correctly received data, this class
+ also check its data type. If it is a RTS packet, a timer is set. The duration
+ is set to be the time needed to receive a CTS, plus some guard time. If no CTS
+ is received before this timer expires, a RTSTimeout signal is sent to ChannelState
+ process, which will clear the channel reservation made earlier by the above
+ RTS packet.
 
-   @author Charlie Zhong, Xiaojun Liu and Yang Zhao
-   @version ValidateMpdu.java,v 1.18 2005/02/28 17:10:01 cxh Exp
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (czhong)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ @author Charlie Zhong, Xiaojun Liu and Yang Zhao
+ @version ValidateMpdu.java,v 1.18 2005/02/28 17:10:01 cxh Exp
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (czhong)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class ValidateMpdu extends MACActorBase {
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
@@ -120,16 +119,16 @@ public class ValidateMpdu extends MACActorBase {
         switch (_currentState) {
         case Rx_Idle:
 
-            if (kind == RtsTimeout) { 
+            if (kind == RtsTimeout) {
                 // send RtsTimeout message to ChannelState process
 
                 Token[] values = { new IntToken(RtsTimeout) };
                 RecordToken msgout = new RecordToken(RtsTimeoutMsgFields,
-                                                     values);
+                        values);
                 toChannelState.send(0, msgout);
             } else if (fromPHYLayer.hasToken(0)) {
                 // RecordToken msg = (RecordToken) fromPHYLayer.get(0);
-                UnionToken inputToken = (UnionToken)fromPHYLayer.get(0);
+                UnionToken inputToken = (UnionToken) fromPHYLayer.get(0);
                 RecordToken msg = (RecordToken) inputToken.value();
 
                 if (((IntToken) msg.get("kind")).intValue() == RxStart) {
@@ -153,7 +152,7 @@ public class ValidateMpdu extends MACActorBase {
 
             if (fromPHYLayer.hasToken(0)) {
                 //RecordToken msg = (RecordToken) fromPHYLayer.get(0);
-                UnionToken inputToken = (UnionToken)fromPHYLayer.get(0);
+                UnionToken inputToken = (UnionToken) fromPHYLayer.get(0);
                 RecordToken msg = (RecordToken) inputToken.value();
                 switch (((IntToken) msg.get("kind")).intValue()) {
                 case RxEnd:
@@ -164,18 +163,16 @@ public class ValidateMpdu extends MACActorBase {
                         if ((((IntToken) _pdu.get("Type")).intValue() == ControlType)
                                 && (((IntToken) _pdu.get("Subtype")).intValue() == Rts)) {
                             _dRts = (2 * _aSifsTime) + (2 * _aSlotTime)
-                                + (_sAckCtsLng / _rxRate) + _aPreambleLength
-                                + _aPlcpHeaderLength;
-                            _timer = setTimer(RtsTimeout,
-                                    currentTime.add(_dRts * 1e-6));
+                                    + (_sAckCtsLng / _rxRate)
+                                    + _aPreambleLength + _aPlcpHeaderLength;
+                            _timer = setTimer(RtsTimeout, currentTime
+                                    .add(_dRts * 1e-6));
                         }
 
                         // working with record tokens to represent messages
-                        Token[] RxMpduvalues = {
-                            new IntToken(RxMpdu), _pdu,
-                            new DoubleToken(_endRx.getDoubleValue()),
-                            new IntToken(_rxRate)
-                        };
+                        Token[] RxMpduvalues = { new IntToken(RxMpdu), _pdu,
+                                new DoubleToken(_endRx.getDoubleValue()),
+                                new IntToken(_rxRate) };
                         RecordToken msgout = new RecordToken(RxMpduMsgFields,
                                 RxMpduvalues);
 
@@ -190,10 +187,8 @@ public class ValidateMpdu extends MACActorBase {
                     }
 
                     // send UseIfs message to ChannelState process
-                    Token[] Ifsvalues = {
-                        new IntToken(UseIfs),
-                        new DoubleToken(_endRx.getDoubleValue())
-                    };
+                    Token[] Ifsvalues = { new IntToken(UseIfs),
+                            new DoubleToken(_endRx.getDoubleValue()) };
                     RecordToken msgout = new RecordToken(UseIfsMsgFields,
                             Ifsvalues);
                     toChannelState.send(0, msgout);
@@ -229,14 +224,21 @@ public class ValidateMpdu extends MACActorBase {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int _dRts;
+
     private int _rxRate;
+
     private Time _endRx;
+
     private RecordToken _pdu;
+
     private Timer _timer;
+
     private int _D1;
 
     // define states in FSM
     private static final int Rx_Idle = 0;
+
     private static final int Rx_Frame = 1;
+
     private int _currentState = Rx_Idle;
 }

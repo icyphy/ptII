@@ -1,31 +1,31 @@
 /* An actor that generates the current wall clock time in response to a
-   click of a button.
+ click of a button.
 
-   @Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the
-   above copyright notice and the following two paragraphs appear in all
-   copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION 2
-   COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.sr.lib;
 
 import java.awt.Color;
@@ -47,19 +47,18 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ButtonTime
 
 /**
-   Output the current wall clock time in response to a click of a button.
+ Output the current wall clock time in response to a click of a button.
 
-   @author  Paul Whitaker
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (pwhitake)
-   @Pt.AcceptedRating Red (pwhitake)
-*/
+ @author  Paul Whitaker
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (pwhitake)
+ @Pt.AcceptedRating Red (pwhitake)
+ */
 public class ButtonTime extends WallClockTime implements Placeable {
     // FIXME: This actor is almost identitcal to the DE Event Button actor.
     // There is no need to have a copy here. An alternative design is to
@@ -193,18 +192,18 @@ public class ButtonTime extends WallClockTime implements Placeable {
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    if (_button != null) {
-                        if (_container != null) {
-                            _container.remove(_button);
-                            _container.invalidate();
-                            _container.repaint();
-                        } else if (_frame != null) {
-                            _frame.dispose();
-                        }
+            public void run() {
+                if (_button != null) {
+                    if (_container != null) {
+                        _container.remove(_button);
+                        _container.invalidate();
+                        _container.repaint();
+                    } else if (_frame != null) {
+                        _frame.dispose();
                     }
                 }
-            });
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -224,6 +223,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
 
     // Flag indicating that the place() method has been called at least once.
     private boolean _placeCalled = false;
+
     private ButtonTime _self;
 
     ///////////////////////////////////////////////////////////////////

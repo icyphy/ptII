@@ -1,30 +1,30 @@
 /* Convert to dB.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.data.BooleanToken;
@@ -36,33 +36,32 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DB
 
 /**
-   Produce a token that is the value of the input in decibels.
-   That is, if the input is <i>z</i>, then the output is
-   <i>k</i>*log<sub>10</sub>(<em>z</em>).
-   The constant <i>k</i> depends on the value of the <i>inputIsPower</i>
-   parameter.  If that parameter is true, then <i>k</i> = 10.
-   Otherwise (the default) <i>k</i> = 20.
-   Normally, you would set <i>inputIsPower</i> to true if
-   the input is the square of a signal, and to false otherwise.
-   <p>
-   The output is never smaller than the value of the <i>min</i> parameter.
-   This makes it easier to plot by limiting the range of output values.
-   If the input is zero or negative, then the output is the
-   value of the <i>min</i> parameter.
-   <p>
-   The input and output both have type double.
+ Produce a token that is the value of the input in decibels.
+ That is, if the input is <i>z</i>, then the output is
+ <i>k</i>*log<sub>10</sub>(<em>z</em>).
+ The constant <i>k</i> depends on the value of the <i>inputIsPower</i>
+ parameter.  If that parameter is true, then <i>k</i> = 10.
+ Otherwise (the default) <i>k</i> = 20.
+ Normally, you would set <i>inputIsPower</i> to true if
+ the input is the square of a signal, and to false otherwise.
+ <p>
+ The output is never smaller than the value of the <i>min</i> parameter.
+ This makes it easier to plot by limiting the range of output values.
+ If the input is zero or negative, then the output is the
+ value of the <i>min</i> parameter.
+ <p>
+ The input and output both have type double.
 
-   @author Bart Kienhuis and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (ssachs)
-*/
+ @author Bart Kienhuis and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Yellow (ssachs)
+ */
 public class DB extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -79,8 +78,8 @@ public class DB extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        inputIsPower = new Parameter(this, "inputIsPower",
-                new BooleanToken(false));
+        inputIsPower = new Parameter(this, "inputIsPower", new BooleanToken(
+                false));
         inputIsPower.setTypeEquals(BaseType.BOOLEAN);
         min = new Parameter(this, "min", new DoubleToken(-100.0));
         min.setTypeEquals(BaseType.DOUBLE);

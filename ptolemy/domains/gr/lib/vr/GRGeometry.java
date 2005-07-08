@@ -1,29 +1,29 @@
 /* Base class for all actors that render arbitrary shapesin 3-D.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 
 package ptolemy.domains.gr.lib.vr;
 
@@ -54,26 +54,21 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
-
-
-
-
 //////////////////////////////////////////////////////////////////////////
 //// GRGeometry
 /**
-   Describe your class here, in complete sentences.
-   What does it do?  What is its intended use?
+ Describe your class here, in complete sentences.
+ What does it do?  What is its intended use?
 
-   @author Tiffany Crawford
-   @version $Id$
-   @see classname (refer to relevant classes, but not the base class)
-   @since Ptolemy II x.x
-   @Pt.ProposedRating Red (tsc)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ @author Tiffany Crawford
+ @version $Id$
+ @see classname (refer to relevant classes, but not the base class)
+ @since Ptolemy II x.x
+ @Pt.ProposedRating Red (tsc)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 
-abstract  public class GRGeometry extends GRActor3D {
+abstract public class GRGeometry extends GRActor3D {
 
     /** Create an instance with ... (describe the properties of the
      *  instance). Use the imperative case here.
@@ -82,7 +77,7 @@ abstract  public class GRGeometry extends GRActor3D {
      *   causes the exception to be thrown).
      */
     public GRGeometry(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException   {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         allowRuntimeChanges = new Parameter(this, "allowRuntimeChanges");
@@ -104,10 +99,9 @@ abstract  public class GRGeometry extends GRActor3D {
         transparency.setExpression("1.0");
         transparency.setTypeEquals(BaseType.DOUBLE);
 
-
         /*nSlices = new Parameter(this, "nSlices");
-          nSlices.setExpression("50");
-          nSlices.setTypeEquals(BaseType.INT);*/
+         nSlices.setExpression("50");
+         nSlices.setTypeEquals(BaseType.INT);*/
 
         //FIXME How do I use static fields with this expression?
         axis = new Parameter(this, "axis");
@@ -117,7 +111,6 @@ abstract  public class GRGeometry extends GRActor3D {
         planeSpacing = new Parameter(this, "planeSpacing");
         planeSpacing.setExpression(".0125");
         planeSpacing.setTypeEquals(BaseType.DOUBLE);
-
 
     }
 
@@ -149,16 +142,10 @@ abstract  public class GRGeometry extends GRActor3D {
      *  as a texture.
      */
     //public FilePortParameter texture;
-
     /** The transparency, where 0.0 means opaque (the default) and 1.0
      *  means fully transparent. The type is double.
      */
     public DoubleRangeParameter transparency;
-
-
-
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -171,7 +158,6 @@ abstract  public class GRGeometry extends GRActor3D {
      *  @exception ExceptionClass If ... (describe what
      *   causes the exception to be thrown).
      */
-
 
     /** Adjust the appearance when an attribute changes if such
      *  an update is supported by the <i>allowRuntimeChanges</i> parameter.
@@ -186,9 +172,11 @@ abstract  public class GRGeometry extends GRActor3D {
                             .getToken()).doubleValue();
 
                     if (transparent > 0.0) {
-                        _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NICEST);
+                        _transparencyAttributes
+                                .setTransparencyMode(TransparencyAttributes.NICEST);
                     } else {
-                        _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NONE);
+                        _transparencyAttributes
+                                .setTransparencyMode(TransparencyAttributes.NONE);
                     }
 
                     _transparencyAttributes.setTransparency(transparent);
@@ -196,6 +184,7 @@ abstract  public class GRGeometry extends GRActor3D {
             }
         }
     }
+
     /** Override the base class to null out private variables.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -209,8 +198,8 @@ abstract  public class GRGeometry extends GRActor3D {
     public void initialize() throws IllegalActionException {
         super.initialize();
         // _nSlices = ((IntToken)nSlices.getToken()).intValue();
-        _axis = ((IntToken)axis.getToken()).intValue();
-        _planeSpacing = ((DoubleToken)planeSpacing.getToken()).doubleValue();
+        _axis = ((IntToken) axis.getToken()).intValue();
+        _planeSpacing = ((DoubleToken) planeSpacing.getToken()).doubleValue();
     }
 
     /** Returns false if the scene graph has already initialized and
@@ -223,21 +212,21 @@ abstract  public class GRGeometry extends GRActor3D {
             _debug("Called prefire()");
             _debug("_isSceneGraphInitialized = " + _isSceneGraphInitialized);
         }
-        if(input.hasToken(0)){
+        if (input.hasToken(0)) {
             System.out.println("Has token");
             /** Set _isSceneGraphInitialized back to false so node
              * can be sent. fire() will set it back to true
              */
             _createModel();
             _isSceneGraphInitialized = false;
-            if(_debugging){
-                _debug ("Prefire returns true");
+            if (_debugging) {
+                _debug("Prefire returns true");
             }
             return true;
-        }else {
+        } else {
             System.out.println("Does not have token");
-            if(_debugging){
-                _debug ("Prefire returns false");
+            if (_debugging) {
+                _debug("Prefire returns false");
             }
             return false;
         }
@@ -270,7 +259,6 @@ abstract  public class GRGeometry extends GRActor3D {
         super.wrapup();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -279,20 +267,19 @@ abstract  public class GRGeometry extends GRActor3D {
      *  _changesAllowedNow so that derived classes can check it.
      *  @exception IllegalActionException If a parameter cannot be evaluated.
      */
-    protected void _createAppearance()throws IllegalActionException {
+    protected void _createAppearance() throws IllegalActionException {
         _material = new Material();
         _appearance = new Appearance();
 
         boolean allowChanges = ((BooleanToken) allowRuntimeChanges.getToken())
-            .booleanValue();
+                .booleanValue();
 
         // Deal with transparent attributes.
         float transparent = (float) ((DoubleToken) transparency.getToken())
-            .doubleValue();
+                .doubleValue();
 
         if ((transparent > 0.0) || allowChanges) {
             int mode = TransparencyAttributes.NICEST;
-
 
             if (transparent == 0.0) {
                 mode = TransparencyAttributes.NONE;
@@ -301,12 +288,8 @@ abstract  public class GRGeometry extends GRActor3D {
             _transparencyAttributes = new TransparencyAttributes(mode,
                     transparent);
 
-
             _appearance.setTransparencyAttributes(_transparencyAttributes);
         }
-
-
-
 
         // Default culls back facing polygons, which is weird.
         // We disable that here.
@@ -315,21 +298,22 @@ abstract  public class GRGeometry extends GRActor3D {
                 PolygonAttributes.CULL_NONE, 0.0f);
         _appearance.setPolygonAttributes(_polygonAttributes);
 
-
         // Turn on antialiasing.
         LineAttributes lineAttributes = new LineAttributes(1.0f,
                 LineAttributes.PATTERN_SOLID, true);
         _appearance.setLineAttributes(lineAttributes);
 
-
         // If runtime changes are allowed, we need to set the
         // appropriate capabilities.
         if (allowChanges) {
-            _transparencyAttributes.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
-            _transparencyAttributes.setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
+            _transparencyAttributes
+                    .setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+            _transparencyAttributes
+                    .setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
             _material.setCapability(Material.ALLOW_COMPONENT_WRITE);
             _appearance.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
-            _polygonAttributes.setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
+            _polygonAttributes
+                    .setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
         }
 
         _changesAllowedNow = allowChanges;
@@ -338,7 +322,7 @@ abstract  public class GRGeometry extends GRActor3D {
 
     abstract protected void _createGeometry() throws IllegalActionException;
 
-    protected void _createModel()throws IllegalActionException {
+    protected void _createModel() throws IllegalActionException {
         if (_debugging) {
             _debug("inside of _createModel()");
         }
@@ -355,8 +339,6 @@ abstract  public class GRGeometry extends GRActor3D {
         return _containedNode;
     }
 
-
-
     /** Send the scene graph token on the output. */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
@@ -364,7 +346,6 @@ abstract  public class GRGeometry extends GRActor3D {
             _debug("Called _makeSceneGraphConnection()");
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -378,13 +359,12 @@ abstract  public class GRGeometry extends GRActor3D {
     //protected BranchGroup _containedNode;
 
     protected Node _containedNode;
+
     protected Shape3D _createdNode;
+
     protected Geometry _geometry;
 
-
-
     /** The material of this 3D object. */
-
 
     protected Material _material;
 
@@ -405,9 +385,10 @@ abstract  public class GRGeometry extends GRActor3D {
     protected boolean _changesAllowedNow = false;
 
     protected static int XAXIS = 0;
-    protected static int YAXIS = 1;
-    protected static int ZAXIS = 2;
 
+    protected static int YAXIS = 1;
+
+    protected static int ZAXIS = 2;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -415,7 +396,6 @@ abstract  public class GRGeometry extends GRActor3D {
     // Private methods need not have Javadoc comments, although it can
     // be more convenient if they do, since they may at some point
     // become protected methods.
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

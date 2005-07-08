@@ -1,57 +1,56 @@
 /* A library for mathematical operations on matrices of doubles.
 
-This file was automatically generated with a preprocessor, so that
-similar matrix operations are supported on ints, longs, floats, and doubles.
+ This file was automatically generated with a preprocessor, so that
+ similar matrix operations are supported on ints, longs, floats, and doubles.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.math;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixMath
 
 /**
-   This class provides a library for mathematical operations on
-   matrices of doubles.
-   All calls expect matrix arguments to be non-null. In addition, all
-   rows of the matrix are expected to have the same number of columns.
-   <p>
-   Some algorithms are from:
-   <p>
-   [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
-   Signal Processing," Prentice Hall, Englewood Cliffs, NJ, 1991.
+ This class provides a library for mathematical operations on
+ matrices of doubles.
+ All calls expect matrix arguments to be non-null. In addition, all
+ rows of the matrix are expected to have the same number of columns.
+ <p>
+ Some algorithms are from:
+ <p>
+ [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
+ Signal Processing," Prentice Hall, Englewood Cliffs, NJ, 1991.
 
-   @author Jeff Tsay
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (ctsay)
-   @Pt.AcceptedRating Yellow (ctsay)
-*/
+ @author Jeff Tsay
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (ctsay)
+ @Pt.AcceptedRating Yellow (ctsay)
+ */
 public class DoubleMatrixMath {
     // private constructor prevents construction of this class.
     private DoubleMatrixMath() {
@@ -612,8 +611,9 @@ public class DoubleMatrixMath {
         if (rows != array.length) {
             throw new IllegalArgumentException(
                     "preMultiply : array does not have the same number of "
-                    + "elements (" + array.length + ") as the number of rows "
-                    + "of the matrix (" + rows + ")");
+                            + "elements (" + array.length
+                            + ") as the number of rows " + "of the matrix ("
+                            + rows + ")");
         }
 
         double[] returnValue = new double[columns];
@@ -645,8 +645,9 @@ public class DoubleMatrixMath {
         if (columns != array.length) {
             throw new IllegalArgumentException(
                     "postMultiply() : array does not have the same number "
-                    + "of elements (" + array.length + ") as the number of "
-                    + "columns of the matrix (" + columns + ")");
+                            + "of elements (" + array.length
+                            + ") as the number of " + "columns of the matrix ("
+                            + columns + ")");
         }
 
         double[] returnValue = new double[rows];
@@ -770,8 +771,7 @@ public class DoubleMatrixMath {
      *  the output matrix will contain a column of zeros for all
      *  redundant input columns.
      */
-    public static final double[][] orthonormalizeColumns(
-            final double[][] matrix) {
+    public static final double[][] orthonormalizeColumns(final double[][] matrix) {
         return transpose(orthogonalizeRows(transpose(matrix)));
     }
 
@@ -848,10 +848,7 @@ public class DoubleMatrixMath {
             }
         }
 
-        return new double[][][] {
-            transpose(qT),
-            dotProducts
-        };
+        return new double[][][] { transpose(qT), dotProducts };
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -1129,8 +1126,7 @@ public class DoubleMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if ((matrix1[i][j] > (matrix2[i][j] + errorMatrix[i][j]))
-                        || (matrix1[i][j] < (matrix2[i][j]
-                                    - errorMatrix[i][j]))) {
+                        || (matrix1[i][j] < (matrix2[i][j] - errorMatrix[i][j]))) {
                     return false;
                 }
             }
@@ -1177,8 +1173,8 @@ public class DoubleMatrixMath {
             final double[][] matrix) throws IllegalArgumentException {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException("ptolemy.math.DoubleMatrixMath."
-                    + caller + "() : matrix argument " + _dimensionString(matrix)
-                    + " is not a square matrix.");
+                    + caller + "() : matrix argument "
+                    + _dimensionString(matrix) + " is not a square matrix.");
         }
 
         return _rows(matrix);
@@ -1248,9 +1244,9 @@ public class DoubleMatrixMath {
 
                 dotProductMatrix[j][i] = dotProduct;
 
-                rowArray = DoubleArrayMath.subtract(rowArray,
-                        DoubleArrayMath.scale(orthogonalMatrix[j],
-                                dotProduct * oneOverNormSquaredArray[j]));
+                rowArray = DoubleArrayMath.subtract(rowArray, DoubleArrayMath
+                        .scale(orthogonalMatrix[j], dotProduct
+                                * oneOverNormSquaredArray[j]));
             }
 
             // Compute the dot product between the input and output vector
@@ -1287,12 +1283,8 @@ public class DoubleMatrixMath {
             }
         }
 
-        return new Object[] {
-            orthogonalMatrix,
-            dotProductMatrix,
-            oneOverNormSquaredArray,
-            new Integer(nullity)
-        };
+        return new Object[] { orthogonalMatrix, dotProductMatrix,
+                oneOverNormSquaredArray, new Integer(nullity) };
     }
 
     /** Return the number of rows of a matrix. */

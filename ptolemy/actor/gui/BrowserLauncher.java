@@ -1,30 +1,30 @@
 /* Launch the user's default web browser.
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -35,71 +35,70 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 
-
 /**
-   BrowserLauncher is a class that provides one static method, openURL,
-   which opens the default web browser for the current user of the system
-   to the given URL.  It may support other protocols depending on the
-   system -- mailto, ftp, etc. -- but that has not been rigorously tested
-   and is not guaranteed to work.
+ BrowserLauncher is a class that provides one static method, openURL,
+ which opens the default web browser for the current user of the system
+ to the given URL.  It may support other protocols depending on the
+ system -- mailto, ftp, etc. -- but that has not been rigorously tested
+ and is not guaranteed to work.
 
-   <p> Yes, this is platform-specific code, and yes, it may rely on
-   classes on certain platforms that are not part of the standard JDK.
-   What we're trying to do, though, is to take something that's
-   frequently desirable but inherently platform-specific -- opening a
-   default browser -- and allow programmers (you, for example) to do so
-   without worrying about dropping into native code or doing anything
-   else similarly evil.
+ <p> Yes, this is platform-specific code, and yes, it may rely on
+ classes on certain platforms that are not part of the standard JDK.
+ What we're trying to do, though, is to take something that's
+ frequently desirable but inherently platform-specific -- opening a
+ default browser -- and allow programmers (you, for example) to do so
+ without worrying about dropping into native code or doing anything
+ else similarly evil.
 
-   <p> Anyway, this code is completely in Java and will run on all JDK
-   1.1-compliant systems without modification or a need for additional
-   libraries.  All classes that are required on certain platforms to
-   allow this to run are dynamically loaded at runtime via reflection
-   and, if not found, will not cause this to do anything other than
-   returning an error when opening the browser.
+ <p> Anyway, this code is completely in Java and will run on all JDK
+ 1.1-compliant systems without modification or a need for additional
+ libraries.  All classes that are required on certain platforms to
+ allow this to run are dynamically loaded at runtime via reflection
+ and, if not found, will not cause this to do anything other than
+ returning an error when opening the browser.
 
 
-   <p> There are certain system requirements for this class, as it's
-   running through Runtime.exec(), which is Java's way of making a
-   native system call.  Currently, this requires that a Macintosh have a
-   Finder which supports the GURL event, which is true for Mac OS 8.0
-   and 8.1 systems that have the Internet Scripting AppleScript
-   dictionary installed in the Scripting Additions folder in the
-   Extensions folder (which is installed by default as far as I know
-   under Mac OS 8.0 and 8.1), and for all Mac OS 8.5 and later systems.
-   On Windows, it only runs under Win32 systems (Windows 95, 98, and NT
-   4.0, as well as later versions of all).  On other systems, this drops
-   back from the inherently platform-sensitive concept of a default
-   browser and simply attempts to launch Netscape via a shell command.
+ <p> There are certain system requirements for this class, as it's
+ running through Runtime.exec(), which is Java's way of making a
+ native system call.  Currently, this requires that a Macintosh have a
+ Finder which supports the GURL event, which is true for Mac OS 8.0
+ and 8.1 systems that have the Internet Scripting AppleScript
+ dictionary installed in the Scripting Additions folder in the
+ Extensions folder (which is installed by default as far as I know
+ under Mac OS 8.0 and 8.1), and for all Mac OS 8.5 and later systems.
+ On Windows, it only runs under Win32 systems (Windows 95, 98, and NT
+ 4.0, as well as later versions of all).  On other systems, this drops
+ back from the inherently platform-sensitive concept of a default
+ browser and simply attempts to launch Netscape via a shell command.
 
-   <p> This code is Copyright 1999-2001 by Eric Albert (ejalbert@cs.stanford.edu)
-   and may be redistributed or modified in any form without restrictions as
-   long as the portion of this comment from this paragraph through the end
-   of the comment is not removed.  The author requests that he be notified
-   of any application, applet, or other binary that makes use of this code,
-   but that is more out of curiosity than anything and is not required.  This
-   software includes no warranty.  The author is not responsible for any
-   loss of data or functionality or any adverse or unexpected effects of
-   using this software.
+ <p> This code is Copyright 1999-2001 by Eric Albert (ejalbert@cs.stanford.edu)
+ and may be redistributed or modified in any form without restrictions as
+ long as the portion of this comment from this paragraph through the end
+ of the comment is not removed.  The author requests that he be notified
+ of any application, applet, or other binary that makes use of this code,
+ but that is more out of curiosity than anything and is not required.  This
+ software includes no warranty.  The author is not responsible for any
+ loss of data or functionality or any adverse or unexpected effects of
+ using this software.
 
-   <p>
-   Credits:
+ <p>
+ Credits:
 
-   <br>Steven Spencer, JavaWorld magazine (<a href="http://www.javaworld.com/javaworld/javatips/jw-javatip66.html">Java//Tip 66</a>)
+ <br>Steven Spencer, JavaWorld magazine (<a href="http://www.javaworld.com/javaworld/javatips/jw-javatip66.html">Java//Tip 66</a>)
 
-   <br>Thanks also to Ron B. Yeh, Eric Shapiro, Ben Engber, Paul
-   Teitlebaum, Andrea Cantatore, Larry Barowski, Trevor Bedzek, Frank
-   Miedrich, and Ron Rabakukk
+ <br>Thanks also to Ron B. Yeh, Eric Shapiro, Ben Engber, Paul
+ Teitlebaum, Andrea Cantatore, Larry Barowski, Trevor Bedzek, Frank
+ Miedrich, and Ron Rabakukk
 
-   <p> This code is from
-   <a href="http://browserlauncher.sourceforge.net/">http://browserlauncher.sourceforge.net/</a>
+ <p> This code is from
+ <a href="http://browserlauncher.sourceforge.net/">http://browserlauncher.sourceforge.net/</a>
 
-   @author Eric Albert (<a href="mailto:ejalbert@cs.stanford.edu">ejalbert@cs.stanford.edu</a>)
-   @version $Id$, based on 1.4b1 (Released June 20, 2001)
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Eric Albert (<a href="mailto:ejalbert@cs.stanford.edu">ejalbert@cs.stanford.edu</a>)
+ @version $Id$, based on 1.4b1 (Released June 20, 2001)
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class BrowserLauncher {
     /** Launch the browser on the first argument.  If there is
      *  no first argument, then open http://ptolemy.eecs.berkeley.edu.
@@ -200,7 +199,7 @@ public class BrowserLauncher {
                             // copy somehow.
                             String old = url;
                             String temporaryURL = JNLPUtilities
-                                .saveJarURLInClassPath(url);
+                                    .saveJarURLInClassPath(url);
 
                             if (temporaryURL != null) {
                                 url = temporaryURL;
@@ -238,15 +237,10 @@ public class BrowserLauncher {
             Object aeDesc = null;
 
             try {
-                aeDesc = aeDescConstructor.newInstance(new Object[] {
-                    url
-                });
-                putParameter.invoke(browser,
-                        new Object[] {
-                            keyDirectObject,
-                            aeDesc
-                        });
-                sendNoReply.invoke(browser, new Object[] {  });
+                aeDesc = aeDescConstructor.newInstance(new Object[] { url });
+                putParameter.invoke(browser, new Object[] { keyDirectObject,
+                        aeDesc });
+                sendNoReply.invoke(browser, new Object[] {});
             } catch (InvocationTargetException ite) {
                 throw new IOException("InvocationTargetException while "
                         + "creating AEDesc: " + ite.getMessage());
@@ -267,10 +261,7 @@ public class BrowserLauncher {
             break;
 
         case MRJ_2_1:
-            Runtime.getRuntime().exec(new String[] {
-                (String) browser,
-                url
-            });
+            Runtime.getRuntime().exec(new String[] { (String) browser, url });
             break;
 
         case MRJ_3_0:
@@ -279,17 +270,11 @@ public class BrowserLauncher {
             int result = ICStart(instance, 0);
 
             if (result == 0) {
-                int[] selectionStart = new int[] {
-                    0
-                };
+                int[] selectionStart = new int[] { 0 };
                 byte[] urlBytes = url.getBytes();
-                int[] selectionEnd = new int[] {
-                    urlBytes.length
-                };
-                result = ICLaunchURL(instance[0], new byte[] {
-                    0
-                }, urlBytes, urlBytes.length, selectionStart,
-                        selectionEnd);
+                int[] selectionEnd = new int[] { urlBytes.length };
+                result = ICLaunchURL(instance[0], new byte[] { 0 }, urlBytes,
+                        urlBytes.length, selectionStart, selectionEnd);
 
                 if (result == 0) {
                     // Ignore the return value; the URL was launched
@@ -308,9 +293,7 @@ public class BrowserLauncher {
         case MRJ_3_1:
 
             try {
-                openURL.invoke(null, new Object[] {
-                    url
-                });
+                openURL.invoke(null, new Object[] { url });
             } catch (InvocationTargetException ite) {
                 throw new IOException("InvocationTargetException while "
                         + "calling openURL: " + ite.getMessage());
@@ -326,13 +309,10 @@ public class BrowserLauncher {
 
             // Add quotes around the URL to allow ampersands and other special
             // characters to work.
-            Process process = Runtime.getRuntime().exec(new String[] {
-                (String) browser,
-                FIRST_WINDOWS_PARAMETER,
-                SECOND_WINDOWS_PARAMETER,
-                THIRD_WINDOWS_PARAMETER,
-                '"' + url + '"'
-            });
+            Process process = Runtime.getRuntime().exec(
+                    new String[] { (String) browser, FIRST_WINDOWS_PARAMETER,
+                            SECOND_WINDOWS_PARAMETER, THIRD_WINDOWS_PARAMETER,
+                            '"' + url + '"' });
 
             // This avoids a memory leak on some versions of Java on Windows.
             // That's hinted at in
@@ -352,22 +332,20 @@ public class BrowserLauncher {
             // Assume that we're on Unix and that Netscape is installed
             // First, attempt to open the URL in a currently running
             // session of Netscape
-            process = Runtime.getRuntime().exec(new String[] {
-                (String) browser,
-                NETSCAPE_REMOTE_PARAMETER,
+            process = Runtime.getRuntime().exec(
+                    new String[] {
+                            (String) browser,
+                            NETSCAPE_REMOTE_PARAMETER,
 
-                NETSCAPE_OPEN_PARAMETER_START + url
-                + NETSCAPE_OPEN_PARAMETER_END
-            });
+                            NETSCAPE_OPEN_PARAMETER_START + url
+                                    + NETSCAPE_OPEN_PARAMETER_END });
 
             try {
                 exitCode = process.waitFor();
 
                 if (exitCode != 0) { // if Netscape was not open
-                    Runtime.getRuntime().exec(new String[] {
-                        (String) browser,
-                        url
-                    });
+                    Runtime.getRuntime().exec(
+                            new String[] { (String) browser, url });
                 }
             } catch (InterruptedException ie) {
                 throw new IOException("InterruptedException while "
@@ -380,17 +358,14 @@ public class BrowserLauncher {
 
             // This should never occur, but if it does, we'll try
             // the simplest thing possible
-            Runtime.getRuntime().exec(new String[] {
-                (String) browser,
-                url
-            });
+            Runtime.getRuntime().exec(new String[] { (String) browser, url });
             break;
         }
 
         if (exitCode != 0) {
             throw new IOException("Process exec'd by BrowserLauncher returned "
-                    + exitCode + "." + "\n url was: " + url + "\n browser was: "
-                    + browser);
+                    + exitCode + "." + "\n url was: " + url
+                    + "\n browser was: " + browser);
         }
     }
 
@@ -480,7 +455,6 @@ public class BrowserLauncher {
     //private static final String JDirect_MacOSX =
     //"/System/Library/Frameworks/Carbon.framework/Frameworks/"
     //+ "HIToolbox.framework/HIToolbox";
-
     /** JVM constant for MRJ 2.0 */
     private static final int MRJ_2_0 = 0;
 
@@ -539,7 +513,9 @@ public class BrowserLauncher {
      * already-open copy of Netscape on many command-line systems.
      */
     private static final String NETSCAPE_REMOTE_PARAMETER = "-remote";
+
     private static final String NETSCAPE_OPEN_PARAMETER_START = "'openURL(";
+
     private static final String NETSCAPE_OPEN_PARAMETER_END = ")'";
 
     /**
@@ -632,47 +608,37 @@ public class BrowserLauncher {
             try {
                 Class aeTargetClass = Class.forName("com.apple.MacOS.AETarget");
                 Class osUtilsClass = Class.forName("com.apple.MacOS.OSUtils");
-                Class appleEventClass = Class.forName(
-                        "com.apple.MacOS.AppleEvent");
+                Class appleEventClass = Class
+                        .forName("com.apple.MacOS.AppleEvent");
                 Class aeClass = Class.forName("com.apple.MacOS.ae");
                 aeDescClass = Class.forName("com.apple.MacOS.AEDesc");
 
-                aeTargetConstructor = aeTargetClass.getDeclaredConstructor(new Class[] {
-                    int.class
-                });
-                appleEventConstructor = appleEventClass.getDeclaredConstructor(new Class[] {
-                    int.class,
-                    int.class,
-                    aeTargetClass,
-                    int.class,
-                    int.class
-                });
-                aeDescConstructor = aeDescClass.getDeclaredConstructor(new Class[] {
-                    String.class
-                });
+                aeTargetConstructor = aeTargetClass
+                        .getDeclaredConstructor(new Class[] { int.class });
+                appleEventConstructor = appleEventClass
+                        .getDeclaredConstructor(new Class[] { int.class,
+                                int.class, aeTargetClass, int.class, int.class });
+                aeDescConstructor = aeDescClass
+                        .getDeclaredConstructor(new Class[] { String.class });
 
                 makeOSType = osUtilsClass.getDeclaredMethod("makeOSType",
-                        new Class[] {
-                            String.class
-                        });
-                putParameter = appleEventClass.getDeclaredMethod("putParameter",
-                        new Class[] {
-                            int.class,
-                            aeDescClass
-                        });
+                        new Class[] { String.class });
+                putParameter = appleEventClass.getDeclaredMethod(
+                        "putParameter", new Class[] { int.class, aeDescClass });
                 sendNoReply = appleEventClass.getDeclaredMethod("sendNoReply",
-                        new Class[] {  });
+                        new Class[] {});
 
-                Field keyDirectObjectField = aeClass.getDeclaredField(
-                        "keyDirectObject");
+                Field keyDirectObjectField = aeClass
+                        .getDeclaredField("keyDirectObject");
                 keyDirectObject = (Integer) keyDirectObjectField.get(null);
 
                 Field autoGenerateReturnIDField = appleEventClass
-                    .getDeclaredField("kAutoGenerateReturnID");
-                kAutoGenerateReturnID = (Integer) autoGenerateReturnIDField.get(null);
+                        .getDeclaredField("kAutoGenerateReturnID");
+                kAutoGenerateReturnID = (Integer) autoGenerateReturnIDField
+                        .get(null);
 
-                Field anyTransactionIDField = appleEventClass.getDeclaredField(
-                        "kAnyTransactionID");
+                Field anyTransactionIDField = appleEventClass
+                        .getDeclaredField("kAnyTransactionID");
                 kAnyTransactionID = (Integer) anyTransactionIDField.get(null);
             } catch (ClassNotFoundException cnfe) {
                 errorMessage = cnfe.getMessage();
@@ -696,21 +662,15 @@ public class BrowserLauncher {
                 mrjFileUtilsClass = Class.forName("com.apple.mrj.MRJFileUtils");
                 mrjOSTypeClass = Class.forName("com.apple.mrj.MRJOSType");
 
-                Field systemFolderField = mrjFileUtilsClass.getDeclaredField(
-                        "kSystemFolderType");
+                Field systemFolderField = mrjFileUtilsClass
+                        .getDeclaredField("kSystemFolderType");
                 kSystemFolderType = systemFolderField.get(null);
                 findFolder = mrjFileUtilsClass.getDeclaredMethod("findFolder",
-                        new Class[] {
-                            mrjOSTypeClass
-                        });
-                getFileCreator = mrjFileUtilsClass.getDeclaredMethod("getFileCreator",
-                        new Class[] {
-                            File.class
-                        });
-                getFileType = mrjFileUtilsClass.getDeclaredMethod("getFileType",
-                        new Class[] {
-                            File.class
-                        });
+                        new Class[] { mrjOSTypeClass });
+                getFileCreator = mrjFileUtilsClass.getDeclaredMethod(
+                        "getFileCreator", new Class[] { File.class });
+                getFileType = mrjFileUtilsClass.getDeclaredMethod(
+                        "getFileType", new Class[] { File.class });
             } catch (ClassNotFoundException cnfe) {
                 errorMessage = cnfe.getMessage();
                 return false;
@@ -734,12 +694,10 @@ public class BrowserLauncher {
 
             try {
                 Class linker = Class.forName("com.apple.mrj.jdirect.Linker");
-                Constructor constructor = linker.getConstructor(new Class[] {
-                    Class.class
-                });
-                linkage = constructor.newInstance(new Object[] {
-                    BrowserLauncher.class
-                });
+                Constructor constructor = linker
+                        .getConstructor(new Class[] { Class.class });
+                linkage = constructor
+                        .newInstance(new Object[] { BrowserLauncher.class });
             } catch (ClassNotFoundException cnfe) {
                 errorMessage = cnfe.getMessage();
                 return false;
@@ -764,9 +722,7 @@ public class BrowserLauncher {
             try {
                 mrjFileUtilsClass = Class.forName("com.apple.mrj.MRJFileUtils");
                 openURL = mrjFileUtilsClass.getDeclaredMethod("openURL",
-                        new Class[] {
-                            String.class
-                        });
+                        new Class[] { String.class });
             } catch (ClassNotFoundException cnfe) {
                 errorMessage = cnfe.getMessage();
                 return false;
@@ -805,23 +761,15 @@ public class BrowserLauncher {
 
             try {
                 Integer finderCreatorCode = (Integer) makeOSType.invoke(null,
-                        new Object[] {
-                            FINDER_CREATOR
-                        });
-                Object aeTarget = aeTargetConstructor.newInstance(new Object[] {
-                    finderCreatorCode
-                });
+                        new Object[] { FINDER_CREATOR });
+                Object aeTarget = aeTargetConstructor
+                        .newInstance(new Object[] { finderCreatorCode });
                 Integer gurlType = (Integer) makeOSType.invoke(null,
-                        new Object[] {
-                            GURL_EVENT
-                        });
-                Object appleEvent = appleEventConstructor.newInstance(new Object[] {
-                    gurlType,
-                    gurlType,
-                    aeTarget,
-                    kAutoGenerateReturnID,
-                    kAnyTransactionID
-                });
+                        new Object[] { GURL_EVENT });
+                Object appleEvent = appleEventConstructor
+                        .newInstance(new Object[] { gurlType, gurlType,
+                                aeTarget, kAutoGenerateReturnID,
+                                kAnyTransactionID });
 
                 // Don't set browser = appleEvent because then the
                 // next time we call locateBrowser(), we'll get the
@@ -851,9 +799,7 @@ public class BrowserLauncher {
 
             try {
                 systemFolder = (File) findFolder.invoke(null,
-                        new Object[] {
-                            kSystemFolderType
-                        });
+                        new Object[] { kSystemFolderType });
             } catch (IllegalArgumentException iare) {
                 browser = null;
                 errorMessage = iare.getMessage();
@@ -865,7 +811,7 @@ public class BrowserLauncher {
             } catch (InvocationTargetException ite) {
                 browser = null;
                 errorMessage = ite.getTargetException().getClass() + ": "
-                    + ite.getTargetException().getMessage();
+                        + ite.getTargetException().getMessage();
                 return browser;
             }
 
@@ -889,15 +835,11 @@ public class BrowserLauncher {
                     // event to those applications results in a logout
                     // under Multiple Users.
                     Object fileType = getFileType.invoke(null,
-                            new Object[] {
-                                file
-                            });
+                            new Object[] { file });
 
                     if (FINDER_TYPE.equals(fileType.toString())) {
                         Object fileCreator = getFileCreator.invoke(null,
-                                new Object[] {
-                                    file
-                                });
+                                new Object[] { file });
 
                         if (FINDER_CREATOR.equals(fileCreator.toString())) {
                             // Actually the Finder, but that's OK
@@ -915,7 +857,7 @@ public class BrowserLauncher {
                 } catch (InvocationTargetException ite) {
                     browser = null;
                     errorMessage = ite.getTargetException().getClass() + ": "
-                        + ite.getTargetException().getMessage();
+                            + ite.getTargetException().getMessage();
                     return browser;
                 }
             }
@@ -936,7 +878,8 @@ public class BrowserLauncher {
             browser = "command.com";
             break;
 
-        case OTHER:default:
+        case OTHER:
+        default:
             browser = "netscape";
             break;
         }

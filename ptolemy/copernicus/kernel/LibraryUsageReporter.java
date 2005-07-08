@@ -1,29 +1,29 @@
 /* A transformer that reports library methods used.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.kernel;
 
 import java.io.FileWriter;
@@ -56,22 +56,21 @@ import soot.jimple.toolkits.callgraph.EntryPoints;
 import soot.jimple.toolkits.callgraph.Filter;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LibraryUsageReporter
 
 /**
-   A Transformer that reports reachable methods in the Java libraries.
+ A Transformer that reports reachable methods in the Java libraries.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
 
-*/
-public class LibraryUsageReporter extends SceneTransformer
-    implements HasPhaseOptions {
+ */
+public class LibraryUsageReporter extends SceneTransformer implements
+        HasPhaseOptions {
     /** Return an instance of this transformer that will operate on
      *  the given model.  The model is assumed to already have been
      *  properly initialized so that resolved types and other static
@@ -112,15 +111,16 @@ public class LibraryUsageReporter extends SceneTransformer
 
         final Set createableClasses = new HashSet();
 
-        for (Iterator reachables = reachableMethods.listener();
-             reachables.hasNext();) {
+        for (Iterator reachables = reachableMethods.listener(); reachables
+                .hasNext();) {
             SootMethod method = (SootMethod) reachables.next();
             String methodName = method.getSignature();
 
             if (method.getName().equals("<init>")
                     && !method.getDeclaringClass().getName().startsWith("java")) {
-                createableClasses.addAll(hierarchy.getSuperclassesOfIncluding(
-                                                 method.getDeclaringClass()));
+                createableClasses
+                        .addAll(hierarchy.getSuperclassesOfIncluding(method
+                                .getDeclaringClass()));
                 _addAllInterfaces(createableClasses, method.getDeclaringClass());
             }
         }
@@ -131,14 +131,13 @@ public class LibraryUsageReporter extends SceneTransformer
         // includes methods that are static or are declared in classes
         // that can are created.
         Filter filter = new Filter(new EdgePredicate() {
-                public boolean want(Edge e) {
-                    SootMethod target = e.tgt();
-                    return e.isExplicit()
-                        && (target.isStatic()
-                                || createableClasses.contains(target
-                                        .getDeclaringClass()));
-                }
-            });
+            public boolean want(Edge e) {
+                SootMethod target = e.tgt();
+                return e.isExplicit()
+                        && (target.isStatic() || createableClasses
+                                .contains(target.getDeclaringClass()));
+            }
+        });
         Set necessaryClasses = new HashSet();
         ReachableMethods RTAReachableMethods = new ReachableMethods(callGraph,
                 EntryPoints.v().application().iterator(), filter);
@@ -146,8 +145,8 @@ public class LibraryUsageReporter extends SceneTransformer
 
         List list = new LinkedList();
 
-        for (Iterator reachables = RTAReachableMethods.listener();
-             reachables.hasNext();) {
+        for (Iterator reachables = RTAReachableMethods.listener(); reachables
+                .hasNext();) {
             SootMethod method = (SootMethod) reachables.next();
             String methodName = method.getSignature();
             list.add(methodName);
@@ -160,12 +159,11 @@ public class LibraryUsageReporter extends SceneTransformer
 
             if (method.isConcrete()) {
                 for (Iterator units = method.retrieveActiveBody().getUnits()
-                         .iterator();
-                     units.hasNext();) {
+                        .iterator(); units.hasNext();) {
                     Unit unit = (Unit) units.next();
 
-                    for (Iterator boxes = unit.getUseBoxes().iterator();
-                         boxes.hasNext();) {
+                    for (Iterator boxes = unit.getUseBoxes().iterator(); boxes
+                            .hasNext();) {
                         ValueBox box = (ValueBox) boxes.next();
                         Value value = box.getValue();
 
@@ -175,14 +173,14 @@ public class LibraryUsageReporter extends SceneTransformer
 
                             if (castType instanceof RefType) {
                                 SootClass castClass = ((RefType) castType)
-                                    .getSootClass();
+                                        .getSootClass();
 
                                 if (castClass.isInterface()) {
                                     necessaryClasses.add(castClass);
                                 } else {
-                                    necessaryClasses.addAll(hierarchy
-                                            .getSuperclassesOfIncluding(
-                                                    castClass));
+                                    necessaryClasses
+                                            .addAll(hierarchy
+                                                    .getSuperclassesOfIncluding(castClass));
                                 }
 
                                 _addAllInterfaces(necessaryClasses, castClass);
@@ -193,12 +191,12 @@ public class LibraryUsageReporter extends SceneTransformer
 
                             if (checkType instanceof RefType) {
                                 SootClass checkClass = ((RefType) checkType)
-                                    .getSootClass();
+                                        .getSootClass();
 
                                 if (!checkClass.isInterface()) {
-                                    necessaryClasses.addAll(hierarchy
-                                            .getSuperclassesOfIncluding(
-                                                    checkClass));
+                                    necessaryClasses
+                                            .addAll(hierarchy
+                                                    .getSuperclassesOfIncluding(checkClass));
                                 }
 
                                 _addAllInterfaces(necessaryClasses, checkClass);
@@ -218,11 +216,12 @@ public class LibraryUsageReporter extends SceneTransformer
 
         try {
             // Add to the set of necessary classes all that they depend on.
-            DependedClasses dependedClasses = new DependedClasses(necessaryClasses);
+            DependedClasses dependedClasses = new DependedClasses(
+                    necessaryClasses);
             FileWriter writer = new FileWriter(outFile);
 
-            for (Iterator classes = dependedClasses.list().iterator();
-                 classes.hasNext();) {
+            for (Iterator classes = dependedClasses.list().iterator(); classes
+                    .hasNext();) {
                 SootClass theClass = (SootClass) classes.next();
 
                 if (analyzeAllReachables) {

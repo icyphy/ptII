@@ -1,30 +1,30 @@
 /* A frame for presenting a dialog
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
@@ -50,18 +50,17 @@ import javax.swing.JScrollPane;
 import ptolemy.kernel.Entity;
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyDialog
 
 /**
 
-@author Rowland R Johnson
-@version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Red (rowland)
-@Pt.AcceptedRating Red (rowland)
-*/
+ @author Rowland R Johnson
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (rowland)
+ @Pt.AcceptedRating Red (rowland)
+ */
 public abstract class PtolemyDialog extends JFrame implements ActionListener {
     public PtolemyDialog(String title, DialogTableau dialogTableau,
             Frame owner, Entity target, Configuration configuration) {
@@ -79,29 +78,30 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         JPanel _buttons = _createButtonsPanel();
         getContentPane().add(_buttons, BorderLayout.SOUTH);
         addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent e) {
-                    _cancel();
-                }
-            });
+            public void windowClosing(WindowEvent e) {
+                _cancel();
+            }
+        });
 
         _owner.addWindowListener(new WindowAdapter() {
-                public void windowIconified(WindowEvent e) {
-                    _iconify();
-                }
+            public void windowIconified(WindowEvent e) {
+                _iconify();
+            }
 
-                public void windowDeiconified(WindowEvent e) {
-                    _deiconify();
-                }
-            });
+            public void windowDeiconified(WindowEvent e) {
+                _deiconify();
+            }
+        });
 
         GraphicsEnvironment ge = GraphicsEnvironment
-            .getLocalGraphicsEnvironment();
+                .getLocalGraphicsEnvironment();
         GraphicsDevice[] SCREENS = ge.getScreenDevices();
         Point ownerLoc = owner.getLocation();
         Rectangle screenBounds = null;
 
         for (int screen = 0; screen < SCREENS.length; screen++) {
-            GraphicsConfiguration gc = SCREENS[screen].getDefaultConfiguration();
+            GraphicsConfiguration gc = SCREENS[screen]
+                    .getDefaultConfiguration();
             Rectangle bounds = gc.getBounds();
 
             if (bounds.contains(ownerLoc)) {
@@ -113,9 +113,9 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         if (screenBounds != null) {
             Dimension size = getPreferredSize();
             int x = (screenBounds.x + (screenBounds.width / 2))
-                - (size.width / 2);
+                    - (size.width / 2);
             int y = (screenBounds.y + (screenBounds.height / 2))
-                - (size.height / 2);
+                    - (size.height / 2);
             setLocation(x, y);
         } else {
             setLocationRelativeTo(_owner);
@@ -232,8 +232,11 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                   ////
     protected Configuration _configuration;
+
     protected boolean _debug = false;
+
     protected JButton _helpButton;
+
     protected JButton _cancelButton;
 
     ///////////////////////////////////////////////////////////////////
@@ -269,7 +272,10 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     // The following is true if any of the values have been changed but not
     // applied.
     private boolean _dirty = false;
+
     private Frame _owner;
+
     private DialogTableau _dialogTableau;
+
     private Entity _target;
 }

@@ -1,30 +1,30 @@
 /* Compute the third and fourth derivatives of X and Z.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARIMath.sinG OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARIMath.sinG OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.demo.Helicopter;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -37,31 +37,30 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// XZHigherDerivatives
 
 /**
-   Compute the third and fourth derivatives of Px and Pz
-   DDDotPx = (Dotth*TM*Cos[th))/m + (DotTM*Math.sin[th))/m
+ Compute the third and fourth derivatives of Px and Pz
+ DDDotPx = (Dotth*TM*Cos[th))/m + (DotTM*Math.sin[th))/m
 
-   DDDDotPx = (2*Dotth*DotTM*Cos[th))/m +
-   (TM*Cos[th)*(a*MM + hM*TM*Math.sin[a)))/(Iy*m) + (DDotTM*Math.sin[th))/m -
-   (Dotth^2*TM*Math.sin[th))/m
+ DDDDotPx = (2*Dotth*DotTM*Cos[th))/m +
+ (TM*Cos[th)*(a*MM + hM*TM*Math.sin[a)))/(Iy*m) + (DDotTM*Math.sin[th))/m -
+ (Dotth^2*TM*Math.sin[th))/m
 
-   DDDotPz = -((DotTM*Cos[th))/m) + (Dotth*TM*Math.sin[th))/m
+ DDDotPz = -((DotTM*Cos[th))/m) + (Dotth*TM*Math.sin[th))/m
 
-   DDDDotPz = -((DDotTM*Cos[th))/m) + (Dotth^2*TM*Cos[th))/m +
-   (2*Dotth*DotTM*Math.sin[th))/m +
-   (TM*(a*MM + hM*TM*Math.sin[a))*Math.sin[th))/(Iy*m)
+ DDDDotPz = -((DDotTM*Cos[th))/m) + (Dotth^2*TM*Cos[th))/m +
+ (2*Dotth*DotTM*Math.sin[th))/m +
+ (TM*(a*MM + hM*TM*Math.sin[a))*Math.sin[th))/(Iy*m)
 
-   @author  liuj
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (reviewmoderator)
+ @author  liuj
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (reviewmoderator)
 
-*/
+ */
 public class XZHigherDerivatives extends TypedAtomicActor {
     /** Construct the actor, all parameters take the default value.
      * @param container The TypedCompositeActor this star belongs to
@@ -181,20 +180,20 @@ public class XZHigherDerivatives extends TypedAtomicActor {
         double A = ((DoubleToken) inputA.get(0)).doubleValue();
 
         double D3Px = ((DTh * Tm * Math.cos(Th)) / _mass)
-            + ((DTm * Math.sin(Th)) / _mass);
+                + ((DTm * Math.sin(Th)) / _mass);
 
         double D4Px = (((2.0 * DTh * DTm * Math.cos(Th)) / _mass)
-                + ((Tm * Math.cos(Th) * ((A * _Mm) + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass))
-                + ((DDTm * Math.sin(Th)) / _mass))
-            - ((DTh * DTh * Tm * Math.sin(Th)) / _mass);
+                + ((Tm * Math.cos(Th) * ((A * _Mm) + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass)) + ((DDTm * Math
+                .sin(Th)) / _mass))
+                - ((DTh * DTh * Tm * Math.sin(Th)) / _mass);
 
         double D3Pz = -((DTm * Math.cos(Th)) / _mass)
-            + ((DTh * Tm * Math.sin(Th)) / _mass);
+                + ((DTh * Tm * Math.sin(Th)) / _mass);
 
         double D4Pz = -((DDTm * Math.cos(Th)) / _mass)
-            + ((DTh * DTh * Tm * Math.cos(Th)) / _mass)
-            + ((2.0 * DTh * DTm * Math.sin(Th)) / _mass)
-            + ((Tm * ((A * _Mm) + (_hm * Tm * Math.sin(A))) * Math.sin(Th)) / (_Iy * _mass));
+                + ((DTh * DTh * Tm * Math.cos(Th)) / _mass)
+                + ((2.0 * DTh * DTm * Math.sin(Th)) / _mass)
+                + ((Tm * ((A * _Mm) + (_hm * Tm * Math.sin(A))) * Math.sin(Th)) / (_Iy * _mass));
 
         outputD3Px.broadcast(new DoubleToken(D3Px));
         outputD4Px.broadcast(new DoubleToken(D4Px));
@@ -261,7 +260,10 @@ public class XZHigherDerivatives extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private double _Iy;
+
     private double _hm;
+
     private double _Mm;
+
     private double _mass;
 }

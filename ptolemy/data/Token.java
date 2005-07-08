@@ -1,32 +1,32 @@
 /* Base class for data capsules.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-Added pow() method for integer exponentiation.
-Don't use to represent pure events.
-*/
+ Added pow() method for integer exponentiation.
+ Don't use to represent pure events.
+ */
 package ptolemy.data;
 
 import java.io.Serializable;
@@ -35,55 +35,54 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Token
 
 /**
-   Token is the base class for data capsules.  Tokens are immutable,
-   meaning that their value cannot change after construction.  They have
-   a set of polymorphic methods providing a set of basic arithmetic and
-   logical operations.  Generally, derived classes should override the
-   methods to implement type specific operations that make sense for a
-   given type.  For operations that are non-sensical for a given type,
-   such as division of matrices, the implementation of this base class
-   can be used, which simply throws an exception.
+ Token is the base class for data capsules.  Tokens are immutable,
+ meaning that their value cannot change after construction.  They have
+ a set of polymorphic methods providing a set of basic arithmetic and
+ logical operations.  Generally, derived classes should override the
+ methods to implement type specific operations that make sense for a
+ given type.  For operations that are non-sensical for a given type,
+ such as division of matrices, the implementation of this base class
+ can be used, which simply throws an exception.
 
-   <p> Generally, it is painful to implement both the operation and
-   operationReverse methods of this class.  It is also painful to
-   implement tokens that are automatically converted to other tokens in a
-   consistent fashion.  As such, there are several subclasses of this
-   class that implement these methods and provide a somewhat nicer
-   abstraction.  The ScalarToken derived class is useful for many types
-   that are losslessly convertible to other types and may be associated
-   with units, such as IntToken.  The MatrixToken derived class is useful
-   for implementing matrices of ScalarTokens, such as IntMatrixToken.
-   The AbstractNotConvertible derived class is useful for implementing
-   tokens that are not losslessly convertible to a token in implemented
-   in another class, such as ArrayToken.  Lastly,
-   AbstractConvertibleToken is useful for implementing tokens that are
-   losslessly convertible to a token in another class, but don't have
-   units, such as BooleanToken.
+ <p> Generally, it is painful to implement both the operation and
+ operationReverse methods of this class.  It is also painful to
+ implement tokens that are automatically converted to other tokens in a
+ consistent fashion.  As such, there are several subclasses of this
+ class that implement these methods and provide a somewhat nicer
+ abstraction.  The ScalarToken derived class is useful for many types
+ that are losslessly convertible to other types and may be associated
+ with units, such as IntToken.  The MatrixToken derived class is useful
+ for implementing matrices of ScalarTokens, such as IntMatrixToken.
+ The AbstractNotConvertible derived class is useful for implementing
+ tokens that are not losslessly convertible to a token in implemented
+ in another class, such as ArrayToken.  Lastly,
+ AbstractConvertibleToken is useful for implementing tokens that are
+ losslessly convertible to a token in another class, but don't have
+ units, such as BooleanToken.
 
-   <p> Instances of this base class *should not* be used to represent
-   pure events, i.e., to indicate that an event is present. To represent
-   pure events, it is better to use the EventToken class.  The reasoning
-   is that the type BaseType.GENERAL is reserved to represent types which
-   the type system cannot represent exactly.  Using the EventToken class,
-   and the type BaseType.EVENT allows typesafe use of pure events.
+ <p> Instances of this base class *should not* be used to represent
+ pure events, i.e., to indicate that an event is present. To represent
+ pure events, it is better to use the EventToken class.  The reasoning
+ is that the type BaseType.GENERAL is reserved to represent types which
+ the type system cannot represent exactly.  Using the EventToken class,
+ and the type BaseType.EVENT allows typesafe use of pure events.
 
-   @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Hylands,
-   Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
+ @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Hylands,
+ Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
 
-   @see ScalarToken
-   @see AbstractConvertibleToken
-   @see AbstractNotConvertibleToken
-   @see MatrixToken
-*/
+ @see ScalarToken
+ @see AbstractConvertibleToken
+ @see AbstractNotConvertibleToken
+ @see MatrixToken
+ */
 public class Token implements Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -98,7 +97,7 @@ public class Token implements Serializable {
      */
     public Token add(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("add", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the sum of this token
@@ -111,7 +110,7 @@ public class Token implements Serializable {
      */
     public Token addReverse(Token leftArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("addReverse",
-                                                 this, leftArgument));
+                this, leftArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -124,7 +123,7 @@ public class Token implements Serializable {
      */
     public Token divide(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("divide", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument
@@ -139,7 +138,7 @@ public class Token implements Serializable {
     public Token divideReverse(Token leftArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("divideReverse",
-                                                 this, leftArgument));
+                this, leftArgument));
     }
 
     /** Return the type of this token.
@@ -185,7 +184,7 @@ public class Token implements Serializable {
     public BooleanToken isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("isCloseTo", this,
-                                                 token));
+                token));
     }
 
     /** Test for equality of the values of this Token and the argument
@@ -199,7 +198,7 @@ public class Token implements Serializable {
     public BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("isEqualTo", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -212,7 +211,7 @@ public class Token implements Serializable {
      */
     public Token modulo(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -227,7 +226,7 @@ public class Token implements Serializable {
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("moduloReverse",
-                                                 this, leftArgument));
+                this, leftArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -240,7 +239,7 @@ public class Token implements Serializable {
      */
     public Token multiply(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("multiply", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument
@@ -254,8 +253,8 @@ public class Token implements Serializable {
      */
     public Token multiplyReverse(Token leftArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage(
-                                                 "multiplyReverse", this, leftArgument));
+        throw new IllegalActionException(notSupportedMessage("multiplyReverse",
+                this, leftArgument));
     }
 
     /** Return a string with an error message that states that
@@ -280,14 +279,13 @@ public class Token implements Serializable {
      *  converted to.
      *  @return A string error message.
      */
-    public static String notSupportedIncomparableConversionMessage(
-            Token token, String typeString) {
+    public static String notSupportedIncomparableConversionMessage(Token token,
+            String typeString) {
         // We use this method to factor out a very common message
         return ("Conversion is not supported from "
                 + token.getClass().getName() + " '" + token.toString()
                 + "' to the type " + typeString
-                + " because the type of the token is higher "
-                + "or incomparable with the given type.");
+                + " because the type of the token is higher " + "or incomparable with the given type.");
     }
 
     /** Return a string with an error message that states that the
@@ -304,8 +302,9 @@ public class Token implements Serializable {
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return (operation + " method not supported between "
-                + firstToken.getClass().getName() + " '" + firstToken.toString()
-                + "' and " + secondToken.getClass().getName() + " '"
+                + firstToken.getClass().getName() + " '"
+                + firstToken.toString() + "' and "
+                + secondToken.getClass().getName() + " '"
                 + secondToken.toString() + "' because the types are incomparable.");
     }
 
@@ -321,8 +320,9 @@ public class Token implements Serializable {
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return (operation + " operation not supported between "
-                + firstToken.getClass().getName() + " '" + firstToken.toString()
-                + "' and " + secondToken.getClass().getName() + " '"
+                + firstToken.getClass().getName() + " '"
+                + firstToken.toString() + "' and "
+                + secondToken.getClass().getName() + " '"
                 + secondToken.toString() + "'");
     }
 
@@ -335,7 +335,7 @@ public class Token implements Serializable {
     public Token one() throws IllegalActionException {
         throw new IllegalActionException(
                 "Multiplicative identity not supported on "
-                + this.getClass().getName() + ".");
+                        + this.getClass().getName() + ".");
     }
 
     /** Return a new token computed as follows:
@@ -396,7 +396,7 @@ public class Token implements Serializable {
      */
     public Token subtract(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("subtract", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -409,8 +409,8 @@ public class Token implements Serializable {
      */
     public Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage(
-                                                 "subtractReverse", this, leftArgument));
+        throw new IllegalActionException(notSupportedMessage("subtractReverse",
+                this, leftArgument));
     }
 
     /** Return the value of this token as a string that can be parsed

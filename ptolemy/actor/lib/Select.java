@@ -1,31 +1,31 @@
 /* A polymorphic select, which routes specified input channels to the output.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-Code review issue: This actor reads data in prefire.
-*/
+ Code review issue: This actor reads data in prefire.
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -36,45 +36,44 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Select
 
 /**
-   A polymorphic select, which routes specified input channels to the
-   output.  This actor has two input ports, the <i>input</i> port for
-   data, and the <i>control</i> port to select which input channel to
-   read.  In an iteration, if an input token is available at the
-   <i>control</i> input, that token is read, and its value is noted.  Its
-   value specifies the input channel that should be read next. If an
-   input token is available on the specified channel of the <i>input</i>
-   port, then that token is read and sent to the output.
+ A polymorphic select, which routes specified input channels to the
+ output.  This actor has two input ports, the <i>input</i> port for
+ data, and the <i>control</i> port to select which input channel to
+ read.  In an iteration, if an input token is available at the
+ <i>control</i> input, that token is read, and its value is noted.  Its
+ value specifies the input channel that should be read next. If an
+ input token is available on the specified channel of the <i>input</i>
+ port, then that token is read and sent to the output.
 
-   <p> The actor indicates a willingness to fire in its prefire() method
-   if there is an input available on the channel specified by the most
-   recently seen token on the <i>control</i> port.  If no token has ever
-   been received on the <i>control</i> port, then channel zero is assumed
-   to be the one to read.  If the value of the most recently received
-   token on the <i>control</i> port is out of range (less than zero, or
-   greater than or equal to the width of the input), then the actor will
-   not fire() (although it will continue to consume tokens on the
-   <i>control</i> port in its prefire() method).
+ <p> The actor indicates a willingness to fire in its prefire() method
+ if there is an input available on the channel specified by the most
+ recently seen token on the <i>control</i> port.  If no token has ever
+ been received on the <i>control</i> port, then channel zero is assumed
+ to be the one to read.  If the value of the most recently received
+ token on the <i>control</i> port is out of range (less than zero, or
+ greater than or equal to the width of the input), then the actor will
+ not fire() (although it will continue to consume tokens on the
+ <i>control</i> port in its prefire() method).
 
-   <p> This actor is similar to the Multiplexor actor, except that it
-   never discards input tokens.  Tokens on channels that are not selected
-   are not consumed.
+ <p> This actor is similar to the Multiplexor actor, except that it
+ never discards input tokens.  Tokens on channels that are not selected
+ are not consumed.
 
-   <p> Note that in the DE domain, where this actor is commonly used, if
-   a new value is given to the <i>control</i> port, then all previously
-   unread input tokens on the specified input channel will be read at the
-   same firing time, in the order in which they arrived.
+ <p> Note that in the DE domain, where this actor is commonly used, if
+ a new value is given to the <i>control</i> port, then all previously
+ unread input tokens on the specified input channel will be read at the
+ same firing time, in the order in which they arrived.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (liuj)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (liuj)
+ */
 public class Select extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.

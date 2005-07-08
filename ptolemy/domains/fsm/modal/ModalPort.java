@@ -1,30 +1,30 @@
 /* An IOPort for modal models.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.fsm.modal;
 
 import java.util.Iterator;
@@ -40,23 +40,22 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ModalPort
 
 /**
-   A port for modal models.  This port mirrors certain changes to it in
-   the ports of the controller and refinements of the modal model. It is
-   designed to work closely with RefinementPort, since changes to the
-   ports can be initiated in either class.
+ A port for modal models.  This port mirrors certain changes to it in
+ the ports of the controller and refinements of the modal model. It is
+ designed to work closely with RefinementPort, since changes to the
+ ports can be initiated in either class.
 
-   @see RefinementPort
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (liuxj)
-*/
+ @see RefinementPort
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (liuxj)
+ */
 public class ModalPort extends TypedIOPort {
     /** Construct a port in the given workspace.
      *  @param workspace The workspace.
@@ -339,8 +338,8 @@ public class ModalPort extends TypedIOPort {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
-    public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(Entity container) throws IllegalActionException,
+            NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -370,7 +369,7 @@ public class ModalPort extends TypedIOPort {
 
                 // Remove the relation as well.
                 ComponentRelation relation = (ComponentRelation) model
-                    .getRelation(getName() + "Relation");
+                        .getRelation(getName() + "Relation");
 
                 if (relation != null) {
                     relation.setContainer(null);
@@ -477,8 +476,8 @@ public class ModalPort extends TypedIOPort {
      *  @exception NameDuplicationException If there is already a port
      *   with the same name in the container.
      */
-    public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -600,7 +599,7 @@ public class ModalPort extends TypedIOPort {
         if (!(container instanceof ModalModel) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "ModalPort can only be contained by ModalModel objects. "
-                    + "The container was: " + container);
+                            + "The container was: " + container);
         }
     }
 }

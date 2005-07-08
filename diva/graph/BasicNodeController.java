@@ -1,31 +1,31 @@
 /*
-  @Copyright (c) 1998-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package diva.graph;
 
 import java.awt.geom.Point2D;
@@ -41,7 +41,6 @@ import diva.canvas.FigureLayer;
 import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionModel;
 
-
 /**
  * A basic node controller implementation, intended for use
  * as a controller for graphs containing only one node type.
@@ -54,7 +53,9 @@ import diva.canvas.interactor.SelectionModel;
  */
 public class BasicNodeController implements NodeController {
     private Interactor _interactor;
+
     private NodeRenderer _renderer;
+
     private GraphController _controller;
 
     /**
@@ -72,7 +73,8 @@ public class BasicNodeController implements NodeController {
      */
     public void addNode(Object node) {
         // FIXME this may cause a classcast exception.
-        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller
+                .getGraphModel();
         model.addNode(_controller, node, model.getRoot());
         drawNode(node);
     }
@@ -81,7 +83,8 @@ public class BasicNodeController implements NodeController {
      * at the given location.
      */
     public void addNode(Object node, double x, double y) {
-        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller
+                .getGraphModel();
         model.addNode(_controller, node, model.getRoot());
 
         Figure nf = drawNode(node);
@@ -93,7 +96,8 @@ public class BasicNodeController implements NodeController {
      * and place it where convenient
      */
     public void addNode(Object node, Object parent) {
-        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller
+                .getGraphModel();
         model.addNode(_controller, node, parent);
         drawNode(node, parent);
     }
@@ -103,7 +107,8 @@ public class BasicNodeController implements NodeController {
      * and render it at the given location relative to its parent.
      */
     public void addNode(Object node, Object parent, double x, double y) {
-        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller
+                .getGraphModel();
         model.addNode(_controller, node, parent);
 
         Figure nf = drawNode(node, parent);
@@ -178,11 +183,12 @@ public class BasicNodeController implements NodeController {
         if (center != null) {
             // place the new figure where the old one was, if there
             // was an old figure.
-            CanvasUtilities.translateTo(newFigure, center.getX(), center.getY());
+            CanvasUtilities
+                    .translateTo(newFigure, center.getX(), center.getY());
         }
 
         _controller.dispatch(new GraphViewEvent(this,
-                                     GraphViewEvent.NODE_DRAWN, node));
+                GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }
@@ -202,7 +208,7 @@ public class BasicNodeController implements NodeController {
         _drawChildren(node);
 
         _controller.dispatch(new GraphViewEvent(this,
-                                     GraphViewEvent.NODE_DRAWN, node));
+                GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }
@@ -233,7 +239,8 @@ public class BasicNodeController implements NodeController {
      */
     public void removeNode(Object node) {
         // FIXME why isn't this symmetric with addNode?
-        MutableGraphModel model = (MutableGraphModel) _controller.getGraphModel();
+        MutableGraphModel model = (MutableGraphModel) _controller
+                .getGraphModel();
 
         // clearing the nodes is responsible for clearing any edges that are
         // connected

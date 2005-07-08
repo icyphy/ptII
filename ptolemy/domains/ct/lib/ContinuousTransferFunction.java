@@ -1,30 +1,30 @@
 /* Transfer function in the CT domain.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.lib;
 
 import java.util.Iterator;
@@ -47,45 +47,44 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousTransferFunction
 
 /**
-   A transfer function in the continuous time domain.
-   This actor implements a transfer function where the single input (u) and
-   single output (y) can be expressed in (Laplace) transfer function
-   form as the following equation:
-   <pre>
-   y(s)    b(1)*s^(m-1) + b(2)*s^(m-2) + ... + b(m)
-   ----- = -------------------------------------------
-   u(s)    a(1)*s^(n-1) + a(2)*s^(n-2) + ... + a(n)
-   </pre>
-   where m and n are the number of numerator and denominator coefficients,
-   respectively. This actors has two parameters -- numerator and denominator --
-   containing the coefficients of the numerator and denominator in
-   descending powers of s. These coefficients are double numbers.
-   The order of the denominator (n) must be greater
-   than or equal to the order of the numerator (m).
-   <p>
-   This actor extends TypedCompositeActor and works as a higher-order function.
-   Whenever the parameters are changed, the actor will build a transparent
-   subsystem inside it using integrators, adders, and scales. This is called
-   a realization of the transfer function. Notice that there are infinite
-   number of realizations of a transfer function, and they are equivalent if and
-   only if the initial conditions are all zero. Here we choose the controllable
-   canonical form and preset all initial states of the integrators to zero.
-   If you need to set arbitrary initial
-   conditions you have to use the state-space representation, for example,
-   use the LinearStateSpace actor.
+ A transfer function in the continuous time domain.
+ This actor implements a transfer function where the single input (u) and
+ single output (y) can be expressed in (Laplace) transfer function
+ form as the following equation:
+ <pre>
+ y(s)    b(1)*s^(m-1) + b(2)*s^(m-2) + ... + b(m)
+ ----- = -------------------------------------------
+ u(s)    a(1)*s^(n-1) + a(2)*s^(n-2) + ... + a(n)
+ </pre>
+ where m and n are the number of numerator and denominator coefficients,
+ respectively. This actors has two parameters -- numerator and denominator --
+ containing the coefficients of the numerator and denominator in
+ descending powers of s. These coefficients are double numbers.
+ The order of the denominator (n) must be greater
+ than or equal to the order of the numerator (m).
+ <p>
+ This actor extends TypedCompositeActor and works as a higher-order function.
+ Whenever the parameters are changed, the actor will build a transparent
+ subsystem inside it using integrators, adders, and scales. This is called
+ a realization of the transfer function. Notice that there are infinite
+ number of realizations of a transfer function, and they are equivalent if and
+ only if the initial conditions are all zero. Here we choose the controllable
+ canonical form and preset all initial states of the integrators to zero.
+ If you need to set arbitrary initial
+ conditions you have to use the state-space representation, for example,
+ use the LinearStateSpace actor.
 
-   @author Jie Liu
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.domains.ct.kernel.CTBaseIntegrator
-*/
+ @author Jie Liu
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.domains.ct.kernel.CTBaseIntegrator
+ */
 public class ContinuousTransferFunction extends TypedCompositeActor {
     /** Construct the composite actor with a name and a container.
      * @see ptolemy.domains.ct.kernel.CTBaseIntegrator
@@ -114,12 +113,11 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         setClassName("ptolemy.domains.ct.lib.ContinuousTransferFunction");
 
         // icon
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
-                + "<text x=\"-25\" y=\"0\" " + "style=\"font-size:14\">\n"
-                + "b(s)/a(s) \n" + "</text>\n" + "style=\"fill:blue\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-25\" y=\"0\" "
+                + "style=\"font-size:14\">\n" + "b(s)/a(s) \n" + "</text>\n"
+                + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -245,7 +243,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         if (m > n) {
             throw new IllegalActionException(this,
                     "The order of the denominator must be greater than or "
-                    + "equal to the order of the numerator.");
+                            + "equal to the order of the numerator.");
         }
 
         // Add leading zeros to bRow such that b has the same length as a.
@@ -285,11 +283,11 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                     // The integrator names are d0x, d1x, etc.
                     integrators[i] = new Integrator(this, "Integrator" + i);
                     feedback[i] = new Scale(this, "Feedback" + i);
-                    feedback[i].factor.setToken(new DoubleToken(
-                                                        -a[i + 1] / a[0]));
+                    feedback[i].factor.setToken(new DoubleToken(-a[i + 1]
+                            / a[0]));
                     feedforward[i] = new Scale(this, "Feedforward" + i);
                     feedforward[i].factor.setToken(new DoubleToken(
-                                                           (b[i + 1] - (d * a[i + 1])) / a[0]));
+                            (b[i + 1] - (d * a[i + 1])) / a[0]));
 
                     // connections
                     nodes[i] = (IORelation) connect(integrators[i].output,

@@ -1,30 +1,30 @@
 /* The receiver for the SR domain.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sr.kernel;
 
 import ptolemy.actor.AbstractReceiver;
@@ -34,64 +34,63 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SRReceiver
 
 /**
 
-The receiver for the Synchronous Reactive (SR) domain.  This
-receiver is a mailbox with capacity one.  The status of this
-receiver can be known (either known to contain a token or known not
-to contain a token) or unknown.  The isKnown() method returns true
-if the receiver has known status.  If the receiver has known
-status, the hasToken() method returns whether the receiver has a
-token.  If the receiver has unknown status, the hasToken() method
-will throw an UnknownTokenException.
+ The receiver for the Synchronous Reactive (SR) domain.  This
+ receiver is a mailbox with capacity one.  The status of this
+ receiver can be known (either known to contain a token or known not
+ to contain a token) or unknown.  The isKnown() method returns true
+ if the receiver has known status.  If the receiver has known
+ status, the hasToken() method returns whether the receiver has a
+ token.  If the receiver has unknown status, the hasToken() method
+ will throw an UnknownTokenException.
 
-<p> In the course of an iteration in SR, receivers can change from
-unknown status to known status, but never the other way around, as
-shown by the transitions in the diagram below.
+ <p> In the course of an iteration in SR, receivers can change from
+ unknown status to known status, but never the other way around, as
+ shown by the transitions in the diagram below.
 
-<pre>
-known values:     absent     value (present)
-^         ^
-|         |
-\       /
-\     /
-|   |
-unknown
-</pre>
+ <pre>
+ known values:     absent     value (present)
+ ^         ^
+ |         |
+ \       /
+ \     /
+ |   |
+ unknown
+ </pre>
 
-<p> The status is automatically set to known when the put() method
-or clear() method is called.  Once a receiver becomes known, its
-value (or lack of a value if it is absent) cannot change until the
-next call to reset().  The SRDirector calls reset() between
-iterations.  The hasRoom() method returns true if the state of the
-receiver is unknown or if it is known but not absent, since only in
-these circumstances can it accept a token. Attempting to change the
-status of a receiver from present to absent or from absent to
-present will result in an exception.  An exception will also be
-thrown if a receiver has present status and it receives a token
-that is not the same as the one it already contains (as determined
-by the isEqualTo() method of the token).  Thus, for an actor to be
-valid in SR, a firing must produce the same outputs given the same
-inputs (in a given iteration).
+ <p> The status is automatically set to known when the put() method
+ or clear() method is called.  Once a receiver becomes known, its
+ value (or lack of a value if it is absent) cannot change until the
+ next call to reset().  The SRDirector calls reset() between
+ iterations.  The hasRoom() method returns true if the state of the
+ receiver is unknown or if it is known but not absent, since only in
+ these circumstances can it accept a token. Attempting to change the
+ status of a receiver from present to absent or from absent to
+ present will result in an exception.  An exception will also be
+ thrown if a receiver has present status and it receives a token
+ that is not the same as the one it already contains (as determined
+ by the isEqualTo() method of the token).  Thus, for an actor to be
+ valid in SR, a firing must produce the same outputs given the same
+ inputs (in a given iteration).
 
-<p> Since the value of a receiver cannot change (once it is known)
-in the course of an iteration, tokens need not be consumed.  A
-receiver retains its token until the director calls the reset()
-method at the beginning of the next iteration, which resets the
-receiver to have unknown status.  There is no way for an actor to
-reset a receiver to have unknown status.
+ <p> Since the value of a receiver cannot change (once it is known)
+ in the course of an iteration, tokens need not be consumed.  A
+ receiver retains its token until the director calls the reset()
+ method at the beginning of the next iteration, which resets the
+ receiver to have unknown status.  There is no way for an actor to
+ reset a receiver to have unknown status.
 
-@author Paul Whitaker, contributor: Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0
-@Pt.ProposedRating Green (pwhitake)
-@Pt.AcceptedRating Green (pwhitake)
-@see ptolemy.domains.sr.kernel.SRDirector
-*/
+ @author Paul Whitaker, contributor: Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Green (pwhitake)
+ @Pt.AcceptedRating Green (pwhitake)
+ @see ptolemy.domains.sr.kernel.SRDirector
+ */
 public class SRReceiver extends AbstractReceiver implements StateReceiver {
     /** Construct an SRReceiver with unknown state and the given director.
      *  @param director The director of this receiver.
@@ -116,7 +115,7 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
         if (isKnown() && hasToken()) {
             throw new IllegalActionException(
                     "SRReceiver: Cannot transition from a present state "
-                    + "to an absent state.");
+                            + "to an absent state.");
         }
 
         // Ivan Jeukens: Signal the SR director to increment the
@@ -221,8 +220,8 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
      */
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (!isKnown()) {
-            throw new UnknownTokenException(getContainer(),
-                    "hasToken(" + numberOfTokens
+            throw new UnknownTokenException(getContainer(), "hasToken("
+                    + numberOfTokens
                     + ") called on SRReceiver with unknown state.");
         }
 
@@ -299,7 +298,7 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
             if (!hasToken()) {
                 throw new IllegalOutputException(getContainer(),
                         "SRReceiver cannot transition from an absent state "
-                        + "to a present state.  Call reset().");
+                                + "to a present state.  Call reset().");
             } else {
                 try {
                     if ((token.getType().equals(_token.getType()))
@@ -308,7 +307,7 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
                     } else {
                         throw new IllegalOutputException(getContainer(),
                                 "SRReceiver cannot receive two tokens "
-                                + "that differ.");
+                                        + "that differ.");
                     }
                 } catch (IllegalActionException ex) {
                     // Should never happen.
@@ -353,6 +352,7 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private boolean _lastKnownStatus;
+
     private Token _cachedToken;
 
     /** A flag indicating whether this receiver has known state.  A receiver

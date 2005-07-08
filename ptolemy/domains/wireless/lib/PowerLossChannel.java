@@ -1,30 +1,30 @@
 /* A channel with a distance-dependent power loss.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.data.DoubleToken;
@@ -40,70 +40,69 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PowerLossChannel
 
 /**
-   This is a model of a wireless channel with a specified power propagation
-   formula. The power propagation is given as an expression that is evaluated
-   and then multiplied by the power field of the transmit properties before
-   delivery to the receiver. For convenience, a variable named "distance"
-   is available and equal to the distance between the transmitter and the
-   receiver when the power propagation formula is evaluated.  Thus, the
-   expression can depend on this distance. The value of the power field should
-   be interpreted as power at the transmitter but power density at the receiver.
-   A receiver may multiply the power density with its efficiency and an
-   area(typically the antenna area). A receiver can then use the resulting
-   power to compare against a detectable threshold, or to determine
-   signal-to-interference ratio, for example.
-   <p>
-   The default value of <i>powerPropagationFactor</i> is
-   <pre>
-   1.0 / (4 * PI * distance * distance).
-   </pre>
-   This assumes that the transmit power is uniformly distributed
-   on a sphere of radius <i>distance</i>. The result of multiplying
-   this by a transmit power is a power density (power per unit area).
-   The receiver should multiply this power density by the area of the
-   sensor it uses to capture the energy (such as antenna area) and
-   also an efficiency factor which represents how effectively it capture
-   the energy.
-   <p>
-   The power field of the transmit properties can be supplied by
-   the transmitter as a record with a <i>power</i> field of type double.
-   The default value provided by this channel is Infinity, which when
-   multiplied by any positive constant will yield Infinity, which
-   presumably will be above any threshold. Thus, the default behavior
-   is to encounter no power loss and no limits to communication due
-   to power.
-   <p>
-   In addition, this channel can have a specified limited transmission
-   range. If a transmission range less than Infinity (the default)
-   is specified, then receivers outside the specified range will
-   not be notified of transmission, irrespective of power loss.
-   The transmission range can be specified in one of two ways.
-   Either it is the value of the <i>range</i> field in the
-   <i>defaultProperties</i> parameter (a record) of this
-   channel, or it is provided by the transmitter on each call to
-   transmit() as a property argument.  To use the latter mechanism,
-   it is necessary that the property token be an instance of RecordToken
-   with a field named "range" that can be converted to a double
-   (i.e., it can be a double, an int, or a byte).
-   The default value for <i>range</i> is Infinity, which
-   indicates that by default, there is no range limit.
-   <p>
-   Any receiver that is within the specified range when transmit()
-   is called will receive the transmission, unless the <i>lossProbability</i>
-   parameter is set to greater than zero.
+ This is a model of a wireless channel with a specified power propagation
+ formula. The power propagation is given as an expression that is evaluated
+ and then multiplied by the power field of the transmit properties before
+ delivery to the receiver. For convenience, a variable named "distance"
+ is available and equal to the distance between the transmitter and the
+ receiver when the power propagation formula is evaluated.  Thus, the
+ expression can depend on this distance. The value of the power field should
+ be interpreted as power at the transmitter but power density at the receiver.
+ A receiver may multiply the power density with its efficiency and an
+ area(typically the antenna area). A receiver can then use the resulting
+ power to compare against a detectable threshold, or to determine
+ signal-to-interference ratio, for example.
+ <p>
+ The default value of <i>powerPropagationFactor</i> is
+ <pre>
+ 1.0 / (4 * PI * distance * distance).
+ </pre>
+ This assumes that the transmit power is uniformly distributed
+ on a sphere of radius <i>distance</i>. The result of multiplying
+ this by a transmit power is a power density (power per unit area).
+ The receiver should multiply this power density by the area of the
+ sensor it uses to capture the energy (such as antenna area) and
+ also an efficiency factor which represents how effectively it capture
+ the energy.
+ <p>
+ The power field of the transmit properties can be supplied by
+ the transmitter as a record with a <i>power</i> field of type double.
+ The default value provided by this channel is Infinity, which when
+ multiplied by any positive constant will yield Infinity, which
+ presumably will be above any threshold. Thus, the default behavior
+ is to encounter no power loss and no limits to communication due
+ to power.
+ <p>
+ In addition, this channel can have a specified limited transmission
+ range. If a transmission range less than Infinity (the default)
+ is specified, then receivers outside the specified range will
+ not be notified of transmission, irrespective of power loss.
+ The transmission range can be specified in one of two ways.
+ Either it is the value of the <i>range</i> field in the
+ <i>defaultProperties</i> parameter (a record) of this
+ channel, or it is provided by the transmitter on each call to
+ transmit() as a property argument.  To use the latter mechanism,
+ it is necessary that the property token be an instance of RecordToken
+ with a field named "range" that can be converted to a double
+ (i.e., it can be a double, an int, or a byte).
+ The default value for <i>range</i> is Infinity, which
+ indicates that by default, there is no range limit.
+ <p>
+ Any receiver that is within the specified range when transmit()
+ is called will receive the transmission, unless the <i>lossProbability</i>
+ parameter is set to greater than zero.
 
-   <p>
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ <p>
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class PowerLossChannel extends LimitedRangeChannel {
     /** Construct a channel with the given name and container.
      *  The container argument must not be null, or a
@@ -127,14 +126,8 @@ public class PowerLossChannel extends LimitedRangeChannel {
         // the range field. This must be done after setting the value
         // above, because the value in the base class is not a subtype
         // of this specified type.
-        String[] labels = {
-            "range",
-            "power"
-        };
-        Type[] types = {
-            BaseType.DOUBLE,
-            BaseType.DOUBLE
-        };
+        String[] labels = { "range", "power" };
+        Type[] types = { BaseType.DOUBLE, BaseType.DOUBLE };
         RecordType type = new RecordType(labels, types);
 
         // Setting an upper bound allows the addition of fields.
@@ -142,8 +135,8 @@ public class PowerLossChannel extends LimitedRangeChannel {
 
         powerPropagationFactor = new Parameter(this, "powerPropagationFactor");
         powerPropagationFactor.setTypeEquals(BaseType.DOUBLE);
-        powerPropagationFactor.setExpression(
-                "1.0 / (4 * PI * distance * distance)");
+        powerPropagationFactor
+                .setExpression("1.0 / (4 * PI * distance * distance)");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -193,15 +186,12 @@ public class PowerLossChannel extends LimitedRangeChannel {
                 .getToken()).doubleValue();
 
         // Calculate the receive power.
-        double receivePower = transmitPower.doubleValue() * powerPropagationFactorValue;
+        double receivePower = transmitPower.doubleValue()
+                * powerPropagationFactorValue;
 
         // Create a record token with the receive power.
-        String[] names = {
-            "power"
-        };
-        Token[] values = {
-            new DoubleToken(receivePower)
-        };
+        String[] names = { "power" };
+        Token[] values = { new DoubleToken(receivePower) };
         RecordToken newPower = new RecordToken(names, values);
 
         // Merge the receive power into the merged token.

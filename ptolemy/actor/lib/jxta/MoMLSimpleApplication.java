@@ -1,31 +1,31 @@
 /* An application that executes non-graphical
-   models specified on the command line.
+ models specified on the command line.
 
-   Copyright (c) 2001-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.jxta;
 
 import java.io.File;
@@ -43,20 +43,19 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MoMLSimpleApplication
 
 /** A simple application that reads in a .xml file as a command
-    line argument and modify it.
+ line argument and modify it.
 
 
-    @author Yang Zhao
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (eal)
-*/
+ @author Yang Zhao
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
     /** A Nullary constructor is necessary so that we can extends this
      *  base class with a subclass
@@ -88,8 +87,8 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
-        toplevel = (CompositeActor) parser.parse(null,
-                new File(xmlFilename).toURL());
+        toplevel = (CompositeActor) parser.parse(null, new File(xmlFilename)
+                .toURL());
 
         _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
         toplevel.setManager(_manager);
@@ -139,20 +138,21 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
      */
     public static void main(String[] args) {
         try {
-            MoMLSimpleApplication simpleApplication = new MoMLSimpleApplication(args[0]);
+            MoMLSimpleApplication simpleApplication = new MoMLSimpleApplication(
+                    args[0]);
             System.out.println("open a new simpleApplication");
 
             StringBuffer moml = new StringBuffer(
                     "<group><entity  name=\"Const2\" class=\"ptolemy.actor.lib.Const\">");
-            moml.append(
-                    "<property name=\"value\" class=\"ptolemy.data.expr.Parameter\" value=\"2\">");
+            moml
+                    .append("<property name=\"value\" class=\"ptolemy.data.expr.Parameter\" value=\"2\">");
             moml.append("</property>");
-            moml.append(
-                    "<port name=\"in\" class=\"ptolemy.actor.TypedIOPort\">");
+            moml
+                    .append("<port name=\"in\" class=\"ptolemy.actor.TypedIOPort\">");
             moml.append("<property name=\"input\"/>");
             moml.append("</port>");
-            moml.append(
-                    "<port name=\"out\" class=\"ptolemy.actor.TypedIOPort\">");
+            moml
+                    .append("<port name=\"out\" class=\"ptolemy.actor.TypedIOPort\">");
             moml.append("<property name=\"output\"/>");
             moml.append("</port>");
             moml.append("</entity></group>");
@@ -207,5 +207,6 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Manager _manager = null;
+
     private NamedObj _context;
 }

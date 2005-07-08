@@ -1,30 +1,30 @@
 /* The graph controller for FSM models.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.fsm;
 
 import java.awt.Toolkit;
@@ -73,21 +73,20 @@ import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphController
 
 /**
-   A Graph Controller for FSM models.  This controller allows states to be
-   dragged and dropped onto its graph. Arcs can be created by
-   control-clicking and dragging from one state to another.
+ A Graph Controller for FSM models.  This controller allows states to be
+ dragged and dropped onto its graph. Arcs can be created by
+ control-clicking and dragging from one state to another.
 
-   @author Steve Neuendorffer, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class FSMGraphController extends FSMViewerGraphController {
     /** Create a new basic controller with default
      *  terminal and edge interactors.
@@ -115,12 +114,14 @@ public class FSMGraphController extends FSMViewerGraphController {
         diva.gui.GUIUtilities.addMenuItem(menu, _newInOutPortAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInOutPortAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
-        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputMultiportAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar,
+                _newInputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar,
                 _newOutputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInOutMultiportAction);
-        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInOutMultiportAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar,
+                _newInOutMultiportAction);
 
         // Add an item that adds new states.
         menu.addSeparator();
@@ -171,7 +172,7 @@ public class FSMGraphController extends FSMViewerGraphController {
         // because it is a diva method.
         super.initializeInteraction();
 
-        /* GraphPane pane = */ getGraphPane();
+        /* GraphPane pane = */getGraphPane();
 
         // Add a menu command to configure the ports.
         _portDialogFactory = new PortDialogFactory();
@@ -186,7 +187,7 @@ public class FSMGraphController extends FSMViewerGraphController {
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor) _stateController.getNodeInteractor())
-            .addInteractor(_linkCreator);
+                .addInteractor(_linkCreator);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -224,31 +225,38 @@ public class FSMGraphController extends FSMViewerGraphController {
      *  http://lists.apple.com/archives/java-dev User: archives,
      *  passwd: archives
      */
-    private MouseFilter _shortcutFilter = new MouseFilter(InputEvent.BUTTON1_MASK,
-            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+    private MouseFilter _shortcutFilter = new MouseFilter(
+            InputEvent.BUTTON1_MASK, Toolkit.getDefaultToolkit()
+                    .getMenuShortcutKeyMask());
 
     /** Action for creating a new input port. */
-    private Action _newInputPortAction = new NewPortAction(ExternalIOPortController._GENERIC_INPUT,
-            "New input port", KeyEvent.VK_I);
+    private Action _newInputPortAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_INPUT, "New input port",
+            KeyEvent.VK_I);
 
     /** Action for creating a new output port. */
-    private Action _newOutputPortAction = new NewPortAction(ExternalIOPortController._GENERIC_OUTPUT,
-            "New output port", KeyEvent.VK_O);
+    private Action _newOutputPortAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_OUTPUT, "New output port",
+            KeyEvent.VK_O);
 
     /** Action for creating a new in/out port. */
-    private Action _newInOutPortAction = new NewPortAction(ExternalIOPortController._GENERIC_INOUT,
-            "New input/output port", KeyEvent.VK_P);
+    private Action _newInOutPortAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_INOUT, "New input/output port",
+            KeyEvent.VK_P);
 
     /** Action for creating a new input multiport. */
-    private Action _newInputMultiportAction = new NewPortAction(ExternalIOPortController._GENERIC_INPUT_MULTIPORT,
+    private Action _newInputMultiportAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_INPUT_MULTIPORT,
             "New input multiport", KeyEvent.VK_N);
 
     /** Action for creating a new output multiport. */
-    private Action _newOutputMultiportAction = new NewPortAction(ExternalIOPortController._GENERIC_OUTPUT_MULTIPORT,
+    private Action _newOutputMultiportAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_OUTPUT_MULTIPORT,
             "New output multiport", KeyEvent.VK_U);
 
     /** Action for creating a new in/out multiport. */
-    private Action _newInOutMultiportAction = new NewPortAction(ExternalIOPortController._GENERIC_INOUT_MULTIPORT,
+    private Action _newInOutMultiportAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_INOUT_MULTIPORT,
             "New input/output multiport", KeyEvent.VK_T);
 
     /** The port dialog factory. */
@@ -297,10 +305,10 @@ public class FSMGraphController extends FSMViewerGraphController {
                 Site tailSite;
 
                 // Temporary sites.  One of these will get removed later.
-                headSite = new AutonomousSite(layer, event.getLayerX(),
-                        event.getLayerY());
-                tailSite = new AutonomousSite(layer, event.getLayerX(),
-                        event.getLayerY());
+                headSite = new AutonomousSite(layer, event.getLayerX(), event
+                        .getLayerY());
+                tailSite = new AutonomousSite(layer, event.getLayerX(), event
+                        .getLayerY());
 
                 // Render the edge.
                 Connector c = getEdgeController(link).render(link, layer,
@@ -308,8 +316,8 @@ public class FSMGraphController extends FSMViewerGraphController {
 
                 // get the actual attach site.
                 tailSite = getEdgeController(link).getConnectorTarget()
-                    .getTailSite(c, source,
-                            event.getLayerX(), event.getLayerY());
+                        .getTailSite(c, source, event.getLayerX(),
+                                event.getLayerY());
 
                 if (tailSite == null) {
                     throw new RuntimeException("Invalid connector target: "
@@ -343,15 +351,16 @@ public class FSMGraphController extends FSMViewerGraphController {
             super("New State");
             putValue("tooltip", "New State");
 
-            NodeRenderer renderer = new StateController.StateRenderer(getGraphModel());
+            NodeRenderer renderer = new StateController.StateRenderer(
+                    getGraphModel());
             Figure figure = renderer.render(_prototypeState);
 
             // Standard toolbar icons are 25x25 pixels.
             FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
             putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             putValue("tooltip", "New State");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_W));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+                    KeyEvent.VK_W));
         }
 
         /** Execute the action. */
@@ -398,7 +407,7 @@ public class FSMGraphController extends FSMViewerGraphController {
             // the same object.
             try {
                 LibraryAttribute attribute = (LibraryAttribute) toplevel
-                    .getAttribute("_library", LibraryAttribute.class);
+                        .getAttribute("_library", LibraryAttribute.class);
 
                 if (attribute != null) {
                     CompositeEntity library = attribute.getLibrary();

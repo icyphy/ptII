@@ -1,87 +1,86 @@
 /* Interface for attributes that can have their values externally set.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.kernel.util;
 
 import java.io.Serializable;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// Settable
 
 /**
-   This is an interface for attributes that can have their values
-   externally set.  An attribute class that implements this interface has to
-   be able to have a value set by a string, via the setExpression()
-   method.  A string representation is returned by the getExpression()
-   method.  An expression may be an ordinary string with no further
-   interpretation, or it may be a string that needs to be evaluated.
-   In the latter case, an implementation of this attribute may not
-   evaluate the string when the setExpression() method is called.
-   It may instead only evaluate the string when the validate() method
-   is called.  Often this will not be called until the value of the
-   expression is actually needed (this is known as "lazy evaluation").
-   Such an implementation will defer notification of listeners and the
-   container until the string is evaluated. In a typical use of this
-   interface, therefore, it is necessary to be sure that validate()
-   is called sometime after setExpression() is called.
-   <p>
-   In addition, an attribute class that implements this interface
-   needs to maintain a list of listeners that are informed whenever
-   the value of the attribute changes.  It should inform those
-   listeners whenever setExpression() is called.
-   <p>
-   Among other uses, this interface marks attributes whose value
-   can be set via the value attribute of a MoML property element.
-   For example, if class XXX implements Settable, then the following
-   is valid MoML:
-   <pre>
-   &lt;property name="xxx" class="XXX" value="yyy"/&gt;
-   </pre>
-   <p>
-   This interface also supports annotations that hint to a user
-   interface the level of visibility that an instance should have.
-   The visibility is specified as one of the static instances of
-   the inner class Visibility, currently NONE, EXPERT, FULL, and NOT_EDITABLE
-   NONE indicates that the user should never see the instance,
-   and should not be able to set its value through the user interface.
-   EXPERT means that only expert users should see the instance.
-   FULL means that the instance is always visible, and a user interface
-   should always allow it to be set.
-   NOT_EDITABLE is similar to FULL, except that the value of the
-   expression is visible, but not editable by the user.  This is
-   commonly used for feedback from the model.
+ This is an interface for attributes that can have their values
+ externally set.  An attribute class that implements this interface has to
+ be able to have a value set by a string, via the setExpression()
+ method.  A string representation is returned by the getExpression()
+ method.  An expression may be an ordinary string with no further
+ interpretation, or it may be a string that needs to be evaluated.
+ In the latter case, an implementation of this attribute may not
+ evaluate the string when the setExpression() method is called.
+ It may instead only evaluate the string when the validate() method
+ is called.  Often this will not be called until the value of the
+ expression is actually needed (this is known as "lazy evaluation").
+ Such an implementation will defer notification of listeners and the
+ container until the string is evaluated. In a typical use of this
+ interface, therefore, it is necessary to be sure that validate()
+ is called sometime after setExpression() is called.
+ <p>
+ In addition, an attribute class that implements this interface
+ needs to maintain a list of listeners that are informed whenever
+ the value of the attribute changes.  It should inform those
+ listeners whenever setExpression() is called.
+ <p>
+ Among other uses, this interface marks attributes whose value
+ can be set via the value attribute of a MoML property element.
+ For example, if class XXX implements Settable, then the following
+ is valid MoML:
+ <pre>
+ &lt;property name="xxx" class="XXX" value="yyy"/&gt;
+ </pre>
+ <p>
+ This interface also supports annotations that hint to a user
+ interface the level of visibility that an instance should have.
+ The visibility is specified as one of the static instances of
+ the inner class Visibility, currently NONE, EXPERT, FULL, and NOT_EDITABLE
+ NONE indicates that the user should never see the instance,
+ and should not be able to set its value through the user interface.
+ EXPERT means that only expert users should see the instance.
+ FULL means that the instance is always visible, and a user interface
+ should always allow it to be set.
+ NOT_EDITABLE is similar to FULL, except that the value of the
+ expression is visible, but not editable by the user.  This is
+ commonly used for feedback from the model.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public interface Settable extends Nameable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

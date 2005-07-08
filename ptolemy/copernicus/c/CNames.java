@@ -1,33 +1,33 @@
 /*
-  A class that determines names of various entities to use for
-  C code generation.
+ A class that determines names of various entities to use for
+ C code generation.
 
-  Copyright (c) 2001-2005 The University of Maryland.
-  All rights reserved.
+ Copyright (c) 2001-2005 The University of Maryland.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -50,16 +50,15 @@ import soot.SootMethod;
 import soot.Type;
 import soot.VoidType;
 
-
 /** A class that determines names of various entities to use for C code
-    generation.
+ generation.
 
-    @author Shuvra S. Bhattacharyya, Ankush Varma
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (ssb)
-    @Pt.AcceptedRating Red (ssb)
-*/
+ @author Shuvra S. Bhattacharyya, Ankush Varma
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (ssb)
+ @Pt.AcceptedRating Red (ssb)
+ */
 public class CNames {
     // Private constructor to prevent instantiation of this class.
     private CNames() {
@@ -87,8 +86,8 @@ public class CNames {
      */
     public static String classNameToFileName(String className) {
         if (isSystemClass(className)) {
-            return (Options.v().get("lib") + "/"
-                    + _sanitize(className).replace('.', '/'));
+            return (Options.v().get("lib") + "/" + _sanitize(className)
+                    .replace('.', '/'));
         } else {
             return (_sanitize(className).replace('.', '/'));
         }
@@ -139,11 +138,11 @@ public class CNames {
         if ((name = (String) (_functionMap.get(method))) == null) {
             if (method.isNative()) {
                 /*
-                  name = ((method.getDeclaringClass().getName()) + "_" +
-                  method.getName()).replace('.', '_');
-                */
+                 name = ((method.getDeclaringClass().getName()) + "_" +
+                 method.getName()).replace('.', '_');
+                 */
                 String prefixBase = method.getDeclaringClass().getName()
-                    + method.getSubSignature();
+                        + method.getSubSignature();
                 Integer prefixCode = new Integer(prefixBase.hashCode());
                 name = _sanitize("n" + prefixCode + "_" + method.getName());
 
@@ -152,7 +151,7 @@ public class CNames {
                 // Hash the class name + type signature combination to
                 // avoid naming conflicts.
                 String prefixBase = method.getDeclaringClass().getName()
-                    + method.getSubSignature();
+                        + method.getSubSignature();
                 Integer prefixCode = new Integer(prefixBase.hashCode());
                 name = _sanitize("f" + prefixCode + "_" + method.getName());
             }
@@ -169,7 +168,7 @@ public class CNames {
      */
     public static int hashNumberOf(SootMethod method) {
         String prefixBase = method.getDeclaringClass().getName()
-            + method.getSubSignature();
+                + method.getSubSignature();
         return prefixBase.hashCode();
     }
 
@@ -283,7 +282,8 @@ public class CNames {
         if ((name = (String) (_nameMap.get(method))) == null) {
             // Hash the type signature to avoid naming conflicts for overloaded
             // methods.
-            Integer prefixCode = new Integer(method.getSubSignature().hashCode());
+            Integer prefixCode = new Integer(method.getSubSignature()
+                    .hashCode());
             name = _sanitize("m" + prefixCode + "_" + method.getName());
             _nameMap.put(method, name);
         }
@@ -344,7 +344,7 @@ public class CNames {
             }
         } else if (type instanceof ArrayType) {
             name = "iA" + ((ArrayType) type).numDimensions + "_"
-                + typeNameOf(((ArrayType) type).baseType);
+                    + typeNameOf(((ArrayType) type).baseType);
         }
 
         if (type instanceof BooleanType) {
@@ -422,9 +422,8 @@ public class CNames {
             String name = source.getName();
 
             // The choice of 'i' as the first letter stands for "instance."
-            String className = (name.indexOf(".") < 0) ? name
-                : name.substring(name
-                        .lastIndexOf(".") + 1);
+            String className = (name.indexOf(".") < 0) ? name : name
+                    .substring(name.lastIndexOf(".") + 1);
             Integer prefixCode = new Integer(name.hashCode());
             CClassName = _sanitize("i" + prefixCode.toString() + "_"
                     + className);
@@ -437,7 +436,7 @@ public class CNames {
     // Sanitize a name to be valid a C identifier.
     private static String _sanitize(String name) {
         return name.replace('-', '0').replace('<', '_').replace('>', '_')
-            .replace('$', '_');
+                .replace('$', '_');
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -1,75 +1,74 @@
 /* List of cross-references.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.kernel.util;
 
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CrossRefList
 
 /**
 
-CrossRefList is a list that maintains pointers to other CrossRefLists.
-CrossRefList is meant to be used to keep track of links between ports
-and relations in Ptolemy II.  It is a highly specialized form of a
-list.  An instance has a container (an Object), which is immutable,
-meaning that the container cannot be changed after the instance is
-constructed.  CrossRefList enumerators and query methods do not return
-references to other CrossRefLists; instead, references to the
-containers of the CrossRefLists (which can be any Object) are
-returned.
+ CrossRefList is a list that maintains pointers to other CrossRefLists.
+ CrossRefList is meant to be used to keep track of links between ports
+ and relations in Ptolemy II.  It is a highly specialized form of a
+ list.  An instance has a container (an Object), which is immutable,
+ meaning that the container cannot be changed after the instance is
+ constructed.  CrossRefList enumerators and query methods do not return
+ references to other CrossRefLists; instead, references to the
+ containers of the CrossRefLists (which can be any Object) are
+ returned.
 
-<p>
-For efficiency, CrossRefList maintains a list of pairwise links
-between Objects (CrossRefs). That is, each member of a set of objects
-has a list of references to other members of the set, and each
-reference has a similar list that contains a corresponding back
-reference. Each reference list is an instance of . The class
-is used as if it were a simple list of references to objects, but it
-ensures the symmetry of the references, and supports efficient removal
-of links.  Removing a reference in one list automatically updates N
-back-references in O(N) time, independent of the sizes of the
-cross-referenced lists.
-<p>
-It is possible to create links at specified points in the list (called
-the <i>index number</i>).  This may result in gaps in the list at
-lower index numbers.  Gaps are representing by null in an enumeration
-of the list.
+ <p>
+ For efficiency, CrossRefList maintains a list of pairwise links
+ between Objects (CrossRefs). That is, each member of a set of objects
+ has a list of references to other members of the set, and each
+ reference has a similar list that contains a corresponding back
+ reference. Each reference list is an instance of . The class
+ is used as if it were a simple list of references to objects, but it
+ ensures the symmetry of the references, and supports efficient removal
+ of links.  Removing a reference in one list automatically updates N
+ back-references in O(N) time, independent of the sizes of the
+ cross-referenced lists.
+ <p>
+ It is possible to create links at specified points in the list (called
+ the <i>index number</i>).  This may result in gaps in the list at
+ lower index numbers.  Gaps are representing by null in an enumeration
+ of the list.
 
-@author Geroncio Galicia, Contributor: Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
-@Pt.ProposedRating Green (eal)
-@Pt.AcceptedRating Green (bart)
-*/
+ @author Geroncio Galicia, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (bart)
+ */
 public final class CrossRefList implements Serializable {
     /** Construct a list with the specified container.
      *  The container is immutable (it cannot be changed).
@@ -384,7 +383,9 @@ public final class CrossRefList implements Serializable {
     protected class CrossRef implements Serializable {
         /** The far CrossRef. */
         protected CrossRef _far;
+
         private CrossRef _next;
+
         private CrossRef _previous;
 
         private CrossRef() {
@@ -549,7 +550,7 @@ public final class CrossRefList implements Serializable {
             if (_enumeratorVersion != _listVersion) {
                 throw new InvalidStateException(
                         "CrossRefList.hasMoreElements(): "
-                        + "The list has been modified.");
+                                + "The list has been modified.");
             }
 
             if (_ref == null) {
@@ -580,6 +581,7 @@ public final class CrossRefList implements Serializable {
         }
 
         private long _enumeratorVersion;
+
         private CrossRef _ref;
     }
 }

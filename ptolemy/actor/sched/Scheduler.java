@@ -1,31 +1,31 @@
 /* A base class for schedulers.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-FIXME: Caching should move into StaticSchedulingDirector.
-*/
+ FIXME: Caching should move into StaticSchedulingDirector.
+ */
 package ptolemy.actor.sched;
 
 import java.util.Iterator;
@@ -43,42 +43,41 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Scheduler
 
 /**
-   The base class for schedulers. A scheduler schedules the execution
-   order of the containees of a CompositeActor.  <p>
+ The base class for schedulers. A scheduler schedules the execution
+ order of the containees of a CompositeActor.  <p>
 
-   A scheduler is contained by a StaticSchedulingDirector, and provides
-   the schedule for it.  The director will use this schedule to govern
-   the execution of a CompositeActor. <p>
+ A scheduler is contained by a StaticSchedulingDirector, and provides
+ the schedule for it.  The director will use this schedule to govern
+ the execution of a CompositeActor. <p>
 
-   A schedule is represented by the Schedule class, and determines the
-   order of the firing of the actors in a particular composite actor.  In
-   this base class, the default schedule fires the deeply
-   contained actors in the order of their construction.  A domain specific
-   scheduler will override this to provide a different order. <p>
+ A schedule is represented by the Schedule class, and determines the
+ order of the firing of the actors in a particular composite actor.  In
+ this base class, the default schedule fires the deeply
+ contained actors in the order of their construction.  A domain specific
+ scheduler will override this to provide a different order. <p>
 
-   The schedule, once constructed, is cached and reused as long as the
-   schedule is still valid.  The validity of the schedule is set by the
-   setValid() method.  If the current schedule is not valid, then the
-   schedule will be recomputed the next time the getSchedule() method is
-   called.  However, derived classes will usually override only the
-   protected _getSchedule() method. <p>
+ The schedule, once constructed, is cached and reused as long as the
+ schedule is still valid.  The validity of the schedule is set by the
+ setValid() method.  If the current schedule is not valid, then the
+ schedule will be recomputed the next time the getSchedule() method is
+ called.  However, derived classes will usually override only the
+ protected _getSchedule() method. <p>
 
-   The scheduler does not perform any mutations, and it does not listen
-   for changes in the model.  Directors that use this scheduler should
-   normally invalidate the schedule when mutations occur.
+ The scheduler does not perform any mutations, and it does not listen
+ for changes in the model.  Directors that use this scheduler should
+ normally invalidate the schedule when mutations occur.
 
-   @author Jie Liu, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-   @see ptolemy.actor.sched.Schedule
-*/
+ @author Jie Liu, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ @see ptolemy.actor.sched.Schedule
+ */
 public class Scheduler extends Attribute {
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
@@ -166,8 +165,8 @@ public class Scheduler extends Attribute {
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived schedulers.
      */
-    public Schedule getSchedule()
-            throws IllegalActionException, NotSchedulableException {
+    public Schedule getSchedule() throws IllegalActionException,
+            NotSchedulableException {
         try {
             workspace().getReadAccess();
 
@@ -236,8 +235,8 @@ public class Scheduler extends Attribute {
      *   be thrown if the container argument is an instance of
      *   CompositeActor.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -250,8 +249,8 @@ public class Scheduler extends Attribute {
                 // use the most recently added one.
                 Scheduler previous = null;
                 StaticSchedulingDirector castContainer = (StaticSchedulingDirector) oldContainer;
-                Iterator schedulers = castContainer.attributeList(Scheduler.class)
-                    .iterator();
+                Iterator schedulers = castContainer.attributeList(
+                        Scheduler.class).iterator();
 
                 while (schedulers.hasNext()) {
                     Scheduler altScheduler = (Scheduler) schedulers.next();
@@ -323,10 +322,11 @@ public class Scheduler extends Attribute {
      *  by derived classes.
      *  @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      */
-    protected Schedule _getSchedule()
-            throws IllegalActionException, NotSchedulableException {
+    protected Schedule _getSchedule() throws IllegalActionException,
+            NotSchedulableException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
-        CompositeActor compositeActor = (CompositeActor) (director.getContainer());
+        CompositeActor compositeActor = (CompositeActor) (director
+                .getContainer());
         List actors = compositeActor.deepEntityList();
         Schedule schedule = new Schedule();
         Iterator actorIterator = actors.iterator();

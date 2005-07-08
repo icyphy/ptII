@@ -1,30 +1,30 @@
 /* Display a java.awt.Image
 
-@Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.image;
 
 import java.awt.BorderLayout;
@@ -57,23 +57,22 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.media.Picture;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay
 
 /**
-   Display an image on the screen using the ptolemy.media.Picture
-   class.  For a sequence of images that are all the same size, this class
-   will continually update the picture with new data.   If the size of the
-   input image changes, then a new Picture object is created.  This class
-   will only accept an ImageToken on its input.
+ Display an image on the screen using the ptolemy.media.Picture
+ class.  For a sequence of images that are all the same size, this class
+ will continually update the picture with new data.   If the size of the
+ input image changes, then a new Picture object is created.  This class
+ will only accept an ImageToken on its input.
 
-   @author James Yeh, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red
-   @Pt.AcceptedRating Red
-*/
+ @author James Yeh, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red
+ @Pt.AcceptedRating Red
+ */
 public class ImageDisplay extends Sink implements Placeable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -111,8 +110,7 @@ public class ImageDisplay extends Sink implements Placeable {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ImageDisplay newObject = (ImageDisplay) super.clone(workspace);
 
         newObject._container = null;
@@ -139,10 +137,10 @@ public class ImageDisplay extends Sink implements Placeable {
 
         // This has to be done in the Swing event thread.
         Runnable doDisplay = new Runnable() {
-                public void run() {
-                    _createOrShowWindow();
-                }
-            };
+            public void run() {
+                _createOrShowWindow();
+            }
+        };
 
         SwingUtilities.invokeLater(doDisplay);
     }
@@ -207,10 +205,10 @@ public class ImageDisplay extends Sink implements Placeable {
 
             // Display probably to be done in the Swing event thread.
             Runnable doDisplay = new Runnable() {
-                    public void run() {
-                        _display(in);
-                    }
-                };
+                public void run() {
+                    _display(in);
+                }
+            };
 
             SwingUtilities.invokeLater(doDisplay);
         }
@@ -261,7 +259,7 @@ public class ImageDisplay extends Sink implements Placeable {
                 _oldYSize = ySize;
 
                 Container container = _picture.getParent();
-        
+
                 if (_picture != null) {
                     container.remove(_picture);
                 }
@@ -310,12 +308,12 @@ public class ImageDisplay extends Sink implements Placeable {
                 if (containerEffigy == null) {
                     throw new InternalErrorException(
                             "Cannot find effigy for top level: "
-                            + toplevel().getFullName());
+                                    + toplevel().getFullName());
                 }
 
                 try {
-                    _effigy = new TokenEffigy(containerEffigy,
-                            containerEffigy.uniqueName("imageEffigy"));
+                    _effigy = new TokenEffigy(containerEffigy, containerEffigy
+                            .uniqueName("imageEffigy"));
 
                     // The default identifier is "Unnamed", which is
                     // no good for two reasons: Wrong title bar label,
@@ -334,7 +332,7 @@ public class ImageDisplay extends Sink implements Placeable {
                     // set the size of the frame, we have to also set the
                     // size of the internal component.
                     Component[] components = _frame.getContentPane()
-                        .getComponents();
+                            .getComponents();
 
                     if (components.length > 0) {
                         _pictureSize.setSize(components[0]);
@@ -386,7 +384,7 @@ public class ImageDisplay extends Sink implements Placeable {
     ////                         private variables                 ////
 
     /** A specification of the size of the picture if it's in its own window.
-     */ 
+     */
     private SizeAttribute _pictureSize;
 
     /** The tableau with the display, if any. */

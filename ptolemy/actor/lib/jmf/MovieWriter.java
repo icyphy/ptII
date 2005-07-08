@@ -1,31 +1,31 @@
 /* An actor that writes frames to a video file.
 
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.jmf;
 
 import java.awt.Image;
@@ -75,7 +75,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 
-
 //FIXME: This actor only works properly when a model containing this actor
 //       is run for the first time.  Vergil has to be reloaded each time
 //       for this actor to work.
@@ -85,26 +84,26 @@ import ptolemy.util.MessageHandler;
 //// MovieWriter
 
 /**
-   This actor writes a video file (MPEG, AVI, or Quicktime).  It receives
-   JMFImageTokens at the input, and queues them up for writing.
-   <p>
-   The file is specified by the <i>fileName</i> attribute
-   using any form acceptable to FileParameter.
-   <p>
-   If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
-   then this actor will overwrite the specified file if it exists
-   without asking.  If <i>true</i> (the default), then if the file
-   exists, then this actor will ask for confirmation before overwriting.
+ This actor writes a video file (MPEG, AVI, or Quicktime).  It receives
+ JMFImageTokens at the input, and queues them up for writing.
+ <p>
+ The file is specified by the <i>fileName</i> attribute
+ using any form acceptable to FileParameter.
+ <p>
+ If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
+ then this actor will overwrite the specified file if it exists
+ without asking.  If <i>true</i> (the default), then if the file
+ exists, then this actor will ask for confirmation before overwriting.
 
-   @see FileParameter
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @see FileParameter
+ @author James Yeh
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class MovieWriter extends Sink implements ControllerListener,
-                                                 DataSinkListener {
+        DataSinkListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -173,7 +172,7 @@ public class MovieWriter extends Sink implements ControllerListener,
             }
         } else if (attribute == confirmOverwrite) {
             _confirmOverwrite = ((BooleanToken) confirmOverwrite.getToken())
-                .booleanValue();
+                    .booleanValue();
         } else if (attribute == fileType) {
             String typeName = fileType.getExpression();
 
@@ -186,7 +185,7 @@ public class MovieWriter extends Sink implements ControllerListener,
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized file type: " + typeName + ", must be "
-                        + "on of AVI, MPEG, or QUICKTIME");
+                                + "on of AVI, MPEG, or QUICKTIME");
             }
         } else {
             super.attributeChanged(attribute);
@@ -260,8 +259,8 @@ public class MovieWriter extends Sink implements ControllerListener,
             try {
                 _jmfImageToken = (JMFImageToken) token;
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(this, ex,
-                        "Failed to cast " + token.getClass()
+                throw new IllegalActionException(this, ex, "Failed to cast "
+                        + token.getClass()
                         + " to a JMFImageToken.\nToken was: " + token);
             }
 
@@ -296,7 +295,7 @@ public class MovieWriter extends Sink implements ControllerListener,
 
             if (_confirmOverwrite) {
                 if (!MessageHandler.yesNoQuestion("OK to overwrite " + _file
-                            + "?")) {
+                        + "?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
                 }
@@ -314,7 +313,7 @@ public class MovieWriter extends Sink implements ControllerListener,
         if (_jmfImageToken == null) {
             throw new IllegalActionException(this,
                     "In MovieWriter.wrapup(), _jmfImageToken is "
-                    + "null, perhaps this actor never read any input?");
+                            + "null, perhaps this actor never read any input?");
         } else {
             Image image = _jmfImageToken.asAWTImage();
             int width = image.getWidth(null);
@@ -340,17 +339,18 @@ public class MovieWriter extends Sink implements ControllerListener,
 
             if (_fileType == _QUICKTIME) {
                 processor.setContentDescriptor(new ContentDescriptor(
-                                                       FileTypeDescriptor.QUICKTIME));
+                        FileTypeDescriptor.QUICKTIME));
             } else if (_fileType == _AVI) {
                 processor.setContentDescriptor(new ContentDescriptor(
-                                                       FileTypeDescriptor.MSVIDEO));
+                        FileTypeDescriptor.MSVIDEO));
             } else if (_fileType == _MPEG) {
                 processor.setContentDescriptor(new ContentDescriptor(
-                                                       FileTypeDescriptor.MPEG));
+                        FileTypeDescriptor.MPEG));
             } else {
                 throw new InternalErrorException("type = " + _fileType
-                        + ", which is not one of " + _QUICKTIME + "(QUICKTIME), "
-                        + _AVI + "(AVI) or " + _MPEG + "(MPEG).");
+                        + ", which is not one of " + _QUICKTIME
+                        + "(QUICKTIME), " + _AVI + "(AVI) or " + _MPEG
+                        + "(MPEG).");
             }
 
             TrackControl[] trackControl = processor.getTrackControls();
@@ -429,7 +429,7 @@ public class MovieWriter extends Sink implements ControllerListener,
             } catch (Exception e) {
                 throw new IllegalActionException(null, e,
                         "Failed block the processor until it state"
-                        + " transition completed.");
+                                + " transition completed.");
             }
         }
 
@@ -449,7 +449,7 @@ public class MovieWriter extends Sink implements ControllerListener,
             } catch (Exception e) {
                 throw new IllegalActionException(null, e,
                         "Failed block the processor until it state"
-                        + " transition completed.");
+                                + " transition completed.");
             }
         }
 
@@ -510,7 +510,8 @@ public class MovieWriter extends Sink implements ControllerListener,
             //                      Format.NOT_SPECIFIED,
             //                      Format.byteArray,
             //                      (float)_frameRate);
-            _videoFormat = (VideoFormat) (_jmfImageToken.getValue()).getFormat();
+            _videoFormat = (VideoFormat) (_jmfImageToken.getValue())
+                    .getFormat();
         }
 
         public boolean endOfStream() {
@@ -568,22 +569,35 @@ public class MovieWriter extends Sink implements ControllerListener,
     ////                         private variables                 ////
     //private Buffer _buffer;
     private ArrayList _bufferArrayList;
+
     private Iterator _bufferIterator;
+
     private boolean _confirmOverwrite;
+
     private boolean _dimensionSet;
+
     private boolean _ended = false;
+
     private File _file;
+
     private boolean _fileDone = false;
+
     private String _fileRoot;
+
     private boolean _fileSuccess = true;
+
     private int _fileType;
+
     private ImageSourceStream[] _imageSourceStream = new ImageSourceStream[1];
+
     private JMFImageToken _jmfImageToken;
 
     // Boolean that keeps track of whether the player initialization
     // has gone through smoothly.
     private boolean _stateTransitionOK = true;
+
     private VideoFormat _videoFormat;
+
     private Object _waitFileSync = new Object();
 
     // Object to allow synchronization in this actor.
@@ -591,6 +605,8 @@ public class MovieWriter extends Sink implements ControllerListener,
 
     // FIXME: Use a type safe enumeration.
     private static final int _AVI = 0;
+
     private static final int _MPEG = 1;
+
     private static final int _QUICKTIME = 2;
 }

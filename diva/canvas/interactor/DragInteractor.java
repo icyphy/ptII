@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.canvas.interactor;
 
 import java.awt.event.MouseEvent;
@@ -36,7 +36,6 @@ import diva.canvas.event.LayerEvent;
 import diva.canvas.event.LayerEventMulticaster;
 import diva.canvas.event.LayerListener;
 import diva.util.ArrayIterator;
-
 
 /**
  * An interactor that responds to mouse drag events. It adds
@@ -69,6 +68,7 @@ public class DragInteractor extends AbstractInteractor {
     /* The most recent coordinates
      */
     private double _prevX = 0.0;
+
     private double _prevY = 0.0;
 
     /* Enable only if the figure in the event is in the selection
@@ -171,8 +171,7 @@ public class DragInteractor extends AbstractInteractor {
      */
     public void mouseDragged(LayerEvent e) {
         if (!isEnabled()
-                || (_selectiveEnabled
-                        && !SelectionInteractor.isSelected(e))) {
+                || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
             return;
         }
 
@@ -211,8 +210,7 @@ public class DragInteractor extends AbstractInteractor {
      */
     public void mousePressed(LayerEvent e) {
         if (!isEnabled()
-                || (_selectiveEnabled
-                        && !SelectionInteractor.isSelected(e))) {
+                || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
             return;
         }
 
@@ -250,8 +248,7 @@ public class DragInteractor extends AbstractInteractor {
      */
     public void mouseReleased(LayerEvent e) {
         if (!isEnabled()
-                || (_selectiveEnabled
-                        && !SelectionInteractor.isSelected(e))) {
+                || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
             return;
         }
 

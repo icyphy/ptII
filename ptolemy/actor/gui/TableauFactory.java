@@ -1,31 +1,31 @@
 /* An object that can create a tableau for a model.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.util.Iterator;
@@ -35,47 +35,46 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TableauFactory
 
 /**
-   This class is an attribute that creates a tableau to view a specified effigy.
-   When a model is opened, if the top-level of that model contains this
-   attribute or a subclass, then that attribute handles constructing a tableau.
-   Otherwise, the configuration specifies which tableau is used.
-   A configuration contains an instance of this class, and uses it to create
-   a tableau for a model represented by an effigy.  This base class assumes
-   that it contains other tableau factories. Its createTableau() method defers
-   to each contained factory, in the order in which they were added,
-   until one is capable of creating a tableau for the specified effigy.
-   Subclasses of this class will usually be inner classes of a Tableau,
-   and will create the Tableau, or might themselves be aggregates of
-   instances of TextEditorTableauFactory.
-   <p>
-   When there are multiple distinct TableauFactory classes that are capable
-   of providing views on the same effigy, then instances of these
-   factories should be aggregated into a single factory contained herein.
-   Those instances can be presented as alternative views of the data when
-   any single view is opened.
-   <p>
-   There is a significant subtlety with respect to how Ptolemy II classes
-   are dealt with. Normally, when one looks inside an instance of a class,
-   what is opened is the class definition, not the instance. However,
-   if the instance contains an instance of TableauFactory, then what
-   is opened is the instance, not the class definition.  This is used,
-   for example, when the look inside behavior is customized on a per
-   instance basis.
+ This class is an attribute that creates a tableau to view a specified effigy.
+ When a model is opened, if the top-level of that model contains this
+ attribute or a subclass, then that attribute handles constructing a tableau.
+ Otherwise, the configuration specifies which tableau is used.
+ A configuration contains an instance of this class, and uses it to create
+ a tableau for a model represented by an effigy.  This base class assumes
+ that it contains other tableau factories. Its createTableau() method defers
+ to each contained factory, in the order in which they were added,
+ until one is capable of creating a tableau for the specified effigy.
+ Subclasses of this class will usually be inner classes of a Tableau,
+ and will create the Tableau, or might themselves be aggregates of
+ instances of TextEditorTableauFactory.
+ <p>
+ When there are multiple distinct TableauFactory classes that are capable
+ of providing views on the same effigy, then instances of these
+ factories should be aggregated into a single factory contained herein.
+ Those instances can be presented as alternative views of the data when
+ any single view is opened.
+ <p>
+ There is a significant subtlety with respect to how Ptolemy II classes
+ are dealt with. Normally, when one looks inside an instance of a class,
+ what is opened is the class definition, not the instance. However,
+ if the instance contains an instance of TableauFactory, then what
+ is opened is the instance, not the class definition.  This is used,
+ for example, when the look inside behavior is customized on a per
+ instance basis.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (celaine)
-   @see Configuration
-   @see Effigy
-   @see Tableau
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (celaine)
+ @see Configuration
+ @see Effigy
+ @see Tableau
+ */
 public class TableauFactory extends Attribute {
     /** Create a factory with the given name and container.
      *  @param container The container.

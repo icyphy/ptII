@@ -56,7 +56,6 @@ import diva.canvas.toolbox.ImageFigure;
 import diva.gui.BasicFrame;
 import diva.util.java2d.ShapeUtilities;
 
-
 /** An example showing how to make custom figures.
  *
  * <p>
@@ -224,7 +223,7 @@ public class FigureTutorial {
         // Create a controller to do the work.
         BasicController controller = new BasicController(graphicsPane);
         SelectionInteractor defaultInteractor = controller
-            .getSelectionInteractor();
+                .getSelectionInteractor();
         BoundsManipulator manip = new BoundsManipulator();
         defaultInteractor.setPrototypeDecorator(manip);
 
@@ -263,10 +262,10 @@ public class FigureTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    new FigureTutorial();
-                }
-            });
+            public void run() {
+                new FigureTutorial();
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////

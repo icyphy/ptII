@@ -1,34 +1,34 @@
 /*
 
-A class that handles generation and management of Java methods that are
-over-ridden by pre-defined C code.
+ A class that handles generation and management of Java methods that are
+ over-ridden by pre-defined C code.
 
-Copyright (c) 2002-2005 The University of Maryland.
-All rights reserved.
+ Copyright (c) 2002-2005 The University of Maryland.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.HashSet;
@@ -39,22 +39,21 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
 
-
 /**
-   A class that handles generation and management of Java methods that are
-   over-ridden by pre-defined C code. The class allows conventional java
-   methods to be replaced with pre-defined C code. This may be done for
-   platform-specificness, correctness or performance considerations. Note
-   that "overridden" here means that the code for a method is replaced
-   with either dummy or user-defined C code. It does not refer to
-   overriding methods by inheritance in java.
+ A class that handles generation and management of Java methods that are
+ over-ridden by pre-defined C code. The class allows conventional java
+ methods to be replaced with pre-defined C code. This may be done for
+ platform-specificness, correctness or performance considerations. Note
+ that "overridden" here means that the code for a method is replaced
+ with either dummy or user-defined C code. It does not refer to
+ overriding methods by inheritance in java.
 
-   @author Ankush Varma
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (ankush)
-   @Pt.AcceptedRating Red (ankush)
-*/
+ @author Ankush Varma
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (ankush)
+ @Pt.AcceptedRating Red (ankush)
+ */
 public class OverriddenMethodGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -66,7 +65,7 @@ public class OverriddenMethodGenerator {
      */
     public static String fileContainingCodeFor(SootMethod method) {
         String fileName = getOverriddenBodyLib()
-            + CNames.functionNameOf(method) + ".c";
+                + CNames.functionNameOf(method) + ".c";
 
         return fileName;
     }
@@ -104,26 +103,26 @@ public class OverriddenMethodGenerator {
         ///////////// Methods replaced with dummy code ////////////
         // Methods ovverriden for speed
         /*
-          _forceOverriddenMethods.add("<java.lang.String: java.lang.String "
-          + "valueOf(java.lang.Object)>");
-          _forceOverriddenMethods.add("<java.util.WeakHashMap: boolean "
-          + "eq(java.lang.Object,java.lang.Object)>");
-          _forceOverriddenMethods.add("<java.util.TreeMap: int "
-          + "compare(java.lang.Object,java.lang.Object)>");
-          _forceOverriddenMethods.add("<java.text.AttributedString: boolean "
-          + "valuesMatch(java.lang.Object,java.lang.Object)>");
-          _forceOverriddenMethods.add("<java.util.Vector: int "
-          + "indexOf(java.lang.Object,int)>");
+         _forceOverriddenMethods.add("<java.lang.String: java.lang.String "
+         + "valueOf(java.lang.Object)>");
+         _forceOverriddenMethods.add("<java.util.WeakHashMap: boolean "
+         + "eq(java.lang.Object,java.lang.Object)>");
+         _forceOverriddenMethods.add("<java.util.TreeMap: int "
+         + "compare(java.lang.Object,java.lang.Object)>");
+         _forceOverriddenMethods.add("<java.text.AttributedString: boolean "
+         + "valuesMatch(java.lang.Object,java.lang.Object)>");
+         _forceOverriddenMethods.add("<java.util.Vector: int "
+         + "indexOf(java.lang.Object,int)>");
 
 
-        */
+         */
         // End Speed.
         /*
-          _forceOverriddenMethods.add(
-          "<java.util.ResourceBundle: java.lang.Object "
-          + "loadBundle(java.lang.ClassLoader,java.lang.String)>");
-          // Overridden it throws a warning for an unused variable.
-          */
+         _forceOverriddenMethods.add(
+         "<java.util.ResourceBundle: java.lang.Object "
+         + "loadBundle(java.lang.ClassLoader,java.lang.String)>");
+         // Overridden it throws a warning for an unused variable.
+         */
         _forceOverriddenMethods.add("<java.util.Locale: void <clinit>()>");
 
         // Overridden because called and used the result from an
@@ -139,9 +138,9 @@ public class OverriddenMethodGenerator {
         // Overridden because inner classes have problems accessing private
         // fields of outer classes. Specifically outerClass cannot call
         // InnerClass.privateFieldOfOuterClass.
-        _forceOverriddenMethods.add(
-                "<java.security.Signature: java.security.Signature "
-                + "getInstance(java.lang.String,java.lang.String)>");
+        _forceOverriddenMethods
+                .add("<java.security.Signature: java.security.Signature "
+                        + "getInstance(java.lang.String,java.lang.String)>");
 
         // Overridden because inner classes have problems accessing private
         // fields of outer classes. Specifically outerClass cannot call
@@ -151,12 +150,12 @@ public class OverriddenMethodGenerator {
         _forceOverriddenMethods.add("<java.lang.SecurityManager: "
                 + "java.lang.ThreadGroup getRootGroup()>");
 
-        _forceOverriddenMethods.add(
-                "<sun.net.InetAddressCachePolicy: void <clinit>()>");
+        _forceOverriddenMethods
+                .add("<sun.net.InetAddressCachePolicy: void <clinit>()>");
 
         // Overridden because Object.hashCode() is not up yet.
-        _forceOverriddenMethods.add(
-                "<java.io.ObjectOutputStream: long getUTFLength(char[],int)>");
+        _forceOverriddenMethods
+                .add("<java.io.ObjectOutputStream: long getUTFLength(char[],int)>");
 
         // Overridden because it threw a warning.
         _forceOverriddenMethods.add("<java.lang.ClassLoader: void <clinit>()>");
@@ -170,13 +169,13 @@ public class OverriddenMethodGenerator {
                 + "saveAsProperties(java.io.File)>");
 
         // Overridden it throws a warning for an unused variable.
-        _forceOverriddenMethods.add(
-                "<java.lang.reflect.Proxy: java.lang.Class "
-                + "getProxyClass(java.lang.ClassLoader,java.lang.Class[])>");
+        _forceOverriddenMethods
+                .add("<java.lang.reflect.Proxy: java.lang.Class "
+                        + "getProxyClass(java.lang.ClassLoader,java.lang.Class[])>");
 
         // Overridden it throws a warning for an unused variable.
-        _forceOverriddenMethods.add(
-                "<java.lang.reflect.AccessibleObject: void <clinit>()>");
+        _forceOverriddenMethods
+                .add("<java.lang.reflect.AccessibleObject: void <clinit>()>");
 
         _forceOverriddenMethods.add("<java.io.DataOutputStream: "
                 + "int writeUTF(java.lang.String,java.io.DataOutput)>");
@@ -253,22 +252,23 @@ public class OverriddenMethodGenerator {
                 + "(java.lang.String,java.security.Provider)>");
 
         _forceOverriddenMethods.add("<java.math.BigInteger: void <clinit>()>");
-        _forceOverriddenMethods.add(
-                "<java.text.AttributedCharacterIterator$Attribute: "
-                + "void <clinit>()>");
-        _forceOverriddenMethods.add(
-                "<java.text.MessageFormat$Field: void <clinit>()>");
-        _forceOverriddenMethods.add(
-                "<java.text.DateFormat$Field: void <clinit>()>");
-        _forceOverriddenMethods.add("<java.io.FilePermission: void <clinit>()>");
+        _forceOverriddenMethods
+                .add("<java.text.AttributedCharacterIterator$Attribute: "
+                        + "void <clinit>()>");
+        _forceOverriddenMethods
+                .add("<java.text.MessageFormat$Field: void <clinit>()>");
+        _forceOverriddenMethods
+                .add("<java.text.DateFormat$Field: void <clinit>()>");
+        _forceOverriddenMethods
+                .add("<java.io.FilePermission: void <clinit>()>");
         _forceOverriddenMethods.add("<java.util.Random: void <clinit>()>");
 
         // Causes segfault.
         _forceOverriddenMethods.add("<java.math.BigDecimal: void <clinit>()>");
 
         // Uses classloader indirectly.
-        _forceOverriddenMethods.add(
-                "<java.lang.FloatingDecimal: void <clinit>()>");
+        _forceOverriddenMethods
+                .add("<java.lang.FloatingDecimal: void <clinit>()>");
 
         // Causes segfault.
         _forceOverriddenMethods.add("<java.lang.FDBigInt: void <clinit>()>");
@@ -277,22 +277,22 @@ public class OverriddenMethodGenerator {
         ///////// Methods replaced with actual code ////////
         // Methods that provide basic I/O functionality in
         // java.io.PrintStream.
-        _forceOverriddenMethods.add(
-                "<java.io.PrintStream: void println(float)>");
+        _forceOverriddenMethods
+                .add("<java.io.PrintStream: void println(float)>");
         _forceOverriddenMethods.add("<java.io.PrintStream: void println(int)>");
 
         //_forceOverriddenMethods.add(
         //    "<java.io.PrintStream: void println(java.lang.String)>");
-        _forceOverriddenMethods.add(
-                "<java.io.PrintStream: void print(java.lang.Object)>");
+        _forceOverriddenMethods
+                .add("<java.io.PrintStream: void print(java.lang.Object)>");
         _forceOverriddenMethods.add("<java.io.PrintStream: void newLine()>");
-        _forceOverriddenMethods.add(
-                "<java.io.PrintStream: void println(double)>");
-        _forceOverriddenMethods.add(
-                "<java.io.PrintStream: void write(java.lang.String)>");
+        _forceOverriddenMethods
+                .add("<java.io.PrintStream: void println(double)>");
+        _forceOverriddenMethods
+                .add("<java.io.PrintStream: void write(java.lang.String)>");
 
-        _forceOverriddenMethods.add(
-                "<java.lang.System: void initializeSystemClass()>");
+        _forceOverriddenMethods
+                .add("<java.lang.System: void initializeSystemClass()>");
 
         // Contains initializations needed to get System.out.println() and
         // other needed functionality to be supported.
@@ -304,27 +304,27 @@ public class OverriddenMethodGenerator {
         // corresponding to a throwable.
         // FIXME: A better solution is to give some support to
         // java.lang.Class.
-        _forceOverriddenMethods.add(
-                "<java.lang.Throwable: java.lang.String toString()>");
+        _forceOverriddenMethods
+                .add("<java.lang.Throwable: java.lang.String toString()>");
 
-        _forceOverriddenMethods.add(
-                "<java.util.PropertyPermissionCollection: void <clinit>()>");
+        _forceOverriddenMethods
+                .add("<java.util.PropertyPermissionCollection: void <clinit>()>");
 
         // Threw segfault.
-        _forceOverriddenMethods.add(
-                "<java.lang.CharacterDataLatin1: void <clinit>()>");
+        _forceOverriddenMethods
+                .add("<java.lang.CharacterDataLatin1: void <clinit>()>");
 
         // Threw segfault.
         _forceOverriddenMethods.add("<java.io.FileSystem: void <clinit>()>");
 
         // Segfaulted.
-        _forceOverriddenMethods.add(
-                "<java.lang.CharacterData: void <clinit>()>");
+        _forceOverriddenMethods
+                .add("<java.lang.CharacterData: void <clinit>()>");
 
         //Segfaulted.
         _forceOverriddenMethods.add("<java.math.BitSieve: void <clinit>()>");
-        _forceOverriddenMethods.add(
-                "<java.io.FilePermissionCollection: void <clinit>()>");
+        _forceOverriddenMethods
+                .add("<java.io.FilePermissionCollection: void <clinit>()>");
 
         //Segfaulted.
     }

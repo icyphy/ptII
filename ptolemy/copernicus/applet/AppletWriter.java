@@ -1,29 +1,29 @@
 /* A transformer that writes an applet version of the model.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.applet;
 
 import java.io.BufferedInputStream;
@@ -67,24 +67,23 @@ import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.SceneTransformer;
 
-
 /**
-   A transformer that writes an applet version of a model.
-   For a model called Foo, we generate Foo/makefile, Foo/Foo.xml,
-   Foo/Foo.htm Foo/FooVergil.htm in the directory named by the
-   outDir parameter.
+ A transformer that writes an applet version of a model.
+ For a model called Foo, we generate Foo/makefile, Foo/Foo.xml,
+ Foo/Foo.htm Foo/FooVergil.htm in the directory named by the
+ outDir parameter.
 
-   <p>Potential future enhancements
-   <menu>
-   <li> Optionally copy the necessary jar files to the target directory.
-   <li> Pull out the top level annotation and add the text to the web page.
-   </menu>
-   @author Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ <p>Potential future enhancements
+ <menu>
+ <li> Optionally copy the necessary jar files to the target directory.
+ <li> Pull out the top level annotation and add the text to the web page.
+ </menu>
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
@@ -149,9 +148,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // NOTE: This property is set by the vergil startup script.
             _ptIIDirectory = System.getProperty("ptolemy.ptII.dir");
         } catch (SecurityException security) {
-            throw new InternalErrorException(null, security,
-                    "Could not find " + "'ptolemy.ptII.dir'"
-                    + " property.  Vergil should be "
+            throw new InternalErrorException(null, security, "Could not find "
+                    + "'ptolemy.ptII.dir'" + " property.  Vergil should be "
                     + "invoked with -Dptolemy.ptII.dir" + "=\"$PTII\"");
         }
 
@@ -225,7 +223,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         try {
             WindowPropertiesAttribute windowProperties = (WindowPropertiesAttribute) _model
-                .getAttribute("_windowProperties");
+                    .getAttribute("_windowProperties");
             ArrayToken boundsToken = (ArrayToken) ((RecordToken) windowProperties
                     .getToken()).get("bounds");
 
@@ -237,11 +235,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         try {
-            SizeAttribute vergilSize = (SizeAttribute) _model.getAttribute(
-                    "_vergilSize");
+            SizeAttribute vergilSize = (SizeAttribute) _model
+                    .getAttribute("_vergilSize");
 
             IntMatrixToken vergilSizeToken = (IntMatrixToken) vergilSize
-                .getToken();
+                    .getToken();
 
             vergilWidth = vergilSizeToken.getElementAt(0, 0);
             vergilHeight = vergilSizeToken.getElementAt(0, 1);
@@ -281,7 +279,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         // Generate the .xml file.
         String newModelFileName = _outputDirectory + "/" + _sanitizedModelName
-            + ".xml";
+                + ".xml";
 
         try {
             // Since we strip out the graphical information in
@@ -327,17 +325,17 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             try {
                 modelFileWriter = new BufferedWriter(new OutputStreamWriter(
-                                                             new FileOutputStream(newModelFileName)));
+                        new FileOutputStream(newModelFileName)));
                 _model.exportMoML(modelFileWriter);
 
                 // FIXME: need finally?
                 modelFileWriter.close();
             } catch (IOException ex2) {
                 // Rethrow original exception ex.
-                throw new InternalErrorException(null, ex,
-                        "Problem reading '" + _modelPath + "' or " + "writing '"
-                        + newModelFileName + "'\n"
-                        + "Also tried calling exportMoML():" + ex2.getMessage());
+                throw new InternalErrorException(null, ex, "Problem reading '"
+                        + _modelPath + "' or " + "writing '" + newModelFileName
+                        + "'\n" + "Also tried calling exportMoML():"
+                        + ex2.getMessage());
             } finally {
                 if (modelFileWriter != null) {
                     try {
@@ -356,7 +354,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         //    StringUtilities.substitute(PhaseOptions.getString(options,
         //            "templateDirectory"),
         //            "$PTII", _ptIIDirectory);
-        _templateDirectory = PhaseOptions.getString(options, "templateDirectory");
+        _templateDirectory = PhaseOptions.getString(options,
+                "templateDirectory");
 
         System.out.println("AppletWriter: _templateDirectory: '"
                 + _templateDirectory + "'");
@@ -364,11 +363,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // Read in the templates and generate new files.
         try {
             Copernicus.substitute(_templateDirectory + "model.htm.in",
-                    _substituteMap,
-                    _outputDirectory + "/" + _sanitizedModelName + ".htm");
+                    _substituteMap, _outputDirectory + "/"
+                            + _sanitizedModelName + ".htm");
             Copernicus.substitute(_templateDirectory + "modelVergil.htm.in",
-                    _substituteMap,
-                    _outputDirectory + "/" + _sanitizedModelName + "Vergil.htm");
+                    _substituteMap, _outputDirectory + "/"
+                            + _sanitizedModelName + "Vergil.htm");
 
             // Copy $PTII/doc/default.css as well.
             File defaultStyleSheetDirectory = new File(_outputDirectory
@@ -376,8 +375,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             defaultStyleSheetDirectory.mkdirs();
 
             Copernicus.substitute(_templateDirectory + "default.css",
-                    _substituteMap,
-                    defaultStyleSheetDirectory.toString() + "/default.css");
+                    _substituteMap, defaultStyleSheetDirectory.toString()
+                            + "/default.css");
         } catch (IOException ex) {
             // This exception tends to get eaten by soot, so we print as well.
             System.err.println("Problem writing makefile or html files:" + ex);
@@ -395,15 +394,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
-            results.put(object.getClass().getName(),
-                    _getDomainJar(object.getClass().getPackage().getName()));
+            results.put(object.getClass().getName(), _getDomainJar(object
+                    .getClass().getPackage().getName()));
 
             if (object instanceof AtomicActor) {
                 // Add in the Managers.
                 results.put(((AtomicActor) object).getDirector().getClass()
-                        .getName(),
-                        _getDomainJar(((AtomicActor) object).getDirector().getClass()
-                                .getPackage().getName()));
+                        .getName(), _getDomainJar(((AtomicActor) object)
+                        .getDirector().getClass().getPackage().getName()));
             }
         }
 
@@ -432,13 +430,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // the graphical classes
             RemoveGraphicalClasses removeGraphicalClasses = new RemoveGraphicalClasses();
             removeGraphicalClasses.clear();
-            removeGraphicalClasses.put("ptolemy.copernicus.gui.GeneratorTableauAttribute",
-                    null);
+            removeGraphicalClasses.put(
+                    "ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
             parser.addMoMLFilter(removeGraphicalClasses);
 
             // Parse the model.
             CompositeActor toplevel = null;
-            toplevel = (CompositeActor) parser.parse(modelPathURL, modelPathURL);
+            toplevel = (CompositeActor) parser
+                    .parse(modelPathURL, modelPathURL);
 
             FileWriter writer = null;
 
@@ -538,18 +537,19 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         while (classNames.hasNext()) {
             String className = (String) classNames.next();
 
-            if (jarFilesThatHaveBeenRequired.contains(
-                        (String) classMap.get(className))) {
+            if (jarFilesThatHaveBeenRequired.contains((String) classMap
+                    .get(className))) {
                 // If we have already possibly copied the jar file, then skip
                 continue;
             }
 
             if (!_copyPotentialJarFile((String) classMap.get(className),
-                        className, jarFilesThatHaveBeenRequired)) {
+                    className, jarFilesThatHaveBeenRequired)) {
                 // The className could not be found in the classMap
                 // Under Web Start, the resource that contains a class
                 // will have a mangled name, so we copy the jar file.
-                String classResource = ClassUtilities.lookupClassAsResource(className);
+                String classResource = ClassUtilities
+                        .lookupClassAsResource(className);
 
                 if (classResource == null) {
                     throw new IOException("Could not find '" + className
@@ -567,9 +567,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
                 // We need to actually look up the file to deal with
                 // the various C:/ptII, c:/ptII, c:\ptII, C:\ptII possibilities
-                String canonicalClassResource = UtilityFunctions.findFile(classResource);
+                String canonicalClassResource = UtilityFunctions
+                        .findFile(classResource);
 
-                String canonicalPtIIDirectory = UtilityFunctions.findFile(_ptIIDirectory);
+                String canonicalPtIIDirectory = UtilityFunctions
+                        .findFile(_ptIIDirectory);
 
                 if (canonicalClassResource.equals(canonicalPtIIDirectory)) {
                     // Failed to find the jar file.
@@ -577,19 +579,20 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     // where the class is found.  If the class is foo.bar.biz,
                     // the we look for $PTII/foo/bar/bar.jar
                     String pathName = className.replace('.', '/');
-                    String directoryName = pathName.substring(0,
-                            pathName.lastIndexOf("/"));
+                    String directoryName = pathName.substring(0, pathName
+                            .lastIndexOf("/"));
                     String jarFileName = directoryName
-                        + directoryName.substring(directoryName.lastIndexOf("/"))
-                        + ".jar";
+                            + directoryName.substring(directoryName
+                                    .lastIndexOf("/")) + ".jar";
 
                     if (_copyPotentialJarFile(jarFileName, className,
-                                jarFilesThatHaveBeenRequired)) {
+                            jarFilesThatHaveBeenRequired)) {
                     } else {
                         String warning = "Looking up '" + className
-                            + "'\nreturned the $PTII directory '"
-                            + _ptIIDirectory + "' instead of a jar file.\n'"
-                            + jarFileName + "' was not present?\n";
+                                + "'\nreturned the $PTII directory '"
+                                + _ptIIDirectory
+                                + "' instead of a jar file.\n'" + jarFileName
+                                + "' was not present?\n";
 
                         if (_codeBase.equals(".")) {
                             // We only need print an error message if
@@ -615,7 +618,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             System.out.println("Warning: " + warning
                                     + "Perhaps you need to run "
                                     + "'make install' to create the "
-                                    + "jar files?" + "\nIf the jar files are not "
+                                    + "jar files?"
+                                    + "\nIf the jar files are not "
                                     + "present, then the archive "
                                     + "applet parameter will not "
                                     + "include all of the jar files.");
@@ -679,8 +683,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         if (!sourceFile.isFile()) {
             throw new FileNotFoundException("'" + sourceFileName
-                    + "' is not a file or cannot be found." + "\nPerhaps you need "
-                    + "to run 'make install'?");
+                    + "' is not a file or cannot be found."
+                    + "\nPerhaps you need " + "to run 'make install'?");
         }
 
         File destinationFile = new File(destinationDirectory,
@@ -700,7 +704,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             try {
                 out = new BufferedOutputStream(new FileOutputStream(
-                                                       destinationFile));
+                        destinationFile));
 
                 int c;
 
@@ -734,14 +738,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
     // Given a domain package, return the corresponding jar file
     private static String _getDomainJar(String domainPackage) {
-        String domainPackageDomain = domainPackage.substring(0,
-                domainPackage.lastIndexOf("."));
+        String domainPackageDomain = domainPackage.substring(0, domainPackage
+                .lastIndexOf("."));
 
         String domainDomain = domainPackageDomain.substring(domainPackageDomain
                 .lastIndexOf(".") + 1);
 
         return StringUtilities.substitute(domainPackageDomain, ".", "/") + "/"
-            + domainDomain + ".jar";
+                + domainDomain + ".jar";
     }
 
     ///////////////////////////////////////////////////////////////////

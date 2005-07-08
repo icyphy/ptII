@@ -1,30 +1,30 @@
 /* Base class for code generators.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.codegen.kernel;
 
 import java.io.File;
@@ -57,7 +57,6 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// CodeGenerator
@@ -93,8 +92,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
         overwriteFiles.setExpression("true");
 
-        _attachText("_iconDescription",
-                "<svg>\n"
+        _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
@@ -169,13 +167,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Get the code generator helper associated with the director of
         // the container first.
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
-            .getDirector();
+                .getDirector();
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
         ((Director) directorHelper).setCodeGenerator(this);
 
         Set includingFiles = new HashSet();
         Iterator actors = ((CompositeActor) getContainer()).deepEntityList()
-            .iterator();
+                .iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -212,7 +210,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 // this method from a script.  If the question is
                 // asked, the build will hang.
                 if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
-                            + " exists. OK to overwrite?")) {
+                        + " exists. OK to overwrite?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
                 }
@@ -222,8 +220,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             writer.write(code.toString());
             codeDirectory.close();
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to write \"" + codeDirectory.asFile() + "\"");
+            throw new IllegalActionException(this, ex, "Failed to write \""
+                    + codeDirectory.asFile() + "\"");
         }
     }
 
@@ -239,7 +237,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(comment("Initialize " + getContainer().getFullName()));
 
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
-            .getDirector();
+                .getDirector();
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
         code.append(directorHelper.generateInitializeCode());
         return code.toString();
@@ -253,16 +251,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException If the helper class for the model
      *   director cannot be found.
      */
-    public String generatePreinitializeCode() 
-            throws IllegalActionException {
+    public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
-            .getDirector();
+                .getDirector();
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
-        code.append(((Director)directorHelper).generatePreinitializeCode());
+        code.append(((Director) directorHelper).generatePreinitializeCode());
         return code.toString();
     }
-    
+
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
      *  @param code The given string buffer.
@@ -270,10 +267,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public void generateVariableDeclarations(StringBuffer code)
             throws IllegalActionException {
         code.append(comment("Variable Declarations "
-                            + getContainer().getFullName()));
+                + getContainer().getFullName()));
 
         Iterator actors = ((CompositeActor) getContainer()).deepEntityList()
-            .iterator();
+                .iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -353,7 +350,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(comment("Wrapup " + getContainer().getFullName()));
 
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
-            .getDirector();
+                .getDirector();
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
         directorHelper.generateWrapupCode(code);
     }
@@ -415,7 +412,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 }
 
                 // Get all instances of this class contained in the model
-                List codeGenerators = toplevel.attributeList(CodeGenerator.class);
+                List codeGenerators = toplevel
+                        .attributeList(CodeGenerator.class);
 
                 CodeGenerator codeGenerator;
 
@@ -426,8 +424,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 } else {
                     // Get the last CodeGenerator in the list, maybe
                     // it was added last?
-                    codeGenerator = (CodeGenerator) codeGenerators.get(codeGenerators
-                            .size() - 1);
+                    codeGenerator = (CodeGenerator) codeGenerators
+                            .get(codeGenerators.size() - 1);
                 }
 
                 System.out.println("CodeGenerator: " + codeGenerator);
@@ -453,11 +451,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException if the given container
      *   is not null and not an instance of CompositeEntity.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         if ((container != null) && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
-                    "CodeGenerator can only be contained" + " by CompositeEntity");
+                    "CodeGenerator can only be contained"
+                            + " by CompositeEntity");
         }
 
         super.setContainer(container);
@@ -494,22 +493,19 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         Constructor constructor = null;
 
         try {
-            constructor = helperClass.getConstructor(new Class[] {
-                component.getClass()
-            });
+            constructor = helperClass.getConstructor(new Class[] { component
+                    .getClass() });
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, e,
                     "There is no constructor in " + helperClassName
-                    + " which accepts an instance of " + componentClassName
-                    + " as the argument.");
+                            + " which accepts an instance of "
+                            + componentClassName + " as the argument.");
         }
 
         Object helperObject = null;
 
         try {
-            helperObject = constructor.newInstance(new Object[] {
-                component
-            });
+            helperObject = constructor.newInstance(new Object[] { component });
         } catch (Exception e) {
             throw new IllegalActionException((NamedObj) component, e,
                     "Failed to create helper class code generator.");
@@ -518,8 +514,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (!(helperObject instanceof ComponentCodeGenerator)) {
             throw new IllegalActionException(this,
                     "Cannot generate code for this component: " + component
-                    + ". Its helper class does not"
-                    + " implement componentCodeGenerator.");
+                            + ". Its helper class does not"
+                            + " implement componentCodeGenerator.");
         }
 
         ComponentCodeGenerator castHelperObject = (ComponentCodeGenerator) helperObject;

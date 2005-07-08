@@ -1,31 +1,31 @@
 /** A directed acyclic graph (DAG).
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.graph;
 
 import java.util.ArrayList;
@@ -36,38 +36,37 @@ import java.util.ListIterator;
 import ptolemy.graph.analysis.TransitiveClosureAnalysis;
 import ptolemy.graph.analysis.strategy.CachedStrategy;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DirectedAcyclicGraph.java
 
 /**
-   A directed acyclic graph (DAG).
+ A directed acyclic graph (DAG).
 
-   The graphs constructed by this class cannot have cycles. For performance
-   reasons, this requirement is not checked (except for self-loops) during
-   the construction of the graph (calls to <code>add</code> and
-   <code>addEdge</code>), but is checked when any of the other methods is
-   called for the first time after the addition of nodes or edges. If the
-   graph is cyclic, a GraphTopologyException is thrown. The check for cycles
-   is done by computing the transitive closure, so the first operation after
-   a graph change is slower.
+ The graphs constructed by this class cannot have cycles. For performance
+ reasons, this requirement is not checked (except for self-loops) during
+ the construction of the graph (calls to <code>add</code> and
+ <code>addEdge</code>), but is checked when any of the other methods is
+ called for the first time after the addition of nodes or edges. If the
+ graph is cyclic, a GraphTopologyException is thrown. The check for cycles
+ is done by computing the transitive closure, so the first operation after
+ a graph change is slower.
 
-   This class implements the CPO interface since the Hasse diagram of a CPO
-   can be viewed as a DAG.  Therefore, this class can be viewed as both a DAG
-   and a finite CPO. In the case of CPO, the node weights
-   are the CPO elements. The CPO does not require the bottom
-   element to exist. The call to <code>bottom</code> returns
-   <code>null</code> if the bottom element does not exist.
-   <p>
-   NOTE: This class is a starting point for implementing graph algorithms,
-   more methods will be added.
+ This class implements the CPO interface since the Hasse diagram of a CPO
+ can be viewed as a DAG.  Therefore, this class can be viewed as both a DAG
+ and a finite CPO. In the case of CPO, the node weights
+ are the CPO elements. The CPO does not require the bottom
+ element to exist. The call to <code>bottom</code> returns
+ <code>null</code> if the bottom element does not exist.
+ <p>
+ NOTE: This class is a starting point for implementing graph algorithms,
+ more methods will be added.
 
-   @author Yuhong Xiong, Shuvra S. Bhattacharyya
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (yuhong)
-   @Pt.AcceptedRating Green (kienhuis)
-*/
+ @author Yuhong Xiong, Shuvra S. Bhattacharyya
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (yuhong)
+ @Pt.AcceptedRating Green (kienhuis)
+ */
 
 // The methods greatestLowerBound, downSet, greatestElement share the
 // same code with their duals, leastUpperBound, upSet, leastElement.
@@ -309,7 +308,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
             if (finished && active) {
                 throw new GraphStateException(
                         "DirectedAcyclicGraph.topologicalSort: Graph is "
-                        + "cyclic.");
+                                + "cyclic.");
             }
         }
 
@@ -496,10 +495,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         if (virtualLength == 0) {
             return null;
         } else if (incomparables.size() != 0) {
-            for (ListIterator iterator = incomparables.listIterator(0);
-                 iterator.hasNext();) {
-                int result = _compareNodeId(ids[0],
-                        ((Integer) iterator.next()).intValue());
+            for (ListIterator iterator = incomparables.listIterator(0); iterator
+                    .hasNext();) {
+                int result = _compareNodeId(ids[0], ((Integer) iterator.next())
+                        .intValue());
 
                 if ((result == HIGHER) || (result == INCOMPARABLE)) {
                     return null;
@@ -677,7 +676,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     private void _validate() {
         boolean[][] transitiveClosure = transitiveClosure();
 
-        if (!((CachedStrategy) _transitiveClosureAnalysis.analyzer()).obsolete()
+        if (!((CachedStrategy) _transitiveClosureAnalysis.analyzer())
+                .obsolete()
                 && isAcyclic()) {
             _closure = transitiveClosure;
             return;
@@ -749,10 +749,13 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     // all the private methods, exception _validate() and _validateDual(),
     // use _closure instead of _transitiveClosure or _tranClosureTranspose.
     private boolean[][] _closure = null;
+
     private boolean[][] _tranClosureTranspose = null;
 
     // The graph analysis for computation of the transitive closure.
     private TransitiveClosureAnalysis _transitiveClosureAnalysis;
+
     private Object _bottom = null;
+
     private Object _top = null;
 }

@@ -1,30 +1,30 @@
 /* A plotter that is also a source of sketched signals.
 
-@Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.gui;
 
 import java.awt.Container;
@@ -51,35 +51,34 @@ import ptolemy.plot.EditablePlot;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SketchedSource
 
 /**
-   This actor is a plotter that also produces as its output a
-   signal that has been sketched by the user on the screen.
-   The <i>length</i> parameter specifies the
-   number of samples in the sketched signal.  The <i>periodic</i>
-   parameter, if true, specifies that the signal should be repeated.
-   If this parameter is false, then the sketched signal is produced
-   exactly once, at the beginning of the execution of the model.  If
-   <i>periodic</i> is true and the sketch is modified during
-   execution of the model, then the modification appears in the next
-   cycle after the modification has been completed.  In
-   other words, the change does not appear mid-cycle.
-   <p>
-   This actor is also a plotter, and will plot the input signals
-   on the same plot as the sketched signal.  It can be used in a
-   feedback loop where the output affects the input. The first batch
-   of outputs is produced in the initialize() method, so it can
-   be put in a feedback loop in a dataflow model.
+ This actor is a plotter that also produces as its output a
+ signal that has been sketched by the user on the screen.
+ The <i>length</i> parameter specifies the
+ number of samples in the sketched signal.  The <i>periodic</i>
+ parameter, if true, specifies that the signal should be repeated.
+ If this parameter is false, then the sketched signal is produced
+ exactly once, at the beginning of the execution of the model.  If
+ <i>periodic</i> is true and the sketch is modified during
+ execution of the model, then the modification appears in the next
+ cycle after the modification has been completed.  In
+ other words, the change does not appear mid-cycle.
+ <p>
+ This actor is also a plotter, and will plot the input signals
+ on the same plot as the sketched signal.  It can be used in a
+ feedback loop where the output affects the input. The first batch
+ of outputs is produced in the initialize() method, so it can
+ be put in a feedback loop in a dataflow model.
 
-   @author  Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (vogel)
-*/
+ @author  Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (vogel)
+ */
 public class SketchedSource extends SequencePlotter implements EditListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -243,7 +242,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
             // Optionally execute the model here if it is idle.
             try {
                 boolean runValue = ((BooleanToken) runOnModification.getToken())
-                    .booleanValue();
+                        .booleanValue();
 
                 if (runValue) {
                     Manager manager = getManager();
@@ -274,7 +273,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
         super.fire();
 
         boolean periodicValue = ((BooleanToken) periodic.getToken())
-            .booleanValue();
+                .booleanValue();
 
         // If this isn't periodic, then send zero only, since we already
         // sent out the entire waveform in the initialize method.
@@ -403,7 +402,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
 
                 if ((defaultValues != null) && (i < defaultValues.length())) {
                     value = ((DoubleToken) defaultValues.getElement(i))
-                        .doubleValue();
+                            .doubleValue();
                 }
 
                 ((Plot) plot).addPoint(0, (double) i, value, connected);

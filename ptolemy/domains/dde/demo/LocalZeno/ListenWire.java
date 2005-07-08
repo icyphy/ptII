@@ -1,31 +1,31 @@
 /* A Wire actor that can notify an ExecEventListener of ExecEvents.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.dde.demo.LocalZeno;
 
 import ptolemy.domains.dde.lib.Wire;
@@ -33,28 +33,27 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ListenWire
 
 /**
-   A Wire actor that can notify an ExecEventListener of ExecEvents.
-   In particular, the listener will be notified each time the prefire(),
-   postfire() and wrapup() methods of this actor are invoked. Such
-   notification is enabled by adding an ExecEventListener to this actor's
-   listener list via the addListeners() method. Listeners can be removed
-   via the removeListeners() method. ExecEventListeners are currently
-   implemented to serve as conduits between Ptolemy II and the Diva
-   graphical user interface.
+ A Wire actor that can notify an ExecEventListener of ExecEvents.
+ In particular, the listener will be notified each time the prefire(),
+ postfire() and wrapup() methods of this actor are invoked. Such
+ notification is enabled by adding an ExecEventListener to this actor's
+ listener list via the addListeners() method. Listeners can be removed
+ via the removeListeners() method. ExecEventListeners are currently
+ implemented to serve as conduits between Ptolemy II and the Diva
+ graphical user interface.
 
-   @author John S. Davis II
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (davisj)
-   @Pt.AcceptedRating Yellow (davisj)
-   @see ptolemy.actor.gui.ExecEvent
-   @see ptolemy.actor.gui.ExecEventListener
-*/
+ @author John S. Davis II
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Red (davisj)
+ @Pt.AcceptedRating Yellow (davisj)
+ @see ptolemy.actor.gui.ExecEvent
+ @see ptolemy.actor.gui.ExecEventListener
+ */
 public class ListenWire extends Wire {
     /** Construct a ListenWire actor with the specified container
      *  and name.

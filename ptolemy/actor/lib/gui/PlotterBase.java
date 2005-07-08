@@ -1,30 +1,30 @@
 /* Base class for plotters.
 
-@Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.gui;
 
 import java.awt.Container;
@@ -65,31 +65,30 @@ import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.plotml.PlotMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PlotterBase
 
 /**
-   Base class for plotters.  This class contains an instance of the
-   PlotBox class from the Ptolemy plot package as a public member,
-   although which subclass of PlotBox is created is left to derived classes.
-   It provides a parameter that determines whether to fill the plot
-   when wrapup is invoked. It also has a <i>legend</i> parameter,
-   which gives a comma-separated list of labels to attach to
-   each dataset.  Normally, the number of elements in this list
-   should equal the number of input channels, although this
-   is not enforced.
+ Base class for plotters.  This class contains an instance of the
+ PlotBox class from the Ptolemy plot package as a public member,
+ although which subclass of PlotBox is created is left to derived classes.
+ It provides a parameter that determines whether to fill the plot
+ when wrapup is invoked. It also has a <i>legend</i> parameter,
+ which gives a comma-separated list of labels to attach to
+ each dataset.  Normally, the number of elements in this list
+ should equal the number of input channels, although this
+ is not enforced.
 
-   @see ptolemy.plot.PlotBox
+ @see ptolemy.plot.PlotBox
 
-   @author  Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @author  Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class PlotterBase extends TypedAtomicActor implements Configurable,
-                                                             Placeable {
+        Placeable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -102,8 +101,8 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        fillOnWrapup = new Parameter(this, "fillOnWrapup",
-                new BooleanToken(true));
+        fillOnWrapup = new Parameter(this, "fillOnWrapup", new BooleanToken(
+                true));
         fillOnWrapup.setTypeEquals(BaseType.BOOLEAN);
 
         legend = new StringAttribute(this, "legend");
@@ -113,15 +112,15 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
 
         _plotSize = new SizeAttribute(this, "_plotSize");
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-12\" y=\"-12\" " + "width=\"24\" height=\"24\" "
-                + "style=\"fill:white\"/>\n" + "<rect x=\"2\" y=\"-18\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
+                + "style=\"fill:lightGrey\"/>\n" + "<rect x=\"-12\" y=\"-12\" "
+                + "width=\"24\" height=\"24\" " + "style=\"fill:white\"/>\n"
+                + "<rect x=\"2\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n" + "<rect x=\"8\" y=\"-18\" "
                 + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"8\" y=\"-18\" " + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n" + "<rect x=\"14\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+                + "<rect x=\"14\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n"
                 + "<polyline points=\"-10,0, -5,-8, 5,8, 10,0\" "
                 + "style=\"stroke:red\"/>\n" + "</svg>\n");
     }
@@ -423,9 +422,8 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
 
         // NOTE: Cannot include xml spec in the header because processing
         // instructions cannot be nested in XML (lame, isn't it?).
-        String header =
-            "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"
-            + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
+        String header = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"
+                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
 
         if (plot != null) {
             output.write(_getIndentPrefix(depth) + "<configure>\n<?plotml "
@@ -567,26 +565,29 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    if (plot != null) {
-                        if (_container != null) {
-                            _container.remove(plot);
-                            _container.invalidate();
-                            _container.repaint();
-                        } else if (_frame != null) {
-                            _frame.dispose();
-                        }
+            public void run() {
+                if (plot != null) {
+                    if (_container != null) {
+                        _container.remove(plot);
+                        _container.invalidate();
+                        _container.repaint();
+                    } else if (_frame != null) {
+                        _frame.dispose();
                     }
                 }
-            });
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // The bases and input streams given to the configure() method.
     private List _configureBases = null;
+
     private List _configureSources = null;
+
     private List _configureTexts = null;
+
     private String _configureSource;
 
     ///////////////////////////////////////////////////////////////////

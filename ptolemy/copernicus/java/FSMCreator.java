@@ -1,29 +1,29 @@
 /* An interface for classes that replaces port methods.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.Collections;
@@ -73,18 +73,17 @@ import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.toolkits.scalar.LocalSplitter;
 import soot.util.Chain;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AtomicActorCreator
 
 /**
 
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
-@Pt.ProposedRating Red (cxh)
-@Pt.AcceptedRating Red (cxh)
-*/
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class FSMCreator implements AtomicActorCreator {
     /** Generate a new class with the given name that can take the
      *  place of the given actor.  Use the given options when
@@ -153,8 +152,9 @@ public class FSMCreator implements AtomicActorCreator {
 
                 // PtolemyUtilities.getSootTypeForTokenType(
                 //  port.getType());
-                SootField field = new SootField(StringUtilities.sanitizeName(
-                                                        name) + "Token", type);
+                SootField field = new SootField(StringUtilities
+                        .sanitizeName(name)
+                        + "Token", type);
                 entityInstanceClass.addField(field);
                 nameToField.put(name, field);
 
@@ -182,7 +182,8 @@ public class FSMCreator implements AtomicActorCreator {
         }
 
         // Add a field to keep track of the current state.
-        SootField currentStateField = new SootField("_currentState", IntType.v());
+        SootField currentStateField = new SootField("_currentState", IntType
+                .v());
         entityInstanceClass.addField(currentStateField);
 
         SootField nextTransitionField = new SootField("_nextTransition",
@@ -204,12 +205,14 @@ public class FSMCreator implements AtomicActorCreator {
             Local thisLocal = body.getThisLocal();
 
             // Set the initial state.
-            String initialStateName = ((StringAttribute) entity.getAttribute(
-                                               "initialStateName")).getExpression();
-            int initialStateIndex = entity.entityList().indexOf(entity
-                    .getEntity(initialStateName));
-            units.add(Jimple.v().newAssignStmt(Jimple.v().newInstanceFieldRef(thisLocal,
-                                                       currentStateField), IntConstant.v(initialStateIndex)));
+            String initialStateName = ((StringAttribute) entity
+                    .getAttribute("initialStateName")).getExpression();
+            int initialStateIndex = entity.entityList().indexOf(
+                    entity.getEntity(initialStateName));
+            units.add(Jimple.v().newAssignStmt(
+                    Jimple.v()
+                            .newInstanceFieldRef(thisLocal, currentStateField),
+                    IntConstant.v(initialStateIndex)));
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
@@ -255,14 +258,18 @@ public class FSMCreator implements AtomicActorCreator {
                             PtolemyUtilities.componentPortType);
                     body.getLocals().add(portLocal);
 
-                    SootField portField = entityInstanceClass.getFieldByName(StringUtilities
-                            .sanitizeName(name));
-                    units.add(Jimple.v().newAssignStmt(portLocal,
-                                      Jimple.v().newInstanceFieldRef(thisLocal, portField)));
-                    units.add(Jimple.v().newAssignStmt(hasTokenLocal,
-                                      Jimple.v().newVirtualInvokeExpr(portLocal,
-                                              PtolemyUtilities.hasTokenMethod,
-                                              IntConstant.v(0))));
+                    SootField portField = entityInstanceClass
+                            .getFieldByName(StringUtilities.sanitizeName(name));
+                    units
+                            .add(Jimple.v().newAssignStmt(
+                                    portLocal,
+                                    Jimple.v().newInstanceFieldRef(thisLocal,
+                                            portField)));
+                    units.add(Jimple.v().newAssignStmt(
+                            hasTokenLocal,
+                            Jimple.v().newVirtualInvokeExpr(portLocal,
+                                    PtolemyUtilities.hasTokenMethod,
+                                    IntConstant.v(0))));
 
                     Local hasTokenToken = PtolemyUtilities.addTokenLocal(body,
                             "token", PtolemyUtilities.booleanTokenClass,
@@ -270,23 +277,26 @@ public class FSMCreator implements AtomicActorCreator {
                             hasTokenLocal);
 
                     // store the isPresent
-                    SootField tokenIsPresentField = (SootField) nameToField.get(name
-                            + "_isPresent");
-                    units.add(Jimple.v().newAssignStmt(Jimple.v()
-                                      .newInstanceFieldRef(thisLocal,
-                                              tokenIsPresentField), hasTokenToken));
+                    SootField tokenIsPresentField = (SootField) nameToField
+                            .get(name + "_isPresent");
+                    units.add(Jimple.v().newAssignStmt(
+                            Jimple.v().newInstanceFieldRef(thisLocal,
+                                    tokenIsPresentField), hasTokenToken));
 
                     Stmt target = Jimple.v().newNopStmt();
-                    units.add(Jimple.v().newIfStmt(Jimple.v().newEqExpr(hasTokenLocal,
-                                                           IntConstant.v(0)), target));
-                    units.add(Jimple.v().newAssignStmt(tokenLocal,
-                                      Jimple.v().newVirtualInvokeExpr(portLocal,
-                                              PtolemyUtilities.getMethod, IntConstant.v(0))));
+                    units.add(Jimple.v().newIfStmt(
+                            Jimple.v().newEqExpr(hasTokenLocal,
+                                    IntConstant.v(0)), target));
+                    units.add(Jimple.v().newAssignStmt(
+                            tokenLocal,
+                            Jimple.v().newVirtualInvokeExpr(portLocal,
+                                    PtolemyUtilities.getMethod,
+                                    IntConstant.v(0))));
 
                     SootField tokenField = (SootField) nameToField.get(name);
-                    units.add(Jimple.v().newAssignStmt(Jimple.v()
-                                      .newInstanceFieldRef(thisLocal,
-                                              tokenField), tokenLocal));
+                    units.add(Jimple.v().newAssignStmt(
+                            Jimple.v().newInstanceFieldRef(thisLocal,
+                                    tokenField), tokenLocal));
                     units.add(target);
                 }
             }
@@ -296,8 +306,8 @@ public class FSMCreator implements AtomicActorCreator {
             int numberOfStates = entity.entityList().size();
 
             // Figure out what state we are in.
-            for (Iterator states = entity.entityList().iterator();
-                 states.hasNext();) {
+            for (Iterator states = entity.entityList().iterator(); states
+                    .hasNext();) {
                 State state = (State) states.next();
                 Stmt startStmt = Jimple.v().newNopStmt();
 
@@ -316,36 +326,40 @@ public class FSMCreator implements AtomicActorCreator {
             Local flagLocal = Jimple.v().newLocal("flagLocal", BooleanType.v());
             body.getLocals().add(flagLocal);
 
-            Local transitionTakenLocal = Jimple.v().newLocal("transitionTakenLocal",
-                    BooleanType.v());
+            Local transitionTakenLocal = Jimple.v().newLocal(
+                    "transitionTakenLocal", BooleanType.v());
             body.getLocals().add(transitionTakenLocal);
 
-            Local nextTransitionLocal = Jimple.v().newLocal("nextTransitionLocal",
-                    IntType.v());
+            Local nextTransitionLocal = Jimple.v().newLocal(
+                    "nextTransitionLocal", IntType.v());
             body.getLocals().add(nextTransitionLocal);
 
-            units.add(Jimple.v().newAssignStmt(currentStateLocal,
-                              Jimple.v().newInstanceFieldRef(thisLocal, currentStateField)));
+            units
+                    .add(Jimple.v().newAssignStmt(
+                            currentStateLocal,
+                            Jimple.v().newInstanceFieldRef(thisLocal,
+                                    currentStateField)));
 
             // Start by doing nothing.
             units.add(Jimple.v().newAssignStmt(transitionTakenLocal,
-                              IntConstant.v(0)));
+                    IntConstant.v(0)));
             units.add(Jimple.v().newAssignStmt(nextTransitionLocal,
-                              IntConstant.v(-1)));
+                    IntConstant.v(-1)));
 
             // If no transition is taken, then stay in this state.
-            units.add(Jimple.v().newAssignStmt(nextStateLocal, currentStateLocal));
+            units.add(Jimple.v().newAssignStmt(nextStateLocal,
+                    currentStateLocal));
 
             Stmt finishedStmt = Jimple.v().newNopStmt();
             Stmt errorStmt = Jimple.v().newNopStmt();
 
             // Get the current state.
             units.add(Jimple.v().newTableSwitchStmt(currentStateLocal, 0,
-                              numberOfStates - 1, stateStmtList, errorStmt));
+                    numberOfStates - 1, stateStmtList, errorStmt));
 
             // Generate code for each state.
-            for (Iterator states = entity.entityList().iterator();
-                 states.hasNext();) {
+            for (Iterator states = entity.entityList().iterator(); states
+                    .hasNext();) {
                 State state = (State) states.next();
                 System.out.println("state " + state.getName());
 
@@ -374,25 +388,42 @@ public class FSMCreator implements AtomicActorCreator {
                         body.getLocals().add(entityLocal);
 
                         NamedObj containerModel = (NamedObj) entity
-                            .getContainer();
-                        String deepName = ((NamedObj) refinement).getName(containerModel);
+                                .getContainer();
+                        String deepName = ((NamedObj) refinement)
+                                .getName(containerModel);
 
-                        units.add(Jimple.v().newAssignStmt(containerLocal,
-                                          Jimple.v().newInterfaceInvokeExpr(thisLocal,
-                                                  PtolemyUtilities.getContainerMethod)));
-                        units.add(Jimple.v().newAssignStmt(containerLocal,
-                                          Jimple.v().newCastExpr(containerLocal,
-                                                  RefType.v(
-                                                          PtolemyUtilities.compositeActorClass))));
-                        units.add(Jimple.v().newAssignStmt(entityLocal,
-                                          Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                                  PtolemyUtilities.getEntityMethod,
-                                                  StringConstant.v(deepName))));
+                        units.add(Jimple.v().newAssignStmt(
+                                containerLocal,
+                                Jimple.v().newInterfaceInvokeExpr(thisLocal,
+                                        PtolemyUtilities.getContainerMethod)));
+                        units
+                                .add(Jimple
+                                        .v()
+                                        .newAssignStmt(
+                                                containerLocal,
+                                                Jimple
+                                                        .v()
+                                                        .newCastExpr(
+                                                                containerLocal,
+                                                                RefType
+                                                                        .v(PtolemyUtilities.compositeActorClass))));
+                        units.add(Jimple.v().newAssignStmt(
+                                entityLocal,
+                                Jimple.v().newVirtualInvokeExpr(containerLocal,
+                                        PtolemyUtilities.getEntityMethod,
+                                        StringConstant.v(deepName))));
 
-                        units.add(Jimple.v().newAssignStmt(entityLocal,
-                                          Jimple.v().newCastExpr(entityLocal,
-                                                  RefType.v(
-                                                          PtolemyUtilities.compositeActorClass))));
+                        units
+                                .add(Jimple
+                                        .v()
+                                        .newAssignStmt(
+                                                entityLocal,
+                                                Jimple
+                                                        .v()
+                                                        .newCastExpr(
+                                                                entityLocal,
+                                                                RefType
+                                                                        .v(PtolemyUtilities.compositeActorClass))));
 
                         SootMethod rprefireMethod;
                         SootMethod rfireMethod;
@@ -400,74 +431,88 @@ public class FSMCreator implements AtomicActorCreator {
 
                         if (refinement instanceof CompositeActor) {
                             rprefireMethod = SootUtilities
-                                .searchForMethodByName(PtolemyUtilities.compositeActorClass,
-                                        "prefire");
-                            rfireMethod = SootUtilities.searchForMethodByName(PtolemyUtilities.compositeActorClass,
+                                    .searchForMethodByName(
+                                            PtolemyUtilities.compositeActorClass,
+                                            "prefire");
+                            rfireMethod = SootUtilities.searchForMethodByName(
+                                    PtolemyUtilities.compositeActorClass,
                                     "fire");
                             rpostfireMethod = SootUtilities
-                                .searchForMethodByName(PtolemyUtilities.compositeActorClass,
-                                        "postfire");
+                                    .searchForMethodByName(
+                                            PtolemyUtilities.compositeActorClass,
+                                            "postfire");
                         } else {
                             throw new RuntimeException();
                         }
 
-                        units.add(Jimple.v().newInvokeStmt(Jimple.v()
-                                          .newVirtualInvokeExpr(entityLocal,
-                                                  rprefireMethod)));
-                        units.add(Jimple.v().newInvokeStmt(Jimple.v()
-                                          .newVirtualInvokeExpr(entityLocal,
-                                                  rfireMethod)));
-                        units.add(Jimple.v().newInvokeStmt(Jimple.v()
-                                          .newVirtualInvokeExpr(entityLocal,
-                                                  rpostfireMethod)));
+                        units.add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(entityLocal,
+                                        rprefireMethod)));
+                        units.add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(entityLocal,
+                                        rfireMethod)));
+                        units.add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(entityLocal,
+                                        rpostfireMethod)));
                     }
                 }
 
                 // Determine the next state in this state.
-                for (Iterator transitions = state.outgoingPort.linkedRelationList()
-                         .iterator();
-                     transitions.hasNext();) {
+                for (Iterator transitions = state.outgoingPort
+                        .linkedRelationList().iterator(); transitions.hasNext();) {
                     Transition transition = (Transition) transitions.next();
                     System.out.println("transition = " + transition);
 
                     String guardExpression = transition.getGuardExpression();
 
-                    Local guardLocal = DataUtilities.generateExpressionCode(entity,
-                            entityInstanceClass, guardExpression, nameToField,
-                            nameToType, body);
+                    Local guardLocal = DataUtilities.generateExpressionCode(
+                            entity, entityInstanceClass, guardExpression,
+                            nameToField, nameToType, body);
 
                     // Test the guard.
-                    units.add(Jimple.v().newAssignStmt(tokenLocal,
-                                      Jimple.v().newCastExpr(guardLocal,
-                                              RefType.v(PtolemyUtilities.booleanTokenClass))));
-                    units.add(Jimple.v().newAssignStmt(flagLocal,
-                                      Jimple.v().newVirtualInvokeExpr(tokenLocal,
-                                              PtolemyUtilities.booleanValueMethod)));
+                    units
+                            .add(Jimple
+                                    .v()
+                                    .newAssignStmt(
+                                            tokenLocal,
+                                            Jimple
+                                                    .v()
+                                                    .newCastExpr(
+                                                            guardLocal,
+                                                            RefType
+                                                                    .v(PtolemyUtilities.booleanTokenClass))));
+                    units.add(Jimple.v().newAssignStmt(
+                            flagLocal,
+                            Jimple.v().newVirtualInvokeExpr(tokenLocal,
+                                    PtolemyUtilities.booleanValueMethod)));
 
                     Stmt skipStmt = Jimple.v().newNopStmt();
 
-                    units.add(Jimple.v().newIfStmt(Jimple.v().newEqExpr(flagLocal,
-                                                           IntConstant.v(0)), skipStmt));
-                    units.add(Jimple.v().newIfStmt(Jimple.v().newEqExpr(transitionTakenLocal,
-                                                           IntConstant.v(1)), errorStmt));
+                    units.add(Jimple.v().newIfStmt(
+                            Jimple.v().newEqExpr(flagLocal, IntConstant.v(0)),
+                            skipStmt));
+                    units.add(Jimple.v().newIfStmt(
+                            Jimple.v().newEqExpr(transitionTakenLocal,
+                                    IntConstant.v(1)), errorStmt));
 
                     // If transition taken, then store the next state
                     units.add(Jimple.v().newAssignStmt(transitionTakenLocal,
-                                      IntConstant.v(1)));
-                    units.add(Jimple.v().newAssignStmt(nextTransitionLocal,
-                                      IntConstant.v(entity.relationList().indexOf(transition))));
+                            IntConstant.v(1)));
+                    units.add(Jimple.v().newAssignStmt(
+                            nextTransitionLocal,
+                            IntConstant.v(entity.relationList().indexOf(
+                                    transition))));
 
-                    int nextStateIndex = entity.entityList().indexOf(transition
-                            .destinationState());
+                    int nextStateIndex = entity.entityList().indexOf(
+                            transition.destinationState());
                     units.add(Jimple.v().newAssignStmt(nextStateLocal,
-                                      IntConstant.v(nextStateIndex)));
+                            IntConstant.v(nextStateIndex)));
 
                     // Generate code for the outputExpression of the guard.
                     for (Iterator actions = transition.choiceActionList()
-                             .iterator();
-                         actions.hasNext();) {
+                            .iterator(); actions.hasNext();) {
                         AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                            .next();
+                                .next();
                         System.out.println("action = " + action);
                         _generateActionCode(entity, entityInstanceClass,
                                 nameToField, nameToType, body, action);
@@ -490,12 +535,15 @@ public class FSMCreator implements AtomicActorCreator {
                     errorStmt);
 
             // Store the next state.
-            units.add(Jimple.v().newAssignStmt(Jimple.v().newInstanceFieldRef(thisLocal,
-                                                       currentStateField), nextStateLocal));
+            units.add(Jimple.v().newAssignStmt(
+                    Jimple.v()
+                            .newInstanceFieldRef(thisLocal, currentStateField),
+                    nextStateLocal));
 
             // And the next Transition.
-            units.add(Jimple.v().newAssignStmt(Jimple.v().newInstanceFieldRef(thisLocal,
-                                                       nextTransitionField), nextTransitionLocal));
+            units.add(Jimple.v().newAssignStmt(
+                    Jimple.v().newInstanceFieldRef(thisLocal,
+                            nextTransitionField), nextTransitionLocal));
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
@@ -523,8 +571,8 @@ public class FSMCreator implements AtomicActorCreator {
             int numberOfTransitions = entity.relationList().size();
 
             // Figure out what transition we are in.
-            for (Iterator transitions = entity.relationList().iterator();
-                 transitions.hasNext();) {
+            for (Iterator transitions = entity.relationList().iterator(); transitions
+                    .hasNext();) {
                 Transition transition = (Transition) transitions.next();
                 Stmt startStmt = Jimple.v().newNopStmt();
 
@@ -532,33 +580,34 @@ public class FSMCreator implements AtomicActorCreator {
                 transitionStmtList.add(startStmt);
             }
 
-            Local nextTransitionLocal = Jimple.v().newLocal("nextTransitionLocal",
-                    IntType.v());
+            Local nextTransitionLocal = Jimple.v().newLocal(
+                    "nextTransitionLocal", IntType.v());
             body.getLocals().add(nextTransitionLocal);
 
-            units.add(Jimple.v().newAssignStmt(nextTransitionLocal,
-                              Jimple.v().newInstanceFieldRef(thisLocal,
-                                      nextTransitionField)));
+            units.add(Jimple.v().newAssignStmt(
+                    nextTransitionLocal,
+                    Jimple.v().newInstanceFieldRef(thisLocal,
+                            nextTransitionField)));
 
             Stmt finishedStmt = Jimple.v().newNopStmt();
             Stmt errorStmt = Jimple.v().newNopStmt();
 
             // Get the current transition..
             units.add(Jimple.v().newTableSwitchStmt(nextTransitionLocal, 0,
-                              numberOfTransitions - 1, transitionStmtList, errorStmt));
+                    numberOfTransitions - 1, transitionStmtList, errorStmt));
 
             // Generate code for each transition
-            for (Iterator transitions = entity.relationList().iterator();
-                 transitions.hasNext();) {
+            for (Iterator transitions = entity.relationList().iterator(); transitions
+                    .hasNext();) {
                 Transition transition = (Transition) transitions.next();
                 Stmt startStmt = (Stmt) transitionToStartStmt.get(transition);
                 units.add(startStmt);
 
                 // Generate code for the commitExpression of the guard.
-                for (Iterator actions = transition.commitActionList().iterator();
-                     actions.hasNext();) {
+                for (Iterator actions = transition.commitActionList()
+                        .iterator(); actions.hasNext();) {
                     AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                        .next();
+                            .next();
                     _generateActionCode(entity, entityInstanceClass,
                             nameToField, nameToType, body, action);
                 }
@@ -569,11 +618,11 @@ public class FSMCreator implements AtomicActorCreator {
 
                 try {
                     BooleanToken resetToken = (BooleanToken) transition.reset
-                        .getToken();
+                            .getToken();
 
                     if (resetToken.booleanValue()) {
                         refinements = ((State) transition.destinationState())
-                            .getRefinement();
+                                .getRefinement();
                     }
                 } catch (Exception ex) {
                     throw new RuntimeException(ex.getMessage());
@@ -592,32 +641,50 @@ public class FSMCreator implements AtomicActorCreator {
                         body.getLocals().add(entityLocal);
 
                         NamedObj containerModel = (NamedObj) entity
-                            .getContainer();
-                        String deepName = ((NamedObj) refinement).getName(containerModel);
+                                .getContainer();
+                        String deepName = ((NamedObj) refinement)
+                                .getName(containerModel);
 
-                        units.add(Jimple.v().newAssignStmt(containerLocal,
-                                          Jimple.v().newInterfaceInvokeExpr(thisLocal,
-                                                  PtolemyUtilities.getContainerMethod)));
-                        units.add(Jimple.v().newAssignStmt(containerLocal,
-                                          Jimple.v().newCastExpr(containerLocal,
-                                                  RefType.v(
-                                                          PtolemyUtilities.compositeActorClass))));
-                        units.add(Jimple.v().newAssignStmt(entityLocal,
-                                          Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                                  PtolemyUtilities.getEntityMethod,
-                                                  StringConstant.v(deepName))));
+                        units.add(Jimple.v().newAssignStmt(
+                                containerLocal,
+                                Jimple.v().newInterfaceInvokeExpr(thisLocal,
+                                        PtolemyUtilities.getContainerMethod)));
+                        units
+                                .add(Jimple
+                                        .v()
+                                        .newAssignStmt(
+                                                containerLocal,
+                                                Jimple
+                                                        .v()
+                                                        .newCastExpr(
+                                                                containerLocal,
+                                                                RefType
+                                                                        .v(PtolemyUtilities.compositeActorClass))));
+                        units.add(Jimple.v().newAssignStmt(
+                                entityLocal,
+                                Jimple.v().newVirtualInvokeExpr(containerLocal,
+                                        PtolemyUtilities.getEntityMethod,
+                                        StringConstant.v(deepName))));
 
-                        units.add(Jimple.v().newAssignStmt(entityLocal,
-                                          Jimple.v().newCastExpr(entityLocal,
-                                                  RefType.v(
-                                                          PtolemyUtilities.compositeActorClass))));
+                        units
+                                .add(Jimple
+                                        .v()
+                                        .newAssignStmt(
+                                                entityLocal,
+                                                Jimple
+                                                        .v()
+                                                        .newCastExpr(
+                                                                entityLocal,
+                                                                RefType
+                                                                        .v(PtolemyUtilities.compositeActorClass))));
 
                         SootMethod rinitializeMethod = SootUtilities
-                            .searchForMethodByName(PtolemyUtilities.compositeActorClass,
-                                    "initialize");
-                        units.add(Jimple.v().newInvokeStmt(Jimple.v()
-                                          .newVirtualInvokeExpr(entityLocal,
-                                                  rinitializeMethod)));
+                                .searchForMethodByName(
+                                        PtolemyUtilities.compositeActorClass,
+                                        "initialize");
+                        units.add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(entityLocal,
+                                        rinitializeMethod)));
                     }
                 }
 
@@ -657,12 +724,13 @@ public class FSMCreator implements AtomicActorCreator {
     private static void _generateActionCode(Entity entity,
             SootClass entityClass, Map nameToField, Map nameToType,
             JimpleBody body, AbstractActionsAttribute action) {
-        for (Iterator names = action.getDestinationNameList().iterator();
-             names.hasNext();) {
+        for (Iterator names = action.getDestinationNameList().iterator(); names
+                .hasNext();) {
             String name = (String) names.next();
             String actionExpression = action.getExpression(name);
-            Local outputTokenLocal = DataUtilities.generateExpressionCode(entity,
-                    entityClass, actionExpression, nameToField, nameToType, body);
+            Local outputTokenLocal = DataUtilities.generateExpressionCode(
+                    entity, entityClass, actionExpression, nameToField,
+                    nameToType, body);
 
             try {
                 NamedObj destination = action.getDestination(name);
@@ -675,13 +743,25 @@ public class FSMCreator implements AtomicActorCreator {
 
                     SootField portField = entityClass.getFieldByName(name);
 
-                    body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
-                                                Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                                                        portField)));
-                    body.getUnits().add(Jimple.v().newInvokeStmt(Jimple.v()
-                                                .newVirtualInvokeExpr(portLocal,
-                                                        PtolemyUtilities.sendMethod,
-                                                        IntConstant.v(0), outputTokenLocal)));
+                    body.getUnits().add(
+                            Jimple.v().newAssignStmt(
+                                    portLocal,
+                                    Jimple.v().newInstanceFieldRef(
+                                            body.getThisLocal(), portField)));
+                    body
+                            .getUnits()
+                            .add(
+                                    Jimple
+                                            .v()
+                                            .newInvokeStmt(
+                                                    Jimple
+                                                            .v()
+                                                            .newVirtualInvokeExpr(
+                                                                    portLocal,
+                                                                    PtolemyUtilities.sendMethod,
+                                                                    IntConstant
+                                                                            .v(0),
+                                                                    outputTokenLocal)));
                 } else if (destination instanceof Parameter) {
                     // set the computed token
                     Local paramLocal = Jimple.v().newLocal("param",
@@ -700,23 +780,62 @@ public class FSMCreator implements AtomicActorCreator {
                     // since the parameter we are assigning to may be
                     // above us in the hierarchy.
                     NamedObj containerModel = (NamedObj) entity.getContainer();
-                    String deepName = ((NamedObj) destination).getName(containerModel);
+                    String deepName = ((NamedObj) destination)
+                            .getName(containerModel);
 
-                    body.getUnits().add(Jimple.v().newAssignStmt(containerLocal,
-                                                Jimple.v().newInterfaceInvokeExpr(body.getThisLocal(),
-                                                        PtolemyUtilities.getContainerMethod)));
-                    body.getUnits().add(Jimple.v().newAssignStmt(attributeLocal,
-                                                Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                                        PtolemyUtilities.getAttributeMethod,
-                                                        StringConstant.v(deepName))));
+                    body
+                            .getUnits()
+                            .add(
+                                    Jimple
+                                            .v()
+                                            .newAssignStmt(
+                                                    containerLocal,
+                                                    Jimple
+                                                            .v()
+                                                            .newInterfaceInvokeExpr(
+                                                                    body
+                                                                            .getThisLocal(),
+                                                                    PtolemyUtilities.getContainerMethod)));
+                    body
+                            .getUnits()
+                            .add(
+                                    Jimple
+                                            .v()
+                                            .newAssignStmt(
+                                                    attributeLocal,
+                                                    Jimple
+                                                            .v()
+                                                            .newVirtualInvokeExpr(
+                                                                    containerLocal,
+                                                                    PtolemyUtilities.getAttributeMethod,
+                                                                    StringConstant
+                                                                            .v(deepName))));
 
-                    body.getUnits().add(Jimple.v().newAssignStmt(paramLocal,
-                                                Jimple.v().newCastExpr(attributeLocal,
-                                                        RefType.v(PtolemyUtilities.variableClass))));
-                    body.getUnits().add(Jimple.v().newInvokeStmt(Jimple.v()
-                                                .newVirtualInvokeExpr(paramLocal,
-                                                        PtolemyUtilities.variableSetTokenMethod,
-                                                        outputTokenLocal)));
+                    body
+                            .getUnits()
+                            .add(
+                                    Jimple
+                                            .v()
+                                            .newAssignStmt(
+                                                    paramLocal,
+                                                    Jimple
+                                                            .v()
+                                                            .newCastExpr(
+                                                                    attributeLocal,
+                                                                    RefType
+                                                                            .v(PtolemyUtilities.variableClass))));
+                    body
+                            .getUnits()
+                            .add(
+                                    Jimple
+                                            .v()
+                                            .newInvokeStmt(
+                                                    Jimple
+                                                            .v()
+                                                            .newVirtualInvokeExpr(
+                                                                    paramLocal,
+                                                                    PtolemyUtilities.variableSetTokenMethod,
+                                                                    outputTokenLocal)));
                 } else {
                     throw new RuntimeException("unknown object");
                 }

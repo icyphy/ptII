@@ -1,29 +1,29 @@
 /* Top-level window containing a plotter.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.plot;
 
 import java.awt.BorderLayout;
@@ -57,7 +57,6 @@ import javax.swing.filechooser.FileFilter;
 
 import ptolemy.util.StringUtilities;
 
-
 // TO DO:
 //   - Add a mechanism for combining two plots into one
 //////////////////////////////////////////////////////////////////////////
@@ -65,37 +64,37 @@ import ptolemy.util.StringUtilities;
 
 /**
 
-PlotFrame is a versatile two-dimensional data plotter that runs as
-part of an application, but in its own window. It can read files
-compatible with the old Ptolemy plot file format (currently only ASCII).
-It is extended with the capability to read PlotML files in PlotMLFrame.
-An application can also interact directly with the contained Plot
-object, which is visible as a public member, by invoking its methods.
-<p>
-An application that uses this class should set up the handling of
-window-closing events.  Presumably, the application will exit when
-all windows have been closed. This is done with code something like:
-<pre>
-plotFrameInstance.addWindowListener(new WindowAdapter() {
-public void windowClosing(WindowEvent e) {
-// Handle the event
-}
-});
-</pre>
-<p>
-PlotFrame contains an instance of PlotBox. PlotBox is the base class for
-classes with drawing capability, e.g. Plot, LogicAnalyzer. If not
-specified in the constructor, the default is to contain a Plot object. This
-field is set once in the constructor and immutable afterwards.
+ PlotFrame is a versatile two-dimensional data plotter that runs as
+ part of an application, but in its own window. It can read files
+ compatible with the old Ptolemy plot file format (currently only ASCII).
+ It is extended with the capability to read PlotML files in PlotMLFrame.
+ An application can also interact directly with the contained Plot
+ object, which is visible as a public member, by invoking its methods.
+ <p>
+ An application that uses this class should set up the handling of
+ window-closing events.  Presumably, the application will exit when
+ all windows have been closed. This is done with code something like:
+ <pre>
+ plotFrameInstance.addWindowListener(new WindowAdapter() {
+ public void windowClosing(WindowEvent e) {
+ // Handle the event
+ }
+ });
+ </pre>
+ <p>
+ PlotFrame contains an instance of PlotBox. PlotBox is the base class for
+ classes with drawing capability, e.g. Plot, LogicAnalyzer. If not
+ specified in the constructor, the default is to contain a Plot object. This
+ field is set once in the constructor and immutable afterwards.
 
-@see Plot
-@see PlotBox
-@author Christopher Hylands and Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
-@Pt.ProposedRating Yellow (cxh)
-@Pt.AcceptedRating Yellow (cxh)
-*/
+ @see Plot
+ @see PlotBox
+ @author Christopher Hylands and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class PlotFrame extends JFrame {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
@@ -146,30 +145,28 @@ public class PlotFrame extends JFrame {
         _specialMenu.setMnemonic(KeyEvent.VK_S);
 
         // File menu
-        JMenuItem[] fileMenuItems = {
-            new JMenuItem("Open", KeyEvent.VK_O),
-            new JMenuItem("Save", KeyEvent.VK_S),
-            new JMenuItem("SaveAs", KeyEvent.VK_A),
-            new JMenuItem("Export", KeyEvent.VK_E),
-            new JMenuItem("Print", KeyEvent.VK_P),
-            new JMenuItem("Close", KeyEvent.VK_C),
-        };
+        JMenuItem[] fileMenuItems = { new JMenuItem("Open", KeyEvent.VK_O),
+                new JMenuItem("Save", KeyEvent.VK_S),
+                new JMenuItem("SaveAs", KeyEvent.VK_A),
+                new JMenuItem("Export", KeyEvent.VK_E),
+                new JMenuItem("Print", KeyEvent.VK_P),
+                new JMenuItem("Close", KeyEvent.VK_C), };
 
         // Open button = ctrl-o.
         fileMenuItems[0].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
-                                                Event.CTRL_MASK));
+                Event.CTRL_MASK));
 
         // Save button = ctrl-s.
         fileMenuItems[1].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-                                                Event.CTRL_MASK));
+                Event.CTRL_MASK));
 
         // Print button = ctrl-p.
         fileMenuItems[4].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
-                                                Event.CTRL_MASK));
+                Event.CTRL_MASK));
 
         // Close button = ctrl-w.
         fileMenuItems[5].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
-                                                Event.CTRL_MASK));
+                Event.CTRL_MASK));
 
         FileMenuListener fml = new FileMenuListener();
 
@@ -190,14 +187,12 @@ public class PlotFrame extends JFrame {
         _menubar.add(_editMenu);
 
         // Special menu
-        JMenuItem[] specialMenuItems = {
-            new JMenuItem("About", KeyEvent.VK_A),
-            new JMenuItem("Help", KeyEvent.VK_H),
-            new JMenuItem("Clear", KeyEvent.VK_C),
-            new JMenuItem("Fill", KeyEvent.VK_F),
-            new JMenuItem("Reset axes", KeyEvent.VK_R),
-            new JMenuItem("Sample plot", KeyEvent.VK_S),
-        };
+        JMenuItem[] specialMenuItems = { new JMenuItem("About", KeyEvent.VK_A),
+                new JMenuItem("Help", KeyEvent.VK_H),
+                new JMenuItem("Clear", KeyEvent.VK_C),
+                new JMenuItem("Fill", KeyEvent.VK_F),
+                new JMenuItem("Reset axes", KeyEvent.VK_R),
+                new JMenuItem("Sample plot", KeyEvent.VK_S), };
         SpecialMenuListener sml = new SpecialMenuListener();
 
         // Set the action command and listener for each menu item.
@@ -253,7 +248,7 @@ public class PlotFrame extends JFrame {
     /** @serial The plot object held by this frame. */
 
     // FIXME: uncomment final when we upgrade to jdk1.2
-    public /*final*/ PlotBox plot;
+    public/*final*/PlotBox plot;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -279,15 +274,20 @@ public class PlotFrame extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     protected void _about() {
-        JOptionPane.showMessageDialog(this,
-                "PlotFrame class\n" + "By: Edward A. Lee "
-                + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
-                + ", Build: $Id$\n\n"
-                + "For more information, see\n"
-                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                + "Copyright (c) 1997-2005, "
-                + "The Regents of the University of California.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane
+                .showMessageDialog(
+                        this,
+                        "PlotFrame class\n"
+                                + "By: Edward A. Lee "
+                                + "and Christopher Hylands\n"
+                                + "Version "
+                                + PlotBox.PTPLOT_RELEASE
+                                + ", Build: $Id$\n\n"
+                                + "For more information, see\n"
+                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                                + "Copyright (c) 1997-2005, "
+                                + "The Regents of the University of California.",
+                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Close the window.
@@ -325,7 +325,7 @@ public class PlotFrame extends JFrame {
         }
 
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                                           "plot.eps"));
+                "plot.eps"));
 
         int returnVal = fileDialog.showDialog(this, "Export");
 
@@ -348,9 +348,8 @@ public class PlotFrame extends JFrame {
                     }
                 }
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Error exporting plot: " + ex, "Ptolemy II Error",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error exporting plot: "
+                        + ex, "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -360,9 +359,9 @@ public class PlotFrame extends JFrame {
     protected void _help() {
         JOptionPane.showMessageDialog(this,
                 "PlotFrame is a plot in a top-level window.\n"
-                + "  File formats understood: Ptplot ASCII.\n"
-                + "  Left mouse button: Zooming.", "About Ptolemy Plot",
-                JOptionPane.INFORMATION_MESSAGE);
+                        + "  File formats understood: Ptplot ASCII.\n"
+                        + "  Left mouse button: Zooming.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Open a new file and plot its data.
@@ -400,13 +399,13 @@ public class PlotFrame extends JFrame {
                         new FileInputStream(_file));
                 plot.repaint();
             } catch (FileNotFoundException ex) {
-                JOptionPane.showMessageDialog(this,
-                        "File not found:\n" + ex.toString(), "Ptolemy Plot Error",
+                JOptionPane.showMessageDialog(this, "File not found:\n"
+                        + ex.toString(), "Ptolemy Plot Error",
                         JOptionPane.WARNING_MESSAGE);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Error reading input:\n" + ex.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error reading input:\n"
+                        + ex.toString(), "Ptolemy Plot Error",
+                        JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -434,8 +433,8 @@ public class PlotFrame extends JFrame {
             try {
                 job.print(aset);
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Printing failed:\n" + ex.toString(), "Print Error",
+                JOptionPane.showMessageDialog(this, "Printing failed:\n"
+                        + ex.toString(), "Print Error",
                         JOptionPane.WARNING_MESSAGE);
             }
         }
@@ -458,8 +457,8 @@ public class PlotFrame extends JFrame {
                 // calls PlotBox.print(Graphics, PageFormat)
                 job.print();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Printing failed:\n" + ex.toString(), "Print Error",
+                JOptionPane.showMessageDialog(this, "Printing failed:\n"
+                        + ex.toString(), "Print Error",
                         JOptionPane.WARNING_MESSAGE);
             }
         }
@@ -485,9 +484,9 @@ public class PlotFrame extends JFrame {
                 FileOutputStream fout = new FileOutputStream(_file);
                 plot.write(fout);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Error writing file:\n" + ex.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error writing file:\n"
+                        + ex.toString(), "Ptolemy Plot Error",
+                        JOptionPane.WARNING_MESSAGE);
             }
         } else {
             _saveAs();
@@ -515,7 +514,7 @@ public class PlotFrame extends JFrame {
         }
 
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                                           "plot.xml"));
+                "plot.xml"));
 
         int returnVal = fileDialog.showSaveDialog(this);
 
@@ -552,9 +551,9 @@ public class PlotFrame extends JFrame {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                JOptionPane.showMessageDialog(null,
-                        "File Menu Exception:\n" + exception.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "File Menu Exception:\n"
+                        + exception.toString(), "Ptolemy Plot Error",
+                        JOptionPane.WARNING_MESSAGE);
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta
@@ -572,9 +571,9 @@ public class PlotFrame extends JFrame {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                JOptionPane.showMessageDialog(null,
-                        "Format Exception:\n" + exception.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Format Exception:\n"
+                        + exception.toString(), "Ptolemy Plot Error",
+                        JOptionPane.WARNING_MESSAGE);
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta
@@ -609,9 +608,9 @@ public class PlotFrame extends JFrame {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                JOptionPane.showMessageDialog(null,
-                        "Special Menu Exception:\n" + exception.toString(),
-                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Special Menu Exception:\n"
+                        + exception.toString(), "Ptolemy Plot Error",
+                        JOptionPane.WARNING_MESSAGE);
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta

@@ -1,45 +1,44 @@
 /* Perform pitch shifting using a pitch-synchronous overlap-add
-   algorithm.
+ algorithm.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.javasound.test.pitchshift;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// PitchShift
 
 /** Perform pitch scaling of an input signal.
 
-@author Brian K. Vogel
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Red (vogel)
-@Pt.AcceptedRating Red (vogel)
-*/
+ @author Brian K. Vogel
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (vogel)
+ @Pt.AcceptedRating Red (vogel)
+ */
 public class PitchShift {
     /* Initialize the current output ring buffer read postition.
      * Maybe need to add ringBuffSize because % does not like negative numbers?
@@ -60,7 +59,8 @@ public class PitchShift {
         _inputRingBufWritePos = 0;
 
         //////////////////////////////////////
-        readPos = (_inputRingBufWritePos - outputDelay + ringBufSize) % ringBufSize;
+        readPos = (_inputRingBufWritePos - outputDelay + ringBufSize)
+                % ringBufSize;
 
         // The input ring buffer:
         _inputRingBuf = new double[RING_BUFFER_SIZE];
@@ -119,7 +119,7 @@ public class PitchShift {
         // lags x->inputRingBufWritePos, else set to zero.
 
         /* This is a marker for the element half way around the cirucular
-           buffer w.r.t. x->inputRingBufWritePos */
+         buffer w.r.t. x->inputRingBufWritePos */
         int inHalfAway;
 
         /* The main loop. This will iterate <MSP vector size> times for each
@@ -129,26 +129,28 @@ public class PitchShift {
             // Write the current input sample into the input circular array.
             //inputRingBuf[inputRingBufWritePos] = in[curInSamp];
             // Add some delay, to compensate for the pitch detector.
-            _inputRingBuf[(_inputRingBufWritePos + _pitchDetectorDelay) % ringBufSize] = in[curInSamp];
+            _inputRingBuf[(_inputRingBufWritePos + _pitchDetectorDelay)
+                    % ringBufSize] = in[curInSamp];
 
             //////////////////////////////////////////////////////
             //////////////////////////////////////////////////////
             // Do all interesting processing here.
 
             /* Check if have reached the end of the current period in the
-               input signal.
-            */
+             input signal.
+             */
             if (samplesLeftInPeriod == 0) {
                 /* Check if ok to do an OLA in the output buffer. */
                 /* That is, check if the the outputRingBufPitchMarkerPos
                  *  lags nputRingBufWritePos.
                  */
                 outLag = 1;
-                inHalfAway = (_inputRingBufWritePos + (ringBufSize / 2)) % ringBufSize;
+                inHalfAway = (_inputRingBufWritePos + (ringBufSize / 2))
+                        % ringBufSize;
 
                 if (inHalfAway < (ringBufSize / 2)) {
                     /* The zero element of the input buffer lies
-                       in (inptr, inHalfAway] */
+                     in (inptr, inHalfAway] */
                     if ((_outputRingBufPitchMarkerPos < inHalfAway)
                             || (_outputRingBufPitchMarkerPos > _inputRingBufWritePos)) {
                         // The current input element lags current
@@ -157,7 +159,7 @@ public class PitchShift {
                     }
                 } else {
                     /* The zero element of the input buffer lies
-                       in (inHalfAway, inptr] */
+                     in (inHalfAway, inptr] */
                     if ((_outputRingBufPitchMarkerPos > _inputRingBufWritePos)
                             && (_outputRingBufPitchMarkerPos < inHalfAway)) {
                         // The current input element lags current
@@ -170,8 +172,8 @@ public class PitchShift {
                     // Do an OLA
 
                     /* Update the synthesis pitch marker posistion
-                       (in the output buffer)/
-                    */
+                     (in the output buffer)/
+                     */
 
                     // Do error checking
                     if ((pitchScaleIn <= 0.1) || (pitchScaleIn > 6.0)
@@ -184,8 +186,8 @@ public class PitchShift {
 
                     // Period scale factor.
                     periodRatio = 1.0 / (correctedPitchScale);
-                    _outputRingBufPitchMarkerPos = (int) (_outputRingBufPitchMarkerPos
-                            + (int) (inputPeriodLength * periodRatio)) % ringBufSize;
+                    _outputRingBufPitchMarkerPos = (int) (_outputRingBufPitchMarkerPos + (int) (inputPeriodLength * periodRatio))
+                            % ringBufSize;
 
                     /* Do an OLA (in the output buffer)
                      * about the synthesis pitch
@@ -198,21 +200,20 @@ public class PitchShift {
                      * reduce latency and should not have
                      * an audible impact, I think.
                      */
-                    for (olaIndex = -inputPeriodLength;
-                         olaIndex <= inputPeriodLength;
-                         ++olaIndex) {
-                        windowVal = (1
-                                + Math.cos((Math.PI * olaIndex) / (float) inputPeriodLength)) * 0.5;
+                    for (olaIndex = -inputPeriodLength; olaIndex <= inputPeriodLength; ++olaIndex) {
+                        windowVal = (1 + Math.cos((Math.PI * olaIndex)
+                                / (float) inputPeriodLength)) * 0.5;
 
-                        _outputRingBuf[(olaIndex + _outputRingBufPitchMarkerPos
-                                               + ringBufSize) % ringBufSize] += (windowVal * _inputRingBuf[((olaIndex
-                                                                                                                    + _inputRingBufWritePos)
-                                                                                                                   - minimumPitchSamps + ringBufSize) % ringBufSize]);
+                        _outputRingBuf[(olaIndex + _outputRingBufPitchMarkerPos + ringBufSize)
+                                % ringBufSize] += (windowVal * _inputRingBuf[((olaIndex + _inputRingBufWritePos)
+                                - minimumPitchSamps + ringBufSize)
+                                % ringBufSize]);
                     }
 
                     // Update loop condition variable.
                     outLag = 1;
-                    inHalfAway = (_inputRingBufWritePos + (ringBufSize / 2)) % ringBufSize;
+                    inHalfAway = (_inputRingBufWritePos + (ringBufSize / 2))
+                            % ringBufSize;
 
                     if (inHalfAway < (ringBufSize / 2)) {
                         /* The zero element of the input buffer lies in
@@ -292,9 +293,13 @@ public class PitchShift {
     ///////////////////////////////////////////////////////////////////
     ////                   private variables                   ////////
     private static final int RING_BUFFER_SIZE = 10000;
+
     private static int OUTPUT_BUFFER_DELAY;
+
     private static final double MINIMUM_PITCH = 20.0;
+
     private static final double DEFAULT_PITCH = MINIMUM_PITCH;
+
     private static int _sampleRate;
 
     // Delay of the pitch detector, in samples.
@@ -306,7 +311,9 @@ public class PitchShift {
 
     // The output ring buffer:
     private double[] _outputRingBuf;
+
     private int _inputRingBufWritePos;
+
     private double minimumPitch = MINIMUM_PITCH;
 
     /* This contains the element in the output ring buffer corresponding to
@@ -342,6 +349,8 @@ public class PitchShift {
      * <inputPeriodLength> is updated when <samplesLeftInPeriod> is 0.
      */
     private int samplesLeftInPeriod;
+
     private int isUnvoiced; // 1 if unvoice (no pitch), else set to 0.
+
     private int minimumPitchSamps; // This is minimumPitch converted to samples.
 }

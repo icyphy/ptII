@@ -1,30 +1,30 @@
 /* An application for editing ptolemy models visually.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil;
 
 import java.io.File;
@@ -55,46 +55,45 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// VergilApplication
 
 /**
-   This application opens run control panels for models specified on the
-   command line.
-   <p>
-   The exact facilities that are available are determined by an optional
-   command line argument that names a directory in ptolemy/configs that
-   contains a configuration.xml file.  For example, if we call vergil
-   -ptiny, then we will use ptolemy/configs/ptiny/configuration.xml and
-   ptolemy/configs/ptiny/intro.htm.  The default configuration is
-   ptolemy/configs/full/configuration.xml, which is loaded before any
-   other command-line arguments are processed.
+ This application opens run control panels for models specified on the
+ command line.
+ <p>
+ The exact facilities that are available are determined by an optional
+ command line argument that names a directory in ptolemy/configs that
+ contains a configuration.xml file.  For example, if we call vergil
+ -ptiny, then we will use ptolemy/configs/ptiny/configuration.xml and
+ ptolemy/configs/ptiny/intro.htm.  The default configuration is
+ ptolemy/configs/full/configuration.xml, which is loaded before any
+ other command-line arguments are processed.
 
-   <p>This application also takes an optional command line argument pair
-   <code>-configuration <i>configurationFile.xml</i></code> that names a configuration
-   to be read.  For example,
-   <pre>
-   $PTII/bin/vergil -configuration ptolemy/configs/ptiny/configuration.xml
-   </pre>
-   and
-   <pre>
-   $PTII/bin/vergil -ptiny
-   </pre>
-   are equivalent
-   <p>
-   If there are no command-line arguments at all, then the configuration
-   file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
+ <p>This application also takes an optional command line argument pair
+ <code>-configuration <i>configurationFile.xml</i></code> that names a configuration
+ to be read.  For example,
+ <pre>
+ $PTII/bin/vergil -configuration ptolemy/configs/ptiny/configuration.xml
+ </pre>
+ and
+ <pre>
+ $PTII/bin/vergil -ptiny
+ </pre>
+ are equivalent
+ <p>
+ If there are no command-line arguments at all, then the configuration
+ file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
 
-   @author Edward A. Lee, Steve Neuendorffer, Christopher Hylands, contributor: Chad Berkeley
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-   @see ptolemy.actor.gui.ModelFrame
-   @see ptolemy.actor.gui.RunTableau
-   @see ptolemy.actor.gui.PtExecuteApplication
-*/
+ @author Edward A. Lee, Steve Neuendorffer, Christopher Hylands, contributor: Chad Berkeley
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ @see ptolemy.actor.gui.ModelFrame
+ @see ptolemy.actor.gui.RunTableau
+ @see ptolemy.actor.gui.PtExecuteApplication
+ */
 public class VergilApplication extends MoMLApplication {
     /** Parse the specified command-line arguments, creating models
      *  and frames to interact with them.
@@ -118,8 +117,7 @@ public class VergilApplication extends MoMLApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public VergilApplication(String basePath, String[] args)
-            throws Exception {
+    public VergilApplication(String basePath, String[] args) throws Exception {
         super(basePath, args);
 
         // Create register an error handler with the parser so that
@@ -145,16 +143,16 @@ public class VergilApplication extends MoMLApplication {
             // getting read access the workspace is much more efficient
             // in PtolemyThread.
             SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        try {
-                            new VergilApplication(args);
-                        } catch (Throwable throwable) {
-                            // If we get an Error or and Exception while
-                            // configuring, we will end up here.
-                            _errorAndExit("Command failed", args, throwable);
-                        }
+                public void run() {
+                    try {
+                        new VergilApplication(args);
+                    } catch (Throwable throwable) {
+                        // If we get an Error or and Exception while
+                        // configuring, we will end up here.
+                        _errorAndExit("Command failed", args, throwable);
                     }
-                });
+                }
+            });
         } catch (Throwable throwable2) {
             // We are not likely to get here, but just to be safe
             // we try to print the error message and display it in a
@@ -191,12 +189,12 @@ public class VergilApplication extends MoMLApplication {
     public static void openLibrary(Configuration configuration, File file)
             throws Exception {
         CompositeEntity library = null;
-        final CompositeEntity libraryContainer =
-            (CompositeEntity) configuration.getEntity("actor library");
-        
+        final CompositeEntity libraryContainer = (CompositeEntity) configuration
+                .getEntity("actor library");
+
         final ModelDirectory directory = (ModelDirectory) configuration
-            .getEntity(Configuration._DIRECTORY_NAME);
-            
+                .getEntity(Configuration._DIRECTORY_NAME);
+
         if (directory == null) {
             return;
         }
@@ -205,31 +203,31 @@ public class VergilApplication extends MoMLApplication {
             return;
         }
 
-        StringAttribute alternateLibraryBuilderAttribute =
-          (StringAttribute)libraryContainer
-            .getAttribute("_alternateLibraryBuilder");
+        StringAttribute alternateLibraryBuilderAttribute = (StringAttribute) libraryContainer
+                .getAttribute("_alternateLibraryBuilder");
 
         // If the _alternateLibraryBuilder attribute is present, then we use
         // the specified class to build the library instead of just reading
         // the moml.
         if (alternateLibraryBuilderAttribute != null) {
             // Get the class that will build the library from the plugins
-            String libraryBuilderClassName =
-              alternateLibraryBuilderAttribute.getExpression();
+            String libraryBuilderClassName = alternateLibraryBuilderAttribute
+                    .getExpression();
             // Dynamically load the library builder and build the library
             Class libraryBuilderClass = Class.forName(libraryBuilderClassName);
-            LibraryBuilder libraryBuilder =
-                (LibraryBuilder)libraryBuilderClass.newInstance();
+            LibraryBuilder libraryBuilder = (LibraryBuilder) libraryBuilderClass
+                    .newInstance();
             // Set the attributes defined in the moml to the attributes of the
             // LibraryBuilder
-            libraryBuilder.addAttributes(
-                    alternateLibraryBuilderAttribute.attributeList());
+            libraryBuilder.addAttributes(alternateLibraryBuilderAttribute
+                    .attributeList());
             try {
-                library = libraryBuilder.buildLibrary(libraryContainer.workspace());
-            } catch(Exception ex) {
+                library = libraryBuilder.buildLibrary(libraryContainer
+                        .workspace());
+            } catch (Exception ex) {
                 ex.printStackTrace();
-                throw new Exception("Cannot create library with " +
-                        "LibraryBuilder: ", ex);
+                throw new Exception("Cannot create library with "
+                        + "LibraryBuilder: ", ex);
             }
             System.out.println("\nActor Library built from alternative plugin");
         }
@@ -251,8 +249,7 @@ public class VergilApplication extends MoMLApplication {
                 // by this URL.  Parse the user library into the
                 // workspace of the actor library.
 
-                MoMLParser parser =
-                    new MoMLParser(libraryContainer.workspace());
+                MoMLParser parser = new MoMLParser(libraryContainer.workspace());
 
                 // Set the ErrorHandler so that if we have
                 // compatibility problems between devel and production
@@ -261,14 +258,13 @@ public class VergilApplication extends MoMLApplication {
                 MoMLParser.setErrorHandler(new VergilErrorHandler());
                 parser.parse(fileURL, fileURL);
 
-                library = (CompositeEntity) parser
-                    .getToplevel();
+                library = (CompositeEntity) parser.getToplevel();
             }
             //library.setContainer(libraryContainer); //i don't know if this is needed
 
             // Now create the effigy with no tableau.
-            final PtolemyEffigy finalLibraryEffigy =
-                new PtolemyEffigy(directory.workspace());
+            final PtolemyEffigy finalLibraryEffigy = new PtolemyEffigy(
+                    directory.workspace());
             finalLibraryEffigy.setSystemEffigy(true);
 
             // Correct old library name, if the loaded library happens
@@ -277,8 +273,7 @@ public class VergilApplication extends MoMLApplication {
                 library.setName(BasicGraphFrame.VERGIL_USER_LIBRARY_NAME);
             }
 
-            finalLibraryEffigy.setName(directory.uniqueName(
-                                               library.getName()));
+            finalLibraryEffigy.setName(directory.uniqueName(library.getName()));
 
             _instantiateLibrary(library, directory, configuration, file,
                     libraryContainer, finalLibraryEffigy);
@@ -315,8 +310,7 @@ public class VergilApplication extends MoMLApplication {
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
-    protected Configuration _createDefaultConfiguration()
-            throws Exception {
+    protected Configuration _createDefaultConfiguration() throws Exception {
         try {
             if (_configurationURL == null) {
                 _configurationURL = specToURL(_basePath
@@ -348,7 +342,7 @@ public class VergilApplication extends MoMLApplication {
         }
 
         Parameter hideUserLibraryAttribute = (Parameter) configuration
-            .getAttribute("_hideUserLibrary", Parameter.class);
+                .getAttribute("_hideUserLibrary", Parameter.class);
 
         if ((hideUserLibraryAttribute == null)
                 || hideUserLibraryAttribute.getExpression().equals("false")) {
@@ -367,15 +361,15 @@ public class VergilApplication extends MoMLApplication {
 
             try {
                 libraryName = StringUtilities.preferencesDirectory()
-                    + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
+                        + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
             } catch (Exception ex) {
                 System.out.println("Warning: Failed to get the preferences "
                         + "directory (-sandbox always causes this): " + ex);
             }
 
             if (libraryName != null) {
-                System.out.println("Opening user library "
-                        + libraryName + "...");
+                System.out.println("Opening user library " + libraryName
+                        + "...");
 
                 File file = new File(libraryName);
 
@@ -383,8 +377,8 @@ public class VergilApplication extends MoMLApplication {
                     // File might exist under an old name.
                     // Try to read it.
                     String oldLibraryName = StringUtilities
-                        .preferencesDirectory()
-                        + "user library.xml";
+                            .preferencesDirectory()
+                            + "user library.xml";
                     File oldFile = new File(oldLibraryName);
 
                     if (oldFile.isFile() && oldFile.exists()) {
@@ -420,8 +414,7 @@ public class VergilApplication extends MoMLApplication {
                     openLibrary(configuration, file);
                     System.out.println(" Done");
                 } catch (Exception ex) {
-                    MessageHandler.error("Failed to display user library.",
-                            ex);
+                    MessageHandler.error("Failed to display user library.", ex);
                 }
             }
         }
@@ -435,8 +428,7 @@ public class VergilApplication extends MoMLApplication {
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
-    protected Configuration _createEmptyConfiguration()
-            throws Exception {
+    protected Configuration _createEmptyConfiguration() throws Exception {
         Configuration configuration = _createDefaultConfiguration();
         URL welcomeURL = null;
         URL introURL = null;
@@ -507,9 +499,8 @@ public class VergilApplication extends MoMLApplication {
             throw new IllegalActionException("Missing configuration");
         }
 
-        String[] processedArgs =
-            (String[]) processedArgsList.toArray(new String[processedArgsList
-                                                         .size()]);
+        String[] processedArgs = (String[]) processedArgsList
+                .toArray(new String[processedArgsList.size()]);
 
         super._parseArgs(processedArgs);
     }
@@ -519,7 +510,7 @@ public class VergilApplication extends MoMLApplication {
      */
     protected String _usage() {
         return _configurationUsage(_commandTemplate, _commandOptions,
-                new String[] {  });
+                new String[] {});
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -529,12 +520,8 @@ public class VergilApplication extends MoMLApplication {
     //  in which case non-static variables are null?
 
     /** The command-line options that take arguments. */
-    protected static String[][] _commandOptions = {
-        {
-            "-configuration",
-            "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>"
-        },
-    };
+    protected static String[][] _commandOptions = { { "-configuration",
+            "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>" }, };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -548,8 +535,7 @@ public class VergilApplication extends MoMLApplication {
      *  @return True if the argument is understood, false otherwise.
      *  @exception Exception If something goes wrong.
      */
-    private boolean _configurationParseArg(String arg)
-            throws Exception {
+    private boolean _configurationParseArg(String arg) throws Exception {
         if (arg.startsWith("-conf")) {
             _expectingConfiguration = true;
         } else if (arg.startsWith("-")) {
@@ -565,7 +551,7 @@ public class VergilApplication extends MoMLApplication {
                 _configurationSubdirectory = arg.substring(1);
 
                 String potentialConfiguration = _basePath + "/"
-                    + _configurationSubdirectory + "/configuration.xml";
+                        + _configurationSubdirectory + "/configuration.xml";
 
                 // This will throw an Exception if we can't find the config.
                 _configurationURL = specToURL(potentialConfiguration);
@@ -632,18 +618,18 @@ public class VergilApplication extends MoMLApplication {
      * implement it in the model
      */
     private static void _instantiateLibrary(final CompositeEntity library,
-      final ModelDirectory directory, Configuration configuration, File file,
-      final CompositeEntity libraryContainer,
-      final PtolemyEffigy finalLibraryEffigy) throws Exception {
-        ChangeRequest request = new ChangeRequest(configuration,
-                file.toURL().toString()) {
-                protected void _execute() throws Exception {
-                    // The library is a class!
-                    library.setClassDefinition(true);
-                    library.instantiate(libraryContainer, library.getName());
-                    finalLibraryEffigy.setContainer(directory);
-                }
-            };
+            final ModelDirectory directory, Configuration configuration,
+            File file, final CompositeEntity libraryContainer,
+            final PtolemyEffigy finalLibraryEffigy) throws Exception {
+        ChangeRequest request = new ChangeRequest(configuration, file.toURL()
+                .toString()) {
+            protected void _execute() throws Exception {
+                // The library is a class!
+                library.setClassDefinition(true);
+                library.instantiate(libraryContainer, library.getName());
+                finalLibraryEffigy.setContainer(directory);
+            }
+        };
 
         libraryContainer.requestChange(request);
         request.waitForCompletion();

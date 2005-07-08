@@ -1,29 +1,29 @@
 /* Utilities to use with Soot
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.kernel;
 
 import java.lang.reflect.Constructor;
@@ -105,19 +105,18 @@ import soot.toolkits.scalar.SimpleLocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
 import soot.util.Chain;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SootUtilities
 
 /**
-   This class consists of static utility methods for use with Soot
+ This class consists of static utility methods for use with Soot
 
-   @author Stephen Neuendorffer, Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Stephen Neuendorffer, Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class SootUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -186,7 +185,7 @@ public class SootUtilities {
      }
      }
      }
-    */
+     */
     /** Make the given field final.  Anywhere where the the given
      *  field is used in the given class, inline the reference with
      *  the given value.  Anywhere where the given field is illegally
@@ -207,8 +206,8 @@ public class SootUtilities {
         // Find any assignment to the field in the class and convert
         // them to Exceptions, unless they are in constructors,
         // in which case remove them.
-        for (Iterator methods = theClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = theClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod method = (SootMethod) methods.next();
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
             Chain units = body.getUnits();
@@ -217,8 +216,8 @@ public class SootUtilities {
                 Stmt stmt = (Stmt) stmts.next();
 
                 // Remove all the definitions.
-                for (Iterator boxes = stmt.getDefBoxes().iterator();
-                     boxes.hasNext();) {
+                for (Iterator boxes = stmt.getDefBoxes().iterator(); boxes
+                        .hasNext();) {
                     ValueBox box = (ValueBox) boxes.next();
                     Value value = box.getValue();
 
@@ -234,8 +233,8 @@ public class SootUtilities {
 
                 // Inline all the uses.
                 if (Evaluator.isValueConstantValued(newValue)) {
-                    for (Iterator boxes = stmt.getUseBoxes().iterator();
-                         boxes.hasNext();) {
+                    for (Iterator boxes = stmt.getUseBoxes().iterator(); boxes
+                            .hasNext();) {
                         ValueBox box = (ValueBox) boxes.next();
                         Value value = box.getValue();
 
@@ -245,8 +244,8 @@ public class SootUtilities {
                             if (ref.getField() == theField) {
                                 System.out.println("inlining stmt = " + stmt);
 
-                                box.setValue(Evaluator.getConstantValueOf(
-                                                     newValue));
+                                box.setValue(Evaluator
+                                        .getConstantValueOf(newValue));
                             }
                         }
                     }
@@ -261,8 +260,8 @@ public class SootUtilities {
             if (theClass.declaresMethodByName("<clinit>")) {
                 method = theClass.getMethodByName("<clinit>");
             } else {
-                method = new SootMethod("<clinit>", new LinkedList(),
-                        NullType.v(), Modifier.PUBLIC);
+                method = new SootMethod("<clinit>", new LinkedList(), NullType
+                        .v(), Modifier.PUBLIC);
                 theClass.addMethod(method);
             }
 
@@ -279,8 +278,8 @@ public class SootUtilities {
             units.insertBefore(Jimple.v().newAssignStmt(fieldRef, local),
                     insertPoint);
         } else {
-            for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
+            for (Iterator methods = theClass.getMethods().iterator(); methods
+                    .hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
 
                 // ignore things that aren't initializers.
@@ -291,14 +290,14 @@ public class SootUtilities {
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
                 Chain units = body.getUnits();
                 Stmt insertPoint = (Stmt) units.getLast();
-                Local local = Jimple.v().newLocal("_CGTemp"
-                        + theField.getName(), theField.getType());
+                Local local = Jimple.v().newLocal(
+                        "_CGTemp" + theField.getName(), theField.getType());
                 body.getLocals().add(local);
                 units.insertBefore(Jimple.v().newAssignStmt(local, newValue),
                         insertPoint);
 
-                FieldRef fieldRef = Jimple.v().newInstanceFieldRef(body
-                        .getThisLocal(), theField);
+                FieldRef fieldRef = Jimple.v().newInstanceFieldRef(
+                        body.getThisLocal(), theField);
                 units.insertBefore(Jimple.v().newAssignStmt(fieldRef, local),
                         insertPoint);
             }
@@ -310,7 +309,8 @@ public class SootUtilities {
         //System.out.println("SootClass.copyClass(" + oldClass + ", "
         //                   + newClassName + ")");
         // Create the new Class
-        SootClass newClass = new SootClass(newClassName, oldClass.getModifiers());
+        SootClass newClass = new SootClass(newClassName, oldClass
+                .getModifiers());
 
         try {
             Scene.v().addClass(newClass);
@@ -418,8 +418,7 @@ public class SootUtilities {
             List paramTypes = new LinkedList();
 
             for (Iterator oldParamTypes = newMethod.getParameterTypes()
-                     .iterator();
-                 oldParamTypes.hasNext();) {
+                    .iterator(); oldParamTypes.hasNext();) {
                 Type type = (Type) oldParamTypes.next();
 
                 if (type instanceof RefType
@@ -440,8 +439,8 @@ public class SootUtilities {
 
             Body newBody = newMethod.retrieveActiveBody();
 
-            for (Iterator locals = newBody.getLocals().iterator();
-                 locals.hasNext();) {
+            for (Iterator locals = newBody.getLocals().iterator(); locals
+                    .hasNext();) {
                 Local local = (Local) locals.next();
                 Type type = local.getType();
 
@@ -466,17 +465,18 @@ public class SootUtilities {
                         FieldRef r = (FieldRef) value;
 
                         if (r.getField().getDeclaringClass() == oldClass) {
-                            r.setField(newClass.getFieldByName(
-                                               r.getField().getName()));
+                            r.setField(newClass.getFieldByName(r.getField()
+                                    .getName()));
 
                             //   System.out.println("fieldRef = " +
                             //              box.getValue());
                         } else if (r.getField().getDeclaringClass().getName()
                                 .startsWith(oldClass.getName())) {
-                            SootClass changeClass = _getInnerClassCopy(oldClass,
-                                    r.getField().getDeclaringClass(), newClass);
-                            r.setField(changeClass.getFieldByName(
-                                               r.getField().getName()));
+                            SootClass changeClass = _getInnerClassCopy(
+                                    oldClass, r.getField().getDeclaringClass(),
+                                    newClass);
+                            r.setField(changeClass.getFieldByName(r.getField()
+                                    .getName()));
                         }
                     } else if (value instanceof CastExpr) {
                         // Fix casts
@@ -484,17 +484,18 @@ public class SootUtilities {
                         Type type = r.getType();
 
                         if (type instanceof RefType) {
-                            SootClass refClass = ((RefType) type).getSootClass();
+                            SootClass refClass = ((RefType) type)
+                                    .getSootClass();
 
                             if (refClass == oldClass) {
                                 r.setCastType(RefType.v(newClass));
 
                                 //    System.out.println("newValue = " +
                                 //        box.getValue());
-                            } else if (refClass.getName().startsWith(oldClass
-                                               .getName())) {
-                                SootClass changeClass = _getInnerClassCopy(oldClass,
-                                        refClass, newClass);
+                            } else if (refClass.getName().startsWith(
+                                    oldClass.getName())) {
+                                SootClass changeClass = _getInnerClassCopy(
+                                        oldClass, refClass, newClass);
                                 r.setCastType(RefType.v(changeClass));
                             }
                         }
@@ -505,8 +506,8 @@ public class SootUtilities {
 
                         if (type instanceof RefType
                                 && (((RefType) type).getSootClass() == oldClass)) {
-                            box.setValue(Jimple.v().newThisRef(RefType.v(
-                                                                       newClass)));
+                            box.setValue(Jimple.v().newThisRef(
+                                    RefType.v(newClass)));
                         }
                     } else if (value instanceof ParameterRef) {
                         // Fix references to a parameter
@@ -515,22 +516,23 @@ public class SootUtilities {
 
                         if (type instanceof RefType
                                 && (((RefType) type).getSootClass() == oldClass)) {
-                            box.setValue(Jimple.v().newParameterRef(RefType.v(
-                                                                            newClass), r.getIndex()));
+                            box.setValue(Jimple.v().newParameterRef(
+                                    RefType.v(newClass), r.getIndex()));
                         }
                     } else if (value instanceof InvokeExpr) {
                         // Fix up the method invokes.
                         InvokeExpr r = (InvokeExpr) value;
 
                         if (r.getMethod().getDeclaringClass() == oldClass) {
-                            r.setMethod(newClass.getMethod(
-                                                r.getMethod().getSubSignature()));
+                            r.setMethod(newClass.getMethod(r.getMethod()
+                                    .getSubSignature()));
                         } else if (r.getMethod().getDeclaringClass().getName()
                                 .startsWith(oldClass.getName())) {
-                            SootClass changeClass = _getInnerClassCopy(oldClass,
+                            SootClass changeClass = _getInnerClassCopy(
+                                    oldClass,
                                     r.getMethod().getDeclaringClass(), newClass);
-                            r.setMethod(changeClass.getMethod(
-                                                r.getMethod().getSubSignature()));
+                            r.setMethod(changeClass.getMethod(r.getMethod()
+                                    .getSubSignature()));
                         }
                     } else if (value instanceof NewExpr) {
                         // Fix up the object creations.
@@ -543,8 +545,9 @@ public class SootUtilities {
                             //           box.getValue());
                         } else if (r.getBaseType().getSootClass().getName()
                                 .startsWith(oldClass.getName())) {
-                            SootClass changeClass = _getInnerClassCopy(oldClass,
-                                    r.getBaseType().getSootClass(), newClass);
+                            SootClass changeClass = _getInnerClassCopy(
+                                    oldClass, r.getBaseType().getSootClass(),
+                                    newClass);
                             r.setBaseType(RefType.v(changeClass));
                         }
                     }
@@ -658,7 +661,7 @@ public class SootUtilities {
 
             // Cast the local to the type of the field.
             units.insertAfter(Jimple.v().newAssignStmt(castLocal,
-                                      Jimple.v().newCastExpr(local, type)), insertPoint);
+                    Jimple.v().newCastExpr(local, type)), insertPoint);
             insertPoint = (Unit) body.getUnits().getSuccOf(insertPoint);
         }
 
@@ -673,9 +676,9 @@ public class SootUtilities {
         }
 
         // Set the field.
-        units.insertAfter(Jimple.v().newAssignStmt(Jimple.v()
-                                  .newInstanceFieldRef(thisLocal,
-                                          field), castLocal), insertPoint);
+        units.insertAfter(Jimple.v().newAssignStmt(
+                Jimple.v().newInstanceFieldRef(thisLocal, field), castLocal),
+                insertPoint);
         return field;
     }
 
@@ -721,7 +724,7 @@ public class SootUtilities {
                 ArrayType arrayElementType = (ArrayType) elementType;
                 return ArrayType.v(arrayElementType.baseType,
                         arrayElementType.numDimensions
-                        + arrayShapeType.numDimensions);
+                                + arrayShapeType.numDimensions);
             }
         }
 
@@ -736,18 +739,21 @@ public class SootUtilities {
      */
     public static Local createRuntimeException(Body body, Unit unit,
             String string) {
-        SootClass exceptionClass = Scene.v().getSootClass("java.lang.RuntimeException");
+        SootClass exceptionClass = Scene.v().getSootClass(
+                "java.lang.RuntimeException");
         RefType exceptionType = RefType.v(exceptionClass);
-        SootMethod initMethod = exceptionClass.getMethod(
-                "void <init>(java.lang.String)");
+        SootMethod initMethod = exceptionClass
+                .getMethod("void <init>(java.lang.String)");
 
         Local local = Jimple.v().newLocal("exceptionLocal", exceptionType);
         body.getLocals().add(local);
-        body.getUnits().insertBefore(Jimple.v().newAssignStmt(local,
-                                             Jimple.v().newNewExpr(exceptionType)), unit);
-        body.getUnits().insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                             .newSpecialInvokeExpr(local,
-                                                     initMethod, StringConstant.v(string))), unit);
+        body.getUnits().insertBefore(
+                Jimple.v().newAssignStmt(local,
+                        Jimple.v().newNewExpr(exceptionType)), unit);
+        body.getUnits().insertBefore(
+                Jimple.v().newInvokeStmt(
+                        Jimple.v().newSpecialInvokeExpr(local, initMethod,
+                                StringConstant.v(string))), unit);
         return local;
     }
 
@@ -767,8 +773,8 @@ public class SootUtilities {
      *  @param className The name of the class that will be created.
      */
     public static SootClass createStaticClassForInstance(SootClass theClass,
-            Body containerBody, DefinitionStmt newStmt, InvokeStmt constructorStmt,
-            String className) {
+            Body containerBody, DefinitionStmt newStmt,
+            InvokeStmt constructorStmt, String className) {
         // FIXME: We need to do something if the object is passed to a
         // method.  Perhaps we can copy the method and inline the static
         // methods inside.  Even worse, what if we pass to an
@@ -794,8 +800,8 @@ public class SootUtilities {
         // Push the constructor code into the <clinit> method.
         SootMethod constructorMethod = ((InvokeExpr) constructorStmt
                 .getInvokeExpr()).getMethod();
-        SootMethod staticConstructorMethod = staticClass.getMethod(constructorMethod
-                .getSubSignature());
+        SootMethod staticConstructorMethod = staticClass
+                .getMethod(constructorMethod.getSubSignature());
 
         SootMethod clinitMethod;
 
@@ -820,9 +826,10 @@ public class SootUtilities {
         // constructor.
         // Later we will come back and inline this after we make all the
         // method static.
-        InvokeExpr constructorExpr = (InvokeExpr) constructorStmt.getInvokeExpr();
-        Stmt insertStmt = Jimple.v().newInvokeStmt(Jimple.v()
-                .newStaticInvokeExpr(staticConstructorMethod,
+        InvokeExpr constructorExpr = (InvokeExpr) constructorStmt
+                .getInvokeExpr();
+        Stmt insertStmt = Jimple.v().newInvokeStmt(
+                Jimple.v().newStaticInvokeExpr(staticConstructorMethod,
                         constructorExpr.getArgs()));
         clinitUnits.insertBefore(insertStmt, insertPoint);
 
@@ -869,18 +876,19 @@ public class SootUtilities {
             // thisLocal is aliased in another local?  Maybe we should
             // run the CopyPropagator somewhere here?
             // change method calls to static invocation
-            for (Iterator useBoxes = body.getUseAndDefBoxes().iterator();
-                 useBoxes.hasNext();) {
+            for (Iterator useBoxes = body.getUseAndDefBoxes().iterator(); useBoxes
+                    .hasNext();) {
                 ValueBox box = (ValueBox) useBoxes.next();
 
                 if (box.getValue() instanceof InstanceInvokeExpr) {
-                    InstanceInvokeExpr expr = (InstanceInvokeExpr) box.getValue();
+                    InstanceInvokeExpr expr = (InstanceInvokeExpr) box
+                            .getValue();
                     Local local = (Local) expr.getBase();
 
                     if (local == thisLocal) {
                         System.out.println("fixing invoke = " + expr);
-                        box.setValue(Jimple.v().newStaticInvokeExpr(expr
-                                             .getMethod(), expr.getArgs()));
+                        box.setValue(Jimple.v().newStaticInvokeExpr(
+                                expr.getMethod(), expr.getArgs()));
                     }
                 } else if (box.getValue() instanceof InstanceFieldRef) {
                     InstanceFieldRef expr = (InstanceFieldRef) box.getValue();
@@ -888,15 +896,16 @@ public class SootUtilities {
 
                     if (local == thisLocal) {
                         System.out.println("fixing field = " + expr);
-                        box.setValue(Jimple.v().newStaticFieldRef(expr.getField()));
+                        box.setValue(Jimple.v().newStaticFieldRef(
+                                expr.getField()));
                     }
                 }
             }
 
             // Fix synchronization locks.  Anything synchronized on this
             // should instead be synchronized on the class.
-            for (Iterator stmts = body.getUnits().snapshotIterator();
-                 stmts.hasNext();) {
+            for (Iterator stmts = body.getUnits().snapshotIterator(); stmts
+                    .hasNext();) {
                 Stmt stmt = (Stmt) stmts.next();
 
                 if (stmt instanceof MonitorStmt) {
@@ -905,8 +914,7 @@ public class SootUtilities {
 
                     if (lock == thisLocal) {
                         Local classLocal = SynchronizerManager.v()
-                            .addStmtsToFetchClassBefore(body,
-                                    stmt);
+                                .addStmtsToFetchClassBefore(body, stmt);
                         monitorStmt.setOp(classLocal);
                     }
                 }
@@ -930,8 +938,8 @@ public class SootUtilities {
 
         // Loop through the class and make all the non-static fields static.
         // Make all reference to this into static references.
-        for (Iterator fields = staticClass.getFields().iterator();
-             fields.hasNext();) {
+        for (Iterator fields = staticClass.getFields().iterator(); fields
+                .hasNext();) {
             SootField field = (SootField) fields.next();
 
             // make the fieldd static.
@@ -941,7 +949,8 @@ public class SootUtilities {
         System.out.println("inlining = " + constructorMethod);
         System.out.println("inlineCall = " + insertStmt);
         System.out.println("container = " + clinitMethod);
-        SiteInliner.inlineSite(staticConstructorMethod, insertStmt, clinitMethod);
+        SiteInliner.inlineSite(staticConstructorMethod, insertStmt,
+                clinitMethod);
 
         // Now loop through all the reachable uses of the new definition
         // and replace references to the local with references to the
@@ -1015,14 +1024,15 @@ public class SootUtilities {
         // Rename fields in the given class
         // whose name is the same between
         // the given class and its superclass.
-        for (Iterator fields = theClass.getFields().snapshotIterator();
-             fields.hasNext();) {
+        for (Iterator fields = theClass.getFields().snapshotIterator(); fields
+                .hasNext();) {
             SootField field = (SootField) fields.next();
 
             if (superClass.declaresFieldByName(field.getName())) {
                 // SootField superField = superClass.getFieldByName(field.getName());
                 String newName = StringUtilities.sanitizeName(superClass
-                        .getName()) + field.getName();
+                        .getName())
+                        + field.getName();
                 System.out.println("Renaming field " + field + " to " + newName
                         + " to avoid collision with superClass field "
                         + superClass.getFieldByName(field.getName()));
@@ -1043,8 +1053,8 @@ public class SootUtilities {
         // Now create new methods in the given class for methods that
         // exist in the super class, but not in the given class.
         // Invoke the super class.
-        for (Iterator methods = superClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = superClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod oldMethod = (SootMethod) methods.next();
 
             if (theClass.declaresMethod(oldMethod.getSubSignature())) {
@@ -1127,8 +1137,8 @@ public class SootUtilities {
         // This code is similar to inlineCallsToMethod, but avoids iterating
         // over all the methods in the class twice, which could get
         // very expensive.
-        for (Iterator methods = theClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = theClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod newMethod = (SootMethod) methods.next();
             Body newBody = newMethod.retrieveActiveBody();
 
@@ -1172,17 +1182,17 @@ public class SootUtilities {
                                 // [2] methodref=soot/coffi/A.foo
                                 // So, we look for the method in the superclass
                                 SootClass scratchClass = invokeMethod
-                                    .getDeclaringClass();
+                                        .getDeclaringClass();
 
                                 while (scratchClass.hasSuperclass()) {
                                     SootClass superC = scratchClass
-                                        .getSuperclass();
+                                            .getSuperclass();
 
-                                    if (superC.declaresMethod(
-                                                invokeMethod
-                                                .getSubSignature())) {
-                                        invokeMethod = superC.getMethod(invokeMethod
-                                                .getSubSignature());
+                                    if (superC.declaresMethod(invokeMethod
+                                            .getSubSignature())) {
+                                        invokeMethod = superC
+                                                .getMethod(invokeMethod
+                                                        .getSubSignature());
                                         System.out.println("SootUtilties."
                                                 + "foldClass() " + "found "
                                                 + superC + " " + invokeMethod);
@@ -1196,7 +1206,7 @@ public class SootUtilities {
                         } catch (Exception ex) {
                             throw new KernelRuntimeException(ex,
                                     "foldClass: Problem with "
-                                    + "retrieveActiveBody()");
+                                            + "retrieveActiveBody()");
                         }
 
                         SiteInliner.inlineSite(invokeMethod, stmt, newMethod);
@@ -1279,8 +1289,8 @@ public class SootUtilities {
                     if (argumentType != parameterType) {
                         // This is inefficient.  Full type merging is
                         // expensive and unnecessary.
-                        isEqual = (parameterType == argumentType.merge(parameterType,
-                                           Scene.v()));
+                        isEqual = (parameterType == argumentType.merge(
+                                parameterType, Scene.v()));
                     }
 
                     if (!isEqual) {
@@ -1305,8 +1315,8 @@ public class SootUtilities {
      */
     public static SootMethod getSootMethodForMethod(Method method) {
         StringBuffer buffer = new StringBuffer();
-        String className = Scene.v().quotedNameOf(method.getDeclaringClass()
-                .getName());
+        String className = Scene.v().quotedNameOf(
+                method.getDeclaringClass().getName());
         Scene.v().loadClassAndSupport(className);
         buffer.append("<" + className + ": ");
 
@@ -1340,9 +1350,10 @@ public class SootUtilities {
 
     public static SootMethod resolveSpecialInvokationForInlining(
             SpecialInvokeExpr expr, SootMethod callingMethod) {
-        SootMethod inlinee = Scene.v().getActiveHierarchy()
-            .resolveSpecialDispatch((SpecialInvokeExpr) expr,
-                    callingMethod);
+        SootMethod inlinee = Scene
+                .v()
+                .getActiveHierarchy()
+                .resolveSpecialDispatch((SpecialInvokeExpr) expr, callingMethod);
 
         // Make sure we can access the body of the method that is
         // being inlined.
@@ -1360,15 +1371,14 @@ public class SootUtilities {
 
         // Now inline the resulting call.
         List methodList = Scene.v().getActiveHierarchy()
-            .resolveAbstractDispatch(baseClass,
-                    targetMethod);
+                .resolveAbstractDispatch(baseClass, targetMethod);
 
         if (methodList.size() == 1) {
             // inline the method.
             inlinee = (SootMethod) methodList.get(0);
         } else {
             String string = "Can't resolve " + targetMethod + " on baseClass "
-                + baseClass + "\n";
+                    + baseClass + "\n";
 
             for (int i = 0; i < methodList.size(); i++) {
                 string += ("target = " + methodList.get(i) + "\n");
@@ -1399,8 +1409,8 @@ public class SootUtilities {
         // This is required by the inliner.
         inlineMethod.retrieveActiveBody();
 
-        for (Iterator methods = theClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = theClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             // System.out.println("method = " + method.getSignature());
@@ -1473,8 +1483,7 @@ public class SootUtilities {
                             }
 
                             inlineMethod = searchForMethodByName(theClass
-                                    .getSuperclass(),
-                                    method.getName());
+                                    .getSuperclass(), method.getName());
                         }
 
                         // Don't inline a recursive method call.
@@ -1499,12 +1508,10 @@ public class SootUtilities {
      */
     public static boolean isAliasableValue(Value value) {
         boolean isAliasableObject = value instanceof Local
-            || value instanceof FieldRef
-            || value instanceof CastExpr
-            || value instanceof ArrayRef
-            || value instanceof NewArrayExpr;
+                || value instanceof FieldRef || value instanceof CastExpr
+                || value instanceof ArrayRef || value instanceof NewArrayExpr;
         boolean isAliasableType = value.getType() instanceof ArrayType
-            || value.getType() instanceof RefType;
+                || value.getType() instanceof RefType;
         return isAliasableObject && isAliasableType;
     }
 
@@ -1530,8 +1537,8 @@ public class SootUtilities {
 
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
-            for (Iterator useBoxes = body.getUseAndDefBoxes().iterator();
-                 useBoxes.hasNext();) {
+            for (Iterator useBoxes = body.getUseAndDefBoxes().iterator(); useBoxes
+                    .hasNext();) {
                 ValueBox box = (ValueBox) useBoxes.next();
 
                 if (box.getValue() instanceof InstanceFieldRef) {
@@ -1539,7 +1546,8 @@ public class SootUtilities {
 
                     if (expr.getField() == field) {
                         System.out.println("fixing field = " + expr);
-                        box.setValue(Jimple.v().newStaticFieldRef(expr.getField()));
+                        box.setValue(Jimple.v().newStaticFieldRef(
+                                expr.getField()));
                     }
                 }
             }
@@ -1556,8 +1564,8 @@ public class SootUtilities {
         int i = 0;
         Object[] args = new Object[argValues.length];
 
-        for (Iterator parameterTypes = sootMethod.getParameterTypes().iterator();
-             parameterTypes.hasNext();) {
+        for (Iterator parameterTypes = sootMethod.getParameterTypes()
+                .iterator(); parameterTypes.hasNext();) {
             Type parameterType = (Type) parameterTypes.next();
 
             try {
@@ -1608,8 +1616,8 @@ public class SootUtilities {
         int i = 0;
         Object[] args = new Object[argValues.length];
 
-        for (Iterator parameterTypes = sootMethod.getParameterTypes().iterator();
-             parameterTypes.hasNext();) {
+        for (Iterator parameterTypes = sootMethod.getParameterTypes()
+                .iterator(); parameterTypes.hasNext();) {
             Type parameterType = (Type) parameterTypes.next();
 
             try {
@@ -1626,7 +1634,8 @@ public class SootUtilities {
         Object returned;
 
         try {
-            Constructor constructor = objectClass.getConstructor(parameterClasses);
+            Constructor constructor = objectClass
+                    .getConstructor(parameterClasses);
 
             returned = constructor.newInstance(args);
         } catch (Exception ex) {
@@ -1681,13 +1690,13 @@ public class SootUtilities {
         // of the blocks.  Unfortunately, finding them all is hard.
         // This should really be done using Dava (when it is finished)
         SootClass iteratorClass = Scene.v().getSootClass("java.util.Iterator");
-        SootMethod iteratorNextMethod = iteratorClass.getMethod(
-                "java.lang.Object next()");
-        SootMethod iteratorHasNextMethod = iteratorClass.getMethod(
-                "boolean hasNext()");
+        SootMethod iteratorNextMethod = iteratorClass
+                .getMethod("java.lang.Object next()");
+        SootMethod iteratorHasNextMethod = iteratorClass
+                .getMethod("boolean hasNext()");
 
-        for (Iterator methods = theClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = theClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod method = (SootMethod) methods.next();
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
@@ -1727,7 +1736,7 @@ public class SootUtilities {
                 }
 
                 InterfaceInvokeExpr expr = (InterfaceInvokeExpr) stmt
-                    .getRightOp();
+                        .getRightOp();
 
                 if (expr.getMethod() != iteratorHasNextMethod) {
                     continue;
@@ -1750,8 +1759,8 @@ public class SootUtilities {
                 // walk backwards until we find a definition of the iterator.
                 while ((unit != whilePredecessor.getHead()) && !found) {
                     if (unit instanceof DefinitionStmt
-                            && ((DefinitionStmt) unit).getLeftOp()
-                            .equals(iteratorLocal)) {
+                            && ((DefinitionStmt) unit).getLeftOp().equals(
+                                    iteratorLocal)) {
                         found = true;
                     } else {
                         unit = whilePredecessor.getPredOf(unit);
@@ -1763,8 +1772,8 @@ public class SootUtilities {
 
                 if (!(iteratorDefinition.getRightOp() instanceof InterfaceInvokeExpr)
                         || !((InterfaceInvokeExpr) iteratorDefinition
-                                .getRightOp()).getMethod()
-                        .getName().equals("iterator")) {
+                                .getRightOp()).getMethod().getName().equals(
+                                "iterator")) {
                     continue;
                 }
 
@@ -1778,8 +1787,8 @@ public class SootUtilities {
                 // of the collection.
                 while ((unit != whilePredecessor.getHead()) && !found) {
                     if (unit instanceof DefinitionStmt
-                            && ((DefinitionStmt) unit).getLeftOp()
-                            .equals(collectionLocal)) {
+                            && ((DefinitionStmt) unit).getLeftOp().equals(
+                                    collectionLocal)) {
                         found = true;
                     } else {
                         unit = whilePredecessor.getPredOf(unit);
@@ -1811,31 +1820,32 @@ public class SootUtilities {
                 // them from the method body.
                 Unit insertPoint = (Unit) units.getSuccOf(block.getTail());
 
-                for (Iterator blockStmts = block.iterator();
-                     blockStmts.hasNext();) {
+                for (Iterator blockStmts = block.iterator(); blockStmts
+                        .hasNext();) {
                     Stmt original = (Stmt) blockStmts.next();
                     blockStmtList.add(original);
                     blockStmts.remove();
                 }
 
                 // Remove the jump that should be the final statement.
-                blockStmtList.remove(blockStmtList.get(blockStmtList.size() - 1));
+                blockStmtList.remove(blockStmtList
+                        .get(blockStmtList.size() - 1));
 
                 // Loop through and unroll the loop body once for
                 // every element of the field list.
                 for (Iterator fields = fieldList.iterator(); fields.hasNext();) {
                     SootField insertField = (SootField) fields.next();
 
-                    for (Iterator blockStmts = blockStmtList.iterator();
-                         blockStmts.hasNext();) {
+                    for (Iterator blockStmts = blockStmtList.iterator(); blockStmts
+                            .hasNext();) {
                         // clone each statement
                         Stmt original = (Stmt) blockStmts.next();
                         Stmt clone = (Stmt) original.clone();
 
                         // If the statement is a call to the next() method,
                         // then inline it with the next value of the iterator.
-                        for (Iterator boxes = clone.getUseBoxes().iterator();
-                             boxes.hasNext();) {
+                        for (Iterator boxes = clone.getUseBoxes().iterator(); boxes
+                                .hasNext();) {
                             ValueBox box = (ValueBox) boxes.next();
                             Value value = box.getValue();
 
@@ -1843,8 +1853,9 @@ public class SootUtilities {
                                 InvokeExpr r = (InvokeExpr) value;
 
                                 if (r.getMethod() == iteratorNextMethod) {
-                                    box.setValue(Jimple.v().newInstanceFieldRef(thisLocal,
-                                                         insertField));
+                                    box.setValue(Jimple.v()
+                                            .newInstanceFieldRef(thisLocal,
+                                                    insertField));
                                 }
                             }
                         }
@@ -1854,8 +1865,8 @@ public class SootUtilities {
                 }
 
                 // remove the conditional
-                for (Iterator blockStmts = whileCond.iterator();
-                     blockStmts.hasNext();) {
+                for (Iterator blockStmts = whileCond.iterator(); blockStmts
+                        .hasNext();) {
                     Stmt original = (Stmt) blockStmts.next();
                     blockStmts.remove();
                 }
@@ -1866,40 +1877,40 @@ public class SootUtilities {
                 // This code modified from WhileMatcher.
 
                 /*
-                  List successorList = block.getSuccs();
+                 List successorList = block.getSuccs();
 
-                  if (successorList.size() == 2) {
-                  Block whileBody, whileSucc;
-                  boolean found = false;
+                 if (successorList.size() == 2) {
+                 Block whileBody, whileSucc;
+                 boolean found = false;
 
-                  whileBody = whileSucc = block;
-                  whileBody = (Block) successorList.get(0);
-                  whileSucc = (Block) successorList.get(1);
+                 whileBody = whileSucc = block;
+                 whileBody = (Block) successorList.get(0);
+                 whileSucc = (Block) successorList.get(1);
 
-                  if ((whileBody.getPreds().size() == 1) &&
-                  (whileBody.getSuccs().size() == 1) &&
-                  (whileBody.getSuccs().get(0) == block))
-                  found = true;
-                  if (!found) {
-                  Block bt;
-                  bt = whileSucc;
-                  whileSucc = whileBody;
-                  whileBody = bt;
+                 if ((whileBody.getPreds().size() == 1) &&
+                 (whileBody.getSuccs().size() == 1) &&
+                 (whileBody.getSuccs().get(0) == block))
+                 found = true;
+                 if (!found) {
+                 Block bt;
+                 bt = whileSucc;
+                 whileSucc = whileBody;
+                 whileBody = bt;
 
-                  if ((whileBody.getPreds().size() == 1) &&
-                  (whileBody.getSuccs().size() == 1) &&
-                  (whileBody.getSuccs().get(0) == block))
-                  found = true;
-                  }
+                 if ((whileBody.getPreds().size() == 1) &&
+                 (whileBody.getSuccs().size() == 1) &&
+                 (whileBody.getSuccs().get(0) == block))
+                 found = true;
+                 }
 
-                  if (found) {
-                  if (con
-                  System.out.println("found while Loop:");
-                  System.out.println("body = " + whileBody);
-                  System.out.println("cond = " + block);
-                  System.out.println("successor = " + whileSucc);
-                  }
-                  }      */
+                 if (found) {
+                 if (con
+                 System.out.println("found while Loop:");
+                 System.out.println("body = " + whileBody);
+                 System.out.println("cond = " + block);
+                 System.out.println("successor = " + whileSucc);
+                 }
+                 }      */
             }
         }
     }
@@ -1926,8 +1937,8 @@ public class SootUtilities {
                         + newClass.getFieldByName(oldField.getName()));
             }
 
-            SootField newField = new SootField(oldField.getName(),
-                    oldField.getType(), oldField.getModifiers());
+            SootField newField = new SootField(oldField.getName(), oldField
+                    .getType(), oldField.getModifiers());
             newClass.addField(newField);
         }
 
@@ -1937,13 +1948,13 @@ public class SootUtilities {
     private static SootClass _getInnerClassCopy(SootClass oldOuterClass,
             SootClass oldInnerClass, SootClass newOuterClass) {
         String oldInnerClassName = oldInnerClass.getName();
-        String oldInnerClassSpecifier = oldInnerClassName.substring(oldOuterClass.getName()
-                .length());
+        String oldInnerClassSpecifier = oldInnerClassName
+                .substring(oldOuterClass.getName().length());
 
         //System.out.println("oldInnerClassSpecifier = " +
         //        oldInnerClassSpecifier);
         String newInnerClassName = newOuterClass.getName()
-            + oldInnerClassSpecifier;
+                + oldInnerClassSpecifier;
         SootClass newInnerClass;
 
         if (Scene.v().containsClass(newInnerClassName)) {

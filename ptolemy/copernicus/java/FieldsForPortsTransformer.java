@@ -1,29 +1,29 @@
 /* Make all references to ports point to port fields
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.HashMap;
@@ -69,23 +69,22 @@ import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.SimpleLocalDefs;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForPortsTransformer
 
 /**
-   A transformer that is responsible for replacing references to ports
-   Any calls to the getPort() method are replaced with a field reference to
-   the field of the appropriate class that points to the correct port.
+ A transformer that is responsible for replacing references to ports
+ Any calls to the getPort() method are replaced with a field reference to
+ the field of the appropriate class that points to the correct port.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
-public class FieldsForPortsTransformer extends SceneTransformer
-    implements HasPhaseOptions {
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class FieldsForPortsTransformer extends SceneTransformer implements
+        HasPhaseOptions {
     /** Construct a new transformer
      */
     private FieldsForPortsTransformer(CompositeActor model) {
@@ -135,8 +134,8 @@ public class FieldsForPortsTransformer extends SceneTransformer
 
     private void _replacePortCalls(SootClass actorClass, ComponentEntity actor) {
         // Loop through all the methods in the class.
-        for (Iterator methods = actorClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = actorClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
@@ -146,8 +145,8 @@ public class FieldsForPortsTransformer extends SceneTransformer
             // This will help us figure out where locals are defined.
             SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
 
-            for (Iterator units = body.getUnits().snapshotIterator();
-                 units.hasNext();) {
+            for (Iterator units = body.getUnits().snapshotIterator(); units
+                    .hasNext();) {
                 Stmt unit = (Stmt) units.next();
 
                 if (!unit.containsInvokeExpr()) {
@@ -160,8 +159,8 @@ public class FieldsForPortsTransformer extends SceneTransformer
                 if (value instanceof InstanceInvokeExpr) {
                     InstanceInvokeExpr r = (InstanceInvokeExpr) value;
 
-                    if (r.getMethod().getSubSignature().equals(PtolemyUtilities.getPortMethod
-                                .getSubSignature())) {
+                    if (r.getMethod().getSubSignature().equals(
+                            PtolemyUtilities.getPortMethod.getSubSignature())) {
                         if (_debug) {
                             System.out.println("replacing getPort in " + unit);
                         }
@@ -173,7 +172,7 @@ public class FieldsForPortsTransformer extends SceneTransformer
 
                         if (Evaluator.isValueConstantValued(nameValue)) {
                             StringConstant nameConstant = (StringConstant) Evaluator
-                                .getConstantValueOf(nameValue);
+                                    .getConstantValueOf(nameValue);
                             String name = nameConstant.value;
 
                             // perform type analysis to determine what the
@@ -189,7 +188,7 @@ public class FieldsForPortsTransformer extends SceneTransformer
                             }
                         } else {
                             String string = "Port cannot be "
-                                + "statically determined";
+                                    + "statically determined";
                             throw new RuntimeException(string);
                         }
                     }
@@ -203,9 +202,10 @@ public class FieldsForPortsTransformer extends SceneTransformer
             // Loop over all the entity classes and replace getPort calls.
             for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
                 ComponentEntity entity = (ComponentEntity) i.next();
-                String className = ModelTransformer.getInstanceClassName(entity,
-                        _options);
-                SootClass entityClass = Scene.v().loadClassAndSupport(className);
+                String className = ModelTransformer.getInstanceClassName(
+                        entity, _options);
+                SootClass entityClass = Scene.v()
+                        .loadClassAndSupport(className);
                 _replacePortCalls(entityClass, entity);
             }
         }
@@ -236,12 +236,12 @@ public class FieldsForPortsTransformer extends SceneTransformer
             // Walk back and get the definition of the field.
             DefinitionStmt definition = _getFieldDef(baseLocal, unit, localDefs);
             InstanceFieldRef fieldRef = (InstanceFieldRef) definition
-                .getRightOp();
+                    .getRightOp();
             SootField baseField = fieldRef.getField();
             System.out.println("baseField = " + baseField);
 
-            SootField portField = baseField.getDeclaringClass().getFieldByName(baseField
-                    .getName() + "_" + name);
+            SootField portField = baseField.getDeclaringClass().getFieldByName(
+                    baseField.getName() + "_" + name);
             return Jimple.v().newInstanceFieldRef(baseLocal, portField);
         }
     }
@@ -313,7 +313,7 @@ public class FieldsForPortsTransformer extends SceneTransformer
                 SootClass fieldClass = ((RefType) type).getSootClass();
 
                 if (!SootUtilities.derivesFrom(fieldClass,
-                            PtolemyUtilities.componentPortClass)) {
+                        PtolemyUtilities.componentPortClass)) {
                     System.out.println("Class " + theClass
                             + " declares field for port " + port.getFullName()
                             + " but it has type " + fieldClass.getName());
@@ -348,16 +348,20 @@ public class FieldsForPortsTransformer extends SceneTransformer
 
             for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
                 ComponentEntity entity = (ComponentEntity) i.next();
-                String className = ModelTransformer.getInstanceClassName(entity,
-                        _options);
-                SootClass entityClass = Scene.v().loadClassAndSupport(className);
+                String className = ModelTransformer.getInstanceClassName(
+                        entity, _options);
+                SootClass entityClass = Scene.v()
+                        .loadClassAndSupport(className);
                 _indexExistingFields(entityClass, entity);
             }
         }
     }
 
     private CompositeActor _model;
+
     private Map _options;
+
     private boolean _debug;
+
     private static Map _portToFieldMap;
 }

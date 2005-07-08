@@ -1,30 +1,30 @@
 /* An actor that outputs a sequence with a given step in values.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.parameters.PortParameter;
@@ -36,33 +36,32 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Ramp
 
 /**
-   Produce an output token on each firing with a value that is
-   incremented by the specified step each iteration. The
-   first output is given by the <i>init</i> parameter, and the
-   increment may be given either by the <i>step</i> parameter or by
-   the associated <i>step</i> port. Note that the increment will show
-   up in the output only on the next iteration. If you need it to show
-   up on the current iteration, use the
-   {@link ptolemy.actor.lib.Accumulator Accumulator} actor.
-   The type of the output is determined by the constraint that it must
-   be greater than or equal to the types of the parameter (and/or the
-   <i>step</i> port, if it is connected).
-   Thus, this actor is
-   polymorphic in the sense that its output data type can be that
-   of any token type that supports addition.
+ Produce an output token on each firing with a value that is
+ incremented by the specified step each iteration. The
+ first output is given by the <i>init</i> parameter, and the
+ increment may be given either by the <i>step</i> parameter or by
+ the associated <i>step</i> port. Note that the increment will show
+ up in the output only on the next iteration. If you need it to show
+ up on the current iteration, use the
+ {@link ptolemy.actor.lib.Accumulator Accumulator} actor.
+ The type of the output is determined by the constraint that it must
+ be greater than or equal to the types of the parameter (and/or the
+ <i>step</i> port, if it is connected).
+ Thus, this actor is
+ polymorphic in the sense that its output data type can be that
+ of any token type that supports addition.
 
-   @see Accumulator
-   @author Yuhong Xiong, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (bilung)
-*/
+ @see Accumulator
+ @author Yuhong Xiong, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (bilung)
+ */
 public class Ramp extends SequenceSource {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
@@ -88,9 +87,9 @@ public class Ramp extends SequenceSource {
         output.setTypeAtLeast(init);
         output.setTypeAtLeast(step);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
                 + "<polygon points=\"-20,10 20,-10 20,10\" "
                 + "style=\"fill:grey\"/>\n" + "</svg>\n");
         _resultArray = new Token[1];
@@ -188,14 +187,14 @@ public class Ramp extends SequenceSource {
 
         for (int i = 0; i < count; i++) {
             _resultArray[i] = _stateToken;
-            
+
             try {
                 step.update();
                 _stateToken = _stateToken.add(step.getToken());
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
                         "Should not be thrown because we have already"
-                        + "verified that the tokens can be added");
+                                + "verified that the tokens can be added");
             }
         }
 
@@ -230,5 +229,6 @@ public class Ramp extends SequenceSource {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Token _stateToken = null;
+
     private Token[] _resultArray;
 }

@@ -41,7 +41,6 @@ import javax.swing.SwingUtilities;
 import diva.canvas.FigureLayer;
 import diva.canvas.GraphicsPane;
 import diva.canvas.JCanvas;
-import diva.canvas.Site;
 import diva.canvas.connector.Arrowhead;
 import diva.canvas.connector.Blob;
 import diva.canvas.connector.StraightTerminal;
@@ -57,7 +56,6 @@ import diva.util.java2d.PaintedList;
 import diva.util.java2d.PaintedPath;
 import diva.util.java2d.PaintedShape;
 import diva.util.java2d.Polygon2D;
-
 
 /**
  * This tutorial illustrates how to use Icons.
@@ -80,6 +78,7 @@ public class IconTutorial {
 
     // The two icons
     private IconFigure _icon1;
+
     private IconFigure _icon2;
 
     /** Create a JCanvas and put it into a window
@@ -206,11 +205,11 @@ public class IconTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    IconTutorial ex = new IconTutorial();
-                    ex.createIcon1();
-                    ex.createIcon2();
-                }
-            });
+            public void run() {
+                IconTutorial ex = new IconTutorial();
+                ex.createIcon1();
+                ex.createIcon2();
+            }
+        });
     }
 }

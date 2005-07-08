@@ -1,33 +1,33 @@
 /* An IOPort for controllers and refinements in modal models.
 
-Copyright (c) 1998-2005 The Regents of the University of California and
-Research in Motion Limited.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California and
+ Research in Motion Limited.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.fsm.modal;
 
 import ptolemy.actor.IOPort;
@@ -46,26 +46,26 @@ import ptolemy.kernel.util.Workspace;
 //// TransitionRefinementPort
 
 /**
-   A port for transition refinements in modal models.  This port
-   mirrors certain changes to it in the ports of the container of the container.
-   That container in turn mirrors those changes in other refinements and/or
-   controllers.
-   <p>
-   For output ports, this class creates a sibling "input" port. The sibling
-   port is normally treated like any other port but mirrors changes via it's
-   output sibling. This is so that TransitionRefinement instances can get the
-   outputs from the State refinements without having the port be an input/output.
-   This sibling port is labeled as "port_in" where port is the name of the
-   corresponding output port.
+ A port for transition refinements in modal models.  This port
+ mirrors certain changes to it in the ports of the container of the container.
+ That container in turn mirrors those changes in other refinements and/or
+ controllers.
+ <p>
+ For output ports, this class creates a sibling "input" port. The sibling
+ port is normally treated like any other port but mirrors changes via it's
+ output sibling. This is so that TransitionRefinement instances can get the
+ outputs from the State refinements without having the port be an input/output.
+ This sibling port is labeled as "port_in" where port is the name of the
+ corresponding output port.
 
-   @see ModalPort
-   @see TransitionRefinement
-   @author David Hermann, Research In Motion Limited
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (liuxj)
-*/
+ @see ModalPort
+ @see TransitionRefinement
+ @author David Hermann, Research In Motion Limited
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (liuxj)
+ */
 public class TransitionRefinementPort extends RefinementPort {
     /** Construct a port in the given workspace.
      *  @param workspace The workspace.
@@ -397,8 +397,8 @@ public class TransitionRefinementPort extends RefinementPort {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
-    public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(Entity container) throws IllegalActionException,
+            NameDuplicationException {
         NamedObj oldContainer = (NamedObj) getContainer();
 
         if (container == oldContainer) {
@@ -416,7 +416,7 @@ public class TransitionRefinementPort extends RefinementPort {
                 if (_hasSibling && isOutput() && (getContainer() != null)) {
                     TransitionRefinement transContainer = (TransitionRefinement) oldContainer;
                     TransitionRefinementPort sibling = (TransitionRefinementPort) transContainer
-                        .getPort(getName() + "_in");
+                            .getPort(getName() + "_in");
 
                     sibling._mirrorDisable = true;
                     sibling.setContainer(container);
@@ -538,7 +538,7 @@ public class TransitionRefinementPort extends RefinementPort {
                 if (_hasSibling && isOutput() && (getContainer() != null)) {
                     TransitionRefinement container = (TransitionRefinement) getContainer();
                     TransitionRefinementPort sibling = (TransitionRefinementPort) container
-                        .getPort(getName() + "_in");
+                            .getPort(getName() + "_in");
 
                     sibling._mirrorDisable = true;
                     sibling.setMultiport(isMultiport);
@@ -583,8 +583,8 @@ public class TransitionRefinementPort extends RefinementPort {
      *  @exception NameDuplicationException If there is already a port
      *   with the same name in the container.
      */
-    public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
         boolean disableStatus = _mirrorDisable;
 
         try {
@@ -595,7 +595,7 @@ public class TransitionRefinementPort extends RefinementPort {
                 if (_hasSibling && isOutput() && (getContainer() != null)) {
                     TransitionRefinement container = (TransitionRefinement) getContainer();
                     TransitionRefinementPort sibling = (TransitionRefinementPort) container
-                        .getPort(getName() + "_in");
+                            .getPort(getName() + "_in");
                     sibling._mirrorDisable = true;
                     sibling.setName(name + "_in");
                     sibling._mirrorDisable = false;
@@ -658,7 +658,7 @@ public class TransitionRefinementPort extends RefinementPort {
             if (isOutput) {
                 throw new InternalErrorException(
                         "TransitionRefinementPort.setOutput:"
-                        + " cannot set input sibling port to be an output");
+                                + " cannot set input sibling port to be an output");
             } else {
                 return;
             }
@@ -677,8 +677,8 @@ public class TransitionRefinementPort extends RefinementPort {
                 if (!_hasSibling && isOutput) {
                     try {
                         TransitionRefinement container = (TransitionRefinement) getContainer();
-                        TransitionRefinementPort sibling = new TransitionRefinementPort(container,
-                                getName() + "_in");
+                        TransitionRefinementPort sibling = new TransitionRefinementPort(
+                                container, getName() + "_in");
 
                         sibling._hasSibling = true;
                         sibling._mirrorDisable = true;
@@ -692,7 +692,8 @@ public class TransitionRefinementPort extends RefinementPort {
                         // link the port relation should already exist
                         // from this port's creation in newPort()
                         String relationName = getName() + "Relation";
-                        ModalModel model = (ModalModel) container.getContainer();
+                        ModalModel model = (ModalModel) container
+                                .getContainer();
                         Relation relation = model.getRelation(relationName);
 
                         if (relation != null) {
@@ -703,11 +704,11 @@ public class TransitionRefinementPort extends RefinementPort {
                     } catch (IllegalActionException ex) {
                         throw new InternalErrorException(
                                 "TransitionRefinementPort.setOutput: Internal error: "
-                                + ex.getMessage());
+                                        + ex.getMessage());
                     } catch (NameDuplicationException ex) {
                         throw new InternalErrorException(
                                 "TransitionRefinementPort.setOutput: Internal error: "
-                                + ex.getMessage());
+                                        + ex.getMessage());
                     }
                 }
             } else {

@@ -1,30 +1,30 @@
 /* A simple graph view for Ptolemy models
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.fsm;
 
 import java.awt.event.ActionEvent;
@@ -50,22 +50,21 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.graph.GraphPane;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphFrame
 
 /**
-   This is a graph editor frame for ptolemy FSM models.  Given a composite
-   entity and a tableau, it creates an editor and populates the menus
-   and toolbar.  This overrides the base class to associate with the
-   editor an instance of FSMGraphController.
+ This is a graph editor frame for ptolemy FSM models.  Given a composite
+ entity and a tableau, it creates an editor and populates the menus
+ and toolbar.  This overrides the base class to associate with the
+ editor an instance of FSMGraphController.
 
-   @author  Steve Neuendorffer, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author  Steve Neuendorffer, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class FSMGraphFrame extends ExtendedGraphFrame {
     /** Construct a frame associated with the specified FSM model.
      *  After constructing this, it is necessary
@@ -124,11 +123,10 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
-            new JMenuItem("Listen to Director", KeyEvent.VK_D),
-            new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
-            new JMenuItem("Animate States", KeyEvent.VK_A),
-            new JMenuItem("Stop Animating", KeyEvent.VK_S),
-        };
+                new JMenuItem("Listen to Director", KeyEvent.VK_D),
+                new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
+                new JMenuItem("Animate States", KeyEvent.VK_A),
+                new JMenuItem("Stop Animating", KeyEvent.VK_S), };
 
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
@@ -169,7 +167,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
         // NOTE: The cast is safe because the constructor accepts
         // only CompositeEntity.
-        final FSMGraphModel graphModel = new FSMGraphModel((CompositeEntity) getModel());
+        final FSMGraphModel graphModel = new FSMGraphModel(
+                (CompositeEntity) getModel());
         return new GraphPane(_controller, graphModel);
     }
 
@@ -209,19 +208,21 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
                     Effigy effigy = (Effigy) getTableau().getContainer();
 
                     // Create a new text effigy inside this one.
-                    Effigy textEffigy = new TextEffigy(effigy,
-                            effigy.uniqueName("debug listener"));
-                    DebugListenerTableau tableau = new DebugListenerTableau(textEffigy,
-                            textEffigy.uniqueName("debugListener"));
-                    tableau.setDebuggable(((FSMActor) getModel()).getDirector());
+                    Effigy textEffigy = new TextEffigy(effigy, effigy
+                            .uniqueName("debug listener"));
+                    DebugListenerTableau tableau = new DebugListenerTableau(
+                            textEffigy, textEffigy.uniqueName("debugListener"));
+                    tableau
+                            .setDebuggable(((FSMActor) getModel())
+                                    .getDirector());
                 } else if (actionCommand.equals("Listen to State Machine")) {
                     Effigy effigy = (Effigy) getTableau().getContainer();
 
                     // Create a new text effigy inside this one.
-                    Effigy textEffigy = new TextEffigy(effigy,
-                            effigy.uniqueName("debug listener"));
-                    DebugListenerTableau tableau = new DebugListenerTableau(textEffigy,
-                            textEffigy.uniqueName("debugListener"));
+                    Effigy textEffigy = new TextEffigy(effigy, effigy
+                            .uniqueName("debug listener"));
+                    DebugListenerTableau tableau = new DebugListenerTableau(
+                            textEffigy, textEffigy.uniqueName("debugListener"));
                     tableau.setDebuggable(getModel());
                 } else if (actionCommand.equals("Animate States")) {
                     // Dialog to ask for a delay time.
@@ -229,8 +230,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
                     query.addLine("delay", "Time (in ms) to hold highlight",
                             Long.toString(_lastDelayTime));
 
-                    ComponentDialog dialog = new ComponentDialog(FSMGraphFrame.this,
-                            "Delay for Animation", query);
+                    ComponentDialog dialog = new ComponentDialog(
+                            FSMGraphFrame.this, "Delay for Animation", query);
 
                     if (dialog.buttonPressed().equals("OK")) {
                         try {
@@ -242,7 +243,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
                             if ((model != null) && (_listeningTo != model)) {
                                 if (_listeningTo != null) {
-                                    _listeningTo.removeDebugListener(_controller);
+                                    _listeningTo
+                                            .removeDebugListener(_controller);
                                 }
 
                                 _listeningTo = model;
@@ -251,7 +253,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
                         } catch (NumberFormatException ex) {
                             MessageHandler.error(
                                     "Invalid time, which is required "
-                                    + "to be an integer: ", ex);
+                                            + "to be an integer: ", ex);
                         }
                     }
                 } else if (actionCommand.equals("Stop Animating")

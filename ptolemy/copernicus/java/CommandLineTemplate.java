@@ -1,31 +1,31 @@
 /* A Ptolemy application that instantiates classnames given on the command
-   line.
+ line.
 
-   Copyright (c) 1999-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -35,25 +35,24 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.KernelException;
 
-
 /////////////////////////////////////////////////////////////////
 //// CommandLineTemplate
 
 /**
-   This class is similar to CompositeActorApplication, except that it
-   does not parse command line elements.   It is used as
-   a template for generating a command line interface for code generated
-   from a ptolemy model.
-   <p>
-   In this case, parsing the command line is not necessary because
-   parameter values and the class values are fixed by the code generator.
+ This class is similar to CompositeActorApplication, except that it
+ does not parse command line elements.   It is used as
+ a template for generating a command line interface for code generated
+ from a ptolemy model.
+ <p>
+ In this case, parsing the command line is not necessary because
+ parameter values and the class values are fixed by the code generator.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (cxh)
-   @Pt.AcceptedRating Red (vogel)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (vogel)
+ */
 public class CommandLineTemplate {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -204,48 +203,48 @@ public class CommandLineTemplate {
      */
     public synchronized void startRun(CompositeActor model) {
         /* Iterator atomicEntities = model.allAtomicEntityList().iterator();
-           while (atomicEntities.hasNext()) {
-           Object object = atomicEntities.next();
-           if (object instanceof Placeable) {
-           hasPlaceable = true;
-           break;
-           }
-           }
+         while (atomicEntities.hasNext()) {
+         Object object = atomicEntities.next();
+         if (object instanceof Placeable) {
+         hasPlaceable = true;
+         break;
+         }
+         }
 
-           if (hasPlaceable) {
-           // The model has an entity that is Placeable, so create a frame.
-           try {
-           // A model frame with no buttons... just place the
-           // placeable actors.
-           ModelFrame frame = new ModelFrame(model, null,
-           new ModelPane(model, ModelPane.HORIZONTAL, 0));
+         if (hasPlaceable) {
+         // The model has an entity that is Placeable, so create a frame.
+         try {
+         // A model frame with no buttons... just place the
+         // placeable actors.
+         ModelFrame frame = new ModelFrame(model, null,
+         new ModelPane(model, ModelPane.HORIZONTAL, 0));
 
-           _openCount++;
-           frame.addWindowListener(new WindowAdapter() {
-           public void windowClosed(WindowEvent event) {
-           synchronized(CommandLineTemplate.this) {
-           _openCount--;
-           CommandLineTemplate.this.notifyAll();
-           // FIXME: is this right?  We need
-           // to exit if all the windows are closed?
-           if (_openCount == 0) {
-           System.exit(0);
-           }
-           }
-           }
-           });
-           frame.setBackground(new Color(0xe5e5e5));
-           frame.pack();
-           frame.centerOnScreen();
-           frame.setVisible(true);
-           // FIXME: Use a JFrame listener to determine when all windows
-           // are closed.
-           } catch (Exception ex) {
-           ex.printStackTrace();
-           System.out.println("startRun: " + ex);
-           }
-           }
-        */
+         _openCount++;
+         frame.addWindowListener(new WindowAdapter() {
+         public void windowClosed(WindowEvent event) {
+         synchronized(CommandLineTemplate.this) {
+         _openCount--;
+         CommandLineTemplate.this.notifyAll();
+         // FIXME: is this right?  We need
+         // to exit if all the windows are closed?
+         if (_openCount == 0) {
+         System.exit(0);
+         }
+         }
+         }
+         });
+         frame.setBackground(new Color(0xe5e5e5));
+         frame.pack();
+         frame.centerOnScreen();
+         frame.setVisible(true);
+         // FIXME: Use a JFrame listener to determine when all windows
+         // are closed.
+         } catch (Exception ex) {
+         ex.printStackTrace();
+         System.out.println("startRun: " + ex);
+         }
+         }
+         */
         Manager manager = model.getManager();
 
         try {
@@ -289,8 +288,9 @@ public class CommandLineTemplate {
         buffer.append("K Free: ");
         buffer.append(freeMemory);
         buffer.append("K (");
-        buffer.append(Math.round(
-                              (((double) freeMemory) / ((double) totalMemory)) * 100.0));
+        buffer
+                .append(Math
+                        .round((((double) freeMemory) / ((double) totalMemory)) * 100.0));
         buffer.append("%)");
     }
 

@@ -1,30 +1,30 @@
 /* Handle a MoML Parsing Error.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil;
 
 import java.awt.Component;
@@ -40,21 +40,20 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.ErrorHandler;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// VergilErrorHandler
 
 /**
-   This error handler attempts to replace any failed MoML elements with
-   generic versions so that the parsing of the MoML can continue. The
-   generic versions, where appropriate, have icons that indicate failure.
+ This error handler attempts to replace any failed MoML elements with
+ generic versions so that the parsing of the MoML can continue. The
+ generic versions, where appropriate, have icons that indicate failure.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class VergilErrorHandler implements ErrorHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -100,7 +99,8 @@ public class VergilErrorHandler implements ErrorHandler {
         // If the element is longer than 80 characters, we split it
         // into shorter new line separated strings.
         String message = "Error encountered in:\n"
-            + StringUtilities.split(element) + "\n" + exception.getMessage();
+                + StringUtilities.split(element) + "\n"
+                + exception.getMessage();
 
         Object[] messageArray = new Object[1];
         messageArray[0] = StringUtilities.ellipsis(message,
@@ -109,12 +109,9 @@ public class VergilErrorHandler implements ErrorHandler {
         if (context == null) {
             // Top-level object, so continuing is not an option.
             messageArray[0] = messageArray[0]
-                + "\nThis is a top-level element, so cannot continue.";
+                    + "\nThis is a top-level element, so cannot continue.";
 
-            Object[] options = {
-                "Display stack trace",
-                "Cancel"
-            };
+            Object[] options = { "Display stack trace", "Cancel" };
 
             // Show the MODAL dialog
             int selected = JOptionPane.showOptionDialog(parentWindow,
@@ -129,12 +126,8 @@ public class VergilErrorHandler implements ErrorHandler {
             return CANCEL;
         } else {
             if (_skippingEnabled) {
-                Object[] options = {
-                    "Skip element",
-                    "Skip remaining errors",
-                    "Display stack trace",
-                    "Cancel"
-                };
+                Object[] options = { "Skip element", "Skip remaining errors",
+                        "Display stack trace", "Cancel" };
 
                 // Show a MODAL dialog
                 int selected = JOptionPane.showOptionDialog(parentWindow,
@@ -153,11 +146,8 @@ public class VergilErrorHandler implements ErrorHandler {
                 return CONTINUE;
             } else {
                 // Skipping is not enabled.
-                Object[] options = {
-                    "Skip element",
-                    "Display stack trace",
-                    "Cancel"
-                };
+                Object[] options = { "Skip element", "Display stack trace",
+                        "Cancel" };
 
                 // Show the MODAL dialog
                 int selected = JOptionPane.showOptionDialog(parentWindow,
@@ -200,8 +190,8 @@ public class VergilErrorHandler implements ErrorHandler {
         // FIXME: The user should be able to click on the links and
         // jump to the line in the offending text.
         // Show the stack trace in a scrollable text area.
-        JTextArea text = new JTextArea(KernelException.stackTraceToString(
-                                               exception), 60, 80);
+        JTextArea text = new JTextArea(KernelException
+                .stackTraceToString(exception), 60, 80);
         JScrollPane scrollPane = new JScrollPane(text);
         scrollPane.setPreferredSize(new Dimension(600, 300));
         text.setCaretPosition(0);
@@ -225,21 +215,13 @@ public class VergilErrorHandler implements ErrorHandler {
         Object[] options = null;
 
         if (skippingEnabled) {
-            options = new Object[] {
-                "Skip element",
-                "Skip remaining errors",
-                "Cancel"
-            };
+            options = new Object[] { "Skip element", "Skip remaining errors",
+                    "Cancel" };
         } else {
             if (skipElement) {
-                options = new Object[] {
-                    "Skip element",
-                    "Cancel"
-                };
+                options = new Object[] { "Skip element", "Cancel" };
             } else {
-                options = new Object[] {
-                    "Cancel"
-                };
+                options = new Object[] { "Cancel" };
             }
         }
 

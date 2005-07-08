@@ -1,30 +1,30 @@
 /* Display a java.awt.Image
 
-@Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
@@ -43,23 +43,24 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.media.Picture;
+
 //////////////////////////////////////////////////////////////////////////
 //// StackDisplay
 
 /**
-   Display an image on the screen using the ptolemy.media.Picture
-   class.  For a sequence of images that are all the same size, this class
-   will continually update the picture with new data.   If the size of the
-   input image changes, then a new Picture object is created.  This class
-   will only accept a IntMatrixToken on its input, and assumes that the
-   input image contains greyscale pixel intensities between 0 and 255 (inclusive).
+ Display an image on the screen using the ptolemy.media.Picture
+ class.  For a sequence of images that are all the same size, this class
+ will continually update the picture with new data.   If the size of the
+ input image changes, then a new Picture object is created.  This class
+ will only accept a IntMatrixToken on its input, and assumes that the
+ input image contains greyscale pixel intensities between 0 and 255 (inclusive).
 
-   @author James Yeh, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red
-   @Pt.AcceptedRating Red
-*/
+ @author James Yeh, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red
+ @Pt.AcceptedRating Red
+ */
 public class StackDisplay extends Sink {
     // FIXME:
     // This actor and sdf.lib.vq.StackDisplay are very similar except that this
@@ -141,17 +142,16 @@ public class StackDisplay extends Sink {
 
             //ImageToken imageToken;
             ImagePlus imagePlus;
-            imagePlus = (ImagePlus)objectToken.getValue();
+            imagePlus = (ImagePlus) objectToken.getValue();
 
             //FIXME What type of catch do I need?
             /*   try {
-                 imageToken = (ImageToken) token;
-                 } catch (ClassCastException ex) {
-                 throw new IllegalActionException(this, ex,
-                 "Failed to cast " + token.getClass()
-                 + " to an ImageToken.\nToken was: " + token);
-                 }*/
-
+             imageToken = (ImageToken) token;
+             } catch (ClassCastException ex) {
+             throw new IllegalActionException(this, ex,
+             "Failed to cast " + token.getClass()
+             + " to an ImageToken.\nToken was: " + token);
+             }*/
 
             //FIXME Do I need a container and a frame?
             //_container = _frame = new StackWindow(imagePlus);
@@ -182,17 +182,15 @@ public class StackDisplay extends Sink {
 
         //FIXME Do I need a container and a frame?
         /*   if (_container == null) {
-             _container = _frame = new StackWindow(null);
-             //_container = _frame.getContentPane();
-             }
+         _container = _frame = new StackWindow(null);
+         //_container = _frame.getContentPane();
+         }
 
-             if (_frame != null) {
-             _frame.setVisible(true);
-             _frame.toFront();
-             }*/
+         if (_frame != null) {
+         _frame.setVisible(true);
+         _frame.toFront();
+         }*/
     }
-
-
 
     /** Set the background */
     public void setBackground(Color background) {

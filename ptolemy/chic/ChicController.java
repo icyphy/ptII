@@ -1,30 +1,30 @@
 /* The node controller for ChicInvoker visible attributes.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.chic;
 
 import java.awt.Event;
@@ -45,26 +45,25 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
 import diva.gui.GUIUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ChicController
 
 /**
-   This class provides interaction with nodes that represent ChicInvoker
-   visible attributes.  It provides a double click binding and context menu
-   entry to edit the parameters of the node ("Configure"), a command to get
-   documentation ("Get Documentation"), a command to look inside ("Look
-   Inside") and commands for invoking Chic. It can have one of two access
-   levels, FULL or PARTIAL. If the access level is FULL, then the context
-   menu also contains a command to rename the node ("Customize Name") and
-   a command to set the icon of the node ("Set Icon").
+ This class provides interaction with nodes that represent ChicInvoker
+ visible attributes.  It provides a double click binding and context menu
+ entry to edit the parameters of the node ("Configure"), a command to get
+ documentation ("Get Documentation"), a command to look inside ("Look
+ Inside") and commands for invoking Chic. It can have one of two access
+ levels, FULL or PARTIAL. If the access level is FULL, then the context
+ menu also contains a command to rename the node ("Customize Name") and
+ a command to set the icon of the node ("Set Icon").
 
-   @author Eleftherios Matsikoudis
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Eleftherios Matsikoudis
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class ChicController extends AttributeController {
     /** Create a Chic controller associated with the specified graph
      *  controller with full access.
@@ -86,9 +85,9 @@ public class ChicController extends AttributeController {
 
         // Add commands to invoke Chic
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                new AsynchronousIOAction()));
+                new AsynchronousIOAction()));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                new SynchronousAGAction()));
+                new SynchronousAGAction()));
 
         //        _menuFactory.addMenuItemFactory(
         //                new MenuActionFactory(new BidirectionalSynAction()));
@@ -101,7 +100,7 @@ public class ChicController extends AttributeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _lookInsideAction));
+                    _lookInsideAction));
         }
     }
 
@@ -118,7 +117,7 @@ public class ChicController extends AttributeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _lookInsideAction));
+                    _lookInsideAction));
         }
     }
 
@@ -136,9 +135,9 @@ public class ChicController extends AttributeController {
 
     // Error message used when we can't find the inside definition.
     private static String _CANNOT_FIND_MESSAGE = "Cannot find inside definition. "
-    + "Perhaps source code is not installed? "
-    + "You can obtain source code for Berkeley actors at: "
-    + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
+            + "Perhaps source code is not installed? "
+            + "You can obtain source code for Berkeley actors at: "
+            + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -157,8 +156,8 @@ public class ChicController extends AttributeController {
             NamedObj object = getTarget();
 
             try {
-                ((ChicInvoker) object).checkInterfaceCompatibility(ChicInvoker.ASYNCHRONOUS_IO,
-                        false);
+                ((ChicInvoker) object).checkInterfaceCompatibility(
+                        ChicInvoker.ASYNCHRONOUS_IO, false);
             } catch (IllegalActionException ex) {
                 MessageHandler.error(ex.getMessage());
             } catch (NameDuplicationException ex) {
@@ -203,14 +202,14 @@ public class ChicController extends AttributeController {
 
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_L, Event.CTRL_MASK));
         }
 
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
-                MessageHandler.error(
-                        "Cannot look inside without a configuration.");
+                MessageHandler
+                        .error("Cannot look inside without a configuration.");
                 return;
             }
 
@@ -221,14 +220,14 @@ public class ChicController extends AttributeController {
 
             // Open the source code, if possible.
             String filename = object.getClass().getName().replace('.', '/')
-                + ".java";
+                    + ".java";
 
             try {
                 URL toRead = getClass().getClassLoader().getResource(filename);
 
                 if (toRead != null) {
-                    _configuration.openModel(null, toRead,
-                            toRead.toExternalForm());
+                    _configuration.openModel(null, toRead, toRead
+                            .toExternalForm());
                 } else {
                     MessageHandler.error(_CANNOT_FIND_MESSAGE);
                 }
@@ -305,8 +304,8 @@ public class ChicController extends AttributeController {
             NamedObj object = getTarget();
 
             try {
-                ((ChicInvoker) object).checkInterfaceCompatibility(ChicInvoker.SYNCHRONOUS_AG,
-                        false);
+                ((ChicInvoker) object).checkInterfaceCompatibility(
+                        ChicInvoker.SYNCHRONOUS_AG, false);
             } catch (IllegalActionException ex) {
                 MessageHandler.error(ex.getMessage());
             } catch (NameDuplicationException ex) {

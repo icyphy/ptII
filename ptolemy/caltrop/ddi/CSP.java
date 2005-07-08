@@ -1,32 +1,32 @@
 /*
-  @Copyright (c) 2003-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
 
-*/
+ */
 package ptolemy.caltrop.ddi;
 
 import java.util.ArrayList;
@@ -62,17 +62,16 @@ import caltrop.interpreter.ast.Statement;
 import caltrop.interpreter.environment.Environment;
 import caltrop.interpreter.util.PriorityUtil;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CSP
 
 /**
-   @author Christopher Chang
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Chang
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class CSP extends AbstractDDI implements DDI {
     public CSP(TypedAtomicActor ptActor, Actor actor, Context context,
             Environment env) {
@@ -87,12 +86,19 @@ public class CSP extends AbstractDDI implements DDI {
     }
 
     private TypedAtomicActor _ptActor;
+
     private Actor _actor;
+
     private Action[] _actions;
+
     private Context _context;
+
     private Environment _env;
+
     private ExprEvaluator _eval;
+
     private Map _ioPorts;
+
     private ConditionalBranchController _cbc;
 
     public boolean isLegalActor() {
@@ -133,8 +139,8 @@ public class CSP extends AbstractDDI implements DDI {
             return;
         } else if (actions.length == 1) {
             inputProfile = computeRemainingTokens(actions, dataSoFar);
-            mergeData(dataSoFar,
-                    new CSPTokenReader(inputProfile, _ioPorts, _cbc).getAll());
+            mergeData(dataSoFar, new CSPTokenReader(inputProfile, _ioPorts,
+                    _cbc).getAll());
             fireAction(actions[0], dataSoFar);
         } else {
             inputProfile = computeRemainingTokens(actions, dataSoFar);
@@ -196,7 +202,7 @@ public class CSP extends AbstractDDI implements DDI {
                 }
 
                 int repeatVal = _context.intValue(new ExprEvaluator(_context,
-                                                          env).evaluate(repeatExpr));
+                        env).evaluate(repeatExpr));
 
                 for (int j = 0; j < repeatVal; j++) {
                     for (int k = 0; k < vars.length; k++) {
@@ -303,16 +309,16 @@ public class CSP extends AbstractDDI implements DDI {
                 InputPattern inputPattern = inputPatterns[i];
                 numNeeded = numTokensNeeded(inputPattern);
 
-                List data = (List) dataSoFar.get(new ChannelID(
-                                                         inputPattern.getPortname(), 0));
+                List data = (List) dataSoFar.get(new ChannelID(inputPattern
+                        .getPortname(), 0));
 
                 if (data != null) {
                     numNeeded = numNeeded - data.size();
                 }
 
                 if (numNeeded > 0) {
-                    inputProfile.put(new ChannelID(inputPattern.getPortname(), 0),
-                            new Integer(numNeeded));
+                    inputProfile.put(new ChannelID(inputPattern.getPortname(),
+                            0), new Integer(numNeeded));
                 }
             }
 
@@ -341,8 +347,8 @@ public class CSP extends AbstractDDI implements DDI {
                 } else {
                     numNeeded = Math.min(numNeeded, numTokensNeeded(ip));
 
-                    List data = (List) dataSoFar.get(new ChannelID(
-                                                             inputPattern.getPortname(), 0));
+                    List data = (List) dataSoFar.get(new ChannelID(inputPattern
+                            .getPortname(), 0));
 
                     if (data != null) {
                         numNeeded = numNeeded - data.size();
@@ -393,8 +399,8 @@ public class CSP extends AbstractDDI implements DDI {
 
     // oldData and newData are both Map: ChannelID -> List[Object]
     private void mergeData(Map oldData, Map newData) {
-        for (Iterator iterator = newData.keySet().iterator();
-             iterator.hasNext();) {
+        for (Iterator iterator = newData.keySet().iterator(); iterator
+                .hasNext();) {
             ChannelID chID = (ChannelID) iterator.next();
 
             if (oldData.containsKey(chID)) {
@@ -475,9 +481,8 @@ public class CSP extends AbstractDDI implements DDI {
                 if (needSoFar == null) {
                     profile.put(chID, new Integer(numNeeded - numHave));
                 } else {
-                    profile.put(chID,
-                            new Integer(Math.max(numNeeded - numHave,
-                                                needSoFar.intValue())));
+                    profile.put(chID, new Integer(Math.max(numNeeded - numHave,
+                            needSoFar.intValue())));
                 }
             }
         }
@@ -535,8 +540,8 @@ public class CSP extends AbstractDDI implements DDI {
     }
 
     private boolean moreDataToRead(Map inputProfile) {
-        for (Iterator iterator = inputProfile.keySet().iterator();
-             iterator.hasNext();) {
+        for (Iterator iterator = inputProfile.keySet().iterator(); iterator
+                .hasNext();) {
             ChannelID chID = (ChannelID) iterator.next();
 
             if (((Integer) inputProfile.get(chID)).intValue() > 0) {
@@ -582,8 +587,8 @@ public class CSP extends AbstractDDI implements DDI {
         for (int i = 0; i < inputPatterns.length; i++) {
             InputPattern inputPattern = inputPatterns[i];
             int numNeeded = numTokensNeeded(inputPattern);
-            List data = (List) dataSoFar.get(new ChannelID(
-                                                     inputPattern.getPortname(), 0));
+            List data = (List) dataSoFar.get(new ChannelID(inputPattern
+                    .getPortname(), 0));
             int numHave = (data == null) ? 0 : data.size();
 
             if (numNeeded > numHave) {
@@ -595,13 +600,13 @@ public class CSP extends AbstractDDI implements DDI {
     }
 }
 
-
 class CSPTokenReader {
     // List[Object]
     private List[] _data;
 
     // (ChannelID -> Integer)
     private Map _profile;
+
     private ChannelID[] _indexToChannelID;
 
     // (ChannelID -> Integer)
@@ -609,8 +614,11 @@ class CSPTokenReader {
 
     // (String -> TypedIOPort)
     private Map _ioPorts;
+
     private int[] _count;
+
     private ConditionalBranchController _cbc;
+
     private boolean _done;
 
     public CSPTokenReader(Map profile, Map ioPorts,
@@ -631,8 +639,8 @@ class CSPTokenReader {
 
         int i = 0;
 
-        for (Iterator iterator = profile.keySet().iterator();
-             iterator.hasNext();) {
+        for (Iterator iterator = profile.keySet().iterator(); iterator
+                .hasNext();) {
             ChannelID chID = (ChannelID) iterator.next();
             _indexToChannelID[i] = chID;
             _channelIDToIndex.put(chID, new Integer(i));
@@ -777,12 +785,14 @@ class CSPTokenReader {
     // assumes _count has been created, and _profile and _indexToChannelID are set correctly.
     private void _resetCount() {
         for (int i = 0; i < _count.length; i++) {
-            _count[i] = ((Integer) _profile.get(_indexToChannelID[i])).intValue();
+            _count[i] = ((Integer) _profile.get(_indexToChannelID[i]))
+                    .intValue();
         }
     }
 
     public static class DataChannelID {
         private Object _data;
+
         private ChannelID _chID;
 
         public DataChannelID(Object data, ChannelID chID) {
@@ -800,16 +810,19 @@ class CSPTokenReader {
     }
 }
 
-
 class CSPTokenWriter {
     // (String -> TypedIOPort)
     private Map _ioPorts;
+
     private ConditionalBranchController _cbc;
 
     // (ChannelID -> Integer)
     private Map _channelIDToIndex;
+
     private ChannelID[] _indexToChannelID;
+
     private int[] _count;
+
     private Map _data;
 
     public CSPTokenWriter(Map ioPorts, ConditionalBranchController cbc) {
@@ -895,8 +908,8 @@ class CSPTokenWriter {
                 //
                 //_indexToChannelNumber(i));
                 branches[i] = new ConditionalSend(true, _indexToPort(i),
-                        _indexToChannelNumber(i), i,
-                        (Token) datal.get(_count[i]), _cbc);
+                        _indexToChannelNumber(i), i, (Token) datal
+                                .get(_count[i]), _cbc);
             } else {
                 branches[i] = new ConditionalSend(false, _indexToPort(i),
                         _indexToChannelNumber(i), i, null, _cbc);

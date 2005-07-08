@@ -1,30 +1,30 @@
 /* Descramble the input bit sequence using a feedback shift register.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
@@ -37,27 +37,26 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DeScrambler
 
 /**
-   Descramble the input bit sequence using a feedback shift register.
-   The taps of the feedback shift register are given by the <i>polynomial</i>
-   parameter. The initial state of the shift register is given by the
-   <i>initialState</i> parameter. This is a self-synchronizing descrambler that
-   will exactly reverse the operation of the Scrambler if the polynomials
-   are the same. The low-order bit of the polynomial should always be set.
-   For more information, see the documentation for the Scrambler actor
-   and Lee and Messerschmitt, Digital Communication, Second Edition,
-   Kluwer Academic Publishers, 1994, pp. 595-603.
-   <p>
-   @author Edward A. Lee and Ye Zhou
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ Descramble the input bit sequence using a feedback shift register.
+ The taps of the feedback shift register are given by the <i>polynomial</i>
+ parameter. The initial state of the shift register is given by the
+ <i>initialState</i> parameter. This is a self-synchronizing descrambler that
+ will exactly reverse the operation of the Scrambler if the polynomials
+ are the same. The low-order bit of the polynomial should always be set.
+ For more information, see the documentation for the Scrambler actor
+ and Lee and Messerschmitt, Digital Communication, Second Edition,
+ Kluwer Academic Publishers, 1994, pp. 595-603.
+ <p>
+ @author Edward A. Lee and Ye Zhou
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class DeScrambler extends Transformer {
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
@@ -172,7 +171,7 @@ public class DeScrambler extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _latestShiftReg = _shiftReg = ((IntToken) initialState.getToken())
-            .intValue();
+                .intValue();
     }
 
     /** Record the most recent shift register state as the new

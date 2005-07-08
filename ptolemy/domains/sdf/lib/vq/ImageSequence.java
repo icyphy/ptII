@@ -1,30 +1,30 @@
 /* Load a sequence of binary images from files.
 
-@Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.sdf.lib.vq;
 
 import java.io.FileNotFoundException;
@@ -42,40 +42,39 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ImageSequence
 
 /**
-   Load a sequence of binary images from files, and create a sequence of
-   IntMatrixTokens from them.  The data is assumed to row scanned, starting
-   at the top row.  Each byte of the binary file is assumed to be the
-   greyscale intensity of a single pixel in the image.
-   <p>
-   The files to be loaded are specified as relative URLs from the base URL path.
-   Usually the base path should be set to the root ptolemy classpath.
-   The file names are created by replacing *'s in the filename with consecutive
-   integers (using zero padding).  For example, specifying a URLtemplate of
-   "missa***.qcf" and a starting frame of
-   zero, will create the names:
-   <ul>
-   <li>missa000.qcf
-   <li>missa001.qcf
-   <li>missa002.qcf
-   <li>...
-   </ul>
-   The name manufacturing algorithm is not especially robust, so
-   debug listeners attached to this actor will receive a list of the file names.
+ Load a sequence of binary images from files, and create a sequence of
+ IntMatrixTokens from them.  The data is assumed to row scanned, starting
+ at the top row.  Each byte of the binary file is assumed to be the
+ greyscale intensity of a single pixel in the image.
+ <p>
+ The files to be loaded are specified as relative URLs from the base URL path.
+ Usually the base path should be set to the root ptolemy classpath.
+ The file names are created by replacing *'s in the filename with consecutive
+ integers (using zero padding).  For example, specifying a URLtemplate of
+ "missa***.qcf" and a starting frame of
+ zero, will create the names:
+ <ul>
+ <li>missa000.qcf
+ <li>missa001.qcf
+ <li>missa002.qcf
+ <li>...
+ </ul>
+ The name manufacturing algorithm is not especially robust, so
+ debug listeners attached to this actor will receive a list of the file names.
 
-   This actor could be greatly expanded to use the Java Advanced Imaging API
-   for loading images.
+ This actor could be greatly expanded to use the Java Advanced Imaging API
+ for loading images.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Red
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Red
+ */
 public class ImageSequence extends Source {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -132,7 +131,7 @@ public class ImageSequence extends Source {
         InputStream source = null;
 
         String fileRoot = ((StringToken) imageURLTemplate.getToken())
-            .stringValue();
+                .stringValue();
         _startFrame = ((IntToken) startFrame.getToken()).intValue();
         _endFrame = ((IntToken) endFrame.getToken()).intValue();
         _imageColumns = ((IntToken) imageColumns.getToken()).intValue();
@@ -257,12 +256,20 @@ public class ImageSequence extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int _frameCount;
+
     private IntMatrixToken[] _images;
+
     private byte[] _frameBytes;
+
     private int[][] _frameInts;
+
     private int _imageColumns;
+
     private int _imageRows;
+
     private int _startFrame;
+
     private int _endFrame;
+
     private int _frameNumber;
 }

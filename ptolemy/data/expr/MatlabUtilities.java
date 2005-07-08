@@ -1,30 +1,30 @@
 /* Utilities for accessing the Matlab engine.
 
-Copyright (c) 2003-2005 The Regents of the University of California
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
 
-*/
+ */
 package ptolemy.data.expr;
 
 import java.lang.reflect.InvocationTargetException;
@@ -36,21 +36,20 @@ import java.util.StringTokenizer;
 import ptolemy.data.StringToken;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MatlabUtilities
 
 /** This class provides access to the Ptolemy Matlab interface
-    in ptolemy.matlab by using reflection.
+ in ptolemy.matlab by using reflection.
 
-    @author Christopher Hylands, Steve Neuendorffer
-    @author Zoltan Kemenczy, Research in Motion Ltd.
-    @version $Id$
-    @since Ptolemy II 2.1
-    @Pt.ProposedRating Green (neuendor)
-    @Pt.AcceptedRating Yellow (neuendor)
-    @see ptolemy.data.expr.ParseTreeEvaluator
-*/
+ @author Christopher Hylands, Steve Neuendorffer
+ @author Zoltan Kemenczy, Research in Motion Ltd.
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ @see ptolemy.data.expr.ParseTreeEvaluator
+ */
 public class MatlabUtilities {
     /** Evaluate a Matlab expression within a scope.
      *        The expression argument is of the form
@@ -106,8 +105,8 @@ public class MatlabUtilities {
 
             try {
                 synchronized (
-                        //matlabEngine.getSemaphore();
-                        _engine) {
+                //matlabEngine.getSemaphore();
+                _engine) {
                     // matlabEngine is not very good since it is
                     // "local".
                     // (zk:) I would recommend removing the static,
@@ -124,64 +123,54 @@ public class MatlabUtilities {
 
                     if ((packageDirectories != null)
                             && packageDirectories instanceof StringToken) {
-                        StringTokenizer dirs = new StringTokenizer((String) ((StringToken) packageDirectories)
-                                .stringValue(), ",");
+                        StringTokenizer dirs = new StringTokenizer(
+                                (String) ((StringToken) packageDirectories)
+                                        .stringValue(), ",");
                         StringBuffer cellFormat = new StringBuffer(512);
                         cellFormat.append("{");
 
                         if (dirs.hasMoreTokens()) {
                             cellFormat.append("'"
-                                    + UtilityFunctions.findFile(dirs.nextToken())
-                                    + "'");
+                                    + UtilityFunctions.findFile(dirs
+                                            .nextToken()) + "'");
                         }
 
                         while (dirs.hasMoreTokens()) {
                             cellFormat.append(",'"
-                                    + UtilityFunctions.findFile(dirs.nextToken())
-                                    + "'");
+                                    + UtilityFunctions.findFile(dirs
+                                            .nextToken()) + "'");
                         }
 
                         cellFormat.append("}");
 
                         if (cellFormat.length() > 2) {
                             addPathCommand = "addedPath_="
-                                + cellFormat.toString()
-                                + ";addpath(addedPath_{:});";
+                                    + cellFormat.toString()
+                                    + ";addpath(addedPath_{:});";
 
                             //matlabEngine.evalString
                             //    (engine, "previousPath_=path");
                             _engineEvalString.invoke(matlabEngine,
-                                    new Object[] {
-                                        _engine,
-                                        "previousPath_=path"
-                                    });
+                                    new Object[] { _engine,
+                                            "previousPath_=path" });
 
                             //previousPath = matlabEngine.get
                             //    (engine, "previousPath_");
                             previousPath = (ptolemy.data.Token) _engineGet
-                                .invoke(matlabEngine,
-                                        new Object[] {
-                                            _engine,
-                                            "previousPath_"
-                                        });
+                                    .invoke(matlabEngine, new Object[] {
+                                            _engine, "previousPath_" });
                         }
                     }
 
                     //matlabEngine.evalString
                     //    (engine, "clear variables;clear globals");
-                    _engineEvalString.invoke(matlabEngine,
-                            new Object[] {
-                                _engine,
-                                "clear variables;clear globals"
-                            });
+                    _engineEvalString.invoke(matlabEngine, new Object[] {
+                            _engine, "clear variables;clear globals" });
 
                     if (addPathCommand != null) {
                         // matlabEngine.evalString(engine, addPathCommand);
-                        _engineEvalString.invoke(matlabEngine,
-                                new Object[] {
-                                    _engine,
-                                    addPathCommand
-                                });
+                        _engineEvalString.invoke(matlabEngine, new Object[] {
+                                _engine, addPathCommand });
                     }
 
                     // Set matlab variables required for evaluating the
@@ -196,55 +185,36 @@ public class MatlabUtilities {
                             if (token != null) {
                                 //matlabEngine.put
                                 //    (engine, name, token);
-                                _enginePut.invoke(matlabEngine,
-                                        new Object[] {
-                                            _engine,
-                                            name,
-                                            token
-                                        });
+                                _enginePut.invoke(matlabEngine, new Object[] {
+                                        _engine, name, token });
                             }
                         }
                     }
 
                     //matlabEngine.evalString(engine,
                     //        "result__=" + expression);
-                    _engineEvalString.invoke(matlabEngine,
-                            new Object[] {
-                                _engine,
-                                "result__=" + expression
-                            });
+                    _engineEvalString.invoke(matlabEngine, new Object[] {
+                            _engine, "result__=" + expression });
 
                     //result = matlabEngine.get(engine, "result__");
-                    result = (ptolemy.data.Token) _engineGet.invoke(matlabEngine,
-                            new Object[] {
-                                _engine,
-                                "result__"
-                            });
+                    result = (ptolemy.data.Token) _engineGet.invoke(
+                            matlabEngine, new Object[] { _engine, "result__" });
 
                     if (previousPath != null) {
                         // Restore the original engine path
                         //matlabEngine.put
                         //    (engine, name, token);
-                        _enginePut.invoke(matlabEngine,
-                                new Object[] {
-                                    _engine,
-                                    "previousPath_",
-                                    previousPath
-                                });
+                        _enginePut.invoke(matlabEngine, new Object[] { _engine,
+                                "previousPath_", previousPath });
 
                         // matlabEngine.evalString(engine, "path(previousPath_)");
-                        _engineEvalString.invoke(matlabEngine,
-                                new Object[] {
-                                    _engine,
-                                    "path(previousPath_)"
-                                });
+                        _engineEvalString.invoke(matlabEngine, new Object[] {
+                                _engine, "path(previousPath_)" });
                     }
                 }
             } finally {
                 //matlabEngine.close(engine);
-                _engineClose.invoke(matlabEngine, new Object[] {
-                    _engine
-                });
+                _engineClose.invoke(matlabEngine, new Object[] { _engine });
             }
 
             return result;
@@ -278,30 +248,18 @@ public class MatlabUtilities {
         try {
             // Methods of ptolemy.matlab.Engine, in alphabetical order.
             _engineClose = _engineClass.getMethod("close",
-                    new Class[] {
-                        long[].class
-                    });
+                    new Class[] { long[].class });
 
             _engineEvalString = _engineClass.getMethod("evalString",
-                    new Class[] {
-                        long[].class,
-                        String.class
-                    });
+                    new Class[] { long[].class, String.class });
 
-            _engineGet = _engineClass.getMethod("get",
-                    new Class[] {
-                        long[].class,
-                        String.class
-                    });
+            _engineGet = _engineClass.getMethod("get", new Class[] {
+                    long[].class, String.class });
 
             _engineOpen = _engineClass.getMethod("open", new Class[0]);
 
-            _enginePut = _engineClass.getMethod("put",
-                    new Class[] {
-                        long[].class,
-                        String.class,
-                        ptolemy.data.Token.class
-                    });
+            _enginePut = _engineClass.getMethod("put", new Class[] {
+                    long[].class, String.class, ptolemy.data.Token.class });
         } catch (NoSuchMethodException ex) {
             throw new IllegalActionException(null, ex,
                     "Problem finding a method of " + "ptolemy.matlab.Engine");

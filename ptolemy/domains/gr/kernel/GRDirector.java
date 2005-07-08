@@ -1,30 +1,30 @@
 /* Graphics (GR) domain director with synchronous/reactive semantics
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.kernel;
 
 import java.util.Iterator;
@@ -52,34 +52,33 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// GRDirector
 
 /**
-   GR is a domain for displaying three-dimensional graphics in Ptolemy
-   II.  GR is an untimed domain in where actors are connected in an
-   acyclic directed graph.  Actors are fired according to a simple
-   topological sort of the graph.  Nodes in the graph that have no
-   descendants are assumed to be consumers of data produced by the rest
-   of the model.
+ GR is a domain for displaying three-dimensional graphics in Ptolemy
+ II.  GR is an untimed domain in where actors are connected in an
+ acyclic directed graph.  Actors are fired according to a simple
+ topological sort of the graph.  Nodes in the graph that have no
+ descendants are assumed to be consumers of data produced by the rest
+ of the model.
 
-   <p>The basic idea behind the GR domain is to arrange geometry and
-   transform actors in a directed acyclic graph to represent the location
-   and orientation of objects in a scene. This topology of connected GR
-   actors form what is commonly called a scene graph in computer graphics
-   literature.  The GR director converts the GR scene graph into a Java3D
-   representation for rendering on the computer screen.
+ <p>The basic idea behind the GR domain is to arrange geometry and
+ transform actors in a directed acyclic graph to represent the location
+ and orientation of objects in a scene. This topology of connected GR
+ actors form what is commonly called a scene graph in computer graphics
+ literature.  The GR director converts the GR scene graph into a Java3D
+ representation for rendering on the computer screen.
 
-   @see GRReceiver
-   @see GRActor
+ @see GRReceiver
+ @see GRActor
 
-   @author C. Fong, Steve Neuendorffer, Contributor: Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating yellow (chf)
-   @Pt.AcceptedRating yellow (vogel)
-*/
+ @author C. Fong, Steve Neuendorffer, Contributor: Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating yellow (chf)
+ @Pt.AcceptedRating yellow (vogel)
+ */
 public class GRDirector extends StaticSchedulingDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -176,7 +175,7 @@ public class GRDirector extends StaticSchedulingDirector {
         // synchronizeToRealTime implementations.
         long currentTime = System.currentTimeMillis();
         int frameRate = ((IntToken) iterationTimeLowerBound.getToken())
-            .intValue();
+                .intValue();
         long timeElapsed = currentTime - _lastIterationTime;
         long timeRemaining = frameRate - timeElapsed;
 
@@ -191,15 +190,15 @@ public class GRDirector extends StaticSchedulingDirector {
         _lastIterationTime = currentTime;
 
         if (container == null) {
-            throw new InvalidStateException(this,
-                    getName() + " fired, but it has no container!");
+            throw new InvalidStateException(this, getName()
+                    + " fired, but it has no container!");
         }
 
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
-            throw new IllegalActionException(this,
-                    "Attempted to fire " + "GR system with no scheduler");
+            throw new IllegalActionException(this, "Attempted to fire "
+                    + "GR system with no scheduler");
         }
 
         Schedule schedule = scheduler.getSchedule();
@@ -213,7 +212,7 @@ public class GRDirector extends StaticSchedulingDirector {
             // will be called.
             if (_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_PREFIRE,
-                               1));
+                        1));
             }
 
             if (actor instanceof CompositeActor) {
@@ -227,29 +226,30 @@ public class GRDirector extends StaticSchedulingDirector {
             boolean flag = actor.prefire();
 
             if (_debugging) {
-                _debug(new FiringEvent(this, actor, FiringEvent.AFTER_PREFIRE, 1));
+                _debug(new FiringEvent(this, actor, FiringEvent.AFTER_PREFIRE,
+                        1));
             }
 
             if (flag) {
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.BEFORE_FIRE, 1));
+                            FiringEvent.BEFORE_FIRE, 1));
                 }
 
                 actor.fire();
 
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor, FiringEvent.AFTER_FIRE,
-                                   1));
+                            1));
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.BEFORE_POSTFIRE, 1));
+                            FiringEvent.BEFORE_POSTFIRE, 1));
                 }
 
                 actor.postfire();
 
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.AFTER_POSTFIRE, 1));
+                            FiringEvent.AFTER_POSTFIRE, 1));
                 }
             }
 
@@ -492,8 +492,8 @@ public class GRDirector extends StaticSchedulingDirector {
         Scheduler currentScheduler = getScheduler();
 
         if (currentScheduler == null) {
-            throw new IllegalActionException(this,
-                    "Attempted to fire " + "GR system with no scheduler");
+            throw new IllegalActionException(this, "Attempted to fire "
+                    + "GR system with no scheduler");
         }
 
         currentScheduler.getSchedule();
@@ -538,11 +538,13 @@ public class GRDirector extends StaticSchedulingDirector {
             // the class that is reported as missing.
             Class.forName("javax.vecmath.Tuple3f");
         } catch (Exception ex) {
-            throw new InternalErrorException(this, ex,
+            throw new InternalErrorException(
+                    this,
+                    ex,
                     "The GR domain requires that Java 3D be installed.\n"
-                    + "Java 3D can be downloaded from\n"
-                    + "http://java.sun.com/products/java-media/3D/\n"
-                    + "For details see $PTII/ptolemy/domains/gr/main.htm");
+                            + "Java 3D can be downloaded from\n"
+                            + "http://java.sun.com/products/java-media/3D/\n"
+                            + "For details see $PTII/ptolemy/domains/gr/main.htm");
         }
 
         try {
@@ -577,7 +579,10 @@ public class GRDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private long _lastIterationTime;
+
     private boolean _pseudoTimeEnabled = false;
+
     private Director _insideDirector;
+
     private int _iteration = 0;
 }

@@ -1,29 +1,29 @@
 /* A top-level dialog window for editing Unit constraints.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.awt.Dimension;
@@ -49,19 +49,18 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.moml.MoMLChangeRequest;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// UnitConstraintsDialog
 
 /**
-   @author Rowland R Johnson
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (rowland)
-   @Pt.AcceptedRating Red (rowland)
-*/
-public class UnitConstraintsDialog extends PtolemyDialog
-    implements ChangeListener {
+ @author Rowland R Johnson
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (rowland)
+ @Pt.AcceptedRating Red (rowland)
+ */
+public class UnitConstraintsDialog extends PtolemyDialog implements
+        ChangeListener {
     /**
      * Construct a dialog that presents Unit constraints as a table. Each row
      * of the table corresponds to one constraint. The user modifies the table
@@ -86,15 +85,16 @@ public class UnitConstraintsDialog extends PtolemyDialog
                 target, configuration);
 
         Vector _constraintExpression = new Vector();
-        UnitAttribute _unitConstraints = (UnitAttribute) target.getAttribute(
-                "_unitConstraints");
+        UnitAttribute _unitConstraints = (UnitAttribute) target
+                .getAttribute("_unitConstraints");
 
         if (_unitConstraints != null) {
-            Vector _constraintExpressions = _unitConstraints.getUnitConstraints()
-                .getConstraints();
+            Vector _constraintExpressions = _unitConstraints
+                    .getUnitConstraints().getConstraints();
 
             for (int i = 0; i < _constraintExpressions.size(); i++) {
-                UnitEquation uEq = (UnitEquation) (_constraintExpressions.get(i));
+                UnitEquation uEq = (UnitEquation) (_constraintExpressions
+                        .get(i));
                 String commonDesc = uEq.descriptiveForm();
                 System.out.println("_constraint " + commonDesc);
                 _constraintExpression.add(commonDesc);
@@ -198,8 +198,8 @@ public class UnitConstraintsDialog extends PtolemyDialog
     protected void _apply() {
         String expr = _unitsTableModel.toString();
         String moml = "<property name=\"_unitConstraints\" "
-            + "class = \"ptolemy.data.unit.UnitAttribute\" " + "value = \""
-            + expr + "\"/>";
+                + "class = \"ptolemy.data.unit.UnitAttribute\" " + "value = \""
+                + expr + "\"/>";
 
         MoMLChangeRequest request = new MoMLChangeRequest(this, getTarget(),
                 moml, null);
@@ -234,7 +234,8 @@ public class UnitConstraintsDialog extends PtolemyDialog
     }
 
     protected URL _getHelpURL() {
-        URL helpURL = getClass().getClassLoader().getResource("ptolemy/actor/gui/doc/unitConstraintsDialog.htm");
+        URL helpURL = getClass().getClassLoader().getResource(
+                "ptolemy/actor/gui/doc/unitConstraintsDialog.htm");
         return helpURL;
     }
 
@@ -254,10 +255,11 @@ public class UnitConstraintsDialog extends PtolemyDialog
         _unitsTableModel = new UnitsTableModel(constraintExpressions);
         _unitsTable.setModel(_unitsTableModel);
 
-        TableColumn _constraintColumn = ((TableColumn) (_unitsTable.getColumnModel()
-                                                 .getColumn(0)));
+        TableColumn _constraintColumn = ((TableColumn) (_unitsTable
+                .getColumnModel().getColumn(0)));
         JTextField textField = new JTextField();
-        final DefaultCellEditor constraintEditor = new DefaultCellEditor(textField);
+        final DefaultCellEditor constraintEditor = new DefaultCellEditor(
+                textField);
         constraintEditor.setClickCountToStart(1);
         _constraintColumn.setCellEditor(constraintEditor);
 
@@ -284,29 +286,32 @@ public class UnitConstraintsDialog extends PtolemyDialog
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private JButton _removeButton;
+
     private ListSelectionListener _rowSelectionListener = new ListSelectionListener() {
-            ///////////////////////////////////////////////////////////////////
-            //// inner class ////
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-
-                //Ignore extra messages.
-                ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-
-                if (lsm.isSelectionEmpty()) {
-                    _removeButton.setText("Remove");
-                    _removeButton.setEnabled(false);
-                    _selectedRow = -1;
-                } else {
-                    _selectedRow = lsm.getMinSelectionIndex();
-                    _removeButton.setEnabled(true);
-                }
+        ///////////////////////////////////////////////////////////////////
+        //// inner class ////
+        public void valueChanged(ListSelectionEvent e) {
+            if (e.getValueIsAdjusting()) {
+                return;
             }
-        };
+
+            //Ignore extra messages.
+            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+
+            if (lsm.isSelectionEmpty()) {
+                _removeButton.setText("Remove");
+                _removeButton.setEnabled(false);
+                _selectedRow = -1;
+            } else {
+                _selectedRow = lsm.getMinSelectionIndex();
+                _removeButton.setEnabled(true);
+            }
+        }
+    };
 
     private int _selectedRow = -1;
+
     private JTable _unitsTable;
+
     private UnitsTableModel _unitsTableModel;
 }

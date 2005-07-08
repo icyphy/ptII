@@ -1,30 +1,30 @@
 /* Abstract base class for change requests.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.kernel.util;
 
 import java.lang.ref.WeakReference;
@@ -32,37 +32,36 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ChangeRequest
 
 /**
-   Abstract base class for change requests.  A change request is any
-   modification to a model that might be performed during execution of the
-   model, but where there might only be certain phases of execution during
-   which it is safe to make the modification.  Such changes are also called
-   <i>mutations</i>.
-   <p>
-   A typical use of this class is to define an anonymous inner class that
-   implements the _execute() method to bring about the desired change.
-   The instance of that anonymous inner class is then queued with
-   an instance of NamedObj using its requestChange() method.
-   The execute() method must be called only once; attempting to call
-   it multiple times will trigger an exception.
-   <p>
-   Concrete derived classes can be defined to implement
-   mutations of a certain kind or in a certain way. Instances of these
-   classes should be queued with a NamedObj, just like an anonymous
-   inner class extending this class. MoMLChangeRequest is such a concrete
-   derived class, where the mutation is specified as MoML code.
+ Abstract base class for change requests.  A change request is any
+ modification to a model that might be performed during execution of the
+ model, but where there might only be certain phases of execution during
+ which it is safe to make the modification.  Such changes are also called
+ <i>mutations</i>.
+ <p>
+ A typical use of this class is to define an anonymous inner class that
+ implements the _execute() method to bring about the desired change.
+ The instance of that anonymous inner class is then queued with
+ an instance of NamedObj using its requestChange() method.
+ The execute() method must be called only once; attempting to call
+ it multiple times will trigger an exception.
+ <p>
+ Concrete derived classes can be defined to implement
+ mutations of a certain kind or in a certain way. Instances of these
+ classes should be queued with a NamedObj, just like an anonymous
+ inner class extending this class. MoMLChangeRequest is such a concrete
+ derived class, where the mutation is specified as MoML code.
 
-   @author  Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (neuendor)
-   @see ChangeListener
-*/
+ @author  Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (neuendor)
+ @see ChangeListener
+ */
 public abstract class ChangeRequest {
     /** Construct a request with the specified source and description.
      *  The description is a string that is used to report the change,
@@ -125,7 +124,7 @@ public abstract class ChangeRequest {
         if (!_pending) {
             throw new InternalErrorException(
                     "Attempted to execute a change request "
-                    + "that had already been executed.");
+                            + "that had already been executed.");
         }
 
         _exception = null;
@@ -194,7 +193,7 @@ public abstract class ChangeRequest {
 
                 throw new InternalErrorException(object, _exception,
                         "ChangeRequest failed (NOTE: there is no "
-                        + "ChangeListener):\n" + _description);
+                                + "ChangeListener):\n" + _description);
             }
         }
 
@@ -367,8 +366,7 @@ public abstract class ChangeRequest {
      *  @exception Exception If the execution of the change request
      *   throws it.
      */
-    public final synchronized void waitForCompletion()
-            throws Exception {
+    public final synchronized void waitForCompletion() throws Exception {
         while (_pending) {
             wait();
         }

@@ -1,30 +1,30 @@
 /* A tree of ptolemy objects.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.tree;
 
 import java.awt.Component;
@@ -46,17 +46,16 @@ import javax.swing.tree.TreePath;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 
-
 /**
-   This class provides a tree view of a ptolemy model, showing only the
-   entities of the model.  The class supports drag-and-drop.
+ This class provides a tree view of a ptolemy model, showing only the
+ entities of the model.  The class supports drag-and-drop.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class PTree extends JTree {
     /** Create a new tree that is rooted at the given entity.
      */
@@ -65,8 +64,9 @@ public class PTree extends JTree {
         // tree to displaying only entities.
         super(model);
         setCellRenderer(new PtolemyTreeCellRenderer());
-        DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
-                DnDConstants.ACTION_COPY_OR_MOVE, new PTreeDragGestureListener());
+        DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+                this, DnDConstants.ACTION_COPY_OR_MOVE,
+                new PTreeDragGestureListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -75,32 +75,32 @@ public class PTree extends JTree {
     private class PTreeDragGestureListener implements DragGestureListener {
         public void dragGestureRecognized(DragGestureEvent e) {
             final DragSourceListener dsl = new DragSourceListener() {
-                    public void dragDropEnd(DragSourceDropEvent dsde) {
+                public void dragDropEnd(DragSourceDropEvent dsde) {
+                }
+
+                public void dragEnter(DragSourceDragEvent dsde) {
+                    DragSourceContext context = dsde.getDragSourceContext();
+
+                    // Intersection of the users selected action,
+                    // and the source and target actions
+                    int myaction = dsde.getDropAction();
+
+                    if ((myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0) {
+                        context.setCursor(DragSource.DefaultCopyDrop);
+                    } else {
+                        context.setCursor(DragSource.DefaultCopyNoDrop);
                     }
+                }
 
-                    public void dragEnter(DragSourceDragEvent dsde) {
-                        DragSourceContext context = dsde.getDragSourceContext();
+                public void dragExit(DragSourceEvent dse) {
+                }
 
-                        // Intersection of the users selected action,
-                        // and the source and target actions
-                        int myaction = dsde.getDropAction();
+                public void dragOver(DragSourceDragEvent dsde) {
+                }
 
-                        if ((myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0) {
-                            context.setCursor(DragSource.DefaultCopyDrop);
-                        } else {
-                            context.setCursor(DragSource.DefaultCopyNoDrop);
-                        }
-                    }
-
-                    public void dragExit(DragSourceEvent dse) {
-                    }
-
-                    public void dragOver(DragSourceDragEvent dsde) {
-                    }
-
-                    public void dropActionChanged(DragSourceDragEvent dsde) {
-                    }
-                };
+                public void dropActionChanged(DragSourceDragEvent dsde) {
+                }
+            };
 
             Component source = e.getComponent();
 
@@ -126,7 +126,9 @@ public class PTree extends JTree {
                     transferable.addObject((NamedObj) object);
 
                     //initial cursor, transferable, dsource listener
-                    e.startDrag(DragSource.DefaultCopyNoDrop, transferable, dsl);
+                    e
+                            .startDrag(DragSource.DefaultCopyNoDrop,
+                                    transferable, dsl);
                 }
             }
         }

@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.graph.test;
 
 import diva.graph.basic.BasicGraphModel;
@@ -33,7 +33,6 @@ import diva.util.jester.TestCase;
 import diva.util.jester.TestFailedException;
 import diva.util.jester.TestHarness;
 import diva.util.jester.TestSuite;
-
 
 /**
  * A test suite for the BasicGraphModel class.
@@ -95,54 +94,55 @@ public class BasicGraphModelTest extends TestSuite {
      */
     public void testEmpty() {
         runTestCase(new TestCase("Empty graph") {
-                BasicGraphModel g;
+            BasicGraphModel g;
 
-                public void init() throws Exception {
-                    g = factory.createGraph();
-                }
+            public void init() throws Exception {
+                g = factory.createGraph();
+            }
 
-                public void run() throws Exception {
-                    ;
-                }
+            public void run() throws Exception {
+                ;
+            }
 
-                public void check() throws TestFailedException {
-                    // assertExpr(g.getNodeCount(g) == 0, "Node count != 0");
-                }
-            });
+            public void check() throws TestFailedException {
+                // assertExpr(g.getNodeCount(g) == 0, "Node count != 0");
+            }
+        });
     }
 
     /** Test a star-connected graph
      */
     public void testStarConnected() {
         runTestCase(new TestCase("Star-connected from single node") {
-                BasicGraphModel g;
-                CompositeNode root;
+            BasicGraphModel g;
 
-                public void init() throws Exception {
-                    startTimer();
-                    g = factory.createGraph();
-                    root = (CompositeNode) g.getRoot();
+            CompositeNode root;
+
+            public void init() throws Exception {
+                startTimer();
+                g = factory.createGraph();
+                root = (CompositeNode) g.getRoot();
+            }
+
+            public void run() throws Exception {
+                Node first = g.createNode(null);
+                g.addNode(this, first, root);
+
+                for (int i = 1; i < 32; i++) {
+                    Node n = g.createNode(null);
+                    g.addNode(this, n, root);
+
+                    Edge e = g.createEdge(null);
+                    g.connectEdge(this, e, first, n);
                 }
 
-                public void run() throws Exception {
-                    Node first = g.createNode(null);
-                    g.addNode(this, first, root);
+                stopTimer();
+            }
 
-                    for (int i = 1; i < 32; i++) {
-                        Node n = g.createNode(null);
-                        g.addNode(this, n, root);
-
-                        Edge e = g.createEdge(null);
-                        g.connectEdge(this, e, first, n);
-                    }
-
-                    stopTimer();
-                }
-
-                public void check() throws TestFailedException {
-                    assertExpr(g.getNodeCount(root) == 32, "Node count != 32");
-                }
-            });
+            public void check() throws TestFailedException {
+                assertExpr(g.getNodeCount(root) == 32, "Node count != 32");
+            }
+        });
     }
 
     /** Test a large (64 knode) graph. Unfortunately, something
@@ -152,38 +152,39 @@ public class BasicGraphModelTest extends TestSuite {
      */
     public void testBig() {
         runTestCase(new TestCase("Test 64 knode graph") {
-                BasicGraphModel g;
-                CompositeNode root;
-                Node[] nodes = new Node[65536];
+            BasicGraphModel g;
 
-                public void init() throws Exception {
-                    startTimer();
-                    g = factory.createGraph();
-                    root = (CompositeNode) g.getRoot();
+            CompositeNode root;
+
+            Node[] nodes = new Node[65536];
+
+            public void init() throws Exception {
+                startTimer();
+                g = factory.createGraph();
+                root = (CompositeNode) g.getRoot();
+            }
+
+            public void run() throws Exception {
+                Node first = g.createNode(null);
+                g.addNode(this, first, root);
+
+                //nodes[0] = first;
+                for (int i = 1; i < 65536; i++) {
+                    Node n = g.createNode(null);
+                    g.addNode(this, n, root);
+
+                    //nodes[i] = n;
+                    Edge e = g.createEdge(null);
+                    int s = i / 2;
+                    g.connectEdge(this, e, first, n);
                 }
 
-                public void run() throws Exception {
-                    Node first = g.createNode(null);
-                    g.addNode(this, first, root);
+                stopTimer();
+            }
 
-                    //nodes[0] = first;
-                    for (int i = 1; i < 65536; i++) {
-                        Node n = g.createNode(null);
-                        g.addNode(this, n, root);
-
-                        //nodes[i] = n;
-                        Edge e = g.createEdge(null);
-                        int s = i / 2;
-                        g.connectEdge(this, e, first, n);
-                    }
-
-                    stopTimer();
-                }
-
-                public void check() throws TestFailedException {
-                    assertExpr(g.getNodeCount(root) == 65536,
-                            "Node count != 65536");
-                }
-            });
+            public void check() throws TestFailedException {
+                assertExpr(g.getNodeCount(root) == 65536, "Node count != 65536");
+            }
+        });
     }
 }

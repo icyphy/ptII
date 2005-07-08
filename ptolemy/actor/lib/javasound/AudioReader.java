@@ -1,31 +1,31 @@
 /* An actor that outputs the sequence of sample values from a
-   sound file specified as a URL.
+ sound file specified as a URL.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.javasound;
 
 import java.io.IOException;
@@ -41,49 +41,48 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.media.javasound.SoundReader;
 
-
 /////////////////////////////////////////////////////////////////
 //// AudioReader
 
 /**
 
-This actor outputs samples from a sound file as doubles in
-the range [-1.0, 1.0]. If the file has multiple channels of
-output data, then the separate channels are sent on successive
-output channels.  If the output has more channels than there
-are channels in the audio file, then nothing will be send
-on the output channels where there is no corresponding
-output data.
-<p>
-The <i>fileOrURL</i> parameter should be set to the name of the file
-or a URL, in any form accepted by FileParameter. The default initial value is
-<code>$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav</code>,
-which refers to a file that is found relative to the classpath.
-<p>
-Supported file formats are  WAV, AU, and AIFF. The sound
-file format is determined from the file extension.
-<p>
-When the end of the file is reached, postfire() return false, which
-in some domains will cause the model to stop executing (e.g. SDF),
-and in some will prevent further firings of this actor (e.g. DE).
-<p>
-There are security issues involved with accessing files and audio
-resources in applets. Applets are only allowed access to files
-specified by a URL and located on the machine from which the
-applet is loaded. The .java.policy file may be modified to grant
-applets more privileges.
-<p>
-Note: Requires Java 2 v1.3.0 or later.
+ This actor outputs samples from a sound file as doubles in
+ the range [-1.0, 1.0]. If the file has multiple channels of
+ output data, then the separate channels are sent on successive
+ output channels.  If the output has more channels than there
+ are channels in the audio file, then nothing will be send
+ on the output channels where there is no corresponding
+ output data.
+ <p>
+ The <i>fileOrURL</i> parameter should be set to the name of the file
+ or a URL, in any form accepted by FileParameter. The default initial value is
+ <code>$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav</code>,
+ which refers to a file that is found relative to the classpath.
+ <p>
+ Supported file formats are  WAV, AU, and AIFF. The sound
+ file format is determined from the file extension.
+ <p>
+ When the end of the file is reached, postfire() return false, which
+ in some domains will cause the model to stop executing (e.g. SDF),
+ and in some will prevent further firings of this actor (e.g. DE).
+ <p>
+ There are security issues involved with accessing files and audio
+ resources in applets. Applets are only allowed access to files
+ specified by a URL and located on the machine from which the
+ applet is loaded. The .java.policy file may be modified to grant
+ applets more privileges.
+ <p>
+ Note: Requires Java 2 v1.3.0 or later.
 
-@author Brian K. Vogel, Christopher Hylands, Edward A. Lee, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Green (eal)
-@Pt.AcceptedRating Yellow (chf)
-@see ptolemy.media.javasound.LiveSound
-@see ptolemy.media.javasound.SoundWriter
-@see ptolemy.media.javasound.SoundPlayback
-*/
+ @author Brian K. Vogel, Christopher Hylands, Edward A. Lee, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (chf)
+ @see ptolemy.media.javasound.LiveSound
+ @see ptolemy.media.javasound.SoundWriter
+ @see ptolemy.media.javasound.SoundPlayback
+ */
 public class AudioReader extends Source {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
@@ -103,8 +102,8 @@ public class AudioReader extends Source {
 
         // We use voice.wav so that we can include the voice.wav file
         // in the jar file for use under Web Start.
-        fileOrURL.setExpression(
-                "$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
+        fileOrURL
+                .setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
 
         // Set the type of the output port.
         output.setMultiport(true);
@@ -139,7 +138,7 @@ public class AudioReader extends Source {
             // has not in fact changed.  We check this by just comparing
             // name, which is not perfect...
             String newFileOrURL = ((StringToken) fileOrURL.getToken())
-                .stringValue();
+                    .stringValue();
 
             if ((_previousFileOrURL != null)
                     && !newFileOrURL.equals(_previousFileOrURL)) {
@@ -288,7 +287,7 @@ public class AudioReader extends Source {
                         getSamplesArraySize);
             } catch (IOException ex) {
                 String newFileOrURL = ((StringToken) fileOrURL.getToken())
-                    .stringValue();
+                        .stringValue();
                 throw new IllegalActionException(this, ex,
                         "Cannot open fileOrURL '" + newFileOrURL + "'.");
             }

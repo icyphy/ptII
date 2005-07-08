@@ -1,30 +1,30 @@
 /* A calendar queue implementation of the DE event queue.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.de.kernel;
 
 import ptolemy.actor.Actor;
@@ -37,26 +37,25 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DECQEventQueue
 
 /**
-   A calendar queue implementation of the DE event queue.
-   This queue stores DE events in the order of their timestamps,
-   microsteps, and then depths of their destination actors. See
-   {@link DEEventQueue} for more explanation of the order of DE events.
-   <P>
-   Its complexity is theoretically O(1) for both enqueue and dequeue
-   operations, assuming a reasonable distribution of timestamps. See
-   {@link ptolemy.actor.util.CalendarQueue}.
+ A calendar queue implementation of the DE event queue.
+ This queue stores DE events in the order of their timestamps,
+ microsteps, and then depths of their destination actors. See
+ {@link DEEventQueue} for more explanation of the order of DE events.
+ <P>
+ Its complexity is theoretically O(1) for both enqueue and dequeue
+ operations, assuming a reasonable distribution of timestamps. See
+ {@link ptolemy.actor.util.CalendarQueue}.
 
-   @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (hyzheng)
-   @Pt.AcceptedRating Green (hyzheng)
-*/
+ @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Green (hyzheng)
+ */
 public class DECQEventQueue implements DEEventQueue {
     /** Construct an empty event queue.
      *  @param director The director that contains this event queue.
@@ -232,9 +231,8 @@ public class DECQEventQueue implements DEEventQueue {
             // returns the low-order 64 bits of the result.
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
-            return (((DEEvent) event).timeStamp()
-                    .subtract(_zeroReference.timeStamp())).divide(_binWidth
-                            .timeStamp());
+            return (((DEEvent) event).timeStamp().subtract(_zeroReference
+                    .timeStamp())).divide(_binWidth.timeStamp());
         }
 
         /** Given an array of DE events, set an appropriate bin width.
@@ -256,16 +254,15 @@ public class DECQEventQueue implements DEEventQueue {
         public void setBinWidth(Object[] entryArray) {
             try {
                 if ((entryArray == null) || (entryArray.length < 2)) {
-                    _zeroReference = new DEEvent((Actor) null,
-                            new Time(_director, 0.0), 0, 0);
+                    _zeroReference = new DEEvent((Actor) null, new Time(
+                            _director, 0.0), 0, 0);
                     return;
                 }
 
                 Time[] diff = new Time[entryArray.length - 1];
-                Time average = (((DEEvent) entryArray[entryArray.length - 1]).timeStamp()
-                        .subtract(((DEEvent) entryArray[0])
-                                .timeStamp())).divide((long) (entryArray.length
-                                                              - 1));
+                Time average = (((DEEvent) entryArray[entryArray.length - 1])
+                        .timeStamp().subtract(((DEEvent) entryArray[0])
+                        .timeStamp())).divide((long) (entryArray.length - 1));
                 Time zero = new Time(_director, 0.0);
                 Time effectiveAverage = zero;
                 int effectiveSamples = 0;
@@ -276,8 +273,7 @@ public class DECQEventQueue implements DEEventQueue {
 
                 for (int i = 0; i < (entryArray.length - 1); ++i) {
                     diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
-                        .subtract(((DEEvent) entryArray[i])
-                                .timeStamp());
+                            .subtract(((DEEvent) entryArray[i]).timeStamp());
 
                     if (diff[i].compareTo(average.add(average)) < 0) {
                         effectiveSamples++;
@@ -292,9 +288,10 @@ public class DECQEventQueue implements DEEventQueue {
                     return;
                 }
 
-                effectiveAverage = effectiveAverage.divide((long) effectiveSamples);
-                _binWidth = new DEEvent((Actor) null,
-                        effectiveAverage.multiply(3L), 0, 0);
+                effectiveAverage = effectiveAverage
+                        .divide((long) effectiveSamples);
+                _binWidth = new DEEvent((Actor) null, effectiveAverage
+                        .multiply(3L), 0, 0);
             } catch (IllegalActionException e) {
                 // If the time resolution of the director is invalid,
                 // it should have been caught before this.
@@ -315,12 +312,12 @@ public class DECQEventQueue implements DEEventQueue {
         ///////////////////////////////////////////////////////////////////
         ////                         private members                   ////
         // The bin width.
-        private DEEvent _binWidth = new DEEvent((Actor) null,
-                new Time(_director, 1.0), 0, 0);
+        private DEEvent _binWidth = new DEEvent((Actor) null, new Time(
+                _director, 1.0), 0, 0);
 
         // The zero reference.
-        private DEEvent _zeroReference = new DEEvent((Actor) null,
-                new Time(_director, 0.0), 0, 0);
+        private DEEvent _zeroReference = new DEEvent((Actor) null, new Time(
+                _director, 0.0), 0, 0);
     }
 
     ///////////////////////////////////////////////////////////////////

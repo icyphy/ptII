@@ -1,27 +1,27 @@
 /*
-  Copyright (c) 2003-2005 THALES.
-  All rights reserved.
+ Copyright (c) 2003-2005 THALES.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-  SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
-  OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
-  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+ SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+ OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-  THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-  BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-  UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-  Created on 8 juil. 2003
+ Created on 8 juil. 2003
 
-*/
+ */
 package thales.vergil;
 
 import java.net.URL;
@@ -34,19 +34,18 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.VergilApplication;
 import thales.actor.gui.SingleWindowHTMLViewer;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SingleWindowApplication
 
 /**
-   Main entry point for the SingleWindow mode.
+ Main entry point for the SingleWindow mode.
 
-   @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 12 nov. 2003
-   @version $Id$
-   @since
-   @Pt.ProposedRating Yellow (jerome.blanc)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 12 nov. 2003
+ @version $Id$
+ @since
+ @Pt.ProposedRating Yellow (jerome.blanc)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class SingleWindowApplication extends VergilApplication {
     //Main Frame
     public static SingleWindowHTMLViewer _mainFrame;
@@ -81,17 +80,14 @@ public class SingleWindowApplication extends VergilApplication {
     /* (non-Javadoc)
      * @see ptolemy.actor.gui.MoMLApplication#_createDefaultConfiguration()
      */
-    protected Configuration _createDefaultConfiguration()
-            throws Exception {
-        return _readConfiguration(specToURL(
-                                          "thales/configs/singleWindow/singleWindowConfiguration.xml"));
+    protected Configuration _createDefaultConfiguration() throws Exception {
+        return _readConfiguration(specToURL("thales/configs/singleWindow/singleWindowConfiguration.xml"));
     }
 
     /* (non-Javadoc)
      * @see ptolemy.actor.gui.MoMLApplication#_createEmptyConfiguration()
      */
-    protected Configuration _createEmptyConfiguration()
-            throws Exception {
+    protected Configuration _createEmptyConfiguration() throws Exception {
         Configuration configuration = _createDefaultConfiguration();
 
         try {
@@ -101,8 +97,7 @@ public class SingleWindowApplication extends VergilApplication {
         }
 
         // FIXME: This code is Dog slow for some reason.
-        URL inurl = specToURL(
-                "thales/configs/singleWindow/singleWindowWelcomeWindow.xml");
+        URL inurl = specToURL("thales/configs/singleWindow/singleWindowWelcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
         _parser.parse(inurl, inurl);

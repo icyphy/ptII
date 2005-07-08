@@ -1,30 +1,30 @@
 /* Attribute that contains attributes that identify the containing model.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.kernel.attributes;
 
 import java.text.DateFormat;
@@ -46,25 +46,24 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.BoxedValuesIcon;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// IDAttribute
 
 /**
-   This attribute identifies the containing model, showing its name, base
-   class, last modified date, author, and contributors information.
-   Of these, only the contributors information is editable.
-   For the others, they are inferred from either the model itself or the
-   operations on the model.
-   Unfortunately, the changes will not be shown on the display until the
-   model is saved, closed and re-opened.
-   <p>
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ This attribute identifies the containing model, showing its name, base
+ class, last modified date, author, and contributors information.
+ Of these, only the contributors information is editable.
+ For the others, they are inferred from either the model itself or the
+ operations on the model.
+ Unfortunately, the changes will not be shown on the display until the
+ model is saved, closed and re-opened.
+ <p>
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class IDAttribute extends SingletonAttribute {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -101,7 +100,8 @@ public class IDAttribute extends SingletonAttribute {
         // boolean isClass = false;
 
         if (container instanceof InstantiableNamedObj) {
-            /* isClass = */ ((InstantiableNamedObj) container).isClassDefinition();
+            /* isClass = */((InstantiableNamedObj) container)
+                    .isClassDefinition();
         }
 
         String className = container.getClassName();
@@ -133,7 +133,8 @@ public class IDAttribute extends SingletonAttribute {
         // We may force this to happen.:-) Further more, we may force
         // that only the top level contains an model ID.
         created = new StringAttribute(this, "created");
-        created.setExpression(DateFormat.getDateTimeInstance().format(new Date()));
+        created.setExpression(DateFormat.getDateTimeInstance().format(
+                new Date()));
         created.setVisibility(Settable.NOT_EDITABLE);
         created.setPersistent(true);
 
@@ -250,7 +251,8 @@ public class IDAttribute extends SingletonAttribute {
      */
     private void _updateDate() {
         try {
-            lastUpdated.setExpression(DateFormat.getDateTimeInstance().format(new Date()));
+            lastUpdated.setExpression(DateFormat.getDateTimeInstance().format(
+                    new Date()));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

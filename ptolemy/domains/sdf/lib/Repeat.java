@@ -1,30 +1,30 @@
 /* An actor that repeats each input sample a specified number of times.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.IntToken;
@@ -36,24 +36,23 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Repeat
 
 /**
-   An actor that repeats a block of input tokens the specified number of times
-   on the output.  On each firing, it reads <i>blockSize</i> tokens
-   and repeats each block <i>numberOfTimes</i> times
-   on the output.  Note that this causes a sample rate increase by
-   a factor of <i>numberOfTimes</i>,
-   and hence affects the number of invocations of downstream actors.
+ An actor that repeats a block of input tokens the specified number of times
+ on the output.  On each firing, it reads <i>blockSize</i> tokens
+ and repeats each block <i>numberOfTimes</i> times
+ on the output.  Note that this causes a sample rate increase by
+ a factor of <i>numberOfTimes</i>,
+ and hence affects the number of invocations of downstream actors.
 
-   @author Shankar Rao, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
+ @author Shankar Rao, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
 public class Repeat extends SDFTransformer {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -109,13 +108,13 @@ public class Repeat extends SDFTransformer {
             if (repetitions < 1) {
                 throw new IllegalActionException(numberOfTimes,
                         "The value of numberOfTimes must be positive, but "
-                        + "was set to " + repetitions);
+                                + "was set to " + repetitions);
             }
 
             if (count < 1) {
                 throw new IllegalActionException(blockSize,
                         "The value of blockSize must be positive, but "
-                        + "was set to " + count);
+                                + "was set to " + count);
             }
         } else {
             super.attributeChanged(attribute);

@@ -1,30 +1,30 @@
 /* Read ArrayTokens and send their elements to the output.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.lib;
 
 import java.util.List;
@@ -43,32 +43,31 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToSequence
 
 /**
-   This actor reads an array at the input and writes the array elements
-   as a sequence to the output. The parameter <i>arrayLength</i> can be
-   used to specify the length of arrays that the actor will accept.
-   If the <i>enforceArrayLength</i> parameter true, then if an input
-   array does not match <i>arrayLength</i>, the fire() method will throw
-   an exception.  This feature is important in domains, such as SDF,
-   that do static scheduling based on production and consumption
-   rates.  For other domains, such as DE and PN, the <i>enforceArrayLength</i>
-   parameter can be set to false, in which case the <i>arrayLength</i>
-   parameter will be ignored.
-   <p>
-   This actor is polymorphic. It can accept ArrayTokens with any element
-   type and send out tokens corresponding to that type.
-   <p>
+ This actor reads an array at the input and writes the array elements
+ as a sequence to the output. The parameter <i>arrayLength</i> can be
+ used to specify the length of arrays that the actor will accept.
+ If the <i>enforceArrayLength</i> parameter true, then if an input
+ array does not match <i>arrayLength</i>, the fire() method will throw
+ an exception.  This feature is important in domains, such as SDF,
+ that do static scheduling based on production and consumption
+ rates.  For other domains, such as DE and PN, the <i>enforceArrayLength</i>
+ parameter can be set to false, in which case the <i>arrayLength</i>
+ parameter will be ignored.
+ <p>
+ This actor is polymorphic. It can accept ArrayTokens with any element
+ type and send out tokens corresponding to that type.
+ <p>
 
-   @author Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (yuhong)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
+ @author Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (yuhong)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
 public class ArrayToSequence extends SDFTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -99,8 +98,8 @@ public class ArrayToSequence extends SDFTransformer {
         output_tokenProductionRate.setExpression("arrayLength");
 
         // Set the icon.
-        _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
@@ -132,8 +131,8 @@ public class ArrayToSequence extends SDFTransformer {
             int rate = ((IntToken) arrayLength.getToken()).intValue();
 
             if (rate < 0) {
-                throw new IllegalActionException(this,
-                        "Invalid arrayLength: " + rate);
+                throw new IllegalActionException(this, "Invalid arrayLength: "
+                        + rate);
             }
         } else {
             super.attributeChanged(attribute);
@@ -166,11 +165,11 @@ public class ArrayToSequence extends SDFTransformer {
         ArrayToken token = (ArrayToken) input.get(0);
         int rate = ((IntToken) arrayLength.getToken()).intValue();
         boolean enforce = ((BooleanToken) enforceArrayLength.getToken())
-            .booleanValue();
+                .booleanValue();
 
         if (enforce && (token.length() != rate)) {
-            throw new IllegalActionException(this,
-                    "The " + "number of elements in the input ArrayToken ("
+            throw new IllegalActionException(this, "The "
+                    + "number of elements in the input ArrayToken ("
                     + token.length() + ") is not the same as the arrayLength "
                     + "parameter (" + rate + ").");
         }

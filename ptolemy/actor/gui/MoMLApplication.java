@@ -1,30 +1,30 @@
 /* An application that reads one or more files specified on the command line.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -60,84 +60,83 @@ import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplication
 
 /**
-   This is an application that reads one or more
-   files specified on the command line, or instantiates one or
-   more Java classes specified by the -class option.
-   If one of these files is an XML file that defines a Configuration, or one
-   of the classes is an instance of Configuration, then
-   all subsequent files will be read by delegating to the Configuration,
-   invoking its openModel() method.  A command-line file is assumed to be
-   a MoML file or a file that can be opened by the specified configuration.
-   <p>For example, this command uses the HyVisual configuration to
-   open a model:
-   <pre>
-   $PTII/bin/moml $PTII/ptolemy/configs/hyvisual/configuration.xml $PTII/ptolemy/domains/ct/demo/StickyMasses/StickyMasses.xml
-   </pre>
-   <p>
-   If a Ptolemy model is instantiated on the command line, either
-   by giving a MoML file or a -class argument, then parameters of that
-   model can be set on the command line.  The syntax is:
-   <pre>
-   $PTII/bin/ptolemy <i>modelFile.xml</i> -<i>parameterName</i> <i>value</i>
-   </pre>
-   where <i>parameterName</i> is the name of a parameter relative to
-   the top level of a model or the director of a model.  For instance,
-   if foo.xml defines a toplevel entity named <code>x</code> and
-   <code>x</code> contains an entity named <code>y</code> and a
-   parameter named <code>a</code>, and <code>y</code> contains a
-   parameter named <code>b</code>, then:
-   <pre>
-   $PTII/bin/ptolemy foo.xml -a 5 -y.b 10
-   </pre>
-   would set the values of the two parameters.
+ This is an application that reads one or more
+ files specified on the command line, or instantiates one or
+ more Java classes specified by the -class option.
+ If one of these files is an XML file that defines a Configuration, or one
+ of the classes is an instance of Configuration, then
+ all subsequent files will be read by delegating to the Configuration,
+ invoking its openModel() method.  A command-line file is assumed to be
+ a MoML file or a file that can be opened by the specified configuration.
+ <p>For example, this command uses the HyVisual configuration to
+ open a model:
+ <pre>
+ $PTII/bin/moml $PTII/ptolemy/configs/hyvisual/configuration.xml $PTII/ptolemy/domains/ct/demo/StickyMasses/StickyMasses.xml
+ </pre>
+ <p>
+ If a Ptolemy model is instantiated on the command line, either
+ by giving a MoML file or a -class argument, then parameters of that
+ model can be set on the command line.  The syntax is:
+ <pre>
+ $PTII/bin/ptolemy <i>modelFile.xml</i> -<i>parameterName</i> <i>value</i>
+ </pre>
+ where <i>parameterName</i> is the name of a parameter relative to
+ the top level of a model or the director of a model.  For instance,
+ if foo.xml defines a toplevel entity named <code>x</code> and
+ <code>x</code> contains an entity named <code>y</code> and a
+ parameter named <code>a</code>, and <code>y</code> contains a
+ parameter named <code>b</code>, then:
+ <pre>
+ $PTII/bin/ptolemy foo.xml -a 5 -y.b 10
+ </pre>
+ would set the values of the two parameters.
 
-   <p>Note that strings need to be carefully backslashed, so to set a
-   parameter named <code>c</code> to the string <code>"bar"</code> it
-   might be necessary to do something like:
-   <pre>
-   $PTII/bin/ptolemy foo.xml -a 5 -y.b 10 -c \\\"bar\\\"
-   </pre>
-   The reason the backslashes are necessary is because <code>moml</code>
-   is a shell script which tends to strip off the double quotes.
+ <p>Note that strings need to be carefully backslashed, so to set a
+ parameter named <code>c</code> to the string <code>"bar"</code> it
+ might be necessary to do something like:
+ <pre>
+ $PTII/bin/ptolemy foo.xml -a 5 -y.b 10 -c \\\"bar\\\"
+ </pre>
+ The reason the backslashes are necessary is because <code>moml</code>
+ is a shell script which tends to strip off the double quotes.
 
-   The -class option can be used to specify a Java class to be loaded.
-   The named class must have a constructor that takes a Workspace
-   as an argument.
-   In the example below, $PTII/ptolemy/domains/sdf/demo/Butterfly/Butterfly.java
-   is a class that has a constructor Butterfly(Workspace).
-   <pre>
-   $PTII/bin/ptolemy -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
-   </pre>
-   Note that -class is very well tested now that we have use MoML
-   for almost all models.
+ The -class option can be used to specify a Java class to be loaded.
+ The named class must have a constructor that takes a Workspace
+ as an argument.
+ In the example below, $PTII/ptolemy/domains/sdf/demo/Butterfly/Butterfly.java
+ is a class that has a constructor Butterfly(Workspace).
+ <pre>
+ $PTII/bin/ptolemy -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
+ </pre>
+ Note that -class is very well tested now that we have use MoML
+ for almost all models.
 
-   <p>
-   Derived classes may provide default configurations. In particular, the
-   protected method _createDefaultConfiguration() is called before any
-   arguments are processed to provide a default configuration for those
-   command-line command-line arguments.  In this base class,
-   that method returns null, so no default configuration is provided.
-   <p>
-   If no arguments are given at all, then a default configuration is instead
-   obtained by calling the protected method _createEmptyConfiguration().
-   In this base class, that method also returns null,
-   so calling this with no arguments will not be very useful.
-   No configuration will be created and no models will be opened.
-   Derived classes can specify a configuration that opens some
-   welcome window, or a blank editor.
+ <p>
+ Derived classes may provide default configurations. In particular, the
+ protected method _createDefaultConfiguration() is called before any
+ arguments are processed to provide a default configuration for those
+ command-line command-line arguments.  In this base class,
+ that method returns null, so no default configuration is provided.
+ <p>
+ If no arguments are given at all, then a default configuration is instead
+ obtained by calling the protected method _createEmptyConfiguration().
+ In this base class, that method also returns null,
+ so calling this with no arguments will not be very useful.
+ No configuration will be created and no models will be opened.
+ Derived classes can specify a configuration that opens some
+ welcome window, or a blank editor.
 
-   @author Edward A. Lee and Steve Neuendorffer, Contributor: Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-   @see Configuration
-*/
+ @author Edward A. Lee and Steve Neuendorffer, Contributor: Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ @see Configuration
+ */
 public class MoMLApplication implements ExecutionListener {
     /** Parse the specified command-line arguments, instanting classes
      *  and reading files that are specified.
@@ -156,8 +155,7 @@ public class MoMLApplication implements ExecutionListener {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public MoMLApplication(String basePath, String[] args)
-            throws Exception {
+    public MoMLApplication(String basePath, String[] args) throws Exception {
         _basePath = basePath;
 
         // The Java look & feel is pretty lame, so we use the native
@@ -219,11 +217,11 @@ public class MoMLApplication implements ExecutionListener {
                     // So instead, we create a new thread to
                     // do it.
                     Thread waitThread = new Thread() {
-                            public void run() {
-                                waitForFinish();
-                                System.exit(0);
-                            }
-                        };
+                        public void run() {
+                            waitForFinish();
+                            System.exit(0);
+                        }
+                    };
 
                     // Note that we start the thread here, which could
                     // be risky when we subclass, since the thread will be
@@ -252,7 +250,7 @@ public class MoMLApplication implements ExecutionListener {
             }
 
             String errorMessage = "Failed to parse \""
-                + argsStringBuffer.toString() + "\"";
+                    + argsStringBuffer.toString() + "\"";
 
             MessageHandler.error(errorMessage, ex);
         }
@@ -328,7 +326,8 @@ public class MoMLApplication implements ExecutionListener {
             return result;
         }
 
-        ModelDirectory directory = (ModelDirectory) _configuration.getEntity(Configuration._DIRECTORY_NAME);
+        ModelDirectory directory = (ModelDirectory) _configuration
+                .getEntity(Configuration._DIRECTORY_NAME);
         Iterator effigies = directory.entityList().iterator();
 
         while (effigies.hasNext()) {
@@ -363,12 +362,12 @@ public class MoMLApplication implements ExecutionListener {
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it
         // in the directory.
-        ComponentEntity directory = ((Configuration) toplevel).getEntity(
-                "directory");
+        ComponentEntity directory = ((Configuration) toplevel)
+                .getEntity("directory");
 
         if (directory instanceof ModelDirectory) {
-            PtolemyEffigy effigy = new PtolemyEffigy((ModelDirectory) directory,
-                    toplevel.getName());
+            PtolemyEffigy effigy = new PtolemyEffigy(
+                    (ModelDirectory) directory, toplevel.getName());
             effigy.setModel(toplevel);
             effigy.identifier.setExpression(specificationURL.toExternalForm());
         }
@@ -460,7 +459,7 @@ public class MoMLApplication implements ExecutionListener {
                 } catch (java.security.AccessControlException accessControl) {
                     IOException exception = new IOException(
                             "AccessControlException while "
-                            + "trying to read '" + absoluteFile + "'");
+                                    + "trying to read '" + absoluteFile + "'");
 
                     // IOException does not have a cause argument constructor.
                     exception.initCause(accessControl);
@@ -487,7 +486,7 @@ public class MoMLApplication implements ExecutionListener {
                     // This works in Web Start, see
                     // http://java.sun.com/products/javawebstart/faq.html#54
                     specURL = Thread.currentThread().getContextClassLoader()
-                        .getResource(spec);
+                            .getResource(spec);
 
                     if (specURL == null) {
                         throw new Exception("getResource(\"" + spec
@@ -583,10 +582,12 @@ public class MoMLApplication implements ExecutionListener {
             // Look for configuration directories in _basePath
             // This will likely fail if ptolemy/configs is in a jar file
             // We use a URI here so that we cause call File(URI).
-            URI configurationURI = new URI(specToURL(_basePath).toExternalForm());
+            URI configurationURI = new URI(specToURL(_basePath)
+                    .toExternalForm());
             File configurationDirectory = new File(configurationURI);
             ConfigurationFilenameFilter filter = new ConfigurationFilenameFilter();
-            File[] configurationDirectories = configurationDirectory.listFiles(filter);
+            File[] configurationDirectories = configurationDirectory
+                    .listFiles(filter);
 
             System.out.println("MoMLApplication: " + configurationURI);
 
@@ -596,7 +597,7 @@ public class MoMLApplication implements ExecutionListener {
 
                 for (i = 0; i < configurationDirectories.length; i++) {
                     String configurationName = configurationDirectories[i]
-                        .getName();
+                            .getName();
                     result.append(" -" + configurationName);
 
                     // Pad out to a fixed number of spaces to get good alignment.
@@ -605,7 +606,7 @@ public class MoMLApplication implements ExecutionListener {
                     }
 
                     String configurationFileName = configurationDirectories[i]
-                        + File.separator + "configuration.xml";
+                            + File.separator + "configuration.xml";
                     boolean printDefaultConfigurationMessage = true;
 
                     try {
@@ -619,12 +620,10 @@ public class MoMLApplication implements ExecutionListener {
                             Configuration configuration = _readConfiguration(specificationURL);
 
                             if ((configuration != null)
-                                    && (configuration.getAttribute(
-                                                "_doc") != null)
-                                    && configuration.getAttribute(
-                                            "_doc") instanceof Documentation) {
+                                    && (configuration.getAttribute("_doc") != null)
+                                    && configuration.getAttribute("_doc") instanceof Documentation) {
                                 Documentation doc = (Documentation) configuration
-                                    .getAttribute("_doc");
+                                        .getAttribute("_doc");
                                 result.append("\t\t" + doc.getValue() + "\n");
                                 printDefaultConfigurationMessage = false;
                             }
@@ -658,8 +657,7 @@ public class MoMLApplication implements ExecutionListener {
      *  @exception Exception Thrown in derived classes if the default
      *   configuration cannot be opened.
      */
-    protected Configuration _createDefaultConfiguration()
-            throws Exception {
+    protected Configuration _createDefaultConfiguration() throws Exception {
         return null;
     }
 
@@ -670,8 +668,7 @@ public class MoMLApplication implements ExecutionListener {
      *  @exception Exception Thrown in derived classes if the empty
      *   configuration cannot be opened.
      */
-    protected Configuration _createEmptyConfiguration()
-            throws Exception {
+    protected Configuration _createEmptyConfiguration() throws Exception {
         return _createDefaultConfiguration();
     }
 
@@ -695,9 +692,10 @@ public class MoMLApplication implements ExecutionListener {
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version "
-                    + VersionAttribute.CURRENT_VERSION.getExpression()
-                    + ", Build $Id$");
+            System.out
+                    .println("Version "
+                            + VersionAttribute.CURRENT_VERSION.getExpression()
+                            + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
             System.exit(0);
@@ -779,7 +777,7 @@ public class MoMLApplication implements ExecutionListener {
                     // assume the file is an XML file.
                     if (_configuration != null) {
                         ModelDirectory directory = (ModelDirectory) _configuration
-                            .getEntity("directory");
+                                .getEntity("directory");
 
                         if (directory == null) {
                             throw new InternalErrorException(
@@ -818,11 +816,11 @@ public class MoMLApplication implements ExecutionListener {
                                 if ((inURL.toString().indexOf("!/") != -1)
                                         && (inURL.toString().indexOf("%20") != -1)) {
                                     detailMessage = " The URL contains "
-                                        + "'!/', so it may be a jar "
-                                        + "URL, and jar URLs cannot contain "
-                                        + "%20. This might happen if the "
-                                        + "pathname to the jnlp file had a "
-                                        + "space in it";
+                                            + "'!/', so it may be a jar "
+                                            + "URL, and jar URLs cannot contain "
+                                            + "%20. This might happen if the "
+                                            + "pathname to the jnlp file had a "
+                                            + "space in it";
                                 }
                             } catch (Exception ex2) {
                                 // Ignored
@@ -890,7 +888,7 @@ public class MoMLApplication implements ExecutionListener {
 
             boolean match = false;
             ModelDirectory directory = (ModelDirectory) _configuration
-                .getEntity("directory");
+                    .getEntity("directory");
 
             if (directory == null) {
                 throw new InternalErrorException("No model directory!");
@@ -913,23 +911,23 @@ public class MoMLApplication implements ExecutionListener {
                         // Use a MoMLChangeRequest so that visual rendition (if
                         // any) is updated and listeners are notified.
                         String moml = "<property name=\"" + name
-                            + "\" value=\"" + value + "\"/>";
+                                + "\" value=\"" + value + "\"/>";
                         MoMLChangeRequest request = new MoMLChangeRequest(this,
                                 model, moml);
                         model.requestChange(request);
 
                         /* Formerly (before the change request):
-                           ((Settable)attribute).setExpression(value);
-                           if (attribute instanceof Variable) {
-                           // Force evaluation so that listeners are notified.
-                           ((Variable)attribute).getToken();
-                           }
-                        */
+                         ((Settable)attribute).setExpression(value);
+                         if (attribute instanceof Variable) {
+                         // Force evaluation so that listeners are notified.
+                         ((Variable)attribute).getToken();
+                         }
+                         */
                     }
 
                     if (model instanceof CompositeActor) {
                         Director director = ((CompositeActor) model)
-                            .getDirector();
+                                .getDirector();
 
                         if (director != null) {
                             attribute = director.getAttribute(name);
@@ -940,19 +938,19 @@ public class MoMLApplication implements ExecutionListener {
                                 // Use a MoMLChangeRequest so that visual rendition (if
                                 // any) is updated and listeners are notified.
                                 String moml = "<property name=\"" + name
-                                    + "\" value=\"" + value + "\"/>";
-                                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                                        director, moml);
+                                        + "\" value=\"" + value + "\"/>";
+                                MoMLChangeRequest request = new MoMLChangeRequest(
+                                        this, director, moml);
                                 director.requestChange(request);
 
                                 /* Formerly (before change request):
-                                   ((Settable)attribute).setExpression(value);
-                                   if (attribute instanceof Variable) {
-                                   // Force evaluation so that listeners
-                                   // are notified.
-                                   ((Variable)attribute).getToken();
-                                   }
-                                */
+                                 ((Settable)attribute).setExpression(value);
+                                 if (attribute instanceof Variable) {
+                                 // Force evaluation so that listeners
+                                 // are notified.
+                                 ((Variable)attribute).getToken();
+                                 }
+                                 */
                             }
                         }
                     }
@@ -1011,25 +1009,13 @@ public class MoMLApplication implements ExecutionListener {
     protected String _basePath = "ptolemy/configs";
 
     /** The command-line options that are either present or not. */
-    protected String[] _commandFlags = {
-        "-help",
-        "-run",
-        "-runThenExit",
-        "-test",
-        "-version",
-    };
+    protected String[] _commandFlags = { "-help", "-run", "-runThenExit",
+            "-test", "-version", };
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {
-        {
-            "-class",
-            "<classname>"
-        },
-        {
-            "-<parameter name>",
-            "<parameter value>"
-        },
-    };
+            { "-class", "<classname>" },
+            { "-<parameter name>", "<parameter value>" }, };
 
     /** The form of the command line. */
     protected String _commandTemplate = "moml [ options ] [file ...]";

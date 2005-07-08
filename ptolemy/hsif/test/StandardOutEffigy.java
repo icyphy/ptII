@@ -1,29 +1,29 @@
 /* A representative of a Standard Output writer
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.hsif.test;
 
 import java.io.BufferedReader;
@@ -41,21 +41,20 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// StandardOutEffigy
 
 /**
-   An effigy for a web browser.
+ An effigy for a web browser.
 
-   <p> We invoke the user's web browser for certain files such as pdf files
+ <p> We invoke the user's web browser for certain files such as pdf files
 
-   @author Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class StandardOutEffigy extends Effigy {
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
@@ -100,8 +99,8 @@ public class StandardOutEffigy extends Effigy {
     public static StandardOutEffigy newStandardOutEffigy(
             CompositeEntity container, URL base, URL in) throws Exception {
         // Create a new effigy.
-        StandardOutEffigy effigy = new StandardOutEffigy(container,
-                container.uniqueName("standardOutEffigy"));
+        StandardOutEffigy effigy = new StandardOutEffigy(container, container
+                .uniqueName("standardOutEffigy"));
 
         // We cannot easily communicate with the StandardOut once we launch
         // it, so mark this effigy as unmodifiable
@@ -134,9 +133,10 @@ public class StandardOutEffigy extends Effigy {
                     // view source on a .html file that is not in
                     // ptsupport.jar, then we may end up here,
                     // so we look for the file as a resource.
-                    URL jarURL = JNLPUtilities.jarURLEntryResource(in.toString());
-                    reader = new BufferedReader(new InputStreamReader(
-                                                        jarURL.openStream()));
+                    URL jarURL = JNLPUtilities.jarURLEntryResource(in
+                            .toString());
+                    reader = new BufferedReader(new InputStreamReader(jarURL
+                            .openStream()));
 
                     // We were able to open the URL, so update the
                     // original URL so that the title bar accurately

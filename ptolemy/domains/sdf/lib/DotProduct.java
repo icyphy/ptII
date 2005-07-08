@@ -1,30 +1,30 @@
 /* An actor that computes the dot product of two arrays.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -46,27 +46,26 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DotProduct
 
 /**
-   Compute the dot product of two arrays or matrices. This actor has two
-   input ports, from which it receives two ArrayTokens or two Matrix
-   Tokens. The elements of the ArrayTokens or MatrixTokens must be of
-   type ScalarToken. The output is the dot product of the two arrays or
-   matrices.
+ Compute the dot product of two arrays or matrices. This actor has two
+ input ports, from which it receives two ArrayTokens or two Matrix
+ Tokens. The elements of the ArrayTokens or MatrixTokens must be of
+ type ScalarToken. The output is the dot product of the two arrays or
+ matrices.
 
-   <p> This actor requires that each input port have a token upon
-   firing. On each firing, it produces exactly one token, which is of
-   type ScalarToken.
+ <p> This actor requires that each input port have a token upon
+ firing. On each firing, it produces exactly one token, which is of
+ type ScalarToken.
 
-   @author Jeff Tsay, Paul Whitaker, Adam Cataldo
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (pwhitake)
-   @Pt.AcceptedRating Red (acataldo)
-*/
+ @author Jeff Tsay, Paul Whitaker, Adam Cataldo
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (pwhitake)
+ @Pt.AcceptedRating Red (acataldo)
+ */
 public class DotProduct extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -186,8 +185,8 @@ public class DotProduct extends TypedAtomicActor {
 
         if (array1.length != array2.length) {
             throw new IllegalActionException("Inputs to DotProduct have "
-                    + "unequal lengths: " + array1.length + " and " + array2.length
-                    + ".");
+                    + "unequal lengths: " + array1.length + " and "
+                    + array2.length + ".");
         }
 
         if (array1.length < 1) {
@@ -308,20 +307,13 @@ public class DotProduct extends TypedAtomicActor {
             InequalityTerm term2 = _port2.getTypeTerm();
 
             if ((term1.isSettable()) && (term2.isSettable())) {
-                InequalityTerm[] array = {
-                    term1,
-                    term2
-                };
+                InequalityTerm[] array = { term1, term2 };
                 return array;
             } else if (term1.isSettable()) {
-                InequalityTerm[] array = {
-                    term1
-                };
+                InequalityTerm[] array = { term1 };
                 return array;
             } else if (term2.isSettable()) {
-                InequalityTerm[] array = {
-                    term2
-                };
+                InequalityTerm[] array = { term2 };
                 return array;
             }
 
@@ -331,6 +323,7 @@ public class DotProduct extends TypedAtomicActor {
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
         private TypedIOPort _port1;
+
         private TypedIOPort _port2;
     }
 }

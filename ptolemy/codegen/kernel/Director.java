@@ -1,30 +1,30 @@
 /* Code generator helper class associated with the Director class.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.codegen.kernel;
 
 import java.util.HashSet;
@@ -37,22 +37,21 @@ import ptolemy.actor.IOPort;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////
 //// Director
 
 /**
-   Code generator helper associated with the Director class. This class
-   is also associated with a code generator.
+ Code generator helper associated with the Director class. This class
+ is also associated with a code generator.
 
-   @see CodeGenerator
-   @author Ye Zhou
-   @version $Id$
-   @since Ptolemy II 5.0,
-   @Pt.ProsedRating Red (zhouye)
-   @Pt.AcceptedRating Red (zhouye)
+ @see CodeGenerator
+ @author Ye Zhou
+ @version $Id$
+ @since Ptolemy II 5.0,
+ @Pt.ProsedRating Red (zhouye)
+ @Pt.AcceptedRating Red (zhouye)
 
-*/
+ */
 public class Director implements ActorCodeGenerator {
     /** Construct the code generator helper associated with the given director.
      *  @param director The associated director.
@@ -78,8 +77,8 @@ public class Director implements ActorCodeGenerator {
             throws IllegalActionException {
         code.append("/* The firing of the director. */\n");
 
-        Iterator actors = ((CompositeActor) _codeGenerator.getContainer()).deepEntityList()
-            .iterator();
+        Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -100,7 +99,7 @@ public class Director implements ActorCodeGenerator {
         code.append("/* The initialization of the director. */\n");
 
         Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
-            .deepEntityList().iterator();
+                .deepEntityList().iterator();
         //Iterator actors = actorsList.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -122,7 +121,7 @@ public class Director implements ActorCodeGenerator {
         StringBuffer code = new StringBuffer();
         code.append("/* The preinitialization of the director. */\n");
         Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
-            .deepEntityList().iterator();
+                .deepEntityList().iterator();
         //Iterator actors = actorsList.iterator();
         while (actors.hasNext()) {
             // Set the buffer sizes of each channel of the actor before
@@ -149,7 +148,7 @@ public class Director implements ActorCodeGenerator {
         }
         return code.toString();
     }
-    
+
     /** Generate the wrapup code of the director associated with this helper
      *  class. For this base class, the wrapup code is just to generate
      *  the wrapup code for each actor.
@@ -160,8 +159,8 @@ public class Director implements ActorCodeGenerator {
             throws IllegalActionException {
         code.append("/* The wrapup of the director. */\n");
 
-        Iterator actors = ((CompositeActor) _codeGenerator.getContainer()).deepEntityList()
-            .iterator();
+        Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -188,8 +187,8 @@ public class Director implements ActorCodeGenerator {
      */
 
     /*public ComponentCodeGenerator getCodeGenerator() {
-      return _codeGenerator;
-      }*/
+     return _codeGenerator;
+     }*/
 
     /** Return the director associated with this class.
      *  @return The director associated with this class.

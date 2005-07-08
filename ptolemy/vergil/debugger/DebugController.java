@@ -1,29 +1,29 @@
 /* An execution listener that suspends execution based on breakpoints.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.  Permission is hereby granted, without written
-agreement and without license or royalty fees, to use, copy, modify,
-and distribute this software and its documentation for any purpose,
-provided that the above copyright notice and the following two
-paragraphs appear in all copies of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.  Permission is hereby granted, without written
+ agreement and without license or royalty fees, to use, copy, modify,
+ and distribute this software and its documentation for any purpose,
+ provided that the above copyright notice and the following two
+ paragraphs appear in all copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
-IF THE UNIVERSITY OF CALIFORNIA HAVE BEEN ADVISED OF THE POSSIBILITY
-OF SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
+ IF THE UNIVERSITY OF CALIFORNIA HAVE BEEN ADVISED OF THE POSSIBILITY
+ OF SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIM ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIM ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.debugger;
 
 import java.util.Hashtable;
@@ -45,26 +45,25 @@ import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.kernel.DebugRenderer;
 import diva.canvas.Figure;
 
-
 ////////////////////////////////////////////////////////////////////////
 //// DebugController
 
 /**
-   An execution listener that suspends execution based on breakpoints.
-   Instances of this class should be contained by a director.  This class
-   keeps a DebugProfile for each actor that belongs to that director and
-   is being debugged. This attribute is not persistent by default.
+ An execution listener that suspends execution based on breakpoints.
+ Instances of this class should be contained by a director.  This class
+ keeps a DebugProfile for each actor that belongs to that director and
+ is being debugged. This attribute is not persistent by default.
 
-   @see DebugProfile
+ @see DebugProfile
 
-   @author Elaine Cheong
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (celaine)
-   @Pt.AcceptedRating Red (celaine)
-*/
-public class DebugController extends SingletonConfigurableAttribute
-    implements DebugListener {
+ @author Elaine Cheong
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (celaine)
+ @Pt.AcceptedRating Red (celaine)
+ */
+public class DebugController extends SingletonConfigurableAttribute implements
+        DebugListener {
     /** Construct a debug listener with the given container and name.
      *  @param container The container.
      *  @param name The name.
@@ -117,9 +116,9 @@ public class DebugController extends SingletonConfigurableAttribute
                 // that is.
                 DebugProfile debugProfile = getDebugProfile((Executable) objToHighlight);
                 BasicGraphController graphController = debugProfile
-                    .getGraphController();
+                        .getGraphController();
                 AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) graphController
-                    .getGraphModel();
+                        .getGraphModel();
                 NamedObj toplevel = graphModel.getPtolemyModel();
 
                 while ((objToHighlight != null)
@@ -142,10 +141,11 @@ public class DebugController extends SingletonConfigurableAttribute
                         // wait for the user to press the Resume
                         // button.
                         if (debugProfile.isListening(event.getType())) {
-                            String message = new String(objToHighlight.getName()
+                            String message = new String(objToHighlight
+                                    .getName()
                                     + " " + event.getType().getName());
                             Manager manager = ((Actor) objToHighlight)
-                                .getManager();
+                                    .getManager();
                             render(figure, manager, message);
                         }
                     }
@@ -222,10 +222,10 @@ public class DebugController extends SingletonConfigurableAttribute
         // so we make an anonymous inner class to handle it in a
         // different thread.
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    _debugRenderer.renderSelected(figure);
-                }
-            });
+            public void run() {
+                _debugRenderer.renderSelected(figure);
+            }
+        });
 
         final Figure debugRendered = figure;
 
@@ -235,10 +235,10 @@ public class DebugController extends SingletonConfigurableAttribute
         if (debugRendered != null) {
             // Unhighlight the actor after resuming execution.
             SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        _debugRenderer.renderDeselected(debugRendered);
-                    }
-                });
+                public void run() {
+                    _debugRenderer.renderDeselected(debugRendered);
+                }
+            });
         }
     }
 

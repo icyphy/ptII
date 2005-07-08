@@ -1,30 +1,30 @@
 /* A Scheduler for the GR domain
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.kernel;
 
 import java.util.HashSet;
@@ -48,24 +48,23 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-
 /////////////////////////////////////////////////////////////////////
 //// GRScheduler
 
 /**
 
-A scheduler that implements scheduling of the active parts of a GR
-scene graph. The scene graph is assumed to be a directed acyclic graph.
-Scheduling is done by performing a topological sort on all the actors.
+ A scheduler that implements scheduling of the active parts of a GR
+ scene graph. The scene graph is assumed to be a directed acyclic graph.
+ Scheduling is done by performing a topological sort on all the actors.
 
-@see ptolemy.actor.sched.Scheduler
+ @see ptolemy.actor.sched.Scheduler
 
-@author C. Fong, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating yellow (chf)
-@Pt.AcceptedRating yellow (vogel)
-*/
+ @author C. Fong, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating yellow (chf)
+ @Pt.AcceptedRating yellow (vogel)
+ */
 public class GRScheduler extends Scheduler {
     /** Construct a scheduler with no container (director)
      *  in the default workspace, the name of the scheduler is
@@ -214,8 +213,8 @@ public class GRScheduler extends Scheduler {
                 }
             }
 
-            throw new NotSchedulableException(this,
-                    "GR graph is not acyclic: " + names.toString());
+            throw new NotSchedulableException(this, "GR graph is not acyclic: "
+                    + names.toString());
         }
 
         if (dag.top() == null) {

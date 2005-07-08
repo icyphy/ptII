@@ -55,7 +55,6 @@ import diva.canvas.toolbox.PathFigure;
 import diva.gui.BasicFrame;
 import diva.util.java2d.Polyline2D;
 
-
 /**
  * <p> This tutorial shows how to add different types of manipulators
  * to figures.
@@ -66,8 +65,11 @@ import diva.util.java2d.Polyline2D;
 public class ManipulatorTutorial {
     // The figures
     private BasicRectangle _rectangle;
+
     private BasicEllipse _circle;
+
     private PathFigure _line;
+
     private BasicFigure _shape;
 
     // The JCanvas
@@ -175,11 +177,11 @@ public class ManipulatorTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ManipulatorTutorial ex = new ManipulatorTutorial();
-                    ex.createFigures();
-                    ex.createInteraction();
-                }
-            });
+            public void run() {
+                ManipulatorTutorial ex = new ManipulatorTutorial();
+                ex.createFigures();
+                ex.createInteraction();
+            }
+        });
     }
 }

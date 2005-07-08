@@ -1,29 +1,29 @@
 /* A representative of a file that contains one or more tokens.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -48,20 +48,19 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TokenEffigy
 
 /**
-   An effigy for a file that contains one or more tokens, one per line,
-   represented as text in the expression language.
+ An effigy for a file that contains one or more tokens, one per line,
+ represented as text in the expression language.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (neuendor)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (neuendor)
+ */
 public class TokenEffigy extends Effigy {
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
@@ -157,8 +156,8 @@ public class TokenEffigy extends Effigy {
         LineNumberReader reader = null;
 
         try {
-            reader = new LineNumberReader(new InputStreamReader(
-                                                  input.openStream()));
+            reader = new LineNumberReader(new InputStreamReader(input
+                    .openStream()));
 
             while (true) {
                 // NOTE: The following tolerates all major line terminators.
@@ -184,7 +183,7 @@ public class TokenEffigy extends Effigy {
 
                         // Notify the contained tableaux.
                         Iterator tableaux = entityList(TokenTableau.class)
-                            .iterator();
+                                .iterator();
 
                         while (tableaux.hasNext()) {
                             ((TokenTableau) tableaux.next()).append(token);
@@ -305,8 +304,8 @@ public class TokenEffigy extends Effigy {
                 String extension = getExtension(input);
 
                 if (extension.equals("ptd")) {
-                    TokenEffigy effigy = new TokenEffigy(container,
-                            container.uniqueName("effigy"));
+                    TokenEffigy effigy = new TokenEffigy(container, container
+                            .uniqueName("effigy"));
                     effigy.uri.setURL(input);
                     return effigy;
                 }

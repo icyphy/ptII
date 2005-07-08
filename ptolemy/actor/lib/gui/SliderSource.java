@@ -1,30 +1,30 @@
 /* An actor whose output is controlled by a slider in the run window.
 
-@Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.gui;
 
 import java.awt.Color;
@@ -52,21 +52,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SliderSource
 
 /**
-   The output of this actor is controlled by a slider in the run window.
-   The range of the output is specified by two parameters, <i>minimum</i> and
-   <i>maximum</i>. The type of these parameters and the output is integer.
+ The output of this actor is controlled by a slider in the run window.
+ The range of the output is specified by two parameters, <i>minimum</i> and
+ <i>maximum</i>. The type of these parameters and the output is integer.
 
-   @author Xiaojun Liu
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (liuxj)
-   @Pt.AcceptedRating Red (liuxj)
-*/
+ @author Xiaojun Liu
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (liuxj)
+ @Pt.AcceptedRating Red (liuxj)
+ */
 public class SliderSource extends Source implements ChangeListener, Placeable {
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
@@ -128,8 +127,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
             int max = ((IntToken) maximum.getToken()).intValue();
 
             if ((min > max) && (slider != null)) {
-                throw new IllegalActionException(this,
-                        "The minimum value "
+                throw new IllegalActionException(this, "The minimum value "
                         + "of the slider cannot be larger than the maximum "
                         + "value.");
             }
@@ -303,24 +301,26 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    if (slider != null) {
-                        if (_container != null) {
-                            _container.remove(_panel);
-                            _container.invalidate();
-                            _container.repaint();
-                        } else if (_frame != null) {
-                            _frame.dispose();
-                        }
+            public void run() {
+                if (slider != null) {
+                    if (_container != null) {
+                        _container.remove(_panel);
+                        _container.invalidate();
+                        _container.repaint();
+                    } else if (_frame != null) {
+                        _frame.dispose();
                     }
                 }
-            });
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private Container _container;
+
     private int _val;
+
     private IntToken _outputVal;
 
     // The frame into which to put the text widget, if any.

@@ -1,60 +1,59 @@
 /* A weighted or unweighted edge for a directed or undirected graph.
 
-Copyright (c) 2001-2005 The University of Maryland
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The University of Maryland
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
 
-*/
+ */
 package ptolemy.graph;
-
 
 ////////////////////////////////////////////////////////////////////////// //
 //Edge
 
 /**
-   A weighted or unweighted edge for a directed or undirected graph.  The
-   connectivity of edges is specified by <i>source</i> nodes and <i>sink</i>
-   nodes. A directed edge is directed <i>from</i> its source node <i>to</i> its
-   sink node. For an undirected edge, the source node is simply the first node
-   that was specified when the edge was created, and the sink node is the
-   second node.  This convention allows undirected edges to later be converted
-   in a consistent manner to directed edges, if desired.
+ A weighted or unweighted edge for a directed or undirected graph.  The
+ connectivity of edges is specified by <i>source</i> nodes and <i>sink</i>
+ nodes. A directed edge is directed <i>from</i> its source node <i>to</i> its
+ sink node. For an undirected edge, the source node is simply the first node
+ that was specified when the edge was created, and the sink node is the
+ second node.  This convention allows undirected edges to later be converted
+ in a consistent manner to directed edges, if desired.
 
-   <p>On creation of an edge, an arbitrary object can be associated with the
-   edge as the weight of the edge.  We say that an edge is <i>unweighted</i> if
-   it does not have an assigned weight. It is an error to attempt to access the
-   weight of an unweighted edge.
+ <p>On creation of an edge, an arbitrary object can be associated with the
+ edge as the weight of the edge.  We say that an edge is <i>unweighted</i> if
+ it does not have an assigned weight. It is an error to attempt to access the
+ weight of an unweighted edge.
 
-   <p>Self-loop edges (edges whose source and sink nodes are identical)
-   are allowed.
+ <p>Self-loop edges (edges whose source and sink nodes are identical)
+ are allowed.
 
-   <p> Once an edge is created, its source node and sink node cannot be changed.
+ <p> Once an edge is created, its source node and sink node cannot be changed.
 
-   @author Shuvra S. Bhattacharyya
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.graph.Node
-*/
+ @author Shuvra S. Bhattacharyya
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.graph.Node
+ */
 public final class Edge extends Element {
     /** Construct an unweighted edge with a specified source node and sink node.
      *  @param source The source node.

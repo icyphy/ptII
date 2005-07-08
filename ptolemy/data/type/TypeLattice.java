@@ -1,30 +1,30 @@
 /* Type hierarchy of token classes.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.data.type;
 
 import ptolemy.data.Token;
@@ -32,20 +32,19 @@ import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.InternalErrorException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypeLattice
 
 /**
-   Type hierarchy for token classes.
+ Type hierarchy for token classes.
 
-   @author Yuhong Xiong, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (yuhong)
-   @Pt.AcceptedRating Red
-   @see ptolemy.graph.CPO
-*/
+ @author Yuhong Xiong, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (yuhong)
+ @Pt.AcceptedRating Red
+ @see ptolemy.graph.CPO
+ */
 public class TypeLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -73,8 +72,8 @@ public class TypeLattice {
         if ((token1 == null) || (token2 == null)) {
             throw new IllegalArgumentException(
                     "TypeLattice.compare(Token, Token): "
-                    + "one or both of the argument tokens is null: " + " token1 = "
-                    + token1 + ", token2 = " + token2);
+                            + "one or both of the argument tokens is null: "
+                            + " token1 = " + token1 + ", token2 = " + token2);
         }
 
         return compare(token1.getType(), token2.getType());
@@ -94,7 +93,8 @@ public class TypeLattice {
     public static int compare(Token token, Type type) {
         if (token == null) {
             throw new IllegalArgumentException(
-                    "TypeLattice.compare(Token, Type): " + "token argument is null");
+                    "TypeLattice.compare(Token, Type): "
+                            + "token argument is null");
         }
 
         return compare(token.getType(), type);
@@ -114,7 +114,8 @@ public class TypeLattice {
     public static int compare(Type type, Token token) {
         if (token == null) {
             throw new IllegalArgumentException(
-                    "TypeLattice.compare(Type, Token): " + "token argument is null");
+                    "TypeLattice.compare(Type, Token): "
+                            + "token argument is null");
         }
 
         return compare(type, token.getType());
@@ -134,8 +135,8 @@ public class TypeLattice {
         if ((type1 == null) || (type2 == null)) {
             throw new IllegalArgumentException(
                     "TypeLattice.compare(Type, Type): "
-                    + "one or both of the argument types is null: " + " type1 = "
-                    + type1 + ", type2 = " + type2);
+                            + "one or both of the argument types is null: "
+                            + " type1 = " + type1 + ", type2 = " + type2);
         }
 
         int i1 = type1.getTypeHash();
@@ -145,10 +146,10 @@ public class TypeLattice {
         // _lattice.compare() on ptolemy.data package performance... Run
         // ptolemy/data/type/test/performance.xml before and after...(zk)
         if ( /*false &&*/
-                (i1 != Type.HASH_INVALID) && (i2 != Type.HASH_INVALID)) {
+        (i1 != Type.HASH_INVALID) && (i2 != Type.HASH_INVALID)) {
             if (_getCachedTypeComparisonResult(i1, i2) == Type.HASH_INVALID) {
-                _setCachedTypeComparisonResult(i1, i2,
-                        _lattice.compare(type1, type2));
+                _setCachedTypeComparisonResult(i1, i2, _lattice.compare(type1,
+                        type2));
             }
 
             return _getCachedTypeComparisonResult(i1, i2);
@@ -259,7 +260,7 @@ public class TypeLattice {
         public Object[] downSet(Object e) {
             throw new UnsupportedOperationException(
                     "TheTypeLattice.downSet(): operation not supported for "
-                    + "the type lattice.");
+                            + "the type lattice.");
         }
 
         /** Return the greatest lower bound of two types.
@@ -273,7 +274,7 @@ public class TypeLattice {
             if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                 throw new IllegalArgumentException(
                         "TheTypeLattice.greatestLowerBound: "
-                        + "Arguments are not instances of Type.");
+                                + "Arguments are not instances of Type.");
             }
 
             Type ct1 = (Type) t1;
@@ -283,7 +284,8 @@ public class TypeLattice {
             Type t2Rep = _toRepresentative(ct2);
 
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
-                return ((StructuredType) t1)._greatestLowerBound((StructuredType) t2);
+                return ((StructuredType) t1)
+                        ._greatestLowerBound((StructuredType) t2);
             } else if (_basicLattice.containsNodeWeight(t1Rep)
                     && _basicLattice.containsNodeWeight(t2Rep)) {
                 // Both are not the same structured type, so their relation is
@@ -413,7 +415,7 @@ public class TypeLattice {
             if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                 throw new IllegalArgumentException(
                         "TheTypeLattice.leastUpperBound: "
-                        + "Arguments are not instances of Type.");
+                                + "Arguments are not instances of Type.");
             }
 
             Type ct1 = (Type) t1;
@@ -423,7 +425,8 @@ public class TypeLattice {
             Type t2Rep = _toRepresentative(ct2);
 
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
-                return ((StructuredType) t1)._leastUpperBound((StructuredType) t2);
+                return ((StructuredType) t1)
+                        ._leastUpperBound((StructuredType) t2);
             } else if (_basicLattice.containsNodeWeight(t1Rep)
                     && _basicLattice.containsNodeWeight(t2Rep)) {
                 // Both are not the same structured type, so their relation is
@@ -492,7 +495,7 @@ public class TypeLattice {
         public Object[] upSet(Object e) {
             throw new UnsupportedOperationException(
                     "TheTypeLattice.upSet(): operation not supported for "
-                    + "the type lattice.");
+                            + "the type lattice.");
         }
 
         ///////////////////////////////////////////////////////////////
@@ -502,14 +505,14 @@ public class TypeLattice {
             _basicLattice = new DirectedAcyclicGraph();
 
             StructuredType arrayRep = (new ArrayType(BaseType.UNKNOWN))
-                ._getRepresentative();
+                    ._getRepresentative();
 
             String[] labels = new String[0];
             Type[] types = new Type[0];
             StructuredType recordRep = (new RecordType(labels, types))
-                ._getRepresentative();
+                    ._getRepresentative();
             StructuredType unionRep = (new UnionType(labels, types))
-                ._getRepresentative();
+                    ._getRepresentative();
 
             StructuredType functionRep = new ptolemy.data.type.FunctionType(
                     new ptolemy.data.type.Type[0],

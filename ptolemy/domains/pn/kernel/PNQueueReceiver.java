@@ -1,31 +1,31 @@
 /* A receiver with a FIFO queue and performing blocking reads
-   and blocking writes.
+ and blocking writes.
 
-   Copyright (c) 1997-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.pn.kernel;
 
 import ptolemy.actor.Actor;
@@ -40,46 +40,45 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PNQueueReceiver
 
 /**
 
-A receiver with a FIFO queue that blocks the calling process on a read if the
-FIFO queue is empty and on a write if the queue is full. Blocking read provides
-the basic functionality of a FIFO channel in the process networks model of
-computation. Blocking write supports the implementation suggested by Parks for
-bounded memory execution of process networks.
-<p>
-Tokens are appended to the queue with the put() method, which blocks on a write
-if the queue is full. Tokens are removed from the queue with the get() method,
-which blocks on a read if the queue is empty.
-In case a process blocks on a read or a write, the receiver informs the
-director about the same.
-The receiver also unblocks processes blocked on a read or a write. In case
-a process is blocked on a read (read-blocked), it is unblocked on availability
-of a token.  If a process is blocked on a write (write-blocked), it
-is unblocked on the availability of room in the queue and informs the director
-of the same.
-<p>
-This class is also responsible for pausing or terminating a process that tries
-to read from or write to the receiver. In case of termination, the receiver
-throws a TerminateProcessException when a process tries to read from or write
-to the receiver. This terminates the process.
-In case of pausing, the receiver suspends the process when it tries to read
-from or write to the receiver and resumes it only after a request to resume the
-process has been received.g
-<p>
+ A receiver with a FIFO queue that blocks the calling process on a read if the
+ FIFO queue is empty and on a write if the queue is full. Blocking read provides
+ the basic functionality of a FIFO channel in the process networks model of
+ computation. Blocking write supports the implementation suggested by Parks for
+ bounded memory execution of process networks.
+ <p>
+ Tokens are appended to the queue with the put() method, which blocks on a write
+ if the queue is full. Tokens are removed from the queue with the get() method,
+ which blocks on a read if the queue is empty.
+ In case a process blocks on a read or a write, the receiver informs the
+ director about the same.
+ The receiver also unblocks processes blocked on a read or a write. In case
+ a process is blocked on a read (read-blocked), it is unblocked on availability
+ of a token.  If a process is blocked on a write (write-blocked), it
+ is unblocked on the availability of room in the queue and informs the director
+ of the same.
+ <p>
+ This class is also responsible for pausing or terminating a process that tries
+ to read from or write to the receiver. In case of termination, the receiver
+ throws a TerminateProcessException when a process tries to read from or write
+ to the receiver. This terminates the process.
+ In case of pausing, the receiver suspends the process when it tries to read
+ from or write to the receiver and resumes it only after a request to resume the
+ process has been received.g
+ <p>
 
-@author Mudit Goel, John S. Davis II, Edward A. Lee, Xiaowen Xin
-@version $Id$
-@since Ptolemy II 0.2
-@Pt.ProposedRating Yellow (eal)
-@Pt.AcceptedRating Red (hyzheng)
-@see QueueReceiver
-@see ptolemy.actor.QueueReceiver
-*/
+ @author Mudit Goel, John S. Davis II, Edward A. Lee, Xiaowen Xin
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (hyzheng)
+ @see QueueReceiver
+ @see ptolemy.actor.QueueReceiver
+ */
 public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Construct an empty receiver with no container.
      */
@@ -129,7 +128,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         if (!(director instanceof PNDirector)) {
             throw new IllegalActionException(port,
                     "Cannot use an instance of PNQueueReceiver "
-                    + "since the director is not a PNDirector.");
+                            + "since the director is not a PNDirector.");
         }
 
         _director = (PNDirector) director;
@@ -170,21 +169,21 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         // NOTE: This method used to be synchronized on this
         // receiver, but since it calls synchronized methods in
         // the director, that can cause deadlock.
-        synchronized(_director) {
+        synchronized (_director) {
             // OK, I'm blocked on read.
-            if(null == branch) {
+            if (null == branch) {
                 _director._actorBlocked(this, true);
                 _readNumBlocked++;
             } else {
                 branch.registerReceiverBlocked(this);
             }
 
-            while(!_terminate) {
+            while (!_terminate) {
                 // Try to read.
-                if(super.hasToken()) {
+                if (super.hasToken()) {
                     result = super.get();
-                    if(null == branch) {
-                        if(_readPending) {
+                    if (null == branch) {
+                        if (_readPending) {
                             _readPending = false;
                         } else {
                             _readNumBlocked--;
@@ -202,12 +201,12 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 try {
                     Workspace workspace = getContainer().workspace();
                     workspace.wait(_director);
-                } catch(InterruptedException e) {
+                } catch (InterruptedException e) {
                     _terminate = true;
                 }
             }
 
-            if(_terminate) {
+            if (_terminate) {
                 throw new TerminateProcessException("");
             }
         }
@@ -403,21 +402,21 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         // NOTE: This used to synchronize on this, but since it calls
         // director methods that are synchronized on the director,
         // this can cause deadlock.
-        synchronized(_director) {
+        synchronized (_director) {
             // OK, I'm blocked on write.
-            if(null == branch) {
+            if (null == branch) {
                 _director._actorBlocked(this, false);
                 _writeNumBlocked++;
             } else {
                 branch.registerReceiverBlocked(this);
             }
 
-            while(!_terminate) {
+            while (!_terminate) {
                 // Try to write.
-                if(super.hasRoom()) {
+                if (super.hasRoom()) {
                     super.put(token);
-                    if(null == branch) {
-                        if(_writePending) {
+                    if (null == branch) {
+                        if (_writePending) {
                             _writePending = false;
                         } else {
                             _writeNumBlocked--;
@@ -437,7 +436,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     // this returns, where the read will appear to be
                     // blocked, but actually will unblock as soon as its
                     // thread gets a chance to run.
-                    if(!_readPending && _readNumBlocked > 0) {
+                    if (!_readPending && _readNumBlocked > 0) {
                         _readPending = true;
                         _readNumBlocked--;
                         _director._actorUnBlocked(this, true);
@@ -449,7 +448,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 try {
                     Workspace workspace = getContainer().workspace();
                     workspace.wait(_director);
-                } catch(InterruptedException e) {
+                } catch (InterruptedException e) {
                     _terminate = true;
                 }
             }
@@ -488,7 +487,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         // receiver, but since it calls synchronized methods in
         // the director, that can cause deadlock.
         synchronized (_director) {
-            if(!_writePending && 0 < _writeNumBlocked) {
+            if (!_writePending && 0 < _writeNumBlocked) {
                 _writePending = true;
                 _writeNumBlocked--;
                 _director._actorUnBlocked(this, false);
@@ -517,12 +516,16 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     private PNDirector _director;
 
     private boolean _readPending = false;
+
     private boolean _writePending = false;
+
     private int _readNumBlocked = 0;
+
     private int _writeNumBlocked = 0;
 
     private boolean _terminate = false;
 
     private Branch _otherBranch = null;
+
     private BoundaryDetector _boundaryDetector;
 }

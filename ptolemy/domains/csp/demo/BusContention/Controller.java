@@ -1,30 +1,30 @@
 /* A CSP actor that serves as a controller of a shared resource.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.csp.demo.BusContention;
 
 import java.util.Iterator;
@@ -44,39 +44,38 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Controller
 
 /**
-   A CSP actor that serves as a controller of a shared resource. This
-   actor has four "informal" states that are cycled through in the
-   fire() method. In these four states this actor accepts and grants
-   requests for access to a shared resource. An Actor that wants to
-   request or be granted access to a shared resource must connect to
-   this controller via the requestInput and requestOutput ports. To
-   aid in monitoring such requests, the controller connects to a
-   ContentionAlarm actor through its contendInput and contendOutput
-   ports.
+ A CSP actor that serves as a controller of a shared resource. This
+ actor has four "informal" states that are cycled through in the
+ fire() method. In these four states this actor accepts and grants
+ requests for access to a shared resource. An Actor that wants to
+ request or be granted access to a shared resource must connect to
+ this controller via the requestInput and requestOutput ports. To
+ aid in monitoring such requests, the controller connects to a
+ ContentionAlarm actor through its contendInput and contendOutput
+ ports.
 
-   In state one the controller waits for requests on its requestInput
-   port. Once the first request has been received, the controller
-   moves to state two and sends a message to the ContentionAlarm
-   notifying it that a request has occurred at the current time. The
-   controller then moves to state three and performs a conditional
-   rendezvous on its contendInput and requestInput ports. Once an input
-   has been received from the ContentionAlarm, then the controller knows
-   that that the request contention period is over and it moves to state
-   four. In state four the controller notifies the resource requestors as
-   to whether their requests were granted based on priority relative to
-   other contenders.
+ In state one the controller waits for requests on its requestInput
+ port. Once the first request has been received, the controller
+ moves to state two and sends a message to the ContentionAlarm
+ notifying it that a request has occurred at the current time. The
+ controller then moves to state three and performs a conditional
+ rendezvous on its contendInput and requestInput ports. Once an input
+ has been received from the ContentionAlarm, then the controller knows
+ that that the request contention period is over and it moves to state
+ four. In state four the controller notifies the resource requestors as
+ to whether their requests were granted based on priority relative to
+ other contenders.
 
-   @author John S. Davis II
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (davisj)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author John S. Davis II
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Red (davisj)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class Controller extends CSPActor {
     /** Construct a Controller actor with the specified container
      *  and name.
@@ -196,8 +195,7 @@ public class Controller extends CSPActor {
             boolean continueCDO = true;
 
             while (continueCDO) {
-                requiredBranches = new ConditionalBranch[_numRequestInChannels
-                        + 1];
+                requiredBranches = new ConditionalBranch[_numRequestInChannels + 1];
 
                 for (int i = 0; i < _numRequestInChannels; i++) {
                     requiredBranches[i] = new ConditionalReceive(true,
@@ -217,11 +215,11 @@ public class Controller extends CSPActor {
 
                     if (code > _winningPortChannelCode.getCode()) {
                         _losingPortChannelCodes.add(0, _winningPortChannelCode);
-                        _winningPortChannelCode = new PortChannelCode(requestInput,
-                                br, code);
+                        _winningPortChannelCode = new PortChannelCode(
+                                requestInput, br, code);
                     } else {
-                        _losingPortChannelCodes.add(0,
-                                new PortChannelCode(requestInput, br, code));
+                        _losingPortChannelCodes.add(0, new PortChannelCode(
+                                requestInput, br, code));
                     }
                 } else if (br == _numRequestInChannels) {
                     //
@@ -262,6 +260,8 @@ public class Controller extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
     private int _numRequestInChannels = -1;
+
     private PortChannelCode _winningPortChannelCode;
+
     private List _losingPortChannelCodes;
 }

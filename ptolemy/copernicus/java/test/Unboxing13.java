@@ -5,9 +5,9 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 public class Unboxing13 {
     IntToken inputToken;
+
     BitwiseOperationToken bitwiseoperationtoken;
 
     public void fire() throws IllegalActionException {

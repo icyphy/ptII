@@ -1,30 +1,30 @@
 /* An editor for Ptolemy II objects.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.awt.Component;
@@ -44,33 +44,32 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Configurer
 
 /**
-   This class is an editor for the user settable attributes of an object.
-   It may consist of more than one editor panel.  If the object has
-   any attributes that are instances of EditorPaneFactory, then the
-   panes made by those factories are stacked vertically in this panel.
-   Otherwise, a static method of EditorPaneFactory is
-   used to construct a default editor.
-   <p>
-   The restore() method restores the values of the attributes of the
-   object to their values when this object was created.  This can be used
-   in a modal dialog to implement a cancel button, which restores
-   the attribute values to those before the dialog was opened.
-   <p>
-   This class is created by an instance of the EditParametersDialog class
-   to handle the part of the dialog that edits the parameters.
+ This class is an editor for the user settable attributes of an object.
+ It may consist of more than one editor panel.  If the object has
+ any attributes that are instances of EditorPaneFactory, then the
+ panes made by those factories are stacked vertically in this panel.
+ Otherwise, a static method of EditorPaneFactory is
+ used to construct a default editor.
+ <p>
+ The restore() method restores the values of the attributes of the
+ object to their values when this object was created.  This can be used
+ in a modal dialog to implement a cancel button, which restores
+ the attribute values to those before the dialog was opened.
+ <p>
+ This class is created by an instance of the EditParametersDialog class
+ to handle the part of the dialog that edits the parameters.
 
-   @see EditorPaneFactory
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
+ @see EditorPaneFactory
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
 public class Configurer extends JPanel implements CloseListener {
     /** Construct a configurer for the specified object.  This stores
      *  the current values of any Settable attributes of the given object,
@@ -100,7 +99,7 @@ public class Configurer extends JPanel implements CloseListener {
 
         boolean foundOne = false;
         Iterator editors = object.attributeList(EditorPaneFactory.class)
-            .iterator();
+                .iterator();
 
         while (editors.hasNext()) {
             foundOne = true;
@@ -184,47 +183,48 @@ public class Configurer extends JPanel implements CloseListener {
         // invoked before that notification occurs if the
         // "X" is used to close the window.  Swing bug?
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    // First check for changes.
-                    Iterator parameters = _object.attributeList(Settable.class)
+            public void run() {
+                // First check for changes.
+                Iterator parameters = _object.attributeList(Settable.class)
                         .iterator();
-                    boolean hasChanges = false;
-                    StringBuffer buffer = new StringBuffer("<group>\n");
+                boolean hasChanges = false;
+                StringBuffer buffer = new StringBuffer("<group>\n");
 
-                    while (parameters.hasNext()) {
-                        Settable parameter = (Settable) parameters.next();
+                while (parameters.hasNext()) {
+                    Settable parameter = (Settable) parameters.next();
 
-                        if (isVisible(_object, parameter)) {
-                            String newValue = parameter.getExpression();
-                            String oldValue = (String) _originalValues.get(parameter);
+                    if (isVisible(_object, parameter)) {
+                        String newValue = parameter.getExpression();
+                        String oldValue = (String) _originalValues
+                                .get(parameter);
 
-                            if (!newValue.equals(oldValue)) {
-                                hasChanges = true;
-                                buffer.append("<property name=\"");
-                                buffer.append(((NamedObj) parameter).getName(
-                                                      _object));
-                                buffer.append("\" value=\"");
-                                buffer.append(StringUtilities.escapeForXML(
-                                                      oldValue));
-                                buffer.append("\"/>\n");
-                            }
+                        if (!newValue.equals(oldValue)) {
+                            hasChanges = true;
+                            buffer.append("<property name=\"");
+                            buffer.append(((NamedObj) parameter)
+                                    .getName(_object));
+                            buffer.append("\" value=\"");
+                            buffer.append(StringUtilities
+                                    .escapeForXML(oldValue));
+                            buffer.append("\"/>\n");
                         }
                     }
-
-                    buffer.append("</group>\n");
-
-                    // If there are changes, then issue a change request.
-                    // Use a MoMLChangeRequest so undo works... I.e., you can undo a cancel
-                    // of a previous change.
-                    if (hasChanges) {
-                        MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
-                                _object, // context
-                                buffer.toString(), // MoML code
-                                null); // base
-                        _object.requestChange(request);
-                    }
                 }
-            });
+
+                buffer.append("</group>\n");
+
+                // If there are changes, then issue a change request.
+                // Use a MoMLChangeRequest so undo works... I.e., you can undo a cancel
+                // of a previous change.
+                if (hasChanges) {
+                    MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
+                            _object, // context
+                            buffer.toString(), // MoML code
+                            null); // base
+                    _object.requestChange(request);
+                }
+            }
+        });
     }
 
     /** Restore parameter values to their defaults.
@@ -241,71 +241,68 @@ public class Configurer extends JPanel implements CloseListener {
         // That notification occurs some time after the
         // window is destroyed.
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    Iterator parameters = _object.attributeList(Settable.class)
+            public void run() {
+                Iterator parameters = _object.attributeList(Settable.class)
                         .iterator();
-                    StringBuffer buffer = new StringBuffer("<group>\n");
-                    final List parametersReset = new LinkedList();
+                StringBuffer buffer = new StringBuffer("<group>\n");
+                final List parametersReset = new LinkedList();
 
-                    while (parameters.hasNext()) {
-                        Settable parameter = (Settable) parameters.next();
+                while (parameters.hasNext()) {
+                    Settable parameter = (Settable) parameters.next();
 
-                        if (isVisible(_object, parameter)) {
-                            String newValue = parameter.getExpression();
-                            String defaultValue = parameter
-                                .getDefaultExpression();
+                    if (isVisible(_object, parameter)) {
+                        String newValue = parameter.getExpression();
+                        String defaultValue = parameter.getDefaultExpression();
 
-                            if ((defaultValue != null)
-                                    && !newValue.equals(defaultValue)) {
-                                buffer.append("<property name=\"");
-                                buffer.append(((NamedObj) parameter).getName(
-                                                      _object));
-                                buffer.append("\" value=\"");
-                                buffer.append(StringUtilities.escapeForXML(
-                                                      defaultValue));
-                                buffer.append("\"/>\n");
-                                parametersReset.add(parameter);
-                            }
+                        if ((defaultValue != null)
+                                && !newValue.equals(defaultValue)) {
+                            buffer.append("<property name=\"");
+                            buffer.append(((NamedObj) parameter)
+                                    .getName(_object));
+                            buffer.append("\" value=\"");
+                            buffer.append(StringUtilities
+                                    .escapeForXML(defaultValue));
+                            buffer.append("\"/>\n");
+                            parametersReset.add(parameter);
                         }
                     }
-
-                    buffer.append("</group>\n");
-
-                    // If there are changes, then issue a change request.
-                    // Use a MoMLChangeRequest so undo works... I.e., you can undo a cancel
-                    // of a previous change.
-                    if (parametersReset.size() > 0) {
-                        MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
-                                _object, // context
-                                buffer.toString(), // MoML code
-                                null) { // base
-                                protected void _execute()
-                                        throws Exception {
-                                    super._execute();
-
-                                    // Reset the derived level, which has the side
-                                    // effect of marking the object not overridden.
-                                    Iterator parameters = parametersReset
-                                        .iterator();
-
-                                    while (parameters.hasNext()) {
-                                        Settable parameter = (Settable) parameters
-                                            .next();
-
-                                        if (isVisible(_object, parameter)) {
-                                            int derivedLevel = ((NamedObj) parameter)
-                                                .getDerivedLevel();
-                                            ((NamedObj) parameter)
-                                                .setDerivedLevel(derivedLevel);
-                                        }
-                                    }
-                                }
-                            };
-
-                        _object.requestChange(request);
-                    }
                 }
-            });
+
+                buffer.append("</group>\n");
+
+                // If there are changes, then issue a change request.
+                // Use a MoMLChangeRequest so undo works... I.e., you can undo a cancel
+                // of a previous change.
+                if (parametersReset.size() > 0) {
+                    MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
+                            _object, // context
+                            buffer.toString(), // MoML code
+                            null) { // base
+                        protected void _execute() throws Exception {
+                            super._execute();
+
+                            // Reset the derived level, which has the side
+                            // effect of marking the object not overridden.
+                            Iterator parameters = parametersReset.iterator();
+
+                            while (parameters.hasNext()) {
+                                Settable parameter = (Settable) parameters
+                                        .next();
+
+                                if (isVisible(_object, parameter)) {
+                                    int derivedLevel = ((NamedObj) parameter)
+                                            .getDerivedLevel();
+                                    ((NamedObj) parameter)
+                                            .setDerivedLevel(derivedLevel);
+                                }
+                            }
+                        }
+                    };
+
+                    _object.requestChange(request);
+                }
+            }
+        });
     }
 
     /** Notify any panels in this configurer that implement the

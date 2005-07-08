@@ -1,30 +1,30 @@
 /* Giotto Code Generator Utilties
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.giotto.kernel;
 
 import java.io.File;
@@ -49,32 +49,31 @@ import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// GiottoCodeGeneratorUtilties
 
 /**
-   Utilities for generating Giotto code.
+ Utilities for generating Giotto code.
 
-   <p>The Giotto Code Generator has been changed from the earlier generator
-   implemented by Haiyang and Steve in the following respect :-
+ <p>The Giotto Code Generator has been changed from the earlier generator
+ implemented by Haiyang and Steve in the following respect :-
 
-   <p>Any and all unconnected ports are ignored. This includes :
-   <ol>
-   <li> Removal of its mention in the output drivers
-   <li> Removal of its mention in task (...) output (...)
-   <li> Removal of driver code for tasks without inputs
-   </ol>
+ <p>Any and all unconnected ports are ignored. This includes :
+ <ol>
+ <li> Removal of its mention in the output drivers
+ <li> Removal of its mention in task (...) output (...)
+ <li> Removal of driver code for tasks without inputs
+ </ol>
 
-   <p>This class is separate from GiottoCodeGenerator so that we can
-   easily generate Giotto code without using a UI.
+ <p>This class is separate from GiottoCodeGenerator so that we can
+ easily generate Giotto code without using a UI.
 
-   @author Edward A. Lee, Steve Neuendorffer, Haiyang Zheng, Christopher Brooks
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Edward A. Lee, Steve Neuendorffer, Haiyang Zheng, Christopher Brooks
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class GiottoCodeGeneratorUtilities {
     /** Instances of this class cannot be created.
      */
@@ -113,13 +112,13 @@ public class GiottoCodeGeneratorUtilities {
                 String containerName = model.getName();
 
                 generatedCode = _headerCode(model) + _sensorCode(model)
-                    + _actuatorCode(model) + _outputCode(model)
-                    + _tasksCode(model) + _driversCode(model)
-                    + "\n///////////////////////////"
-                    + "///////////////////////////\n"
-                    + "////                    modes"
-                    + "                     ////\n\n" + "start "
-                    + containerName + " {\n" + _modeCode(model) + "}\n";
+                        + _actuatorCode(model) + _outputCode(model)
+                        + _tasksCode(model) + _driversCode(model)
+                        + "\n///////////////////////////"
+                        + "///////////////////////////\n"
+                        + "////                    modes"
+                        + "                     ////\n\n" + "start "
+                        + containerName + " {\n" + _modeCode(model) + "}\n";
             }
 
             model.wrapup();
@@ -144,10 +143,10 @@ public class GiottoCodeGeneratorUtilities {
             if (args.length != 1) {
                 throw new IllegalArgumentException(
                         "Usage: java -classpath $PTII "
-                        + "ptolemy.domains.giotto.kernel"
-                        + ".GiottoCodeGeneratorUtilities ptolemyModel.xml\n"
-                        + "The model is read in and Giotto code is "
-                        + "generated on stdout.");
+                                + "ptolemy.domains.giotto.kernel"
+                                + ".GiottoCodeGeneratorUtilities ptolemyModel.xml\n"
+                                + "The model is read in and Giotto code is "
+                                + "generated on stdout.");
             }
 
             MoMLParser parser = new MoMLParser();
@@ -167,8 +166,8 @@ public class GiottoCodeGeneratorUtilities {
             // because parseFile() works best on relative pathnames and
             // has problems finding resources like files specified in
             // parameters if the xml file was specified as an absolute path.
-            TypedCompositeActor toplevel = (TypedCompositeActor) parser.parse(null,
-                    new File(args[0]).toURL());
+            TypedCompositeActor toplevel = (TypedCompositeActor) parser.parse(
+                    null, new File(args[0]).toURL());
 
             System.out.println(generateGiottoCode(toplevel));
         } catch (Throwable ex) {
@@ -212,8 +211,8 @@ public class GiottoCodeGeneratorUtilities {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer(
                 "\n//////////////////////////////////////////////////////\n"
-                + "////                    actuators                 ////\n\n"
-                + "actuator\n");
+                        + "////                    actuators                 ////\n\n"
+                        + "actuator\n");
 
         Iterator outPorts = model.outputPortList().iterator();
 
@@ -261,16 +260,15 @@ public class GiottoCodeGeneratorUtilities {
 
         Map driverIOMap = new LinkedHashMap();
 
-        for (Iterator inPorts = actor.inputPortList().iterator();
-             inPorts.hasNext();) {
+        for (Iterator inPorts = actor.inputPortList().iterator(); inPorts
+                .hasNext();) {
             IOPort inPort = (IOPort) inPorts.next();
             String sanitizedPortName = StringUtilities.sanitizeName(inPort
                     .getName(model));
             List sourcePortList = inPort.sourcePortList();
 
             if (sourcePortList.size() > 1) {
-                throw new IllegalActionException(inPort,
-                        "Input port cannot "
+                throw new IllegalActionException(inPort, "Input port cannot "
                         + "receive data from multiple sources in Giotto.");
             }
 
@@ -296,8 +294,8 @@ public class GiottoCodeGeneratorUtilities {
         // Write the input port specification of the task
         boolean first = true;
 
-        for (Iterator inPorts = actor.inputPortList().iterator();
-             inPorts.hasNext();) {
+        for (Iterator inPorts = actor.inputPortList().iterator(); inPorts
+                .hasNext();) {
             TypedIOPort port = (TypedIOPort) inPorts.next();
 
             // Ignore unconnected ports
@@ -308,7 +306,8 @@ public class GiottoCodeGeneratorUtilities {
                     code.append(", ");
                 }
 
-                String portID = StringUtilities.sanitizeName(port.getName(model));
+                String portID = StringUtilities.sanitizeName(port
+                        .getName(model));
                 String portTypeID = _getTypeString(port);
                 code.append(portTypeID + " " + portID);
             }
@@ -319,8 +318,8 @@ public class GiottoCodeGeneratorUtilities {
 
         first = true;
 
-        for (Iterator sourceNames = driverIOMap.keySet().iterator();
-             sourceNames.hasNext();) {
+        for (Iterator sourceNames = driverIOMap.keySet().iterator(); sourceNames
+                .hasNext();) {
             if (first) {
                 first = false;
             } else {
@@ -348,7 +347,7 @@ public class GiottoCodeGeneratorUtilities {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer(
                 "\n//////////////////////////////////////////////////////\n"
-                + "////                    drivers for common actors ////\n");
+                        + "////                    drivers for common actors ////\n");
 
         Actor actor;
 
@@ -360,15 +359,15 @@ public class GiottoCodeGeneratorUtilities {
             code.append(_driverCode(model, actor));
         }
 
-        code.append(
-                "\n//////////////////////////////////////////////////////\n"
-                + "////                    output drivers            ////\n\n");
+        code
+                .append("\n//////////////////////////////////////////////////////\n"
+                        + "////                    output drivers            ////\n\n");
 
         // Generate driver functions for toplevel output ports.
         // FIXME: the giotto director should do some checking to
         // avoid several outputs of actors connect to the same output port?
-        for (Iterator outPorts = model.outputPortList().iterator();
-             outPorts.hasNext();) {
+        for (Iterator outPorts = model.outputPortList().iterator(); outPorts
+                .hasNext();) {
             String driverParas = "";
             TypedIOPort port = (TypedIOPort) outPorts.next();
 
@@ -382,8 +381,8 @@ public class GiottoCodeGeneratorUtilities {
 
                 while (portConnected.hasNext()) {
                     IOPort outPort = (IOPort) portConnected.next();
-                    String sanitizedPortName = StringUtilities.sanitizeName(outPort
-                            .getName(model));
+                    String sanitizedPortName = StringUtilities
+                            .sanitizeName(outPort.getName(model));
 
                     if (outPort.isOutput()) {
                         if (driverParas.length() == 0) {
@@ -421,13 +420,21 @@ public class GiottoCodeGeneratorUtilities {
      */
     protected static String _headerCode(TypedCompositeActor model)
             throws IllegalActionException {
-        return "/* Giotto code for " + model.getName() + "\n"
-            + "   Generated by Ptolemy II Giotto Code Generator.\n" + " */\n\n"
-            + "//////////////////////////////////////////////////////\n" + "//// "
-            + model.getName() + "\n" + "/**\n" + model.getName() + "\n"
-            + "@author\n"
-            + "@version $Id$\n"
-            + "*/\n";
+        return "/* Giotto code for "
+                + model.getName()
+                + "\n"
+                + "   Generated by Ptolemy II Giotto Code Generator.\n"
+                + " */\n\n"
+                + "//////////////////////////////////////////////////////\n"
+                + "//// "
+                + model.getName()
+                + "\n"
+                + "/**\n"
+                + model.getName()
+                + "\n"
+                + "@author\n"
+                + "@version $Id$\n"
+                + "*/\n";
     }
 
     /** Initialize the code generation process by checking whether the
@@ -460,9 +467,9 @@ public class GiottoCodeGeneratorUtilities {
 
         StringBuffer code = new StringBuffer(
                 "\n    /////////////////////////////////////////////"
-                + "/////////\n" + "    ////                   mode " + modeName
-                + "\n" + "    mode " + modeName + " () period " + periodValue
-                + " {\n");
+                        + "/////////\n" + "    ////                   mode "
+                        + modeName + "\n" + "    mode " + modeName
+                        + " () period " + periodValue + " {\n");
 
         //FIXME: How to deal with several outputs of Giotto director?
         Iterator outPorts = model.outputPortList().iterator();
@@ -480,7 +487,8 @@ public class GiottoCodeGeneratorUtilities {
                     Iterator portConnected = port.insidePortList().iterator();
 
                     while (portConnected.hasNext()) {
-                        TypedIOPort outPort = (TypedIOPort) portConnected.next();
+                        TypedIOPort outPort = (TypedIOPort) portConnected
+                                .next();
 
                         if (!outPort.isOutput()) {
                             continue;
@@ -490,18 +498,19 @@ public class GiottoCodeGeneratorUtilities {
 
                         if (actor instanceof Actor) {
                             Parameter actorFreqPara = (Parameter) ((NamedObj) actor)
-                                .getAttribute("frequency");
+                                    .getAttribute("frequency");
 
                             if (actorFreqPara == null) {
                                 actorFreq = 1;
                             } else {
-                                actorFreq = ((IntToken) actorFreqPara.getToken())
-                                    .intValue();
+                                actorFreq = ((IntToken) actorFreqPara
+                                        .getToken()).intValue();
                             }
                         }
 
                         code.append("    actfreq " + actorFreq + " do "
-                                + outputName + " (" + outputName + "_driver);\n");
+                                + outputName + " (" + outputName
+                                + "_driver);\n");
                     }
                 }
             }
@@ -512,11 +521,11 @@ public class GiottoCodeGeneratorUtilities {
 
         while (actors.hasNext()) {
             TypedActor actor = (TypedActor) actors.next();
-            actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName(
-                                                             model));
+            actorName = StringUtilities.sanitizeName(((NamedObj) actor)
+                    .getName(model));
 
             Parameter actorFreqPara = (Parameter) ((NamedObj) actor)
-                .getAttribute("frequency");
+                    .getAttribute("frequency");
 
             if (actorFreqPara == null) {
                 actorFreq = 1;
@@ -552,8 +561,8 @@ public class GiottoCodeGeneratorUtilities {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer(
                 "\n//////////////////////////////////////////////////////\n"
-                + "////                    output ports              ////\n\n"
-                + "output\n");
+                        + "////                    output ports              ////\n\n"
+                        + "output\n");
 
         Iterator actors = model.entityList().iterator();
 
@@ -566,8 +575,8 @@ public class GiottoCodeGeneratorUtilities {
 
                 // Ignore unconnected ports
                 if (port.getWidth() > 0) {
-                    String portID = StringUtilities.sanitizeName(port.getName(
-                                                                         model));
+                    String portID = StringUtilities.sanitizeName(port
+                            .getName(model));
                     String portTypeID = _getTypeString(port);
                     String portInitialValue = "CGinit_" + portID;
                     checkGiottoID(portID);
@@ -590,8 +599,8 @@ public class GiottoCodeGeneratorUtilities {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer(
                 "\n//////////////////////////////////////////////////////\n"
-                + "////                    sensors                   ////\n\n"
-                + "sensor\n");
+                        + "////                    sensors                   ////\n\n"
+                        + "sensor\n");
 
         Iterator inPorts = model.inputPortList().iterator();
 
@@ -641,8 +650,8 @@ public class GiottoCodeGeneratorUtilities {
 
         String inputPorts = "";
 
-        for (Iterator inPorts = actor.inputPortList().iterator();
-             inPorts.hasNext();) {
+        for (Iterator inPorts = actor.inputPortList().iterator(); inPorts
+                .hasNext();) {
             TypedIOPort port = (TypedIOPort) inPorts.next();
 
             // Ignore unconnected ports
@@ -654,7 +663,8 @@ public class GiottoCodeGeneratorUtilities {
                     code.append(", ");
                 }
 
-                String portID = StringUtilities.sanitizeName(port.getName(model));
+                String portID = StringUtilities.sanitizeName(port
+                        .getName(model));
                 String portTypeID = _getTypeString(port);
 
                 code.append(portTypeID + " " + portID);
@@ -669,8 +679,8 @@ public class GiottoCodeGeneratorUtilities {
 
         String outputPorts = "";
 
-        for (Iterator outPorts = actor.outputPortList().iterator();
-             outPorts.hasNext();) {
+        for (Iterator outPorts = actor.outputPortList().iterator(); outPorts
+                .hasNext();) {
             TypedIOPort port = (TypedIOPort) outPorts.next();
 
             // Ignore unconnected ports
@@ -682,7 +692,8 @@ public class GiottoCodeGeneratorUtilities {
                     outputPorts += ", ";
                 }
 
-                String portID = StringUtilities.sanitizeName(port.getName(model));
+                String portID = StringUtilities.sanitizeName(port
+                        .getName(model));
                 code.append(portID);
                 outputPorts += portID;
             }
@@ -712,7 +723,7 @@ public class GiottoCodeGeneratorUtilities {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer(
                 "\n//////////////////////////////////////////////////////\n"
-                + "////                    tasks                     ////\n");
+                        + "////                    tasks                     ////\n");
         Actor actor;
 
         // Generate task code for common actors.

@@ -1,31 +1,31 @@
 /* Parent class of all atomic CSP actors.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.csp.kernel;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -36,80 +36,80 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CSPActor
 
 /**
-   This class is the base class of all atomic actors using the
-   non-deterministic communication and timed features of  the communicating
-   sequential processes(CSP) domain.
-   <p>
-   Two conditional communication constructs are available: "Conditional if"
-   (CIF) and "Conditional do" (CDO). The constructs are analogous to,
-   but different from, the common <I>if</I> and <I>do</I> statements. The
-   steps involved in using both of these are
-   <BR>(1) create the branches involved and assign an identification number
-   to each branch.
-   <BR>(2) call the chooseBranch() method, which invokes the chooseBranch()
-   method of the controller to determine which branch should succeed.
-   <BR>(3) execute the statements associated with the successful branch.
-   <P>
-   Each branch is either an instance of ConditionalSend or ConditionalReceive,
-   depending on the communication in the branch. Please see these classes for
-   details on <I>guarded communication statements</I>, which they represent.
-   The identification number assigned to each branch only needs to identify
-   the branch uniquely for one sequence of the steps above. A good example
-   of how to use a CDO is the code in the actor CSPBuffer, in the
-   ptolemy.domains.csp.lib package. One significant difference between a
-   CDO (or CIF) and a common <I>do</I> (<I>if</I>) is that all the branches
-   are evaluated in parallel, as opposed to sequentially.
+ This class is the base class of all atomic actors using the
+ non-deterministic communication and timed features of  the communicating
+ sequential processes(CSP) domain.
+ <p>
+ Two conditional communication constructs are available: "Conditional if"
+ (CIF) and "Conditional do" (CDO). The constructs are analogous to,
+ but different from, the common <I>if</I> and <I>do</I> statements. The
+ steps involved in using both of these are
+ <BR>(1) create the branches involved and assign an identification number
+ to each branch.
+ <BR>(2) call the chooseBranch() method, which invokes the chooseBranch()
+ method of the controller to determine which branch should succeed.
+ <BR>(3) execute the statements associated with the successful branch.
+ <P>
+ Each branch is either an instance of ConditionalSend or ConditionalReceive,
+ depending on the communication in the branch. Please see these classes for
+ details on <I>guarded communication statements</I>, which they represent.
+ The identification number assigned to each branch only needs to identify
+ the branch uniquely for one sequence of the steps above. A good example
+ of how to use a CDO is the code in the actor CSPBuffer, in the
+ ptolemy.domains.csp.lib package. One significant difference between a
+ CDO (or CIF) and a common <I>do</I> (<I>if</I>) is that all the branches
+ are evaluated in parallel, as opposed to sequentially.
 
-   <p>The chooseBranch() method takes an array of the branches as an
-   argument, and simply passes the branches to the chooseBranch() method
-   of the controller to decide which branch is successful. The successful
-   branch is the branch that succeeds with its communication. See the
-   chooseBranch() method of ConditionalBranchController for details
-   about how the successful branch is chosen.
+ <p>The chooseBranch() method takes an array of the branches as an
+ argument, and simply passes the branches to the chooseBranch() method
+ of the controller to decide which branch is successful. The successful
+ branch is the branch that succeeds with its communication. See the
+ chooseBranch() method of ConditionalBranchController for details
+ about how the successful branch is chosen.
 
-   <p>Time is supported by the method delay(double). This delays the
-   process until time has advanced the argument time from the current
-   model time.  If this method is called with a zero argument, then
-   the process continues immediately. As far as each process is
-   concerned, time can only increase while the process is blocked
-   trying to rendezvous or when it is delayed. A process can be aware
-   of the current model time, but it should only affect the model time
-   through delays. Thus time is centralized in that it is advanced by
-   the director controlling the process represented by this actor.
+ <p>Time is supported by the method delay(double). This delays the
+ process until time has advanced the argument time from the current
+ model time.  If this method is called with a zero argument, then
+ the process continues immediately. As far as each process is
+ concerned, time can only increase while the process is blocked
+ trying to rendezvous or when it is delayed. A process can be aware
+ of the current model time, but it should only affect the model time
+ through delays. Thus time is centralized in that it is advanced by
+ the director controlling the process represented by this actor.
 
-   <p>A process can also choose to delay its execution until the next
-   occasion a deadlock occurs by calling _waitForDeadlock(). The
-   process resumes at the same model time at which it delayed. This is
-   useful if a process wishes to delay itself until some changes to
-   the topology have been carried out.
+ <p>A process can also choose to delay its execution until the next
+ occasion a deadlock occurs by calling _waitForDeadlock(). The
+ process resumes at the same model time at which it delayed. This is
+ useful if a process wishes to delay itself until some changes to
+ the topology have been carried out.
 
-   <p> The model of computation used in this domain extends the
-   original CSP, as proposed by Hoare in 1978, model of computation in
-   two ways.  First it allows non-deterministic communication using
-   both sends and receives. The original model only allowed
-   non-deterministic receives.  Second, a centralized notion of time
-   has been added. The original proposal was untimed. Neither of these
-   extensions are new, but it is worth noting the differences between
-   the model used here and the original model. If an actor wishes to
-   use either non-deterministic rendezvous or time, it must derive
-   from this class. Otherwise deriving from AtomicActor is sufficient.
+ <p> The model of computation used in this domain extends the
+ original CSP, as proposed by Hoare in 1978, model of computation in
+ two ways.  First it allows non-deterministic communication using
+ both sends and receives. The original model only allowed
+ non-deterministic receives.  Second, a centralized notion of time
+ has been added. The original proposal was untimed. Neither of these
+ extensions are new, but it is worth noting the differences between
+ the model used here and the original model. If an actor wishes to
+ use either non-deterministic rendezvous or time, it must derive
+ from this class. Otherwise deriving from AtomicActor is sufficient.
 
-   <p>
-   @author Neil Smyth, Bilung Lee
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (nsmyth)
-   @Pt.AcceptedRating Yellow (liuj)
-   @see ConditionalBranch
-   @see ConditionalReceive
-   @see ConditionalSend
-*/
-public class CSPActor extends TypedAtomicActor implements ConditionalBranchActor {
+ <p>
+ @author Neil Smyth, Bilung Lee
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (nsmyth)
+ @Pt.AcceptedRating Yellow (liuj)
+ @see ConditionalBranch
+ @see ConditionalReceive
+ @see ConditionalSend
+ */
+public class CSPActor extends TypedAtomicActor implements
+        ConditionalBranchActor {
     /** Construct a CSPActor in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.
@@ -179,7 +179,8 @@ public class CSPActor extends TypedAtomicActor implements ConditionalBranchActor
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CSPActor newObject = (CSPActor) super.clone(workspace);
         newObject._delayed = false;
-        newObject._conditionalBranchController = new ConditionalBranchController(newObject);
+        newObject._conditionalBranchController = new ConditionalBranchController(
+                newObject);
         return newObject;
     }
 

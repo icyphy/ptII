@@ -1,30 +1,30 @@
 /* An actor that produces a sequence of frames from a video camera.
 
-@Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 /* Some of this code is copied from Sun's sample code.  Hence:
  *
  * @(#)FrameAccess.java        1.5 01/03/13
@@ -90,23 +90,22 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// VideoCamera
 
 /**
-   An actor that produces a sequence of frames from a video camera.
-   This actor requires the Java Media Framework, and has been tested
-   at least with version 2.1.1.
+ An actor that produces a sequence of frames from a video camera.
+ This actor requires the Java Media Framework, and has been tested
+ at least with version 2.1.1.
 
-   FIXME: more info.
+ FIXME: more info.
 
-   @author  Christopher Hylands, Edward Lee, James Yeh, Paul Yang, David Lee
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red
-   @Pt.AcceptedRating Red
-*/
+ @author  Christopher Hylands, Edward Lee, James Yeh, Paul Yang, David Lee
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red
+ @Pt.AcceptedRating Red
+ */
 public class VideoCamera extends Source implements ControllerListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -215,7 +214,7 @@ public class VideoCamera extends Source implements ControllerListener {
         if (deviceList.size() == 0) {
             throw new IllegalActionException(this,
                     "No video capture devices found by the "
-                    + "Java Media Framework.");
+                            + "Java Media Framework.");
         }
 
         // List the devices in the debug window.
@@ -235,7 +234,7 @@ public class VideoCamera extends Source implements ControllerListener {
         // Choose the device from the device list.
         // FIXME: This isn't crashing gracefully at all.
         CaptureDeviceInfo captureDeviceInfo = (CaptureDeviceInfo) deviceList
-            .get(((IntToken) deviceNumber.getToken()).intValue());
+                .get(((IntToken) deviceNumber.getToken()).intValue());
 
         // Create a locator for this device.
         MediaLocator locator = captureDeviceInfo.getLocator();
@@ -244,11 +243,14 @@ public class VideoCamera extends Source implements ControllerListener {
         try {
             _processor = Manager.createProcessor(locator);
         } catch (Exception ex) {
-            throw new IllegalActionException(null, ex,
+            throw new IllegalActionException(
+                    null,
+                    ex,
                     "Failed to create a processor for the media locator '"
-                    + locator + "'. Note that you may need to run jmfinit, "
-                    + "which is found in the JMF directory, for example "
-                    + "c:/Program Files/JMF2.1.1/bin");
+                            + locator
+                            + "'. Note that you may need to run jmfinit, "
+                            + "which is found in the JMF directory, for example "
+                            + "c:/Program Files/JMF2.1.1/bin");
         }
 
         // Make this a control listener.
@@ -301,9 +303,7 @@ public class VideoCamera extends Source implements ControllerListener {
         try {
             _cameraCodec = new PreAccessCodec();
 
-            Codec[] codec = {
-                _cameraCodec
-            };
+            Codec[] codec = { _cameraCodec };
             videoTrack.setCodecChain(codec);
         } catch (UnsupportedPlugInException e) {
             throw new IllegalActionException(
@@ -392,6 +392,7 @@ public class VideoCamera extends Source implements ControllerListener {
         }
 
         Format input = null;
+
         Format output = null;
 
         public String getName() {
@@ -411,18 +412,12 @@ public class VideoCamera extends Source implements ControllerListener {
         }
 
         public Format[] getSupportedInputFormats() {
-            return new Format[] {
-                new YUVFormat(),
-                new RGBFormat()
-            };
+            return new Format[] { new YUVFormat(), new RGBFormat() };
         }
 
         public Format[] getSupportedOutputFormats(Format in) {
             if (in == null) {
-                return new Format[] {
-                    new YUVFormat(),
-                    new RGBFormat()
-                };
+                return new Format[] { new YUVFormat(), new RGBFormat() };
             } else {
                 // If an input format is given, we use that input format
                 // as the output since we are not modifying the bit stream
@@ -464,12 +459,17 @@ public class VideoCamera extends Source implements ControllerListener {
 
     // The java.awt.Image that we are producing
     private Buffer _bufferNew;
+
     private boolean _newFrame = false;
 
     // The video processor.
     private Processor _processor;
+
     private PreAccessCodec _cameraCodec;
+
     private Object _waitSync = new Object();
+
     private boolean _stateTransitionOK = true;
+
     private Buffer _frameBuffer = new Buffer();
 }

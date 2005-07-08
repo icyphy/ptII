@@ -1,29 +1,29 @@
 /* A base class for actions with semicolon delimited lists of commands.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fsm.kernel;
 
 import java.util.Collections;
@@ -53,48 +53,47 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AbstractActionsAttribute
 
 /**
-   A base class for actions with semicolon delimited lists of commands.
-   <p>
-   The value of this attribute is a semicolon separated list of commands,
-   where each command gives a destination to send data to and a value
-   to send. The actions are given by calling setExpression() with
-   a string of the form:
-   <pre>
-   <i>command</i>; <i>command</i>; ...
-   </pre>
-   where each <i>command</i> has the form:
-   <pre>
-   <i>destination</i> = <i>expression</i>
-   </pre>
-   where <i>destination</i> is either
-   <pre>
-   <i>name</i>
-   </pre>
-   or
-   <pre>
-   <i>name</i>(<i>number</i>)
-   </pre>
-   <p>
-   The <i>expression</i> is a string giving an expression in the usual
-   Ptolemy II expression language.  The expression may include references
-   to variables and parameters contained by the FSM actor.
+ A base class for actions with semicolon delimited lists of commands.
+ <p>
+ The value of this attribute is a semicolon separated list of commands,
+ where each command gives a destination to send data to and a value
+ to send. The actions are given by calling setExpression() with
+ a string of the form:
+ <pre>
+ <i>command</i>; <i>command</i>; ...
+ </pre>
+ where each <i>command</i> has the form:
+ <pre>
+ <i>destination</i> = <i>expression</i>
+ </pre>
+ where <i>destination</i> is either
+ <pre>
+ <i>name</i>
+ </pre>
+ or
+ <pre>
+ <i>name</i>(<i>number</i>)
+ </pre>
+ <p>
+ The <i>expression</i> is a string giving an expression in the usual
+ Ptolemy II expression language.  The expression may include references
+ to variables and parameters contained by the FSM actor.
 
-   @author Xiaojun Liu and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-   @see CommitActionsAttribute
-   @see Transition
-   @see FSMActor
-*/
-public abstract class AbstractActionsAttribute extends Action
-    implements HasTypeConstraints {
+ @author Xiaojun Liu and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ @see CommitActionsAttribute
+ @see Transition
+ @see FSMActor
+ */
+public abstract class AbstractActionsAttribute extends Action implements
+        HasTypeConstraints {
     /** Construct an action in the specified workspace with an empty
      *  string as a name.
      *  The object is added to the directory of the workspace.
@@ -153,7 +152,8 @@ public abstract class AbstractActionsAttribute extends Action
      *  port, or a channel has not been specified for the name.
      */
     public int getChannel(String name) throws IllegalActionException {
-        Integer integer = (Integer) _numbers.get(_destinationNames.indexOf(name));
+        Integer integer = (Integer) _numbers.get(_destinationNames
+                .indexOf(name));
 
         if (integer == null) {
             throw new IllegalActionException("No channel was specified for "
@@ -197,8 +197,8 @@ public abstract class AbstractActionsAttribute extends Action
      */
     public String getExpression(String name) {
         ParseTreeWriter writer = new ParseTreeWriter();
-        return writer.printParseTree((ASTPtRootNode) _parseTrees.get(
-                                             _destinationNames.indexOf(name)));
+        return writer.printParseTree((ASTPtRootNode) _parseTrees
+                .get(_destinationNames.indexOf(name)));
     }
 
     /** Test if a channel number is associated with the given name.
@@ -206,7 +206,8 @@ public abstract class AbstractActionsAttribute extends Action
      *  @return true If a channel was specified.
      */
     public boolean isChannelSpecified(String name) {
-        Integer integer = (Integer) _numbers.get(_destinationNames.indexOf(name));
+        Integer integer = (Integer) _numbers.get(_destinationNames
+                .indexOf(name));
         return integer != null;
     }
 
@@ -256,21 +257,23 @@ public abstract class AbstractActionsAttribute extends Action
                 if (closeParen < openParen) {
                     throw new IllegalActionException(this,
                             "Malformed action: expected destination = "
-                            + "expression. Got: " + completeDestinationSpec);
+                                    + "expression. Got: "
+                                    + completeDestinationSpec);
                 }
 
                 _destinationNames.add(completeDestinationSpec.substring(0,
-                                              openParen).trim());
+                        openParen).trim());
 
-                String channelSpec = completeDestinationSpec.substring(openParen
-                        + 1, closeParen);
+                String channelSpec = completeDestinationSpec.substring(
+                        openParen + 1, closeParen);
 
                 try {
                     _numbers.add(new Integer(channelSpec));
                 } catch (NumberFormatException ex) {
                     throw new IllegalActionException(this,
                             "Malformed action: expected destination = "
-                            + "expression. Got: " + completeDestinationSpec);
+                                    + "expression. Got: "
+                                    + completeDestinationSpec);
                 }
             } else {
                 // No channel is specified.
@@ -291,8 +294,8 @@ public abstract class AbstractActionsAttribute extends Action
     public List typeConstraintList() {
         List list = new LinkedList();
 
-        for (Iterator names = getDestinationNameList().iterator();
-             names.hasNext();) {
+        for (Iterator names = getDestinationNameList().iterator(); names
+                .hasNext();) {
             String name = (String) names.next();
 
             try {
@@ -421,11 +424,12 @@ public abstract class AbstractActionsAttribute extends Action
                     }
                 }
 
-                ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees.get(_destinationNames
-                        .indexOf(_name));
+                ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees
+                        .get(_destinationNames.indexOf(_name));
 
                 if (_scope == null) {
-                    FSMActor fsmActor = (FSMActor) getContainer().getContainer();
+                    FSMActor fsmActor = (FSMActor) getContainer()
+                            .getContainer();
                     _scope = fsmActor.getPortScope();
                 }
 
@@ -433,7 +437,8 @@ public abstract class AbstractActionsAttribute extends Action
                 return type;
             } catch (Exception ex) {
                 throw new IllegalActionException(AbstractActionsAttribute.this,
-                        ex, "An error occurred during expression type inference");
+                        ex,
+                        "An error occurred during expression type inference");
             }
         }
 
@@ -448,11 +453,12 @@ public abstract class AbstractActionsAttribute extends Action
             // inputs and all of the parameters that are free variables for
             // the expression.
             try {
-                ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees.get(_destinationNames
-                        .indexOf(_name));
+                ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees
+                        .get(_destinationNames.indexOf(_name));
 
                 if (_scope == null) {
-                    FSMActor fsmActor = (FSMActor) getContainer().getContainer();
+                    FSMActor fsmActor = (FSMActor) getContainer()
+                            .getContainer();
                     _scope = fsmActor.getPortScope();
                 }
 
@@ -469,8 +475,8 @@ public abstract class AbstractActionsAttribute extends Action
                     }
                 }
 
-                return (InequalityTerm[]) termList.toArray(new InequalityTerm[termList
-                                                                   .size()]);
+                return (InequalityTerm[]) termList
+                        .toArray(new InequalityTerm[termList.size()]);
             } catch (IllegalActionException ex) {
                 return new InequalityTerm[0];
             }
@@ -486,8 +492,11 @@ public abstract class AbstractActionsAttribute extends Action
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
         private String _name;
+
         private String _description;
+
         private ParseTreeTypeInference _typeInference = new ParseTreeTypeInference();
+
         private ParseTreeFreeVariableCollector _variableCollector = new ParseTreeFreeVariableCollector();
     }
 }

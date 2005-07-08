@@ -1,30 +1,30 @@
 /* Execute a command in a subprocess.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import java.io.BufferedWriter;
@@ -54,56 +54,55 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Execute
 
 /**
-   Execute a command as a separately running subprocess. A command
-   is a single executable.  To get the get the effect of executing
-   a command provided in a shell interpreter, you can set
-   <i>command</i> to "cmd" (Windows) or "sh" (Windows with Cygwin
-   or Linux), and then provide commands at the <i>input</i> port.
-   Note that each command must be terminated with a newline.
-   For example, to open a model in vergil and run it, you can
-   set <i>command</i> to "sh" and use a Const actor to provide
-   on the <i>input</i> port the string:
-   <pre>
-   "vergil -run model.xml\n exit\n"
-   </pre>
+ Execute a command as a separately running subprocess. A command
+ is a single executable.  To get the get the effect of executing
+ a command provided in a shell interpreter, you can set
+ <i>command</i> to "cmd" (Windows) or "sh" (Windows with Cygwin
+ or Linux), and then provide commands at the <i>input</i> port.
+ Note that each command must be terminated with a newline.
+ For example, to open a model in vergil and run it, you can
+ set <i>command</i> to "sh" and use a Const actor to provide
+ on the <i>input</i> port the string:
+ <pre>
+ "vergil -run model.xml\n exit\n"
+ </pre>
 
-   <p>This actor uses java.lang.Runtime.exec() to invoke a subprocess
-   named by the <i>command</i> parameter in a <i>directory</i> with an
-   <i>environment</i>.  Data from the <i>input</i> port (if any) is
-   passed to the input of the subprocess.  The subprocess is run until it
-   exits and then contents of the output and error streams of the
-   subprocess (if any) are passed to the <i>output</i> and <i>error</i>
-   ports.
+ <p>This actor uses java.lang.Runtime.exec() to invoke a subprocess
+ named by the <i>command</i> parameter in a <i>directory</i> with an
+ <i>environment</i>.  Data from the <i>input</i> port (if any) is
+ passed to the input of the subprocess.  The subprocess is run until it
+ exits and then contents of the output and error streams of the
+ subprocess (if any) are passed to the <i>output</i> and <i>error</i>
+ ports.
 
-   <p>If the subprocess generates no data on the output or error stream,
-   then the data on the corresponding port(s) will consist of the empty string.
+ <p>If the subprocess generates no data on the output or error stream,
+ then the data on the corresponding port(s) will consist of the empty string.
 
-   <p>A much more interesting actor could be written using a
-   Kahn Process Network.  This actor would generate output asynchronously
-   as the process was executing.
+ <p>A much more interesting actor could be written using a
+ Kahn Process Network.  This actor would generate output asynchronously
+ as the process was executing.
 
-   <p>Currently, there appears to be no way to get the subprocess to
-   exit by passing it input. For example, if the <i>command</i> is set
-   to the <code>cat</code> command, and we pass in a Const with the
-   value <code>\04</code>, then the cat subprocess does <b>not</b> interpret
-   this as the end of file marker and exit.
+ <p>Currently, there appears to be no way to get the subprocess to
+ exit by passing it input. For example, if the <i>command</i> is set
+ to the <code>cat</code> command, and we pass in a Const with the
+ value <code>\04</code>, then the cat subprocess does <b>not</b> interpret
+ this as the end of file marker and exit.
 
-   <p>For information about Runtime.exec(), see:
-   <br><a href="http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html" target="_top">http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
-   <br>and
-   <br><a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a>
+ <p>For information about Runtime.exec(), see:
+ <br><a href="http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html" target="_top">http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
+ <br>and
+ <br><a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a>
 
-   @author Christopher Hylands Brooks, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (cxh) 2/5/04
-   @Pt.AcceptedRating Yellow (cxh) 2/24/04
-*/
+ @author Christopher Hylands Brooks, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (cxh) 2/5/04
+ @Pt.AcceptedRating Yellow (cxh) 2/24/04
+ */
 public class Exec extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -119,8 +118,8 @@ public class Exec extends TypedAtomicActor {
 
         // Uncomment the next line to see debugging statements
         //addDebugListener(new ptolemy.kernel.util.StreamListener());
-        command = new PortParameter(this, "command",
-                new StringToken("echo \"Hello, world.\""));
+        command = new PortParameter(this, "command", new StringToken(
+                "echo \"Hello, world.\""));
 
         // Make command be a StringParameter (no surrounding double quotes).
         command.setStringMode(true);
@@ -131,17 +130,12 @@ public class Exec extends TypedAtomicActor {
 
         environment = new Parameter(this, "environment");
 
-        String[] labels = new String[] {
-            "name",
-            "value"
-        };
-        Type[] values = new Type[] {
-            BaseType.STRING,
-            BaseType.STRING
-        };
+        String[] labels = new String[] { "name", "value" };
+        Type[] values = new Type[] { BaseType.STRING, BaseType.STRING };
 
         // An array of records {{name = "", value = ""}}
-        environment.setTypeEquals(new ArrayType(new RecordType(labels, values)));
+        environment
+                .setTypeEquals(new ArrayType(new RecordType(labels, values)));
 
         // Array with an empty name and value means
         // default environment of the calling process.
@@ -297,8 +291,7 @@ public class Exec extends TypedAtomicActor {
             if (processReturnCode != 0) {
                 // We could have a parameter that would enable
                 // or disable this.
-                throw new IllegalActionException(this,
-                        "Executing command \""
+                throw new IllegalActionException(this, "Executing command \""
                         + ((StringToken) command.getToken()).stringValue()
                         + "\" returned a non-zero return value of "
                         + processReturnCode);
@@ -385,15 +378,17 @@ public class Exec extends TypedAtomicActor {
             // with a double quote so the substring is considered to
             // be a single token and are returned as a single array
             // element.
-            String[] commandArray = StringUtilities.tokenizeForExec(((StringToken) command
-                                                                            .getToken()).stringValue());
+            String[] commandArray = StringUtilities
+                    .tokenizeForExec(((StringToken) command.getToken())
+                            .stringValue());
 
             File directoryAsFile = directory.asFile();
 
             if (_debugging) {
                 _debug("About to exec \""
-                        + ((StringToken) command.getToken()).stringValue() + "\""
-                        + "\n in \"" + directoryAsFile + "\"\n with environment:");
+                        + ((StringToken) command.getToken()).stringValue()
+                        + "\"" + "\n in \"" + directoryAsFile
+                        + "\"\n with environment:");
             }
 
             // Process the environment parameter.
@@ -410,11 +405,11 @@ public class Exec extends TypedAtomicActor {
 
                 for (int i = 0; i < environmentTokens.length(); i++) {
                     StringToken nameToken = (StringToken) (((RecordToken) environmentTokens
-                                                                   .getElement(i)).get("name"));
+                            .getElement(i)).get("name"));
                     StringToken valueToken = (StringToken) (((RecordToken) environmentTokens
-                                                                    .getElement(i)).get("value"));
+                            .getElement(i)).get("value"));
                     environmentArray[i] = nameToken.stringValue() + "="
-                        + valueToken.stringValue();
+                            + valueToken.stringValue();
 
                     if (_debugging) {
                         _debug("  " + i + ". \"" + environmentArray[i] + "\"");
@@ -451,13 +446,13 @@ public class Exec extends TypedAtomicActor {
                 _streamReaderThreadCount = 0;
             }
 
-            OutputStreamWriter inputStreamWriter = new OutputStreamWriter(_process
-                    .getOutputStream());
+            OutputStreamWriter inputStreamWriter = new OutputStreamWriter(
+                    _process.getOutputStream());
             _inputBufferedWriter = new BufferedWriter(inputStreamWriter);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Problem executing the command '" + command.getExpression()
-                    + "'");
+                            + "'");
         }
     }
 
@@ -522,8 +517,8 @@ public class Exec extends TypedAtomicActor {
                 _inputStreamReader.close();
                 _inputStreamReaderClosed = true;
             } catch (Exception ex) {
-                throw new InternalErrorException(null, ex,
-                        getName() + " failed to close.");
+                throw new InternalErrorException(null, ex, getName()
+                        + " failed to close.");
             }
 
             return results;
@@ -565,8 +560,8 @@ public class Exec extends TypedAtomicActor {
                     _stringBuffer.append(chars, 0, length);
                 }
             } catch (Throwable throwable) {
-                throw new InternalErrorException(_actor, throwable,
-                        getName() + ": Failed while reading from " + _inputStream);
+                throw new InternalErrorException(_actor, throwable, getName()
+                        + ": Failed while reading from " + _inputStream);
             }
         }
 

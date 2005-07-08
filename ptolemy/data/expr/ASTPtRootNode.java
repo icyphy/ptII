@@ -1,35 +1,35 @@
 /* PtRootNode is the root node of the parse tree. It is also the base
-   class for all Ptolemy II nodes as each node is a root node for the
-   tree below it.
+ class for all Ptolemy II nodes as each node is a root node for the
+ tree below it.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-   Created : May 1998
+ Created : May 1998
 
-*/
+ */
 package ptolemy.data.expr;
 
 import java.util.ArrayList;
@@ -38,38 +38,37 @@ import java.util.Map;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtRootNode
 
 /**
-   The parse tree created from the expression string consists of a
-   hierarchy of node objects, each of which is an instance of a class
-   derived from this class. This is because each node is a root node for
-   the portion of the parse tree below it.
-   <p>
-   Each node in the parse tree stores its type and state information
-   in a ptolemy.data.Token variable. A parent node uses the type and value of
-   the ptolemy.data.Tokens contained in its child nodes to evaluate the type
-   and value of the ptolemy.data.Token it should contain.
-   <P>
-   When a node has more than one child nodes, the lexical tokens relating
-   the child nodes are stored in the parent node. Thus if we parsed a string
-   such as "2+4-9", the child nodes would be leaf nodes containing
-   ptolemy.data.Token's with values 2, 4 and 9, and the parent node would
-   store the lexical tokens representing the "+" and the "-".
-   <p>
-   The tree is evaluated in a top down manner, calling evaluateParseTree() on the
-   children of each node before resolving the type of the current node.
+ The parse tree created from the expression string consists of a
+ hierarchy of node objects, each of which is an instance of a class
+ derived from this class. This is because each node is a root node for
+ the portion of the parse tree below it.
+ <p>
+ Each node in the parse tree stores its type and state information
+ in a ptolemy.data.Token variable. A parent node uses the type and value of
+ the ptolemy.data.Tokens contained in its child nodes to evaluate the type
+ and value of the ptolemy.data.Token it should contain.
+ <P>
+ When a node has more than one child nodes, the lexical tokens relating
+ the child nodes are stored in the parent node. Thus if we parsed a string
+ such as "2+4-9", the child nodes would be leaf nodes containing
+ ptolemy.data.Token's with values 2, 4 and 9, and the parent node would
+ store the lexical tokens representing the "+" and the "-".
+ <p>
+ The tree is evaluated in a top down manner, calling evaluateParseTree() on the
+ children of each node before resolving the type of the current node.
 
-   @author Neil Smyth
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (nsmyth)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.data.expr.PtParser
-   @see ptolemy.data.Token
-*/
+ @author Neil Smyth
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (nsmyth)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.data.expr.PtParser
+ @see ptolemy.data.Token
+ */
 public class ASTPtRootNode implements Node, Cloneable {
     public ASTPtRootNode(int i) {
         _id = i;
@@ -306,7 +305,7 @@ public class ASTPtRootNode implements Node, Cloneable {
      */
     public String toString() {
         return PtParserTreeConstants.jjtNodeName[_id] + ":" + _isConstant + ":"
-            + _ptType + ":" + _ptToken;
+                + _ptType + ":" + _ptToken;
     }
 
     public String toString(String prefix) {
@@ -319,13 +318,16 @@ public class ASTPtRootNode implements Node, Cloneable {
      */
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         throw new IllegalActionException("The visit() method is not "
-                + " implemented for nodes of type " + getClass().getName() + ".");
+                + " implemented for nodes of type " + getClass().getName()
+                + ".");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     protected Node _parent;
+
     protected ArrayList _children;
+
     protected int _id;
 
     /** Each node stores its type and state information in this variable.

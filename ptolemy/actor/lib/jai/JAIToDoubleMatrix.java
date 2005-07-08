@@ -1,31 +1,31 @@
 /* Takes a JAIImageToken, and outputs the data as a DoubleMatrixToken.
 
-@Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.jai;
 
 import java.awt.image.DataBuffer;
@@ -43,32 +43,31 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// JAIToDoubleMatrix
 
 /**
-   This actor takes a single banded image and outputs a DoubleMatrixToken
-   containing the data.
+ This actor takes a single banded image and outputs a DoubleMatrixToken
+ containing the data.
 
-   To convert multiple banded images (for instance, color images or the
-   output of a Discrete Fourier Transform), use either the BandSelect or
-   BandCombine actors to separate the bands.
+ To convert multiple banded images (for instance, color images or the
+ output of a Discrete Fourier Transform), use either the BandSelect or
+ BandCombine actors to separate the bands.
 
-   The normalize parameter allows non floating point data types to be
-   normalized when the token is converted.  The normalization that
-   occurs is a mapping between the lowest and highest value's of the
-   data type into the double values of 0 and 1.
+ The normalize parameter allows non floating point data types to be
+ normalized when the token is converted.  The normalization that
+ occurs is a mapping between the lowest and highest value's of the
+ data type into the double values of 0 and 1.
 
-   @see DoubleMatrixToJAI
-   @see JAIBandSelect
-   @see JAIBandCombine
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @see DoubleMatrixToJAI
+ @see JAIBandSelect
+ @see JAIBandCombine
+ @author James Yeh
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class JAIToDoubleMatrix extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -194,8 +193,8 @@ public class JAIToDoubleMatrix extends Transformer {
                         //                             (dataBuffer.getElemDouble(i*height + j) -
                         //                                     _minValue)/
                         //                             (_maxValue - _minValue);
-                        data[i][j] = (dataBuffer.getElemDouble(i + (j * width))
-                                - _minValue) / (_maxValue - _minValue);
+                        data[i][j] = (dataBuffer.getElemDouble(i + (j * width)) - _minValue)
+                                / (_maxValue - _minValue);
                     }
                 }
             }

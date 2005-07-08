@@ -1,30 +1,30 @@
 /* An actor that generates messages according to Poisson process.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDETAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDETAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.fsm.demo.ABP;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -40,19 +40,18 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DEMessageSource
 
 /**
-   Generate messages according to Poisson process.
+ Generate messages according to Poisson process.
 
-   @author Xiaojun Liu
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (liuxj)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Xiaojun Liu
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (liuxj)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class DEMessageSource extends TypedAtomicActor {
     /** Constructor.
      *  @param container The composite actor that this actor belongs to.
@@ -94,9 +93,9 @@ public class DEMessageSource extends TypedAtomicActor {
         //        " initializing at time " + getCurrentTime());
         DEDirector dir = (DEDirector) getDirector();
         Time now = dir.getModelTime();
-        dir.fireAt(this,
-                now.add(
-                        ((DoubleToken) maxDelay.getToken()).doubleValue() * Math.random()));
+        dir.fireAt(this, now.add(((DoubleToken) maxDelay.getToken())
+                .doubleValue()
+                * Math.random()));
     }
 
     /** If this is the first fire, output the request
@@ -114,7 +113,8 @@ public class DEMessageSource extends TypedAtomicActor {
 
         DEDirector dir = (DEDirector) getDirector();
         Time now = dir.getModelTime();
-        double maxDelayValue = ((DoubleToken) maxDelay.getToken()).doubleValue();
+        double maxDelayValue = ((DoubleToken) maxDelay.getToken())
+                .doubleValue();
 
         if (next.hasToken(0)) {
             next.get(0);

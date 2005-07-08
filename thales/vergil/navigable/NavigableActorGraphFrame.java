@@ -1,27 +1,27 @@
 /*
-  Created on 01 sept. 2003
+ Created on 01 sept. 2003
 
-  Copyright (c) 2003-2005 THALES.
-  All rights reserved.
+ Copyright (c) 2003-2005 THALES.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-  SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
-  OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
-  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+ SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+ OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-  THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-  BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-  UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package thales.vergil.navigable;
 
 import java.awt.BorderLayout;
@@ -49,22 +49,21 @@ import ptolemy.vergil.actor.ActorGraphFrame;
 import thales.actor.gui.NavigableEffigy;
 import thales.vergil.SingleWindowApplication;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NavigableActorGraphFrame
 
 /**
-   <p>Titre : NavigableActorGraphFrame</p>
-   <p>Description : This is a simple copy of the actual ActorGraphFrame
-   with additional functionalities for the navigation.</p>
-   <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
+ <p>Titre : NavigableActorGraphFrame</p>
+ <p>Description : This is a simple copy of the actual ActorGraphFrame
+ with additional functionalities for the navigation.</p>
+ <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
 
-   @author J&eacute;r&ocirc;me Blanc & Benoit Masson
-   01 sept. 2003
-   @since Ptolemy II 3.1
-   @Pt.ProposedRating Red (jerome.blanc)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author J&eacute;r&ocirc;me Blanc & Benoit Masson
+ 01 sept. 2003
+ @since Ptolemy II 3.1
+ @Pt.ProposedRating Red (jerome.blanc)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class NavigableActorGraphFrame extends ActorGraphFrame {
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -101,7 +100,8 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
 
         diva.gui.GUIUtilities.addToolBarButton(_toolbar, _upAction);
 
-        URL img = getClass().getResource("/thales/vergil/navigable/img/fullScreen.gif");
+        URL img = getClass().getResource(
+                "/thales/vergil/navigable/img/fullScreen.gif");
 
         if (img != null) {
             ImageIcon icon = new ImageIcon(img);
@@ -144,6 +144,7 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     protected JTabbedPane _tabbedPalette = new JTabbedPane(JTabbedPane.BOTTOM);
+
     protected UpAction _upAction = new UpAction();
 
     ///////////////////////////////////////////////////////////////////
@@ -168,7 +169,8 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
             // Load the image by using the absolute path to the gif.
             // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-            URL img = getClass().getResource("/thales/vergil/navigable/img/Up.gif");
+            URL img = getClass().getResource(
+                    "/thales/vergil/navigable/img/Up.gif");
 
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
@@ -176,11 +178,10 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
             }
 
             putValue("tooltip", "Up");
-            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
-                            java.awt.Event.CTRL_MASK));
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_M));
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, KeyStroke
+                    .getKeyStroke(KeyEvent.VK_EQUALS, java.awt.Event.CTRL_MASK));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+                    KeyEvent.VK_M));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -188,7 +189,7 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
 
             if (toOpen != null) {
                 Configuration configuration = SingleWindowApplication._mainFrame
-                    .getConfiguration();
+                        .getConfiguration();
 
                 try {
                     configuration.openModel(toOpen);

@@ -1,29 +1,29 @@
 /* An actor that apply dynamically defined functions to its input.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.hoc;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -35,27 +35,26 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MobileFunction
 
 /**
-   This actor extends the TypedAtomicActor. It applies a function to its inputs
-   and outputs the results. But rather than has the function specified
-   statically, this actor allows dynamic change to the function, which means
-   the computation of this actor can be changed during executing. Its second
-   input accept a function token for the new function's definition. The
-   function token can be given by actors in the local model or remote actors.
+ This actor extends the TypedAtomicActor. It applies a function to its inputs
+ and outputs the results. But rather than has the function specified
+ statically, this actor allows dynamic change to the function, which means
+ the computation of this actor can be changed during executing. Its second
+ input accept a function token for the new function's definition. The
+ function token can be given by actors in the local model or remote actors.
 
-   Currently, it only accept functions that has one argument. The return type
-   of the function needs to be less than the output type of this actor.
+ Currently, it only accept functions that has one argument. The return type
+ of the function needs to be less than the output type of this actor.
 
-   @author Yang Zhao
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ @author Yang Zhao
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class MobileFunction extends TypedAtomicActor {
     /** Construct a MobileFunction in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -67,8 +66,8 @@ public class MobileFunction extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public MobileFunction(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public MobileFunction(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         input = new TypedIOPort(this, "input", true, false);
         function = new TypedIOPort(this, "function", true, false);
@@ -149,9 +148,7 @@ public class MobileFunction extends TypedAtomicActor {
                 // function only has one argument.  how to resolve type and type
                 // signature?
                 Token in = input.get(0);
-                Token[] argList = new Token[] {
-                    in
-                };
+                Token[] argList = new Token[] { in };
                 Token t = _function.apply(argList);
                 output.broadcast(t);
             }

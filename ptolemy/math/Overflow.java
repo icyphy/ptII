@@ -1,30 +1,30 @@
 /* The overflow strategy classes.
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.math;
 
 import java.io.Serializable;
@@ -32,51 +32,50 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Overflow
 
 /**
-   The Overflow class provides a type safe enumeration of strategies for
-   handling numeric overflows. Overflows are typically resolved when
-   quantization constraints are applied to a computed result in order to
-   satisfy the requirements of the type to which the result is to be assigned.
-   <p>
-   The overflow strategies are
-   <ul>
-   <li>
-   <i>grow</i>: Out of range values provoke precision growth.
-   <li>
-   <i>modulo</i> or <i>wrap</i>: Out of range values are wrapped around.
-   <li>
-   <i>to_zero</i>: Out of range values are set to zero.
-   <li>
-   <i>saturate</i> or <i>clip</i>: Out of range values are saturated to the
-   nearest extreme value.
-   <li>
-   <i>trap</i> or <i>throw</i>: Out of range values throw an exception.
-   </ul>
-   <p>
-   A specific strategy may be chosen dynamically by invoking forName() or
-   getName() with one of the above strategy names. Alternatively a strategy
-   may be selected by using one of the static singletons.
-   <p>
-   The active class functionality is provided by the quantize method which is
-   normally invoked from Quantization.quantize.
-   <p>
-   Division by zero can trigger the use of the plusInfinity or minusInfinity
-   methods, which return null, except in the case of the <i>to_zero</i>
-   and <i>saturate</i> strategies for which infinity is well-defined.
+ The Overflow class provides a type safe enumeration of strategies for
+ handling numeric overflows. Overflows are typically resolved when
+ quantization constraints are applied to a computed result in order to
+ satisfy the requirements of the type to which the result is to be assigned.
+ <p>
+ The overflow strategies are
+ <ul>
+ <li>
+ <i>grow</i>: Out of range values provoke precision growth.
+ <li>
+ <i>modulo</i> or <i>wrap</i>: Out of range values are wrapped around.
+ <li>
+ <i>to_zero</i>: Out of range values are set to zero.
+ <li>
+ <i>saturate</i> or <i>clip</i>: Out of range values are saturated to the
+ nearest extreme value.
+ <li>
+ <i>trap</i> or <i>throw</i>: Out of range values throw an exception.
+ </ul>
+ <p>
+ A specific strategy may be chosen dynamically by invoking forName() or
+ getName() with one of the above strategy names. Alternatively a strategy
+ may be selected by using one of the static singletons.
+ <p>
+ The active class functionality is provided by the quantize method which is
+ normally invoked from Quantization.quantize.
+ <p>
+ Division by zero can trigger the use of the plusInfinity or minusInfinity
+ methods, which return null, except in the case of the <i>to_zero</i>
+ and <i>saturate</i> strategies for which infinity is well-defined.
 
-   @author Ed Willink
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (Ed.Willink)
-   @Pt.AcceptedRating Red
-   @see FixPoint
-   @see Quantization
-   @see Rounding
-*/
+ @author Ed Willink
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Red (Ed.Willink)
+ @Pt.AcceptedRating Red
+ @see FixPoint
+ @see Quantization
+ @see Rounding
+ */
 public abstract class Overflow implements Cloneable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -146,7 +145,6 @@ public abstract class Overflow implements Cloneable, Serializable {
     //        int typeInfo = OverflowLattice.compare(this, type);
     //        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
     //    }
-
     /** Return the value of minus infinity, or null if unrepresentable.
      *  <p>
      *  The saturation value is returned for the <i>saturate</i> and
@@ -252,6 +250,7 @@ public abstract class Overflow implements Cloneable, Serializable {
     }
 
     public static final Modulo MODULO = new Modulo();
+
     public static final Modulo WRAP = MODULO;
 
     /** The saturate overflows strategy */
@@ -287,6 +286,7 @@ public abstract class Overflow implements Cloneable, Serializable {
     }
 
     public static final Saturate SATURATE = new Saturate();
+
     public static final Saturate CLIP = SATURATE;
 
     /** The overflow to zero strategy */
@@ -350,6 +350,7 @@ public abstract class Overflow implements Cloneable, Serializable {
     }
 
     public static final Trap TRAP = new Trap();
+
     public static final Trap THROW = TRAP;
 
     /** The unknown overflow strategy at the bottom of the overflow

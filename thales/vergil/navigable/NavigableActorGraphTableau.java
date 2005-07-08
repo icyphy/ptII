@@ -1,27 +1,27 @@
 /*
-  Copyright (c) 2003-2005 THALES.
-  All rights reserved.
+ Copyright (c) 2003-2005 THALES.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-  SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
-  OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
-  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+ SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+ OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-  THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-  BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-  UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
-  Created on 01 sept. 2003
-*/
+ Created on 01 sept. 2003
+ */
 package thales.vergil.navigable;
 
 import java.awt.Color;
@@ -41,20 +41,19 @@ import ptolemy.moml.LibraryAttribute;
 import thales.actor.gui.NavigableEffigy;
 import thales.vergil.SingleWindowApplication;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NavigableActorGraphTableau
 
 /**
-   A simple copy of the ActorGraphFrame with additional functionalities for
-   navigation
+ A simple copy of the ActorGraphFrame with additional functionalities for
+ navigation
 
-   @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and Technology, 01 sept. 2003
-   @version $Id$
-   @since Ptolemy II 3.1
-   @Pt.ProposedRating Red (jerome.blanc)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and Technology, 01 sept. 2003
+ @version $Id$
+ @since Ptolemy II 3.1
+ @Pt.ProposedRating Red (jerome.blanc)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class NavigableActorGraphTableau extends Tableau {
     /** Create a tableau in the specified workspace.
      *  @param workspace The workspace.
@@ -81,8 +80,8 @@ public class NavigableActorGraphTableau extends Tableau {
      *  @param defaultLibrary The default library, or null to not specify one.
      */
     public NavigableActorGraphTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary)
-            throws IllegalActionException, NameDuplicationException {
+            LibraryAttribute defaultLibrary) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
@@ -94,7 +93,8 @@ public class NavigableActorGraphTableau extends Tableau {
         if (!(model instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
                     "Cannot graphically edit a model "
-                    + "that is not a CompositeEntity. Model is a " + model);
+                            + "that is not a CompositeEntity. Model is a "
+                            + model);
         }
 
         CompositeEntity entity = (CompositeEntity) model;
@@ -162,15 +162,16 @@ public class NavigableActorGraphTableau extends Tableau {
             if (effigy instanceof NavigableEffigy) {
                 // First see whether the effigy already contains a RunTableau.
                 NavigableActorGraphTableau tableau = (NavigableActorGraphTableau) effigy
-                    .getEntity("navigableGraphTableau");
+                        .getEntity("navigableGraphTableau");
 
                 if (tableau == null) {
                     // Check to see whether this factory contains a
                     // default library.
-                    LibraryAttribute library = (LibraryAttribute) getAttribute("_library",
-                            LibraryAttribute.class);
-                    tableau = new NavigableActorGraphTableau((PtolemyEffigy) effigy,
-                            "navigableGraphTableau", library);
+                    LibraryAttribute library = (LibraryAttribute) getAttribute(
+                            "_library", LibraryAttribute.class);
+                    tableau = new NavigableActorGraphTableau(
+                            (PtolemyEffigy) effigy, "navigableGraphTableau",
+                            library);
                 }
 
                 // Don't call show() here, it is called for us in

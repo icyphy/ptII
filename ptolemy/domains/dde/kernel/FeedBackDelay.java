@@ -1,31 +1,31 @@
 /* FeedBackDelay actors are used to add delay to feedback topologies.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.dde.kernel;
 
 import ptolemy.actor.Receiver;
@@ -41,47 +41,46 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FeedBackDelay
 
 /**
-   FeedBackDelay actors are used to add delay to feedback topologies.
-   If a FeedBackDelay actor consumes a token (real or Null), it has the
-   option of producing an equivalent token on the output with an
-   incremented time stamp value. Alternatively, the FeedBackDelay actor
-   will simply produce the token without altering the time stamp.
-   <P>
-   Two parameters - <I>nullDelay</I> and <I>realDelay</I> - are
-   available for determining whether an FeedBackDelay actor
-   increments the time stamp of produced output tokens. The default
-   value of nullDelay (realDelay) is true (false). If the nullDelay
-   (realDelay) parameter is set to true, then the time stamps of
-   NullTokens (real tokens) will be incremented as they pass through
-   this actor.
-   <P>
-   The delay value that is applied (given that one of the above
-   parameters is true) is determined by the setDelay() and getDelay()
-   methods. More elaborate delay values can be made available by
-   overriding the getDelay() method in derived classes.
-   <P>
-   FeedBackDelay actors are effective for preventing Zeno conditions
-   involving cycles of null tokens. If a DDE model has a feedback
-   topology, a FeedBackDelay actor should be added into the feedback loop.
-   <P>
-   The delay value of a FeedBackDelay actor must be wisely chosen. The
-   delay value should be smaller than any other successive time stamp
-   increment found in a given DDE model. This means that if a particular
-   model might have any two time stamps with time difference delta, then
-   the delay value should be smaller than delta.
+ FeedBackDelay actors are used to add delay to feedback topologies.
+ If a FeedBackDelay actor consumes a token (real or Null), it has the
+ option of producing an equivalent token on the output with an
+ incremented time stamp value. Alternatively, the FeedBackDelay actor
+ will simply produce the token without altering the time stamp.
+ <P>
+ Two parameters - <I>nullDelay</I> and <I>realDelay</I> - are
+ available for determining whether an FeedBackDelay actor
+ increments the time stamp of produced output tokens. The default
+ value of nullDelay (realDelay) is true (false). If the nullDelay
+ (realDelay) parameter is set to true, then the time stamps of
+ NullTokens (real tokens) will be incremented as they pass through
+ this actor.
+ <P>
+ The delay value that is applied (given that one of the above
+ parameters is true) is determined by the setDelay() and getDelay()
+ methods. More elaborate delay values can be made available by
+ overriding the getDelay() method in derived classes.
+ <P>
+ FeedBackDelay actors are effective for preventing Zeno conditions
+ involving cycles of null tokens. If a DDE model has a feedback
+ topology, a FeedBackDelay actor should be added into the feedback loop.
+ <P>
+ The delay value of a FeedBackDelay actor must be wisely chosen. The
+ delay value should be smaller than any other successive time stamp
+ increment found in a given DDE model. This means that if a particular
+ model might have any two time stamps with time difference delta, then
+ the delay value should be smaller than delta.
 
-   @author John S. Davis II
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (davisj)
-   @Pt.AcceptedRating Red (yuhong)
-   @see ptolemy.domains.dde.kernel.NullToken
-*/
+ @author John S. Davis II
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (davisj)
+ @Pt.AcceptedRating Red (yuhong)
+ @see ptolemy.domains.dde.kernel.NullToken
+ */
 public class FeedBackDelay extends DDEActor {
     /** Construct a FeedBackDelay with no container and a name that
      *  is an empty string.
@@ -90,8 +89,8 @@ public class FeedBackDelay extends DDEActor {
      * @exception NameDuplicationException If the constructor of the
      *  superclass throws a NameDuplicationException .
      */
-    public FeedBackDelay()
-            throws IllegalActionException, NameDuplicationException {
+    public FeedBackDelay() throws IllegalActionException,
+            NameDuplicationException {
         super();
         _setVariables();
     }
@@ -104,8 +103,8 @@ public class FeedBackDelay extends DDEActor {
      * @exception NameDuplicationException If the constructor of the
      *  superclass throws a NameDuplicationException .
      */
-    public FeedBackDelay(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public FeedBackDelay(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _setVariables();
     }
@@ -128,6 +127,7 @@ public class FeedBackDelay extends DDEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
     public Parameter delay;
+
     public TypedIOPort input = null;
 
     /** The boolean parameter that indicates whether a delay value
@@ -135,6 +135,7 @@ public class FeedBackDelay extends DDEActor {
      *  produced by this actor. This parameter defaults to true.
      */
     public Parameter nullDelay;
+
     public TypedIOPort output = null;
 
     /** The boolean parameter that indicates whether a delay value
@@ -169,23 +170,23 @@ public class FeedBackDelay extends DDEActor {
     public void fire() throws IllegalActionException {
         Token token = _getNextInput();
         boolean delayNullVal = ((BooleanToken) nullDelay.getToken())
-            .booleanValue();
+                .booleanValue();
         boolean delayRealVal = ((BooleanToken) realDelay.getToken())
-            .booleanValue();
+                .booleanValue();
         Thread thread = Thread.currentThread();
 
         if (thread instanceof DDEThread) {
             if (token instanceof NullToken) {
                 if (delayNullVal) {
-                    _sendOutToken(token,
-                            getDirector().getModelTime().add(getDelay()));
+                    _sendOutToken(token, getDirector().getModelTime().add(
+                            getDelay()));
                 } else {
                     _sendOutToken(token, getDirector().getModelTime());
                 }
             } else {
                 if (delayRealVal) {
-                    _sendOutToken(token,
-                            getDirector().getModelTime().add(getDelay()));
+                    _sendOutToken(token, getDirector().getModelTime().add(
+                            getDelay()));
                 } else {
                     _sendOutToken(token, getDirector().getModelTime());
                 }
@@ -208,8 +209,8 @@ public class FeedBackDelay extends DDEActor {
         for (int i = 0; i < receivers.length; i++) {
             for (int j = 0; j < receivers[i].length; j++) {
                 DDEReceiver rcvr = (DDEReceiver) receivers[i][j];
-                rcvr.put(new Token(),
-                        new Time(getDirector(), PrioritizedTimedQueue.IGNORE));
+                rcvr.put(new Token(), new Time(getDirector(),
+                        PrioritizedTimedQueue.IGNORE));
             }
         }
 
@@ -242,8 +243,8 @@ public class FeedBackDelay extends DDEActor {
 
     /** Syntactic sugar for initializing parameters.
      */
-    private void _setVariables()
-            throws IllegalActionException, NameDuplicationException {
+    private void _setVariables() throws IllegalActionException,
+            NameDuplicationException {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         input.setTypeEquals(BaseType.GENERAL);

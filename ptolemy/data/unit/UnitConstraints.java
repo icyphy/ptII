@@ -1,31 +1,31 @@
 /* A collection that contains Unit constraints.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_3
-COPYRIGHTENDKEY
-@Pt.ProposedRating Red (rowland)
-@Pt.AcceptedRating Red (rowland)
-*/
+ PT_COPYRIGHT_VERSION_3
+ COPYRIGHTENDKEY
+ @Pt.ProposedRating Red (rowland)
+ @Pt.AcceptedRating Red (rowland)
+ */
 package ptolemy.data.unit;
 
 import java.util.Iterator;
@@ -38,24 +38,23 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 ///////////////////////////////////////////////////////////////////////////
 //// UnitConstraints
 
 /**
-   UnitConstraints represents a group, with duplicates allowed, of
-   UnitConstraints. The are two general ways to create an instance of this class.
-   The first requires you to create an instance without any UnitConstraints and
-   then add them with the method addConstraint. The second is to specify a
-   TypedCompositeActor as well as specific nodes and relations in the
-   TypedCompositeActor, and have the UnitConstraintCollection constructor
-   determine which UnitConstraints belong to the collection.
-   @author Rowland R Johnson
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ UnitConstraints represents a group, with duplicates allowed, of
+ UnitConstraints. The are two general ways to create an instance of this class.
+ The first requires you to create an instance without any UnitConstraints and
+ then add them with the method addConstraint. The second is to specify a
+ TypedCompositeActor as well as specific nodes and relations in the
+ TypedCompositeActor, and have the UnitConstraintCollection constructor
+ determine which UnitConstraints belong to the collection.
+ @author Rowland R Johnson
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class UnitConstraints implements UnitPresentation {
     /** Construct an empty collection of Unit constraints.
      *
@@ -95,7 +94,8 @@ public class UnitConstraints implements UnitPresentation {
             ComponentEntity componentEntity = (ComponentEntity) (entities
                     .elementAt(i));
             Vector actorConstraints = new Vector();
-            List unitsAttrs = componentEntity.attributeList(ptolemy.data.unit.UnitAttribute.class);
+            List unitsAttrs = componentEntity
+                    .attributeList(ptolemy.data.unit.UnitAttribute.class);
 
             for (int j = 0; j < unitsAttrs.size(); j++) {
                 UnitAttribute attr = (UnitAttribute) (unitsAttrs.get(j));
@@ -108,7 +108,7 @@ public class UnitConstraints implements UnitPresentation {
 
             for (int j = 0; j < actorConstraints.size(); j++) {
                 UnitEquation uEquation = ((UnitEquation) (actorConstraints
-                                                  .elementAt(j))).copy();
+                        .elementAt(j))).copy();
                 _equationVisitor.expand(uEquation, componentEntity);
                 uEquation.setSource(componentEntity);
                 addConstraint(uEquation);
@@ -119,8 +119,8 @@ public class UnitConstraints implements UnitPresentation {
             while (iter.hasNext()) {
                 IOPort actorPort = (IOPort) iter.next();
                 UnitExpr rhsExpr = null;
-                UnitAttribute ua = (UnitAttribute) (actorPort.getAttribute(
-                                                            "_units"));
+                UnitAttribute ua = (UnitAttribute) (actorPort
+                        .getAttribute("_units"));
 
                 if (ua != null) {
                     rhsExpr = ua.getUnitExpr();
@@ -150,16 +150,16 @@ public class UnitConstraints implements UnitPresentation {
             }
 
             if ((inputPort != null)
-                    && _bindings.bindingExists(inputPort.getName(
-                                                       inputPort.getContainer().getContainer()))) {
+                    && _bindings.bindingExists(inputPort.getName(inputPort
+                            .getContainer().getContainer()))) {
                 Iterator portsIterator = ports.iterator();
 
                 while (portsIterator.hasNext()) {
                     IOPort outPort = (IOPort) (portsIterator.next());
 
                     if ((outPort != inputPort)
-                            && (_bindings.bindingExists(outPort.getName(
-                                                                outPort.getContainer().getContainer())))) {
+                            && (_bindings.bindingExists(outPort.getName(outPort
+                                    .getContainer().getContainer())))) {
                         UnitExpr lhsUExpr = new UnitExpr(outPort);
                         UnitExpr rhsUExpr = new UnitExpr(inputPort);
                         UnitEquation uC = new UnitEquation(lhsUExpr, rhsUExpr);
@@ -209,12 +209,12 @@ public class UnitConstraints implements UnitPresentation {
         String retv = null;
 
         if (!_constraints.isEmpty()) {
-            retv = ((UnitEquation) (_constraints.elementAt(0))).descriptiveForm();
+            retv = ((UnitEquation) (_constraints.elementAt(0)))
+                    .descriptiveForm();
         }
 
         for (int i = 1; i < _constraints.size(); i++) {
-            retv += (";"
-                    + ((UnitEquation) (_constraints.get(i)))
+            retv += (";" + ((UnitEquation) (_constraints.get(i)))
                     .descriptiveForm());
         }
 
@@ -268,8 +268,12 @@ public class UnitConstraints implements UnitPresentation {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Bindings _bindings = null;
+
     private Vector _constraints = null;
+
     private boolean _debug = false;
+
     private static ExpandPortNames _equationVisitor = new ExpandPortNames();
+
     private TypedCompositeActor _model = null;
 }

@@ -1,30 +1,30 @@
 /* A GR scene viewer
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.lib.quicktime;
 
 import java.awt.Dimension;
@@ -71,22 +71,21 @@ import quicktime.util.RawEncodedImage;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MovieViewScreen2D
 
 /**
-   A sink actor that renders a two-dimensional scene into a display screen, and
-   saves it as a movie using Apple's Quicktime for Java.
+ A sink actor that renders a two-dimensional scene into a display screen, and
+ saves it as a movie using Apple's Quicktime for Java.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (chf)
-   @Pt.AcceptedRating Red (chf)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (chf)
+ @Pt.AcceptedRating Red (chf)
+ */
 public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
-                                                               Errors {
+        Errors {
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -178,9 +177,8 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
             frame.add("Center", canv);
 
             Painter painter = new Painter();
-            _imageDrawer = new QTImageDrawer(painter,
-                    new Dimension(_frameWidth, _frameHeight),
-                    Redrawable.kMultiFrame);
+            _imageDrawer = new QTImageDrawer(painter, new Dimension(
+                    _frameWidth, _frameHeight), Redrawable.kMultiFrame);
             _imageDrawer.setRedrawing(true);
 
             canv.setClient(_imageDrawer, true);
@@ -189,7 +187,7 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
             _file = new QTFile(fileName.asFile());
             _movie = Movie.createMovieFile(_file, kMoviePlayer,
                     createMovieFileDeleteCurFile
-                    | createMovieFileDontCreateResFile);
+                            | createMovieFileDontCreateResFile);
 
             //
             // add content
@@ -207,16 +205,16 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
             _videoSize = new QDRect(_frameWidth, _frameHeight);
             _gw = new QDGraphics(_videoSize);
 
-            int size = QTImage.getMaxCompressionSize(_gw, _videoSize,
-                    _gw.getPixMap().getPixelSize(), codecNormalQuality,
+            int size = QTImage.getMaxCompressionSize(_gw, _videoSize, _gw
+                    .getPixMap().getPixelSize(), codecNormalQuality,
                     kAnimationCodecType, CodecComponent.anyCodec);
             _imageHandle = new QTHandle(size, true);
             _imageHandle.lock();
             _compressedFrame = RawEncodedImage.fromQTHandle(_imageHandle);
 
             _frameRateValue = ((IntToken) frameRate.getToken()).intValue();
-            _videoSequence = new CSequence(_gw, _videoSize,
-                    _gw.getPixMap().getPixelSize(), kAnimationCodecType,
+            _videoSequence = new CSequence(_gw, _videoSize, _gw.getPixMap()
+                    .getPixelSize(), kAnimationCodecType,
                     CodecComponent.bestFidelityCodec, codecNormalQuality,
                     codecNormalQuality, _frameRateValue, //1 key frame every second
                     null, //cTab,
@@ -246,12 +244,14 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
             int kTrackStart = 0;
             int kMediaTime = 0;
             int kMediaRate = 1;
-            _videoTrack.insertMedia(kTrackStart, kMediaTime,
-                    _videoMedia.getDuration(), kMediaRate);
+            _videoTrack.insertMedia(kTrackStart, kMediaTime, _videoMedia
+                    .getDuration(), kMediaRate);
 
             // Save movie to file.
             OpenMovieFile outStream = OpenMovieFile.asWrite(_file);
-            _movie.addResource(outStream, movieInDataForkResID, _file.getName());
+            _movie
+                    .addResource(outStream, movieInDataForkResID, _file
+                            .getName());
             outStream.close();
             System.out.println("Finished movie");
         } catch (Exception ex) {
@@ -268,14 +268,15 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
     protected void _createViewScreen() {
         super._createViewScreen();
 
-        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
+        GraphicsConfiguration config = SimpleUniverse
+                .getPreferredConfiguration();
 
         _offScreenCanvas = new Canvas3D(config, true);
         _offScreenCanvas.getScreen3D().setSize(_canvas.getScreen3D().getSize());
-        _offScreenCanvas.getScreen3D().setPhysicalScreenWidth(_canvas.getScreen3D()
-                .getPhysicalScreenWidth());
-        _offScreenCanvas.getScreen3D().setPhysicalScreenHeight(_canvas.getScreen3D()
-                .getPhysicalScreenHeight());
+        _offScreenCanvas.getScreen3D().setPhysicalScreenWidth(
+                _canvas.getScreen3D().getPhysicalScreenWidth());
+        _offScreenCanvas.getScreen3D().setPhysicalScreenHeight(
+                _canvas.getScreen3D().getPhysicalScreenHeight());
 
         // attach the offscreen canvas to the view
         _canvas.getView().addCanvas3D(_offScreenCanvas);
@@ -297,8 +298,8 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
             BufferedImage image = new BufferedImage(_frameWidth, _frameHeight,
                     BufferedImage.TYPE_INT_ARGB);
 
-            ImageComponent2D buffer = new ImageComponent2D(ImageComponent.FORMAT_RGBA,
-                    image);
+            ImageComponent2D buffer = new ImageComponent2D(
+                    ImageComponent.FORMAT_RGBA, image);
 
             _offScreenCanvas.setOffScreenBuffer(buffer);
             _offScreenCanvas.renderOffScreenBuffer();
@@ -315,18 +316,32 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private Canvas3D _offScreenCanvas;
+
     private Movie _movie;
+
     private QTImageDrawer _imageDrawer;
+
     private QTHandle _imageHandle;
+
     private QTFile _file;
+
     private QDGraphics _gw;
+
     private QDRect _videoSize;
+
     private CSequence _videoSequence;
+
     private RawEncodedImage _compressedFrame;
+
     private VideoMedia _videoMedia;
+
     private Track _videoTrack;
+
     private int _frameWidth = 400;
+
     private int _frameHeight = 400;
+
     private int _frameNumber;
+
     private int _frameRateValue;
 }

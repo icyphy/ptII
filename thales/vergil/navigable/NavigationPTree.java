@@ -1,27 +1,27 @@
 /* Navigation P tree
-   Copyright (c) 2003-2005 THALES.
-   All rights reserved.
+ Copyright (c) 2003-2005 THALES.
+ All rights reserved.
 
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the
-   above copyright notice and the following two paragraphs appear in all
-   copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-   IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-   SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
-   OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
-   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+ SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+ OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-   THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
-   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-   A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-   BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-   Created on 01 sept. 2003
+ Created on 01 sept. 2003
 
-*/
+ */
 package thales.vergil.navigable;
 
 import javax.swing.event.TreeExpansionEvent;
@@ -38,17 +38,16 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.tree.PTree;
 import thales.vergil.SingleWindowApplication;
 
-
 /**
-   <p>Titre : NavigationPTree</p>
-   <p>Description : A navigation tree to browse a Ptolemy model</p>
-   <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
-   @author J&eacute;r&ocirc;me Blanc & Benoit Masson  01 sept. 2003
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (jerome.blanc)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ <p>Titre : NavigationPTree</p>
+ <p>Description : A navigation tree to browse a Ptolemy model</p>
+ <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
+ @author J&eacute;r&ocirc;me Blanc & Benoit Masson  01 sept. 2003
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (jerome.blanc)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class NavigationPTree extends PTree {
     /**
      * Most of the time, we use the tree of the ptolemy.vergil.tree package,
@@ -88,9 +87,9 @@ public class NavigationPTree extends PTree {
                 if (obj instanceof CompositeEntity) {
                     try {
                         SingleWindowApplication._mainFrame.getConfiguration()
-                            .openModel(obj);
+                                .openModel(obj);
                         ((NavigationTreeModel) _jTree.getModel())
-                            .setSelectedItem(_jTree.getSelectionPath());
+                                .setSelectedItem(_jTree.getSelectionPath());
                     } catch (IllegalActionException e1) {
                         e1.printStackTrace();
                     } catch (NameDuplicationException e1) {
@@ -122,7 +121,8 @@ public class NavigationPTree extends PTree {
             TreePath aPath = event.getPath();
 
             if (aPath != null) {
-                ((NavigationTreeModel) _jTree.getModel()).expandPath(aPath, true);
+                ((NavigationTreeModel) _jTree.getModel()).expandPath(aPath,
+                        true);
             }
         }
 

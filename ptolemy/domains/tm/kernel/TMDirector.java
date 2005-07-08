@@ -1,31 +1,31 @@
 /* A director that implements a priority-driven multitasking model of
-   computation.
+ computation.
 
-   Copyright (c) 2001-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.tm.kernel;
 
 import java.util.HashSet;
@@ -58,86 +58,85 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TMDirector
 
 /**
-   A director that implements a priority-driven multitasking
-   model of computation. This model of computation is usually seen in
-   real-time operating systems.
-   <P>
-   Each actor in this domain is called a task. A task is eligible to
-   execute if there is an event that triggers it. Source actors may trigger
-   themselves by calling fireAt(time, actor) on this director. This call
-   is treated as an interrupt that happens at that particular time.
-   A task can have a priority and an execution time, specified by (adding)
-   <i>priority</i> and <i>executionTime</i> parameters. The <i>priority</i>
-   parameter takes an integer value, and the <i>executionTime</i>
-   parameter takes a double value. These parameters may also be specified
-   on a per input port basis, if the actor reacts differently
-   to input events at different ports. If these parameters are not
-   specified, then the default priority value is the java.Thread.NORM
-   on the JVM, and the default execution time is 0.
-   <P>
-   This domain assumes there is a single resource, say CPU, shared by
-   the execution of all actors. At one particular time, only
-   one of the tasks can get the resource and execute. If the execution
-   is preemptable (by setting the <i>preemptive</i> parameter of
-   this director to true), then the execution of one task
-   may be preempted by another eligible task with a higher priority.
-   Otherwise, the higher priority task has to wait until the current
-   task finishes its execution.
-   <P>
-   The priority-driven execution is achieved by using an event
-   dispatcher, which sorts and dispatches events that trigger
-   the execution of tasks. The events being dispatched are called
-   TM events (implemented by the TMEvent class).
-   An TM event has a priority and a remaining processing time,
-   among other properties. The priority of the event
-   is inherited from its destination port, which may further inherit
-   its priority from the actor that contains the port. Whenever an
-   event is produced by an actor, it is queued with the event dispatcher.
-   At any time, the event with the highest priority is dequeued,
-   and delivered into its destination receiver. The director then starts
-   the execution of the destination actor (by calling its prefire()
-   method). After that, the director tracks how much time remained
-   for the task to finish processing the event.
+ A director that implements a priority-driven multitasking
+ model of computation. This model of computation is usually seen in
+ real-time operating systems.
+ <P>
+ Each actor in this domain is called a task. A task is eligible to
+ execute if there is an event that triggers it. Source actors may trigger
+ themselves by calling fireAt(time, actor) on this director. This call
+ is treated as an interrupt that happens at that particular time.
+ A task can have a priority and an execution time, specified by (adding)
+ <i>priority</i> and <i>executionTime</i> parameters. The <i>priority</i>
+ parameter takes an integer value, and the <i>executionTime</i>
+ parameter takes a double value. These parameters may also be specified
+ on a per input port basis, if the actor reacts differently
+ to input events at different ports. If these parameters are not
+ specified, then the default priority value is the java.Thread.NORM
+ on the JVM, and the default execution time is 0.
+ <P>
+ This domain assumes there is a single resource, say CPU, shared by
+ the execution of all actors. At one particular time, only
+ one of the tasks can get the resource and execute. If the execution
+ is preemptable (by setting the <i>preemptive</i> parameter of
+ this director to true), then the execution of one task
+ may be preempted by another eligible task with a higher priority.
+ Otherwise, the higher priority task has to wait until the current
+ task finishes its execution.
+ <P>
+ The priority-driven execution is achieved by using an event
+ dispatcher, which sorts and dispatches events that trigger
+ the execution of tasks. The events being dispatched are called
+ TM events (implemented by the TMEvent class).
+ An TM event has a priority and a remaining processing time,
+ among other properties. The priority of the event
+ is inherited from its destination port, which may further inherit
+ its priority from the actor that contains the port. Whenever an
+ event is produced by an actor, it is queued with the event dispatcher.
+ At any time, the event with the highest priority is dequeued,
+ and delivered into its destination receiver. The director then starts
+ the execution of the destination actor (by calling its prefire()
+ method). After that, the director tracks how much time remained
+ for the task to finish processing the event.
 
-   <P>
-   The events, called interrupt events, produced by calling fireAt()
-   on this director are treated differently. These events carry
-   a time stamp, and are queued with another queue which sorts these
-   events in their chronological order. When the modeling time reaches
-   an interrupt event time, (regardless whether there is a task
-   executing),
-   the interrupt event is processed. And the corresponding
-   source actor is fired, which may in turn produce some TM events.
-   If one of these TM events has a higher priority than the event
-   being processed by the current task, and the execution is preemptive,
-   then the current tasks is stalled, and the task triggered by the
-   highest priority event is started. Note that, a task is always
-   granted the resource that is specified by the <i>executionTime</i>,
-   no matter whether it has been preempted.
-   When that amount of time is elapsed, the fire() method of the actor
-   will be called, and the actor is expected to produce its output, if
-   there is any.
-   <P>
-   The TM domain can be nested with other (timed) domains. In that
-   case, the inputs from the outside domain are treated as interrupts
-   that happen at the (outside) current time.
-   <p>
-   This director supports executions that synchronize to real time.
-   To enable such an execution, set the <i>synchronizeToRealTime</i>
-   parameter to true.
+ <P>
+ The events, called interrupt events, produced by calling fireAt()
+ on this director are treated differently. These events carry
+ a time stamp, and are queued with another queue which sorts these
+ events in their chronological order. When the modeling time reaches
+ an interrupt event time, (regardless whether there is a task
+ executing),
+ the interrupt event is processed. And the corresponding
+ source actor is fired, which may in turn produce some TM events.
+ If one of these TM events has a higher priority than the event
+ being processed by the current task, and the execution is preemptive,
+ then the current tasks is stalled, and the task triggered by the
+ highest priority event is started. Note that, a task is always
+ granted the resource that is specified by the <i>executionTime</i>,
+ no matter whether it has been preempted.
+ When that amount of time is elapsed, the fire() method of the actor
+ will be called, and the actor is expected to produce its output, if
+ there is any.
+ <P>
+ The TM domain can be nested with other (timed) domains. In that
+ case, the inputs from the outside domain are treated as interrupts
+ that happen at the (outside) current time.
+ <p>
+ This director supports executions that synchronize to real time.
+ To enable such an execution, set the <i>synchronizeToRealTime</i>
+ parameter to true.
 
-   @author  Jie Liu, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (liuj)
-   @Pt.AcceptedRating Yellow (janneck)
-   @see ptolemy.domains.de.kernel.DEEvent
-*/
+ @author  Jie Liu, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Yellow (liuj)
+ @Pt.AcceptedRating Yellow (janneck)
+ @see ptolemy.domains.de.kernel.DEEvent
+ */
 public class TMDirector extends Director implements TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -248,7 +247,7 @@ public class TMDirector extends Director implements TimedDirector {
 
         if (attribute == stopTime) {
             double stopTimeValue = ((DoubleToken) stopTime.getToken())
-                .doubleValue();
+                    .doubleValue();
 
             if (stopTimeValue < 0.0) {
                 throw new IllegalActionException(this,
@@ -258,10 +257,11 @@ public class TMDirector extends Director implements TimedDirector {
             _stopTime = new Time(this, stopTimeValue);
         } else if (attribute == startTime) {
             double startTimeValue = ((DoubleToken) startTime.getToken())
-                .doubleValue();
+                    .doubleValue();
             _startTime = new Time(this, startTimeValue);
         } else if (attribute == defaultTaskExecutionTime) {
-            if (((DoubleToken) defaultTaskExecutionTime.getToken()).doubleValue() < 0.0) {
+            if (((DoubleToken) defaultTaskExecutionTime.getToken())
+                    .doubleValue() < 0.0) {
                 throw new IllegalActionException(this,
                         " task execution time cannot be less than 0.");
             }
@@ -305,7 +305,8 @@ public class TMDirector extends Director implements TimedDirector {
                 // This should never happen.
                 throw new IllegalActionException(this,
                         "external input in the past: " + "input time stamp is "
-                        + timeStamp + "current time in TM is " + getModelTime());
+                                + timeStamp + "current time in TM is "
+                                + getModelTime());
             } else if (timeStamp == getModelTime()) {
                 _interruptQueue.take();
 
@@ -345,7 +346,7 @@ public class TMDirector extends Director implements TimedDirector {
                 if (_debugging) {
                     _debug(getName(), "put trigger event ", event.toString(),
                             " into " + ((NamedObj) event.actor()).getName()
-                            + " and processing");
+                                    + " and processing");
                 }
 
                 event.receiver()._triggerEvent(event.token());
@@ -375,14 +376,14 @@ public class TMDirector extends Director implements TimedDirector {
                     } else {
                         // Use the executionTime parameter from the port
                         // or the actor.
-                        Parameter executionTime = (Parameter) ((IOPort) event.receiver()
-                                .getContainer())
-                            .getAttribute("executionTime");
+                        Parameter executionTime = (Parameter) ((IOPort) event
+                                .receiver().getContainer())
+                                .getAttribute("executionTime");
 
                         // Actor starts to execute
                         if (executionTime == null) {
                             executionTime = (Parameter) ((NamedObj) actor)
-                                .getAttribute("executionTime");
+                                    .getAttribute("executionTime");
                         }
 
                         if (executionTime != null) {
@@ -424,7 +425,7 @@ public class TMDirector extends Director implements TimedDirector {
                         // Now the behavior depend on whether the
                         // execution is preemptive.
                         _preemptive = ((BooleanToken) preemptive.getToken())
-                            .booleanValue();
+                                .booleanValue();
 
                         if (!_preemptive) {
                             event = (TMEvent) _eventQueue.take();
@@ -493,8 +494,7 @@ public class TMDirector extends Director implements TimedDirector {
         }
 
         if (time.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException(this,
-                    ((NamedObj) actor).getName()
+            throw new IllegalActionException(this, ((NamedObj) actor).getName()
                     + " request an interrupt in the past.");
         }
 
@@ -515,8 +515,8 @@ public class TMDirector extends Director implements TimedDirector {
      */
     public void initialize() throws IllegalActionException {
         if (_isEmbedded()) {
-            _outsideTime = ((CompositeActor) getContainer()).getExecutiveDirector()
-                .getModelTime();
+            _outsideTime = ((CompositeActor) getContainer())
+                    .getExecutiveDirector().getModelTime();
         } else {
             _outsideTime = new Time(this);
             _nextIterationTime = new Time(this);
@@ -527,7 +527,7 @@ public class TMDirector extends Director implements TimedDirector {
 
         if (_isEmbedded() && !_interruptQueue.isEmpty()) {
             Time nextPureEventTime = ((DEEvent) _interruptQueue.get())
-                .timeStamp();
+                    .timeStamp();
             _requestFiringAt(nextPureEventTime);
         }
 
@@ -559,8 +559,8 @@ public class TMDirector extends Director implements TimedDirector {
      */
     public boolean prefire() throws IllegalActionException {
         if (_isEmbedded()) {
-            _outsideTime = ((CompositeActor) getContainer()).getExecutiveDirector()
-                .getModelTime();
+            _outsideTime = ((CompositeActor) getContainer())
+                    .getExecutiveDirector().getModelTime();
         } else {
             // set outside time to the next iteration time, which
             // is the smaller one of the next interrupt event time and
@@ -579,8 +579,8 @@ public class TMDirector extends Director implements TimedDirector {
             double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
 
             if ((_outsideTime.getDoubleValue() - elapsedTimeInSeconds) > 1e-3) {
-                long timeToWait = (long) (_outsideTime.subtract(elapsedTimeInSeconds)
-                        .getDoubleValue() * 1000.0);
+                long timeToWait = (long) (_outsideTime.subtract(
+                        elapsedTimeInSeconds).getDoubleValue() * 1000.0);
 
                 if (timeToWait > 0) {
                     if (_debugging) {
@@ -616,7 +616,7 @@ public class TMDirector extends Director implements TimedDirector {
                 if (_debugging) {
                     _debug("deduct "
                             + getModelTime().subtract(cachedCurrentTime)
-                            .getDoubleValue(),
+                                    .getDoubleValue(),
                             " from processing time of event", event.toString());
                 }
 
@@ -634,7 +634,8 @@ public class TMDirector extends Director implements TimedDirector {
 
                 if (Math.abs(event.processingTime()) < 1e-10) {
                     if (_debugging) {
-                        _debug(getName(), "finish processing ", event.toString());
+                        _debug(getName(), "finish processing ", event
+                                .toString());
                     }
 
                     _eventQueue.take();
@@ -654,8 +655,7 @@ public class TMDirector extends Director implements TimedDirector {
                     }
                 } else {
                     if (_debugging) {
-                        _debug(getName(),
-                                "still needs processing time as "
+                        _debug(getName(), "still needs processing time as "
                                 + event.processingTime());
                     }
                 }
@@ -671,7 +671,8 @@ public class TMDirector extends Director implements TimedDirector {
                 // This should never happen.
                 throw new IllegalActionException(this,
                         "external input in the past: " + "input time stamp is "
-                        + timeStamp + "current time in TM is " + getModelTime());
+                                + timeStamp + "current time in TM is "
+                                + getModelTime());
             } else if (timeStamp.compareTo(_outsideTime) == 0) {
                 _interruptQueue.take();
 
@@ -763,11 +764,10 @@ public class TMDirector extends Director implements TimedDirector {
      public void setCurrentTime(double newTime) throws IllegalActionException {
      _currentTime = newTime;
      }
-    */
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     /** Disable the specified actor.  All events destinated for this actor
      *  will be ignored. If the argument is null, then do nothing.
      *  @param actor The actor to disable.
@@ -798,7 +798,7 @@ public class TMDirector extends Director implements TimedDirector {
             //System.out.println("REPORT SCHEDULE @ " + getCurrentTime());
             for (int i = events.length - 1; i >= 0; i--) {
                 String actorName = ((Nameable) ((TMEvent) events[i]).actor())
-                    .getName();
+                        .getName();
                 double timeValue = getModelTime().getDoubleValue();
                 int scheduleEvent = ScheduleListener.TASK_BLOCKED;
 
@@ -871,14 +871,14 @@ public class TMDirector extends Director implements TimedDirector {
             _startTime = new Time(this);
             _stopTime = new Time(this, Double.POSITIVE_INFINITY);
 
-            startTime = new Parameter(this, "startTime",
-                    new DoubleToken(_startTime.getDoubleValue()));
+            startTime = new Parameter(this, "startTime", new DoubleToken(
+                    _startTime.getDoubleValue()));
             startTime.setTypeEquals(BaseType.DOUBLE);
-            stopTime = new Parameter(this, "stopTime",
-                    new DoubleToken("Infinity"));
+            stopTime = new Parameter(this, "stopTime", new DoubleToken(
+                    "Infinity"));
             stopTime.setTypeEquals(BaseType.DOUBLE);
-            preemptive = new Parameter(this, "preemptive",
-                    new BooleanToken(false));
+            preemptive = new Parameter(this, "preemptive", new BooleanToken(
+                    false));
 
             preemptive.setTypeEquals(BaseType.BOOLEAN);
             defaultTaskExecutionTime = new Parameter(this,
@@ -905,13 +905,13 @@ public class TMDirector extends Director implements TimedDirector {
     // If the queue is empty, then throw an InvalidStateException
     private void _requestFiringAt(Time time) throws IllegalActionException {
         if (_debugging) {
-            _debug("Request refiring of composite actor.",
-                    getContainer().getName(), "at " + time);
+            _debug("Request refiring of composite actor.", getContainer()
+                    .getName(), "at " + time);
         }
 
         // Enqueue a refire for the container of this director.
-        ((CompositeActor) getContainer()).getExecutiveDirector().fireAt((Actor) getContainer(),
-                time);
+        ((CompositeActor) getContainer()).getExecutiveDirector().fireAt(
+                (Actor) getContainer(), time);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -944,5 +944,6 @@ public class TMDirector extends Director implements TimedDirector {
 
     // Local caches of parameter values.
     private Time _startTime;
+
     private Time _stopTime;
 }

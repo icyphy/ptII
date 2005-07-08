@@ -45,7 +45,6 @@ import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;
 import diva.util.java2d.Polyline2D;
 
-
 /**
  * <p> This tutorial shows how to construct a JCanvas and place
  * figures on it.
@@ -171,12 +170,12 @@ public class SimpleTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    SimpleTutorial ex = new SimpleTutorial();
-                    ex.createBasicRectangle();
-                    ex.createBasicFigure();
-                    ex.createPolyline();
-                }
-            });
+            public void run() {
+                SimpleTutorial ex = new SimpleTutorial();
+                ex.createBasicRectangle();
+                ex.createBasicFigure();
+                ex.createPolyline();
+            }
+        });
     }
 }

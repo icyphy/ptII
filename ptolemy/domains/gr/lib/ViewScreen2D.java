@@ -1,30 +1,30 @@
 /* A GR scene viewer
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.lib;
 
 import java.awt.Container;
@@ -64,23 +64,22 @@ import diva.canvas.event.LayerListener;
 import diva.canvas.event.LayerMotionListener;
 import diva.canvas.toolbox.BasicFigure;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ViewScreen2D
 
 /**
-   A sink actor that renders a two-dimensional scene into a display
-   screen.  All mouse and keyboard events within the viewscreen are
-   handled by a ViewScreen2DListener.
+ A sink actor that renders a two-dimensional scene into a display
+ screen.  All mouse and keyboard events within the viewscreen are
+ handled by a ViewScreen2DListener.
 
-   @author Steve Neuendorffer, Ismael M. Sarmiento
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (ismael)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Steve Neuendorffer, Ismael M. Sarmiento
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (ismael)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class ViewScreen2D extends GRActor2D implements Placeable,
-                                                       ViewScreenInterface {
+        ViewScreenInterface {
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -106,7 +105,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
                 new IntToken(400));
         horizontalPixels.setTypeEquals(BaseType.INT);
 
-        verticalPixels = new Parameter(this, "verticalPixels", new IntToken(400));
+        verticalPixels = new Parameter(this, "verticalPixels",
+                new IntToken(400));
         verticalPixels.setTypeEquals(BaseType.INT);
 
         upperLeftX = new Parameter(this, "upperLeftX", new IntToken(0));
@@ -130,8 +130,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
         showAxes = new Parameter(this, "showAxes", new BooleanToken(false));
         showAxes.setTypeEquals(BaseType.BOOLEAN);
 
-        translatable = new Parameter(this, "translatable",
-                new BooleanToken(false));
+        translatable = new Parameter(this, "translatable", new BooleanToken(
+                false));
         translatable.setTypeEquals(BaseType.BOOLEAN);
 
         backgroundColor = new ColorAttribute(this, "backgroundColor");
@@ -402,34 +402,35 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
 
         _container.add("Center", _canvas);
         _canvas.setMinimumSize(new Dimension(horizontalDimension,
-                                       verticalDimension));
+                verticalDimension));
         _canvas.setMaximumSize(new Dimension(horizontalDimension,
-                                       verticalDimension));
+                verticalDimension));
         _canvas.setPreferredSize(new Dimension(horizontalDimension,
-                                         verticalDimension));
+                verticalDimension));
 
         if (_frame != null) {
             _frame.pack();
         }
 
-        double upperLeftXValue = ((IntToken) upperLeftX.getToken()).doubleValue();
-        double upperLeftYValue = ((IntToken) upperLeftY.getToken()).doubleValue();
+        double upperLeftXValue = ((IntToken) upperLeftX.getToken())
+                .doubleValue();
+        double upperLeftYValue = ((IntToken) upperLeftY.getToken())
+                .doubleValue();
         double lowerRightXValue = ((IntToken) lowerRightX.getToken())
-            .doubleValue();
+                .doubleValue();
         double lowerRightYValue = ((IntToken) lowerRightY.getToken())
-            .doubleValue();
-        java.awt.geom.Rectangle2D visibleRect = new java.awt.geom.Rectangle2D.Double(upperLeftXValue,
-                upperLeftYValue, lowerRightXValue - upperLeftXValue,
-                lowerRightYValue - upperLeftYValue);
+                .doubleValue();
+        java.awt.geom.Rectangle2D visibleRect = new java.awt.geom.Rectangle2D.Double(
+                upperLeftXValue, upperLeftYValue, lowerRightXValue
+                        - upperLeftXValue, lowerRightYValue - upperLeftYValue);
 
         if ((visibleRect.getHeight() == 0) || (visibleRect.getWidth() == 0)) {
-            throw new IllegalActionException(this,
-                    "The width and height "
+            throw new IllegalActionException(this, "The width and height "
                     + "of the visible rectangle cannot be zero.");
         }
 
-        AffineTransform transform = CanvasUtilities.computeTransform(visibleRect,
-                _canvas.getBounds());
+        AffineTransform transform = CanvasUtilities.computeTransform(
+                visibleRect, _canvas.getBounds());
         System.out.println("transform = " + transform);
 
         //       _origin = new Point2D.Double(
@@ -439,9 +440,9 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
         pane.setAntialiasing(true);
 
         _crosshairX = new BasicFigure(new java.awt.geom.Line2D.Double(0, 2, 0,
-                                              -2));
+                -2));
         _crosshairY = new BasicFigure(new java.awt.geom.Line2D.Double(2, 0, -2,
-                                              0));
+                0));
         _overlayLayer.add(_crosshairX.getShape());
         _overlayLayer.add(_crosshairY.getShape());
 
@@ -498,7 +499,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
     ///////////////////////////////////////////////////////////////////
     ////                       private inner classes               ////
     public class ViewScreen2DListener implements LayerListener,
-                                                 LayerMotionListener, KeyListener {
+            LayerMotionListener, KeyListener {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -513,7 +514,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
             Iterator allFigures = _layer.figures();
 
             if (selectedFigure != null) {
-                ((FigureInteractor) selectedFigure.getInteractor()).keyPressed(e);
+                ((FigureInteractor) selectedFigure.getInteractor())
+                        .keyPressed(e);
 
                 while (allFigures.hasNext()) {
                     AbstractFigure figure = ((AbstractFigure) allFigures.next());
@@ -548,7 +550,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
             Figure selectedFigure = getSelectedFigure();
 
             if (selectedFigure != null) {
-                ((FigureInteractor) selectedFigure.getInteractor()).keyReleased(e);
+                ((FigureInteractor) selectedFigure.getInteractor())
+                        .keyReleased(e);
             }
 
             if (e.getKeyCode() == KeyEvent.VK_O) {
@@ -586,14 +589,14 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
         public void mouseDragged(LayerEvent e) {
             //Translate the origin while the mouse cursor is in the window
             //and the user is dragging the origin marker.
-            if (_originRelocatable && _mouseInWindow
-                    && (getCrosshairX().getBounds().contains(e
-                                .getLayerPoint())
-                            || getCrosshairY().getBounds().contains(e
-                                    .getLayerPoint()) || (_mouseDragging == true))) {
+            if (_originRelocatable
+                    && _mouseInWindow
+                    && (getCrosshairX().getBounds().contains(e.getLayerPoint())
+                            || getCrosshairY().getBounds().contains(
+                                    e.getLayerPoint()) || (_mouseDragging == true))) {
                 _mouseDragging = true;
-                _canvas.setCursor(Cursor.getPredefinedCursor(
-                                          Cursor.CROSSHAIR_CURSOR));
+                _canvas.setCursor(Cursor
+                        .getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                 _origin = (Point2D.Double) e.getLayerPoint();
                 _canvas.getCanvasPane().translate(_origin.x, _origin.y);
             }
@@ -633,7 +636,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
                 Figure figure = (Figure) figureIterator.next();
 
                 if (!figure.contains(e.getLayerPoint())) {
-                    ((FigureInteractor) figure.getInteractor()).setSelected(false);
+                    ((FigureInteractor) figure.getInteractor())
+                            .setSelected(false);
                 }
             }
         }
@@ -644,7 +648,9 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
          */
         public void mouseReleased(LayerEvent e) {
             _mouseDragging = false;
-            _canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            _canvas
+                    .setCursor(Cursor
+                            .getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
 
         ///////////////////////////////////////////////////////////////////

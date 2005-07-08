@@ -1,29 +1,29 @@
 /* A tableau representing an HTML window.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.io.IOException;
@@ -41,33 +41,32 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// HTMLViewerTableau
 
 /**
-   A tableau representing a rendered HTML view in a toplevel window.
-   The URL that is viewed is given by the <i>url</i> parameter, and
-   can be either an absolute URL, a system fileName, or a resource that
-   can be loaded relative to the classpath.  For more information about how
-   the URL is specified, see MoMLApplication.specToURL().
-   <p>
-   The constructor of this
-   class creates the window. The text window itself is an instance
-   of HTMLViewer, and can be accessed using the getFrame() method.
-   As with other tableaux, this is an entity that is contained by
-   an effigy of a model.
-   There can be any number of instances of this class in an effigy.
+ A tableau representing a rendered HTML view in a toplevel window.
+ The URL that is viewed is given by the <i>url</i> parameter, and
+ can be either an absolute URL, a system fileName, or a resource that
+ can be loaded relative to the classpath.  For more information about how
+ the URL is specified, see MoMLApplication.specToURL().
+ <p>
+ The constructor of this
+ class creates the window. The text window itself is an instance
+ of HTMLViewer, and can be accessed using the getFrame() method.
+ As with other tableaux, this is an entity that is contained by
+ an effigy of a model.
+ There can be any number of instances of this class in an effigy.
 
-   @author  Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-   @see Effigy
-   @see HTMLViewer
-   @see MoMLApplication#specToURL(String)
-*/
+ @author  Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ @see Effigy
+ @see HTMLViewer
+ @see MoMLApplication#specToURL(String)
+ */
 public class HTMLViewerTableau extends Tableau {
     /** Construct a new tableau for the model represented by the given effigy.
      *  This creates an instance of HTMLViewer.  It does not make the frame
@@ -117,8 +116,8 @@ public class HTMLViewerTableau extends Tableau {
                 URL toRead = MoMLApplication.specToURL(urlSpec);
                 ((HTMLViewer) getFrame()).setPage(toRead);
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex,
-                        "Cannot open URL: " + urlSpec);
+                throw new IllegalActionException(this, ex, "Cannot open URL: "
+                        + urlSpec);
             }
         } else {
             super.attributeChanged(attribute);
@@ -171,7 +170,7 @@ public class HTMLViewerTableau extends Tableau {
                 // First see whether the effigy already contains an
                 // HTMLViewerTableau.
                 HTMLViewerTableau tableau = (HTMLViewerTableau) effigy
-                    .getEntity("htmlTableau");
+                        .getEntity("htmlTableau");
 
                 if (tableau == null) {
                     tableau = new HTMLViewerTableau((HTMLEffigy) effigy,
@@ -193,7 +192,8 @@ public class HTMLViewerTableau extends Tableau {
                     // that we are looking in the wrong Jar file, so
                     // we try again.
                     String urlString = effigy.uri.getURI().toString();
-                    URL anotherURL = ClassUtilities.jarURLEntryResource(urlString);
+                    URL anotherURL = ClassUtilities
+                            .jarURLEntryResource(urlString);
 
                     if ((anotherURL == null) && (urlString.indexOf("#") != -1)) {
                         anotherURL = _entryResourceWithoutFragment(urlString);
@@ -220,9 +220,9 @@ public class HTMLViewerTableau extends Tableau {
                             // URI's can't deal with spaces, so we
                             // convert to %20
                             URL canonicalizedURL = JNLPUtilities
-                                .canonicalizeJarURL(anotherURL);
-                            effigy.uri.setURI(new URI(
-                                                      canonicalizedURL.toString()));
+                                    .canonicalizeJarURL(anotherURL);
+                            effigy.uri.setURI(new URI(canonicalizedURL
+                                    .toString()));
                             tableau.setTitle(canonicalizedURL.toString());
                         } catch (Exception ex2) {
                             throw ex;
@@ -263,8 +263,8 @@ public class HTMLViewerTableau extends Tableau {
     public static URL _absolutePTIIURLToJarURL(String urlName)
             throws java.net.URISyntaxException, java.net.MalformedURLException {
         // Try looking up the URL as a resource relative to $PTII.
-        String ptIIDirAsURLName = StringUtilities.getProperty(
-                "ptolemy.ptII.dirAsURL");
+        String ptIIDirAsURLName = StringUtilities
+                .getProperty("ptolemy.ptII.dirAsURL");
 
         // FIXME: This is an ugly hack.
         // If the user has a Windows installation that includes the
@@ -276,8 +276,9 @@ public class HTMLViewerTableau extends Tableau {
         String ptsupportPath = "/ptolemy/ptsupport.jar";
 
         if (ptIIDirAsURLName.endsWith(ptsupportPath)) {
-            ptIIDirAsURLName = ptIIDirAsURLName.substring(0,
-                    ptIIDirAsURLName.length() - ptsupportPath.length());
+            ptIIDirAsURLName = ptIIDirAsURLName.substring(0, ptIIDirAsURLName
+                    .length()
+                    - ptsupportPath.length());
         }
 
         String relativePath = null;
@@ -299,7 +300,7 @@ public class HTMLViewerTableau extends Tableau {
                 // If the ptIIDirAsURLName has a space in it, then it is
                 // not a legitimate URI, so we substitute in %20
                 ptIIDirAsURI = new URI(StringUtilities.substitute(
-                                               ptIIDirAsURLName, " ", "%20"));
+                        ptIIDirAsURLName, " ", "%20"));
             }
 
             URI relativeURI = uri.relativize(ptIIDirAsURI);
@@ -312,9 +313,8 @@ public class HTMLViewerTableau extends Tableau {
                 }
 
                 // Hmm, should this be
-                relativePath = uri.toString().substring(ptIIDirAsURI.toString()
-                        .length()
-                        + offset);
+                relativePath = uri.toString().substring(
+                        ptIIDirAsURI.toString().length() + offset);
 
                 //relativePath = urlName.substring(ptIIDirAsURLName.length());
             }
@@ -328,7 +328,7 @@ public class HTMLViewerTableau extends Tableau {
             }
 
             URL anotherURL = Thread.currentThread().getContextClassLoader()
-                .getResource(relativePath);
+                    .getResource(relativePath);
 
             if ((anotherURL == null) && (relativePath.indexOf('#') != -1)) {
                 // getResource does not work on paths that look like:
@@ -356,7 +356,8 @@ public class HTMLViewerTableau extends Tableau {
     // @param urlString A string representing a jar URL or a relative URL.
     private static URL _entryResourceWithoutFragment(String urlString)
             throws IOException, MalformedURLException {
-        String urlStringBase = urlString.substring(0, urlString.lastIndexOf("#"));
+        String urlStringBase = urlString.substring(0, urlString
+                .lastIndexOf("#"));
 
         URL anotherURL = null;
 
@@ -364,7 +365,7 @@ public class HTMLViewerTableau extends Tableau {
             anotherURL = ClassUtilities.jarURLEntryResource(urlStringBase);
         } else {
             anotherURL = Thread.currentThread().getContextClassLoader()
-                .getResource(urlStringBase);
+                    .getResource(urlStringBase);
         }
 
         if (anotherURL != null) {

@@ -1,30 +1,30 @@
 /* A graph editor frame for Ptolemy models.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.actor;
 
 import java.awt.Toolkit;
@@ -70,23 +70,22 @@ import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ActorGraphFrame
 
 /**
-   This is a graph editor frame for ptolemy models.  Given a composite
-   entity and an instance of ActorGraphTableau, it creates an editor
-   and populates the menus and toolbar.  This overrides the base class
-   to associate with the editor an instance of ActorEditorGraphController.
+ This is a graph editor frame for ptolemy models.  Given a composite
+ entity and an instance of ActorGraphTableau, it creates an editor
+ and populates the menus and toolbar.  This overrides the base class
+ to associate with the editor an instance of ActorEditorGraphController.
 
-   @see ActorEditorGraphController
-   @author  Steve Neuendorffer, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @see ActorEditorGraphController
+ @author  Steve Neuendorffer, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class ActorGraphFrame extends ExtendedGraphFrame {
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -165,10 +164,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
-            new JMenuItem("Listen to Director", KeyEvent.VK_L),
-            new JMenuItem("Animate Execution", KeyEvent.VK_A),
-            new JMenuItem("Stop Animating", KeyEvent.VK_S),
-        };
+                new JMenuItem("Listen to Director", KeyEvent.VK_L),
+                new JMenuItem("Animate Execution", KeyEvent.VK_A),
+                new JMenuItem("Stop Animating", KeyEvent.VK_S), };
 
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
@@ -222,7 +220,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
         // The cast is safe because the constructor only accepts
         // CompositeEntity.
-        final ActorGraphModel graphModel = new ActorGraphModel((CompositeEntity) getModel());
+        final ActorGraphModel graphModel = new ActorGraphModel(
+                (CompositeEntity) getModel());
         return new GraphPane(_controller, graphModel);
     }
 
@@ -240,10 +239,15 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     /** action for creating a level of hierarchy. */
     protected Action _createHierarchyAction;
+
     protected Action _layoutAction;
+
     protected Action _saveInLibraryAction;
+
     protected Action _importLibraryAction;
+
     protected Action _instantiateAttributeAction;
+
     protected Action _instantiateEntityAction;
 
     ///////////////////////////////////////////////////////////////////
@@ -283,13 +287,15 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                         Director director = ((Actor) model).getDirector();
 
                         if (director != null) {
-                            Effigy effigy = (Effigy) getTableau().getContainer();
+                            Effigy effigy = (Effigy) getTableau()
+                                    .getContainer();
 
                             // Create a new text effigy inside this one.
-                            Effigy textEffigy = new TextEffigy(effigy,
-                                    effigy.uniqueName("debug listener"));
-                            DebugListenerTableau tableau = new DebugListenerTableau(textEffigy,
-                                    textEffigy.uniqueName("debugListener"));
+                            Effigy textEffigy = new TextEffigy(effigy, effigy
+                                    .uniqueName("debug listener"));
+                            DebugListenerTableau tableau = new DebugListenerTableau(
+                                    textEffigy, textEffigy
+                                            .uniqueName("debugListener"));
                             tableau.setDebuggable(director);
                             success = true;
                         }
@@ -311,11 +317,12 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                         // Dialog to ask for a delay time.
                         Query query = new Query();
                         query.addLine("delay",
-                                "Time (in ms) to hold highlight",
-                                Long.toString(_lastDelayTime));
+                                "Time (in ms) to hold highlight", Long
+                                        .toString(_lastDelayTime));
 
-                        ComponentDialog dialog = new ComponentDialog(ActorGraphFrame.this,
-                                "Delay for Animation", query);
+                        ComponentDialog dialog = new ComponentDialog(
+                                ActorGraphFrame.this, "Delay for Animation",
+                                query);
 
                         if (dialog.buttonPressed().equals("OK")) {
                             try {
@@ -323,21 +330,24 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                                         .getStringValue("delay"));
                                 _controller.setAnimationDelay(_lastDelayTime);
 
-                                Director director = ((Actor) model).getDirector();
+                                Director director = ((Actor) model)
+                                        .getDirector();
 
                                 while ((director == null)
                                         && model instanceof Actor) {
                                     model = (NamedObj) model.getContainer();
 
                                     if (model instanceof Actor) {
-                                        director = ((Actor) model).getDirector();
+                                        director = ((Actor) model)
+                                                .getDirector();
                                     }
                                 }
 
                                 if ((director != null)
                                         && (_listeningTo != director)) {
                                     if (_listeningTo != null) {
-                                        _listeningTo.removeDebugListener(_controller);
+                                        _listeningTo
+                                                .removeDebugListener(_controller);
                                     }
 
                                     director.addDebugListener(_controller);
@@ -346,17 +356,17 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                             } catch (NumberFormatException ex) {
                                 MessageHandler.error(
                                         "Invalid time, which is required "
-                                        + "to be an integer", ex);
+                                                + "to be an integer", ex);
                             }
                         } else {
-                            MessageHandler.error(
-                                    "Cannot find the director. Possibly this "
-                                    + "is because this is a class, not an "
-                                    + "instance.");
+                            MessageHandler
+                                    .error("Cannot find the director. Possibly this "
+                                            + "is because this is a class, not an "
+                                            + "instance.");
                         }
                     } else {
-                        MessageHandler.error(
-                                "Model is not an actor. Cannot animate.");
+                        MessageHandler
+                                .error("Model is not an actor. Cannot animate.");
                     }
                 } else if (actionCommand.equals("Stop Animating")) {
                     if (_listeningTo != null) {
@@ -392,7 +402,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             super("CreateHierarchy");
             putValue("tooltip",
                     "Create a TypedCompositeActor that contains the"
-                    + " selected actors.");
+                            + " selected actors.");
 
             //putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
             //        KeyStroke.getKeyStroke(KeyEvent.VK_H,
@@ -447,11 +457,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                     File file = chooser.getSelectedFile();
 
                     PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
-                        .getContainer();
+                            .getContainer();
                     Configuration configuration = (Configuration) effigy
-                        .toplevel();
+                            .toplevel();
                     VergilApplication.openLibrary(configuration, file);
-                    
+
                     _setDirectory(chooser.getCurrentDirectory());
                 } catch (Throwable throwable) {
                     MessageHandler.error("Library import failed.", throwable);
@@ -486,9 +496,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
                 GraphController controller = _jgraph.getGraphPane()
-                    .getGraphController();
+                        .getGraphController();
                 AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
-                    .getGraphModel();
+                        .getGraphModel();
                 NamedObj context = model.getPtolemyModel();
 
                 _lastAttributeClassName = query.getStringValue("class");
@@ -509,10 +519,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 // Use the "auto" namespace group so that name collisions
                 // are automatically avoided by appending a suffix to the name.
                 String moml = "<group name=\"auto\"><property name=\""
-                    + rootName + "\" class=\"" + _lastAttributeClassName
-                    + "\"><property name=\"_location\" "
-                    + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
-                    + ", " + y + "\"></property></property></group>";
+                        + rootName + "\" class=\"" + _lastAttributeClassName
+                        + "\"><property name=\"_location\" "
+                        + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
+                        + ", " + y + "\"></property></property></group>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         context, moml);
                 context.requestChange(request);
@@ -547,9 +557,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
                 GraphController controller = _jgraph.getGraphPane()
-                    .getGraphController();
+                        .getGraphController();
                 AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
-                    .getGraphModel();
+                        .getGraphModel();
                 NamedObj context = model.getPtolemyModel();
 
                 _lastEntityClassName = query.getStringValue("class");
@@ -579,10 +589,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 // Use the "auto" namespace group so that name collisions
                 // are automatically avoided by appending a suffix to the name.
                 String moml = "<group name=\"auto\"><entity name=\"" + rootName
-                    + "\" class=\"" + _lastEntityClassName + "\"" + source
-                    + "><property name=\"_location\" "
-                    + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
-                    + ", " + y + "\"></property></entity></group>";
+                        + "\" class=\"" + _lastEntityClassName + "\"" + source
+                        + "><property name=\"_location\" "
+                        + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
+                        + ", " + y + "\"></property></entity></group>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         context, moml);
                 context.requestChange(request);
@@ -599,9 +609,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         public LayoutAction() {
             super("Automatic Layout");
             putValue("tooltip", "Layout the Graph (Ctrl+T)");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_T,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_T, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_L));
         }
 

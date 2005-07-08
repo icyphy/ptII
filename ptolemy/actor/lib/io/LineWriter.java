@@ -1,30 +1,30 @@
 /* An actor that writes the value of string tokens to a file, one per line.
 
-@Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.io;
 
 import java.io.File;
@@ -44,37 +44,36 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LineWriter
 
 /**
-   This actor reads string-valued input tokens and writes them,
-   one line at a time, to a specified file.  It does not
-   include any enclosing quotation marks in the output.
-   If you need the enclosing quotation marks, use ExpressionWriter.
-   <p>
-   The file is specified by the <i>fileName</i> attribute
-   using any form acceptable to FileParameter.
-   <p>
-   If the <i>append</i> attribute has value <i>true</i>,
-   then the file will be appended to. If it has value <i>false</i>,
-   then if the file exists, the user will be queried for permission
-   to overwrite, and if granted, the file will be overwritten.
-   <p>
-   If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
-   then this actor will overwrite the specified file if it exists
-   without asking.  If <i>true</i> (the default), then if the file
-   exists, then this actor will ask for confirmation before overwriting.
+ This actor reads string-valued input tokens and writes them,
+ one line at a time, to a specified file.  It does not
+ include any enclosing quotation marks in the output.
+ If you need the enclosing quotation marks, use ExpressionWriter.
+ <p>
+ The file is specified by the <i>fileName</i> attribute
+ using any form acceptable to FileParameter.
+ <p>
+ If the <i>append</i> attribute has value <i>true</i>,
+ then the file will be appended to. If it has value <i>false</i>,
+ then if the file exists, the user will be queried for permission
+ to overwrite, and if granted, the file will be overwritten.
+ <p>
+ If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
+ then this actor will overwrite the specified file if it exists
+ without asking.  If <i>true</i> (the default), then if the file
+ exists, then this actor will ask for confirmation before overwriting.
 
-   @see FileParameter
-   @see ExpressionWriter
-   @author  Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.2
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (liuj)
-*/
+ @see FileParameter
+ @see ExpressionWriter
+ @author  Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.2
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (liuj)
+ */
 public class LineWriter extends Sink {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -102,9 +101,9 @@ public class LineWriter extends Sink {
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
         confirmOverwrite.setToken(BooleanToken.TRUE);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
-                + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
                 + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
                 + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
                 + "</svg>\n");
@@ -148,7 +147,7 @@ public class LineWriter extends Sink {
         if (attribute == fileName) {
             // Do not close the file if it is the same file.
             String newFileName = ((StringToken) fileName.getToken())
-                .stringValue();
+                    .stringValue();
 
             if ((_previousFileName != null)
                     && !newFileName.equals(_previousFileName)) {
@@ -188,7 +187,7 @@ public class LineWriter extends Sink {
 
             if (_writer == null) {
                 boolean appendValue = ((BooleanToken) append.getToken())
-                    .booleanValue();
+                        .booleanValue();
 
                 if (!fileName.stringValue().equals("System.out")) {
                     // Only check for append and overwrite if the
@@ -205,7 +204,7 @@ public class LineWriter extends Sink {
                         // FIXME: This should be called in the event thread!
                         // There is a chance of deadlock since it is not.
                         if (!MessageHandler.yesNoQuestion("OK to overwrite "
-                                    + file + "?")) {
+                                + file + "?")) {
                             throw new IllegalActionException(this,
                                     "Please select another file name.");
                         }

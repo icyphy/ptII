@@ -27,7 +27,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib.network.mac;
 
 import java.util.Iterator;
@@ -42,20 +42,19 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FilterMPDU
 
 /**
-   Filter the received MPDU (MAC Protocol Data Unit) packets.
-   The code is based on a OMNET model created by Charlie Zhong.
+ Filter the received MPDU (MAC Protocol Data Unit) packets.
+ The code is based on a OMNET model created by Charlie Zhong.
 
-   @author Xiaojun Liu
-   @version FilterMpdu.java,v 1.15 2004/04/22 19:46:18 ellen_zh Exp
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (pjb2e)
-*/
+ @author Xiaojun Liu
+ @version FilterMpdu.java,v 1.15 2004/04/22 19:46:18 ellen_zh Exp
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (pjb2e)
+ */
 public class FilterMpdu extends MACActorBase {
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
@@ -73,7 +72,8 @@ public class FilterMpdu extends MACActorBase {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        fromValidateMpdu = new TypedIOPort(this, "fromValidateMpdu", true, false);
+        fromValidateMpdu = new TypedIOPort(this, "fromValidateMpdu", true,
+                false);
 
         fromValidateMpdu.setTypeEquals(BaseType.GENERAL);
 
@@ -137,15 +137,11 @@ public class FilterMpdu extends MACActorBase {
             // code for broadcast
             if (intFieldValue(pdu, "Addr1") == mac_broadcast_addr) {
                 RecordToken msgout = new RecordToken(RxIndicateMessageFields,
-                        new Token[] {
-                            new IntToken(RxIndicate),
+                        new Token[] { new IntToken(RxIndicate),
 
-                            //TODO: how to implement this?
-                            //msgout->pdu=pdu->copyEncapMsg();
-                            pdu,
-                            msg.get("endRx"),
-                            msg.get("rxRate")
-                        });
+                        //TODO: how to implement this?
+                                //msgout->pdu=pdu->copyEncapMsg();
+                                pdu, msg.get("endRx"), msg.get("rxRate") });
 
                 // send RxIndicate message to the ProtocolControl block
                 toProtocolControl.send(0, msgout);
@@ -161,16 +157,13 @@ public class FilterMpdu extends MACActorBase {
                 }
 
                 if ((intFieldValue(pdu, "retryBit") == 0) || !dup) {
-                    RecordToken msgout = new RecordToken(RxIndicateMessageFields,
-                            new Token[] {
-                                new IntToken(RxIndicate),
+                    RecordToken msgout = new RecordToken(
+                            RxIndicateMessageFields, new Token[] {
+                                    new IntToken(RxIndicate),
 
-                                //TODO: how to implement this?
-                                //msgout->pdu=pdu->copyEncapMsg();
-                                pdu,
-                                msg.get("endRx"),
-                                msg.get("rxRate")
-                            });
+                                    //TODO: how to implement this?
+                                    //msgout->pdu=pdu->copyEncapMsg();
+                                    pdu, msg.get("endRx"), msg.get("rxRate") });
 
                     // only if it is not a duplicate packet, will it be forwarded
                     toProtocolControl.send(0, msgout);
@@ -182,13 +175,9 @@ public class FilterMpdu extends MACActorBase {
 
                 if (intFieldValue(pdu, "Type") == DataType) {
                     RecordToken msgout = new RecordToken(NeedAckMessageFields,
-                            new Token[] {
-                                new IntToken(NeedAck),
-                                pdu.get("Addr2"),
-                                msg.get("endRx"),
-                                msg.get("rxRate"),
-                                new IntToken(dAck)
-                            });
+                            new Token[] { new IntToken(NeedAck),
+                                    pdu.get("Addr2"), msg.get("endRx"),
+                                    msg.get("rxRate"), new IntToken(dAck) });
 
                     // if it is a data packet, an Ack is needed
                     toProtocolControl.send(0, msgout);
@@ -210,12 +199,9 @@ public class FilterMpdu extends MACActorBase {
 
                 if (intFieldValue(pdu, "durId") <= 32767) {
                     RecordToken msgout = new RecordToken(SetNavMessageFields,
-                            new Token[] {
-                                new IntToken(SetNav),
-                                msg.get("endRx"),
-                                new IntToken(dNav),
-                                new IntToken(src)
-                            });
+                            new Token[] { new IntToken(SetNav),
+                                    msg.get("endRx"), new IntToken(dNav),
+                                    new IntToken(src) });
 
                     //TODO: send(msgout, toChannelstateGateId+msgin->channel);
                     // ask the ChannelState process to make reservation
@@ -275,11 +261,8 @@ public class FilterMpdu extends MACActorBase {
         }
 
         // only if no entry is found, will we add a new one
-        int[] tuple = new int[] {
-            intFieldValue(pdu, "Addr2"),
-            intFieldValue(pdu, "SeqNum"),
-            intFieldValue(pdu, "FragNum")
-        };
+        int[] tuple = new int[] { intFieldValue(pdu, "Addr2"),
+                intFieldValue(pdu, "SeqNum"), intFieldValue(pdu, "FragNum") };
 
         if (_tupleCache.size() == _TUPLE_CACHE_SIZE) {
             _tupleCache.removeLast();
@@ -289,5 +272,6 @@ public class FilterMpdu extends MACActorBase {
     }
 
     private LinkedList _tupleCache;
+
     private static final int _TUPLE_CACHE_SIZE = 32;
 }

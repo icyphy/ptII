@@ -1,30 +1,30 @@
 /* Base class for exceptions that report the names of Nameable objects.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.kernel.util;
 
 import java.io.PrintStream;
@@ -33,39 +33,38 @@ import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// KernelException
 
 /**
-   Base class for Ptolemy exceptions.  This class extends the basic
-   JavaException with a constructor that can take a Nameable as
-   an argument.
+ Base class for Ptolemy exceptions.  This class extends the basic
+ JavaException with a constructor that can take a Nameable as
+ an argument.
 
-   (Note however, that it is better to use a class derived from
-   KernelException than it is to throw a KernelException directly.)
+ (Note however, that it is better to use a class derived from
+ KernelException than it is to throw a KernelException directly.)
 
-   <p>JDK1.4 and later support exception chaining.  We are implementing a
-   version of exception chaining here ourselves so that we can use JVMs
-   earlier than JDK1.4.
+ <p>JDK1.4 and later support exception chaining.  We are implementing a
+ version of exception chaining here ourselves so that we can use JVMs
+ earlier than JDK1.4.
 
-   <p>In this implementation, we have the following differences from
-   the JDK1.4 exception chaining implementation:
-   <menu>
-   <li>In this implementation, the detail message includes the detail
-   message from the cause argument.
-   <li>In this implementation, we implement a protected _setCause()
-   method, but not the public initCause() method that JDK1.4 has
-   </menu>
+ <p>In this implementation, we have the following differences from
+ the JDK1.4 exception chaining implementation:
+ <menu>
+ <li>In this implementation, the detail message includes the detail
+ message from the cause argument.
+ <li>In this implementation, we implement a protected _setCause()
+ method, but not the public initCause() method that JDK1.4 has
+ </menu>
 
 
-   @see KernelRuntimeException
-   @author John S. Davis, II, Edward A. Lee, Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (cxh)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @see KernelRuntimeException
+ @author John S. Davis, II, Edward A. Lee, Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class KernelException extends Exception {
     /** Construct an exception with a no specific detail message. */
     public KernelException() {
@@ -179,8 +178,8 @@ public class KernelException extends Exception {
             Object object = objectIterator.next();
 
             if (object instanceof Nameable) {
-                prefixBuffer.append(KernelException.getFullName(
-                                            (Nameable) object));
+                prefixBuffer.append(KernelException
+                        .getFullName((Nameable) object));
             } else {
                 prefixBuffer.append("<Object of class "
                         + object.getClass().getName() + ">");
@@ -221,23 +220,23 @@ public class KernelException extends Exception {
         // upon, but in this case, the alternatives are a very large
         // and complex if/else tree or else the creation of a bunch
         // of temporary strings with a smaller if/else tree.
-        boolean whereNullOrEmpty = ((whereString == null)
-                || whereString.equals(""));
+        boolean whereNullOrEmpty = ((whereString == null) || whereString
+                .equals(""));
         boolean detailNullOrEmpty = ((detail == null) || detail.equals(""));
         return
-            // Do we print the detail?
-            (detailNullOrEmpty ? "" : detail)
-            // Do we add a \n?
-            + ((!whereNullOrEmpty && !detailNullOrEmpty) ? "\n" : "")
-            // Do we print the whereString?
-            + (whereNullOrEmpty ? "" : whereString)
-            // Do we add a \n?
-            + (((!whereNullOrEmpty || !detailNullOrEmpty) && (cause != null))
-                    ? "\n" : "")
-            // Do we print the cause?
-            + ((cause == null) ? ""
-                    : ("Because:\n"
-                            + ((cause.getMessage() != null) ? cause.getMessage() : cause.toString())));
+        // Do we print the detail?
+        (detailNullOrEmpty ? "" : detail)
+                // Do we add a \n?
+                + ((!whereNullOrEmpty && !detailNullOrEmpty) ? "\n" : "")
+                // Do we print the whereString?
+                + (whereNullOrEmpty ? "" : whereString)
+                // Do we add a \n?
+                + (((!whereNullOrEmpty || !detailNullOrEmpty) && (cause != null)) ? "\n"
+                        : "")
+                // Do we print the cause?
+                + ((cause == null) ? ""
+                        : ("Because:\n" + ((cause.getMessage() != null) ? cause
+                                .getMessage() : cause.toString())));
     }
 
     /** Get the cause of this exception.

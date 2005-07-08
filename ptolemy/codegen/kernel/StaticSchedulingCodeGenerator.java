@@ -1,30 +1,30 @@
 /* Base class for code generators for static scheduling models of computation.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.codegen.kernel;
 
 import ptolemy.actor.Actor;
@@ -37,7 +37,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// StaticSchedulingCodeGenerator
 
@@ -49,8 +48,8 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)
  */
-public class StaticSchedulingCodeGenerator extends CodeGenerator
-    implements ActorCodeGenerator {
+public class StaticSchedulingCodeGenerator extends CodeGenerator implements
+        ActorCodeGenerator {
     /** Create a new instance of the C code generator.
      *  @param container The container.
      *  @param name The name.
@@ -90,7 +89,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
 
         if (manager == null) {
             CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
-                .toplevel();
+                    .toplevel();
             manager = new Manager(toplevel.workspace(), "Manager");
             toplevel.setManager(manager);
         }
@@ -118,14 +117,13 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
         ptolemy.actor.Director director = ((Actor) model).getDirector();
 
         if (director == null) {
-            throw new IllegalActionException(this,
-                    "The model " + model.getName() + " does not have a director.");
+            throw new IllegalActionException(this, "The model "
+                    + model.getName() + " does not have a director.");
         }
 
         if (!(director instanceof StaticSchedulingDirector)) {
-            throw new IllegalActionException(this,
-                    "The director of the model " + model.getName()
-                    + " is not a StaticSchedulingDirector.");
+            throw new IllegalActionException(this, "The director of the model "
+                    + model.getName() + " is not a StaticSchedulingDirector.");
         }
 
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
@@ -139,12 +137,12 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
      *  @exception IllegalActionException if the given container
      *   is not null and not an instance of CompositeActor.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         if ((container != null) && !(container instanceof CompositeActor)) {
             throw new IllegalActionException(this, container,
                     "StaticSchedulingCodeGenerator can only be contained "
-                    + " by CompositeActor");
+                            + " by CompositeActor");
         }
 
         super.setContainer(container);
@@ -164,8 +162,8 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
         if (!(helperObject instanceof ActorCodeGenerator)) {
             throw new IllegalActionException(this,
                     "Cannot generate code for this actor: " + actor
-                    + ". Its helper class does not"
-                    + " implement ActorCodeGenerator.");
+                            + ". Its helper class does not"
+                            + " implement ActorCodeGenerator.");
         }
 
         return helperObject;

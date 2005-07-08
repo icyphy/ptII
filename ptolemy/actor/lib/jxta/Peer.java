@@ -1,31 +1,31 @@
 /*
-  @Copyright (c) 2002-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.lib.jxta;
 
 import java.io.BufferedReader;
@@ -70,13 +70,11 @@ import org.apache.log4j.PropertyConfigurator;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
 
 /**
  * @author liuxj, Yang
@@ -89,7 +87,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * Use a timer task for peer discovery, and actor query.
  */
 public class Peer extends TypedAtomicActor implements QueryHandler,
-                                                      DiscoveryListener {
+        DiscoveryListener {
     public Peer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -102,12 +100,12 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
         //trigResult.setTypeEquals(BaseType.GENERAL);
 
         /*configDir = new Parameter(this, "configDir",
-          new StringToken(""));
-          configDir.setTypeEquals(BaseType.STRING);
-          actorList = new Parameter(this, "actorList",
-          new StringToken(""));
-          actorList.setTypeEquals(BaseType.STRING);
-        */
+         new StringToken(""));
+         configDir.setTypeEquals(BaseType.STRING);
+         actorList = new Parameter(this, "actorList",
+         new StringToken(""));
+         actorList.setTypeEquals(BaseType.STRING);
+         */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -122,7 +120,9 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
     /** The output port with.
      */
     public TypedIOPort queryResult;
+
     public Parameter configDir;
+
     public Parameter actorList;
 
     ///////////////////////////////////////////////////////////////////
@@ -151,9 +151,9 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
             configProperties = new FileInputStream(_CONFIG_FILE);
             _properties.load(configProperties);
         } catch (IOException e) {
-            System.out.println(
-                    "Warning: Can't find configuration propertiees file. ' "
-                    + e.getMessage() + "'");
+            System.out
+                    .println("Warning: Can't find configuration propertiees file. ' "
+                            + e.getMessage() + "'");
         } finally {
             if (configProperties != null) {
                 try {
@@ -179,17 +179,16 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
         String groupAdvFileName = _properties.getProperty("GroupAdvFileName");
 
         if (groupAdvFileName == null) {
-            System.out.println(
-                    "Error: property undefined - GroupAdvFileName.\n");
+            System.out
+                    .println("Error: property undefined - GroupAdvFileName.\n");
         }
 
         PeerGroupAdvertisement groupAdv = null;
 
         try {
             groupAdv = (PeerGroupAdvertisement) AdvertisementFactory
-                .newAdvertisement(XML_MIME_TYPE,
-                        new FileInputStream(Dir + "/"
-                                + groupAdvFileName));
+                    .newAdvertisement(XML_MIME_TYPE, new FileInputStream(Dir
+                            + "/" + groupAdvFileName));
         } catch (FileNotFoundException ex) {
             System.out.println("Error: cannot find group adv file.\n"
                     + ex.getMessage());
@@ -215,8 +214,8 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
         StructuredDocument identityInfo = null;
 
         try {
-            AuthenticationCredential authCred = new AuthenticationCredential(_group,
-                    null, identityInfo);
+            AuthenticationCredential authCred = new AuthenticationCredential(
+                    _group, null, identityInfo);
             MembershipService membershipService = _group.getMembershipService();
             _authenticator = membershipService.apply(authCred);
 
@@ -256,7 +255,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
 
             try {
                 BufferedReader fileReader = new BufferedReader(new FileReader(
-                                                                       _actorListFileName));
+                        _actorListFileName));
                 String newline = System.getProperty("line.separator");
 
                 while (true) {
@@ -270,8 +269,9 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
                     actorListText = actorListText.append(newline);
                 }
 
-                _actorQueryResponse = new ResolverResponse(_ACTOR_QUERY_HANDLER_NAME,
-                        null, 0, actorListText.toString());
+                _actorQueryResponse = new ResolverResponse(
+                        _ACTOR_QUERY_HANDLER_NAME, null, 0, actorListText
+                                .toString());
             } catch (IOException ex) {
                 System.out.println("Warning: error reading actor list file.\n"
                         + ex.getMessage());
@@ -297,8 +297,8 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
                         DiscoveryService.PEER, null, null, 5);
 
                 System.out.println("Send actor query message...");
-                _actorQueryMessage.setQueryId(_actorQueryMessage.getQueryId()
-                        + 1);
+                _actorQueryMessage
+                        .setQueryId(_actorQueryMessage.getQueryId() + 1);
                 _resolverService.sendQuery(null, _actorQueryMessage);
             }
 
@@ -325,8 +325,8 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
      * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
      */
     public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-            throws NoResponseException, ResendQueryException, DiscardQueryException,
-            IOException {
+            throws NoResponseException, ResendQueryException,
+            DiscardQueryException, IOException {
         System.out.println("Got query from " + query.getSrc() + " "
                 + query.getQueryId());
         System.out.println("Query is:\n" + query.getQuery());
@@ -368,15 +368,15 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
             is = new ByteArrayInputStream(responderAdvString.getBytes());
 
             PeerAdvertisement responderAdv = (PeerAdvertisement) AdvertisementFactory
-                .newAdvertisement(XML_MIME_TYPE, is);
+                    .newAdvertisement(XML_MIME_TYPE, is);
             System.out.println(" [  Got a Discovery Response ["
                     + response.getResponseCount() + " elements] from peer: "
                     + responderAdv.getName() + " ]");
         } catch (java.io.IOException e) {
             // bogus peer, skip this message alltogether.
-            System.out.println(
-                    "Warning: cannot parse remote peer's advertisement.\n"
-                    + e.getMessage());
+            System.out
+                    .println("Warning: cannot parse remote peer's advertisement.\n"
+                            + e.getMessage());
             return;
         } finally {
             if (is != null) {
@@ -401,9 +401,9 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
 
                 // create an advertisement object from each element
                 newAdv = (PeerAdvertisement) AdvertisementFactory
-                    .newAdvertisement(XML_MIME_TYPE,
-                            new ByteArrayInputStream(
-                                    responseString.getBytes()));
+                        .newAdvertisement(XML_MIME_TYPE,
+                                new ByteArrayInputStream(responseString
+                                        .getBytes()));
                 System.out.println(" Peer name = " + newAdv.getName());
             } catch (java.io.IOException e) {
                 // got a bad response. continue to the next response
@@ -417,18 +417,32 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private Properties _properties;
+
     private PeerGroup _group;
+
     private DiscoveryService _discoveryService;
+
     private ResolverService _resolverService;
+
     private Authenticator _authenticator;
+
     private Credential _credential;
+
     private Timer _peerDiscoveryTimer;
+
     private Timer _actorQueryTimer;
+
     private ResolverQueryMsg _actorQueryMessage;
+
     private ResolverResponseMsg _actorQueryResponse;
+
     private String _CONFIG_FILE = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/Peer.properties";
+
     private String _actorListFileName;
+
     private String _ACTOR_QUERY_HANDLER_NAME = "ActorQueryHandler";
+
     private MimeMediaType XML_MIME_TYPE = new MimeMediaType("text/xml");
+
     private ptolemy.data.Token _inToken = null;
 }

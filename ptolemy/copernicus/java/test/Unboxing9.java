@@ -8,10 +8,11 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 public class Unboxing9 {
     ArrayToken arraytoken;
+
     ArrayToken arraytoken2;
+
     public final ArrayToken initialOutputs_CGToken;
 
     public void initialize() throws IllegalActionException {

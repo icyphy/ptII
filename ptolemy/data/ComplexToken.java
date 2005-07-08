@@ -1,30 +1,30 @@
 /* A token that contains a Complex.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -37,22 +37,21 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ComplexToken
 
 /**
-   A token that contains a Complex number represented by a 64-bit
-   double-precision floating point real and imaginary parts.
+ A token that contains a Complex number represented by a 64-bit
+ double-precision floating point real and imaginary parts.
 
-   @see ptolemy.data.Token
-   @see ptolemy.math.Complex
-   @author Yuhong Xiong, Neil Smyth, Christopher Hylands, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @see ptolemy.data.Token
+ @see ptolemy.math.Complex
+ @author Yuhong Xiong, Neil Smyth, Christopher Hylands, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class ComplexToken extends ScalarToken {
     /** Construct a ComplexToken with Complex 0.0+0.0i
      */
@@ -118,8 +117,8 @@ public class ComplexToken extends ScalarToken {
         int compare = TypeLattice.compare(BaseType.COMPLEX, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "complex"));
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(token, "complex"));
         }
 
         compare = TypeLattice.compare(BaseType.DOUBLE, token);
@@ -128,14 +127,14 @@ public class ComplexToken extends ScalarToken {
             DoubleToken doubleToken = DoubleToken.convert(token);
             ComplexToken result = new ComplexToken(doubleToken.complexValue());
             result._unitCategoryExponents = doubleToken
-                ._copyOfCategoryExponents();
+                    ._copyOfCategoryExponents();
             return result;
         }
 
         // The argument is below ComplexToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "complex"));
+                "complex"));
     }
 
     /** Return true if the argument's class is IntToken and it has the
@@ -216,7 +215,8 @@ public class ComplexToken extends ScalarToken {
      *  @return A new ComplexToken containing the result.
      */
     protected ScalarToken _add(ScalarToken rightArgument) {
-        Complex result = _value.add(((ComplexToken) rightArgument).complexValue());
+        Complex result = _value.add(((ComplexToken) rightArgument)
+                .complexValue());
         return new ComplexToken(result);
     }
 
@@ -227,7 +227,7 @@ public class ComplexToken extends ScalarToken {
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
-                                                 this, rightArgument));
+                this, rightArgument));
     }
 
     /** Throw an exception because bitwise NOT is not supported.
@@ -236,7 +236,7 @@ public class ComplexToken extends ScalarToken {
      */
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
-                                                 this, this));
+                this, this));
     }
 
     /** Throw an exception because bitwise OR is not supported.
@@ -246,7 +246,7 @@ public class ComplexToken extends ScalarToken {
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Throw an exception because bitwise XOR is not supported.
@@ -256,7 +256,7 @@ public class ComplexToken extends ScalarToken {
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseXor",
-                                                 this, rightArgument));
+                this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -283,8 +283,8 @@ public class ComplexToken extends ScalarToken {
      *  close in value to this rightArgument.
      */
     protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
-        return BooleanToken.getInstance(complexValue().isCloseTo(((ComplexToken) rightArgument)
-                                                .complexValue(), epsilon));
+        return BooleanToken.getInstance(complexValue().isCloseTo(
+                ((ComplexToken) rightArgument).complexValue(), epsilon));
     }
 
     /** Throw an exception because complex values cannot be compared.
@@ -295,7 +295,7 @@ public class ComplexToken extends ScalarToken {
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("isLessThan",
-                                                 this, rightArgument)
+                this, rightArgument)
                 + " because complex numbers cannot be compared.");
     }
 
@@ -308,7 +308,7 @@ public class ComplexToken extends ScalarToken {
     protected ScalarToken _modulo(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of this token

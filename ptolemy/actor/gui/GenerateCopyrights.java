@@ -1,29 +1,29 @@
 /* Generate a web page that contains links for the appropriate copyrights
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.net.URL;
@@ -36,23 +36,22 @@ import java.util.Set;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// GenerateCopyrights
 
 /**
-   Generate an HTML file that contains links to the appropriate
-   copyrights for entities in the configuration.
-   This class looks for particular classes, and if the class is found
-   in the classpath, then a corresponding html file is included
-   in the list of copyrights.
+ Generate an HTML file that contains links to the appropriate
+ copyrights for entities in the configuration.
+ This class looks for particular classes, and if the class is found
+ in the classpath, then a corresponding html file is included
+ in the list of copyrights.
 
-   @author Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class GenerateCopyrights {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -153,8 +152,7 @@ public class GenerateCopyrights {
 
         try {
             StringAttribute applicationNameAttribute = (StringAttribute) configuration
-                .getAttribute("_applicationName",
-                        StringAttribute.class);
+                    .getAttribute("_applicationName", StringAttribute.class);
 
             if (applicationNameAttribute != null) {
                 applicationName = applicationNameAttribute.getExpression();
@@ -168,12 +166,12 @@ public class GenerateCopyrights {
 
         try {
             StringAttribute applicationCopyrightAttribute = (StringAttribute) configuration
-                .getAttribute("_applicationCopyright",
-                        StringAttribute.class);
+                    .getAttribute("_applicationCopyright",
+                            StringAttribute.class);
 
             if (applicationCopyrightAttribute != null) {
                 applicationCopyright = applicationCopyrightAttribute
-                    .getExpression();
+                        .getExpression();
             }
         } catch (Exception ex) {
             // Ignore and use the default applicationCopyright
@@ -199,9 +197,10 @@ public class GenerateCopyrights {
             String ptolemyIICopyright = _findURL(defaultApplicationCopyright);
             htmlBuffer.append("<p>" + applicationName + " uses Ptolemy II "
                     + VersionAttribute.CURRENT_VERSION.getExpression() + ".\n"
-                    + "PtolemyII is covered by the copyright in\n " + "<a href=\""
-                    + ptolemyIICopyright + "\"><code>"
-                    + _canonicalizeURLToPTII(ptolemyIICopyright) + "</code></a>\n");
+                    + "PtolemyII is covered by the copyright in\n "
+                    + "<a href=\"" + ptolemyIICopyright + "\"><code>"
+                    + _canonicalizeURLToPTII(ptolemyIICopyright)
+                    + "</code></a>\n");
         }
 
         htmlBuffer.append("<p>" + applicationName
@@ -214,14 +213,18 @@ public class GenerateCopyrights {
 
         if (copyrights.hasNext()) {
             // DSP configuration might not include other actors.
-            htmlBuffer.append("<p>Below we list features and the "
-                    + "corresponding copyright "
-                    + " of the package that is used.  If a feature is not "
-                    + "listed below, then the " + applicationName
-                    + " copyright is the " + "only copyright." + "<table>\n"
-                    + "  <tr><th>Feature</th>\n"
-                    + "      <th>Copyright of package used by the feature</th>\n"
-                    + "  </tr>\n");
+            htmlBuffer
+                    .append("<p>Below we list features and the "
+                            + "corresponding copyright "
+                            + " of the package that is used.  If a feature is not "
+                            + "listed below, then the "
+                            + applicationName
+                            + " copyright is the "
+                            + "only copyright."
+                            + "<table>\n"
+                            + "  <tr><th>Feature</th>\n"
+                            + "      <th>Copyright of package used by the feature</th>\n"
+                            + "  </tr>\n");
 
             while (copyrights.hasNext()) {
                 Map.Entry entry = (Map.Entry) copyrights.next();
@@ -321,7 +324,7 @@ public class GenerateCopyrights {
     private static String _findURL(String localURL) {
         try {
             URL url = Thread.currentThread().getContextClassLoader()
-                .getResource(localURL);
+                    .getResource(localURL);
             return url.toString();
         } catch (Exception ex) {
             // Ignore it and use the copyright from the website
@@ -343,7 +346,7 @@ public class GenerateCopyrights {
 
             String majorVersion = majorVersionBuffer.toString();
             return "http://ptolemy.eecs.berkeley.edu/ptolemyII/" + "ptII"
-                + majorVersion + "/ptII" + majorVersion + "/" + localURL;
+                    + majorVersion + "/ptII" + majorVersion + "/" + localURL;
         }
     }
 }

@@ -1,30 +1,30 @@
 /* An abstract base class for directors in the CT domain.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.kernel;
 
 import java.util.HashSet;
@@ -53,83 +53,82 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
 
 /**
-   Abstract base class for directors in the CT domain. A CTDirector
-   has a CTScheduler which provides static schedules for firing
-   the actors in different phases of execution in one iteration.
-   <P>
-   A CTDirector may have more than one ODE solver. In each phase of execution,
-   one ODE solver takes charge of solving the behavior of a model. This solver
-   is called the <I>current ODE solver</I>.
-   <P>
-   The continuous time (CT) domain is a timed domain. There is a global
-   notion of time that all the actors are aware of. Time is maintained
-   by the director. The method getModelTime() returns the current notion of
-   model time. Time can be set by the setModelTime() method, but this
-   method should not the called by the actors. Time can only be set
-   by directors or their ODE solvers. Because ODE solvers can change time
-   in their fire() methods, we need to record the beginning time of an
-   iteration to support roll back. The _setIterationBeginTime() method is just
-   designed for this purpose. It is called in the prefire() method of each
-   iteration to store the beginning time, and the getIterationBeginTime()
-   returns the lastest stored time.
-   <P>
-   This base class maintains a list of parameters that may be used by
-   ODE solvers and actors. These parameters are: <Br>
-   <LI> <code>startTime</code>: The start time of the
-   simulation. This parameter is effective only if the director
-   is at the top level. The default value is 0.0.
-   <LI> <code>stopTime</code>: The stop time of the simulation.
-   This parameter is effective only if the director
-   is at the top level. The default value is Infinity, which
-   results in execution that does not stop on its own.
-   <LI> <code>initStepSize</code>: The suggested integration step size
-   by the user. This will be the step size for fixed step
-   size ODE solvers if there is no breakpoint. However, it is just
-   a hint. The default value is 0.1
-   <LI> <code>minStepSize</code>: The minimum step
-   size that users want to use in the simulation. The default value is 1e-5.
-   <LI> <code>maxStepSize</code>: The maximum step
-   size that users want to use in the simulation. Usually used to control
-   the simulation speed. The default value is 1.0.
-   <LI> <code>maxIterations</code>:
-   Used only in implicit ODE solvers. This is the maximum number of
-   iterations for finding the fixed point at one time point.
-   The default value is 20.
-   <LI> <code>errorTolerance</code>: This is the local truncation
-   error tolerance, used for controlling the integration accuracy
-   in variable step size ODE solvers. If the local truncation error
-   at some step size control actors are greater than this tolerance, then the
-   integration step is considered to have failed, and should be restarted with
-   a reduced step size. The default value is 1e-4.
-   <LI> <code>valueResolution</code>:
-   This is used to control the convergence of fixed point iterations.
-   If in two successive iterations the difference of the state variables
-   is less than this resolution, then the fixed point is considered to have
-   reached. The default value is 1e-6.
-   <P>
-   This director maintains a breakpoint table to record all predictable
-   breakpoints that are greater than or equal to
-   the current time. The breakpoints are sorted in their chronological order.
-   Breakpoints at the same time are considered to be identical, and the
-   breakpoint table does not contain duplicate time points. A breakpoint can
-   be inserted into the table by calling the fireAt() method. The fireAt method
-   may be requested by the director, which inserts the stop time of the
-   execution. The fireAt method may also be requested by actors and the
-   requested firing time will be inserted into the breakpoint table.
+ Abstract base class for directors in the CT domain. A CTDirector
+ has a CTScheduler which provides static schedules for firing
+ the actors in different phases of execution in one iteration.
+ <P>
+ A CTDirector may have more than one ODE solver. In each phase of execution,
+ one ODE solver takes charge of solving the behavior of a model. This solver
+ is called the <I>current ODE solver</I>.
+ <P>
+ The continuous time (CT) domain is a timed domain. There is a global
+ notion of time that all the actors are aware of. Time is maintained
+ by the director. The method getModelTime() returns the current notion of
+ model time. Time can be set by the setModelTime() method, but this
+ method should not the called by the actors. Time can only be set
+ by directors or their ODE solvers. Because ODE solvers can change time
+ in their fire() methods, we need to record the beginning time of an
+ iteration to support roll back. The _setIterationBeginTime() method is just
+ designed for this purpose. It is called in the prefire() method of each
+ iteration to store the beginning time, and the getIterationBeginTime()
+ returns the lastest stored time.
+ <P>
+ This base class maintains a list of parameters that may be used by
+ ODE solvers and actors. These parameters are: <Br>
+ <LI> <code>startTime</code>: The start time of the
+ simulation. This parameter is effective only if the director
+ is at the top level. The default value is 0.0.
+ <LI> <code>stopTime</code>: The stop time of the simulation.
+ This parameter is effective only if the director
+ is at the top level. The default value is Infinity, which
+ results in execution that does not stop on its own.
+ <LI> <code>initStepSize</code>: The suggested integration step size
+ by the user. This will be the step size for fixed step
+ size ODE solvers if there is no breakpoint. However, it is just
+ a hint. The default value is 0.1
+ <LI> <code>minStepSize</code>: The minimum step
+ size that users want to use in the simulation. The default value is 1e-5.
+ <LI> <code>maxStepSize</code>: The maximum step
+ size that users want to use in the simulation. Usually used to control
+ the simulation speed. The default value is 1.0.
+ <LI> <code>maxIterations</code>:
+ Used only in implicit ODE solvers. This is the maximum number of
+ iterations for finding the fixed point at one time point.
+ The default value is 20.
+ <LI> <code>errorTolerance</code>: This is the local truncation
+ error tolerance, used for controlling the integration accuracy
+ in variable step size ODE solvers. If the local truncation error
+ at some step size control actors are greater than this tolerance, then the
+ integration step is considered to have failed, and should be restarted with
+ a reduced step size. The default value is 1e-4.
+ <LI> <code>valueResolution</code>:
+ This is used to control the convergence of fixed point iterations.
+ If in two successive iterations the difference of the state variables
+ is less than this resolution, then the fixed point is considered to have
+ reached. The default value is 1e-6.
+ <P>
+ This director maintains a breakpoint table to record all predictable
+ breakpoints that are greater than or equal to
+ the current time. The breakpoints are sorted in their chronological order.
+ Breakpoints at the same time are considered to be identical, and the
+ breakpoint table does not contain duplicate time points. A breakpoint can
+ be inserted into the table by calling the fireAt() method. The fireAt method
+ may be requested by the director, which inserts the stop time of the
+ execution. The fireAt method may also be requested by actors and the
+ requested firing time will be inserted into the breakpoint table.
 
-   @author Jie Liu, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (hyzheng)
-   @Pt.AcceptedRating Green (hyzheng)
-*/
-public abstract class CTDirector extends StaticSchedulingDirector
-    implements TimedDirector, CTGeneralDirector {
+ @author Jie Liu, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Green (hyzheng)
+ */
+public abstract class CTDirector extends StaticSchedulingDirector implements
+        TimedDirector, CTGeneralDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -261,14 +260,15 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
         if (attribute == startTime) {
             double startTimeValue = ((DoubleToken) startTime.getToken())
-                .doubleValue();
+                    .doubleValue();
             _startTimeValue = startTimeValue;
         } else if (attribute == stopTime) {
             double stopTimeValue = ((DoubleToken) stopTime.getToken())
-                .doubleValue();
+                    .doubleValue();
             _stopTimeValue = stopTimeValue;
         } else if (attribute == initStepSize) {
-            double value = ((DoubleToken) initStepSize.getToken()).doubleValue();
+            double value = ((DoubleToken) initStepSize.getToken())
+                    .doubleValue();
 
             if (value < 0.0) {
                 throw new IllegalActionException(this,
@@ -278,7 +278,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             _initStepSize = value;
         } else if (attribute == errorTolerance) {
             double value = ((DoubleToken) errorTolerance.getToken())
-                .doubleValue();
+                    .doubleValue();
 
             if (value < 0.0) {
                 throw new IllegalActionException(this,
@@ -306,7 +306,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             _maxStepSize = value;
         } else if (attribute == valueResolution) {
             double value = ((DoubleToken) valueResolution.getToken())
-                .doubleValue();
+                    .doubleValue();
 
             if (value < 0.0) {
                 throw new IllegalActionException(this,
@@ -366,7 +366,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         if (time.compareTo(currentTime) < 0) {
             throw new IllegalActionException((Nameable) actor,
                     "Requested fire time: " + time + " is earlier than"
-                    + " the current time." + currentTime);
+                            + " the current time." + currentTime);
         }
 
         // check the validity of breakpoint table
@@ -627,7 +627,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         try {
             CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
             Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS)
-                .actorIterator();
+                    .actorIterator();
 
             while (actors.hasNext() && !_stopRequested) {
                 Actor actor = (Actor) actors.next();
@@ -641,19 +641,20 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
                 if (actor instanceof CTCompositeActor) {
                     ready = ready
-                        && ((CTCompositeActor) actor)
-                        .prefireDynamicActors();
+                            && ((CTCompositeActor) actor)
+                                    .prefireDynamicActors();
                 }
 
                 // If ready is false, at least one dynamic actor is not
                 // ready to fire. This should never happen.
                 if (!ready) {
                     _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
-                    throw new IllegalActionException((Nameable) actor,
+                    throw new IllegalActionException(
+                            (Nameable) actor,
                             "Actor is not ready to fire. In the CT domain, all "
-                            + "dynamic actors should be ready to fire at "
-                            + "all times.\n Does the actor only operate on "
-                            + "sequence of tokens?");
+                                    + "dynamic actors should be ready to fire at "
+                                    + "all times.\n Does the actor only operate on "
+                                    + "sequence of tokens?");
                 }
 
                 if (_debugging && _verbose) {
@@ -668,7 +669,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             // Without this, on the first round of integration, the state
             // transition actors will complain that inputs are not ready.
             Iterator integrators = schedule.get(CTSchedule.DYNAMIC_ACTORS)
-                .actorIterator();
+                    .actorIterator();
 
             while (integrators.hasNext() && !_stopRequested) {
                 CTDynamicActor dynamic = (CTDynamicActor) integrators.next();
@@ -886,14 +887,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
             Class solver = Class.forName(className);
             newSolver = (ODESolver) solver.newInstance();
         } catch (ClassNotFoundException e) {
-            throw new IllegalActionException(this,
-                    "ODESolver: " + className + " is not found.");
+            throw new IllegalActionException(this, "ODESolver: " + className
+                    + " is not found.");
         } catch (InstantiationException e) {
-            throw new IllegalActionException(this,
-                    "ODESolver: " + className + " instantiation failed.");
+            throw new IllegalActionException(this, "ODESolver: " + className
+                    + " instantiation failed.");
         } catch (IllegalAccessException e) {
-            throw new IllegalActionException(this,
-                    "ODESolver: " + className + " is not accessible.");
+            throw new IllegalActionException(this, "ODESolver: " + className
+                    + " is not accessible.");
         }
 
         newSolver._makeSolverOf(this);
@@ -946,9 +947,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     protected final void _setIterationEndTime(Time time) {
         if (time.compareTo(getModelTime()) < 0) {
-            throw new InvalidStateException(this,
-                    " Iteration end time" + time + " is earlier than"
-                    + " the current time." + getModelTime());
+            throw new InvalidStateException(this, " Iteration end time" + time
+                    + " is earlier than" + " the current time."
+                    + getModelTime());
         }
 
         _iterationEndTime = time;
@@ -973,13 +974,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
     // NOTE: Time objects are not initialized here. They are initialized at
     // the end of the preinitialize method of this director.
     private void _initializeLocalVariables() throws IllegalActionException {
-        _errorTolerance = ((DoubleToken) errorTolerance.getToken()).doubleValue();
+        _errorTolerance = ((DoubleToken) errorTolerance.getToken())
+                .doubleValue();
         _initStepSize = ((DoubleToken) initStepSize.getToken()).doubleValue();
         _maxIterations = ((IntToken) maxIterations.getToken()).intValue();
         _maxStepSize = ((DoubleToken) maxStepSize.getToken()).doubleValue();
         _minStepSize = ((DoubleToken) minStepSize.getToken()).doubleValue();
         _valueResolution = ((DoubleToken) valueResolution.getToken())
-            .doubleValue();
+                .doubleValue();
 
         _currentSolver = null;
         _prefiredActors = new HashSet();
@@ -1041,8 +1043,11 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     // the iteration end time.
     private Time _iterationEndTime;
+
     private int _maxIterations;
+
     private double _maxStepSize;
+
     private double _minStepSize;
 
     // Collection of actors that have been prefired()
@@ -1050,9 +1055,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     // Local copies of parameters.
     private Time _startTime;
+
     private double _startTimeValue;
+
     private Time _stopTime;
+
     private double _stopTimeValue;
+
     private double _suggestedNextStepSize;
+
     private double _valueResolution;
 }

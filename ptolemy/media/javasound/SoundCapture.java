@@ -1,31 +1,31 @@
 /* A buffer supporting the capturing of audio samples from a file or
-   from the computer's audio input port.
+ from the computer's audio input port.
 
-   Copyright (c) 2000-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.media.javasound;
 
 import java.io.IOException;
@@ -39,86 +39,85 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SoundCapture
 
 /**
-   A buffer supporting the capturing of audio samples from a file or
-   from the computer's audio input port.
+ A buffer supporting the capturing of audio samples from a file or
+ from the computer's audio input port.
 
-   <h2>Overview</h2>
-   A buffer supporting the capturing of audio samples from a file or
-   from the computer's audio input port. This class supports the
-   real-time capture of audio from the audio input port (mic or line-in)
-   as well as the capture of audio from a sound file specified as
-   a URL. Single channel
-   (mono) and multichannel audio (stereo) are supported. This class,
-   along with SoundPlayback, intends to provide an easy to use interface
-   to Java Sound, Java's audio API. Java Sound supports the capture
-   of audio data, but only at the byte level, which is audio format
-   specific. This class, however, provides higher level support for the
-   capture of double or integer valued samples from the computer's audio
-   input port or any supported sound file type. This class is therefore
-   useful when it one desires to capture audio samples in an audio format
-   independent way.
-   <p>
-   Depending on available audio
-   system resources, it may be possible to run an instance of this
-   class and an instance of SoundPlayback concurrently. This allows
-   for the concurrent capture, signal processing, and playback of audio data.
-   <p>
-   <h2>Usage</h2>
-   Two constructors are provided. One constructor creates a sound capture
-   object that captures from the line-in or microphone port.
-   The operating system must be used
-   to select between the microphone and line-in. This cannot be
-   done using Java. If this
-   constructor is used, there will be a small
-   delay between the time that the audio enters the microphone or
-   line-in and the time that the corresponding audio samples are
-   available via getSamples() or getSamplesInt().
-   This latency can be adjusted by setting the <i>bufferSize</i>
-   constructor parameter. Another constructor creates a sound capture
-   object that captures audio from a sound file specified as a URL.
-   <p>
-   After calling the appropriate constructor, startCapture()
-   must be called to initialize the audio system for capture.
-   The getSamples() or getSamplesInt() method should then be repeatedly
-   invoked to obtain audio data in the form of a multidimensional
-   array of audio sample values. getSamples() will return audio
-   sample values in the range [-1, 1]. getSamplesInt() will return
-   audio samples in the range
-   (-2^(bits_per_sample/2), 2^(bits_per_sample/2)), where
-   bits_per_sample is the number of bits per sample.
-   For the case where
-   audio is captured from the mic or line-in, it is important to
-   invoke getSamples() or getSamplesInt() often enough to prevent
-   overflow of
-   the internal audio buffer. The size of the internal buffer is
-   set in the constructor. Note that it is possible (but probably
-   not useful) to interleave calls to getSamples() and
-   getSamplesInt().
-   Finally, after no more audio data is desired, stopCapture()
-   should be called to free up audio system resources.
-   <p>
-   <h2>Security issues</h2>
-   Applications have no restrictions on the
-   capturing or playback of audio. Applets, however, may only capture
-   audio from a file specified as a URL on the same machine as the
-   one the applet was loaded from. Applet code is not allowed to
-   read or write native files. The .java.policy file must be
-   modified to grant applets more privileges.
-   <p>
-   Note: Requires Java 2 v1.3.0 or later.
+ <h2>Overview</h2>
+ A buffer supporting the capturing of audio samples from a file or
+ from the computer's audio input port. This class supports the
+ real-time capture of audio from the audio input port (mic or line-in)
+ as well as the capture of audio from a sound file specified as
+ a URL. Single channel
+ (mono) and multichannel audio (stereo) are supported. This class,
+ along with SoundPlayback, intends to provide an easy to use interface
+ to Java Sound, Java's audio API. Java Sound supports the capture
+ of audio data, but only at the byte level, which is audio format
+ specific. This class, however, provides higher level support for the
+ capture of double or integer valued samples from the computer's audio
+ input port or any supported sound file type. This class is therefore
+ useful when it one desires to capture audio samples in an audio format
+ independent way.
+ <p>
+ Depending on available audio
+ system resources, it may be possible to run an instance of this
+ class and an instance of SoundPlayback concurrently. This allows
+ for the concurrent capture, signal processing, and playback of audio data.
+ <p>
+ <h2>Usage</h2>
+ Two constructors are provided. One constructor creates a sound capture
+ object that captures from the line-in or microphone port.
+ The operating system must be used
+ to select between the microphone and line-in. This cannot be
+ done using Java. If this
+ constructor is used, there will be a small
+ delay between the time that the audio enters the microphone or
+ line-in and the time that the corresponding audio samples are
+ available via getSamples() or getSamplesInt().
+ This latency can be adjusted by setting the <i>bufferSize</i>
+ constructor parameter. Another constructor creates a sound capture
+ object that captures audio from a sound file specified as a URL.
+ <p>
+ After calling the appropriate constructor, startCapture()
+ must be called to initialize the audio system for capture.
+ The getSamples() or getSamplesInt() method should then be repeatedly
+ invoked to obtain audio data in the form of a multidimensional
+ array of audio sample values. getSamples() will return audio
+ sample values in the range [-1, 1]. getSamplesInt() will return
+ audio samples in the range
+ (-2^(bits_per_sample/2), 2^(bits_per_sample/2)), where
+ bits_per_sample is the number of bits per sample.
+ For the case where
+ audio is captured from the mic or line-in, it is important to
+ invoke getSamples() or getSamplesInt() often enough to prevent
+ overflow of
+ the internal audio buffer. The size of the internal buffer is
+ set in the constructor. Note that it is possible (but probably
+ not useful) to interleave calls to getSamples() and
+ getSamplesInt().
+ Finally, after no more audio data is desired, stopCapture()
+ should be called to free up audio system resources.
+ <p>
+ <h2>Security issues</h2>
+ Applications have no restrictions on the
+ capturing or playback of audio. Applets, however, may only capture
+ audio from a file specified as a URL on the same machine as the
+ one the applet was loaded from. Applet code is not allowed to
+ read or write native files. The .java.policy file must be
+ modified to grant applets more privileges.
+ <p>
+ Note: Requires Java 2 v1.3.0 or later.
 
-   @author Brian K. Vogel
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (vogel)
-   @Pt.AcceptedRating Yellow (cxh)
-   @see ptolemy.media.javasound.SoundPlayback
-*/
+ @author Brian K. Vogel
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (vogel)
+ @Pt.AcceptedRating Yellow (cxh)
+ @see ptolemy.media.javasound.SoundPlayback
+ */
 public class SoundCapture {
     /** Construct a sound capture object that captures audio from a computer's
      *  audio input port.  If this constructor is used, then it
@@ -295,8 +294,8 @@ public class SoundCapture {
 
             if (_isRealTime == true) {
                 // Real-time capture.
-                numBytesRead = _targetLine.read(_data, 0,
-                        _productionRate * _frameSizeInBytes);
+                numBytesRead = _targetLine.read(_data, 0, _productionRate
+                        * _frameSizeInBytes);
             } else {
                 // Capture audio from file.
                 numBytesRead = _properFormatAudioInputStream.read(_data);
@@ -382,8 +381,8 @@ public class SoundCapture {
 
             if (_isRealTime == true) {
                 // Real-time capture.
-                numBytesRead = _targetLine.read(_data, 0,
-                        _productionRate * _frameSizeInBytes);
+                numBytesRead = _targetLine.read(_data, 0, _productionRate
+                        * _frameSizeInBytes);
             } else {
                 // Capture audio from file.
                 numBytesRead = _properFormatAudioInputStream.read(_data);
@@ -511,9 +510,10 @@ public class SoundCapture {
         if (_isAudioCaptureActive == true) {
             return _sampleSizeInBits;
         } else {
-            throw new IllegalStateException("SoundCapture: "
-                    + "getSampleSizeInBits() was called while audio capture was"
-                    + " inactive (startCapture() was never called).");
+            throw new IllegalStateException(
+                    "SoundCapture: "
+                            + "getSampleSizeInBits() was called while audio capture was"
+                            + " inactive (startCapture() was never called).");
         }
     }
 
@@ -752,7 +752,9 @@ public class SoundCapture {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private AudioInputStream _properFormatAudioInputStream;
+
     private AudioInputStream _audioInputStream;
+
     private int _productionRate;
 
     // Array of audio samples in double format.
@@ -763,18 +765,32 @@ public class SoundCapture {
 
     // Array of audio samples in byte format.
     private byte[] _data;
+
     private int _index;
+
     private int _frameSizeInBytes;
+
     private boolean _isRealTime;
+
     private String _pathName;
+
     private int _sampleSizeInBits;
+
     private float _sampleRate;
+
     private int _channels;
+
     private int _bufferSize;
+
     private TargetDataLine _targetLine;
+
     private int _bytesPerSample;
+
     private boolean _isAudioCaptureActive;
+
     private byte[] _b = new byte[1];
+
     private double[][] _doubleArray = new double[1][1];
+
     private int[][] _intArray = new int[1][1];
 }

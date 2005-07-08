@@ -1,29 +1,29 @@
 /* A transformer that specializes token types in an actor.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.HashMap;
@@ -61,30 +61,30 @@ import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.typing.TypeAssigner;
 import soot.toolkits.scalar.LocalSplitter;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypeSpecializer
 
 /**
-   A transformer that modifies each class using the token types from
-   ports.  In particular, this class creates constraints in the same
-   fashion as the Ptolemy II type system and solves those constraints.
-   The resulting solution should correspond to valid Java types which are
-   more specific (in the Ptolemy II sense) than the original Java types.
-   The code is then transformed to use these more specific types.
+ A transformer that modifies each class using the token types from
+ ports.  In particular, this class creates constraints in the same
+ fashion as the Ptolemy II type system and solves those constraints.
+ The resulting solution should correspond to valid Java types which are
+ more specific (in the Ptolemy II sense) than the original Java types.
+ The code is then transformed to use these more specific types.
 
-   <p> This transformer is necessary because there are some token types
-   that we want to make more specific, but that don't directly depend on
-   the the types of a port.  This transformation enables the token unboxing
-   performed by the TokenToNativeTransformer
+ <p> This transformer is necessary because there are some token types
+ that we want to make more specific, but that don't directly depend on
+ the the types of a port.  This transformation enables the token unboxing
+ performed by the TokenToNativeTransformer
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
-public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions {
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class TypeSpecializer extends SceneTransformer implements
+        HasPhaseOptions {
     /** Construct a new transformer
      */
     private TypeSpecializer(CompositeActor model) {
@@ -124,16 +124,16 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
 
         Hierarchy h = Scene.v().getActiveHierarchy();
 
-        for (Iterator entities = _model.deepEntityList().iterator();
-             entities.hasNext();) {
+        for (Iterator entities = _model.deepEntityList().iterator(); entities
+                .hasNext();) {
             Entity entity = (Entity) entities.next();
             String className = ModelTransformer.getInstanceClassName(entity,
                     options);
             SootClass theClass = Scene.v().loadClassAndSupport(className);
 
             Set unsafeLocalSet = new HashSet();
-            TypeSpecializerAnalysis analysis = new TypeSpecializerAnalysis(theClass,
-                    unsafeLocalSet);
+            TypeSpecializerAnalysis analysis = new TypeSpecializerAnalysis(
+                    theClass, unsafeLocalSet);
             specializeTypes(debug, theClass, unsafeLocalSet, analysis);
         }
     }
@@ -159,8 +159,8 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
         // We are updating it because further passes of code generation
         // use this information (for example, when converting
         // token types (like IntToken) to native types (like int).
-        for (Iterator methods = theClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = theClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             if (debug) {
@@ -169,8 +169,8 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
 
             Body body = method.retrieveActiveBody();
 
-            for (Iterator units = body.getUnits().snapshotIterator();
-                 units.hasNext();) {
+            for (Iterator units = body.getUnits().snapshotIterator(); units
+                    .hasNext();) {
                 Unit unit = (Unit) units.next();
 
                 //System.out.println("unit = " + unit);
@@ -183,14 +183,17 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                     // Replace Array creations with a more specific
                     // type, if possible.
                     if (box.getValue() instanceof NewArrayExpr) {
-                        NewArrayExpr newArrayExpr = (NewArrayExpr) box.getValue();
+                        NewArrayExpr newArrayExpr = (NewArrayExpr) box
+                                .getValue();
 
                         if (debug) {
-                            System.out.println("newArrayExpr = " + newArrayExpr);
+                            System.out
+                                    .println("newArrayExpr = " + newArrayExpr);
                         }
 
                         Type baseType = newArrayExpr.getBaseType();
-                        Type newType = typeAnalysis.getSpecializedSootType(newArrayExpr);
+                        Type newType = typeAnalysis
+                                .getSpecializedSootType(newArrayExpr);
 
                         if ((newType != null) && !newType.equals(baseType)) {
                             if (debug) {
@@ -198,7 +201,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                             }
 
                             box.setValue(Jimple.v().newNewArrayExpr(newType,
-                                                 newArrayExpr.getSize()));
+                                    newArrayExpr.getSize()));
                         }
                     }
                 }
@@ -216,7 +219,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                 }
 
                 if (!PtolemyUtilities.isTokenType(assignStmt.getLeftOp()
-                            .getType())) {
+                        .getType())) {
                     continue;
                 }
 
@@ -279,9 +282,12 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                     Local tempLocal = Jimple.v().newLocal("fieldUpdateLocal",
                             newType);
                     body.getLocals().add(tempLocal);
-                    body.getUnits().insertBefore(Jimple.v().newAssignStmt(tempLocal,
-                                                         Jimple.v().newCastExpr(assignStmt.getRightOp(),
-                                                                 newType)), unit);
+                    body.getUnits().insertBefore(
+                            Jimple.v().newAssignStmt(
+                                    tempLocal,
+                                    Jimple.v().newCastExpr(
+                                            assignStmt.getRightOp(), newType)),
+                            unit);
                     assignStmt.setRightOp(tempLocal);
                 }
 
@@ -290,8 +296,8 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
         }
 
         // Loop through all the fields and update the types.
-        for (Iterator fields = theClass.getFields().iterator();
-             fields.hasNext();) {
+        for (Iterator fields = theClass.getFields().iterator(); fields
+                .hasNext();) {
             SootField field = (SootField) fields.next();
 
             if (debug) {
@@ -302,8 +308,7 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
             RefType refType = PtolemyUtilities.getBaseTokenType(baseType);
 
             if ((refType != null)
-                    && SootUtilities.derivesFrom(
-                            refType.getSootClass(),
+                    && SootUtilities.derivesFrom(refType.getSootClass(),
                             PtolemyUtilities.tokenClass)) {
                 Type type = typeAnalysis.getSpecializedSootType(field);
 
@@ -316,27 +321,28 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                 // Update the type tag.
                 // FIXME: Correct?
                 ptolemy.data.type.Type specializedType = typeAnalysis
-                    .getSpecializedType(field);
+                        .getSpecializedType(field);
 
                 if ((specializedType != BaseType.UNKNOWN)
                         && (specializedType != BaseType.GENERAL)
                         && specializedType.isInstantiable()) {
                     if (debug) {
                         System.out.println("updating type tag of " + field
-                                + " to " + typeAnalysis.getSpecializedType(field));
+                                + " to "
+                                + typeAnalysis.getSpecializedType(field));
                     }
 
                     field.removeTag("_CGType");
-                    field.addTag(new TypeTag(typeAnalysis.getSpecializedType(
-                                                     field)));
+                    field.addTag(new TypeTag(typeAnalysis
+                            .getSpecializedType(field)));
                 }
 
                 map.put(field, typeAnalysis.getSpecializedType(field));
             }
         }
 
-        for (Iterator methods = theClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = theClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             if (debug) {
@@ -360,8 +366,8 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
         return map;
     }
 
-    private static ptolemy.data.type.Type _getReplacementTokenType(
-            Value value, TypeSpecializerAnalysis typeAnalysis) {
+    private static ptolemy.data.type.Type _getReplacementTokenType(Value value,
+            TypeSpecializerAnalysis typeAnalysis) {
         if (value instanceof FieldRef) {
             FieldRef ref = (FieldRef) value;
             SootField field = ref.getField();

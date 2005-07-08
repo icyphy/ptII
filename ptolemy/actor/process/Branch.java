@@ -1,76 +1,75 @@
 /* A Branch transfers tokens through a channel that crosses a composite
-   actor boundary.
+ actor boundary.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.process;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Branch
 
 /**
-   A Branch transfers tokens through a channel that crosses a composite
-   actor boundary. Branch implements the Runnable class and the execution
-   of a branch object is controlled by an instantiation of the
-   BranchController class. Each branch object is assigned two receiver
-   objects and each of these receiver objects must implement the
-   ProcessReceiver class. One of the assigned receivers is referred to as
-   the producer receiver (the channel source) and the other is referred to
-   as the consumer receiver (the channel destination).
-   <P>
-   During its execution a branch attempts to get data from the producer
-   receiver and put data in the consumer receiver. The communication
-   semantics of the producer receiver get() method are dependent upon the
-   model of computation associated with the producer receiver. In cases
-   where a blocking read occurs, the producer receiver registers the block
-   with the calling branch leading to a blocked branch. So that the producer
-   receiver knows which branch to register the block with, a branch always
-   invokes the receiver's get() method by passing itself as an argument.
-   A blocked branch registers the block with the branch controller that it
-   is assigned to.
-   <P>
-   Putting data in a consumer receiver is symmetrically analogous to getting
-   data from a producer receiver. In cases where a blocking write occurs,
-   the consumer receiver registers the block with the calling branch leading
-   to a blocked branch. So that the consumer receiver knows which branch to
-   register the block with, a branch always invokes the receiver's put()
-   method by passing itself as an argument.
+ A Branch transfers tokens through a channel that crosses a composite
+ actor boundary. Branch implements the Runnable class and the execution
+ of a branch object is controlled by an instantiation of the
+ BranchController class. Each branch object is assigned two receiver
+ objects and each of these receiver objects must implement the
+ ProcessReceiver class. One of the assigned receivers is referred to as
+ the producer receiver (the channel source) and the other is referred to
+ as the consumer receiver (the channel destination).
+ <P>
+ During its execution a branch attempts to get data from the producer
+ receiver and put data in the consumer receiver. The communication
+ semantics of the producer receiver get() method are dependent upon the
+ model of computation associated with the producer receiver. In cases
+ where a blocking read occurs, the producer receiver registers the block
+ with the calling branch leading to a blocked branch. So that the producer
+ receiver knows which branch to register the block with, a branch always
+ invokes the receiver's get() method by passing itself as an argument.
+ A blocked branch registers the block with the branch controller that it
+ is assigned to.
+ <P>
+ Putting data in a consumer receiver is symmetrically analogous to getting
+ data from a producer receiver. In cases where a blocking write occurs,
+ the consumer receiver registers the block with the calling branch leading
+ to a blocked branch. So that the consumer receiver knows which branch to
+ register the block with, a branch always invokes the receiver's put()
+ method by passing itself as an argument.
 
-   @author John S. Davis II
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (davisj)
-   @Pt.AcceptedRating Red (davisj)
-*/
+ @author John S. Davis II
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (davisj)
+ @Pt.AcceptedRating Red (davisj)
+ */
 public class Branch implements Runnable {
     /** Construct a branch object with a branch controller.
      *
@@ -103,7 +102,7 @@ public class Branch implements Runnable {
 
         if (!producerReceiver.isProducerReceiver()) {
             String name = ((Nameable) consumerReceiver.getContainer())
-                .getFullName();
+                    .getFullName();
             throw new IllegalActionException("Receiver in the port: " + name
                     + " is not a producer receiver");
         }
@@ -112,7 +111,7 @@ public class Branch implements Runnable {
 
         if (!consumerReceiver.isConsumerReceiver()) {
             String name = ((Nameable) consumerReceiver.getContainer())
-                .getFullName();
+                    .getFullName();
             throw new IllegalActionException("Receiver in the port: " + name
                     + " is not a consumer receiver");
         }
@@ -224,8 +223,12 @@ public class Branch implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private boolean _active = false;
+
     private BranchController _controller;
+
     private ProcessReceiver _producerReceiver;
+
     private ProcessReceiver _consumerReceiver;
+
     private boolean _receiverBlocked = false;
 }

@@ -1,29 +1,29 @@
 /* A transformer that removes dead token and type creations.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.ArrayList;
@@ -43,32 +43,31 @@ import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.EntryPoints;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// UnreachableMethodRemover
 
 /**
-   A transformer that removes methods that are not reachable.  Note that
-   this is a fairly braindead implementation.  Specifically,
-   it does not attempt any
-   Variable Type Analysis to reduce what methods may be called.  However,
-   for the purposes of code generation, we will have already done most
-   of the interesting type analysis by the time this runs, so it is not
-   really a big deal.
+ A transformer that removes methods that are not reachable.  Note that
+ this is a fairly braindead implementation.  Specifically,
+ it does not attempt any
+ Variable Type Analysis to reduce what methods may be called.  However,
+ for the purposes of code generation, we will have already done most
+ of the interesting type analysis by the time this runs, so it is not
+ really a big deal.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 
 // FIXME: This is currently unsafe, because method bodies
 // for context classes don't exist in the method call graph.
 // We need a lightweight way of getting the method call graph for
 // these methods without creating a JimpleBody which is expensive.
-public class UnreachableMethodRemover extends SceneTransformer
-    implements HasPhaseOptions {
+public class UnreachableMethodRemover extends SceneTransformer implements
+        HasPhaseOptions {
     /** Construct a new transformer
      */
     private UnreachableMethodRemover() {
@@ -104,8 +103,8 @@ public class UnreachableMethodRemover extends SceneTransformer
         forcedReachableMethodSet.addAll(EntryPoints.v().application());
 
         // Loop over all the classes...
-        for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
+        for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
+                .hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             // If we are in actor mode, then assert that all the
@@ -121,8 +120,8 @@ public class UnreachableMethodRemover extends SceneTransformer
             // object implements, is reachable.
             //  System.out.println("forcing interfaces of " + theClass);
             if (!theClass.isInterface()) {
-                for (Iterator interfaces = theClass.getInterfaces().iterator();
-                     interfaces.hasNext();) {
+                for (Iterator interfaces = theClass.getInterfaces().iterator(); interfaces
+                        .hasNext();) {
                     SootClass theInterface = (SootClass) interfaces.next();
 
                     _addMethodsFrom(forcedReachableMethodSet, theInterface,
@@ -145,8 +144,8 @@ public class UnreachableMethodRemover extends SceneTransformer
         reachables.update();
 
         // Loop over all the classes...
-        for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
+        for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
+                .hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             // Loop through all the methods...
@@ -188,8 +187,8 @@ public class UnreachableMethodRemover extends SceneTransformer
             }
         }
 
-        for (Iterator superInterfaces = theInterface.getInterfaces().iterator();
-             superInterfaces.hasNext();) {
+        for (Iterator superInterfaces = theInterface.getInterfaces().iterator(); superInterfaces
+                .hasNext();) {
             _addMethodsFrom(forcedReachableMethodSet,
                     (SootClass) superInterfaces.next(), theClass);
         }

@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.canvas.interactor;
 
 import java.awt.Shape;
@@ -35,7 +35,6 @@ import javax.swing.SwingConstants;
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
 import diva.canvas.Site;
-
 
 /**
  * A class that provides support for manipulating
@@ -157,26 +156,26 @@ public class CircleGeometry implements Geometry {
      */
     public Iterator sites() {
         return new Iterator() {
-                // Note: SwingConstants start at 1!
-                int cursor = 0;
+            // Note: SwingConstants start at 1!
+            int cursor = 0;
 
-                public boolean hasNext() {
-                    return cursor < _siteCount;
+            public boolean hasNext() {
+                return cursor < _siteCount;
+            }
+
+            public Object next() {
+                if (_sites[cursor] == null) {
+                    _sites[cursor] = new CircleSite(cursor);
                 }
 
-                public Object next() {
-                    if (_sites[cursor] == null) {
-                        _sites[cursor] = new CircleSite(cursor);
-                    }
+                return _sites[cursor++];
+            }
 
-                    return _sites[cursor++];
-                }
-
-                public void remove() {
-                    throw new UnsupportedOperationException(
-                            "Site cannot be removed");
-                }
-            };
+            public void remove() {
+                throw new UnsupportedOperationException(
+                        "Site cannot be removed");
+            }
+        };
     }
 
     /** Translate the geometry object
@@ -195,8 +194,11 @@ public class CircleGeometry implements Geometry {
     public class CircleSite extends AbstractSite {
         // Its id
         private int _id;
+
         private double _normal;
+
         private double _offX;
+
         private double _offY;
 
         /** Create a new site with the given ID
@@ -322,31 +324,31 @@ public class CircleGeometry implements Geometry {
             _rect.setFrameFromDiagonal(cx - r, cy - r, cx + r, cy + r);
 
             /*
-            // Adjust the coordinates.
-            double x1 = _rect.getX();
-            double y1 = _rect.getY();
-            double x2 = x1 + _rect.getWidth();
-            double y2 = y1 + _rect.getHeight();
+             // Adjust the coordinates.
+             double x1 = _rect.getX();
+             double y1 = _rect.getY();
+             double x2 = x1 + _rect.getWidth();
+             double y2 = y1 + _rect.getHeight();
 
-            x1 += y;
-            y1 += y;
-            x2 -= y;
-            y2 -= y;
+             x1 += y;
+             y1 += y;
+             x2 -= y;
+             y2 -= y;
 
-            // Check if below minimum allowable size.  If so, put the
-            // coordinates back where they were.
-            if (x2 - x1 < _minSize) {
-            x1 -= y;
-            x2 += y;
-            }
-            if (y2 - y1 < _minSize) {
-            y1 -= y;
-            y2 += y;
-            }
+             // Check if below minimum allowable size.  If so, put the
+             // coordinates back where they were.
+             if (x2 - x1 < _minSize) {
+             x1 -= y;
+             x2 += y;
+             }
+             if (y2 - y1 < _minSize) {
+             y1 -= y;
+             y2 += y;
+             }
 
-            // Set the rectangle.
-            _rect.setFrameFromDiagonal(x1,y1,x2,y2);
-            */
+             // Set the rectangle.
+             _rect.setFrameFromDiagonal(x1,y1,x2,y2);
+             */
         }
 
         /** Set the point location of the site

@@ -1,30 +1,30 @@
 /* Extract a subarray from an array.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.parameters.PortParameter;
@@ -38,28 +38,27 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ArrayExtract
 
 /**
-   Extract a subarray from an array.  This actor reads an array from the
-   <i>input</i> port and sends a subarray to the <i>output</i>
-   port, possibly padded with zeros. The segment of the input array
-   starting at <i>sourcePosition</i> with length <i>extractLength</i> is
-   copied to the output array, starting at <i>destinationPosition</i>.
-   The total length of the output array is <i>outputArrayLength</i>.
-   Any of its entries that are not supplied by the input have value
-   zero (of the same type as the entries in the input array).
-   With the default values of the parameters, only the first element
-   of the input array is copied to the output array, which has length one.
+ Extract a subarray from an array.  This actor reads an array from the
+ <i>input</i> port and sends a subarray to the <i>output</i>
+ port, possibly padded with zeros. The segment of the input array
+ starting at <i>sourcePosition</i> with length <i>extractLength</i> is
+ copied to the output array, starting at <i>destinationPosition</i>.
+ The total length of the output array is <i>outputArrayLength</i>.
+ Any of its entries that are not supplied by the input have value
+ zero (of the same type as the entries in the input array).
+ With the default values of the parameters, only the first element
+ of the input array is copied to the output array, which has length one.
 
-   @author Edward A. Lee, Elaine Cheong
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (celaine)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @author Edward A. Lee, Elaine Cheong
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (celaine)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class ArrayExtract extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -150,13 +149,13 @@ public class ArrayExtract extends Transformer {
         if (input.hasToken(0)) {
             Token[] inputArray = ((ArrayToken) input.get(0)).arrayValue();
             int sourcePositionValue = ((IntToken) sourcePosition.getToken())
-                .intValue();
+                    .intValue();
             int extractLengthValue = ((IntToken) extractLength.getToken())
-                .intValue();
+                    .intValue();
             int destinationPositionValue = ((IntToken) destinationPosition
                     .getToken()).intValue();
-            int outputArrayLengthValue = ((IntToken) outputArrayLength.getToken())
-                .intValue();
+            int outputArrayLengthValue = ((IntToken) outputArrayLength
+                    .getToken()).intValue();
 
             try {
                 Token[] outputArray = new Token[outputArrayLengthValue];
@@ -170,8 +169,7 @@ public class ArrayExtract extends Transformer {
                 System.arraycopy(inputArray, sourcePositionValue, outputArray,
                         destinationPositionValue, extractLengthValue);
 
-                for (int i = destinationPositionValue + extractLengthValue;
-                     i < outputArrayLengthValue; i++) {
+                for (int i = destinationPositionValue + extractLengthValue; i < outputArrayLengthValue; i++) {
                     outputArray[i] = zero;
                 }
 
@@ -179,7 +177,7 @@ public class ArrayExtract extends Transformer {
             } catch (IndexOutOfBoundsException ex) {
                 throw new IllegalActionException(this,
                         "Parameter values out of range for the array supplied."
-                        + "inputArray has length" + inputArray.length);
+                                + "inputArray has length" + inputArray.length);
             }
         }
     }

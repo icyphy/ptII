@@ -1,30 +1,30 @@
 /* Extension of plot that allows interactive modification of plot data.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.plot;
 
 import java.awt.Color;
@@ -39,49 +39,48 @@ import java.util.Enumeration;
 import java.util.Stack;
 import java.util.Vector;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// EditablePlot
 
 /**
-   This extension of Plot permits interactive modification of plotted
-   data, one dataset at a time.  By default, you can modify dataset
-   number zero (the first one given).  To change this default, call
-   setEditable().  To edit a plot, use the right mouse button.
-   Click and drag to the left to trace out new values for the data.
-   To read back the modified data, use getData().  To undo a change to
-   the data, type Control-Z.  To redo the change, type Control-Y.
-   The undo history is infinite.
-   <p>
-   The style of editing is very particular.  This class assumes the data
-   specify a function of <i>x</i>.  I.e., there there is exactly one
-   <i>y</i> value for every <i>x</i> value.  Thus, with the right mouse
-   button, you are allowed to trace out new <i>y</i> values
-   starting with some leftmost <i>x</i> value.  You can only trace
-   values to the right.  This feature makes it easy to trace values
-   with discontinuities.  Just start at the left, and drag to the right
-   to the point of the discontinuity, then drag to the left,
-   then right again.  You will have to try it...
-   Notice that this style of editing probably does not make sense with
-   error bars, since there is no mechanism for editing the error bars.
-   <p>
-   To be able to modify the data in a dataset, of course, there must
-   be data in the dataset.  Thus, you should create a dataset (for
-   example by calling addPoint()) before editing it.  Only the visible
-   part of the dataset can be edited (that is, the portion of the dataset
-   along the visible part of the horizontal axis).  If you zoom in, then,
-   you can edit particular points more precisely.
-   <p>
-   To be notified when the user sketches a new signal, create an
-   object that implements the EditListener interface and add that
-   listener using addEditListener().
+ This extension of Plot permits interactive modification of plotted
+ data, one dataset at a time.  By default, you can modify dataset
+ number zero (the first one given).  To change this default, call
+ setEditable().  To edit a plot, use the right mouse button.
+ Click and drag to the left to trace out new values for the data.
+ To read back the modified data, use getData().  To undo a change to
+ the data, type Control-Z.  To redo the change, type Control-Y.
+ The undo history is infinite.
+ <p>
+ The style of editing is very particular.  This class assumes the data
+ specify a function of <i>x</i>.  I.e., there there is exactly one
+ <i>y</i> value for every <i>x</i> value.  Thus, with the right mouse
+ button, you are allowed to trace out new <i>y</i> values
+ starting with some leftmost <i>x</i> value.  You can only trace
+ values to the right.  This feature makes it easy to trace values
+ with discontinuities.  Just start at the left, and drag to the right
+ to the point of the discontinuity, then drag to the left,
+ then right again.  You will have to try it...
+ Notice that this style of editing probably does not make sense with
+ error bars, since there is no mechanism for editing the error bars.
+ <p>
+ To be able to modify the data in a dataset, of course, there must
+ be data in the dataset.  Thus, you should create a dataset (for
+ example by calling addPoint()) before editing it.  Only the visible
+ part of the dataset can be edited (that is, the portion of the dataset
+ along the visible part of the horizontal axis).  If you zoom in, then,
+ you can edit particular points more precisely.
+ <p>
+ To be notified when the user sketches a new signal, create an
+ object that implements the EditListener interface and add that
+ listener using addEditListener().
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class EditablePlot extends Plot {
     /** Constructor.
      */
@@ -254,7 +253,7 @@ public class EditablePlot extends Plot {
             // Only bother with points in visual range
             if ((pt.x >= _xMin) && (pt.x <= _xMax)) {
                 int index = (int) ((pt.x - _xMin) * _xscale)
-                    - (_lrx - _ulx - _editSpecX.length);
+                        - (_lrx - _ulx - _editSpecX.length);
 
                 if ((index >= 0) && (index < _editSpecX.length)) {
                     if (_editSpecSet[index]) {
@@ -324,10 +323,9 @@ public class EditablePlot extends Plot {
 
         while (step <= x) {
             int index = step - (_lrx - _editSpecX.length);
-            double proportion = (step - _currentEditX) / (double) (x
-                    - _currentEditX);
-            int newY = (int) (_currentEditY
-                    + (proportion * (y - _currentEditY)));
+            double proportion = (step - _currentEditX)
+                    / (double) (x - _currentEditX);
+            int newY = (int) (_currentEditY + (proportion * (y - _currentEditY)));
 
             if (!_editSpecSet[index]) {
                 _editSpecX[index] = step;
@@ -431,9 +429,13 @@ public class EditablePlot extends Plot {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int[] _editSpecY;
+
     private boolean[] _editSpecSet;
+
     private int _currentEditX;
+
     private int _currentEditY;
+
     private int _dataset = 0;
 
     // Call setXORMode with a hardwired color because
@@ -443,6 +445,7 @@ public class EditablePlot extends Plot {
 
     // Stack for undo.
     private Stack _undoStack = new Stack();
+
     private Stack _redoStack = new Stack();
 
     // Edit listeners.
@@ -510,7 +513,7 @@ public class EditablePlot extends Plot {
                 break;
 
             default:
-                // None
+            // None
             }
         }
 
@@ -523,7 +526,7 @@ public class EditablePlot extends Plot {
                 break;
 
             default:
-                // None
+            // None
             }
         }
 

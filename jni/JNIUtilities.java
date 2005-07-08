@@ -1,30 +1,30 @@
 /** A graph editor frame for Ptolemy models that use the JNI interface.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package jni;
 
 import java.io.File;
@@ -45,153 +45,152 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// JNIUtilities
 
 /**
-   A collection of utilities for generating Java Native Interface (JNI) classes.
+ A collection of utilities for generating Java Native Interface (JNI) classes.
 
-   <p>For information about JNI, see
-   <a href="http://java.sun.com/docs/books/tutorial/native1.1/concepts/index.html"><code>http://java.sun.com/docs/books/tutorial/native1.1/concepts/index.html</code></a>
+ <p>For information about JNI, see
+ <a href="http://java.sun.com/docs/books/tutorial/native1.1/concepts/index.html"><code>http://java.sun.com/docs/books/tutorial/native1.1/concepts/index.html</code></a>
 
-   <p>For information about how to create shared libraries under Windows using
-   Cygwin, see
-   <a href="http://cygwin.com/cygwin-ug-net/dll.html" target="_top"><code>http://cygwin.com/cygwin-ug-net/dll.html</code></a>
+ <p>For information about how to create shared libraries under Windows using
+ Cygwin, see
+ <a href="http://cygwin.com/cygwin-ug-net/dll.html" target="_top"><code>http://cygwin.com/cygwin-ug-net/dll.html</code></a>
 
-   <p>For information about using JNI with Cygwin, see
-   <a href="http://www.inonit.com/cygwin/jni/helloWorld/c.html" target="_top"><code>http://www.inonit.com/cygwin/jni/helloWorld/c.html</code></a>
+ <p>For information about using JNI with Cygwin, see
+ <a href="http://www.inonit.com/cygwin/jni/helloWorld/c.html" target="_top"><code>http://www.inonit.com/cygwin/jni/helloWorld/c.html</code></a>
 
-   <h2>How to call an actor that calls C code that returns a double</h2>
-   In this example, we call a C method called <code>meaningOfLife()</code>
-   that returns a double.
-   <ol>
+ <h2>How to call an actor that calls C code that returns a double</h2>
+ In this example, we call a C method called <code>meaningOfLife()</code>
+ that returns a double.
+ <ol>
 
-   <li> Create the C file called <code>meaningOfLife.c</code> that contains
-   <pre>
-   // Return the answer to "the meaning of life, the universe, and everything"
-   double meaningOfLife() {
-   return 42.0;
-   }
-   </pre>
+ <li> Create the C file called <code>meaningOfLife.c</code> that contains
+ <pre>
+ // Return the answer to "the meaning of life, the universe, and everything"
+ double meaningOfLife() {
+ return 42.0;
+ }
+ </pre>
 
-   <li> Create <code>meaningOfLife.h</code> that contains
-   <pre>
-   extern "C" double meaningOfLife();
-   </pre>
+ <li> Create <code>meaningOfLife.h</code> that contains
+ <pre>
+ extern "C" double meaningOfLife();
+ </pre>
 
-   <li> Compile and create the shared library.  Under Windows, we
-   create a <code>.dll</code>
-   <pre>
-   gcc -shared -o meaningOfLife.dll meaningOfLife.c
-   </pre>
+ <li> Compile and create the shared library.  Under Windows, we
+ create a <code>.dll</code>
+ <pre>
+ gcc -shared -o meaningOfLife.dll meaningOfLife.c
+ </pre>
 
-   <li> Set the CLASSPATH to include the current directory
-   <pre>
-   CLASSPATH=.
-   export CLASSPATH
-   </pre>
+ <li> Set the CLASSPATH to include the current directory
+ <pre>
+ CLASSPATH=.
+ export CLASSPATH
+ </pre>
 
-   <li> Start up Vergil with the JNI interface enabled.
-   <pre>
-   $PTII/bin/vergil -jni
-   </pre>
-   Note that the <code>-jni</code> option may go away in the future
-   if we merge the jni facility into the main tree
+ <li> Start up Vergil with the JNI interface enabled.
+ <pre>
+ $PTII/bin/vergil -jni
+ </pre>
+ Note that the <code>-jni</code> option may go away in the future
+ if we merge the jni facility into the main tree
 
-   <li> Create a new model with File -> New -> Graph Editor
-   <li> Drag in the JNIActor from the jni folder
-   <li> Right click on the actor and select Configure Arguments.
-   <li> Fill in the form as follows
-   <dl>
-   <dt><code><b>Name:</b></code>
-   <dd><code>output</code>
-   <dt><code><b>C or C++ type:</b></code>
-   <dd><code>double</code>
-   <dt><code><b>Kind:</b></code>
-   <dd><code>return</code>
-   </dl>
+ <li> Create a new model with File -> New -> Graph Editor
+ <li> Drag in the JNIActor from the jni folder
+ <li> Right click on the actor and select Configure Arguments.
+ <li> Fill in the form as follows
+ <dl>
+ <dt><code><b>Name:</b></code>
+ <dd><code>output</code>
+ <dt><code><b>C or C++ type:</b></code>
+ <dd><code>double</code>
+ <dt><code><b>Kind:</b></code>
+ <dd><code>return</code>
+ </dl>
 
-   <li> Select Ok and then Commit to close
-   the argument configurer
-   <li> Right Click on the actor to edit
-   the parameters
-   <dl>
-   <dt><code><b>libraryDirectory</b></code>
-   <dd><code>""</code>
-   <dt><code><b>nativeFunction:</b></code>
-   <dd><code>"meaningOfLife"</code>
-   <dt><code><b>nativeLibrary</b></code>
-   <dd><code>"meaningOfLife"</code>
+ <li> Select Ok and then Commit to close
+ the argument configurer
+ <li> Right Click on the actor to edit
+ the parameters
+ <dl>
+ <dt><code><b>libraryDirectory</b></code>
+ <dd><code>""</code>
+ <dt><code><b>nativeFunction:</b></code>
+ <dd><code>"meaningOfLife"</code>
+ <dt><code><b>nativeLibrary</b></code>
+ <dd><code>"meaningOfLife"</code>
 
-   </dl>
-   <li> Select Commit to close the Edit Parameters window
-   <li> Select JNI from the menu and
-   then select Generate C Interface
-   <li> FIXME: Copy the dlls into a directory that is in the path
-   <pre>
-   cp meaningOfLife.dll $PTII/bin
-   cp jni/jnimeaningOfLife/JnijnimeaningOfLife.dll $PTII/bin
-   </pre>
-   <li> Save the model.
-   <br>FIXME: Because of an apparent bug, it is necessary
-   to save the model for the port we just created to appear
-   <li> Add a Display actor from the Sink folder in the
-   Actor Library and connect the input of the Display actor
-   to the output of the meaningOfLife Actor
-   <li> FIXME: Because of a bug in the Ptolemy interface to the JNI
-   actor, you must specify the type of the output of the meaningOfLife
-   actor by right clicking on the actor and selecting
-   Configure Ports and then entering double for
-   output type
-   <li> Drag in a SDF director and set the number of iterations to 1.
-   <li> Select Run
-   <li> The answer to "the meaning of life, the universe, and everything"
-   should appear in the Display actor.
-   </ol>
-   If you get an error like:
-   <pre>
-   /cygdrive/c/Program Files/j2sdk1.4.1_01/include/win32/jni_md.h:16: syntax error before `;'
-   </pre>
-   Then see
-   <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt" target="_top"><code>http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt</code></a>
-   <br>You might need to edit jni_md.h, the above URL says
-   <blockquote>
-   GCC doesn't have a __int64 built-in, and this patch basically uses
-   "long long" instead.
+ </dl>
+ <li> Select Commit to close the Edit Parameters window
+ <li> Select JNI from the menu and
+ then select Generate C Interface
+ <li> FIXME: Copy the dlls into a directory that is in the path
+ <pre>
+ cp meaningOfLife.dll $PTII/bin
+ cp jni/jnimeaningOfLife/JnijnimeaningOfLife.dll $PTII/bin
+ </pre>
+ <li> Save the model.
+ <br>FIXME: Because of an apparent bug, it is necessary
+ to save the model for the port we just created to appear
+ <li> Add a Display actor from the Sink folder in the
+ Actor Library and connect the input of the Display actor
+ to the output of the meaningOfLife Actor
+ <li> FIXME: Because of a bug in the Ptolemy interface to the JNI
+ actor, you must specify the type of the output of the meaningOfLife
+ actor by right clicking on the actor and selecting
+ Configure Ports and then entering double for
+ output type
+ <li> Drag in a SDF director and set the number of iterations to 1.
+ <li> Select Run
+ <li> The answer to "the meaning of life, the universe, and everything"
+ should appear in the Display actor.
+ </ol>
+ If you get an error like:
+ <pre>
+ /cygdrive/c/Program Files/j2sdk1.4.1_01/include/win32/jni_md.h:16: syntax error before `;'
+ </pre>
+ Then see
+ <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt" target="_top"><code>http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt</code></a>
+ <br>You might need to edit jni_md.h, the above URL says
+ <blockquote>
+ GCC doesn't have a __int64 built-in, and this patch basically uses
+ "long long" instead.
 
-   <ol>
-   <li> Edit the file <code><i>jdk_root</i>>/include/win32/jni_md.h</code>,
-   Where <code><i>jdk_root</i></code> is the installation root (eg.,
-   <code>c:/Program Files/Java/jdk1.5.0_01</code>
-   <li> Replace the segment:
-   </ol>
+ <ol>
+ <li> Edit the file <code><i>jdk_root</i>>/include/win32/jni_md.h</code>,
+ Where <code><i>jdk_root</i></code> is the installation root (eg.,
+ <code>c:/Program Files/Java/jdk1.5.0_01</code>
+ <li> Replace the segment:
+ </ol>
 
-   <pre>
-   typedef long jint;
-   typedef __int64 jlong;
-   </pre>
-   with:
-   <pre>
-   typedef long jint;
-   #ifdef __GNUC__
-   typedef long long jlong;
-   #else
-   typedef __int64 jlong;
-   #endif
-   typedef signed char jbyte;
-   </pre>
-   </blockquote>
-
-
+ <pre>
+ typedef long jint;
+ typedef __int64 jlong;
+ </pre>
+ with:
+ <pre>
+ typedef long jint;
+ #ifdef __GNUC__
+ typedef long long jlong;
+ #else
+ typedef __int64 jlong;
+ #endif
+ typedef signed char jbyte;
+ </pre>
+ </blockquote>
 
 
-   @author Vincent Arnould (vincent.arnould@thalesgroup.com), contributor Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.3
-   @Pt.ProposedRating Red (vincent.arnould)
-   @Pt.AcceptedRating Red (vincent.arnould)
-*/
+
+
+ @author Vincent Arnould (vincent.arnould@thalesgroup.com), contributor Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.3
+ @Pt.ProposedRating Red (vincent.arnould)
+ @Pt.AcceptedRating Red (vincent.arnould)
+ */
 public class JNIUtilities {
     /** Instances of this class cannot be created.
      */
@@ -211,8 +210,7 @@ public class JNIUtilities {
      *  @return true if a GenericJNIActor was found.
      *  @exception Exception If there was a problem creating the JNI files.
      */
-    public static boolean generateJNI(CompositeEntity model)
-            throws Exception {
+    public static boolean generateJNI(CompositeEntity model) throws Exception {
         boolean success = false;
 
         if (model instanceof Actor) {
@@ -242,8 +240,8 @@ public class JNIUtilities {
 
         // Verification qu'il y a un return, place le return en void sinon
         if (actor.getArgumentReturn() == null) {
-            MessageHandler.warning(
-                    "No return was configured,\n so we set it as void");
+            MessageHandler
+                    .warning("No return was configured,\n so we set it as void");
             actor.addArgumentReturn();
         }
 
@@ -290,8 +288,8 @@ public class JNIUtilities {
             } catch (NameDuplicationException ex) {
                 throw new IllegalActionException(actor, ex,
                         "Unable to rename GenericJNIActor '" + actor.getName()
-                        + "' to '" + newName + "': \n"
-                        + "An JNI Actor already exists!\n");
+                                + "' to '" + newName + "': \n"
+                                + "An JNI Actor already exists!\n");
             }
         }
 
@@ -301,7 +299,7 @@ public class JNIUtilities {
         //actor.notifyAll();
         String interNativeLibrary = _getInterNativeLibrary(actor);
         String destinationDirectory = System.getProperty("user.dir") + "/jni/"
-            + nativeLibrary;
+                + nativeLibrary;
 
         //Creation du fichier Java
         _exportJavaInterfaceFile(actor, destinationDirectory);
@@ -344,8 +342,8 @@ public class JNIUtilities {
      */
     public static String getNativeLibrary(GenericJNIActor actor)
             throws IllegalActionException {
-        String nativeLibrary = (((StringToken) ((Parameter) actor.getAttribute(
-                                                        "nativeLibrary")).getToken()).toString());
+        String nativeLibrary = (((StringToken) ((Parameter) actor
+                .getAttribute("nativeLibrary")).getToken()).toString());
         return nativeLibrary.substring(1, nativeLibrary.length() - 1);
     }
 
@@ -357,7 +355,8 @@ public class JNIUtilities {
      *  @param destinationDirectory Directory to create the file in.
      */
     protected static File _exportCInterfaceFile(GenericJNIActor actor,
-            String destinationDirectory) throws IllegalActionException, IOException {
+            String destinationDirectory) throws IllegalActionException,
+            IOException {
         StringBuffer results = new StringBuffer();
 
         String libraryDirectory = _getLibraryDirectory(actor);
@@ -389,42 +388,63 @@ public class JNIUtilities {
             returnJNIType = argument.getJNIType();
         }
 
-        results.append(
-                "#include \"jni.h\" \n" // le fichier entete de la librairie existante
-                // Don't use io stream it results in compile time errors under
-                // gcc with cygwin
-                + "/* #include <iostream> */\n" + "#include \""
-                + System.getProperty("user.dir") + "/" + libraryDirectory + "/"
-                + nativeLibrary + ".h\"\n" // le fichier entete genere par javah
-                + "#include \"jni_" + nativeLibrary + "_Jni" + actor.getName()
-                + ".h\"\n"
-                + "/*******************************************************\n"
-                + "*********************" + actor.getName() + "_"
-                + interNativeFunction + "******************\n"
-                + "*****************************************************/\n\n"
-                + "//Declaration of the preexisting function\n" + "//extern \"C\" "
-                + returnType + " " + nativeFunction + "("
-                + _getArgumentsInWithCType(actor, ",")
-                + _virgule(_getArgumentsInWithCType(actor, ","),
-                        _getArgumentsInOut(actor, ","))
-                + _getArgumentsInOutWithCType(actor, ",")
-                + _virgule(_getArgumentsInOut(actor, ","),
-                        _getArgumentsOutWithCType(actor, ","))
-                + _getArgumentsOutWithCType(actor, ",") + ");\n\n" + "JNIEXPORT "
-                + ((actor.getArgumentReturn() == null)
-                        ? "void /* Warning: getArgumentReturn() == null (1)*/"
-                        : actor.getArgumentReturn().getJNIType()) + " JNICALL Java_jni_"
-                + nativeLibrary + "_Jni" + actor.getName() + "_"
-                + interNativeFunction + "(\nJNIEnv *env, jobject jobj "
-                + _virgule(_getArgumentsInWithJNIType(actor, ","))
-                + _getArgumentsInWithJNIType(actor, ",")
-                + _virgule(_getArgumentsInWithJNIType(actor, ","),
-                        _getArgumentsInOutWithCType(actor, ","))
-                + _getArgumentsInOutWithJNIType(actor, ",")
-                + _virgule(_getArgumentsInOutWithJNIType(actor, ","),
-                        _getArgumentsOutWithCType(actor, ","))
-                + _getArgumentsOutWithJNIType(actor, ",") + ")\n" + "{\n"
-                + _indent1 + "// Declaration des sorties\n");
+        results
+                .append("#include \"jni.h\" \n" // le fichier entete de la librairie existante
+                        // Don't use io stream it results in compile time errors under
+                        // gcc with cygwin
+                        + "/* #include <iostream> */\n"
+                        + "#include \""
+                        + System.getProperty("user.dir")
+                        + "/"
+                        + libraryDirectory
+                        + "/"
+                        + nativeLibrary
+                        + ".h\"\n" // le fichier entete genere par javah
+                        + "#include \"jni_"
+                        + nativeLibrary
+                        + "_Jni"
+                        + actor.getName()
+                        + ".h\"\n"
+                        + "/*******************************************************\n"
+                        + "*********************"
+                        + actor.getName()
+                        + "_"
+                        + interNativeFunction
+                        + "******************\n"
+                        + "*****************************************************/\n\n"
+                        + "//Declaration of the preexisting function\n"
+                        + "//extern \"C\" "
+                        + returnType
+                        + " "
+                        + nativeFunction
+                        + "("
+                        + _getArgumentsInWithCType(actor, ",")
+                        + _virgule(_getArgumentsInWithCType(actor, ","),
+                                _getArgumentsInOut(actor, ","))
+                        + _getArgumentsInOutWithCType(actor, ",")
+                        + _virgule(_getArgumentsInOut(actor, ","),
+                                _getArgumentsOutWithCType(actor, ","))
+                        + _getArgumentsOutWithCType(actor, ",")
+                        + ");\n\n"
+                        + "JNIEXPORT "
+                        + ((actor.getArgumentReturn() == null) ? "void /* Warning: getArgumentReturn() == null (1)*/"
+                                : actor.getArgumentReturn().getJNIType())
+                        + " JNICALL Java_jni_"
+                        + nativeLibrary
+                        + "_Jni"
+                        + actor.getName()
+                        + "_"
+                        + interNativeFunction
+                        + "(\nJNIEnv *env, jobject jobj "
+                        + _virgule(_getArgumentsInWithJNIType(actor, ","))
+                        + _getArgumentsInWithJNIType(actor, ",")
+                        + _virgule(_getArgumentsInWithJNIType(actor, ","),
+                                _getArgumentsInOutWithCType(actor, ","))
+                        + _getArgumentsInOutWithJNIType(actor, ",")
+                        + _virgule(_getArgumentsInOutWithJNIType(actor, ","),
+                                _getArgumentsOutWithCType(actor, ","))
+                        + _getArgumentsOutWithJNIType(actor, ",") + ")\n"
+                        + "{\n" + _indent1 + "// Declaration des sorties\n");
 
         arguments = _getArgumentsOut(actor).iterator();
 
@@ -465,15 +485,25 @@ public class JNIUtilities {
 
             if (typ.endsWith("[]")) {
                 typ = typ.substring(0, typ.length() - 2);
-                results.append(_indent1 + "j" + typ + "Array *" + arg.getName()
-                        + "_1 =" + "(j" + typ + "Array*)env->Get"
-                        + typ.substring(0, 1).toUpperCase()
-                        + typ.substring(1, typ.length()) + "ArrayElements("
-                        + arg.getName() + ",JNI_FALSE);\n"
-                        + "//if ((long *)in_1 == (long *)0 || (long *)inout_1 == (long *)0)n"
-                        + "//{\n"
-                        + "//std::cout << \"warning : the matrix is empty !\""
-                        + " << std::endl;\n" + "//}\n");
+                results
+                        .append(_indent1
+                                + "j"
+                                + typ
+                                + "Array *"
+                                + arg.getName()
+                                + "_1 ="
+                                + "(j"
+                                + typ
+                                + "Array*)env->Get"
+                                + typ.substring(0, 1).toUpperCase()
+                                + typ.substring(1, typ.length())
+                                + "ArrayElements("
+                                + arg.getName()
+                                + ",JNI_FALSE);\n"
+                                + "//if ((long *)in_1 == (long *)0 || (long *)inout_1 == (long *)0)n"
+                                + "//{\n"
+                                + "//std::cout << \"warning : the matrix is empty !\""
+                                + " << std::endl;\n" + "//}\n");
             }
         }
 
@@ -484,7 +514,8 @@ public class JNIUtilities {
         }
 
         //native function call
-        results.append(nativeFunction + "("
+        results.append(nativeFunction
+                + "("
                 + _getArgumentsWithCTypeCast(actor, true, false, false, ",")
                 + _virgule(_getArgumentsInWithCType(actor, ","),
                         _getArgumentsInOut(actor, ","))
@@ -535,16 +566,24 @@ public class JNIUtilities {
                     + "0\" << std::endl;\n" + _indent1 + "}\n");
         }
 
-        if (!(_getArgumentsOut(actor, "").equals("")
-                    && _getArgumentsInOut(actor, "").equals(""))) {
-            results.append(_indent1
-                    + "// envoi des sorties dans l'environnement JAVA / PTOLEMY II\n"
-                    + _indent1 + "jclass cls = env->GetObjectClass(jobj);\n"
-                    + _indent1 + "jmethodID mid = env->GetMethodID(cls, "
-                    + "\"sendResults\", \"" + _signatureSendResults(actor)
-                    + "\");\n" + _indent1 + "if (mid == 0) {\n" + _indent2
-                    + "//std::cout << \"Can't find sendResults method\";\n"
-                    + _indent2 + "printf(\"Can't find sendResults method\");\n");
+        if (!(_getArgumentsOut(actor, "").equals("") && _getArgumentsInOut(
+                actor, "").equals(""))) {
+            results
+                    .append(_indent1
+                            + "// envoi des sorties dans l'environnement JAVA / PTOLEMY II\n"
+                            + _indent1
+                            + "jclass cls = env->GetObjectClass(jobj);\n"
+                            + _indent1
+                            + "jmethodID mid = env->GetMethodID(cls, "
+                            + "\"sendResults\", \""
+                            + _signatureSendResults(actor)
+                            + "\");\n"
+                            + _indent1
+                            + "if (mid == 0) {\n"
+                            + _indent2
+                            + "//std::cout << \"Can't find sendResults method\";\n"
+                            + _indent2
+                            + "printf(\"Can't find sendResults method\");\n");
 
             if (!returnJNIType.equals("void")) {
                 results.append(_indent2 + "return _" + returnName + ";\n}\n");
@@ -552,32 +591,38 @@ public class JNIUtilities {
                 results.append(_indent2 + "return;\n}\n");
             }
 
-            results.append(_indent1 + "env->CallVoidMethod(jobj,mid,"
-                    + _getArgumentsOut(actor, ",")
-                    //warning : ici on suppose qu'il y a toujours au - 1 argument Out !! TBFix
-                    + _virgule(_getArgumentsOut(actor, ","),
-                            _getArgumentsInOut(actor, ","))
-                    + _getArgumentsInOut(actor, ",") + ");\n" + _indent1
-                    + "if (env->ExceptionOccurred()) {\n" + _indent2
-                    + "//std::cout << \"Can't get back results!!\" << std::endl;\n"
-                    + _indent2 + "printf(\"Can't get back results!!\");\n"
-                    + _indent2 + "env->ExceptionDescribe();\n" + _indent2
-                    + "env->ExceptionClear();\n" + _indent1 + "}\n" + _indent1
-                    + "env->ExceptionClear();\n\n");
+            results
+                    .append(_indent1
+                            + "env->CallVoidMethod(jobj,mid,"
+                            + _getArgumentsOut(actor, ",")
+                            //warning : ici on suppose qu'il y a toujours au - 1 argument Out !! TBFix
+                            + _virgule(_getArgumentsOut(actor, ","),
+                                    _getArgumentsInOut(actor, ","))
+                            + _getArgumentsInOut(actor, ",")
+                            + ");\n"
+                            + _indent1
+                            + "if (env->ExceptionOccurred()) {\n"
+                            + _indent2
+                            + "//std::cout << \"Can't get back results!!\" << std::endl;\n"
+                            + _indent2
+                            + "printf(\"Can't get back results!!\");\n"
+                            + _indent2 + "env->ExceptionDescribe();\n"
+                            + _indent2 + "env->ExceptionClear();\n" + _indent1
+                            + "}\n" + _indent1 + "env->ExceptionClear();\n\n");
         }
 
         results.append(_indent1 + "// Menage\n");
 
         /*arguments = _getArgumentsOut(actor).iterator();
-          while (arguments.hasNext()) {
-          Argument arg = (Argument) arguments.next();
-          results.append( "delete " + " " + arg.getName() + ";\n";
-          }
-          arguments = _getArgumentsInOut(actor).iterator();
-          while (arguments.hasNext()) {
-          Argument arg = (Argument) arguments.next();
-          results.append( "delete " + " " + arg.getName() + ";\n";
-          }*/
+         while (arguments.hasNext()) {
+         Argument arg = (Argument) arguments.next();
+         results.append( "delete " + " " + arg.getName() + ";\n";
+         }
+         arguments = _getArgumentsInOut(actor).iterator();
+         while (arguments.hasNext()) {
+         Argument arg = (Argument) arguments.next();
+         results.append( "delete " + " " + arg.getName() + ";\n";
+         }*/
         if (!returnJNIType.equals("void")) {
             results.append(_indent1 + "return _" + returnName + ";\n}\n");
         } else {
@@ -606,127 +651,195 @@ public class JNIUtilities {
      *  @param destinationDirectory Directory to create the file in.
      */
     protected static void _exportDSP(GenericJNIActor actor,
-            String destinationDirectory) throws IllegalActionException, IOException {
+            String destinationDirectory) throws IllegalActionException,
+            IOException {
         StringBuffer results = new StringBuffer();
 
         String libraryDirectory = _getLibraryDirectory(actor);
         String nativeLibrary = getNativeLibrary(actor);
 
         String interNativeLibrary = _getInterNativeLibrary(actor);
-        results.append("# Microsoft Developer Studio Project File - Name=\""
-                + interNativeLibrary + "\" - Package Owner=<4>\r\n"
-                + "# Microsoft Developer Studio Generated Build File,"
-                + " Format Version 6.00\r\n" + "# ** DO NOT EDIT **\r\n"
-                + "# TARGTYPE \"Win32 (x86) Dynamic-Link Library\" 0x0102\r\n"
-                + "CFG=" + interNativeLibrary + " - Win32 Debug\r\n"
-                + "!MESSAGE This is not a valid makefile. To build this project"
-                + " using NMAKE,\r\n"
-                + "!MESSAGE use the Export Makefile command and run\r\n"
-                + "!MESSAGE \r\n" + "!MESSAGE NMAKE /f \"" + interNativeLibrary
-                + ".mak\".\r\n" + "!MESSAGE \r\n"
-                + "!MESSAGE You can specify a configuration when running NMAKE\r\n"
-                + "!MESSAGE by defining the macro CFG on the command line. For example:\r\n"
-                + "!MESSAGE \r\n" + "!MESSAGE NMAKE /f \"" + interNativeLibrary
-                + ".mak\" CFG=\"" + interNativeLibrary + " - Win32 Debug\"\r\n"
-                + "!MESSAGE \r\n"
-                + "!MESSAGE Possible choices for configuration are:\r\n"
-                + "!MESSAGE \r\n" + "!MESSAGE \"" + interNativeLibrary
-                + " - Win32 Release\" (based on \"Win32 (x86) Dynamic-Link Library\")\r\n"
-                + "!MESSAGE \"" + interNativeLibrary
-                + " - Win32 Debug\" (based on \"Win32 (x86) Dynamic-Link Library\")\r\n"
-                + "!MESSAGE \r\n\r\n" + "# Begin Project\r\n"
-                + "# PROP AllowPerConfigDependencies 0\r\n"
-                + "# PROP Scc_ProjName \"\" \r\n"
-                + "# PROP Scc_LocalPath \"\" \r\n" + "CPP=cl.exe\r\n"
-                + "MTL=midl.exe\r\n" + "RSC=rc.exe\r\n\r\n"
-                + "!IF  \"$(CFG)\" == \"" + interNativeLibrary
-                + "- Win32 Release\"\r\n\r\n" + "# PROP BASE Use_MFC 0\r\n"
-                + "# PROP BASE Use_Debug_Libraries 0\r\n"
-                + "# PROP BASE Output_Dir \"Release\"\r\n"
-                + "# PROP BASE Intermediate_Dir \"Release\"\r\n"
-                + "# PROP BASE Target_Dir \"\" \r\n" + "# PROP Use_MFC 0\r\n"
-                + "# PROP Use_Debug_Libraries 0\r\n" + "# PROP Output_Dir \""
-                + System.getProperty("user.dir") + "\\" + libraryDirectory + "\r\n"
-                + "# PROP Intermediate_Dir \"Release\"\r\n"
-                + "# PROP Target_Dir \"\" \r\n"
-                + "# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D \"WIN32\""
-                + " /D \"NDEBUG\" /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
-                + " /D \"" + interNativeLibrary.toUpperCase()
-                + "_EXPORTS\" /YX /FD /c\r\n"
-                + "# ADD CPP /nologo /MT /W3 /GX /O2 /D \"WIN32\" /D \"NDEBUG\""
-                + " /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\"" + " /D \""
-                + interNativeLibrary.toUpperCase() + "_EXPORTS\" /YX /FD /c /I "
-                + "\"d:/users/arnould/jdk1.4.1/include/\" " + "/I "
-                + "\"d:/users/arnould/jdk1.4.1/include/win32/\" \r\n"
-                + "# ADD BASE MTL /nologo /D \"NDEBUG\" /mktyplib203 /win32\r\n"
-                + "# ADD MTL /nologo /D \"NDEBUG\" /mktyplib203 /win32\r\n"
-                + "# ADD BASE RSC /l 0x40c /d \"NDEBUG\"\r\n"
-                + "# ADD RSC /l 0x40c /d \"NDEBUG\"\r\n" + "BSC32=bscmake.exe\r\n"
-                + "# ADD BASE BSC32 /nologo\r\n" + "# ADD BSC32 /nologo\r\n"
-                + "LINK32=link.exe\r\n"
-                + "# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib"
-                + " comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid"
-                + ".lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386\r\n"
-                + "# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib"
-                + " advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"
-                + " /nologo /dll /machine:I386\r\n\r\n"
-                + "!ELSEIF  \"$(CFG)\" == \"" + interNativeLibrary
-                + " - Win32 Debug\"\r\n\r\n" + "# PROP BASE Use_MFC 0\r\n"
-                + "# PROP BASE Use_Debug_Libraries 1\r\n"
-                + "# PROP BASE Output_Dir \"Debug\"\r\n"
-                + "# PROP BASE Intermediate_Dir \"Debug\"\r\n"
-                + "# PROP BASE Target_Dir \"\"\r\n" + "# PROP Use_MFC 0\r\n"
-                + "# PROP Use_Debug_Libraries 1\r\n" + "# PROP Output_Dir \""
-                + System.getProperty("user.dir") + "\\" + libraryDirectory + "\r\n"
-                + "# PROP Intermediate_Dir \"Debug\"\r\n"
-                + "# PROP Ignore_Export_Lib 0\r\n" + "# PROP Target_Dir \"\"\r\n"
-                + "# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D \"WIN32\""
-                + " /D \"_DEBUG\" /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
-                + " /D \"" + interNativeLibrary.toUpperCase()
-                + "_EXPORTS\" /YX /FD /GZ /c\r\n"
-                + "# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od  /D \"WIN32\""
-                + " /D \"_DEBUG\" /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
-                + " /D \"" + interNativeLibrary.toUpperCase()
-                + "_EXPORTS\" /YX /FD /GZ /c /I "
-                + "\"d:/users/arnould/jdk1.4.1/include/\" " + "/I "
-                + "\"d:/users/arnould/jdk1.4.1/include/win32/\" \r\n"
-                + "# ADD BASE MTL /nologo /D \"_DEBUG\" /mktyplib203 /win32\r\n"
-                + "# ADD MTL /nologo /D \"_DEBUG\" /mktyplib203 /win32\r\n"
-                + "# ADD BASE RSC /l 0x40c /d \"_DEBUG\"\r\n"
-                + "# ADD RSC /l 0x40c /d \"_DEBUG\"\r\n" + "BSC32=bscmake.exe\r\n"
-                + "# ADD BASE BSC32 /nologo\r\n" + "# ADD BSC32 /nologo\r\n"
-                + "LINK32=link.exe\r\n"
-                + "# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32"
-                + ".lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib"
-                + " odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept\r\n"
-                + "# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib"
-                + " advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32"
-                + ".lib /nologo /dll /debug /machine:I386 /pdbtype:sept /libpath:\".\"\r\n"
-                + "# SUBTRACT LINK32 /profile /map /nodefaultlib\r\n\r\n"
-                + "!ENDIF \r\n\r\n" + "# Begin Target\r\n\r\n" + "# Name \""
-                + interNativeLibrary + " - Win32 Release\"\r\n" + "# Name \""
-                + interNativeLibrary + " - Win32 Debug\"\r\n"
-                + "# Begin Group \"Source Files\"\r\n\r\n"
-                + "# PROP Default_Filter \"cpp;c;cxx;rc;def;r;odl;idl;hpj;bat\"\r\n"
-                + "# Begin Source File\r\n\r\n" + "SOURCE=.\\jni" + actor.getName()
-                + ".cpp\r\n" + "# End Source File\r\n" + "# End Group\r\n"
-                + "# Begin Group \"Header Files\"\r\n\r\n"
-                + "# PROP Default_Filter \"h;hpp;hxx;hm;inl\"\r\n"
-                + "# Begin Source File\r\n\r\n" + "SOURCE=.\\jni_jni"
-                + nativeLibrary + "_Jni" + actor.getName() + ".h\r\n"
-                + "# End Source File\r\n" + "# Begin Source File\r\n\r\n"
-                + "SOURCE=\"" + System.getProperty("user.dir") + "\\"
-                + libraryDirectory + "\\" + nativeLibrary + ".h\"\r\n"
-                + "# End Source File\r\n" + "# End Group\r\n"
-                + "# Begin Group \"Resource Files\"\r\n\r\n"
-                + "# PROP Default_Filter \"ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe\"\r\n"
-                + "# Begin Source File\r\n\r\n" + "SOURCE=\""
-                + System.getProperty("user.dir") + "\\" + libraryDirectory + "\\"
-                + nativeLibrary + ".dll\"\r\n" + "# End Source File\r\n"
-                + "# Begin Source File\r\n\r\n" + "SOURCE=\""
-                + System.getProperty("user.dir") + "\\" + libraryDirectory + "\\"
-                + nativeLibrary + ".lib\"\r\n" + "# End Source File\r\n"
-                + "# End Group\r\n" + "# End Target\r\n" + "# End Project\r\n");
+        results
+                .append("# Microsoft Developer Studio Project File - Name=\""
+                        + interNativeLibrary
+                        + "\" - Package Owner=<4>\r\n"
+                        + "# Microsoft Developer Studio Generated Build File,"
+                        + " Format Version 6.00\r\n"
+                        + "# ** DO NOT EDIT **\r\n"
+                        + "# TARGTYPE \"Win32 (x86) Dynamic-Link Library\" 0x0102\r\n"
+                        + "CFG="
+                        + interNativeLibrary
+                        + " - Win32 Debug\r\n"
+                        + "!MESSAGE This is not a valid makefile. To build this project"
+                        + " using NMAKE,\r\n"
+                        + "!MESSAGE use the Export Makefile command and run\r\n"
+                        + "!MESSAGE \r\n"
+                        + "!MESSAGE NMAKE /f \""
+                        + interNativeLibrary
+                        + ".mak\".\r\n"
+                        + "!MESSAGE \r\n"
+                        + "!MESSAGE You can specify a configuration when running NMAKE\r\n"
+                        + "!MESSAGE by defining the macro CFG on the command line. For example:\r\n"
+                        + "!MESSAGE \r\n"
+                        + "!MESSAGE NMAKE /f \""
+                        + interNativeLibrary
+                        + ".mak\" CFG=\""
+                        + interNativeLibrary
+                        + " - Win32 Debug\"\r\n"
+                        + "!MESSAGE \r\n"
+                        + "!MESSAGE Possible choices for configuration are:\r\n"
+                        + "!MESSAGE \r\n"
+                        + "!MESSAGE \""
+                        + interNativeLibrary
+                        + " - Win32 Release\" (based on \"Win32 (x86) Dynamic-Link Library\")\r\n"
+                        + "!MESSAGE \""
+                        + interNativeLibrary
+                        + " - Win32 Debug\" (based on \"Win32 (x86) Dynamic-Link Library\")\r\n"
+                        + "!MESSAGE \r\n\r\n"
+                        + "# Begin Project\r\n"
+                        + "# PROP AllowPerConfigDependencies 0\r\n"
+                        + "# PROP Scc_ProjName \"\" \r\n"
+                        + "# PROP Scc_LocalPath \"\" \r\n"
+                        + "CPP=cl.exe\r\n"
+                        + "MTL=midl.exe\r\n"
+                        + "RSC=rc.exe\r\n\r\n"
+                        + "!IF  \"$(CFG)\" == \""
+                        + interNativeLibrary
+                        + "- Win32 Release\"\r\n\r\n"
+                        + "# PROP BASE Use_MFC 0\r\n"
+                        + "# PROP BASE Use_Debug_Libraries 0\r\n"
+                        + "# PROP BASE Output_Dir \"Release\"\r\n"
+                        + "# PROP BASE Intermediate_Dir \"Release\"\r\n"
+                        + "# PROP BASE Target_Dir \"\" \r\n"
+                        + "# PROP Use_MFC 0\r\n"
+                        + "# PROP Use_Debug_Libraries 0\r\n"
+                        + "# PROP Output_Dir \""
+                        + System.getProperty("user.dir")
+                        + "\\"
+                        + libraryDirectory
+                        + "\r\n"
+                        + "# PROP Intermediate_Dir \"Release\"\r\n"
+                        + "# PROP Target_Dir \"\" \r\n"
+                        + "# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D \"WIN32\""
+                        + " /D \"NDEBUG\" /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
+                        + " /D \""
+                        + interNativeLibrary.toUpperCase()
+                        + "_EXPORTS\" /YX /FD /c\r\n"
+                        + "# ADD CPP /nologo /MT /W3 /GX /O2 /D \"WIN32\" /D \"NDEBUG\""
+                        + " /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
+                        + " /D \""
+                        + interNativeLibrary.toUpperCase()
+                        + "_EXPORTS\" /YX /FD /c /I "
+                        + "\"d:/users/arnould/jdk1.4.1/include/\" "
+                        + "/I "
+                        + "\"d:/users/arnould/jdk1.4.1/include/win32/\" \r\n"
+                        + "# ADD BASE MTL /nologo /D \"NDEBUG\" /mktyplib203 /win32\r\n"
+                        + "# ADD MTL /nologo /D \"NDEBUG\" /mktyplib203 /win32\r\n"
+                        + "# ADD BASE RSC /l 0x40c /d \"NDEBUG\"\r\n"
+                        + "# ADD RSC /l 0x40c /d \"NDEBUG\"\r\n"
+                        + "BSC32=bscmake.exe\r\n"
+                        + "# ADD BASE BSC32 /nologo\r\n"
+                        + "# ADD BSC32 /nologo\r\n"
+                        + "LINK32=link.exe\r\n"
+                        + "# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib"
+                        + " comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid"
+                        + ".lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386\r\n"
+                        + "# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib"
+                        + " advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"
+                        + " /nologo /dll /machine:I386\r\n\r\n"
+                        + "!ELSEIF  \"$(CFG)\" == \""
+                        + interNativeLibrary
+                        + " - Win32 Debug\"\r\n\r\n"
+                        + "# PROP BASE Use_MFC 0\r\n"
+                        + "# PROP BASE Use_Debug_Libraries 1\r\n"
+                        + "# PROP BASE Output_Dir \"Debug\"\r\n"
+                        + "# PROP BASE Intermediate_Dir \"Debug\"\r\n"
+                        + "# PROP BASE Target_Dir \"\"\r\n"
+                        + "# PROP Use_MFC 0\r\n"
+                        + "# PROP Use_Debug_Libraries 1\r\n"
+                        + "# PROP Output_Dir \""
+                        + System.getProperty("user.dir")
+                        + "\\"
+                        + libraryDirectory
+                        + "\r\n"
+                        + "# PROP Intermediate_Dir \"Debug\"\r\n"
+                        + "# PROP Ignore_Export_Lib 0\r\n"
+                        + "# PROP Target_Dir \"\"\r\n"
+                        + "# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D \"WIN32\""
+                        + " /D \"_DEBUG\" /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
+                        + " /D \""
+                        + interNativeLibrary.toUpperCase()
+                        + "_EXPORTS\" /YX /FD /GZ /c\r\n"
+                        + "# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od  /D \"WIN32\""
+                        + " /D \"_DEBUG\" /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
+                        + " /D \""
+                        + interNativeLibrary.toUpperCase()
+                        + "_EXPORTS\" /YX /FD /GZ /c /I "
+                        + "\"d:/users/arnould/jdk1.4.1/include/\" "
+                        + "/I "
+                        + "\"d:/users/arnould/jdk1.4.1/include/win32/\" \r\n"
+                        + "# ADD BASE MTL /nologo /D \"_DEBUG\" /mktyplib203 /win32\r\n"
+                        + "# ADD MTL /nologo /D \"_DEBUG\" /mktyplib203 /win32\r\n"
+                        + "# ADD BASE RSC /l 0x40c /d \"_DEBUG\"\r\n"
+                        + "# ADD RSC /l 0x40c /d \"_DEBUG\"\r\n"
+                        + "BSC32=bscmake.exe\r\n"
+                        + "# ADD BASE BSC32 /nologo\r\n"
+                        + "# ADD BSC32 /nologo\r\n"
+                        + "LINK32=link.exe\r\n"
+                        + "# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32"
+                        + ".lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib"
+                        + " odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept\r\n"
+                        + "# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib"
+                        + " advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32"
+                        + ".lib /nologo /dll /debug /machine:I386 /pdbtype:sept /libpath:\".\"\r\n"
+                        + "# SUBTRACT LINK32 /profile /map /nodefaultlib\r\n\r\n"
+                        + "!ENDIF \r\n\r\n"
+                        + "# Begin Target\r\n\r\n"
+                        + "# Name \""
+                        + interNativeLibrary
+                        + " - Win32 Release\"\r\n"
+                        + "# Name \""
+                        + interNativeLibrary
+                        + " - Win32 Debug\"\r\n"
+                        + "# Begin Group \"Source Files\"\r\n\r\n"
+                        + "# PROP Default_Filter \"cpp;c;cxx;rc;def;r;odl;idl;hpj;bat\"\r\n"
+                        + "# Begin Source File\r\n\r\n"
+                        + "SOURCE=.\\jni"
+                        + actor.getName()
+                        + ".cpp\r\n"
+                        + "# End Source File\r\n"
+                        + "# End Group\r\n"
+                        + "# Begin Group \"Header Files\"\r\n\r\n"
+                        + "# PROP Default_Filter \"h;hpp;hxx;hm;inl\"\r\n"
+                        + "# Begin Source File\r\n\r\n"
+                        + "SOURCE=.\\jni_jni"
+                        + nativeLibrary
+                        + "_Jni"
+                        + actor.getName()
+                        + ".h\r\n"
+                        + "# End Source File\r\n"
+                        + "# Begin Source File\r\n\r\n"
+                        + "SOURCE=\""
+                        + System.getProperty("user.dir")
+                        + "\\"
+                        + libraryDirectory
+                        + "\\"
+                        + nativeLibrary
+                        + ".h\"\r\n"
+                        + "# End Source File\r\n"
+                        + "# End Group\r\n"
+                        + "# Begin Group \"Resource Files\"\r\n\r\n"
+                        + "# PROP Default_Filter \"ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe\"\r\n"
+                        + "# Begin Source File\r\n\r\n" + "SOURCE=\""
+                        + System.getProperty("user.dir") + "\\"
+                        + libraryDirectory + "\\" + nativeLibrary
+                        + ".dll\"\r\n" + "# End Source File\r\n"
+                        + "# Begin Source File\r\n\r\n" + "SOURCE=\""
+                        + System.getProperty("user.dir") + "\\"
+                        + libraryDirectory + "\\" + nativeLibrary
+                        + ".lib\"\r\n" + "# End Source File\r\n"
+                        + "# End Group\r\n" + "# End Target\r\n"
+                        + "# End Project\r\n");
 
         File dspFile = new File(destinationDirectory + "/Jni"
                 + interNativeLibrary + ".dsp");
@@ -747,7 +860,8 @@ public class JNIUtilities {
      *  @param destinationDirectory Directory to create the file in.
      */
     protected static File _exportJavaInterfaceFile(GenericJNIActor actor,
-            String destinationDirectory) throws IllegalActionException, IOException {
+            String destinationDirectory) throws IllegalActionException,
+            IOException {
         StringBuffer results = new StringBuffer();
 
         String nativeLibrary = getNativeLibrary(actor);
@@ -768,44 +882,94 @@ public class JNIUtilities {
             }
         }
 
-        results.append("package jni." + nativeLibrary + ";\n\n"
-                + "import ptolemy.data.expr.UtilityFunctions;\n"
-                + "import java.io.File;\n" + "\n\n\n"
-                + "/* The class that interface the native function " + "call\n"
-                + " * @author autogenerated file - by V. Arnould.TRT\n" + " */\n"
-                + "public class Jni" + actor.getName() + " { \n\n" + _indent1
-                + "/* The default constructor\n" + _indent1
-                + " * @author autogenerated - " + "by V. Arnould.TRT\n" + _indent1
-                + " */\n" + _indent1 + "public Jni" + actor.getName() + "(){}\n\n"
-                + _indent1 + "/* The loading of the native library\n" + _indent1
-                + " */\n" + _indent1 + "static {\n" + _indent2
-                + "String library = \"jni\"" + "+ File.separator + \""
-                + nativeLibrary + "\"" + "+ File.separator + \"Jni"
-                + interNativeLibrary + "\";\n" + _indent2 + "try {\n" + _indent3
-                + "UtilityFunctions.loadLibrary(" + "library);\n" + _indent2
-                + "} catch (java.lang.UnsatisfiedLinkError ex) {\n" + _indent3
-                + "System.out.println(\"Warning, UtilityFunctions.loadLibrary('\" + library + \"' failed\");\n"
-                + _indent3 + "ex.printStackTrace();\n" + _indent3
-                + "UtilityFunctions.loadLibrary(\"Jni" + interNativeLibrary
-                + "\");\n" + _indent2 + "}\n" + _indent1 + "}\n\n" + _indent1
-                + "public native " + returnJType + " " + interNativeFunction + "("
-                + _getArgumentsInWithJType(actor, ",")
-                + _virgule(_getArgumentsInWithJType(actor, ","),
-                        _getArgumentsInOutWithJType(actor, ","))
-                + _getArgumentsInOutWithJType(actor, ",")
-                + _virgule(_getArgumentsInWithJType(actor, ",")
-                        + _getArgumentsInOutWithJType(actor, ","),
-                        _getArgumentsOutWithJType(actor, ",")) + "/*foo*/"
-                + _getArgumentsOutWithJType(actor, ",")
-                + ") throws SecurityException;\n\n" + _indent1
-                + "/** Send the result of the native library.\n" + _indent1
-                + " *  This method is called by the native code\n" + _indent1
-                + " *  @author autogenerated - by V. Arnould.TRT\n" + _indent1
-                + " */\n" + _indent1 + "public void sendResults("
-                + _getArgumentsOutWithJType(actor, ",")
-                + _virgule(_getArgumentsOutWithJType(actor, ","),
-                        _getArgumentsInOutWithJType(actor, ","))
-                + _getArgumentsInOutWithJType(actor, ",") + ") {\n");
+        results
+                .append("package jni."
+                        + nativeLibrary
+                        + ";\n\n"
+                        + "import ptolemy.data.expr.UtilityFunctions;\n"
+                        + "import java.io.File;\n"
+                        + "\n\n\n"
+                        + "/* The class that interface the native function "
+                        + "call\n"
+                        + " * @author autogenerated file - by V. Arnould.TRT\n"
+                        + " */\n"
+                        + "public class Jni"
+                        + actor.getName()
+                        + " { \n\n"
+                        + _indent1
+                        + "/* The default constructor\n"
+                        + _indent1
+                        + " * @author autogenerated - "
+                        + "by V. Arnould.TRT\n"
+                        + _indent1
+                        + " */\n"
+                        + _indent1
+                        + "public Jni"
+                        + actor.getName()
+                        + "(){}\n\n"
+                        + _indent1
+                        + "/* The loading of the native library\n"
+                        + _indent1
+                        + " */\n"
+                        + _indent1
+                        + "static {\n"
+                        + _indent2
+                        + "String library = \"jni\""
+                        + "+ File.separator + \""
+                        + nativeLibrary
+                        + "\""
+                        + "+ File.separator + \"Jni"
+                        + interNativeLibrary
+                        + "\";\n"
+                        + _indent2
+                        + "try {\n"
+                        + _indent3
+                        + "UtilityFunctions.loadLibrary("
+                        + "library);\n"
+                        + _indent2
+                        + "} catch (java.lang.UnsatisfiedLinkError ex) {\n"
+                        + _indent3
+                        + "System.out.println(\"Warning, UtilityFunctions.loadLibrary('\" + library + \"' failed\");\n"
+                        + _indent3
+                        + "ex.printStackTrace();\n"
+                        + _indent3
+                        + "UtilityFunctions.loadLibrary(\"Jni"
+                        + interNativeLibrary
+                        + "\");\n"
+                        + _indent2
+                        + "}\n"
+                        + _indent1
+                        + "}\n\n"
+                        + _indent1
+                        + "public native "
+                        + returnJType
+                        + " "
+                        + interNativeFunction
+                        + "("
+                        + _getArgumentsInWithJType(actor, ",")
+                        + _virgule(_getArgumentsInWithJType(actor, ","),
+                                _getArgumentsInOutWithJType(actor, ","))
+                        + _getArgumentsInOutWithJType(actor, ",")
+                        + _virgule(_getArgumentsInWithJType(actor, ",")
+                                + _getArgumentsInOutWithJType(actor, ","),
+                                _getArgumentsOutWithJType(actor, ","))
+                        + "/*foo*/"
+                        + _getArgumentsOutWithJType(actor, ",")
+                        + ") throws SecurityException;\n\n"
+                        + _indent1
+                        + "/** Send the result of the native library.\n"
+                        + _indent1
+                        + " *  This method is called by the native code\n"
+                        + _indent1
+                        + " *  @author autogenerated - by V. Arnould.TRT\n"
+                        + _indent1
+                        + " */\n"
+                        + _indent1
+                        + "public void sendResults("
+                        + _getArgumentsOutWithJType(actor, ",")
+                        + _virgule(_getArgumentsOutWithJType(actor, ","),
+                                _getArgumentsInOutWithJType(actor, ","))
+                        + _getArgumentsInOutWithJType(actor, ",") + ") {\n");
 
         arguments = _getArgumentsOut(actor).iterator();
 
@@ -822,28 +986,40 @@ public class JNIUtilities {
         }
 
         results.append("\n" + _indent1 + "}\n\n");
-        results.append(_indent1
-                + "/** Call the native function in the native library.\n"
-                + _indent1
-                + " *  This method is called by the GenericJNIActor on fire()\n"
-                + _indent1 + " *  @author autogenerated - by V. Arnould.TRT\n"
-                + _indent1 + " */\n" + _indent1 + " public " + returnJType
-                + " fire(" + _getArgumentsInWithJType(actor, ",")
-                + _virgule(_getArgumentsInWithJType(actor, ","),
-                        _getArgumentsInOutWithJType(actor, ","))
-                + _getArgumentsInOutWithJType(actor, ",")
-                + _virgule(_getArgumentsInOutWithJType(actor, ","),
-                        _getArgumentsOutWithJType(actor, ","))
-                + _getArgumentsOutWithJType(actor, ",") + ") {\n\n");
+        results
+                .append(_indent1
+                        + "/** Call the native function in the native library.\n"
+                        + _indent1
+                        + " *  This method is called by the GenericJNIActor on fire()\n"
+                        + _indent1
+                        + " *  @author autogenerated - by V. Arnould.TRT\n"
+                        + _indent1
+                        + " */\n"
+                        + _indent1
+                        + " public "
+                        + returnJType
+                        + " fire("
+                        + _getArgumentsInWithJType(actor, ",")
+                        + _virgule(_getArgumentsInWithJType(actor, ","),
+                                _getArgumentsInOutWithJType(actor, ","))
+                        + _getArgumentsInOutWithJType(actor, ",")
+                        + _virgule(_getArgumentsInOutWithJType(actor, ","),
+                                _getArgumentsOutWithJType(actor, ","))
+                        + _getArgumentsOutWithJType(actor, ",") + ") {\n\n");
 
         //if there is a returned value
         Argument argRet = (Argument) actor.getArgumentReturn();
 
         if ((argRet != null) && !(argRet.getJType().equals("void"))) {
-            results.append(_indent2 + "_" + argRet.getName() + " = "
-                    + interNativeFunction + "(" + _getArgumentsIn(actor, ",")
-                    + _virgule(_getArgumentsIn(actor, ","),
-                            _getArgumentsInOut(actor, ","))
+            results.append(_indent2
+                    + "_"
+                    + argRet.getName()
+                    + " = "
+                    + interNativeFunction
+                    + "("
+                    + _getArgumentsIn(actor, ",")
+                    + _virgule(_getArgumentsIn(actor, ","), _getArgumentsInOut(
+                            actor, ","))
                     + _getArgumentsInOut(actor, ",")
                     + _virgule(_getArgumentsInOut(actor, ","),
                             _getArgumentsOut(actor, ","))
@@ -856,17 +1032,20 @@ public class JNIUtilities {
                 results.append("/* Warning: getArgumentReturn() == null (2)*/");
             }
 
-            results.append(interNativeFunction + "("
+            results.append(interNativeFunction
+                    + "("
                     + _getArgumentsIn(actor, ",")
-                    + _virgule(_getArgumentsIn(actor, ","),
-                            _getArgumentsInOut(actor, ","))
+                    + _virgule(_getArgumentsIn(actor, ","), _getArgumentsInOut(
+                            actor, ","))
                     + _getArgumentsInOut(actor, ",")
                     + _virgule(_getArgumentsInOut(actor, ","),
                             _getArgumentsOut(actor, ","))
                     + _getArgumentsOut(actor, ",") + ");" + "\n }\n");
         }
 
-        results.append("\n" + _indent1 + "///////////// public fields\n" + "\n");
+        results
+                .append("\n" + _indent1 + "///////////// public fields\n"
+                        + "\n");
 
         //out
         arguments = _getArgumentsOut(actor).iterator();
@@ -913,8 +1092,8 @@ public class JNIUtilities {
         try {
             dir.mkdirs();
         } catch (NullPointerException ex) {
-            throw new IllegalActionException(null, ex,
-                    "No directory '" + dir + "'");
+            throw new IllegalActionException(null, ex, "No directory '" + dir
+                    + "'");
         }
 
         File javaFile = new File(destinationDirectory + "/Jni"
@@ -939,7 +1118,8 @@ public class JNIUtilities {
      *  @param destinationDirectory Directory to create the file in.
      */
     protected static void _exportMakefile(GenericJNIActor actor,
-            String destinationDirectory) throws IllegalActionException, IOException {
+            String destinationDirectory) throws IllegalActionException,
+            IOException {
         StringBuffer results = new StringBuffer();
 
         String libraryDirectory = _getLibraryDirectory(actor);
@@ -955,20 +1135,21 @@ public class JNIUtilities {
         //FIXME: this is a HACK, libraryPath should not be set like this
         libraryPath = "../..";
 
-        String ptIIDirWithoutSpaces = StringUtilities.substitute(StringUtilities
-                .getProperty("ptolemy.ptII.dir"), " ", "\\ ");
+        String ptIIDirWithoutSpaces = StringUtilities.substitute(
+                StringUtilities.getProperty("ptolemy.ptII.dir"), " ", "\\ ");
         results.append("# Makefile automatically generated for JNI\n"
                 + "ROOT =\t\t" + ptIIDirWithoutSpaces + "\n\n"
-                + "# Get configuration info\n" + "CONFIG =\t$(ROOT)/mk/ptII.mk\n"
-                + "include $(CONFIG)\n\n" + "SHAREDLIBRARY ="
-                + "$(PTJNI_SHAREDLIBRARY_PREFIX)Jni" + interNativeLibrary
-                + ".$(PTJNI_SHAREDLIBRARY_SUFFIX)\n" + "$(SHAREDLIBRARY):\n"
-                + "\t\"$(PTCC)\" \\\n" + "\t\t\"-I$(PTJAVA_DIR)/include\" \\\n"
+                + "# Get configuration info\n"
+                + "CONFIG =\t$(ROOT)/mk/ptII.mk\n" + "include $(CONFIG)\n\n"
+                + "SHAREDLIBRARY =" + "$(PTJNI_SHAREDLIBRARY_PREFIX)Jni"
+                + interNativeLibrary + ".$(PTJNI_SHAREDLIBRARY_SUFFIX)\n"
+                + "$(SHAREDLIBRARY):\n" + "\t\"$(PTCC)\" \\\n"
+                + "\t\t\"-I$(PTJAVA_DIR)/include\" \\\n"
                 + "\t\t\"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)\" \\\n"
                 + "\t\t-fno-exceptions \\\n"
                 + "\t\t-shared $(PTJNI_SHAREDLIBRARY_LDFLAG) \\\n" + "\t\t-L"
-                + libraryPath + " -l" + nativeLibrary + " \\\n" + "\t\t -o $@ \\\n"
-                + "\t\tjni" + actor.getName() + ".cpp\n\n"
+                + libraryPath + " -l" + nativeLibrary + " \\\n"
+                + "\t\t -o $@ \\\n" + "\t\tjni" + actor.getName() + ".cpp\n\n"
                 + "# Get the rest of the rules\n"
                 + "include $(ROOT)/mk/ptcommon.mk\n");
 
@@ -1011,10 +1192,11 @@ public class JNIUtilities {
      *  @return the name of each in arguments.
      */
     protected static String _getArguments(GenericJNIActor actor,
-            boolean isInput, boolean isOutput, boolean isReturn, String separator) {
+            boolean isInput, boolean isOutput, boolean isReturn,
+            String separator) {
         StringBuffer returnValue = new StringBuffer();
         Iterator arguments = _getArguments(actor, isInput, isOutput, isReturn)
-            .iterator();
+                .iterator();
 
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
@@ -1160,10 +1342,11 @@ public class JNIUtilities {
      *  @return the c type and name of each in arguments.
      */
     protected static String _getArgumentsWithCType(GenericJNIActor actor,
-            boolean isInput, boolean isOutput, boolean isReturn, String separator) {
+            boolean isInput, boolean isOutput, boolean isReturn,
+            String separator) {
         StringBuffer returnValue = new StringBuffer();
         Iterator arguments = _getArguments(actor, isInput, isOutput, isReturn)
-            .iterator();
+                .iterator();
 
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
@@ -1185,10 +1368,11 @@ public class JNIUtilities {
      *  @return the c type and name of each in arguments.
      */
     protected static String _getArgumentsWithCTypeCast(GenericJNIActor actor,
-            boolean isInput, boolean isOutput, boolean isReturn, String separator) {
+            boolean isInput, boolean isOutput, boolean isReturn,
+            String separator) {
         StringBuffer returnValue = new StringBuffer();
         Iterator arguments = _getArguments(actor, isInput, isOutput, isReturn)
-            .iterator();
+                .iterator();
 
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
@@ -1214,10 +1398,11 @@ public class JNIUtilities {
      *  @return the JNI type and name of each in arguments.
      */
     protected static String _getArgumentsWithJNIType(GenericJNIActor actor,
-            boolean isInput, boolean isOutput, boolean isReturn, String separator) {
+            boolean isInput, boolean isOutput, boolean isReturn,
+            String separator) {
         StringBuffer returnValue = new StringBuffer();
         Iterator arguments = _getArguments(actor, isInput, isOutput, isReturn)
-            .iterator();
+                .iterator();
 
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
@@ -1226,7 +1411,8 @@ public class JNIUtilities {
                 returnValue.append(separator);
             }
 
-            returnValue.append(argument.getJNIType() + " " + argument.getName());
+            returnValue
+                    .append(argument.getJNIType() + " " + argument.getName());
         }
 
         return returnValue.toString();
@@ -1236,10 +1422,11 @@ public class JNIUtilities {
      *  @return the java type and name of each in arguments
      */
     protected static String _getArgumentsWithJType(GenericJNIActor actor,
-            boolean isInput, boolean isOutput, boolean isReturn, String separator) {
+            boolean isInput, boolean isOutput, boolean isReturn,
+            String separator) {
         StringBuffer returnValue = new StringBuffer();
         Iterator arguments = _getArguments(actor, isInput, isOutput, isReturn)
-            .iterator();
+                .iterator();
 
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
@@ -1333,7 +1520,7 @@ public class JNIUtilities {
     private static String _getLibraryDirectory(GenericJNIActor actor)
             throws IllegalActionException {
         String libraryDirectory = (((StringToken) ((Parameter) actor
-                                            .getAttribute("libraryDirectory")).getToken()).toString());
+                .getAttribute("libraryDirectory")).getToken()).toString());
         return libraryDirectory.substring(1, libraryDirectory.length() - 1);
     }
 
@@ -1341,15 +1528,15 @@ public class JNIUtilities {
     // quotes stripped off.
     private static String _getNativeFunction(GenericJNIActor actor)
             throws IllegalActionException {
-        String nativeFunction = (((StringToken) ((Parameter) actor.getAttribute(
-                                                         "nativeFunction")).getToken()).toString());
+        String nativeFunction = (((StringToken) ((Parameter) actor
+                .getAttribute("nativeFunction")).getToken()).toString());
         return nativeFunction.substring(1, nativeFunction.length() - 1);
     }
 
     /** Test the given string to know if a comma is needed
-        @param string the string to test
-        @return "" if str is null, "," else
-    */
+     @param string the string to test
+     @return "" if str is null, "," else
+     */
     private static String _virgule(String string) {
         if (string.equals("")) {
             return "";
@@ -1359,10 +1546,10 @@ public class JNIUtilities {
     }
 
     /** Test the given string to know if a comma is needed
-        @param string1 the first string to test
-        @param string2 the second string to test
-        @return "," if str != null && str2 != null, else return ""
-    */
+     @param string1 the first string to test
+     @param string2 the second string to test
+     @return "," if str != null && str2 != null, else return ""
+     */
     private static String _virgule(String string1, String string2) {
         if (string1.equals("")) {
             return "";

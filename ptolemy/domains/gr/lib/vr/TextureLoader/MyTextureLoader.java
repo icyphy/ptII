@@ -80,7 +80,7 @@ public class MyTextureLoader extends Object {
     /**
      * Optional flag - specifies that mipmaps are generated for all levels 
      **/
-    public static final int GENERATE_MIPMAP =  0x01;
+    public static final int GENERATE_MIPMAP = 0x01;
 
     /**
      * Optional flag - specifies that the ImageComponent2D will
@@ -89,7 +89,7 @@ public class MyTextureLoader extends Object {
      * @since Java 3D 1.2
      **/
     public static final int BY_REFERENCE = 0x02;
-    
+
     /**
      * Optional flag - specifies that the ImageComponent2D will
      * have a y-orientation of y up, meaning the origin of the image is the
@@ -102,18 +102,29 @@ public class MyTextureLoader extends Object {
     /**
      * Private declaration for BufferedImage allocation
      */
-    private static ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_sRGB); 
-    private static int[] nBits = {8, 8, 8, 8};
-    private static int[] bandOffset = { 0, 1, 2, 3};
-    private static ComponentColorModel colorModel = new ComponentColorModel(cs, nBits, true, false, Transparency.TRANSLUCENT, 0);
+    private static ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
+
+    private static int[] nBits = { 8, 8, 8, 8 };
+
+    private static int[] bandOffset = { 0, 1, 2, 3 };
+
+    private static ComponentColorModel colorModel = new ComponentColorModel(cs,
+            nBits, true, false, Transparency.TRANSLUCENT, 0);
 
     private Texture2D tex = null;
+
     private BufferedImage bufferedImage = null;
+
     private ImageComponent2D imageComponent = null;
+
     private int textureFormat = Texture.RGBA;
+
     private int imageComponentFormat = ImageComponent.FORMAT_RGBA;
+
     private int flags;
+
     private boolean byRef;
+
     private boolean yUp;
 
     /**
@@ -153,16 +164,16 @@ public class MyTextureLoader extends Object {
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      */
     public MyTextureLoader(BufferedImage bImage, String format, int flags) {
-	parseFormat(format);
-	this.flags = flags;
-	bufferedImage = bImage;
-	
-	if ((flags & BY_REFERENCE) != 0) {
-	    byRef = true;
-	}
-	if ((flags & Y_UP) != 0) {
-	    yUp = true;
-	}
+        parseFormat(format);
+        this.flags = flags;
+        bufferedImage = bImage;
+
+        if ((flags & BY_REFERENCE) != 0) {
+            byRef = true;
+        }
+        if ((flags & Y_UP) != 0) {
+            yUp = true;
+        }
     }
 
     /**
@@ -172,7 +183,7 @@ public class MyTextureLoader extends Object {
      * @param observer The associated image observer
      */
     public MyTextureLoader(Image image, Component observer) {
-	this(image, new String("RGBA"), 0, observer);
+        this(image, new String("RGBA"), 0, observer);
     }
 
     /**
@@ -183,7 +194,7 @@ public class MyTextureLoader extends Object {
      * @param observer The associated image observer
      */
     public MyTextureLoader(Image image, String format, Component observer) {
-	this(image, format, 0, observer);
+        this(image, format, 0, observer);
     }
 
     /**
@@ -194,9 +205,9 @@ public class MyTextureLoader extends Object {
      * @param observer The associated image observer
      */
     public MyTextureLoader(Image image, int flags, Component observer) {
-	this(image, new String("RGBA"), flags, observer);
+        this(image, new String("RGBA"), flags, observer);
     }
- 
+
     /**
      * Contructs a MyTextureLoader object using the specified Image 
      * format and option flags 
@@ -205,23 +216,23 @@ public class MyTextureLoader extends Object {
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      * @param observer The associated image observer
      */
-    public MyTextureLoader(Image image, String format, int flags, 
-                         Component observer) {
+    public MyTextureLoader(Image image, String format, int flags,
+            Component observer) {
 
-	if (observer == null) {
+        if (observer == null) {
             observer = new java.awt.Container();
-	}
+        }
 
-	parseFormat(format);
-	this.flags = flags;
-	System.out.println("About to call createBufferedImage");
-    bufferedImage = createBufferedImage(image, observer);
-	if ((flags & BY_REFERENCE) != 0) {
-	    byRef = true;
-	}
-	if ((flags & Y_UP) != 0) {
-	    yUp = true;
-	}
+        parseFormat(format);
+        this.flags = flags;
+        System.out.println("About to call createBufferedImage");
+        bufferedImage = createBufferedImage(image, observer);
+        if ((flags & BY_REFERENCE) != 0) {
+            byRef = true;
+        }
+        if ((flags & Y_UP) != 0) {
+            yUp = true;
+        }
     }
 
     /**
@@ -265,39 +276,37 @@ public class MyTextureLoader extends Object {
      * @param observer The associated image observer
      */
     public MyTextureLoader(final String fname, String format, int flags,
-			 Component observer) {
+            Component observer) {
 
         if (observer == null) {
             observer = new java.awt.Container();
         }
 
-        bufferedImage = (BufferedImage)
-            java.security.AccessController.doPrivileged(
- 	        new java.security.PrivilegedAction() {
+        bufferedImage = (BufferedImage) java.security.AccessController
+                .doPrivileged(new java.security.PrivilegedAction() {
                     public Object run() {
                         try {
                             return ImageIO.read(new File(fname));
                         } catch (IOException e) {
-			    System.err.println(e);
+                            System.err.println(e);
                             return null;
                         }
                     }
-                }
-            );
+                });
 
         parseFormat(format);
         this.flags = flags;
 
-	if (bufferedImage==null) {
-            System.err.println("Error loading Image "+fname );
+        if (bufferedImage == null) {
+            System.err.println("Error loading Image " + fname);
         }
 
-	if ((flags & BY_REFERENCE) != 0) {
-	    byRef = true;
-	}
-	if ((flags & Y_UP) != 0) {
-	    yUp = true;
-	}
+        if ((flags & BY_REFERENCE) != 0) {
+            byRef = true;
+        }
+        if ((flags & Y_UP) != 0) {
+            yUp = true;
+        }
     }
 
     /**
@@ -331,6 +340,7 @@ public class MyTextureLoader extends Object {
     public MyTextureLoader(URL url, int flags, Component observer) {
         this(url, new String("RGBA"), flags, observer);
     }
+
     /**
      * Contructs a MyTextureLoader object using the specified URL, 
      * format and option flags 
@@ -340,51 +350,48 @@ public class MyTextureLoader extends Object {
      * @param observer The associated image observer
      */
     public MyTextureLoader(final URL url, String format, int flags,
-                         Component observer) {
+            Component observer) {
 
         if (observer == null) {
             observer = new java.awt.Container();
         }
 
-        bufferedImage = (BufferedImage)
-            java.security.AccessController.doPrivileged(
- 	        new java.security.PrivilegedAction() {
+        bufferedImage = (BufferedImage) java.security.AccessController
+                .doPrivileged(new java.security.PrivilegedAction() {
                     public Object run() {
                         try {
                             return ImageIO.read(url);
                         } catch (IOException e) {
-			    System.err.println(e);
+                            System.err.println(e);
                             return null;
                         }
                     }
-                }
-            );
+                });
 
         parseFormat(format);
         this.flags = flags;
 
-	if (bufferedImage==null) {
-            System.err.println("Error loading Image "+url.toString() );
+        if (bufferedImage == null) {
+            System.err.println("Error loading Image " + url.toString());
         }
 
-	if ((flags & BY_REFERENCE) != 0) {
-	    byRef = true;
-	}
-	if ((flags & Y_UP) != 0) {
-	    yUp = true;
-	}
+        if ((flags & BY_REFERENCE) != 0) {
+            byRef = true;
+        }
+        if ((flags & Y_UP) != 0) {
+            yUp = true;
+        }
     }
-
 
     /**
      * Returns the associated ImageComponent2D object
      *   
      * @return The associated ImageComponent2D object
-     */  
+     */
     public ImageComponent2D getImage() {
-	if (imageComponent == null) 
-            imageComponent = new ImageComponent2D(imageComponentFormat, 
-						  bufferedImage, byRef, yUp);
+        if (imageComponent == null)
+            imageComponent = new ImageComponent2D(imageComponentFormat,
+                    bufferedImage, byRef, yUp);
         return imageComponent;
     }
 
@@ -395,15 +402,13 @@ public class MyTextureLoader extends Object {
      * @param yScale The Y scaling factor
      *
      * @return The scaled ImageComponent2D object
-     */  
+     */
     public ImageComponent2D getScaledImage(float xScale, float yScale) {
-	if (xScale == 1.0f && yScale == 1.0f)
-	    return getImage();
-	else
-	    return(new ImageComponent2D(imageComponentFormat, 
-					getScaledImage(bufferedImage,
-						       xScale, yScale),
-					byRef, yUp));
+        if (xScale == 1.0f && yScale == 1.0f)
+            return getImage();
+        else
+            return (new ImageComponent2D(imageComponentFormat, getScaledImage(
+                    bufferedImage, xScale, yScale), byRef, yUp));
     }
 
     /**
@@ -416,14 +421,12 @@ public class MyTextureLoader extends Object {
      */
     public ImageComponent2D getScaledImage(int width, int height) {
 
-	if (bufferedImage.getWidth() == width && 
-	    	bufferedImage.getHeight() == height) 
-	    return getImage();
-        else 
-	    return(new ImageComponent2D(imageComponentFormat, 
-					getScaledImage(bufferedImage,
-						       width, height),
-					byRef, yUp));
+        if (bufferedImage.getWidth() == width
+                && bufferedImage.getHeight() == height)
+            return getImage();
+        else
+            return (new ImageComponent2D(imageComponentFormat, getScaledImage(
+                    bufferedImage, width, height), byRef, yUp));
     }
 
     /**
@@ -433,94 +436,96 @@ public class MyTextureLoader extends Object {
      * @return The associated Texture object
      */
     public Texture getTexture() {
-	ImageComponent2D[] scaledImageComponents = null;
-	BufferedImage[] scaledBufferedImages = null;
+        ImageComponent2D[] scaledImageComponents = null;
+        BufferedImage[] scaledBufferedImages = null;
         if (tex == null) {
-	  if (bufferedImage==null) return null;
+            if (bufferedImage == null)
+                return null;
 
-          int width = getClosestPowerOf2(bufferedImage.getWidth());
-          int height = getClosestPowerOf2(bufferedImage.getHeight());
+            int width = getClosestPowerOf2(bufferedImage.getWidth());
+            int height = getClosestPowerOf2(bufferedImage.getHeight());
 
-	  if ((flags & GENERATE_MIPMAP) != 0) {
-      
-	    BufferedImage origImage = bufferedImage;
-	    int newW = width;
-	    int newH = height;
-	    int level = Math.max(computeLog(width), computeLog(height)) + 1;
-	    scaledImageComponents = new ImageComponent2D[level];
-	    scaledBufferedImages = new BufferedImage[level];
-            tex = new Texture2D(Texture.MULTI_LEVEL_MIPMAP, textureFormat,
-                width, height);
+            if ((flags & GENERATE_MIPMAP) != 0) {
 
-            for (int i = 0; i < level; i++) {
-                scaledBufferedImages[i] = getScaledImage(origImage, newW, newH);
-                scaledImageComponents[i] =  new ImageComponent2D(
-			imageComponentFormat, scaledBufferedImages[i],
-			byRef, yUp);
-	
-                tex.setImage(i, scaledImageComponents[i]);
-                if (newW > 1) newW >>= 1;
-                if (newH > 1) newH >>= 1;
-	        origImage = scaledBufferedImages[i];
+                BufferedImage origImage = bufferedImage;
+                int newW = width;
+                int newH = height;
+                int level = Math.max(computeLog(width), computeLog(height)) + 1;
+                scaledImageComponents = new ImageComponent2D[level];
+                scaledBufferedImages = new BufferedImage[level];
+                tex = new Texture2D(Texture.MULTI_LEVEL_MIPMAP, textureFormat,
+                        width, height);
+
+                for (int i = 0; i < level; i++) {
+                    scaledBufferedImages[i] = getScaledImage(origImage, newW,
+                            newH);
+                    scaledImageComponents[i] = new ImageComponent2D(
+                            imageComponentFormat, scaledBufferedImages[i],
+                            byRef, yUp);
+
+                    tex.setImage(i, scaledImageComponents[i]);
+                    if (newW > 1)
+                        newW >>= 1;
+                    if (newH > 1)
+                        newH >>= 1;
+                    origImage = scaledBufferedImages[i];
+                }
+
+            } else {
+                scaledImageComponents = new ImageComponent2D[1];
+                scaledBufferedImages = new BufferedImage[1];
+
+                // Create texture from image
+                scaledBufferedImages[0] = getScaledImage(bufferedImage, width,
+                        height);
+                scaledImageComponents[0] = new ImageComponent2D(
+                        imageComponentFormat, scaledBufferedImages[0], byRef,
+                        yUp);
+
+                tex = new Texture2D(Texture.BASE_LEVEL, textureFormat, width,
+                        height);
+
+                tex.setImage(0, scaledImageComponents[0]);
             }
-
-          } else {
-	    scaledImageComponents = new ImageComponent2D[1];
-	    scaledBufferedImages = new BufferedImage[1];
-
-            // Create texture from image
-            scaledBufferedImages[0] = getScaledImage(bufferedImage, 
-			width, height);
-            scaledImageComponents[0] = new ImageComponent2D(
-			imageComponentFormat, scaledBufferedImages[0],
-			byRef, yUp);
-
-            tex = new Texture2D(Texture.BASE_LEVEL, textureFormat, width, height);
-
-            tex.setImage(0, scaledImageComponents[0]);
-          }
-          tex.setMinFilter(Texture.BASE_LEVEL_LINEAR);
-          tex.setMagFilter(Texture.BASE_LEVEL_LINEAR);
+            tex.setMinFilter(Texture.BASE_LEVEL_LINEAR);
+            tex.setMagFilter(Texture.BASE_LEVEL_LINEAR);
         }
 
-	return tex;
+        return tex;
     }
 
     // create a BufferedImage from an Image object
-    private BufferedImage createBufferedImage(Image image,
-                                              Component observer) {
+    private BufferedImage createBufferedImage(Image image, Component observer) {
         System.out.println("Inside of createBufferedImage");
-	    observer.prepareImage(image, null);
-       /* while(true) {
-            System.out.println("Inside while loop of createBufferedImage");
-	    status = observer.checkImage(image, null);
-            if ((status & ImageObserver.ERROR) != 0) {
-                System.out.println("In if part of if-loop");
-                return null;
-            } else if ((status & ImageObserver.ALLBITS) != 0) {
-                System.out.println("In else part of if-loop");
-                break;
-            } 
-      /*      try {
-                System.out.println("In try part of try-loop");
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }*/
+        observer.prepareImage(image, null);
+        /* while(true) {
+         System.out.println("Inside while loop of createBufferedImage");
+         status = observer.checkImage(image, null);
+         if ((status & ImageObserver.ERROR) != 0) {
+         System.out.println("In if part of if-loop");
+         return null;
+         } else if ((status & ImageObserver.ALLBITS) != 0) {
+         System.out.println("In else part of if-loop");
+         break;
+         } 
+         /*      try {
+         System.out.println("In try part of try-loop");
+         Thread.sleep(100);
+         } catch (InterruptedException e) {}
+         }*/
         System.out.println("Finished while loop");
         int width = image.getWidth(observer);
         int height = image.getHeight(observer);
 
-	WritableRaster wr =
-            java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
-                                           width, height,
-                                           width * 4, 4,
-                                           bandOffset, null);
-	BufferedImage bImage = new BufferedImage(colorModel, wr, false, null);
-	
-   	java.awt.Graphics g = bImage.getGraphics();
-   	g.drawImage(image, 0, 0, observer);
-	
-	return bImage;
+        WritableRaster wr = java.awt.image.Raster.createInterleavedRaster(
+                DataBuffer.TYPE_BYTE, width, height, width * 4, 4, bandOffset,
+                null);
+        BufferedImage bImage = new BufferedImage(colorModel, wr, false, null);
+
+        java.awt.Graphics g = bImage.getGraphics();
+        g.drawImage(image, 0, 0, observer);
+
+        return bImage;
     }
 
     // initialize appropriate format for ImageComponent and Texture
@@ -529,15 +534,15 @@ public class MyTextureLoader extends Object {
             imageComponentFormat = ImageComponent.FORMAT_RGBA;
             textureFormat = Texture.RGBA;
 
-        } else if (format.equals("RGBA4")) {                                  
+        } else if (format.equals("RGBA4")) {
             imageComponentFormat = ImageComponent.FORMAT_RGBA4;
             textureFormat = Texture.RGBA;
 
-        } else if (format.equals("RGB5_A1")) {                                 
+        } else if (format.equals("RGB5_A1")) {
             imageComponentFormat = ImageComponent.FORMAT_RGB5_A1;
             textureFormat = Texture.RGBA;
 
-        } else if (format.equals("RGB")) { 
+        } else if (format.equals("RGB")) {
             imageComponentFormat = ImageComponent.FORMAT_RGB;
             textureFormat = Texture.RGB;
 
@@ -545,14 +550,14 @@ public class MyTextureLoader extends Object {
             imageComponentFormat = ImageComponent.FORMAT_RGB4;
             textureFormat = Texture.RGB;
 
-        } else if (format.equals("RGB5")) {                                  
+        } else if (format.equals("RGB5")) {
             imageComponentFormat = ImageComponent.FORMAT_RGB5;
             textureFormat = Texture.RGB;
 
-        } else if (format.equals("R3_G3_B2")) {                              
+        } else if (format.equals("R3_G3_B2")) {
             imageComponentFormat = ImageComponent.FORMAT_R3_G3_B2;
             textureFormat = Texture.RGB;
- 
+
         } else if (format.equals("LUM8_ALPHA8")) {
             imageComponentFormat = ImageComponent.FORMAT_LUM8_ALPHA8;
             textureFormat = Texture.LUMINANCE_ALPHA;
@@ -560,11 +565,11 @@ public class MyTextureLoader extends Object {
         } else if (format.equals("LUM4_ALPHA4")) {
             imageComponentFormat = ImageComponent.FORMAT_LUM4_ALPHA4;
             textureFormat = Texture.LUMINANCE_ALPHA;
-       
+
         } else if (format.equals("LUMINANCE")) {
             imageComponentFormat = ImageComponent.FORMAT_CHANNEL8;
             textureFormat = Texture.LUMINANCE;
- 
+
         } else if (format.equals("ALPHA")) {
             imageComponentFormat = ImageComponent.FORMAT_CHANNEL8;
             textureFormat = Texture.ALPHA;
@@ -572,53 +577,53 @@ public class MyTextureLoader extends Object {
     }
 
     // return a scaled image of given width and height
-    private BufferedImage getScaledImage(BufferedImage origImage,
-                                         int width, int height) {
+    private BufferedImage getScaledImage(BufferedImage origImage, int width,
+            int height) {
 
         int origW = origImage.getWidth();
         int origH = origImage.getHeight();
-        float xScale = (float)width/(float)origW;
-        float yScale = (float)height/(float)origH;
+        float xScale = (float) width / (float) origW;
+        float yScale = (float) height / (float) origH;
 
-	return (getScaledImage(origImage, xScale, yScale));
+        return (getScaledImage(origImage, xScale, yScale));
     }
 
     // return a scaled image of given x and y scale
     //FIXME Must be updated to add AlphaChannel
-    private BufferedImage getScaledImage(BufferedImage origImage,
-                                         float xScale, float yScale) {
-    	//      Some variables I need
-        int arrayLength = origImage.getWidth()*origImage.getHeight();
+    private BufferedImage getScaledImage(BufferedImage origImage, float xScale,
+            float yScale) {
+        //      Some variables I need
+        int arrayLength = origImage.getWidth() * origImage.getHeight();
         double[] pixelArray = new double[arrayLength];
         double[] alphaArray = new double[arrayLength];
         //pixelArray = null;
         //alphaArray = null;
-        
+
         //Get channel and write proper alpha values to it
         WritableRaster alphaRaster = origImage.getAlphaRaster();
-        
+
         System.out.println("Got alpha channel");
         System.out.println("alphaRaster = " + alphaRaster);
         //System.out.println("NumBands = " + alphaRaster.getNumBands());
-        
+
         WritableRaster dataRaster = (WritableRaster) origImage.getData();
-        System.out.println("NumBands of dataRaster = " + dataRaster.getNumBands());
+        System.out.println("NumBands of dataRaster = "
+                + dataRaster.getNumBands());
         System.out.println("dataRaster = " + dataRaster);
         System.out.println("Got data channel");
 
-        
         System.out.println("Bounds of image = " + dataRaster.getBounds());
         //dataRaster.getPixels( 0, 0,origImage.getWidth()-1, origImage.getHeight()-1,pixelArray );
-        dataRaster.getPixels( 0, 0,50,50,pixelArray );
+        dataRaster.getPixels(0, 0, 50, 50, pixelArray);
         //dataRaster.getPixels( 0, 0,255,255,pixelArray );
-        
+
         System.out.println("pixelArray = " + pixelArray);
         System.out.println("Got pixels");
-        for (int i=0; i < arrayLength; i ++){ 
+        for (int i = 0; i < arrayLength; i++) {
             alphaArray[i] = 1;
             //alphaArray[i] = pixelArray[i]*fraction;
             //alphaArray[i] = 1 - fraction;
-         }
+        }
         System.out.println("Calculated alpha values");
         System.out.println("alphaRaster = " + alphaRaster);
         System.out.println("NumBands = " + alphaRaster.getNumBands());
@@ -631,30 +636,29 @@ public class MyTextureLoader extends Object {
         //bufferedImage.setData(alphaRaster);
         //bufferedImage.coerceData(true);
         System.out.println(bufferedImage.isAlphaPremultiplied());
-         System.out.println("Set alpha values in proper buffer band");
-         System.out.println("Transparency type = " + bufferedImage.getColorModel().getTransparency());
-         System.out.println("Image type = " + bufferedImage.getType());
-         System.out.println("Tile Height = " + bufferedImage.getTileHeight() +"Tile Width = " + bufferedImage.getTileWidth());
+        System.out.println("Set alpha values in proper buffer band");
+        System.out.println("Transparency type = "
+                + bufferedImage.getColorModel().getTransparency());
+        System.out.println("Image type = " + bufferedImage.getType());
+        System.out.println("Tile Height = " + bufferedImage.getTileHeight()
+                + "Tile Width = " + bufferedImage.getTileWidth());
         // If the image is already the requested size, no need to scale
         if (xScale == 1.0f && yScale == 1.0f)
             return origImage;
         else {
-	    int scaleW = (int)(origImage.getWidth() * xScale + 0.5);
-	    int scaleH = (int)(origImage.getHeight() * yScale + 0.5);
-	    WritableRaster wr = 
-                java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
-                                               scaleW, scaleH,
-                                               scaleW * 4, 4,
-                                               bandOffset, null);
-	    BufferedImage scaledImage = new BufferedImage(colorModel, wr,
-                                                          false, null);
-	    
-         
-	    java.awt.Graphics2D g2 = scaledImage.createGraphics();
+            int scaleW = (int) (origImage.getWidth() * xScale + 0.5);
+            int scaleH = (int) (origImage.getHeight() * yScale + 0.5);
+            WritableRaster wr = java.awt.image.Raster.createInterleavedRaster(
+                    DataBuffer.TYPE_BYTE, scaleW, scaleH, scaleW * 4, 4,
+                    bandOffset, null);
+            BufferedImage scaledImage = new BufferedImage(colorModel, wr,
+                    false, null);
+
+            java.awt.Graphics2D g2 = scaledImage.createGraphics();
             AffineTransform at = AffineTransform.getScaleInstance(xScale,
-                                                                  yScale);
-	    g2.transform(at);
-	    g2.drawImage(origImage, 0, 0, null);
+                    yScale);
+            g2.transform(at);
+            g2.drawImage(origImage, 0, 0, null);
 
             return scaledImage;
         }
@@ -663,32 +667,32 @@ public class MyTextureLoader extends Object {
     private int computeLog(int value) {
         int i = 0;
 
-        if (value == 0) return -1;
+        if (value == 0)
+            return -1;
         for (;;) {
-            if (value == 1) 
+            if (value == 1)
                 return i;
             value >>= 1;
-	    i++;
+            i++;
         }
     }
 
     private int getClosestPowerOf2(int value) {
 
-	if (value < 1)
-	    return value;
-	
-	int powerValue = 1;
-	for (;;) {
-	    powerValue *= 2;
-	    if (value < powerValue) {
-		// Found max bound of power, determine which is closest
-		int minBound = powerValue/2;
-		if ((powerValue - value) >
-		    (value - minBound))
-		    return minBound;
-		else
-		    return powerValue;
-	    }
-	}
+        if (value < 1)
+            return value;
+
+        int powerValue = 1;
+        for (;;) {
+            powerValue *= 2;
+            if (value < powerValue) {
+                // Found max bound of power, determine which is closest
+                int minBound = powerValue / 2;
+                if ((powerValue - value) > (value - minBound))
+                    return minBound;
+                else
+                    return powerValue;
+            }
+        }
     }
 }

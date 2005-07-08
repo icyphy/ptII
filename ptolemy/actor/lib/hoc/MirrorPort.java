@@ -1,30 +1,30 @@
 /* A port that mirrors the properties of an associated port.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.hoc;
 
 import ptolemy.actor.TypedIOPort;
@@ -35,30 +35,29 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MirrorPort
 
 /**
-   This port mirrors the properties of an associated port. That is,
-   if either this port or the associated port is changed by
-   setInput(), setOutput(), setMultiport(), or if it is removed
-   by setContainer(null), or its name is changed by setName(),
-   then the mirror port gets the same
-   changes.  The changes are also applied to derived ports
-   (ports that mirror this one because of the class mechanism).
-   <p>
-   Users of this class must override their clone(Workspace)
-   method to re-establish appropriate port associations in
-   the clone.  Cloning this port results in a clone with
-   no associations.
+ This port mirrors the properties of an associated port. That is,
+ if either this port or the associated port is changed by
+ setInput(), setOutput(), setMultiport(), or if it is removed
+ by setContainer(null), or its name is changed by setName(),
+ then the mirror port gets the same
+ changes.  The changes are also applied to derived ports
+ (ports that mirror this one because of the class mechanism).
+ <p>
+ Users of this class must override their clone(Workspace)
+ method to re-establish appropriate port associations in
+ the clone.  Cloning this port results in a clone with
+ no associations.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (neuendor)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (neuendor)
+ */
 public class MirrorPort extends TypedIOPort {
     /** Construct a port in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -143,8 +142,8 @@ public class MirrorPort extends TypedIOPort {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
-    public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(Entity container) throws IllegalActionException,
+            NameDuplicationException {
         super.setContainer(container);
 
         if ((container == null) && (_associatedPort != null)
@@ -155,8 +154,8 @@ public class MirrorPort extends TypedIOPort {
             // change request will be issued because its container
             // is already null.
             MoMLChangeRequest request = new MoMLChangeRequest(this,
-                    _associatedPort.getContainer(),
-                    "<deletePort name=\"" + _associatedPort.getName() + "\"/>");
+                    _associatedPort.getContainer(), "<deletePort name=\""
+                            + _associatedPort.getName() + "\"/>");
             _associatedPort.getContainer().requestChange(request);
         }
     }
@@ -225,8 +224,8 @@ public class MirrorPort extends TypedIOPort {
     /** Override the base class to also set the associated port,
      *  if there is one.
      */
-    public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
         super.setName(name);
 
         if ((_associatedPort != null)

@@ -1,30 +1,30 @@
 /* A Port is an aggregation of links to relations.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.kernel;
 
 import java.util.Collections;
@@ -41,37 +41,36 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Port
 
 /**
-   A Port is the interface of an Entity to any number of Relations.
-   Normally, a Port is contained by an Entity, although a port
-   may exist with no container.  The role of a port is to aggregate
-   a set of links to relations.  Thus, for example, to represent
-   a directed graph, entities can be created with two ports, one for
-   incoming arcs and one for outgoing arcs.  More generally, the arcs
-   to an entity may be divided into any number of subsets, with one port
-   representing each subset.
-   <p>
+ A Port is the interface of an Entity to any number of Relations.
+ Normally, a Port is contained by an Entity, although a port
+ may exist with no container.  The role of a port is to aggregate
+ a set of links to relations.  Thus, for example, to represent
+ a directed graph, entities can be created with two ports, one for
+ incoming arcs and one for outgoing arcs.  More generally, the arcs
+ to an entity may be divided into any number of subsets, with one port
+ representing each subset.
+ <p>
 
-   A Port can link to any instance of Relation.  Derived classes may wish
-   to constrain links to a subclass of Relation.  To do this, subclasses
-   should override the protected method {@link #_checkLink(Relation)} to
-   throw an exception if its argument is a relation that is not of the
-   appropriate subclass.  Similarly, if a subclass wishes to constrain
-   the containers of the port to be of a subclass of Entity, they should
-   override the protected method {@link #_checkContainer(Entity)}.
+ A Port can link to any instance of Relation.  Derived classes may wish
+ to constrain links to a subclass of Relation.  To do this, subclasses
+ should override the protected method {@link #_checkLink(Relation)} to
+ throw an exception if its argument is a relation that is not of the
+ appropriate subclass.  Similarly, if a subclass wishes to constrain
+ the containers of the port to be of a subclass of Entity, they should
+ override the protected method {@link #_checkContainer(Entity)}.
 
-   @author Mudit Goel, Edward A. Lee, Jie Liu
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (cxh)
-   @see Entity
-   @see Relation
-*/
+ @author Mudit Goel, Edward A. Lee, Jie Liu
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (cxh)
+ @see Entity
+ @see Relation
+ */
 public class Port extends NamedObj {
     /** Construct a port in the default workspace with an empty string
      *  as its name.
@@ -111,8 +110,8 @@ public class Port extends NamedObj {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    public Port(Entity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public Port(Entity container, String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container.workspace(), name);
         _elementName = "port";
         setContainer(container);
@@ -250,9 +249,9 @@ public class Port extends NamedObj {
             _workspace.getReadAccess();
             Iterator relations = r.relationGroupList().iterator();
             while (relations.hasNext()) {
-            	Relation groupRelation = (Relation)relations.next();
+                Relation groupRelation = (Relation) relations.next();
                 if (_relationsList.isLinked(groupRelation)) {
-                	return true;
+                    return true;
                 }
             }
             return false;
@@ -593,8 +592,8 @@ public class Port extends NamedObj {
      *  @see #getContainer()
      *  @see #_checkContainer(Entity)
      */
-    public void setContainer(Entity entity)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(Entity entity) throws IllegalActionException,
+            NameDuplicationException {
         if ((entity != null) && (_workspace != entity.workspace())) {
             throw new IllegalActionException(this, entity,
                     "Cannot set container because workspaces are different.");
@@ -672,8 +671,8 @@ public class Port extends NamedObj {
      *  @exception NameDuplicationException If there is already a port
      *   with the same name in the container.
      */
-    public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -837,11 +836,11 @@ public class Port extends NamedObj {
                 Enumeration linkedRelations = linkedRelations();
 
                 while (linkedRelations.hasMoreElements()) {
-                    Relation relation = (Relation) linkedRelations.nextElement();
+                    Relation relation = (Relation) linkedRelations
+                            .nextElement();
 
                     if (relation != null) {
-                        result += (relation._description(detail, indent + 1, 2)
-                                + "\n");
+                        result += (relation._description(detail, indent + 1, 2) + "\n");
                     } else {
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
@@ -877,8 +876,8 @@ public class Port extends NamedObj {
     protected NamedObj _getContainedObject(NamedObj container,
             String relativeName) throws IllegalActionException {
         if (!(container instanceof Entity)) {
-            throw new IllegalActionException(this,
-                    "Expected " + container.getFullName()
+            throw new IllegalActionException(this, "Expected "
+                    + container.getFullName()
                     + " to be an instance of ptolemy.kernel.Entity,"
                     + " but it is " + container.getClass().getName());
         }
@@ -886,10 +885,10 @@ public class Port extends NamedObj {
         Port candidate = ((Entity) container).getPort(relativeName);
 
         if ((candidate != null) && !getClass().isInstance(candidate)) {
-            throw new IllegalActionException(this,
-                    "Expected " + candidate.getFullName()
-                    + " to be an instance of " + getClass().getName()
-                    + ", but it is " + candidate.getClass().getName());
+            throw new IllegalActionException(this, "Expected "
+                    + candidate.getFullName() + " to be an instance of "
+                    + getClass().getName() + ", but it is "
+                    + candidate.getClass().getName());
         }
 
         return candidate;

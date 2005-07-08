@@ -1,32 +1,32 @@
 /* An actor that outputs the arctan of the input.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-@ProposedRating Red
-@AcceptedRating Red
-*/
+ @ProposedRating Red
+ @AcceptedRating Red
+ */
 package ptolemy.domains.ct.demo.Corba;
 
 import ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
@@ -36,19 +36,18 @@ import ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException;
 import ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException;
 import ptolemy.domains.ct.demo.Corba.util._CorbaActorImplBase;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NonlinearServant
 
 /**
-   This is a stateless function that does a nonlinear transformation of the
-   input data. This is a CORBA servant implement the
-   ptolemy.actor.corba.util.CorbaActor interface, served as a CORBA servant.
-   This is designed as independent of the ptolemy packages.
+ This is a stateless function that does a nonlinear transformation of the
+ input data. This is a CORBA servant implement the
+ ptolemy.actor.corba.util.CorbaActor interface, served as a CORBA servant.
+ This is designed as independent of the ptolemy packages.
 
-   @author Jie Liu
-   @version $Id$
-*/
+ @author Jie Liu
+ @version $Id$
+ */
 public class NonlinearServant extends _CorbaActorImplBase {
     /** Construct the servant.
      */
@@ -62,19 +61,19 @@ public class NonlinearServant extends _CorbaActorImplBase {
     ////                         public methods                    ////
 
     /**Implement
-       <p>
-       Operation: <b>::util::CorbaActor::fire</b>.
-       <pre>
-       #pragma prefix "util/CorbaActor"
-       void fire(
-       )
-       raises(
-       ::util::CorbaIllegalActionException
-       );
-       </pre>
-       </p>
-       Compute the arctan of the input.
-    */
+     <p>
+     Operation: <b>::util::CorbaActor::fire</b>.
+     <pre>
+     #pragma prefix "util/CorbaActor"
+     void fire(
+     )
+     raises(
+     ::util::CorbaIllegalActionException
+     );
+     </pre>
+     </p>
+     Compute the arctan of the input.
+     */
     public void fire() throws CorbaIllegalActionException {
         if (_input == null) {
             _output = null;
@@ -100,48 +99,48 @@ public class NonlinearServant extends _CorbaActorImplBase {
      );
      </pre>
      </p>
-    */
+     */
     public java.lang.String getParameter(java.lang.String paramName)
             throws CorbaIllegalActionException, CorbaUnknownParamException {
         throw new CorbaUnknownParamException();
     }
 
     /** Do nothing.
-        <p>
-        Operation: <b>::util::CorbaActor::initialize</b>.
-        <pre>
-        #pragma prefix "util/CorbaActor"
-        void initialize(
-        )
-        raises(
-        ::util::CorbaIllegalActionException
-        );
-        </pre>
-        </p>
-    */
+     <p>
+     Operation: <b>::util::CorbaActor::initialize</b>.
+     <pre>
+     #pragma prefix "util/CorbaActor"
+     void initialize(
+     )
+     raises(
+     ::util::CorbaIllegalActionException
+     );
+     </pre>
+     </p>
+     */
     public void initialize() throws CorbaIllegalActionException {
     }
 
     /** Return true if there's new data in the output port. Implement
-        <p>
-        Operation: <b>::util::CorbaActor::hasData</b>.
-        <pre>
-        #pragma prefix "util/CorbaActor"
-        boolean hasData(
-        in string portName,
-        in short portIndex
-        )
-        raises(
-        ::util::CorbaIllegalActionException,
-        ::util::CorbaIndexOutofBoundException,
-        ::util::CorbaUnknownPortException
-        );
-        </pre>
-        </p>
-        @exception CorbaIllegalActionException If port name is "input".
-        @exception CorbaIndexOutofBoundException If index is not 0.
-        @exception CorbaUnknownPortException If port name is not known.
-    */
+     <p>
+     Operation: <b>::util::CorbaActor::hasData</b>.
+     <pre>
+     #pragma prefix "util/CorbaActor"
+     boolean hasData(
+     in string portName,
+     in short portIndex
+     )
+     raises(
+     ::util::CorbaIllegalActionException,
+     ::util::CorbaIndexOutofBoundException,
+     ::util::CorbaUnknownPortException
+     );
+     </pre>
+     </p>
+     @exception CorbaIllegalActionException If port name is "input".
+     @exception CorbaIndexOutofBoundException If index is not 0.
+     @exception CorbaUnknownPortException If port name is not known.
+     */
     public boolean hasData(java.lang.String portName, short portIndex)
             throws CorbaIllegalActionException, CorbaIndexOutofBoundException,
             CorbaUnknownPortException {
@@ -289,9 +288,8 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </p>
      */
     public void setParameter(java.lang.String paramName,
-            java.lang.String paramValue)
-            throws CorbaIllegalActionException, CorbaUnknownParamException,
-            CorbaIllegalValueException {
+            java.lang.String paramValue) throws CorbaIllegalActionException,
+            CorbaUnknownParamException, CorbaIllegalValueException {
         //throw new CorbaIllegalActionException(
         //        " No parameter is allowed to set.");
     }
@@ -357,9 +355,9 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *    able to convert to double.
      */
     public void transferInput(java.lang.String portName, short portIndex,
-            java.lang.String tokenValue)
-            throws CorbaIllegalActionException, CorbaUnknownPortException,
-            CorbaIndexOutofBoundException, CorbaIllegalValueException {
+            java.lang.String tokenValue) throws CorbaIllegalActionException,
+            CorbaUnknownPortException, CorbaIndexOutofBoundException,
+            CorbaIllegalValueException {
         if (portName.equals("output")) {
             throw new CorbaIllegalActionException(
                     " Cannot transfer input to an output port");
@@ -406,9 +404,8 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  @exception CorbaIndexOutofBoundException If the port index is not 0.
      */
     public java.lang.String transferOutput(java.lang.String portName,
-            short portIndex)
-            throws CorbaIllegalActionException, CorbaUnknownPortException,
-            CorbaIndexOutofBoundException {
+            short portIndex) throws CorbaIllegalActionException,
+            CorbaUnknownPortException, CorbaIndexOutofBoundException {
         if (portName.equals("input")) {
             throw new CorbaIllegalActionException(
                     " Cannot transfer output from an input port");
@@ -450,5 +447,6 @@ public class NonlinearServant extends _CorbaActorImplBase {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Double _input;
+
     private Double _output;
 }

@@ -1,30 +1,30 @@
 /* An actor that evaluates expressions.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import java.util.HashMap;
@@ -59,60 +59,59 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Expression
 
 /**
-   On each firing, evaluate an expression that may include references
-   to the inputs, current time, and a count of the firing.  The ports
-   are referenced by the identifiers that have the same name as the
-   port.  To use this class, instantiate it, then add ports (instances
-   of TypedIOPort).  In vergil, you can add ports by right clicking on
-   the icon and selecting "Configure Ports".  In MoML you can add
-   ports by just including ports of class TypedIOPort, set to be
-   inputs, as in the following example:
+ On each firing, evaluate an expression that may include references
+ to the inputs, current time, and a count of the firing.  The ports
+ are referenced by the identifiers that have the same name as the
+ port.  To use this class, instantiate it, then add ports (instances
+ of TypedIOPort).  In vergil, you can add ports by right clicking on
+ the icon and selecting "Configure Ports".  In MoML you can add
+ ports by just including ports of class TypedIOPort, set to be
+ inputs, as in the following example:
 
-   <p>
-   <pre>
-   &lt;entity name="exp" class="ptolemy.actor.lib.Expression"&gt;
-   &lt;port name="in" class="ptolemy.actor.TypedIOPort"&gt;
-   &lt;property name="input"/&gt;
-   &lt;/port&gt;
-   &lt;/entity&gt;
-   </pre>
+ <p>
+ <pre>
+ &lt;entity name="exp" class="ptolemy.actor.lib.Expression"&gt;
+ &lt;port name="in" class="ptolemy.actor.TypedIOPort"&gt;
+ &lt;property name="input"/&gt;
+ &lt;/port&gt;
+ &lt;/entity&gt;
+ </pre>
 
-   <p> This actor is type-polymorphic.  The types of the inputs can be
-   arbitrary and the types of the outputs are inferred from the
-   expression based on the types inferred for the inputs.
+ <p> This actor is type-polymorphic.  The types of the inputs can be
+ arbitrary and the types of the outputs are inferred from the
+ expression based on the types inferred for the inputs.
 
-   <p> The <i>expression</i> parameter specifies an expression that
-   can refer to the inputs by name.  By default, the expression is
-   empty, and attempting to execute the actor without setting it
-   triggers an exception.  This actor can be used instead of many of
-   the arithmetic actors, such as AddSubtract, MultiplyDivide, and
-   TrigFunction.  However, those actors will be usually be more
-   efficient, and sometimes more convenient to use.
+ <p> The <i>expression</i> parameter specifies an expression that
+ can refer to the inputs by name.  By default, the expression is
+ empty, and attempting to execute the actor without setting it
+ triggers an exception.  This actor can be used instead of many of
+ the arithmetic actors, such as AddSubtract, MultiplyDivide, and
+ TrigFunction.  However, those actors will be usually be more
+ efficient, and sometimes more convenient to use.
 
-   <p> The expression language understood by this actor is the same as
-   <a href="../../../../expressions.htm">that used to set any
-   parameter value</a>, with the exception that the expressions
-   evaluated by this actor can refer to the values of inputs, and to
-   the current time by the identifier name "time", and to the current
-   iteration count by the identifier named "iteration."
+ <p> The expression language understood by this actor is the same as
+ <a href="../../../../expressions.htm">that used to set any
+ parameter value</a>, with the exception that the expressions
+ evaluated by this actor can refer to the values of inputs, and to
+ the current time by the identifier name "time", and to the current
+ iteration count by the identifier named "iteration."
 
-   <p> This actor requires its all of its inputs to be present.  If
-   inputs are not all present, then an exception will be thrown.
+ <p> This actor requires its all of its inputs to be present.  If
+ inputs are not all present, then an exception will be thrown.
 
-   <p> NOTE: There are a number of limitations in the current
-   implementation.  Primarily, multiports are not supported.
+ <p> NOTE: There are a number of limitations in the current
+ implementation.  Primarily, multiports are not supported.
 
-   @author Xiaojun Liu, Edward A. Lee, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Green (neuendor)
-*/
+ @author Xiaojun Liu, Edward A. Lee, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Green (neuendor)
+ */
 public class Expression extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -193,8 +192,8 @@ public class Expression extends TypedAtomicActor {
                     Token inputToken = port.get(0);
                     _tokenMap.put(port.getName(), inputToken);
                 } else {
-                    throw new IllegalActionException(this,
-                            "Input port " + port.getName() + " has no data.");
+                    throw new IllegalActionException(this, "Input port "
+                            + port.getName() + " has no data.");
                 }
             }
         }
@@ -209,7 +208,8 @@ public class Expression extends TypedAtomicActor {
                 // cases the expression doesn't change, and the parser
                 // requires a large amount of memory.
                 PtParser parser = new PtParser();
-                _parseTree = parser.generateParseTree(expression.getExpression());
+                _parseTree = parser.generateParseTree(expression
+                        .getExpression());
             }
 
             if (_parseTreeEvaluator == null) {
@@ -229,7 +229,7 @@ public class Expression extends TypedAtomicActor {
         if (result == null) {
             throw new IllegalActionException(this,
                     "Expression yields a null result: "
-                    + expression.getExpression());
+                            + expression.getExpression());
         }
 
         output.send(0, result);
@@ -472,8 +472,8 @@ public class Expression extends TypedAtomicActor {
                     }
                 }
 
-                return (InequalityTerm[]) termList.toArray(new InequalityTerm[termList
-                                                                   .size()]);
+                return (InequalityTerm[]) termList
+                        .toArray(new InequalityTerm[termList.size()]);
             } catch (IllegalActionException ex) {
                 return new InequalityTerm[0];
             }
@@ -489,14 +489,19 @@ public class Expression extends TypedAtomicActor {
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
         private ParseTreeTypeInference _typeInference = new ParseTreeTypeInference();
+
         private ParseTreeFreeVariableCollector _variableCollector = new ParseTreeFreeVariableCollector();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int _iterationCount = 1;
+
     private ASTPtRootNode _parseTree = null;
+
     private ParseTreeEvaluator _parseTreeEvaluator = null;
+
     private VariableScope _scope = null;
+
     private Map _tokenMap;
 }

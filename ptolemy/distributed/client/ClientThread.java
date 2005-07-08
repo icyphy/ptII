@@ -23,7 +23,7 @@
  HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 
 package ptolemy.distributed.client;
 
@@ -36,20 +36,20 @@ import ptolemy.kernel.util.KernelException;
 //////////////////////////////////////////////////////////////////////////
 ////ClientThread
 /**
-   Thread that manages the interaction with the remote service. It is required
-   to allow commands to be issued to the remote services in parallel. This
-   threads prevent the main thread of execution to be blocked by the remote
-   calls    to the remote services. A synchronization mechanism to issue and
-   access commands is provided by ThreadSynchronizer.
+ Thread that manages the interaction with the remote service. It is required
+ to allow commands to be issued to the remote services in parallel. This
+ threads prevent the main thread of execution to be blocked by the remote
+ calls    to the remote services. A synchronization mechanism to issue and
+ access commands is provided by ThreadSynchronizer.
 
-   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+ @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
 
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.distributed.client.ThreadSynchronizer
-*/
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (kapokasa)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.distributed.client.ThreadSynchronizer
+ */
 public class ClientThread extends Thread {
 
     /** Construct a ClientThread with a given ThreadSynchronizer and a given
@@ -77,7 +77,6 @@ public class ClientThread extends Thread {
         return service;
     }
 
-
     /** Runs the thread. The thread blocks until it gets a command. When a
      *  command is fetched, the service performs remotely the method
      *  corresponding to the given command. Once the task is performed, the
@@ -95,9 +94,15 @@ public class ClientThread extends Thread {
             distributedActor = (DistributedActor) service.service;
             try {
                 switch (command) {
-                case INITIALIZE: distributedActor.initialize(); break;
-                case FIRE: distributedActor.fire(); break;
-                case ITERATE: distributedActor.iterate(iterationCount); break;
+                case INITIALIZE:
+                    distributedActor.initialize();
+                    break;
+                case FIRE:
+                    distributedActor.fire();
+                    break;
+                case ITERATE:
+                    distributedActor.iterate(iterationCount);
+                    break;
                 }
             } catch (RemoteException e) {
                 KernelException.stackTraceToString(e);

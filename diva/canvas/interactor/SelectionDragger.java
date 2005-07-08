@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.canvas.interactor;
 
 import java.awt.geom.Rectangle2D;
@@ -42,7 +42,6 @@ import diva.canvas.event.EventLayer;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.util.CompoundIterator;
-
 
 /** A class that implements rubber-banding on a canvas. It contains
  * references to one or more instances of SelectionInteractor, which it
@@ -90,6 +89,7 @@ public class SelectionDragger extends DragInteractor {
     /* The origin points
      */
     private double _originX;
+
     private double _originY;
 
     /** The list of selection models selected by this dragger.
@@ -107,6 +107,7 @@ public class SelectionDragger extends DragInteractor {
     /** The selection mode flags
      */
     private boolean _isSelecting;
+
     private boolean _isToggling;
 
     ///////////////////////////////////////////////////////////////////
@@ -292,8 +293,8 @@ public class SelectionDragger extends DragInteractor {
             }
         }
 
-        for (Iterator i = ((HashSet) _holdovers.clone()).iterator();
-             i.hasNext();) {
+        for (Iterator i = ((HashSet) _holdovers.clone()).iterator(); i
+                .hasNext();) {
             Figure f = (Figure) i.next();
 
             if (f.hit(_rubberBand)) {
@@ -323,8 +324,8 @@ public class SelectionDragger extends DragInteractor {
                 if ((r != null) && r instanceof SelectionInteractor) {
                     SelectionInteractor interactor = (SelectionInteractor) r;
 
-                    if (_selectionModels.contains(
-                                interactor.getSelectionModel())) {
+                    if (_selectionModels.contains(interactor
+                            .getSelectionModel())) {
                         expandSelection((SelectionInteractor) r, f);
                     }
                 }
@@ -340,8 +341,8 @@ public class SelectionDragger extends DragInteractor {
                 if ((r != null) && r instanceof SelectionInteractor) {
                     SelectionInteractor interactor = (SelectionInteractor) r;
 
-                    if (_selectionModels.contains(
-                                interactor.getSelectionModel())) {
+                    if (_selectionModels.contains(interactor
+                            .getSelectionModel())) {
                         contractSelection((SelectionInteractor) r, f);
                     }
                 }
@@ -358,8 +359,8 @@ public class SelectionDragger extends DragInteractor {
                 if ((r != null) && r instanceof SelectionInteractor) {
                     SelectionInteractor interactor = (SelectionInteractor) r;
 
-                    if (_selectionModels.contains(
-                                interactor.getSelectionModel())) {
+                    if (_selectionModels.contains(interactor
+                            .getSelectionModel())) {
                         if (interactor.getSelectionModel().containsSelection(f)) {
                             contractSelection(interactor, f);
                         } else {
@@ -399,7 +400,8 @@ public class SelectionDragger extends DragInteractor {
         _overlayLayer.add(_rubberBand);
         _overlayLayer.repaint(_rubberBand);
 
-        _intersectedFigures = _figureLayer.getFigures().getIntersectedFigures(_rubberBand);
+        _intersectedFigures = _figureLayer.getFigures().getIntersectedFigures(
+                _rubberBand);
         _currentFigures = new HashSet();
         _holdovers = new HashSet();
 

@@ -1,29 +1,29 @@
 /* A tableau representing a debug listener window.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.awt.event.WindowAdapter;
@@ -36,28 +36,27 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DebugListenerTableau
 
 /**
-   A tableau representing a debug listener window. The constructor of this
-   class creates the window.  You must then attached any object implementing
-   the Debuggable interface using the setDebuggable() method.
-   Once attached, the window will display any debug messages produced by
-   that object.  The listener window itself is an instance of the inner class
-   DebugListenerFrame, which extends TextEditor, and can be
-   accessed using the getFrame() method. As with other tableaux,
-   this is an entity that is contained by an effigy of the model.
-   There can be any number of instances of this class in an effigy.
+ A tableau representing a debug listener window. The constructor of this
+ class creates the window.  You must then attached any object implementing
+ the Debuggable interface using the setDebuggable() method.
+ Once attached, the window will display any debug messages produced by
+ that object.  The listener window itself is an instance of the inner class
+ DebugListenerFrame, which extends TextEditor, and can be
+ accessed using the getFrame() method. As with other tableaux,
+ this is an entity that is contained by an effigy of the model.
+ There can be any number of instances of this class in an effigy.
 
-   @author  Steve Neuendorffer and Edward A. Lee, Elaine Cheong
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-   @see Effigy
-*/
+ @author  Steve Neuendorffer and Edward A. Lee, Elaine Cheong
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ @see Effigy
+ */
 public class DebugListenerTableau extends Tableau {
     /** Construct a new tableau for the model represented by the given effigy.
      *  @param container The container.
@@ -77,10 +76,10 @@ public class DebugListenerTableau extends Tableau {
 
         // Listen for window closing events to unregister.
         frame.addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent e) {
-                    setDebuggable(null);
-                }
-            });
+            public void windowClosing(WindowEvent e) {
+                setDebuggable(null);
+            }
+        });
 
         if (container instanceof TextEffigy) {
             ((TextEffigy) container).setDocument(frame.text.getDocument());
@@ -133,8 +132,8 @@ public class DebugListenerTableau extends Tableau {
     /** This class is a top-level window for displaying textual debug
      *  output from an instance of Debuggable.
      */
-    public static class DebugListenerFrame extends TextEditor
-        implements DebugListener {
+    public static class DebugListenerFrame extends TextEditor implements
+            DebugListener {
         /** Create a debug listener that displays messages in a top-level
          *  window.
          */

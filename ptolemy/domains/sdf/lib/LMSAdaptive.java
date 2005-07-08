@@ -1,30 +1,30 @@
 /* A type polymorphic LMS adaptive filter.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -41,58 +41,57 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LMSAdaptive
 
 /**
-   An adaptive filter using the Least-Mean Square (LMS) algorithm, also
-   known as the stochastic gradient algorithm.
-   The initial filter coefficients are given by the <i>initialTaps</i>
-   parameter.  The tap values can be observed on the
-   <i>tapValues</i> output. The default initial taps <i>initialTaps</i>
-   are {1, 0, 0, 0}. This actor supports decimation, but not interpolation.
-   <p>
-   When used correctly, this LMS adaptive filter will adapt to try to minimize
-   the mean-squared error of the signal at its <i>error</i> input.
-   In order for this to be possible, the output of the filter should
-   be compared (subtracted from) some reference signal to produce
-   an error signal.
-   That error signal should be fed back to the <i>error</i> input.
-   <p>
-   The <i>stepSize</i> parameter determines the rate of adaptation.
-   If its magnitude is too large, or if it has the wrong sign, then
-   the adaptation algorithm will be unstable.
-   <p>
-   The <i>errorDelay</i> parameter must equal the total number of delays
-   in the path from the output of the filter back to the error input.
-   This ensures correct alignment of the adaptation algorithm.
-   The number of delays must be greater than zero.
-   <p>
-   This actor is type polymorphic, supporting any data type that
-   supports multiplication by a scalar (the <i>stepSize</i>) and
-   addition.
-   <p>
-   The algorithm is simple.  Prior to each invocation of the parent
-   class (an FIR filter), which computes the output given the input,
-   this actor updates the coefficients according to the following
-   formula,
-   <pre>
-   newTapValue = oldTapValue + error * stepSize * tapData
-   </pre>
-   where <i>tapData</i> is the contents of the delay line at
-   the tap in question.
-   This assumes that the <i>decimation</i> parameter is set
-   to 1 (the default).  If it has a value different from 1,
-   the algorithm is slightly more involved.  Similarly, this
-   assumes that the <i>errorDelay</i> is 1.
+ An adaptive filter using the Least-Mean Square (LMS) algorithm, also
+ known as the stochastic gradient algorithm.
+ The initial filter coefficients are given by the <i>initialTaps</i>
+ parameter.  The tap values can be observed on the
+ <i>tapValues</i> output. The default initial taps <i>initialTaps</i>
+ are {1, 0, 0, 0}. This actor supports decimation, but not interpolation.
+ <p>
+ When used correctly, this LMS adaptive filter will adapt to try to minimize
+ the mean-squared error of the signal at its <i>error</i> input.
+ In order for this to be possible, the output of the filter should
+ be compared (subtracted from) some reference signal to produce
+ an error signal.
+ That error signal should be fed back to the <i>error</i> input.
+ <p>
+ The <i>stepSize</i> parameter determines the rate of adaptation.
+ If its magnitude is too large, or if it has the wrong sign, then
+ the adaptation algorithm will be unstable.
+ <p>
+ The <i>errorDelay</i> parameter must equal the total number of delays
+ in the path from the output of the filter back to the error input.
+ This ensures correct alignment of the adaptation algorithm.
+ The number of delays must be greater than zero.
+ <p>
+ This actor is type polymorphic, supporting any data type that
+ supports multiplication by a scalar (the <i>stepSize</i>) and
+ addition.
+ <p>
+ The algorithm is simple.  Prior to each invocation of the parent
+ class (an FIR filter), which computes the output given the input,
+ this actor updates the coefficients according to the following
+ formula,
+ <pre>
+ newTapValue = oldTapValue + error * stepSize * tapData
+ </pre>
+ where <i>tapData</i> is the contents of the delay line at
+ the tap in question.
+ This assumes that the <i>decimation</i> parameter is set
+ to 1 (the default).  If it has a value different from 1,
+ the algorithm is slightly more involved.  Similarly, this
+ assumes that the <i>errorDelay</i> is 1.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class LMSAdaptive extends FIR {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -213,7 +212,7 @@ public class LMSAdaptive extends FIR {
         int errorDelayValue = ((IntToken) errorDelay.getToken()).intValue();
         int decimationValue = ((IntToken) decimation.getToken()).intValue();
         int decimationPhaseValue = ((IntToken) decimationPhase.getToken())
-            .intValue();
+                .intValue();
         int index = (errorDelayValue * decimationValue) + decimationPhaseValue;
         Token factor = error.get(0).multiply(stepSize.getToken());
 

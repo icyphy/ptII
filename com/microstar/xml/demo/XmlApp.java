@@ -10,27 +10,27 @@ import java.net.URL;
 import com.microstar.xml.XmlHandler;
 import com.microstar.xml.XmlParser;
 
-
 /**
-  * Base class for &AElig;lfred demonstration applications.
-  * <p>This class fills in the basic interface, and provides
-  * an I/O infrastructure for simple applications and applets.
-  * @author Copyright (c) 1997, 1998 by Microstar Software Ltd.;
-  * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
-  * @version 1.1
-  * @since Ptolemy II 0.2
-  * @see com.microstar.xml.XmlParser
-  * @see com.microstar.xml.XmlHandler
-  * @see EventDemo
-  * @see TimerDemo
-  * @see DtdDemo
-  * @see StreamDemo
-  */
+ * Base class for &AElig;lfred demonstration applications.
+ * <p>This class fills in the basic interface, and provides
+ * an I/O infrastructure for simple applications and applets.
+ * @author Copyright (c) 1997, 1998 by Microstar Software Ltd.;
+ * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
+ * @version 1.1
+ * @since Ptolemy II 0.2
+ * @see com.microstar.xml.XmlParser
+ * @see com.microstar.xml.XmlHandler
+ * @see EventDemo
+ * @see TimerDemo
+ * @see DtdDemo
+ * @see StreamDemo
+ */
 public class XmlApp implements XmlHandler {
     /**
-      * Flag to show whether we're running as an applet or application.
-      */
+     * Flag to show whether we're running as an applet or application.
+     */
     public boolean isApplet = false;
+
     public XmlParser parser;
 
     //////////////////////////////////////////////////////////////////////
@@ -42,13 +42,13 @@ public class XmlApp implements XmlHandler {
     //////////////////////////////////////////////////////////////////////
 
     /**
-      * Resolve an external entity.
-      * <p>This method could generate a new URL by looking up the
-      * public identifier in a hash table, or it could replace the
-      * URL supplied with a different, local one; for now, however,
-      * just return the URL supplied.
-      * @see com.microstar.xml.XmlHandler#resolveEntity
-      */
+     * Resolve an external entity.
+     * <p>This method could generate a new URL by looking up the
+     * public identifier in a hash table, or it could replace the
+     * URL supplied with a different, local one; for now, however,
+     * just return the URL supplied.
+     * @see com.microstar.xml.XmlHandler#resolveEntity
+     */
     public Object resolveEntity(String publicId, String systemId) {
         return null;
     }
@@ -60,102 +60,102 @@ public class XmlApp implements XmlHandler {
     }
 
     /**
-      * Handle the start of the document.
-      * <p>Do nothing for now.  Subclasses can override this method
-      * if they want to take a specific action.
-      * <p>This method will always be called first.
-      * @see com.microstar.xml.XmlHandler#startDocument
-      */
+     * Handle the start of the document.
+     * <p>Do nothing for now.  Subclasses can override this method
+     * if they want to take a specific action.
+     * <p>This method will always be called first.
+     * @see com.microstar.xml.XmlHandler#startDocument
+     */
     public void startDocument() {
     }
 
     /**
-      * Handle the end the document.
-      * <p>Do nothing for now.  Subclasses can override this method
-      * if they want to take a specific action.
-      * <p>This method will always be called last.
-      * @see com.microstar.xml.XmlHandler#endDocument
-      */
+     * Handle the end the document.
+     * <p>Do nothing for now.  Subclasses can override this method
+     * if they want to take a specific action.
+     * <p>This method will always be called last.
+     * @see com.microstar.xml.XmlHandler#endDocument
+     */
     public void endDocument() {
     }
 
     /**
-      * Handle a DOCTYPE declaration.
-      * <p>Do nothing for now.  Subclasses can override this method
-      * if they want to take a specific action.
-      * <p>Well-formed XML documents might not have one of these.
-      * <p>The query methods in XmlParser will return useful
-      * values only after this callback.
-      * @see com.microstar.xml.XmlHandler#doctypeDecl
-      */
+     * Handle a DOCTYPE declaration.
+     * <p>Do nothing for now.  Subclasses can override this method
+     * if they want to take a specific action.
+     * <p>Well-formed XML documents might not have one of these.
+     * <p>The query methods in XmlParser will return useful
+     * values only after this callback.
+     * @see com.microstar.xml.XmlHandler#doctypeDecl
+     */
     public void doctypeDecl(String name, String pubid, String sysid) {
     }
 
     /**
-      * Handle an attribute value specification.
-      * <p>Do nothing for now.  Subclasses can override this method
-      * if they want to take a specific action.
-      * @see com.microstar.xml.XmlHandler#attribute
-      */
+     * Handle an attribute value specification.
+     * <p>Do nothing for now.  Subclasses can override this method
+     * if they want to take a specific action.
+     * @see com.microstar.xml.XmlHandler#attribute
+     */
     public void attribute(String name, String value, boolean isSpecified) {
     }
 
     /**
-      * Handle the start of an element.
-      * <p>Do nothing for now.  Subclasses can override this method
-      * if they want to take a specific action.
-      * @see com.microstar.xml.XmlHandler#startElement
-      */
+     * Handle the start of an element.
+     * <p>Do nothing for now.  Subclasses can override this method
+     * if they want to take a specific action.
+     * @see com.microstar.xml.XmlHandler#startElement
+     */
     public void startElement(String name) {
     }
 
     /**
-      * Handle the end of an element.
-      * <p>Do nothing for now.  Subclasses can override this method
-      * if they want to take a specific action.
-      * @see com.microstar.xml.XmlHandler#endElement
-      */
+     * Handle the end of an element.
+     * <p>Do nothing for now.  Subclasses can override this method
+     * if they want to take a specific action.
+     * @see com.microstar.xml.XmlHandler#endElement
+     */
     public void endElement(String name) {
     }
 
     /**
-      * Handle character data.
-      * <p>Do nothing for now.  Subclasses can override this method
-      * if they want to take a specific action.
-      * @see com.microstar.xml.XmlHandler#charData
-      */
+     * Handle character data.
+     * <p>Do nothing for now.  Subclasses can override this method
+     * if they want to take a specific action.
+     * @see com.microstar.xml.XmlHandler#charData
+     */
     public void charData(char[] ch, int start, int length) {
     }
 
     /**
-      * Handle ignorable whitespace.
-      * <p>Do nothing for now.  Subclasses can override this method
-      * if they want to take a specific action.
-      * @see com.microstar.xml.XmlHandler#ignorableWhitespace
-      */
+     * Handle ignorable whitespace.
+     * <p>Do nothing for now.  Subclasses can override this method
+     * if they want to take a specific action.
+     * @see com.microstar.xml.XmlHandler#ignorableWhitespace
+     */
     public void ignorableWhitespace(char[] ch, int start, int length) {
     }
 
     /**
-      * Handle a processing instruction.
-      * <p>Do nothing for now.  Subclasses can override this method
-      * if they want to take a specific action.
-      * @see com.microstar.xml.XmlHandler#processingInstruction
-      */
+     * Handle a processing instruction.
+     * <p>Do nothing for now.  Subclasses can override this method
+     * if they want to take a specific action.
+     * @see com.microstar.xml.XmlHandler#processingInstruction
+     */
     public void processingInstruction(String target, String data) {
     }
 
     /**
-      * Handle a parsing error.
-      * <p>By default, print a message and throw an Error.
-      * <p>Subclasses can override this method if they want to do something
-      * different.
-      * @see com.microstar.xml.XmlHandler#error
-      */
+     * Handle a parsing error.
+     * <p>By default, print a message and throw an Error.
+     * <p>Subclasses can override this method if they want to do something
+     * different.
+     * @see com.microstar.xml.XmlHandler#error
+     */
     public void error(String message, String url, int line, int column) {
         displayText("FATAL ERROR: " + message);
         displayText("  at " + url.toString() + ": line " + line + " column "
-            + column);
+                + column);
         throw new Error(message);
     }
 
@@ -164,13 +164,13 @@ public class XmlApp implements XmlHandler {
     //////////////////////////////////////////////////////////////////////
 
     /**
-      * Start a parse in application mode.
-      * <p>Output will go to STDOUT.
-      * @see #displayText
-      * @see com.microstar.xml.XmlParser#run
-      */
+     * Start a parse in application mode.
+     * <p>Output will go to STDOUT.
+     * @see #displayText
+     * @see com.microstar.xml.XmlParser#run
+     */
     void doParse(String url) throws java.lang.Exception {
-        /* String docURL = */ makeAbsoluteURL(url);
+        /* String docURL = */makeAbsoluteURL(url);
 
         // create the parser
         parser = new XmlParser();
@@ -195,15 +195,15 @@ public class XmlApp implements XmlHandler {
     }
 
     /**
-      * Display text on STDOUT or in an applet TextArea.
-      */
+     * Display text on STDOUT or in an applet TextArea.
+     */
     void displayText(String text) {
         System.out.println(text);
     }
 
     /**
-      * Escape a string for printing.
-      */
+     * Escape a string for printing.
+     */
     String escape(char[] ch, int length) {
         StringBuffer out = new StringBuffer();
 

@@ -1,31 +1,31 @@
 /* An actor that provides the common functions to all wireless
-   network models.
+ network models.
 
-   Copyright (c) 2004-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib.network;
 
 import java.util.HashSet;
@@ -37,20 +37,19 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NetWorkActorBase
 
 /**
-   This is a base class designed for the Network actors.
-   Currently, it mainly contains several methods for dealing with timers.
+ This is a base class designed for the Network actors.
+ Currently, it mainly contains several methods for dealing with timers.
 
-   @author Yang Zhao, Charlie Zhong
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (ellen_zh)
-   @Pt.AcceptedRating Red (pjb2e)
-*/
+ @author Yang Zhao, Charlie Zhong
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (ellen_zh)
+ @Pt.AcceptedRating Red (pjb2e)
+ */
 public class NetworkActorBase extends TypedAtomicActor {
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
@@ -78,96 +77,86 @@ public class NetworkActorBase extends TypedAtomicActor {
     }
 
     // messages between the layers
-    protected static final String[] PCRequestMsgFields = {
-        "kind",
-        "fromMACAddr",
-        "toMACAddr",
-        "range",
-        "angle",
-        "num_nb",
-        "xpos",
-        "ypos",
-        "Length"
-    };
-    protected static final String[] PCResponseMsgFields = {
-        "kind",
-        "fromMACAddr",
-        "toMACAddr",
-        "xpos",
-        "ypos",
-        "range",
-        "Length"
-    };
-    protected static final String[] StartRspMsgFields = {
-        "kind",
-        "range"
-    };
-    protected static final String[] cNetwInterestMessageFields = {
-        "kind",
-        "cost",
-        "hop_distance",
-        "fromMACAddr",
-        "toMACAddr",
-        "hopcount",
-        "arrivalTime",
-        "Length"
-    };
-    protected static final String[] cNetwDataMessageFields = {
-        "kind",
-        "fromMACAddr",
-        "toMACAddr",
-        "hopcount",
-        "arrivalTime",
-        "payload",
-        "Length"
-    };
+    protected static final String[] PCRequestMsgFields = { "kind",
+            "fromMACAddr", "toMACAddr", "range", "angle", "num_nb", "xpos",
+            "ypos", "Length" };
 
-    protected static final String[] DataPacket = {
-        "protocolVer", "Type", "Subtype", "toDs", "frDs", "moreFrag",
-        "retryBit", "pwrMgt", "moreData", "wepBit", "orderBit", "FCS",
-        "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4",
-        "payload", "Length"
-    };
-    
-    protected static final String[] RtsPacket = {
-        "protocolVer", "Type", "Subtype", "toDs", "frDs", "moreFrag",
-        "retryBit", "pwrMgt", "moreData", "wepBit", 
-        "orderBit", "FCS", "durId", "Addr1", "Addr2", "Length"
-    };
-    
+    protected static final String[] PCResponseMsgFields = { "kind",
+            "fromMACAddr", "toMACAddr", "xpos", "ypos", "range", "Length" };
+
+    protected static final String[] StartRspMsgFields = { "kind", "range" };
+
+    protected static final String[] cNetwInterestMessageFields = { "kind",
+            "cost", "hop_distance", "fromMACAddr", "toMACAddr", "hopcount",
+            "arrivalTime", "Length" };
+
+    protected static final String[] cNetwDataMessageFields = { "kind",
+            "fromMACAddr", "toMACAddr", "hopcount", "arrivalTime", "payload",
+            "Length" };
+
+    protected static final String[] DataPacket = { "protocolVer", "Type",
+            "Subtype", "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt",
+            "moreData", "wepBit", "orderBit", "FCS", "durId", "Addr1", "Addr2",
+            "Addr3", "SeqNum", "FragNum", "Addr4", "payload", "Length" };
+
+    protected static final String[] RtsPacket = { "protocolVer", "Type",
+            "Subtype", "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt",
+            "moreData", "wepBit", "orderBit", "FCS", "durId", "Addr1", "Addr2",
+            "Length" };
+
     // use Addr1 for RA, so FilterMpdu does not need to check packet type
     // before checking Addr1 or RA filed
-    protected static final String[] AckPacket = {
-        "protocolVer", "Type", "Subtype", "toDs", "frDs", "moreFrag",
-        "retryBit", "pwrMgt", "moreData", "wepBit", 
-        "orderBit", "FCS", "durId", "Addr1", "Length"
-    };
-    
+    protected static final String[] AckPacket = { "protocolVer", "Type",
+            "Subtype", "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt",
+            "moreData", "wepBit", "orderBit", "FCS", "durId", "Addr1", "Length" };
+
     // message types
     protected static final int RxStart = 30;
+
     protected static final int RxEnd = 31;
+
     protected static final int RxData = 32;
+
     protected static final int TxStart = 36;
+
     protected static final int TxStartConfirm = 37;
+
     protected static final int TxData = 38;
+
     protected static final int TxEnd = 11;
+
     protected static final int Idle = 8;
+
     protected static final int Busy = 9;
+
     protected static final int NoError = 0;
+
     protected static final int Error = 1;
+
     protected static final int UNKNOWN = -1;
+
     protected static final int Timeout = 39;
+
     protected static final int Gilbert = 40;
+
     protected static final int Turnaround = 41;
+
     protected static final int Rxdelay = 42;
+
     protected static final int appl_interest_msg = 100;
+
     protected static final int appl_data_msg = 101;
+
     protected static final int netw_interest_msg = 200;
+
     protected static final int netw_data_msg = 201;
-    
+
     protected static final int Cts = 12;
+
     protected static final int Data = 0;
+
     protected static final int Rts = 11;
+
     protected static final int Ack = 13;
 
     ///////////////////////////////////////////////////////////////////
@@ -246,6 +235,7 @@ public class NetworkActorBase extends TypedAtomicActor {
     ////                         inner classes                     ////
     protected class Timer {
         public int kind;
+
         public Time expirationTime;
     }
 }

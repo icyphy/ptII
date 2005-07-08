@@ -1,32 +1,32 @@
 /* A controller that manages the conditional branches for performing
-   conditional communication within CSP domain.
+ conditional communication within CSP domain.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.csp.kernel;
 
 import java.util.Iterator;
@@ -42,53 +42,52 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;
 
-
 // Java imports
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalBranchController
 
 /**
-   A controller that manages the conditional branches for performing
-   conditional communication within CSP (Communication Sequential Processes)
-   domain. Any CSP actors (either atomic or composite) that need the
-   functionality of conditional communication must contain and instantiate
-   an object of this class. In addition, they also needs to implement the
-   interface ConditionalBranchActor.
-   <p>
-   The conditional branches are supposed to be created within the parent
-   actor that contains this controller.
-   <p>The chooseBranch() method takes those branches (an array) as an
-   argument, and controls which branch is successful. The successful
-   branch is the branch that succeeds with its communication. To
-   determine which branch is successful, the guards of <I>all</I>
-   branches are checked. If the guard for a branch is true then that
-   branch is <I>enabled</I>. If no branches are enabled, i.e. if all
-   the guards are false, then -1 is returned to indicate this.  If
-   exactly one branch is enabled, the corresponding communication is
-   carried out and the identification number of the branch is
-   returned.  If more than one branch is enabled, a separate thread is
-   created and started for each enabled branch. The method then waits
-   for one of the branches to succeed, after which it wakes up and
-   terminates the remaining branches. When the last conditional branch
-   thread has finished, the method returns allowing the parent actor
-   thread to continue.
+ A controller that manages the conditional branches for performing
+ conditional communication within CSP (Communication Sequential Processes)
+ domain. Any CSP actors (either atomic or composite) that need the
+ functionality of conditional communication must contain and instantiate
+ an object of this class. In addition, they also needs to implement the
+ interface ConditionalBranchActor.
+ <p>
+ The conditional branches are supposed to be created within the parent
+ actor that contains this controller.
+ <p>The chooseBranch() method takes those branches (an array) as an
+ argument, and controls which branch is successful. The successful
+ branch is the branch that succeeds with its communication. To
+ determine which branch is successful, the guards of <I>all</I>
+ branches are checked. If the guard for a branch is true then that
+ branch is <I>enabled</I>. If no branches are enabled, i.e. if all
+ the guards are false, then -1 is returned to indicate this.  If
+ exactly one branch is enabled, the corresponding communication is
+ carried out and the identification number of the branch is
+ returned.  If more than one branch is enabled, a separate thread is
+ created and started for each enabled branch. The method then waits
+ for one of the branches to succeed, after which it wakes up and
+ terminates the remaining branches. When the last conditional branch
+ thread has finished, the method returns allowing the parent actor
+ thread to continue.
 
-   <p>
-   @author Neil Smyth, Bilung Lee
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (bilung)
-   @Pt.AcceptedRating Red (bilung)
-   @see ConditionalBranch
-   @see ConditionalBranchActor
-   @see ConditionalReceive
-   @see ConditionalSend
-*/
+ <p>
+ @author Neil Smyth, Bilung Lee
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (bilung)
+ @Pt.AcceptedRating Red (bilung)
+ @see ConditionalBranch
+ @see ConditionalBranchActor
+ @see ConditionalReceive
+ @see ConditionalSend
+ */
 public class ConditionalBranchController {
     /** Construct a controller in the specified container, which should
-        be an actor.
-        @param container The parent actor that contains this object.
-    */
+     be an actor.
+     @param container The parent actor that contains this object.
+     */
     public ConditionalBranchController(Actor container) {
         _parentActor = container;
     }
@@ -131,7 +130,7 @@ public class ConditionalBranchController {
                     if (branches[i].getGuard()) {
                         // Create a thread for this enabled branch
                         Nameable act = (Nameable) branches[i].getController()
-                            .getParent();
+                                .getParent();
                         String name = act.getName() + branches[i].getID();
                         Thread t = new Thread((Runnable) branches[i], name);
                         _threadList.add(0, t);
@@ -218,7 +217,8 @@ public class ConditionalBranchController {
             }
         } catch (InterruptedException ex) {
             throw new TerminateProcessException(((Nameable) getParent())
-                    .getName() + ".chooseBranch interrupted.");
+                    .getName()
+                    + ".chooseBranch interrupted.");
         }
 
         if (_successfulBranch == -1) {
@@ -228,7 +228,8 @@ public class ConditionalBranchController {
             }
 
             throw new TerminateProcessException(((Nameable) getParent())
-                    .getName() + ": exiting conditional"
+                    .getName()
+                    + ": exiting conditional"
                     + " branching due to TerminateProcessException.");
         }
 
@@ -365,7 +366,8 @@ public class ConditionalBranchController {
                             .getName()
                             + ": blocked when not all enabled branches are "
                             + "blocked.\nNumber of branches blocked: "
-                            + _branchesBlocked + "\nNumber of branches started: "
+                            + _branchesBlocked
+                            + "\nNumber of branches started: "
                             + _branchesStarted);
                 }
 

@@ -1,30 +1,30 @@
 /* A GUI widget for configuring ports.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.util.HashSet;
@@ -43,25 +43,24 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PortConfigurer
 
 /**
-   This class is an editor to configure the ports of an object.
-   It supports setting their input, output, and multiport properties,
-   and adding and removing ports.  Only ports that extend the TypedIOPort
-   class are listed, since more primitive ports cannot be configured
-   in this way.
+ This class is an editor to configure the ports of an object.
+ It supports setting their input, output, and multiport properties,
+ and adding and removing ports.  Only ports that extend the TypedIOPort
+ class are listed, since more primitive ports cannot be configured
+ in this way.
 
-   @see Configurer
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (neuendor)
-   @deprecated This class is no longer used.  Use PortConfigurerDialog.
-*/
+ @see Configurer
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (neuendor)
+ @deprecated This class is no longer used.  Use PortConfigurerDialog.
+ */
 public class PortConfigurer extends Query implements QueryListener {
     /** Construct a port configurer for the specified entity.
      *  @param object The entity to configure.
@@ -107,8 +106,8 @@ public class PortConfigurer extends Query implements QueryListener {
 
                 // Add a column that controls on which side
                 // of the icon the port lies.
-                StringAttribute cardinal = (StringAttribute) port.getAttribute(
-                        "_cardinal");
+                StringAttribute cardinal = (StringAttribute) port
+                        .getAttribute("_cardinal");
                 String cardinalValue = "SOUTH";
 
                 if (cardinal != null) {
@@ -119,9 +118,8 @@ public class PortConfigurer extends Query implements QueryListener {
                     cardinalValue = "EAST";
                 }
 
-                addChoice(port.getName() + " cardinal",
-                        port.getName() + ": cardinal direction", _cardinals,
-                        cardinalValue);
+                addChoice(port.getName() + " cardinal", port.getName()
+                        + ": cardinal direction", _cardinals, cardinalValue);
             }
         }
     }
@@ -159,9 +157,10 @@ public class PortConfigurer extends Query implements QueryListener {
                     moml.append("\">");
 
                     String cardinalVal = getStringValue(nameCardinal);
-                    moml.append("<property name=\"_cardinal\" "
-                            + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                            + "value = \"" + cardinalVal + "\"/>");
+                    moml
+                            .append("<property name=\"_cardinal\" "
+                                    + "class = \"ptolemy.kernel.util.StringAttribute\" "
+                                    + "value = \"" + cardinalVal + "\"/>");
                     moml.append("</port>");
                 }
 
@@ -195,22 +194,22 @@ public class PortConfigurer extends Query implements QueryListener {
                     if (selectedValues.contains("input")) {
                         moml.append("<property name=\"input\"/>");
                     } else {
-                        moml.append(
-                                "<property name=\"input\" value=\"false\"/>");
+                        moml
+                                .append("<property name=\"input\" value=\"false\"/>");
                     }
 
                     if (selectedValues.contains("output")) {
                         moml.append("<property name=\"output\"/>");
                     } else {
-                        moml.append(
-                                "<property name=\"output\" value=\"false\"/>");
+                        moml
+                                .append("<property name=\"output\" value=\"false\"/>");
                     }
 
                     if (selectedValues.contains("multiport")) {
                         moml.append("<property name=\"multiport\"/>");
                     } else {
-                        moml.append(
-                                "<property name=\"multiport\" value=\"false\"/>");
+                        moml
+                                .append("<property name=\"multiport\" value=\"false\"/>");
                     }
 
                     if (_changed.contains(typeEntryName)) {
@@ -218,8 +217,8 @@ public class PortConfigurer extends Query implements QueryListener {
                         String type = getStringValue(typeEntryName);
                         moml.append("<property name=\"_type\" "
                                 + "class = \"ptolemy.actor.TypeAttribute\" "
-                                + "value = \"" + StringUtilities.escapeForXML(type)
-                                + "\"/>");
+                                + "value = \""
+                                + StringUtilities.escapeForXML(type) + "\"/>");
                     }
 
                     moml.append("</port>");
@@ -257,12 +256,7 @@ public class PortConfigurer extends Query implements QueryListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Possible placements of ports.
-    private String[] _cardinals = {
-        "NORTH",
-        "SOUTH",
-        "EAST",
-        "WEST"
-    };
+    private String[] _cardinals = { "NORTH", "SOUTH", "EAST", "WEST" };
 
     // The set of names of ports that have changed.
     private Set _changed = new HashSet();
@@ -271,9 +265,5 @@ public class PortConfigurer extends Query implements QueryListener {
     private Entity _object;
 
     // The possible configurations for a port.
-    private String[] _optionsArray = {
-        "input",
-        "output",
-        "multiport"
-    };
+    private String[] _optionsArray = { "input", "output", "multiport" };
 }

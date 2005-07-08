@@ -1,35 +1,35 @@
 /*
 
-A C code generator for generating the c file containing the wrapper "main"
-method. This simply does some initialization and calls the main method of
-the class.
+ A C code generator for generating the c file containing the wrapper "main"
+ method. This simply does some initialization and calls the main method of
+ the class.
 
-Copyright (c) 2002-2005 The University of Maryland.
-All rights reserved.
+ Copyright (c) 2002-2005 The University of Maryland.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.Iterator;
@@ -37,17 +37,16 @@ import java.util.Iterator;
 import soot.SootClass;
 import soot.SootMethod;
 
-
 /** A C code generator for generating the c file containing the wrapper "main"
-    method. This simply does some initialization and calls the main method of
-    the appropriate class, if such a method exists.
+ method. This simply does some initialization and calls the main method of
+ the appropriate class, if such a method exists.
 
-    @author Ankush Varma
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (ankush)
-    @Pt.AcceptedRating Red (ankush)
-*/
+ @author Ankush Varma
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (ankush)
+ @Pt.AcceptedRating Red (ankush)
+ */
 public class MainFileGenerator extends CodeGenerator {
     /** Default constructor.
      */
@@ -86,7 +85,7 @@ public class MainFileGenerator extends CodeGenerator {
                 + CNames.classNameToFileName(source.getName()) + ".h\"\n");
 
         Iterator requiredClasses = RequiredFileGenerator.getRequiredClasses()
-            .iterator();
+                .iterator();
 
         // Call the Class Structure Initializations for all required
         // classes.
@@ -142,7 +141,7 @@ public class MainFileGenerator extends CodeGenerator {
         code.append(_indent(1) + "/* Class Structure initializations*/\n");
 
         Iterator requiredClasses = RequiredFileGenerator.getRequiredClasses()
-            .iterator();
+                .iterator();
 
         // Call the Class Structure Initializations for all required
         // classes.
@@ -286,18 +285,19 @@ public class MainFileGenerator extends CodeGenerator {
         code.append(_indent(1) + "/* Static initialization methods. */\n");
 
         Iterator requiredClasses = RequiredFileGenerator.getRequiredClasses()
-            .iterator();
+                .iterator();
 
         while (requiredClasses.hasNext()) {
             // Invoke the static initializer method (clinit) for the class if it
             // exists.
             SootClass nextClass = (SootClass) requiredClasses.next();
-            SootMethod initializer = MethodListGenerator.getClassInitializer(nextClass);
+            SootMethod initializer = MethodListGenerator
+                    .getClassInitializer(nextClass);
 
             if ((initializer != null)
-                    && (!OverriddenMethodGenerator.isOverridden(
-                                initializer))) {
-                code.append("\n" + _indent(1)
+                    && (!OverriddenMethodGenerator.isOverridden(initializer))) {
+                code.append("\n"
+                        + _indent(1)
                         + _comment("Static initializer method for "
                                 + nextClass.toString()));
 

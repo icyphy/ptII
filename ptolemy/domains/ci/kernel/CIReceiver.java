@@ -1,30 +1,30 @@
 /* Receiver for the component interaction (CI) domain.
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ci.kernel;
 
 import java.util.Iterator;
@@ -38,28 +38,27 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CIReceiver
 
 /**
-   An implementation of the ptolemy.actor.Receiver interface for the CI
-   domain. This receiver provides a FIFO buffer between an active actor
-   and an inactive actor or two inactive actors. When an active actor
-   with push output puts a token in a receiver, the inactive actor that
-   reads from the receiver will be put in the task queue of the director.
-   When the director fires an inactive actor, the actors that receive
-   data from this actor are executed as data-driven. For an active actor
-   with pull input, its actor manager will be notified when an input
-   token arrives, and will continue to iterate the actor.
-   <p>
+ An implementation of the ptolemy.actor.Receiver interface for the CI
+ domain. This receiver provides a FIFO buffer between an active actor
+ and an inactive actor or two inactive actors. When an active actor
+ with push output puts a token in a receiver, the inactive actor that
+ reads from the receiver will be put in the task queue of the director.
+ When the director fires an inactive actor, the actors that receive
+ data from this actor are executed as data-driven. For an active actor
+ with pull input, its actor manager will be notified when an input
+ token arrives, and will continue to iterate the actor.
+ <p>
 
-   @author Xiaojun Liu, Yang Zhao
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Yellow (liuxj)
-   @Pt.AcceptedRating Red (liuxj)
-*/
+ @author Xiaojun Liu, Yang Zhao
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Yellow (liuxj)
+ @Pt.AcceptedRating Red (liuxj)
+ */
 public class CIReceiver extends AbstractReceiver {
     /** Construct an empty receiver.
      *  @param director The director that creates this receiver.
@@ -224,6 +223,7 @@ public class CIReceiver extends AbstractReceiver {
 
     // List for storing tokens.
     private LinkedList _tokens = new LinkedList();
+
     private boolean _initialized = false;
 
     // True if an active actor put token in this receiver.

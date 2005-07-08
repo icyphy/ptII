@@ -1,29 +1,29 @@
 /* A tableau for displaying JVM information
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
@@ -46,20 +46,19 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// JVMTableau
 
 /**
-   A tableau that displays Java Virtual Machine information such
-   as the version number and other properties
+ A tableau that displays Java Virtual Machine information such
+ as the version number and other properties
 
-   @author Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class JVMTableau extends Tableau {
     /** Create a new control panel displaying the JVM properties
      *  The tableau is itself an entity contained by the effigy
@@ -115,12 +114,12 @@ public class JVMTableau extends Tableau {
             // Button to request GC.
             JButton GCButton = new JButton("Request Garbage Collection");
             GCButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent event) {
-                        // FindBugs warns about System.gc, but it is ok
-                        System.gc();
-                        updateMemoryStatistics(memoryArea);
-                    }
-                });
+                public void actionPerformed(ActionEvent event) {
+                    // FindBugs warns about System.gc, but it is ok
+                    System.gc();
+                    updateMemoryStatistics(memoryArea);
+                }
+            });
             component.add(GCButton);
 
             // Display system properties
@@ -129,10 +128,12 @@ public class JVMTableau extends Tableau {
 
             try {
                 Properties properties = System.getProperties();
-                Enumeration propertyNamesEnumeration = properties.propertyNames();
+                Enumeration propertyNamesEnumeration = properties
+                        .propertyNames();
 
                 // Sort by property name
-                ArrayList propertyNamesList = Collections.list(propertyNamesEnumeration);
+                ArrayList propertyNamesList = Collections
+                        .list(propertyNamesEnumeration);
                 Collections.sort(propertyNamesList);
 
                 Iterator propertyNames = propertyNamesList.iterator();
@@ -140,15 +141,16 @@ public class JVMTableau extends Tableau {
                 while (propertyNames.hasNext()) {
                     String propertyName = (String) propertyNames.next();
                     propertyBuffer.append(propertyName + " = "
-                            + properties.getProperty(propertyName) + lineSeparator);
+                            + properties.getProperty(propertyName)
+                            + lineSeparator);
                 }
             } catch (java.security.AccessControlException accessControl) {
                 propertyBuffer.append("AccessControlException, probably from "
                         + "System.getProperties():\n" + accessControl);
             }
 
-            final JTextArea messageArea = new JTextArea(propertyBuffer.toString(),
-                    20, 100);
+            final JTextArea messageArea = new JTextArea(propertyBuffer
+                    .toString(), 20, 100);
 
             messageArea.setEditable(false);
 
@@ -192,7 +194,8 @@ public class JVMTableau extends Tableau {
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a tableau
-                JVMTableau tableau = (JVMTableau) effigy.getEntity("JVMTableau");
+                JVMTableau tableau = (JVMTableau) effigy
+                        .getEntity("JVMTableau");
 
                 if (tableau == null) {
                     tableau = new JVMTableau((PtolemyEffigy) effigy,
@@ -216,12 +219,19 @@ public class JVMTableau extends Tableau {
         long freeMemory = runtime.freeMemory() / 1024;
         long maxMemory = runtime.maxMemory() / 1024;
 
-        textArea.setText("Memory: " + totalMemory + "K Free: " + freeMemory
-                + "K ("
-                + Math.round(
-                        (((double) freeMemory) / ((double) totalMemory)) * 100.0)
-                + "%) Max: " + maxMemory + "K ("
-                + Math.round(
-                        (((double) totalMemory) / ((double) maxMemory)) * 100.0) + "%)");
+        textArea
+                .setText("Memory: "
+                        + totalMemory
+                        + "K Free: "
+                        + freeMemory
+                        + "K ("
+                        + Math
+                                .round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
+                        + "%) Max: "
+                        + maxMemory
+                        + "K ("
+                        + Math
+                                .round((((double) totalMemory) / ((double) maxMemory)) * 100.0)
+                        + "%)");
     }
 }

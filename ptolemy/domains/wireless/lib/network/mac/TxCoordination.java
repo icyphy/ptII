@@ -1,30 +1,30 @@
 /* Controls the sequence of events involved in initiating a session.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above=
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above=
 
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.wireless.lib.network.mac;
 
 import java.util.LinkedList;
@@ -43,38 +43,37 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ////////////////////////////////////////////////////////////////////////=
 //
 //// TXCoordinationSta
 
 /**
-   TXCoordination class is responsible for initiating a session. After a packet
-   arrives from the network layer, TXCoordination will generate RTS if the packet
-   is long enough. It will send RTS to the destination and wait for CTS. If CTS
-   is received within a specified interval, data will be sent after SIFS seconds.
-   If ACK is received within a given time after the data is sent, the session
-   is complete. TXCoordination will go to backoff before handling the next packet
-   in the queue.If the network packet is not long enough, RTS/CTS will not be used
-   to reduce overhead. In either case, Carrier sense is only done for the first
-   message in the sequence, which is RTS, retransmitted data or data if RTS is not
-   used. TXCoordination gets the channel status by sending a backoff signal with
-   count 0 to the Backoff process in the Transmission block.If the channel turns
-   to be busy, TXCoordination will send another backoff signal with count -1 to
-   start the real backoff. If CTS or ACK is not received in time, the correspondng
-   RTS or data will neeed to be retransmitted. TXCoordination will increase the
-   corresponding retry counters. The backoff window size is also exponentially
-   increased Retransmission will not start until another backoff is completed to
-   avoid congestions.
+ TXCoordination class is responsible for initiating a session. After a packet
+ arrives from the network layer, TXCoordination will generate RTS if the packet
+ is long enough. It will send RTS to the destination and wait for CTS. If CTS
+ is received within a specified interval, data will be sent after SIFS seconds.
+ If ACK is received within a given time after the data is sent, the session
+ is complete. TXCoordination will go to backoff before handling the next packet
+ in the queue.If the network packet is not long enough, RTS/CTS will not be used
+ to reduce overhead. In either case, Carrier sense is only done for the first
+ message in the sequence, which is RTS, retransmitted data or data if RTS is not
+ used. TXCoordination gets the channel status by sending a backoff signal with
+ count 0 to the Backoff process in the Transmission block.If the channel turns
+ to be busy, TXCoordination will send another backoff signal with count -1 to
+ start the real backoff. If CTS or ACK is not received in time, the correspondng
+ RTS or data will neeed to be retransmitted. TXCoordination will increase the
+ corresponding retry counters. The backoff window size is also exponentially
+ increased Retransmission will not start until another backoff is completed to
+ avoid congestions.
 
 
 
-   @author Charlie Zhong, Yang Zhao
-   @version TxCoordination.java,v 1.13 2004/04/22 19:46:17 ellen_zh Exp
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (czhong)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ @author Charlie Zhong, Yang Zhao
+ @version TxCoordination.java,v 1.13 2004/04/22 19:46:17 ellen_zh Exp
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (czhong)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class TxCoordination extends MACActorBase {
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
@@ -107,7 +106,8 @@ public class TxCoordination extends MACActorBase {
         GotAck = new TypedIOPort(this, "GotAck", true, false);
         GotAck.setTypeEquals(BaseType.GENERAL);
 
-        fromPowerControl = new TypedIOPort(this, "fromPowerControl", true, false);
+        fromPowerControl = new TypedIOPort(this, "fromPowerControl", true,
+                false);
         fromPowerControl.setTypeEquals(BaseType.GENERAL);
 
         getBackoff = new TypedIOPort(this, "getBackoff", false, true);
@@ -115,7 +115,7 @@ public class TxCoordination extends MACActorBase {
 
         TXTXRequest = new TypedIOPort(this, "TXTXRequest", false, true);
         TXTXRequest.setTypeEquals(BaseType.GENERAL);
-        
+
         overhead = new TypedIOPort(this, "overhead", false, true);
         overhead.setTypeEquals(BaseType.DOUBLE);
     }
@@ -151,7 +151,7 @@ public class TxCoordination extends MACActorBase {
     /** Port sending the TX request to the Transmission block
      */
     public TypedIOPort TXTXRequest;
-    
+
     /** Port sending overhead of handling a pdu request.
      */
     public TypedIOPort overhead;
@@ -192,7 +192,7 @@ public class TxCoordination extends MACActorBase {
 
             if (isNetData && !backoff) {
                 _handleData();
-            } else if (BkDone.hasToken(0)) {             
+            } else if (BkDone.hasToken(0)) {
                 BkDone.get(0);
                 _checkQueue();
             }
@@ -209,13 +209,13 @@ public class TxCoordination extends MACActorBase {
                     TXTXRequest.send(0, _rtsdu);
                     _currentState = Wait_Rts_Sent;
                 } else // channel is busy, need to backoff
-                    {
-                        _backoff(_ccw, -1);
+                {
+                    _backoff(_ccw, -1);
 
-                        // modified standard here
-                        _cont = true;
-                        _currentState = TxC_Backoff;
-                    }
+                    // modified standard here
+                    _cont = true;
+                    _currentState = TxC_Backoff;
+                }
             }
 
             break;
@@ -234,7 +234,6 @@ public class TxCoordination extends MACActorBase {
 
             if (kind == Timeout) {
 
-                
                 if (_ccw != _aCWmax) {
                     _ccw = (2 * _ccw) + 1;
                 }
@@ -251,27 +250,27 @@ public class TxCoordination extends MACActorBase {
                     // modified standard here
                     _slrc = 0;
                     _cont = false;
-                }
-                else {
+                } else {
                     _cont = true;
                 }
 
                 _currentState = TxC_Backoff;
             } else if (GotAck.hasToken(0)) {
-                      
+
                 RecordToken GotCtsMsg = (RecordToken) GotAck.get(0);
 
                 if (((IntToken) GotCtsMsg.get("kind")).intValue() == GotCts) {
                     cancelTimer(_Trsp);
 
                     Time endRx = new Time(getDirector(),
-                            ((DoubleToken) GotCtsMsg.get("endRx")).doubleValue());
+                            ((DoubleToken) GotCtsMsg.get("endRx"))
+                                    .doubleValue());
                     _ssrc = 0;
 
                     setTimer(SifsTimeout, endRx.add(_dSifsDly * 1e-6));
 
                     int durId = _aSifsTime + _aPreambleLength
-                        + _aPlcpHeaderLength + (_sAckCtsLng / _mBrate);
+                            + _aPlcpHeaderLength + (_sAckCtsLng / _mBrate);
                     _setDurIdField(_tpdu, durId);
                     _currentState = Wait_Cts_Sifs;
                 }
@@ -321,8 +320,8 @@ public class TxCoordination extends MACActorBase {
                     _backoff(_ccw, -1);
                     _currentState = TxC_Backoff;
                 } else {
-                    _Trsp = setTimer(Timeout,
-                            currentTime.add(_CTSTimeout * 1e-6));
+                    _Trsp = setTimer(Timeout, currentTime
+                            .add(_CTSTimeout * 1e-6));
                     _currentState = Wait_Ack;
                 }
             }
@@ -400,7 +399,7 @@ public class TxCoordination extends MACActorBase {
         _ccw = _aCWmin;
         _seqNum = 0;
         _CTSTimeout = _aSifsTime + _aPreambleLength + _aPlcpHeaderLength
-            + _aSlotTime + (_sAckCtsLng / _mBrate);
+                + _aSlotTime + (_sAckCtsLng / _mBrate);
 
         NamedObj macComposite = getContainer().getContainer();
 
@@ -420,24 +419,13 @@ public class TxCoordination extends MACActorBase {
     ////                         private methods                   ////
     private RecordToken _createPacket(int subtype, int duration, int RA, int TA)
             throws IllegalActionException {
-        Token[] DataPacketValues = {
-            new IntToken(0),
-            new IntToken(ControlType),
-            new IntToken(subtype),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(123),
-            new IntToken(duration),
-            new IntToken(RA),
-            new IntToken(TA),
-            new IntToken(160)
-        };
+        Token[] DataPacketValues = { new IntToken(0),
+                new IntToken(ControlType), new IntToken(subtype),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(123),
+                new IntToken(duration), new IntToken(RA), new IntToken(TA),
+                new IntToken(160) };
         RecordToken pkt = new RecordToken(RtsPacket, DataPacketValues);
         return (pkt);
     }
@@ -445,30 +433,29 @@ public class TxCoordination extends MACActorBase {
     private RecordToken _createDataPacket(RecordToken msg, int dest_addr)
             throws IllegalActionException {
         Token[] DataPacketValues = {
-            new IntToken(0),
-            new IntToken(DataType),
-            new IntToken(Data),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(123),
-            new IntToken(_aSifsTime + _aPreambleLength + _aPlcpHeaderLength
-                    + (_sAckCtsLng / _mBrate)),
-            new IntToken(dest_addr),
-            new IntToken(getID()),
-            new IntToken(0),
-            new IntToken(_seqNum - (_seqNum / 4096 * 4096)),
-            new IntToken(0),
-            new IntToken(0),
-            msg,
-            new IntToken((34 * 8)
-                    + ((IntToken) msg.get("Length")).intValue())
-        };
+                new IntToken(0),
+                new IntToken(DataType),
+                new IntToken(Data),
+                new IntToken(0),
+                new IntToken(0),
+                new IntToken(0),
+                new IntToken(0),
+                new IntToken(0),
+                new IntToken(0),
+                new IntToken(0),
+                new IntToken(0),
+                new IntToken(123),
+                new IntToken(_aSifsTime + _aPreambleLength + _aPlcpHeaderLength
+                        + (_sAckCtsLng / _mBrate)),
+                new IntToken(dest_addr),
+                new IntToken(getID()),
+                new IntToken(0),
+                new IntToken(_seqNum - (_seqNum / 4096 * 4096)),
+                new IntToken(0),
+                new IntToken(0),
+                msg,
+                new IntToken((34 * 8)
+                        + ((IntToken) msg.get("Length")).intValue()) };
         _seqNum++;
 
         RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
@@ -477,29 +464,14 @@ public class TxCoordination extends MACActorBase {
 
     private RecordToken _setRetryField(RecordToken msg, int retryBit)
             throws IllegalActionException {
-        Token[] DataPacketValues = {
-            new IntToken(0),
-            new IntToken(DataType),
-            new IntToken(Data),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(retryBit),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(123),
-            msg.get("durId"),
-            msg.get("Addr1"),
-            msg.get("Addr2"),
-            new IntToken(0),
-            msg.get("SeqNum"),
-            new IntToken(0),
-            new IntToken(0),
-            msg.get("payload"),
-            msg.get("Length")
-        };
+        Token[] DataPacketValues = { new IntToken(0), new IntToken(DataType),
+                new IntToken(Data), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(retryBit), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                new IntToken(123), msg.get("durId"), msg.get("Addr1"),
+                msg.get("Addr2"), new IntToken(0), msg.get("SeqNum"),
+                new IntToken(0), new IntToken(0), msg.get("payload"),
+                msg.get("Length") };
 
         RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
         return (pkt);
@@ -507,53 +479,35 @@ public class TxCoordination extends MACActorBase {
 
     private RecordToken _setDurIdField(RecordToken msg, int durId)
             throws IllegalActionException {
-        Token[] DataPacketValues = {
-            new IntToken(0),
-            new IntToken(DataType),
-            new IntToken(Data),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            msg.get("retryBit"),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(123),
-            new IntToken(durId),
-            msg.get("Addr1"),
-            msg.get("Addr2"),
-            new IntToken(0),
-            msg.get("SeqNum"),
-            new IntToken(0),
-            new IntToken(0),
-            msg.get("payload"),
-            msg.get("Length")
-        };
+        Token[] DataPacketValues = { new IntToken(0), new IntToken(DataType),
+                new IntToken(Data), new IntToken(0), new IntToken(0),
+                new IntToken(0), msg.get("retryBit"), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                new IntToken(123), new IntToken(durId), msg.get("Addr1"),
+                msg.get("Addr2"), new IntToken(0), msg.get("SeqNum"),
+                new IntToken(0), new IntToken(0), msg.get("payload"),
+                msg.get("Length") };
 
         RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
         return (pkt);
     }
 
     private void _backoff(int ccw, int cnt) throws IllegalActionException {
-        Token[] getBackoffMsgValues = {
-            new IntToken(Backoff), new IntToken(ccw), new IntToken(cnt)
-        };
+        Token[] getBackoffMsgValues = { new IntToken(Backoff),
+                new IntToken(ccw), new IntToken(cnt) };
         RecordToken event = new RecordToken(getBackoffMsgFields,
                 getBackoffMsgValues);
         getBackoff.send(0, event);
     }
 
     private void _sendTxRequest() throws IllegalActionException {
-        Token[] TxRequestMsgValues = {
-            new IntToken(TxRequest), _tpdu,
-            new IntToken(_mBrate * (int) 1e6)
-        };
+        Token[] TxRequestMsgValues = { new IntToken(TxRequest), _tpdu,
+                new IntToken(_mBrate * (int) 1e6) };
 
         RecordToken copyTpdu = new RecordToken(TxRequestMsgFields,
                 TxRequestMsgValues);
         TXTXRequest.send(0, copyTpdu);
-        
+
         Time delay = getDirector().getModelTime().subtract(_time);
         overhead.send(0, new DoubleToken(delay.getDoubleValue() * 1e6));
         _currentState = Wait_Pdu_Sent;
@@ -593,13 +547,12 @@ public class TxCoordination extends MACActorBase {
         }
 
         _tpdu = _createDataPacket(msg, dest_addr);
-        
 
         int length = ((IntToken) _tpdu.get("Length")).intValue();
         int Addr1 = ((IntToken) _tpdu.get("Addr1")).intValue();
 
         int durId = (3 * (_aSifsTime + _aPreambleLength + _aPlcpHeaderLength))
-            + ((length + (2 * _sAckCtsLng)) / _mBrate);
+                + ((length + (2 * _sAckCtsLng)) / _mBrate);
 
         // no RTS is needed for broadcast
         if ((length <= _dotllRTSThreshold) || (Addr1 == mac_broadcast_addr)) {
@@ -611,10 +564,8 @@ public class TxCoordination extends MACActorBase {
             }
         } else {
             RecordToken pdu = _createPacket(Rts, durId, dest_addr, getID());
-            Token[] TxRequestMsgValues = {
-                new IntToken(TxRequest), pdu,
-                new IntToken(_mBrate * (int) 1e6)
-            };
+            Token[] TxRequestMsgValues = { new IntToken(TxRequest), pdu,
+                    new IntToken(_mBrate * (int) 1e6) };
             _rtsdu = new RecordToken(TxRequestMsgFields, TxRequestMsgValues);
         }
 
@@ -652,29 +603,47 @@ public class TxCoordination extends MACActorBase {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int _seqNum;
+
     private boolean _cont;
+
     private RecordToken _rtsdu;
+
     private RecordToken _tpdu;
+
     private LinkedList _txQueue;
+
     private Timer _Trsp;
-    
+
     //This list saves the time when each pdu request is generated. It is used
     //to calculate the overheah for statistic perpose. Yang 
     private LinkedList _pduTime;
+
     private Time _time;
 
     // define states in FSM
     private static final int TxC_Idle = 0;
+
     private static final int Wait_Mpdu_Backoff = 1;
+
     private static final int Wait_Pdu_Sent = 2;
+
     private static final int Wait_Ack = 3;
+
     private static final int TxC_Backoff = 4;
+
     private static final int Wait_Rts_Backoff = 5;
+
     private static final int Wait_Rts_Sent = 6;
+
     private static final int Wait_Cts = 7;
+
     private static final int Wait_Cts_Sifs = 8;
+
     private int _currentState = 0;
+
     private static final int Timeout = 1;
+
     private static final int SifsTimeout = 2;
+
     private static final int QueueSize = 100;
 }

@@ -1,29 +1,29 @@
 /* A transformer that removes dead token and type creations.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.HashSet;
@@ -48,23 +48,22 @@ import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DeadObjectEliminator
 
 /**
-   A transformer that removes unnecessary object creations.  If
-   an attribute, type or token is created, but never used anywhere, then
-   it can be safely removed.  This is possible because types and tokens are
-   immutable, and we know that the attribute constructor will not have
-   any interesting side effects after code generation is completed.
+ A transformer that removes unnecessary object creations.  If
+ an attribute, type or token is created, but never used anywhere, then
+ it can be safely removed.  This is possible because types and tokens are
+ immutable, and we know that the attribute constructor will not have
+ any interesting side effects after code generation is completed.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class DeadObjectEliminator extends BodyTransformer {
     /** Construct a new transformer
      */
@@ -82,20 +81,20 @@ public class DeadObjectEliminator extends BodyTransformer {
         Hierarchy hierarchy = Scene.v().getActiveHierarchy();
         Set set = new HashSet();
 
-        set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.tokenClass));
-        set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.baseTypeClass));
-        set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.arrayTypeClass));
-        set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.recordTypeClass));
-        set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.matrixTypeClass));
-        set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.attributeClass));
-        set.addAll(hierarchy.getSubclassesOfIncluding(
-                           Scene.v().loadClassAndSupport("ptolemy.data.expr.PtParser")));
+        set.addAll(hierarchy
+                .getSubclassesOfIncluding(PtolemyUtilities.tokenClass));
+        set.addAll(hierarchy
+                .getSubclassesOfIncluding(PtolemyUtilities.baseTypeClass));
+        set.addAll(hierarchy
+                .getSubclassesOfIncluding(PtolemyUtilities.arrayTypeClass));
+        set.addAll(hierarchy
+                .getSubclassesOfIncluding(PtolemyUtilities.recordTypeClass));
+        set.addAll(hierarchy
+                .getSubclassesOfIncluding(PtolemyUtilities.matrixTypeClass));
+        set.addAll(hierarchy
+                .getSubclassesOfIncluding(PtolemyUtilities.attributeClass));
+        set.addAll(hierarchy.getSubclassesOfIncluding(Scene.v()
+                .loadClassAndSupport("ptolemy.data.expr.PtParser")));
 
         _removeDeadObjectCreation(body, set);
     }
@@ -114,8 +113,8 @@ public class DeadObjectEliminator extends BodyTransformer {
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
 
-        for (Iterator units = body.getUnits().snapshotIterator();
-             units.hasNext();) {
+        for (Iterator units = body.getUnits().snapshotIterator(); units
+                .hasNext();) {
             Stmt stmt = (Stmt) units.next();
 
             if (!stmt.containsInvokeExpr()) {
@@ -131,8 +130,8 @@ public class DeadObjectEliminator extends BodyTransformer {
                 //      System.out.println("compare " + r.getMethod().getDeclaringClass());
                 //                 System.out.println("with " + theClass);
                 if (classSet.contains(r.getMethod().getDeclaringClass())
-                        && !liveLocals.getLiveLocalsAfter(stmt)
-                        .contains(r.getBase())) {
+                        && !liveLocals.getLiveLocalsAfter(stmt).contains(
+                                r.getBase())) {
                     // Remove the initialization and the constructor.
                     // Note: This assumes a fairly tight coupling between
                     // the new and the object constructor.  This may
@@ -140,15 +139,15 @@ public class DeadObjectEliminator extends BodyTransformer {
                     body.getUnits().remove(stmt);
 
                     for (Iterator defs = localDefs.getDefsOfAt(
-                                 (Local) r.getBase(), stmt).iterator();
-                         defs.hasNext();) {
+                            (Local) r.getBase(), stmt).iterator(); defs
+                            .hasNext();) {
                         Unit defUnit = (Unit) defs.next();
 
                         if (defUnit instanceof DefinitionStmt) {
                             // If we are keeping a definition, then
                             // set the definition to be null.
-                            ((DefinitionStmt) defUnit).getRightOpBox().setValue(NullConstant
-                                    .v());
+                            ((DefinitionStmt) defUnit).getRightOpBox()
+                                    .setValue(NullConstant.v());
                         } else {
                             // I can't imagine when this would
                             // be true?

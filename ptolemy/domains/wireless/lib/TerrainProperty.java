@@ -1,30 +1,30 @@
 /* An actor that provides terrain properties.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib;
 
 import java.awt.Polygon;
@@ -50,24 +50,23 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TerrainProperty
 
 /**
-   This actor implements the PropertyTransformer interface.
-   It register itself with the wireless channel specified by
-   the <i>channelName</i> parameter. The channel may call it
-   getProperty() method to get the property.
+ This actor implements the PropertyTransformer interface.
+ It register itself with the wireless channel specified by
+ the <i>channelName</i> parameter. The channel may call it
+ getProperty() method to get the property.
 
-   @author Yang Zhao
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (pjb2e)
-*/
-public class TerrainProperty extends TypedAtomicActor
-    implements PropertyTransformer {
+ @author Yang Zhao
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (pjb2e)
+ */
+public class TerrainProperty extends TypedAtomicActor implements
+        PropertyTransformer {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -101,10 +100,10 @@ public class TerrainProperty extends TypedAtomicActor
         //Crate the icon.
         _icon = new EditorIcon(this, "_icon");
         _terrain = new FilledShapeAttribute(_icon, "terrain") {
-                protected Shape _newShape() {
-                    return new Polygon(_xPoints, _yPoints, _numberOfPoints);
-                }
-            };
+            protected Shape _newShape() {
+                return new Polygon(_xPoints, _yPoints, _numberOfPoints);
+            }
+        };
 
         // Set the color to green.
         _terrain.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
@@ -153,11 +152,11 @@ public class TerrainProperty extends TypedAtomicActor
 
                 for (int i = 0; i < xypointsArray.length(); i++) {
                     ArrayToken xypointArray = (ArrayToken) xypointsArray
-                        .getElement(i);
+                            .getElement(i);
                     _xPoints[i] = ((IntToken) xypointArray.getElement(0))
-                        .intValue();
+                            .intValue();
                     _yPoints[i] = ((IntToken) xypointArray.getElement(1))
-                        .intValue();
+                            .intValue();
                 }
 
                 _number++;
@@ -277,12 +276,8 @@ public class TerrainProperty extends TypedAtomicActor
             Token transmitPower = properties.get("power");
 
             // Create a record token with the receive power.
-            String[] names = {
-                "power"
-            };
-            Token[] values = {
-                new DoubleToken(0.0)
-            };
+            String[] names = { "power" };
+            Token[] values = { new DoubleToken(0.0) };
             RecordToken newPower = new RecordToken(names, values);
 
             // Merge the receive power into the merged token.
@@ -319,7 +314,8 @@ public class TerrainProperty extends TypedAtomicActor
 
         if (location == null) {
             throw new IllegalActionException(
-                    "Cannot determine location for port " + port.getName() + ".");
+                    "Cannot determine location for port " + port.getName()
+                            + ".");
         }
 
         return location.getLocation();
@@ -363,10 +359,15 @@ public class TerrainProperty extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private WirelessChannel _channel;
+
     private int[] _xPoints;
+
     private int[] _yPoints;
+
     private EditorIcon _icon;
+
     private FilledShapeAttribute _terrain;
+
     private int _numberOfPoints;
 
     // this variable is merely used to set the ShapeAttribute
@@ -376,6 +377,7 @@ public class TerrainProperty extends TypedAtomicActor
     //the location of this actor. This is used as (0, 0) when
     //create the shape.
     private double[] _offset;
+
     private String _channelName;
 
     // Name of the location attribute.

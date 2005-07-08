@@ -1,30 +1,30 @@
 /* An actor that does back off after a frame transmission.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib.network.mac;
 
 import java.util.Random;
@@ -45,20 +45,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Backoff
 
 /**
-   This actor does the back off after a frame transmission. It randomly
-   choose a slot from the back off window and wait for that amount of
-   time before trying to access the medium.
-   @author Yang Zhao
-   @version Backoff.java,v 1.14 2004/04/22 19:46:18 ellen_zh Exp
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (ellen_zh)
-   @Pt.AcceptedRating Red (pjb2e)
-*/
+ This actor does the back off after a frame transmission. It randomly
+ choose a slot from the back off window and wait for that amount of
+ time before trying to access the medium.
+ @author Yang Zhao
+ @version Backoff.java,v 1.14 2004/04/22 19:46:18 ellen_zh Exp
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (ellen_zh)
+ @Pt.AcceptedRating Red (pjb2e)
+ */
 public class Backoff extends MACActorBase {
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
@@ -159,7 +158,8 @@ public class Backoff extends MACActorBase {
             }
 
             if (_inputMessage != null) {
-                _messageType = ((IntToken) _inputMessage.get("kind")).intValue();
+                _messageType = ((IntToken) _inputMessage.get("kind"))
+                        .intValue();
             }
         }
 
@@ -201,12 +201,12 @@ public class Backoff extends MACActorBase {
         case Channel_Busy:
 
             switch (_messageType) {
-                // modify standard here
+            // modify standard here
             case Idle:
                 _startBackoff();
                 break;
 
-                // end modification
+            // end modification
             case Cancel:
                 _backoffDone(_slotCnt);
                 break;
@@ -228,16 +228,16 @@ public class Backoff extends MACActorBase {
             }
 
             switch (_messageType) {
-                // modify standard here
+            // modify standard here
             case Busy:
                 _slotCnt -= (int) ((_currentTime.subtract(_backoffStartTime)
-                                           .getDoubleValue() * 1e6) / _aSlotTime);
+                        .getDoubleValue() * 1e6) / _aSlotTime);
                 cancelTimer(_BackoffTimer);
                 _state = Channel_Busy;
                 _status = Busy;
                 break;
 
-                // end modification
+            // end modification
             case Cancel:
                 _backoffDone(_slotCnt);
                 break;
@@ -301,10 +301,7 @@ public class Backoff extends MACActorBase {
     }
 
     private void _backoffDone(int cnt) throws IllegalActionException {
-        Token[] value = {
-            new IntToken(BkDone),
-            new IntToken(cnt)
-        };
+        Token[] value = { new IntToken(BkDone), new IntToken(cnt) };
         BKDone.send(0, new RecordToken(BackoffDoneMsgFields, value));
         _setAttribute(_mBkIP, new BooleanToken(false));
         _state = No_Backoff;
@@ -312,8 +309,8 @@ public class Backoff extends MACActorBase {
 
     private void _startBackoff() throws IllegalActionException {
         _backoffStartTime = _currentTime;
-        _BackoffTimer = setTimer(BackoffTimeOut,
-                _currentTime.add(_slotCnt * _aSlotTime * 1e-6));
+        _BackoffTimer = setTimer(BackoffTimeOut, _currentTime.add(_slotCnt
+                * _aSlotTime * 1e-6));
         _state = Channel_Idle;
         _status = Idle;
     }
@@ -322,19 +319,31 @@ public class Backoff extends MACActorBase {
     ////                         private variables                 ////
     //Define the states of the inside FSM.
     private static final int No_Backoff = 0;
+
     private static final int Channel_Busy = 1;
+
     private static final int Channel_Idle = 2;
+
     private int _state = 0;
+
     private int _slotCnt;
+
     private int _cnt;
+
     private int _status;
+
     private Timer _BackoffTimer;
 
     // timer types
     private static final int BackoffTimeOut = 0;
+
     private Time _backoffStartTime;
+
     private RecordToken _inputMessage;
+
     private int _messageType;
+
     private Time _currentTime;
+
     protected Random _random = new Random();
 }

@@ -1,32 +1,32 @@
 /* A variable is an attribute that contains a token and can be referenced
-   in expressions.
+ in expressions.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.data.expr;
 
 import java.util.Collections;
@@ -60,163 +60,162 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Variable
 
 /**
-   A Variable is an Attribute that contains a token, and can be set by an
-   expression that can refer to other variables.
-   <p>
-   A variable can be given a token or an expression as its value. To create
-   a variable with a token, either call the appropriate constructor, or create
-   the variable with the appropriate container and name, and then call
-   setToken(). To set the value from an expression, call setExpression().
-   The expression is not actually evaluated until you call getToken(),
-   getType(). By default, it is also evaluated when you call validate(),
-   unless you have called setLazyValidation(true), in which case it will only
-   be evaluated if there are other variables that depend on it and those
-   have not had setLazyValidation(true) called.
-   <p>
-   Consider for example the sequence:
-   <pre>
-   Variable v3 = new Variable(container,"v3");
-   Variable v2 = new Variable(container,"v2");
-   Variable v1 = new Variable(container,"v1");
-   v3.setExpression("v1 + v2");
-   v2.setExpression("1.0");
-   v1.setExpression("2.0");
-   v3.getToken();
-   </pre>
-   Notice that the expression for <code>v3</code> cannot be evaluated
-   when it is set because <code>v2</code> and <code>v1</code> do not
-   yet have values.  But there is no problem because the expression
-   is not evaluated until getToken() is called.  Equivalently, we
-   could have called, for example,
-   <pre>
-   v3.validate();
-   </pre>
-   This will force <code>v3</code> to be evaluated,
-   and also <code>v1</code> and <code>v2</code>
-   to be evaluated.
-   <p>
-   There is a potentially confusing subtlety.  In the above code,
-   before the last line is executed, the expression for <code>v3</code>
-   has not been evaluated, so the dependence that <code>v3</code> has
-   on <code>v1</code> and <code>v2</code> has not been recorded.
-   Thus, if we call
-   <pre>
-   v1.validate();
-   </pre>
-   before <code>v3</code> has ever been evaluated, then it will <i>not</i>
-   trigger an evaluation of <code>v3</code>.  Because of this, we recommend
-   that user code call validate() immediately after calling
-   setExpression().
-   <p>
-   If the expression string is null or empty,
-   or if no value has been specified, then getToken() will return null.
-   <p>
-   The expression can reference variables that are in scope before the
-   expression is evaluated (i.e., before getToken() or validate() is called).
-   Otherwise, getToken() will throw an exception. All variables
-   contained by the same container, and those contained by the container's
-   container, are in the scope of this variable. Thus, in the above,
-   all three variables are in each other's scope because they belong
-   to the same container. If there are variables in the scope with the
-   same name, then those lower in the hierarchy shadow those that are higher.
-   An instance of ScopeExtendingAttribute can also be used to
-   aggregate a set of variables and add them to the scope.
-   <p>
-   If a variable is referred
-   to by expressions of other variables, then the name of the variable must be a
-   valid identifier as defined by the Ptolemy II expression language syntax.
-   A valid identifier starts with a letter or underscore, and contains
-   letters, underscores, numerals, dollar signs ($),
-   at signs (@), or pound signs (#).
-   <p>
-   A variable is a Typeable object. Constraints on its type can be
-   specified relative to other Typeable objects (as inequalities on the types),
-   or relative to specific types.  The former are called <i>dynamic type
-   constraints</i>, and the latter are called <i>static type constraints</i>.
-   Static type constraints are specified by the methods:
-   <ul>
-   <li> setTypeEquals()
-   <li> setTypeAtMost()
-   </ul>
-   whereas dynamic type constraints are given by
-   <ul>
-   <li> setTypeAtLeast()
-   <li> setTypeSameAs()
-   </ul>
-   Static type constraints are enforced in this class, meaning that:
-   <ul>
-   <li> If the variable already has a value (set by setToken() or
-   setExpression()) when you set the static type constraint, then
-   the value must satisfy the type constraint; and
-   <li> If after setting a static type constraint you give the token
-   a value, then the value must satisfy the constraints.
-   </ul>
-   A violation will cause an exception (either when setToken() is called
-   or when the expression is evaluated).
-   <p>
-   The dynamic type constraints are not enforced in this class, but merely
-   reported by the typeConstraintList() method.  They must be enforced at a
-   higher level (by a type system) since they involve a network of variables
-   and other typeable objects.  In fact, if the variable does not yet have
-   a value, then a type system may use these constraints to infer what the
-   type of the variable needs to be, and then call setTypeEquals().
-   <p>
-   The token returned by getToken() is always an instance of the class given
-   by the getType() method.  This is not necessarily the same as the class
-   of the token that was inserted via setToken().  It might be a distinct
-   type if the token given by setToken() can be converted losslessly into one
-   of the type given by setTypeEquals().
-   <p>
-   A variable by default has no MoML description (MoML is an XML modeling markup
-   language).  Thus, a variable contained by a named object is not
-   persistent, in that if the object is exported to a MoML file, the
-   variable will not be represented.  If you prefer that the variable
-   be represented, then you should use the derived class Parameter instead.
-   <p>
-   A variable is also normally not settable by casual users from the user
-   interface.  This is because, by default, getVisibility() returns EXPERT.
-   The derived class Parameter is fully visible by default.
-   <p>
-   In addition, this class provides as a convenience a "string mode."
-   If the variable is in string mode, then when setting the value of
-   this variable, the string that you pass to setExpression(String)
-   is taken to be literally the value of the instance of StringToken
-   that represents the value of this parameter. It is not necessary
-   to enclose it in quotation marks (and indeed, if you do, the quotation
-   marks will become part of the value of the string).  In addition,
-   the type of this parameter will be set to string. In addition,
-   getToken() will never return null; if the value of the string
-   has never been set, then an instance of StringToken is returned
-   that has an empty string as its value. A parameter is
-   in string mode if either setStringMode(true) has been called or
-   it contains an attribute named "_stringMode".
-   <p>
-   In string mode, the value passed to setExpression(String) may contain
-   references to other variables in scope using the syntax $id,
-   ${id} or $(id).  The first case only works if the id consists
-   only of alphanumeric characters and/or underscore, and if the
-   character immediately following the id is not one of these.
-   To get a simple dollar sign, use $$.
+ A Variable is an Attribute that contains a token, and can be set by an
+ expression that can refer to other variables.
+ <p>
+ A variable can be given a token or an expression as its value. To create
+ a variable with a token, either call the appropriate constructor, or create
+ the variable with the appropriate container and name, and then call
+ setToken(). To set the value from an expression, call setExpression().
+ The expression is not actually evaluated until you call getToken(),
+ getType(). By default, it is also evaluated when you call validate(),
+ unless you have called setLazyValidation(true), in which case it will only
+ be evaluated if there are other variables that depend on it and those
+ have not had setLazyValidation(true) called.
+ <p>
+ Consider for example the sequence:
+ <pre>
+ Variable v3 = new Variable(container,"v3");
+ Variable v2 = new Variable(container,"v2");
+ Variable v1 = new Variable(container,"v1");
+ v3.setExpression("v1 + v2");
+ v2.setExpression("1.0");
+ v1.setExpression("2.0");
+ v3.getToken();
+ </pre>
+ Notice that the expression for <code>v3</code> cannot be evaluated
+ when it is set because <code>v2</code> and <code>v1</code> do not
+ yet have values.  But there is no problem because the expression
+ is not evaluated until getToken() is called.  Equivalently, we
+ could have called, for example,
+ <pre>
+ v3.validate();
+ </pre>
+ This will force <code>v3</code> to be evaluated,
+ and also <code>v1</code> and <code>v2</code>
+ to be evaluated.
+ <p>
+ There is a potentially confusing subtlety.  In the above code,
+ before the last line is executed, the expression for <code>v3</code>
+ has not been evaluated, so the dependence that <code>v3</code> has
+ on <code>v1</code> and <code>v2</code> has not been recorded.
+ Thus, if we call
+ <pre>
+ v1.validate();
+ </pre>
+ before <code>v3</code> has ever been evaluated, then it will <i>not</i>
+ trigger an evaluation of <code>v3</code>.  Because of this, we recommend
+ that user code call validate() immediately after calling
+ setExpression().
+ <p>
+ If the expression string is null or empty,
+ or if no value has been specified, then getToken() will return null.
+ <p>
+ The expression can reference variables that are in scope before the
+ expression is evaluated (i.e., before getToken() or validate() is called).
+ Otherwise, getToken() will throw an exception. All variables
+ contained by the same container, and those contained by the container's
+ container, are in the scope of this variable. Thus, in the above,
+ all three variables are in each other's scope because they belong
+ to the same container. If there are variables in the scope with the
+ same name, then those lower in the hierarchy shadow those that are higher.
+ An instance of ScopeExtendingAttribute can also be used to
+ aggregate a set of variables and add them to the scope.
+ <p>
+ If a variable is referred
+ to by expressions of other variables, then the name of the variable must be a
+ valid identifier as defined by the Ptolemy II expression language syntax.
+ A valid identifier starts with a letter or underscore, and contains
+ letters, underscores, numerals, dollar signs ($),
+ at signs (@), or pound signs (#).
+ <p>
+ A variable is a Typeable object. Constraints on its type can be
+ specified relative to other Typeable objects (as inequalities on the types),
+ or relative to specific types.  The former are called <i>dynamic type
+ constraints</i>, and the latter are called <i>static type constraints</i>.
+ Static type constraints are specified by the methods:
+ <ul>
+ <li> setTypeEquals()
+ <li> setTypeAtMost()
+ </ul>
+ whereas dynamic type constraints are given by
+ <ul>
+ <li> setTypeAtLeast()
+ <li> setTypeSameAs()
+ </ul>
+ Static type constraints are enforced in this class, meaning that:
+ <ul>
+ <li> If the variable already has a value (set by setToken() or
+ setExpression()) when you set the static type constraint, then
+ the value must satisfy the type constraint; and
+ <li> If after setting a static type constraint you give the token
+ a value, then the value must satisfy the constraints.
+ </ul>
+ A violation will cause an exception (either when setToken() is called
+ or when the expression is evaluated).
+ <p>
+ The dynamic type constraints are not enforced in this class, but merely
+ reported by the typeConstraintList() method.  They must be enforced at a
+ higher level (by a type system) since they involve a network of variables
+ and other typeable objects.  In fact, if the variable does not yet have
+ a value, then a type system may use these constraints to infer what the
+ type of the variable needs to be, and then call setTypeEquals().
+ <p>
+ The token returned by getToken() is always an instance of the class given
+ by the getType() method.  This is not necessarily the same as the class
+ of the token that was inserted via setToken().  It might be a distinct
+ type if the token given by setToken() can be converted losslessly into one
+ of the type given by setTypeEquals().
+ <p>
+ A variable by default has no MoML description (MoML is an XML modeling markup
+ language).  Thus, a variable contained by a named object is not
+ persistent, in that if the object is exported to a MoML file, the
+ variable will not be represented.  If you prefer that the variable
+ be represented, then you should use the derived class Parameter instead.
+ <p>
+ A variable is also normally not settable by casual users from the user
+ interface.  This is because, by default, getVisibility() returns EXPERT.
+ The derived class Parameter is fully visible by default.
+ <p>
+ In addition, this class provides as a convenience a "string mode."
+ If the variable is in string mode, then when setting the value of
+ this variable, the string that you pass to setExpression(String)
+ is taken to be literally the value of the instance of StringToken
+ that represents the value of this parameter. It is not necessary
+ to enclose it in quotation marks (and indeed, if you do, the quotation
+ marks will become part of the value of the string).  In addition,
+ the type of this parameter will be set to string. In addition,
+ getToken() will never return null; if the value of the string
+ has never been set, then an instance of StringToken is returned
+ that has an empty string as its value. A parameter is
+ in string mode if either setStringMode(true) has been called or
+ it contains an attribute named "_stringMode".
+ <p>
+ In string mode, the value passed to setExpression(String) may contain
+ references to other variables in scope using the syntax $id,
+ ${id} or $(id).  The first case only works if the id consists
+ only of alphanumeric characters and/or underscore, and if the
+ character immediately following the id is not one of these.
+ To get a simple dollar sign, use $$.
 
-   @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (cxh)
+ @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (cxh)
 
-   @see ptolemy.data.Token
-   @see ptolemy.data.expr.PtParser
-   @see ptolemy.data.expr.Parameter
-   @see ScopeExtendingAttribute
-   @see #setPersistent(boolean)
-*/
+ @see ptolemy.data.Token
+ @see ptolemy.data.expr.PtParser
+ @see ptolemy.data.expr.Parameter
+ @see ScopeExtendingAttribute
+ @see #setPersistent(boolean)
+ */
 public class Variable extends AbstractSettableAttribute implements Typeable,
-                                                                   ValueListener {
+        ValueListener {
     /** Construct a variable in the default workspace with an empty string
      *  as its name. The variable is added to the list of objects in the
      *  workspace. Increment the version number of the workspace.
@@ -341,7 +340,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         if (_declaredType instanceof StructuredType
                 && !_declaredType.isConstant()) {
             newObject._declaredType = (Type) ((StructuredType) _declaredType)
-                .clone();
+                    .clone();
             newObject._varType = newObject._declaredType;
         }
 
@@ -470,7 +469,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     }
                 }
 
-                level1 = container.attributeList(ScopeExtender.class).iterator();
+                level1 = container.attributeList(ScopeExtender.class)
+                        .iterator();
 
                 while (level1.hasNext()) {
                     ScopeExtender extender = (ScopeExtender) level1.next();
@@ -737,8 +737,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this variable.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         Nameable cont = getContainer();
         super.setContainer(container);
 
@@ -949,8 +949,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _debug("setTypeAtLeast: " + name);
         }
 
-        Inequality ineq = new Inequality(lesser.getTypeTerm(),
-                this.getTypeTerm());
+        Inequality ineq = new Inequality(lesser.getTypeTerm(), this
+                .getTypeTerm());
         _constraints.add(ineq);
     }
 
@@ -965,7 +965,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             String name = "not named";
 
             if (typeTerm.getAssociatedObject() instanceof Nameable) {
-                name = ((Nameable) typeTerm.getAssociatedObject()).getFullName();
+                name = ((Nameable) typeTerm.getAssociatedObject())
+                        .getFullName();
             }
 
             _debug("setTypeAtLeast: " + name);
@@ -1003,8 +1004,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
 
         if (!type.isInstantiable()) {
-            throw new IllegalActionException(this,
-                    "setTypeAtMost(): " + "the argument " + type
+            throw new IllegalActionException(this, "setTypeAtMost(): "
+                    + "the argument " + type
                     + " is not an instantiable type in the type lattice.");
         }
 
@@ -1012,9 +1013,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         int typeInfo = TypeLattice.compare(currentType, type);
 
         if ((typeInfo == CPO.HIGHER) || (typeInfo == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(this,
-                    "setTypeAtMost(): " + "the current type "
-                    + currentType.toString()
+            throw new IllegalActionException(this, "setTypeAtMost(): "
+                    + "the current type " + currentType.toString()
                     + " is not less than the desired bounding type "
                     + type.toString());
         }
@@ -1047,9 +1047,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             } else {
                 throw new IllegalActionException(this,
                         "The currently contained token "
-                        + _token.getClass().getName() + "(" + _token.toString()
-                        + ") is not compatible with the desired type "
-                        + type.toString());
+                                + _token.getClass().getName() + "("
+                                + _token.toString()
+                                + ") is not compatible with the desired type "
+                                + type.toString());
             }
         }
 
@@ -1116,7 +1117,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _debug("setTypeSameAs: " + name);
         }
 
-        Inequality ineq = new Inequality(this.getTypeTerm(), equal.getTypeTerm());
+        Inequality ineq = new Inequality(this.getTypeTerm(), equal
+                .getTypeTerm());
         _constraints.add(ineq);
         ineq = new Inequality(equal.getTypeTerm(), this.getTypeTerm());
         _constraints.add(ineq);
@@ -1383,7 +1385,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _dependencyLoop = false;
             throw new IllegalActionException("There is a dependency loop"
                     + " where " + getFullName() + " directly or indirectly"
-                    + " refers to itself in its expression: " + _currentExpression);
+                    + " refers to itself in its expression: "
+                    + _currentExpression);
         }
 
         _dependencyLoop = true;
@@ -1535,7 +1538,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 if (listener instanceof Variable) {
                     if (((Variable) listener)._needsEvaluation) {
                         List additionalErrors = ((Variable) listener)
-                            ._propagate();
+                                ._propagate();
 
                         if (additionalErrors != null) {
                             if (result == null) {
@@ -1614,15 +1617,15 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             } else {
                 throw new IllegalActionException(this,
                         "Variable._setToken: Cannot store a token of type "
-                        + newToken.getType().toString()
-                        + ", which is incompatible with type "
-                        + declaredType.toString());
+                                + newToken.getType().toString()
+                                + ", which is incompatible with type "
+                                + declaredType.toString());
             }
 
             // update _varType to the type of the new token.
             if (_declaredType instanceof StructuredType) {
-                ((StructuredType) _varType).updateType((StructuredType) newToken
-                        .getType());
+                ((StructuredType) _varType)
+                        .updateType((StructuredType) newToken.getType());
             } else {
                 // _declaredType is a BaseType
                 _varType = newToken.getType();
@@ -1638,9 +1641,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                         || (comparison == CPO.INCOMPARABLE)) {
                     // Incompatible type!
                     throw new IllegalActionException(this,
-                            "Cannot store a token of type " + tokenType.toString()
-                            + ", which is not less than or equal to "
-                            + _typeAtMost.toString());
+                            "Cannot store a token of type "
+                                    + tokenType.toString()
+                                    + ", which is not less than or equal to "
+                                    + _typeAtMost.toString());
                 }
             }
 
@@ -1686,8 +1690,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 oldVarType = (Type) ((StructuredType) _varType).clone();
             } catch (CloneNotSupportedException ex2) {
                 throw new InternalErrorException(
-                        "Variable._setTokenAndNotify: " + " Cannot clone _varType"
-                        + ex2.getMessage());
+                        "Variable._setTokenAndNotify: "
+                                + " Cannot clone _varType" + ex2.getMessage());
             }
         }
 
@@ -1716,7 +1720,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
             if (_varType instanceof StructuredType
                     && oldVarType instanceof StructuredType) {
-                ((StructuredType) _varType).updateType((StructuredType) oldVarType);
+                ((StructuredType) _varType)
+                        .updateType((StructuredType) oldVarType);
             } else {
                 _varType = oldVarType;
             }
@@ -1759,8 +1764,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             return;
         }
 
-        for (Iterator variables = object.attributeList(Variable.class).iterator();
-             variables.hasNext();) {
+        for (Iterator variables = object.attributeList(Variable.class)
+                .iterator(); variables.hasNext();) {
             Variable variable = (Variable) variables.next();
 
             if (variable.getName().equals(getName())) {
@@ -1770,14 +1775,14 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         // Also invalidate the variables inside any
         // scopeExtendingAttributes.
-        Iterator scopeAttributes = object.attributeList(ScopeExtendingAttribute.class)
-            .iterator();
+        Iterator scopeAttributes = object.attributeList(
+                ScopeExtendingAttribute.class).iterator();
 
         while (scopeAttributes.hasNext()) {
             ScopeExtendingAttribute attribute = (ScopeExtendingAttribute) scopeAttributes
-                .next();
+                    .next();
             Iterator variables = attribute.attributeList(Variable.class)
-                .iterator();
+                    .iterator();
 
             while (variables.hasNext()) {
                 Variable variable = (Variable) variables.next();
@@ -1967,9 +1972,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 throw new IllegalActionException("Variable$TypeTerm"
                         + ".setValue: "
                         + "Cannot update the type of this variable to the "
-                        + "new type." + " Variable: " + Variable.this.getFullName()
-                        + ", Variable type: " + _declaredType.toString()
-                        + ", New type: " + e.toString());
+                        + "new type." + " Variable: "
+                        + Variable.this.getFullName() + ", Variable type: "
+                        + _declaredType.toString() + ", New type: "
+                        + e.toString());
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
@@ -2024,7 +2030,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 // Variable might be cached.
                 if (_variablesDependentOnVersion == workspace().getVersion()) {
                     // Cache is valid. Look up the variable.
-                    Variable result = (Variable) _variablesDependentOn.get(name);
+                    Variable result = (Variable) _variablesDependentOn
+                            .get(name);
 
                     if (result != null) {
                         return result.getToken();

@@ -1,30 +1,30 @@
 /* The node controller for states.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.fsm;
 
 import java.awt.Toolkit;
@@ -56,23 +56,22 @@ import diva.graph.GraphModel;
 import diva.graph.NodeRenderer;
 import diva.gui.GUIUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// StateController
 
 /**
-   This class provides interaction with nodes that represent states in an
-   FSM graph.  It provides a double click binding to edit the parameters
-   of the state, and a context menu containing a commands to edit parameters
-   ("Configure"), rename, get documentation, and look inside.  The looks
-   inside command opens the refinement of the state, if it exists.
+ This class provides interaction with nodes that represent states in an
+ FSM graph.  It provides a double click binding to edit the parameters
+ of the state, and a context menu containing a commands to edit parameters
+ ("Configure"), rename, get documentation, and look inside.  The looks
+ inside command opens the refinement of the state, if it exists.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class StateController extends AttributeController {
     /** Create a state controller associated with the specified graph
      *  controller.
@@ -96,7 +95,7 @@ public class StateController extends AttributeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _lookInsideAction));
+                    _lookInsideAction));
         }
     }
 
@@ -113,7 +112,7 @@ public class StateController extends AttributeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _lookInsideAction));
+                    _lookInsideAction));
         }
     }
 
@@ -146,15 +145,15 @@ public class StateController extends AttributeController {
 
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
-                MessageHandler.error(
-                        "Cannot look inside without a configuration.");
+                MessageHandler
+                        .error("Cannot look inside without a configuration.");
                 return;
             }
 
@@ -212,7 +211,7 @@ public class StateController extends AttributeController {
                 // but not inserted.
                 if (icons.size() == 0) {
                     XMLIcon alreadyCreated = (XMLIcon) _iconsPendingContainer
-                        .get(object);
+                            .get(object);
 
                     if (alreadyCreated != null) {
                         icons.add(alreadyCreated);
@@ -255,31 +254,32 @@ public class StateController extends AttributeController {
                     final EditorIcon finalIcon = icon;
                     ChangeRequest request = new ChangeRequest(_model,
                             "Set the container of a new XMLIcon.") {
-                            // NOTE: The KernelException should not be thrown,
-                            // but if it is, it will be handled properly.
-                            protected void _execute() throws KernelException {
-                                _iconsPendingContainer.remove(object);
+                        // NOTE: The KernelException should not be thrown,
+                        // but if it is, it will be handled properly.
+                        protected void _execute() throws KernelException {
+                            _iconsPendingContainer.remove(object);
 
-                                // If the icon already has a container, do nothing.
-                                if (finalIcon.getContainer() != null) {
-                                    return;
-                                }
-
-                                // If the container already has an icon, do nothing.
-                                if (object.getAttribute("_icon") != null) {
-                                    return;
-                                }
-
-                                finalIcon.setContainer(object);
+                            // If the icon already has a container, do nothing.
+                            if (finalIcon.getContainer() != null) {
+                                return;
                             }
-                        };
+
+                            // If the container already has an icon, do nothing.
+                            if (object.getAttribute("_icon") != null) {
+                                return;
+                            }
+
+                            finalIcon.setContainer(object);
+                        }
+                    };
 
                     request.setPersistent(false);
                     object.requestChange(request);
                 }
             } catch (KernelException ex) {
                 throw new InternalErrorException("could not create icon "
-                        + "in " + object + " even " + "though one did not exist");
+                        + "in " + object + " even "
+                        + "though one did not exist");
             }
 
             Figure figure = icon.createFigure();

@@ -1,31 +1,31 @@
 /* Parent class of guarded communication branches.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.csp.kernel;
 
 import ptolemy.actor.IOPort;
@@ -33,71 +33,70 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalBranch
 
 /**
-   Base class for classes representing guarded communication statements. A
-   guarded communication statement is of the form
-   <P>
-   <CENTER>guard; communication => statements </CENTER>
-   <P>
-   If the guard is true, or absent which implies true, then the branch
-   is enabled. Guarded communication statements are used to perform
-   both forms of conditional communication constructs: "conditional if" (CIF)
-   and "conditional do" (CDO). These constructs are analogous to,
-   but different from, the common <I>if</I> and <I>do</I> statements.
-   Each guarded communication statement is one branch of a CIF or CDO.
-   <p>
-   A CDO has the form
-   <P>
-   CDO {
-   <br>G1; C1 => S1;
-   <br>[]
-   <br>G2; C2 => S2;
-   <br>[]
-   <br>...
-   <br>}
-   <P>
-   The G1, G2 etc. represent the guards. The C1, C2 etc. represent the
-   communication associated with that branch, and may be either a send()
-   or a get(). The S1, S2 etc. represent the blocks of statements
-   associated with that branch. They are executed if that branch is
-   successful. The "[]" hints at the fact that the guards are all evaluated
-   in parallel (as opposed to sequentially in a common <I>if</I> statement).
-   <p>
-   While at least one of the branches is enabled, the construct continues
-   to evaluate and execute one of the enabled branches. If more than one
-   branch is enabled, the first branch to be able to rendezvous succeeds
-   and its statements are executed. Note that this construct is
-   nondeterministic as it may be  a race condition that determines
-   which branch is successful. The CIF is similar to the CDO except that
-   it is only evaluated once.
-   <p>
-   The communication part of a guarded communication statement can be
-   either a send() or a get(). There are thus two subclasses of this
-   class, each representing a guarded communication statement for one of
-   the communication primitives. The subclasses are ConditionalSend and
-   ConditionalReceive.
-   <p>
-   If more than one branch is enabled, each enabled branch is executed
-   in a separate thread. For rendezvous, the receiver is the key
-   synchronization point.
-   <p>
-   Conditional branches are designed to be used once. Upon instantiation,
-   they are given the guard, the port and channel over which to communicate,
-   and the identification number of the branch according to the controller.
-   The port and the channel together define the CSPReceiver with which to
-   rendezvous. The ConditionalBranchController, that controls this branch,
-   is assumed to be contained by the container of the port.
-   <p>
-   @author  Neil Smyth
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (nsmyth)
-   @Pt.AcceptedRating Green (kienhuis)
-*/
+ Base class for classes representing guarded communication statements. A
+ guarded communication statement is of the form
+ <P>
+ <CENTER>guard; communication => statements </CENTER>
+ <P>
+ If the guard is true, or absent which implies true, then the branch
+ is enabled. Guarded communication statements are used to perform
+ both forms of conditional communication constructs: "conditional if" (CIF)
+ and "conditional do" (CDO). These constructs are analogous to,
+ but different from, the common <I>if</I> and <I>do</I> statements.
+ Each guarded communication statement is one branch of a CIF or CDO.
+ <p>
+ A CDO has the form
+ <P>
+ CDO {
+ <br>G1; C1 => S1;
+ <br>[]
+ <br>G2; C2 => S2;
+ <br>[]
+ <br>...
+ <br>}
+ <P>
+ The G1, G2 etc. represent the guards. The C1, C2 etc. represent the
+ communication associated with that branch, and may be either a send()
+ or a get(). The S1, S2 etc. represent the blocks of statements
+ associated with that branch. They are executed if that branch is
+ successful. The "[]" hints at the fact that the guards are all evaluated
+ in parallel (as opposed to sequentially in a common <I>if</I> statement).
+ <p>
+ While at least one of the branches is enabled, the construct continues
+ to evaluate and execute one of the enabled branches. If more than one
+ branch is enabled, the first branch to be able to rendezvous succeeds
+ and its statements are executed. Note that this construct is
+ nondeterministic as it may be  a race condition that determines
+ which branch is successful. The CIF is similar to the CDO except that
+ it is only evaluated once.
+ <p>
+ The communication part of a guarded communication statement can be
+ either a send() or a get(). There are thus two subclasses of this
+ class, each representing a guarded communication statement for one of
+ the communication primitives. The subclasses are ConditionalSend and
+ ConditionalReceive.
+ <p>
+ If more than one branch is enabled, each enabled branch is executed
+ in a separate thread. For rendezvous, the receiver is the key
+ synchronization point.
+ <p>
+ Conditional branches are designed to be used once. Upon instantiation,
+ they are given the guard, the port and channel over which to communicate,
+ and the identification number of the branch according to the controller.
+ The port and the channel together define the CSPReceiver with which to
+ rendezvous. The ConditionalBranchController, that controls this branch,
+ is assumed to be contained by the container of the port.
+ <p>
+ @author  Neil Smyth
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (nsmyth)
+ @Pt.AcceptedRating Green (kienhuis)
+ */
 public abstract class ConditionalBranch {
     /** Create a guarded communication statement. This class contains
      *  all of the information necessary to carry out a guarded
@@ -120,13 +119,13 @@ public abstract class ConditionalBranch {
         if (!(tmp instanceof ConditionalBranchActor)) {
             throw new IllegalActionException(port,
                     "A conditional branch can only be created"
-                    + "with a port contained by ConditionalBranchActor");
+                            + "with a port contained by ConditionalBranchActor");
         }
 
         _branchID = branchID;
         _guard = guard;
         _controller = ((ConditionalBranchActor) tmp)
-            .getConditionalBranchController();
+                .getConditionalBranchController();
     }
 
     /** Create a guarded communication statement. This class contains

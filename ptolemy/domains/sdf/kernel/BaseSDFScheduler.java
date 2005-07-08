@@ -1,30 +1,30 @@
 /* A Scheduler infrastructure for the SDF domain
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.kernel;
 
 import java.util.Iterator;
@@ -51,20 +51,19 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 ///////////////////////////////////////////////////////////
 //// BaseSDFScheduler
 
 /**
-   This class factors code out of the SDF domain, for use in different
-   schedulers, so that they can be implemented in a consistent fashion.
+ This class factors code out of the SDF domain, for use in different
+ schedulers, so that they can be implemented in a consistent fashion.
 
-   @author Stephen Neuendorffer, Shuvra S. Bhattacharyya
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (neuendor)
-*/
+ @author Stephen Neuendorffer, Shuvra S. Bhattacharyya
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (neuendor)
+ */
 public abstract class BaseSDFScheduler extends Scheduler {
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
@@ -131,7 +130,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *  the rate dependency on a port
      */
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
-            Port port, String name, List dependents) throws IllegalActionException {
+            Port port, String name, List dependents)
+            throws IllegalActionException {
         if (_debugging && VERBOSE) {
             _debug("declaring dependency for rate variable " + name
                     + " in port " + port.getFullName());
@@ -139,8 +139,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
 
         Variable variable = (Variable) DFUtilities.getRateVariable(port, name);
         DependencyDeclaration declaration = (DependencyDeclaration) variable
-            .getAttribute("_SDFRateDependencyDeclaration",
-                    DependencyDeclaration.class);
+                .getAttribute("_SDFRateDependencyDeclaration",
+                        DependencyDeclaration.class);
 
         if (declaration == null) {
             try {
@@ -183,9 +183,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                         + receivers[channel].length);
             }
 
-            for (int destinationIndex = 0;
-                 destinationIndex < receivers[channel].length;
-                 destinationIndex++) {
+            for (int destinationIndex = 0; destinationIndex < receivers[channel].length; destinationIndex++) {
                 if (receivers[channel][destinationIndex] == receiver) {
                     if (_debugging && VERBOSE) {
                         _debug("-- returning channel number:" + channel);
@@ -206,9 +204,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                         + receivers[channel].length);
             }
 
-            for (int destinationIndex = 0;
-                 destinationIndex < insideReceivers[channel].length;
-                 destinationIndex++) {
+            for (int destinationIndex = 0; destinationIndex < insideReceivers[channel].length; destinationIndex++) {
                 if (insideReceivers[channel][destinationIndex] == receiver) {
                     return channel;
                 }
@@ -227,49 +223,50 @@ public abstract class BaseSDFScheduler extends Scheduler {
      */
     protected void _saveBufferSizes(final Map minimumBufferSizes) {
         Director director = (Director) getContainer();
-        final CompositeActor container = (CompositeActor) director.getContainer();
+        final CompositeActor container = (CompositeActor) director
+                .getContainer();
         // FIXME: These buffer sizes should be properties of input ports,
         // not properties of relations.
         ChangeRequest request = new ChangeRequest(this, "Record buffer sizes") {
-                protected void _execute() throws KernelException {
-                    Iterator relations = container.relationList().iterator();
+            protected void _execute() throws KernelException {
+                Iterator relations = container.relationList().iterator();
 
-                    while (relations.hasNext()) {
-                        Relation relation = (Relation) relations.next();
-                        Object bufferSizeObject = minimumBufferSizes.get(relation);
+                while (relations.hasNext()) {
+                    Relation relation = (Relation) relations.next();
+                    Object bufferSizeObject = minimumBufferSizes.get(relation);
 
-                        if (bufferSizeObject instanceof Integer) {
-                            int bufferSize = ((Integer) bufferSizeObject)
+                    if (bufferSizeObject instanceof Integer) {
+                        int bufferSize = ((Integer) bufferSizeObject)
                                 .intValue();
-                            DFUtilities.setOrCreate(relation, "bufferSize",
-                                    bufferSize);
+                        DFUtilities.setOrCreate(relation, "bufferSize",
+                                bufferSize);
 
-                            if (_debugging) {
-                                _debug("Adding bufferSize parameter to "
-                                        + relation.getName() + " with value "
-                                        + bufferSize);
-                            }
-                        } else if (bufferSizeObject instanceof String) {
-                            String bufferSizeExpression = (String) bufferSizeObject;
-                            DFUtilities.setOrCreate(relation, "bufferSize",
-                                    "\"" + bufferSizeExpression + "\"");
-
-                            if (_debugging) {
-                                _debug("Adding bufferSize parameter to "
-                                        + relation.getName() + " with expression "
-                                        + bufferSizeExpression);
-                            }
-                        } else if (bufferSizeObject == null) {
-                        } else {
-                            throw new InternalErrorException(
-                                    "Invalid value found "
-                                    + "in buffer size map.\nValue is of type "
-                                    + bufferSizeObject.getClass().getName()
-                                    + ".\nIt should be of type Integer or String.\n");
+                        if (_debugging) {
+                            _debug("Adding bufferSize parameter to "
+                                    + relation.getName() + " with value "
+                                    + bufferSize);
                         }
+                    } else if (bufferSizeObject instanceof String) {
+                        String bufferSizeExpression = (String) bufferSizeObject;
+                        DFUtilities.setOrCreate(relation, "bufferSize", "\""
+                                + bufferSizeExpression + "\"");
+
+                        if (_debugging) {
+                            _debug("Adding bufferSize parameter to "
+                                    + relation.getName() + " with expression "
+                                    + bufferSizeExpression);
+                        }
+                    } else if (bufferSizeObject == null) {
+                    } else {
+                        throw new InternalErrorException(
+                                "Invalid value found "
+                                        + "in buffer size map.\nValue is of type "
+                                        + bufferSizeObject.getClass().getName()
+                                        + ".\nIt should be of type Integer or String.\n");
                     }
                 }
-            };
+            }
+        };
 
         // Indicate that the change is non-persistent, so that
         // the UI doesn't prompt to save.
@@ -307,17 +304,17 @@ public abstract class BaseSDFScheduler extends Scheduler {
             if (port.isInput() && port.isOutput()) {
                 throw new NotSchedulableException(port,
                         "External port is both an input and an output, "
-                        + "which is not allowed in SDF.");
+                                + "which is not allowed in SDF.");
             } else if (port.isInput()) {
-                DFUtilities.setIfNotDefined(port, "tokenConsumptionRate",
-                        rate.intValue());
+                DFUtilities.setIfNotDefined(port, "tokenConsumptionRate", rate
+                        .intValue());
 
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenConsumptionRate to " + rate.intValue());
                 }
             } else if (port.isOutput()) {
-                DFUtilities.setIfNotDefined(port, "tokenProductionRate",
-                        rate.intValue());
+                DFUtilities.setIfNotDefined(port, "tokenProductionRate", rate
+                        .intValue());
 
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenProductionRate to " + rate.intValue());
@@ -327,7 +324,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
                 // Note that this is a very simple type of inference...
                 // However, in general, we don't want to try to
                 // flatten this model...
-                Iterator connectedPorts = port.insideSourcePortList().iterator();
+                Iterator connectedPorts = port.insideSourcePortList()
+                        .iterator();
                 IOPort foundOutputPort = null;
                 int inferredRate = 0;
 
@@ -337,7 +335,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     int newRate;
 
                     if (connectedPort.isOutput()) {
-                        newRate = DFUtilities.getTokenInitProduction(connectedPort);
+                        newRate = DFUtilities
+                                .getTokenInitProduction(connectedPort);
                     } else {
                         newRate = 0;
                     }
@@ -346,10 +345,12 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     // rate for any other internal port is correct.
                     if ((foundOutputPort != null) && (newRate != inferredRate)) {
                         throw new NotSchedulableException(
-                                "External output port " + port
-                                + " is connected on the inside to ports "
-                                + "with different initial production: "
-                                + foundOutputPort + " and " + connectedPort);
+                                "External output port "
+                                        + port
+                                        + " is connected on the inside to ports "
+                                        + "with different initial production: "
+                                        + foundOutputPort + " and "
+                                        + connectedPort);
                     }
 
                     foundOutputPort = connectedPort;
@@ -365,7 +366,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
             } else {
                 throw new NotSchedulableException(port,
                         "External port is neither an input and an output, "
-                        + "which is not allowed in SDF.");
+                                + "which is not allowed in SDF.");
             }
         }
     }
@@ -376,29 +377,30 @@ public abstract class BaseSDFScheduler extends Scheduler {
      */
     protected void _saveFiringCounts(final Map entityToFiringsPerIteration) {
         Director director = (Director) getContainer();
-        final CompositeActor container = (CompositeActor) director.getContainer();
+        final CompositeActor container = (CompositeActor) director
+                .getContainer();
 
         ChangeRequest request = new ChangeRequest(this,
                 "Record firings per iteration") {
-                protected void _execute() throws KernelException {
-                    Iterator entities = entityToFiringsPerIteration.keySet()
+            protected void _execute() throws KernelException {
+                Iterator entities = entityToFiringsPerIteration.keySet()
                         .iterator();
 
-                    while (entities.hasNext()) {
-                        Entity entity = (Entity) entities.next();
-                        int firingCount = ((Integer) entityToFiringsPerIteration
-                                .get(entity)).intValue();
-                        DFUtilities.setOrCreate(entity, "firingsPerIteration",
-                                firingCount);
+                while (entities.hasNext()) {
+                    Entity entity = (Entity) entities.next();
+                    int firingCount = ((Integer) entityToFiringsPerIteration
+                            .get(entity)).intValue();
+                    DFUtilities.setOrCreate(entity, "firingsPerIteration",
+                            firingCount);
 
-                        if (_debugging) {
-                            _debug("Adding firingsPerIteration parameter to "
-                                    + entity.getName() + " with value "
-                                    + firingCount);
-                        }
+                    if (_debugging) {
+                        _debug("Adding firingsPerIteration parameter to "
+                                + entity.getName() + " with value "
+                                + firingCount);
                     }
                 }
-            };
+            }
+        };
 
         // Indicate that the change is non-persistent, so that
         // the UI doesn't prompt to save.

@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.graph.layout;
 
 import java.awt.geom.Rectangle2D;
@@ -30,7 +30,6 @@ import java.util.Iterator;
 
 import diva.graph.GraphModel;
 import diva.graph.GraphUtilities;
-
 
 /**
  * Miscellaneous utility routines used in layout.
@@ -75,8 +74,8 @@ public final class LayoutUtilities {
     public static final void placeNoReroute(LayoutTarget target, Object node,
             double x, double y) {
         Rectangle2D bounds = target.getBounds(node);
-        target.translate(node, x - (bounds.getWidth() / 2) - bounds.getX(),
-                y - (bounds.getHeight() / 2) - bounds.getY());
+        target.translate(node, x - (bounds.getWidth() / 2) - bounds.getX(), y
+                - (bounds.getHeight() / 2) - bounds.getY());
     }
 
     /**
@@ -111,29 +110,29 @@ public final class LayoutUtilities {
      */
     private static final boolean checkCommon(Object composite, GraphModel model) {
         /*
-          for (Iterator i = g.nodes(); i.hasNext(); ) {
-          Node n = (Node)i.next();
-          if (target.getLayoutNode(n) == null) {
-          return false;
-          }
+         for (Iterator i = g.nodes(); i.hasNext(); ) {
+         Node n = (Node)i.next();
+         if (target.getLayoutNode(n) == null) {
+         return false;
+         }
 
-          for (Iterator j = n.outEdges(); j.hasNext(); ) {
-          Edge e = (Edge)j.next();
-          if ((target.getLayoutEdge(e) == null) ||
-          (target.getLayoutNode(e.getHead()) == null)) {
-          return false;
-          }
-          }
-          for (Iterator j = n.inEdges(); j.hasNext(); ) {
-          Edge e = (Edge)j.next();
-          if ((target.getLayoutEdge(e) == null) ||
-          (target.getLayoutNode(e.getTail()) == null)) {
-          return false;
-          }
-          }
-          }
-          return true;
-        */
+         for (Iterator j = n.outEdges(); j.hasNext(); ) {
+         Edge e = (Edge)j.next();
+         if ((target.getLayoutEdge(e) == null) ||
+         (target.getLayoutNode(e.getHead()) == null)) {
+         return false;
+         }
+         }
+         for (Iterator j = n.inEdges(); j.hasNext(); ) {
+         Edge e = (Edge)j.next();
+         if ((target.getLayoutEdge(e) == null) ||
+         (target.getLayoutNode(e.getTail()) == null)) {
+         return false;
+         }
+         }
+         }
+         return true;
+         */
 
         //XXX
         return true;
@@ -145,8 +144,8 @@ public final class LayoutUtilities {
      */
     public static final void routeVisibleEdges(Object composite,
             LayoutTarget target) {
-        for (Iterator i = GraphUtilities.localEdges(composite,
-                     target.getGraphModel()); i.hasNext();) {
+        for (Iterator i = GraphUtilities.localEdges(composite, target
+                .getGraphModel()); i.hasNext();) {
             Object edge = i.next();
 
             if (target.isEdgeVisible(edge)) {

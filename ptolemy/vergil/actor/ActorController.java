@@ -1,30 +1,30 @@
 /* The node controller for entities.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
@@ -80,34 +80,33 @@ import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.AbstractGlobalLayout;
 import diva.gui.GUIUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ActorController
 
 /**
-   This class provides interaction with nodes that represent Ptolemy II
-   entities.  It provides a double click binding and context menu
-   entry to edit the parameters of the node ("Configure"), a
-   command to get documentation, and a command to look inside.
-   It can have one of two access levels, FULL or PARTIAL.
-   If the access level is FULL, the the context menu also
-   contains a command to rename the node and to configure its ports.
-   In addition, a layout algorithm is applied so that
-   the figures for ports are automatically placed on the sides of the
-   figure for the entity.
-   <p>
-   NOTE: This class is abstract because it is missing the code for laying
-   out ports. Use the concrete subclasses ActorInstanceController
-   or ClassDefinitionController instead.
+ This class provides interaction with nodes that represent Ptolemy II
+ entities.  It provides a double click binding and context menu
+ entry to edit the parameters of the node ("Configure"), a
+ command to get documentation, and a command to look inside.
+ It can have one of two access levels, FULL or PARTIAL.
+ If the access level is FULL, the the context menu also
+ contains a command to rename the node and to configure its ports.
+ In addition, a layout algorithm is applied so that
+ the figures for ports are automatically placed on the sides of the
+ figure for the entity.
+ <p>
+ NOTE: This class is abstract because it is missing the code for laying
+ out ports. Use the concrete subclasses ActorInstanceController
+ or ClassDefinitionController instead.
 
-   @author Steve Neuendorffer and Edward A. Lee, Elaine Cheong
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-   @see ActorInstanceController
-   @see ClassDefinitionController
-*/
+ @author Steve Neuendorffer and Edward A. Lee, Elaine Cheong
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ @see ActorInstanceController
+ @see ClassDefinitionController
+ */
 public abstract class ActorController extends AttributeController {
     /** Create an entity controller associated with the specified graph
      *  controller with full access.
@@ -138,15 +137,15 @@ public abstract class ActorController extends AttributeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _lookInsideAction));
+                    _lookInsideAction));
 
             if (access == FULL) {
                 _editIconAction.setConfiguration(_configuration);
                 _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                        _editIconAction));
+                        _editIconAction));
                 _removeIconAction.setConfiguration(_configuration);
                 _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                        _removeIconAction));
+                        _removeIconAction));
             }
         }
 
@@ -155,23 +154,24 @@ public abstract class ActorController extends AttributeController {
          * only a Workspace argument) to be usable at the top level.
          _menuFactory.addMenuItemFactory(
          new MenuActionFactory(new SaveInFileAction()));
-        */
+         */
         //if (((BasicGraphController) getController()).getFrame() != null) {
-            // If we are in an applet, then we have no frame, so no need
-            // for a "Listen to Actor" or "Save in Library" menu choices.
-            // FIXME: this is not perfect, it would be better if we
-            // could just test if we are in an applet or else fix this
-            // so we have a frame.
-            // NOTE: This requires that the configuration be non null, or it
-            // will report an error.
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    new SaveInLibraryAction()));
+        // If we are in an applet, then we have no frame, so no need
+        // for a "Listen to Actor" or "Save in Library" menu choices.
+        // FIXME: this is not perfect, it would be better if we
+        // could just test if we are in an applet or else fix this
+        // so we have a frame.
+        // NOTE: This requires that the configuration be non null, or it
+        // will report an error.
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                new SaveInLibraryAction()));
 
-            _listenToActorAction = new ListenToActorAction((BasicGraphController) getController());
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _listenToActorAction));
-            _listenToActorAction.setConfiguration(_configuration);
-            //}
+        _listenToActorAction = new ListenToActorAction(
+                (BasicGraphController) getController());
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                _listenToActorAction));
+        _listenToActorAction.setConfiguration(_configuration);
+        //}
 
         // "Set Breakpoints"
         if (access == FULL) {
@@ -181,7 +181,8 @@ public abstract class ActorController extends AttributeController {
             // We should use reflection to check this so that
             // this class does not require SDFDirector.
             // See $PTII/doc/coding/debugging.htm
-            _breakpointDialogFactory = new BreakpointDialogFactory((BasicGraphController) getController());
+            _breakpointDialogFactory = new BreakpointDialogFactory(
+                    (BasicGraphController) getController());
             _menuFactory.addMenuItemFactory(_breakpointDialogFactory);
         }
     }
@@ -219,15 +220,15 @@ public abstract class ActorController extends AttributeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _lookInsideAction));
+                    _lookInsideAction));
 
             if (_access == FULL) {
                 _editIconAction.setConfiguration(_configuration);
                 _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                        _editIconAction));
+                        _editIconAction));
                 _removeIconAction.setConfiguration(_configuration);
                 _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                        _removeIconAction));
+                        _removeIconAction));
             }
         }
     }
@@ -255,26 +256,29 @@ public abstract class ActorController extends AttributeController {
 
         if (direction == SwingConstants.SOUTH) {
             // The 1.0 argument is the padding.
-            label = new LabelFigure(string, font, 1.0, SwingConstants.SOUTH_WEST);
+            label = new LabelFigure(string, font, 1.0,
+                    SwingConstants.SOUTH_WEST);
 
             // Shift the label down so it doesn't
             // collide with ports.
             label.translateTo(x, y + 5);
 
             // Rotate the label.
-            AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2.0,
-                    x, y + 5);
+            AffineTransform rotate = AffineTransform.getRotateInstance(
+                    Math.PI / 2.0, x, y + 5);
             label.transform(rotate);
         } else if (direction == SwingConstants.EAST) {
             // The 1.0 argument is the padding.
-            label = new LabelFigure(string, font, 1.0, SwingConstants.SOUTH_WEST);
+            label = new LabelFigure(string, font, 1.0,
+                    SwingConstants.SOUTH_WEST);
 
             // Shift the label right so it doesn't
             // collide with ports.
             label.translateTo(x + 5, y);
         } else if (direction == SwingConstants.WEST) {
             // The 1.0 argument is the padding.
-            label = new LabelFigure(string, font, 1.0, SwingConstants.SOUTH_EAST);
+            label = new LabelFigure(string, font, 1.0,
+                    SwingConstants.SOUTH_EAST);
 
             // Shift the label left so it doesn't
             // collide with ports.
@@ -282,7 +286,8 @@ public abstract class ActorController extends AttributeController {
         } else { // Must be north.
 
             // The 1.0 argument is the padding.
-            label = new LabelFigure(string, font, 1.0, SwingConstants.SOUTH_WEST);
+            label = new LabelFigure(string, font, 1.0,
+                    SwingConstants.SOUTH_WEST);
 
             // Shift the label right so it doesn't
             // collide with ports.  It will probably
@@ -290,8 +295,8 @@ public abstract class ActorController extends AttributeController {
             label.translateTo(x, y - 5);
 
             // Rotate the label.
-            AffineTransform rotate = AffineTransform.getRotateInstance(-Math.PI / 2.0,
-                    x, y - 5);
+            AffineTransform rotate = AffineTransform.getRotateInstance(
+                    -Math.PI / 2.0, x, y - 5);
             label.transform(rotate);
         }
 
@@ -301,8 +306,11 @@ public abstract class ActorController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private BreakpointDialogFactory _breakpointDialogFactory;
+
     private ListenToActorAction _listenToActorAction;
+
     private PortDialogFactory _portDialogFactory;
+
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
 
     ///////////////////////////////////////////////////////////////////
@@ -338,8 +346,8 @@ public abstract class ActorController extends AttributeController {
 
             while (nodes.hasNext()) {
                 Port port = (Port) nodes.next();
-                StringAttribute cardinal = (StringAttribute) port.getAttribute(
-                        "_cardinal");
+                StringAttribute cardinal = (StringAttribute) port
+                        .getAttribute("_cardinal");
 
                 if (cardinal == null) {
                     if (!(port instanceof IOPort)) {
@@ -378,7 +386,7 @@ public abstract class ActorController extends AttributeController {
             }
 
             CompositeFigure figure = (CompositeFigure) getLayoutTarget()
-                .getVisualObject(node);
+                    .getVisualObject(node);
 
             _reOrderPorts(westPorts);
             _placePortFigures(figure, westPorts, SwingConstants.WEST);
@@ -414,8 +422,8 @@ public abstract class ActorController extends AttributeController {
                         try {
                             ordinal.setExpression(Integer.toString(size - 1));
                         } catch (Exception e) {
-                            MessageHandler.error("Error setting ordinal property",
-                                    e);
+                            MessageHandler.error(
+                                    "Error setting ordinal property", e);
                         }
 
                         ports.add(port);
@@ -425,8 +433,8 @@ public abstract class ActorController extends AttributeController {
                         try {
                             ordinal.setExpression(Integer.toString(0));
                         } catch (Exception e) {
-                            MessageHandler.error("Error setting ordinal property",
-                                    e);
+                            MessageHandler.error(
+                                    "Error setting ordinal property", e);
                         }
 
                         ports.add(0, port);
@@ -483,7 +491,7 @@ public abstract class ActorController extends AttributeController {
 
                     try {
                         showRate = ((Variable) showRateAttribute).getToken()
-                            .equals(BooleanToken.TRUE);
+                                .equals(BooleanToken.TRUE);
                     } catch (Exception ex) {
                         // Ignore.
                     }
@@ -494,33 +502,36 @@ public abstract class ActorController extends AttributeController {
                         Variable rateParameter = null;
 
                         if (((IOPort) port).isInput()) {
-                            rateParameter = (Variable) port.getAttribute(
-                                    "tokenConsumptionRate");
+                            rateParameter = (Variable) port
+                                    .getAttribute("tokenConsumptionRate");
 
                             if (rateParameter == null) {
                                 String altName = "_tokenConsumptionRate";
-                                rateParameter = (Variable) port.getAttribute(altName);
+                                rateParameter = (Variable) port
+                                        .getAttribute(altName);
                             }
                         } else if (((IOPort) port).isOutput()) {
-                            rateParameter = (Variable) port.getAttribute(
-                                    "tokenProductionRate");
+                            rateParameter = (Variable) port
+                                    .getAttribute("tokenProductionRate");
 
                             if (rateParameter == null) {
                                 String altName = "_tokenProductionRate";
-                                rateParameter = (Variable) port.getAttribute(altName);
+                                rateParameter = (Variable) port
+                                        .getAttribute(altName);
                             }
                         }
 
                         if (rateParameter != null) {
                             try {
-                                rateString = rateParameter.getToken().toString();
+                                rateString = rateParameter.getToken()
+                                        .toString();
                             } catch (KernelException ex) {
                                 // Ignore.
                             }
                         }
 
-                        LabelFigure labelFigure = _createPortLabelFigure(rateString,
-                                _portLabelFont, x, y, direction);
+                        LabelFigure labelFigure = _createPortLabelFigure(
+                                rateString, _portLabelFont, x, y, direction);
                         labelFigure.setFillPaint(Color.BLUE);
                         figure.add(labelFigure);
                     }
@@ -537,7 +548,8 @@ public abstract class ActorController extends AttributeController {
 
                     if (showAttribute instanceof Parameter) {
                         try {
-                            Token token = ((Parameter) showAttribute).getToken();
+                            Token token = ((Parameter) showAttribute)
+                                    .getToken();
 
                             if (token instanceof BooleanToken) {
                                 show = ((BooleanToken) token).booleanValue();
@@ -549,8 +561,7 @@ public abstract class ActorController extends AttributeController {
 
                     if (show) {
                         LabelFigure labelFigure = _createPortLabelFigure(port
-                                .getName(), _portLabelFont, x, y,
-                                direction);
+                                .getName(), _portLabelFont, x, y, direction);
                         figure.add(labelFigure);
                     }
                 }
@@ -579,8 +590,8 @@ public abstract class ActorController extends AttributeController {
 
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
-                MessageHandler.error(
-                        "Cannot listen to actor without a configuration.");
+                MessageHandler
+                        .error("Cannot listen to actor without a configuration.");
                 return;
             }
 
@@ -605,11 +616,11 @@ public abstract class ActorController extends AttributeController {
                 // child of the model window.  So, we create a new text
                 // effigy inside this one.  Specify model's effigy as
                 // a container for this new effigy.
-                Effigy textEffigy = new TextEffigy(effigy,
-                        effigy.uniqueName("debugListener" + object.getName()));
+                Effigy textEffigy = new TextEffigy(effigy, effigy
+                        .uniqueName("debugListener" + object.getName()));
 
-                DebugListenerTableau debugTableau = new DebugListenerTableau(textEffigy,
-                        textEffigy.uniqueName("debugListener"
+                DebugListenerTableau debugTableau = new DebugListenerTableau(
+                        textEffigy, textEffigy.uniqueName("debugListener"
                                 + object.getName()));
                 debugTableau.setDebuggable(object);
             } catch (KernelException ex) {
@@ -625,7 +636,9 @@ public abstract class ActorController extends AttributeController {
         }
 
         private Configuration _configuration;
+
         private BasicGraphController _controller;
+
         private NamedObj _target;
     }
 
@@ -638,15 +651,15 @@ public abstract class ActorController extends AttributeController {
 
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
-                MessageHandler.error(
-                        "Cannot look inside without a configuration.");
+                MessageHandler
+                        .error("Cannot look inside without a configuration.");
                 return;
             }
 

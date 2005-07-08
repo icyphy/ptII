@@ -1,34 +1,34 @@
 /* Plotter application that is capable of reading PlotML files.
 
-@Author: Edward A. Lee
+ @Author: Edward A. Lee
 
-@Version: $Id$
+ @Version: $Id$
 
-@Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.plot.plotml;
 
 import java.io.BufferedInputStream;
@@ -45,27 +45,26 @@ import ptolemy.plot.PlotBox;
 
 import com.microstar.xml.XmlException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PlotMLApplication
 
 /**
-   An application that can plot data in PlotML format from a URL or
-   from files specified on the command line.
-   To compile and run this application, do the following:
-   <pre>
-   javac -classpath ../.. PlotMLApplication.java
-   java -classpath ../.. ptolemy.plot.plotml.PlotMLApplication
-   </pre>
+ An application that can plot data in PlotML format from a URL or
+ from files specified on the command line.
+ To compile and run this application, do the following:
+ <pre>
+ javac -classpath ../.. PlotMLApplication.java
+ java -classpath ../.. ptolemy.plot.plotml.PlotMLApplication
+ </pre>
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating red (eal)
-   @Pt.AcceptedRating red (cxh)
-   @see PlotBox
-   @see Plot
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating red (eal)
+ @Pt.AcceptedRating red (cxh)
+ @see PlotBox
+ @see Plot
+ */
 public class PlotMLApplication extends PlotApplication {
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.
@@ -89,8 +88,7 @@ public class PlotMLApplication extends PlotApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public PlotMLApplication(PlotBox plot, String[] args)
-            throws Exception {
+    public PlotMLApplication(PlotBox plot, String[] args) throws Exception {
         super(plot, args);
     }
 
@@ -108,15 +106,15 @@ public class PlotMLApplication extends PlotApplication {
     public static void main(final String[] args) {
         try {
             Runnable doActions = new Runnable() {
-                    public void run() {
-                        try {
-                            new PlotMLApplication(new Plot(), args);
-                        } catch (Exception ex) {
-                            System.err.println(ex.toString());
-                            ex.printStackTrace();
-                        }
+                public void run() {
+                    try {
+                        new PlotMLApplication(new Plot(), args);
+                    } catch (Exception ex) {
+                        System.err.println(ex.toString());
+                        ex.printStackTrace();
                     }
-                };
+                }
+            };
 
             // NOTE: Using invokeAndWait() here risks causing
             // deadlock.  However, the Sun Tutorial recommends calling
@@ -143,25 +141,34 @@ public class PlotMLApplication extends PlotApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     protected void _about() {
-        JOptionPane.showMessageDialog(this,
-                "PlotMLApplication class\n" + "By: Edward A. Lee "
-                + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
-                + ", Build: $Id$\n\n"
-                + "For more information, see\n"
-                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                + "Copyright (c) 1997-2005, "
-                + "The Regents of the University of California.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane
+                .showMessageDialog(
+                        this,
+                        "PlotMLApplication class\n"
+                                + "By: Edward A. Lee "
+                                + "and Christopher Hylands\n"
+                                + "Version "
+                                + PlotBox.PTPLOT_RELEASE
+                                + ", Build: $Id$\n\n"
+                                + "For more information, see\n"
+                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                                + "Copyright (c) 1997-2005, "
+                                + "The Regents of the University of California.",
+                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
-        JOptionPane.showMessageDialog(this,
-                "PlotMLApplication is a standalone plot " + " application.\n"
-                + "  File formats understood: PlotML and Ptplot ASCII.\n"
-                + "  Left mouse button: Zooming.\n\n" + _usage(),
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane
+                .showMessageDialog(
+                        this,
+                        "PlotMLApplication is a standalone plot "
+                                + " application.\n"
+                                + "  File formats understood: PlotML and Ptplot ASCII.\n"
+                                + "  Left mouse button: Zooming.\n\n"
+                                + _usage(), "About Ptolemy Plot",
+                        JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Read the specified stream.  This method checks to see whether
@@ -197,9 +204,9 @@ public class PlotMLApplication extends PlotApplication {
                 if (ex instanceof XmlException) {
                     XmlException xmlex = (XmlException) ex;
                     msg = "PlotMLApplication: failed to parse PlotML data:\n"
-                        + "line: " + xmlex.getLine() + ", column: "
-                        + xmlex.getColumn() + "\nIn entity: "
-                        + xmlex.getSystemId() + "\n";
+                            + "line: " + xmlex.getLine() + ", column: "
+                            + xmlex.getColumn() + "\nIn entity: "
+                            + xmlex.getSystemId() + "\n";
                 } else {
                     msg = "PlotMLApplication: failed to parse PlotML data:\n";
                 }

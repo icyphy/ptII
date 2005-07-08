@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.gui.toolbox;
 
 import java.awt.Color;
@@ -57,7 +57,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import diva.gui.BasicFrame;
-
 
 /**
  * A Visio-style tab box that uses a "window shade" metaphor instead
@@ -209,18 +208,18 @@ public class JShadePane extends JPanel {
     public void insertShade(String title, Icon icon, Component component,
             String tip, int index) {
         if ((icon != null) && icon instanceof ImageIcon) {
-            new ImageIcon(GrayFilter.createDisabledImage(
-                                  ((ImageIcon) icon).getImage()));
+            new ImageIcon(GrayFilter.createDisabledImage(((ImageIcon) icon)
+                    .getImage()));
         }
 
         JButton button = new JButton(title, icon);
         final String titleHandle = title;
         button.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    int i = indexOfShade(titleHandle);
-                    setSelectedIndex(i);
-                }
-            });
+            public void actionPerformed(ActionEvent e) {
+                int i = indexOfShade(titleHandle);
+                setSelectedIndex(i);
+            }
+        });
         button.setToolTipText(tip);
 
         //Add this shade to the data structure and also
@@ -377,9 +376,11 @@ public class JShadePane extends JPanel {
      * Borrowed from JTabbedPane.  Holds all the info about each shade.
      */
     private class Shade extends AccessibleContext implements Serializable,
-                                                             Accessible, AccessibleComponent {
+            Accessible, AccessibleComponent {
         JShadePane _parent;
+
         JButton _button;
+
         Component _component;
 
         Shade(JShadePane parent, JButton button, Component component) {
@@ -441,7 +442,7 @@ public class JShadePane extends JPanel {
 
         public Accessible getAccessibleChild(int i) {
             return (_component instanceof Accessible) ? (Accessible) _component
-                : null;
+                    : null;
         }
 
         public Locale getLocale() {
@@ -552,7 +553,7 @@ public class JShadePane extends JPanel {
 
         public Accessible getAccessibleAt(Point p) {
             return (_component instanceof Accessible) ? (Accessible) _component
-                : null;
+                    : null;
         }
 
         public boolean isFocusTraversable() {
@@ -583,72 +584,72 @@ public class JShadePane extends JPanel {
 
         JButton b1 = new JButton("rm sel");
         b1.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    int i = sp.getSelectedIndex();
+            public void actionPerformed(ActionEvent e) {
+                int i = sp.getSelectedIndex();
 
-                    if (i >= 0) {
-                        sp.removeShadeAt(i);
-                    }
+                if (i >= 0) {
+                    sp.removeShadeAt(i);
                 }
-            });
+            }
+        });
         btns.add(b1);
 
         JButton b2 = new JButton("rm sel-1");
         b2.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    int i = sp.getSelectedIndex() - 1;
+            public void actionPerformed(ActionEvent e) {
+                int i = sp.getSelectedIndex() - 1;
 
-                    if (i >= 0) {
-                        sp.removeShadeAt(i);
-                    }
+                if (i >= 0) {
+                    sp.removeShadeAt(i);
                 }
-            });
+            }
+        });
         btns.add(b2);
 
         JButton b3 = new JButton("rm sel+1");
         b3.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    int i = sp.getSelectedIndex() + 1;
+            public void actionPerformed(ActionEvent e) {
+                int i = sp.getSelectedIndex() + 1;
 
-                    if ((i >= 1) && (i < sp.getShadeCount())) {
-                        sp.removeShadeAt(i);
-                    }
+                if ((i >= 1) && (i < sp.getShadeCount())) {
+                    sp.removeShadeAt(i);
                 }
-            });
+            }
+        });
         btns.add(b3);
 
         JButton b4 = new JButton("rm all");
         b4.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    sp.removeAll();
-                }
-            });
+            public void actionPerformed(ActionEvent e) {
+                sp.removeAll();
+            }
+        });
         btns.add(b4);
 
         JButton b5 = new JButton("toggle sel");
         b5.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    int i = sp.getSelectedIndex();
+            public void actionPerformed(ActionEvent e) {
+                int i = sp.getSelectedIndex();
 
-                    if (i >= 0) {
-                        boolean en = sp.isEnabledAt(i);
-                        sp.setEnabledAt(i, !en);
-                    }
+                if (i >= 0) {
+                    boolean en = sp.isEnabledAt(i);
+                    sp.setEnabledAt(i, !en);
                 }
-            });
+            }
+        });
         btns.add(b5);
 
         JButton b6 = new JButton("toggle sel-1");
         b6.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    int i = sp.getSelectedIndex() - 1;
+            public void actionPerformed(ActionEvent e) {
+                int i = sp.getSelectedIndex() - 1;
 
-                    if (i >= 0) {
-                        boolean en = sp.isEnabledAt(i);
-                        sp.setEnabledAt(i, !en);
-                    }
+                if (i >= 0) {
+                    boolean en = sp.isEnabledAt(i);
+                    sp.setEnabledAt(i, !en);
                 }
-            });
+            }
+        });
         btns.add(b6);
 
         f.setSize(600, 400);

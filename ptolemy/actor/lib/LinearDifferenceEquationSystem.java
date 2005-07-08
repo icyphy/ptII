@@ -1,30 +1,30 @@
 /* Linear Difference Equation System.
 
-@Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -37,49 +37,48 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LinearDifferenceEquationSystem
 
 /**
-   Linear Difference Equation System.
+ Linear Difference Equation System.
 
-   <p>The linear state-space model implements a system whose behavior
-   is defined by:
+ <p>The linear state-space model implements a system whose behavior
+ is defined by:
 
-   <pre>
-   x(k+1) = Ax(k) + Bu(k)
-   y(k) = Cx(k) + Du(k)
-   x(0) = x0
-   </pre>
+ <pre>
+ x(k+1) = Ax(k) + Bu(k)
+ y(k) = Cx(k) + Du(k)
+ x(0) = x0
+ </pre>
 
-   where x is the state vector, u is the input vector, and y is the
-   output vector. (Note that in Ptolemy II, vectors are double matrices
-   with one column or one row.) The matrix coefficients must have the
-   following characteristics:
+ where x is the state vector, u is the input vector, and y is the
+ output vector. (Note that in Ptolemy II, vectors are double matrices
+ with one column or one row.) The matrix coefficients must have the
+ following characteristics:
 
-   <pre>
-   A must be an n-by-n matrix, where n is the number of states.
-   B must be an n-by-m matrix, where m is the number of inputs.
-   C must be an r-by-n matrix, where r is the number of outputs.
-   D must be an r-by-m matrix.
-   </pre>
+ <pre>
+ A must be an n-by-n matrix, where n is the number of states.
+ B must be an n-by-m matrix, where m is the number of inputs.
+ C must be an r-by-n matrix, where r is the number of outputs.
+ D must be an r-by-m matrix.
+ </pre>
 
-   For each firing, the actor accepts one input DoubleMatrixToken of
-   dimension <i>m</i> x 1, and generates one output DoubleMatrixToken of
-   dimension <i>r</i> x 1.
+ For each firing, the actor accepts one input DoubleMatrixToken of
+ dimension <i>m</i> x 1, and generates one output DoubleMatrixToken of
+ dimension <i>r</i> x 1.
 
-   <P>
-   In addition to producing the output <i>y</i> through port
-   <i>output</i>, the actor also produce the state values <i>x</i>
-   through port <i>state</i>.
+ <P>
+ In addition to producing the output <i>y</i> through port
+ <i>output</i>, the actor also produce the state values <i>x</i>
+ through port <i>state</i>.
 
-   @author Jie Liu and Elaine Cheong
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (celaine)
-   @Pt.AcceptedRating Yellow (celaine)
-*/
+ @author Jie Liu and Elaine Cheong
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Yellow (celaine)
+ @Pt.AcceptedRating Yellow (celaine)
+ */
 public class LinearDifferenceEquationSystem extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -116,22 +115,18 @@ public class LinearDifferenceEquationSystem extends Transformer {
         initialStates.setExpression("[0.0]");
         initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        double[][] zero = {
-            {
-                0.0
-            }
-        };
+        double[][] zero = { { 0.0 } };
         _x = new DoubleMatrixToken(zero);
         _initialStateChanged = true;
 
         // icon
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-75\" y=\"-30\" "
-                + "width=\"150\" height=\"60\" " + "style=\"fill:white\"/>\n"
-                + "<text x=\"-70\" y=\"-10\" " + "style=\"font-size:14\">\n"
-                + "x(k+1) = Ax(k) + Bu(k) " + "</text>\n"
-                + "<text x=\"-70\" y=\"10\" " + "style=\"font-size:14\">\n"
-                + "    y(k) = Cx(k) + Du(k)" + "</text>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-75\" y=\"-30\" " + "width=\"150\" height=\"60\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-70\" y=\"-10\" "
+                + "style=\"font-size:14\">\n" + "x(k+1) = Ax(k) + Bu(k) "
+                + "</text>\n" + "<text x=\"-70\" y=\"10\" "
+                + "style=\"font-size:14\">\n" + "    y(k) = Cx(k) + Du(k)"
+                + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -230,7 +225,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
         } else if (attribute == initialStates) {
             // The initialStates parameter should be a row vector.
             DoubleMatrixToken token = (DoubleMatrixToken) initialStates
-                .getToken();
+                    .getToken();
 
             if ((token.getColumnCount() != 1) || (token.getRowCount() < 1)) {
                 throw new IllegalActionException(this,
@@ -323,7 +318,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
         if (b.getRowCount() != n) {
             throw new IllegalActionException(this,
                     "The number of rows of the B matrix should equal to "
-                    + "the number of rows of the A matrix.");
+                            + "the number of rows of the A matrix.");
         }
 
         if (n == 1) {
@@ -347,7 +342,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
         if (c.getColumnCount() != n) {
             throw new IllegalActionException(this,
                     "The number of columns of the C matrix should equal to "
-                    + "the number of rows of the A matrix.");
+                            + "the number of rows of the A matrix.");
         }
 
         int r = c.getRowCount();
@@ -365,7 +360,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
         if (c.getRowCount() != d.getRowCount()) {
             throw new IllegalActionException(this,
                     "The number of rows of the D matrix should equal to "
-                    + "the number of rows of the C matrix.");
+                            + "the number of rows of the C matrix.");
         }
 
         DoubleMatrixToken x0 = (DoubleMatrixToken) initialStates.getToken();
@@ -373,7 +368,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
         if (x0.getRowCount() != n) {
             throw new IllegalActionException(this,
                     "The number of initial states should equal to "
-                    + "the number of columns of the A matrix.");
+                            + "the number of columns of the A matrix.");
         }
 
         // reset initial state.

@@ -1,30 +1,30 @@
 /** A graph editor frame for Ptolemy models that use the JNI interface.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package jni;
 
 import java.awt.event.ActionEvent;
@@ -40,22 +40,21 @@ import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ActorGraphTableau;
 import diva.graph.GraphPane;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ThalesGraphFrame
 
 /**
-   This is a graph editor frame for ptolemy models that use the JNI interface.
-   Given a composite entity and an instance of ThalesGraphTableau,
-   it creates an editor and populates the menus and toolbar.
-   This overrides the base class to associate with the editor the JNI interface.
+ This is a graph editor frame for ptolemy models that use the JNI interface.
+ Given a composite entity and an instance of ThalesGraphTableau,
+ it creates an editor and populates the menus and toolbar.
+ This overrides the base class to associate with the editor the JNI interface.
 
-   @author  Steve Neuendorffer, Vincent Arnould, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (vincent.arnould)
-   @Pt.AcceptedRating Red (vincent.arnould)
-*/
+ @author  Steve Neuendorffer, Vincent Arnould, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (vincent.arnould)
+ @Pt.AcceptedRating Red (vincent.arnould)
+ */
 public class ThalesGraphFrame extends ActorGraphFrame {
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -79,9 +78,8 @@ public class ThalesGraphFrame extends ActorGraphFrame {
         super._addMenus();
 
         // TRT Add JNI Menu
-        JMenuItem[] jniMenuItems = {
-            new JMenuItem("Generate C Interface", KeyEvent.VK_G)
-        };
+        JMenuItem[] jniMenuItems = { new JMenuItem("Generate C Interface",
+                KeyEvent.VK_G) };
 
         _jniMenu = new JMenu("JNI");
         _jniMenu.setMnemonic(KeyEvent.VK_J);
@@ -109,7 +107,8 @@ public class ThalesGraphFrame extends ActorGraphFrame {
         GraphPane result = super._createGraphPane();
 
         // Add the ArgumentDialogFactory to the context menu for actors
-        _controller.getEntityController().addMenuItemFactory(new ArgumentDialogFactory());
+        _controller.getEntityController().addMenuItemFactory(
+                new ArgumentDialogFactory());
 
         return result;
     }

@@ -1,30 +1,30 @@
 /* A polymorphic multiplexor with boolean select.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -36,32 +36,31 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// BooleanMultiplexor
 
 /**
-   A type polymorphic multiplexor with boolean valued select.
-   <p>If any input port has no token, the prefire method returns false and
-   the fire method is not called. Tokens are only consumed in the fire method,
-   where exactly one token is consumed from each input port, and one
-   of the tokens from either <i>trueInput</i> or <i>falseInput</i> is sent
-   to the output.  The token sent to the output
-   is determined by the <i>select</i> input, which must be a boolean value.
-   Because tokens are immutable, the same Token
-   is sent to the output, rather than a copy.
-   The <i>trueInput</i> and <i>falseInput</i> port may receive Tokens of
-   any type.
-   <p> This actor is different from the BooleanSelect actor, which consumes
-   one token from the control input and another token from either the
-   trueInput or the falseInput in each firing.
+ A type polymorphic multiplexor with boolean valued select.
+ <p>If any input port has no token, the prefire method returns false and
+ the fire method is not called. Tokens are only consumed in the fire method,
+ where exactly one token is consumed from each input port, and one
+ of the tokens from either <i>trueInput</i> or <i>falseInput</i> is sent
+ to the output.  The token sent to the output
+ is determined by the <i>select</i> input, which must be a boolean value.
+ Because tokens are immutable, the same Token
+ is sent to the output, rather than a copy.
+ The <i>trueInput</i> and <i>falseInput</i> port may receive Tokens of
+ any type.
+ <p> This actor is different from the BooleanSelect actor, which consumes
+ one token from the control input and another token from either the
+ trueInput or the falseInput in each firing.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
 public class BooleanMultiplexor extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.

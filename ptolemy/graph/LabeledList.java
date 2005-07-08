@@ -1,32 +1,32 @@
 /* A list of unique objects with an efficient mapping from the objects
-   into consecutive integer labels.
+ into consecutive integer labels.
 
-   Copyright (c) 2001-2005 The Regents of the University of Maryland.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2001-2005 The Regents of the University of Maryland.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.graph;
 
 import java.util.ArrayList;
@@ -37,43 +37,42 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// LabeledList
 
 /** A list of unique objects (<i>elements</i>) with a mapping from the elements
-    into consecutive integer labels. The labels are consecutive
-    integers between 0 and <em>N</em>-1 inclusive, where <em>N</em> is
-    the total number of elements in the list. This list features <em>O</em>(1)
-    list insertion, <em>O</em>(1) testing for membership in the list,
-    <em>O</em>(1) access of a list element from its associated label,
-    and <em>O</em>(1) access of a label from its corresponding element.
-    Removal from the list is, however, an <em>O</em>(<em>1</em>) operation.
-    The element labels are useful, for example, in creating mappings from
-    list elements into elements of arbitrary arrays.
-    More generally, element labels can be used to maintain arbitrary
-    <em>m</em>-dimensional matrices that are indexed by the list elements
-    (via the associated element labels).
+ into consecutive integer labels. The labels are consecutive
+ integers between 0 and <em>N</em>-1 inclusive, where <em>N</em> is
+ the total number of elements in the list. This list features <em>O</em>(1)
+ list insertion, <em>O</em>(1) testing for membership in the list,
+ <em>O</em>(1) access of a list element from its associated label,
+ and <em>O</em>(1) access of a label from its corresponding element.
+ Removal from the list is, however, an <em>O</em>(<em>1</em>) operation.
+ The element labels are useful, for example, in creating mappings from
+ list elements into elements of arbitrary arrays.
+ More generally, element labels can be used to maintain arbitrary
+ <em>m</em>-dimensional matrices that are indexed by the list elements
+ (via the associated element labels).
 
-    <p> Element labels maintain their consistency (remain constant) during
-    periods when no elements are removed from the list. When elements are
-    removed, the labels assigned to the remaining elements may
-    change (see {@link #remove(Object)} for details).
+ <p> Element labels maintain their consistency (remain constant) during
+ periods when no elements are removed from the list. When elements are
+ removed, the labels assigned to the remaining elements may
+ change (see {@link #remove(Object)} for details).
 
-    <p> Elements themselves must be non-null and distinct, as determined by the
-    <code>equals</code> method.
+ <p> Elements themselves must be non-null and distinct, as determined by the
+ <code>equals</code> method.
 
-    <p> This class supports all required operations of
-    the {@link java.util.List} interface, except
-    for the {@link java.util.List#subList(int, int)} operation,
-    which results in an UnsupportedOperationException.
+ <p> This class supports all required operations of
+ the {@link java.util.List} interface, except
+ for the {@link java.util.List#subList(int, int)} operation,
+ which results in an UnsupportedOperationException.
 
-    @author Shuvra S. Bhattacharyya
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ @author Shuvra S. Bhattacharyya
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class LabeledList implements List {
     /** Construct an empty list.
      */
@@ -258,7 +257,8 @@ public class LabeledList implements List {
             if (label == null) {
                 throw new IllegalArgumentException(
                         "The specified object is not"
-                        + " an element of this list. " + _elementDump(element));
+                                + " an element of this list. "
+                                + _elementDump(element));
             } else {
                 return label.intValue();
             }
@@ -439,7 +439,7 @@ public class LabeledList implements List {
     // in an error message.
     private String _elementDump(Object element) {
         return "The offending element follows:\n"
-            + ((element == null) ? "null" : element) + "\n";
+                + ((element == null) ? "null" : element) + "\n";
     }
 
     // Fill in the labels map with the appropriate indices of

@@ -1,30 +1,30 @@
 /* Query dialog.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.gui;
 
 import java.awt.Color;
@@ -78,30 +78,29 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-
 // Avoid importing any packages from ptolemy.* here so that we
 // can ship Ptplot.
 //////////////////////////////////////////////////////////////////////////
 //// Query
 
 /**
-   Create a query with various types of entry boxes and controls.  Each type
-   of entry box has a colon and space appended to the end of its label, to
-   ensure uniformity.
-   Here is one example of creating a query with a radio button:
-   <pre>
-   query = new Query();
-   getContentPane().add(query);
-   String[] options = {"water", "soda", "juice", "none"};
-   query.addRadioButtons("radio", "Radio buttons", options, "water");
-   </pre>
+ Create a query with various types of entry boxes and controls.  Each type
+ of entry box has a colon and space appended to the end of its label, to
+ ensure uniformity.
+ Here is one example of creating a query with a radio button:
+ <pre>
+ query = new Query();
+ getContentPane().add(query);
+ String[] options = {"water", "soda", "juice", "none"};
+ query.addRadioButtons("radio", "Radio buttons", options, "water");
+ </pre>
 
-   @author  Edward A. Lee, Manda Sutijono, Elaine Cheong
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author  Edward A. Lee, Manda Sutijono, Elaine Cheong
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class Query extends JPanel {
     /** Construct a panel with no entries in it.
      */
@@ -146,7 +145,8 @@ public class Query extends JPanel {
         _messageArea.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         _messageScrollPane = new JScrollPane(_messageArea);
-        _messageScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        _messageScrollPane
+                .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         // Get rid of the border.
         _messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -241,13 +241,13 @@ public class Query extends JPanel {
         // custom editor.  #$(#&$#(@#!!
         // combobox.setBackground(background);
         combobox.setEditor(new BasicComboBoxEditor() {
-                public Component getEditorComponent() {
-                    Component result = super.getEditorComponent();
-                    result.setBackground(background);
-                    result.setForeground(foreground);
-                    return result;
-                }
-            });
+            public Component getEditorComponent() {
+                Component result = super.getEditorComponent();
+                result.setBackground(background);
+                result.setForeground(foreground);
+                return result;
+            }
+        });
         combobox.setSelectedItem(defaultChoice);
         _addPair(name, lbl, combobox, combobox);
 
@@ -261,8 +261,7 @@ public class Query extends JPanel {
      *  @param label The label to attach to the entry.
      *  @param defaultColor The default color to use.
      */
-    public void addColorChooser(String name, String label,
-            String defaultColor) {
+    public void addColorChooser(String name, String label, String defaultColor) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
@@ -335,8 +334,7 @@ public class Query extends JPanel {
      *  @param foreground The foreground color for the text entry box.
      */
     public void addFileChooser(String name, String label, String defaultName,
-            URI base, File startingDirectory,
-            Color background, Color foreground) {
+            URI base, File startingDirectory, Color background, Color foreground) {
         addFileChooser(name, label, defaultName, base, startingDirectory, true,
                 false, background, foreground);
     }
@@ -696,8 +694,8 @@ public class Query extends JPanel {
      *   checkbox.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
-    public boolean booleanValue(String name)
-            throws NoSuchElementException, IllegalArgumentException {
+    public boolean booleanValue(String name) throws NoSuchElementException,
+            IllegalArgumentException {
         return getBooleanValue(name);
     }
 
@@ -718,9 +716,8 @@ public class Query extends JPanel {
      *   line.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
-    public double doubleValue(String name)
-            throws IllegalArgumentException, NoSuchElementException,
-            NumberFormatException {
+    public double doubleValue(String name) throws IllegalArgumentException,
+            NoSuchElementException, NumberFormatException {
         return getDoubleValue(name);
     }
 
@@ -736,8 +733,8 @@ public class Query extends JPanel {
      *   checkbox.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
-    public boolean getBooleanValue(String name)
-            throws NoSuchElementException, IllegalArgumentException {
+    public boolean getBooleanValue(String name) throws NoSuchElementException,
+            IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -769,8 +766,8 @@ public class Query extends JPanel {
      *   This is a runtime exception, so it need not be declared explicitly.
      *  @since Ptolemy II 3.1
      */
-    public char[] getCharArrayValue(String name)
-            throws NoSuchElementException, IllegalArgumentException {
+    public char[] getCharArrayValue(String name) throws NoSuchElementException,
+            IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -802,9 +799,8 @@ public class Query extends JPanel {
      *   line.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
-    public double getDoubleValue(String name)
-            throws IllegalArgumentException, NoSuchElementException,
-            NumberFormatException {
+    public double getDoubleValue(String name) throws IllegalArgumentException,
+            NoSuchElementException, NumberFormatException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -845,9 +841,8 @@ public class Query extends JPanel {
      *   choice, line, or slider.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
-    public int getIntValue(String name)
-            throws IllegalArgumentException, NoSuchElementException,
-            NumberFormatException {
+    public int getIntValue(String name) throws IllegalArgumentException,
+            NoSuchElementException, NumberFormatException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -920,8 +915,8 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the entry type does not
      *   have a string representation (this should not be thrown).
      */
-    public String getStringValue(String name)
-            throws NoSuchElementException, IllegalArgumentException {
+    public String getStringValue(String name) throws NoSuchElementException,
+            IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1020,9 +1015,8 @@ public class Query extends JPanel {
      *   choice, line, or slider.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
-    public int intValue(String name)
-            throws IllegalArgumentException, NoSuchElementException,
-            NumberFormatException {
+    public int intValue(String name) throws IllegalArgumentException,
+            NoSuchElementException, NumberFormatException {
         return getIntValue(name);
     }
 
@@ -1064,8 +1058,8 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the value does not parse
      *   to the appropriate type.
      */
-    public void set(String name, String value)
-            throws NoSuchElementException, IllegalArgumentException {
+    public void set(String name, String value) throws NoSuchElementException,
+            IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1204,7 +1198,7 @@ public class Query extends JPanel {
         if (columns <= 0) {
             throw new IllegalArgumentException(
                     "Query.setColumns() requires a strictly positive "
-                    + "argument.");
+                            + "argument.");
         }
 
         _columns = columns;
@@ -1410,8 +1404,8 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the entry type does not
      *   have a string representation (this should not be thrown).
      */
-    public String stringValue(String name)
-            throws NoSuchElementException, IllegalArgumentException {
+    public String stringValue(String name) throws NoSuchElementException,
+            IllegalArgumentException {
         return getStringValue(name);
     }
 
@@ -1722,7 +1716,9 @@ public class Query extends JPanel {
         }
 
         private JTextField _entryBox;
+
         private String _name;
+
         private String _defaultColor;
     }
 
@@ -1788,14 +1784,13 @@ public class Query extends JPanel {
             fileChooser.setApproveButtonMnemonic('S');
 
             if (_allowFiles && _allowDirectories) {
-                fileChooser.setFileSelectionMode(
-                        JFileChooser.FILES_AND_DIRECTORIES);
+                fileChooser
+                        .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             } else if (_allowFiles && !_allowDirectories) {
                 // This is the default.
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             } else if (!_allowFiles && _allowDirectories) {
-                fileChooser.setFileSelectionMode(
-                        JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             } else {
                 // Usually, we would use InternalErrorException here,
                 // but if we do, then this package would depend on kernel.util,
@@ -1814,7 +1809,8 @@ public class Query extends JPanel {
                                 .getCanonicalPath());
                     } catch (IOException ex) {
                         // If we can't get a path, then just use the name.
-                        _entryBox.setText(fileChooser.getSelectedFile().getName());
+                        _entryBox.setText(fileChooser.getSelectedFile()
+                                .getName());
                     }
                 } else {
                     // Relative file name.
@@ -1853,10 +1849,15 @@ public class Query extends JPanel {
         }
 
         private URI _base;
+
         private JTextField _entryBox;
+
         private String _name;
+
         private File _startingDirectory;
+
         private boolean _allowFiles;
+
         private boolean _allowDirectories;
     }
 

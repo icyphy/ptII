@@ -1,29 +1,29 @@
 /** A class representing the type of a RecordToken.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.component.data.type;
 
 import ptolemy.component.data.TupleToken;
@@ -38,19 +38,18 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TupleType
 
 /**
-   A class representing the type of a FunctionToken.
+ A class representing the type of a FunctionToken.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class TupleType extends StructuredType {
     /** Construct a new TupleType with the specified argument types
      *  and the given return type.  To leave the types of some fields
@@ -126,11 +125,12 @@ public class TupleType extends StructuredType {
         if (argumentTupleToken.length() == _elementTypeTerms.length) {
             try {
                 for (int i = 0; i < argumentTuple.length; i++) {
-                    resultArray[i] = getElementType(i).convert(argumentTuple[i]);
+                    resultArray[i] = getElementType(i)
+                            .convert(argumentTuple[i]);
                 }
             } catch (IllegalActionException ex) {
-                throw new IllegalActionException(null, ex,
-                        Token.notSupportedConversionMessage(token, "int"));
+                throw new IllegalActionException(null, ex, Token
+                        .notSupportedConversionMessage(token, "int"));
             }
         }
 
@@ -461,7 +461,7 @@ public class TupleType extends StructuredType {
         if (!(type instanceof TupleType)) {
             throw new IllegalArgumentException(
                     "TupleType.greatestLowerBound: The argument is not a "
-                    + "TupleType.");
+                            + "TupleType.");
         }
 
         TupleType TupleType = (TupleType) type;
@@ -472,7 +472,7 @@ public class TupleType extends StructuredType {
         if (TupleType.getElementCount() != argCount) {
             throw new IllegalArgumentException(
                     "Types are not comparable because they have"
-                    + " different numbers of arguments");
+                            + " different numbers of arguments");
         }
 
         Type[] types = new Type[argCount];
@@ -486,8 +486,8 @@ public class TupleType extends StructuredType {
             } else if (type2 == null) {
                 types[i] = type1;
             } else {
-                types[i] = (Type) TypeLattice.lattice().greatestLowerBound(type1,
-                        type2);
+                types[i] = (Type) TypeLattice.lattice().greatestLowerBound(
+                        type1, type2);
             }
         }
 
@@ -516,7 +516,7 @@ public class TupleType extends StructuredType {
         if (TupleType.getElementCount() != argCount) {
             throw new IllegalArgumentException(
                     "Types are not comparable because they have"
-                    + " different numbers of arguments");
+                            + " different numbers of arguments");
         }
 
         Type[] types = new Type[argCount];
@@ -668,14 +668,15 @@ public class TupleType extends StructuredType {
             if (!isSettable()) {
                 throw new IllegalActionException(
                         "TupleType$FieldTypeTerm.setValue: The type is not "
-                        + "settable.");
+                                + "settable.");
             }
 
             if (!_declaredType.isSubstitutionInstance((Type) e)) {
                 throw new IllegalActionException("FieldTypeTerm.setValue: "
                         + "Cannot update the field type of this TupleType "
                         + "to the new type." + " Field type: "
-                        + _declaredType.toString() + ", New type: " + e.toString());
+                        + _declaredType.toString() + ", New type: "
+                        + e.toString());
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
@@ -684,7 +685,7 @@ public class TupleType extends StructuredType {
                 } catch (CloneNotSupportedException cnse) {
                     throw new InternalErrorException(
                             "TupleType$FieldTypeTerm.setValue: "
-                            + "The specified type cannot be cloned.");
+                                    + "The specified type cannot be cloned.");
                 }
             } else {
                 ((StructuredType) _resolvedType).updateType((StructuredType) e);
@@ -701,6 +702,7 @@ public class TupleType extends StructuredType {
         ///////////////////////////////////////////////////////////////
         ////                  private inner variables              ////
         private Type _declaredType = null;
+
         private Type _resolvedType = null;
     }
 }

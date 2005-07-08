@@ -1,32 +1,32 @@
 /*
-  @Copyright (c) 2005-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2005-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
 
-*/
+ */
 package ptolemy.caltrop.ddi.util;
 
 import java.util.Map;
@@ -44,32 +44,30 @@ import caltrop.interpreter.ast.InputPattern;
 import caltrop.interpreter.ast.Statement;
 import caltrop.interpreter.environment.Environment;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DataFlowWithRatesActorInterpreter
 
 /**
-   This class extends the DataflowActorInterpreter, overriding the
-   checking of preconditions to assume that input tokens are present.
-   This interpreter is assumed to operate in a DDI where token rates
-   are published, such as SDF and DDF.
+ This class extends the DataflowActorInterpreter, overriding the
+ checking of preconditions to assume that input tokens are present.
+ This interpreter is assumed to operate in a DDI where token rates
+ are published, such as SDF and DDF.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-   @see caltrop.interpreter.ddi.util.DataflowActorInterpreter
-   @see caltrop.interpreter.ast.Actor
-   @see caltrop.interpreter.ast.Action
-   @see #actionSetup
-   @see #actionEvaluatePrecondition
-   @see #actionStep
-   @see #actionComputeOutputs
-   @see #actionClear
-*/
-public class DataflowWithRatesActorInterpreter 
-    extends DataflowActorInterpreter {
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ @see caltrop.interpreter.ddi.util.DataflowActorInterpreter
+ @see caltrop.interpreter.ast.Actor
+ @see caltrop.interpreter.ast.Action
+ @see #actionSetup
+ @see #actionEvaluatePrecondition
+ @see #actionStep
+ @see #actionComputeOutputs
+ @see #actionClear
+ */
+public class DataflowWithRatesActorInterpreter extends DataflowActorInterpreter {
 
     /**
      * Defines a new actor interpreter for the specified actor.
@@ -82,10 +80,9 @@ public class DataflowWithRatesActorInterpreter
      * @see caltrop.interpreter.InputChannel
      * @see caltrop.interpreter.OutputChannel
      */
-    public DataflowWithRatesActorInterpreter(
-            final Actor actor, final Context context,
-            final Environment actorEnv, final Map inputPortMap,
-            final Map outputPortMap) {
+    public DataflowWithRatesActorInterpreter(final Actor actor,
+            final Context context, final Environment actorEnv,
+            final Map inputPortMap, final Map outputPortMap) {
         super(actor, context, actorEnv, inputPortMap, outputPortMap);
     }
 
@@ -103,7 +100,7 @@ public class DataflowWithRatesActorInterpreter
         if (envAction == null) {
             throw new InterpreterException(
                     "DataflowActorInterpreter: Must call actionSetup() "
-                    + "before calling actionEvaluatePrecondition().");
+                            + "before calling actionEvaluatePrecondition().");
         }
 
         final Action action = envAction;
@@ -134,7 +131,7 @@ public class DataflowWithRatesActorInterpreter
         if (envAction == null) {
             throw new InterpreterException(
                     "DataflowActorInterpreter: Must call actionSetup() "
-                    + "before calling actionStep().");
+                            + "before calling actionStep().");
         }
 
         // First evaluate the action-level thunks, so that their value
@@ -149,25 +146,24 @@ public class DataflowWithRatesActorInterpreter
             final InputPattern inputPattern = inputPatterns[i];
 
             // FIXME: handle multiports
-            final InputChannel channel =
-                ((InputPort) (inputPortMap.get(inputPattern
-                                .getPortname()))).getChannel(0);
+            final InputChannel channel = ((InputPort) (inputPortMap
+                    .get(inputPattern.getPortname()))).getChannel(0);
 
             if (inputPattern.getRepeatExpr() == null) {
                 if (!channel.hasAvailable(inputPattern.getVariables().length)) {
-                    throw new InterpreterException(
-                            "Not enough inputs:" + 
-                            inputPattern.getVariables().length);
+                    throw new InterpreterException("Not enough inputs:"
+                            + inputPattern.getVariables().length);
                 }
             } else {
-                int repeatVal = 
-                    context.intValue(env.get(new EnvironmentKey(inputPattern.getPortname())));
+                int repeatVal = context.intValue(env.get(new EnvironmentKey(
+                        inputPattern.getPortname())));
 
-                if (!channel.hasAvailable(
-                            inputPattern.getVariables().length * repeatVal)) {
-                      throw new InterpreterException(
-                              "Not enough repeated inputs:" +
-                              inputPattern.getVariables().length * repeatVal);
+                if (!channel.hasAvailable(inputPattern.getVariables().length
+                        * repeatVal)) {
+                    throw new InterpreterException(
+                            "Not enough repeated inputs:"
+                                    + inputPattern.getVariables().length
+                                    * repeatVal);
                 }
             }
         }

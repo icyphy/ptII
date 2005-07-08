@@ -1,30 +1,30 @@
 /* Huffman Decoder.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.comm;
 
 import ptolemy.data.ArrayToken;
@@ -38,24 +38,23 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanCoder
 
 /**
-   Given a probability distribution and the corresponding alphabet,
-   decode the input using Huffman code and send the result to the output
-   port. Its base class HuffmanBasic generates the code book.
-   The decoder simply decode the input according to this code book.
+ Given a probability distribution and the corresponding alphabet,
+ decode the input using Huffman code and send the result to the output
+ port. Its base class HuffmanBasic generates the code book.
+ The decoder simply decode the input according to this code book.
 
-   @see HuffmanBasic
-   @see HuffmanCoder
-   @author Ye Zhou
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (zhouye)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @see HuffmanBasic
+ @see HuffmanCoder
+ @author Ye Zhou
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Red (zhouye)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class HuffmanDecoder extends HuffmanBasic {
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
@@ -90,7 +89,7 @@ public class HuffmanDecoder extends HuffmanBasic {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HuffmanDecoder newObject = (HuffmanDecoder) super.clone(workspace);
         InequalityTerm elementTerm = ((ArrayType) newObject.alphabet.getType())
-            .getElementTypeTerm();
+                .getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
     }

@@ -1,30 +1,30 @@
 /* An attribute with a reference to a polygon.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Polygon;
@@ -41,24 +41,23 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ResizablePolygonAttribute
 
 /**
-   This is an attribute that is rendered as a polygon.  The <i>vertices</i>
-   parameter is an array of doubles that specify the vertices of the polygon
-   in the form {x1, y1, x2, y2, ... }.
-   The <i>width</i> and <i>height</i> parameters, somewhat awkwardly,
-   are used to specify the overall width and height. The polygon will be
-   scaled to fit the specified width and height.
-   <p>
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ This is an attribute that is rendered as a polygon.  The <i>vertices</i>
+ parameter is an array of doubles that specify the vertices of the polygon
+ in the form {x1, y1, x2, y2, ... }.
+ The <i>width</i> and <i>height</i> parameters, somewhat awkwardly,
+ are used to specify the overall width and height. The polygon will be
+ scaled to fit the specified width and height.
+ <p>
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class ResizablePolygonAttribute extends FilledShapeAttribute {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -81,7 +80,8 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
 
         ArrayType type = new ArrayType(BaseType.DOUBLE);
         vertices.setTypeEquals(type);
-        vertices.setExpression("{0.0, 0.0, 50.0, 0.0, 25.0, 50.0, -25.0, 50.0}");
+        vertices
+                .setExpression("{0.0, 0.0, 50.0, 0.0, 25.0, 50.0, -25.0, 50.0}");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -124,9 +124,9 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
                 _inAttributeChanged = true;
 
                 double widthValue = ((DoubleToken) width.getToken())
-                    .doubleValue();
+                        .doubleValue();
                 double heightValue = ((DoubleToken) height.getToken())
-                    .doubleValue();
+                        .doubleValue();
                 _widthValue = widthValue;
                 _heightValue = heightValue;
                 _icon.setShape(_newShape());
@@ -160,9 +160,9 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
             // First, read vertex values and find the bounds.
             for (int j = 0; j < (length / 2); j++) {
                 xPoints[j] = ((DoubleToken) verticesValue.getElement(2 * j))
-                    .doubleValue();
-                yPoints[j] = ((DoubleToken) verticesValue.getElement((2 * j)
-                                      + 1)).doubleValue();
+                        .doubleValue();
+                yPoints[j] = ((DoubleToken) verticesValue
+                        .getElement((2 * j) + 1)).doubleValue();
 
                 if (xPoints[j] > xMax) {
                     xMax = xPoints[j];

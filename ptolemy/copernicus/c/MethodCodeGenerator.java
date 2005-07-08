@@ -1,28 +1,28 @@
 /* Class that encapsulates functionality for generating C code deom a
-   SootMethod.
+ SootMethod.
 
-   Copyright (c) 2002-2005 The University of Maryland.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2002-2005 The University of Maryland.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -43,19 +43,18 @@ import soot.jimple.JimpleBody;
 import soot.jimple.LookupSwitchStmt;
 import soot.jimple.TableSwitchStmt;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MethodCodeGenerator
 
 /** Class that encapsulates functionality for generating C code from a
-    SootMethod.
+ SootMethod.
 
-    @author Ankush Varma
-    @version $Id$
-    @since  Ptolemy II 2.0
-    @Pt.ProposedRating Red (<your email address>)
-    @Pt.AcceptedRating Red (ssb)
-*/
+ @author Ankush Varma
+ @version $Id$
+ @since  Ptolemy II 2.0
+ @Pt.ProposedRating Red (<your email address>)
+ @Pt.AcceptedRating Red (ssb)
+ */
 public class MethodCodeGenerator {
     public MethodCodeGenerator(Context context, HashMap requiredTypeMap) {
         _context = context;
@@ -97,7 +96,7 @@ public class MethodCodeGenerator {
 
             // Generate the method head.
             code.append(_generateMethodDeclaration(method,
-                                parameterAndThisLocals, thisLocalName));
+                    parameterAndThisLocals, thisLocalName));
 
             // Generate declarations for variables used for
             // exception-catching.
@@ -107,10 +106,10 @@ public class MethodCodeGenerator {
             code.append(_generateLocal(method, parameterAndThisLocals));
 
             code.append(_generateMethodBody(method, visitor, tracker,
-                                thisLocalName));
+                    thisLocalName));
 
             String description = "Function that implements Method "
-                + method.getSignature();
+                    + method.getSignature();
 
             code.append("} ");
             code.append(_comment(description));
@@ -143,16 +142,17 @@ public class MethodCodeGenerator {
     }
 
     /** Generate the declarations for variables used in exception-tracking.
-        @param tracker The ExceptionTracker for the method for which the
-        declarations are needed.
-        @return A string containing these declarations.
-    */
+     @param tracker The ExceptionTracker for the method for which the
+     declarations are needed.
+     @return A string containing these declarations.
+     */
     protected String _declareExceptionVariables(ExceptionTracker tracker) {
         StringBuffer code = new StringBuffer();
 
         if (tracker.trapsExist()) {
             code.append(_indent(1)
-                    + _comment("Variables used for catching exceptions.") + "\n");
+                    + _comment("Variables used for catching exceptions.")
+                    + "\n");
             code.append(_indent(1) + "extern jmp_buf env;\n");
             code.append(_indent(1) + "extern int epc;\n");
             code.append(_indent(1) + "jmp_buf caller_env;\n");
@@ -241,10 +241,10 @@ public class MethodCodeGenerator {
 
         code.append(_indent(3) + "default: longjmp(caller_env, caller_epc);\n");
 
-                                      code.append(_indent(2) + "}\n");
+        code.append(_indent(2) + "}\n");
 
-                                      code.append(_indent(1) + "}\n");
-                                      return code.toString();
+        code.append(_indent(1) + "}\n");
+        return code.toString();
     }
 
     /** Generate code to declare and initialize local variables.
@@ -363,7 +363,7 @@ public class MethodCodeGenerator {
         JimpleBody body = (JimpleBody) method.retrieveActiveBody();
         StringBuffer code = new StringBuffer();
         String description = "Function that implements Method "
-            + method.getSignature();
+                + method.getSignature();
         Type returnType = method.getReturnType();
         code.append(_comment(description));
         code.append(CNames.typeNameOf(returnType));
@@ -383,8 +383,7 @@ public class MethodCodeGenerator {
             parameterCount++;
         }
 
-        for (parameterIndex = 0; parameterIndex < method.getParameterCount();
-             parameterIndex++) {
+        for (parameterIndex = 0; parameterIndex < method.getParameterCount(); parameterIndex++) {
             if (parameterCount++ > 0) {
                 code.append(", ");
             }
@@ -452,7 +451,7 @@ public class MethodCodeGenerator {
         //Exception-catching in the body.
         Iterator units = body.getUnits().iterator();
         boolean handle_exceptions = tracker.trapsExist()
-            && (!Context.getSingleClassMode());
+                && (!Context.getSingleClassMode());
 
         while (units.hasNext()) {
             Unit unit = (Unit) (units.next());
@@ -551,7 +550,7 @@ public class MethodCodeGenerator {
             // All targets for switch statements must be added.
             else if (unit instanceof TableSwitchStmt) {
                 Iterator targets = ((TableSwitchStmt) unit).getTargets()
-                    .iterator();
+                        .iterator();
 
                 while (targets.hasNext()) {
                     visitor.addTarget((Unit) targets.next());
@@ -560,7 +559,7 @@ public class MethodCodeGenerator {
                 visitor.addTarget(((TableSwitchStmt) unit).getDefaultTarget());
             } else if (unit instanceof LookupSwitchStmt) {
                 Iterator targets = ((LookupSwitchStmt) unit).getTargets()
-                    .iterator();
+                        .iterator();
 
                 while (targets.hasNext()) {
                     visitor.addTarget((Unit) targets.next());
@@ -587,13 +586,14 @@ public class MethodCodeGenerator {
                 source = ((RefType) type).getSootClass();
             } else if ((type instanceof ArrayType)
                     && (((ArrayType) type).baseType instanceof RefType)) {
-                source = ((RefType) (((ArrayType) type).baseType)).getSootClass();
+                source = ((RefType) (((ArrayType) type).baseType))
+                        .getSootClass();
             }
 
             if (source != null) {
                 if (!_requiredTypeMap.containsKey(source)) {
-                    _requiredTypeMap.put(source,
-                            CNames.includeFileNameOf(source));
+                    _requiredTypeMap.put(source, CNames
+                            .includeFileNameOf(source));
                 }
             }
         }

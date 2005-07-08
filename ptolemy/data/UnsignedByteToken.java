@@ -1,31 +1,31 @@
 /* A token that contains an unsigned byte number in the range 0 through 255.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.data;
 
 import ptolemy.data.type.BaseType;
@@ -35,36 +35,35 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// UnsignedByteToken
 
 /**
-   A token that contains a byte number in the range 0 through 255.  This
-   UnsignedByteToken definition is in contrast to Java's definition of a
-   byte as a number in the range -128 through 127.
+ A token that contains a byte number in the range 0 through 255.  This
+ UnsignedByteToken definition is in contrast to Java's definition of a
+ byte as a number in the range -128 through 127.
 
-   <p>Overflow and underflow are handled by returning the result of all
-   operations modulo 256.  Thus, the result is always in the range 0
-   through 255.  Likewise, constructors of this class generate tokens
-   whose values are the argument modulo 256.  Note, for example, that
-   UnsignedByteToken((byte)(-100)) generates a UnsignedByteToken
-   representing the value 156, which is -100 modulo 256.
+ <p>Overflow and underflow are handled by returning the result of all
+ operations modulo 256.  Thus, the result is always in the range 0
+ through 255.  Likewise, constructors of this class generate tokens
+ whose values are the argument modulo 256.  Note, for example, that
+ UnsignedByteToken((byte)(-100)) generates a UnsignedByteToken
+ representing the value 156, which is -100 modulo 256.
 
-   <p>Note, also, that the byteValue() method returns a Java byte in the
-   range -128 through 127.  This is in contrast to the intValue(),
-   longValue(), doubleValue(), and complexValue() methods which all
-   return values in the range 0 through 255.  The value returned by
-   byteValue() is the value represented by the UnsignedByteToken but with
-   256 subtracted if this value is greater than 127.  In other words, the
-   result and the argument are equal modulo 256.
+ <p>Note, also, that the byteValue() method returns a Java byte in the
+ range -128 through 127.  This is in contrast to the intValue(),
+ longValue(), doubleValue(), and complexValue() methods which all
+ return values in the range 0 through 255.  The value returned by
+ byteValue() is the value represented by the UnsignedByteToken but with
+ 256 subtracted if this value is greater than 127.  In other words, the
+ result and the argument are equal modulo 256.
 
-   @author Winthrop Williams, Steve Neuendorffer, Contributor: Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (winthrop)
-*/
+ @author Winthrop Williams, Steve Neuendorffer, Contributor: Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (winthrop)
+ */
 public class UnsignedByteToken extends ScalarToken {
     /** Construct a token with byte 0.
      */
@@ -170,12 +169,12 @@ public class UnsignedByteToken extends ScalarToken {
         int compare = TypeLattice.compare(BaseType.UNSIGNED_BYTE, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "byte"));
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(token, "byte"));
         }
 
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "byte"));
+                "byte"));
     }
 
     /** Return the value in the token as a double.
@@ -344,8 +343,8 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return A new UnsignedByteToken containing the result.
      */
     protected ScalarToken _add(ScalarToken rightArgument) {
-        byte sum = (byte) (_value
-                + ((UnsignedByteToken) rightArgument).byteValue());
+        byte sum = (byte) (_value + ((UnsignedByteToken) rightArgument)
+                .byteValue());
         return new UnsignedByteToken(sum);
     }
 
@@ -355,8 +354,8 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return The bitwise AND.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
-        byte sum = (byte) (_value
-                & ((UnsignedByteToken) rightArgument).byteValue());
+        byte sum = (byte) (_value & ((UnsignedByteToken) rightArgument)
+                .byteValue());
         return new UnsignedByteToken(sum);
     }
 
@@ -374,8 +373,8 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return The bitwise OR.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
-        byte sum = (byte) (_value
-                | ((UnsignedByteToken) rightArgument).byteValue());
+        byte sum = (byte) (_value | ((UnsignedByteToken) rightArgument)
+                .byteValue());
         return new UnsignedByteToken(sum);
     }
 
@@ -385,8 +384,8 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return The bitwise XOR.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
-        byte sum = (byte) (_value
-                ^ ((UnsignedByteToken) rightArgument).byteValue());
+        byte sum = (byte) (_value ^ ((UnsignedByteToken) rightArgument)
+                .byteValue());
         return new UnsignedByteToken(sum);
     }
 
@@ -401,7 +400,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected ScalarToken _divide(ScalarToken rightArgument) {
         byte quotient = (byte) (unsignedConvert(_value) / unsignedConvert(((UnsignedByteToken) rightArgument)
-                                        .byteValue()));
+                .byteValue()));
         return new UnsignedByteToken(quotient);
     }
 
@@ -434,8 +433,9 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument) {
         UnsignedByteToken convertedArgument = (UnsignedByteToken) rightArgument;
-        return BooleanToken.getInstance(unsignedConvert(_value) < unsignedConvert(
-                                                convertedArgument.byteValue()));
+        return BooleanToken
+                .getInstance(unsignedConvert(_value) < unsignedConvert(convertedArgument
+                        .byteValue()));
     }
 
     /** Return a new token whose value is the value of this token
@@ -447,7 +447,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected ScalarToken _modulo(ScalarToken rightArgument) {
         byte remainder = (byte) (unsignedConvert(_value) % unsignedConvert(((UnsignedByteToken) rightArgument)
-                                         .byteValue()));
+                .byteValue()));
         return new UnsignedByteToken(remainder);
     }
 
@@ -462,7 +462,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         byte product = (byte) (unsignedConvert(_value) * unsignedConvert(((UnsignedByteToken) rightArgument)
-                                       .byteValue()));
+                .byteValue()));
         return new UnsignedByteToken(product);
     }
 
@@ -475,8 +475,8 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return A new UnsignedByteToken containing the difference modulo 256.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        byte difference = (byte) (unsignedConvert(_value)
-                - unsignedConvert(((UnsignedByteToken) rightArgument).byteValue()));
+        byte difference = (byte) (unsignedConvert(_value) - unsignedConvert(((UnsignedByteToken) rightArgument)
+                .byteValue()));
         return new UnsignedByteToken(difference);
     }
 

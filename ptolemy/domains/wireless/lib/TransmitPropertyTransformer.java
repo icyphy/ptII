@@ -1,30 +1,30 @@
 /* An actor that transforms transmission properties using another model.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib;
 
 import java.util.Iterator;
@@ -50,50 +50,49 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TransmitPropertyTransformer
 
 /**
-   This actor reads input tokens and sends them unmodified to the output;
-   its role is not to operate on input tokens, but rather to modify the
-   properties of a transmission.
-   <p>
-   This actor implements the PropertyTransformer interface, which provides
-   a callback that can be use to modify the transmit properties of a
-   transmission.  It register itself and its connected wireless
-   output port with the channel that the wireless output port uses.
-   The channel will call its transformProperties() method for each
-   transmission from the registed output port.
-   <p>
-   When transformProperties() is called, this actor sets the value
-   of three variables and then performs a complete execution of the
-   contained model. The three variables are <i>senderLocation</i>
-   (an array of doubles), <i>receiverLocation</i> (also an array of
-   doubles), and <i>properties</i> (a record token containing the
-   transmit properties to be modified). After execution of the contained
-   model, the (possibly modified) value of the record <i>properties</i>
-   is taken to be the modified properties. Thus, a contained model would
-   normally read the variable <i>properties</i>, change it, and use
-   a SetVariable actor to set the new value of <i>properties</i>.
-   <p>
-   This actor expects its output port to be connected directly
-   to the inside of a WirelessIOPort belonging to this actor's container.
-   It looks for this port in the preinitialize() method, and registers
-   with the channel specified by that port.  If there is no such port,
-   or no such channel, then preinitialize() throws an exception.
-   Note that since this connectivity is checked only during preinitialize(),
-   this actor does not support dynamically reconnecting its output port
-   during execution of the model.
+ This actor reads input tokens and sends them unmodified to the output;
+ its role is not to operate on input tokens, but rather to modify the
+ properties of a transmission.
+ <p>
+ This actor implements the PropertyTransformer interface, which provides
+ a callback that can be use to modify the transmit properties of a
+ transmission.  It register itself and its connected wireless
+ output port with the channel that the wireless output port uses.
+ The channel will call its transformProperties() method for each
+ transmission from the registed output port.
+ <p>
+ When transformProperties() is called, this actor sets the value
+ of three variables and then performs a complete execution of the
+ contained model. The three variables are <i>senderLocation</i>
+ (an array of doubles), <i>receiverLocation</i> (also an array of
+ doubles), and <i>properties</i> (a record token containing the
+ transmit properties to be modified). After execution of the contained
+ model, the (possibly modified) value of the record <i>properties</i>
+ is taken to be the modified properties. Thus, a contained model would
+ normally read the variable <i>properties</i>, change it, and use
+ a SetVariable actor to set the new value of <i>properties</i>.
+ <p>
+ This actor expects its output port to be connected directly
+ to the inside of a WirelessIOPort belonging to this actor's container.
+ It looks for this port in the preinitialize() method, and registers
+ with the channel specified by that port.  If there is no such port,
+ or no such channel, then preinitialize() throws an exception.
+ Note that since this connectivity is checked only during preinitialize(),
+ this actor does not support dynamically reconnecting its output port
+ during execution of the model.
 
-   @author Yang Zhao, Edward Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (pjb2e)
-*/
-public class TransmitPropertyTransformer extends LifeCycleManager
-    implements PropertyTransformer {
+ @author Yang Zhao, Edward Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (pjb2e)
+ */
+public class TransmitPropertyTransformer extends LifeCycleManager implements
+        PropertyTransformer {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -128,8 +127,8 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         properties.setVisibility(Settable.EXPERT);
 
         // Create the icon.
-        _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" + "</svg>\n");
 
         // To ensure that exported MoML does not represent this as
@@ -254,9 +253,9 @@ public class TransmitPropertyTransformer extends LifeCycleManager
 
                 Entity container = (Entity) (port.getContainer());
                 String channelName = ((WirelessIOPort) port).outsideChannel
-                    .stringValue();
+                        .stringValue();
                 CompositeEntity container2 = (CompositeEntity) container
-                    .getContainer();
+                        .getContainer();
 
                 if (container2 == null) {
                     throw new IllegalActionException(this,
@@ -269,12 +268,12 @@ public class TransmitPropertyTransformer extends LifeCycleManager
                     // Cache it here, so no need to do it again in wrapup().
                     _outputWirelessChannel = (WirelessChannel) channel;
                     _wirelessOutputPort = (WirelessIOPort) port;
-                    ((WirelessChannel) channel).registerPropertyTransformer(this,
-                            (WirelessIOPort) port);
+                    ((WirelessChannel) channel).registerPropertyTransformer(
+                            this, (WirelessIOPort) port);
                 } else {
                     throw new IllegalActionException(this,
                             "The connected output port does not refer to a "
-                            + "valid channel.");
+                                    + "valid channel.");
                 }
             }
         }
@@ -294,9 +293,9 @@ public class TransmitPropertyTransformer extends LifeCycleManager
 
                 Entity container = (Entity) (port.getContainer());
                 String channelName = ((WirelessIOPort) port).outsideChannel
-                    .stringValue();
+                        .stringValue();
                 CompositeEntity container2 = (CompositeEntity) container
-                    .getContainer();
+                        .getContainer();
 
                 if (container2 == null) {
                     throw new IllegalActionException(this,
@@ -309,12 +308,12 @@ public class TransmitPropertyTransformer extends LifeCycleManager
                     // Cache it here, so no need to do it again in wrapup().
                     _inputWirelessChannel = (WirelessChannel) channel;
                     _wirelessInputPort = (WirelessIOPort) port;
-                    ((WirelessChannel) channel).registerPropertyTransformer(this,
-                            (WirelessIOPort) port);
+                    ((WirelessChannel) channel).registerPropertyTransformer(
+                            this, (WirelessIOPort) port);
                 } else {
                     throw new IllegalActionException(this,
                             "The connected input port does not refer to a "
-                            + "valid channel.");
+                                    + "valid channel.");
                 }
             }
         }
@@ -381,8 +380,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         // Do not call the superclass wrapup(), as that will
         // call wrapup() on the diretor.
         if (_debugging) {
-            _debug(
-                    "Called wrapup(), which unregisters the property transformer.");
+            _debug("Called wrapup(), which unregisters the property transformer.");
         }
 
         if (_outputWirelessChannel != null) {
@@ -427,7 +425,8 @@ public class TransmitPropertyTransformer extends LifeCycleManager
 
         if (location == null) {
             throw new IllegalActionException(
-                    "Cannot determine location for port " + port.getName() + ".");
+                    "Cannot determine location for port " + port.getName()
+                            + ".");
         }
 
         return location.getLocation();

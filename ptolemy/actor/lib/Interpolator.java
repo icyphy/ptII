@@ -1,30 +1,30 @@
 /* An interpolator for a specified array of indexes and values.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
@@ -39,47 +39,46 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Interpolation;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Interpolator
 
 /**
-   Produce an interpolation based on the parameters.
-   This class uses the Interpolation class in the math package to compute
-   the interpolation.
-   The <i>values</i> parameter specifies a sequence of values
-   to produce at the output.  The <i>indexes</i> parameter specifies
-   when those values should be produced.
-   The values and indexes parameters must both contain
-   arrays, and have equal lengths or an exception will be thrown.
-   The <i>indexes</i> array must be increasing and non-negative.
-   The values are periodic if the <i>period</i> parameter contains a
-   positive value. In this case, the period must be greater than the
-   largest index, and values within the index range 0 to (period-1) are
-   repeated indefinitely.  If the period is zero, the values are not
-   periodic, and the values outside the range of the indexes are
-   considered to be 0.0.  The <i>order</i> parameter
-   specifies which order of interpolation to apply  whenever the
-   iteration count does not match an index in <i>indexes</i>.
-   The Interpolation class currently supports zero, first, and third
-   order interpolations. The default parameter are those set in the
-   Interpolation class.
-   <p>
-   This actor counts iterations.  Whenever the iteration count matches an entry
-   in the <i>indexes</i> array, the corresponding entry (at the same position)
-   in the <i>values</i> array is produced at the output.  Whenever the iteration
-   count does not match a value in the <i>indexes</i> array, an interpolation
-   of the values is produced at the output.
-   <p>
-   Output type is DoubleToken.
+ Produce an interpolation based on the parameters.
+ This class uses the Interpolation class in the math package to compute
+ the interpolation.
+ The <i>values</i> parameter specifies a sequence of values
+ to produce at the output.  The <i>indexes</i> parameter specifies
+ when those values should be produced.
+ The values and indexes parameters must both contain
+ arrays, and have equal lengths or an exception will be thrown.
+ The <i>indexes</i> array must be increasing and non-negative.
+ The values are periodic if the <i>period</i> parameter contains a
+ positive value. In this case, the period must be greater than the
+ largest index, and values within the index range 0 to (period-1) are
+ repeated indefinitely.  If the period is zero, the values are not
+ periodic, and the values outside the range of the indexes are
+ considered to be 0.0.  The <i>order</i> parameter
+ specifies which order of interpolation to apply  whenever the
+ iteration count does not match an index in <i>indexes</i>.
+ The Interpolation class currently supports zero, first, and third
+ order interpolations. The default parameter are those set in the
+ Interpolation class.
+ <p>
+ This actor counts iterations.  Whenever the iteration count matches an entry
+ in the <i>indexes</i> array, the corresponding entry (at the same position)
+ in the <i>values</i> array is produced at the output.  Whenever the iteration
+ count does not match a value in the <i>indexes</i> array, an interpolation
+ of the values is produced at the output.
+ <p>
+ Output type is DoubleToken.
 
-   @author Sarah Packman, Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (yuhong)
-   @Pt.AcceptedRating Yellow (yuhong)
-   @see ptolemy.math.Interpolation
-*/
+ @author Sarah Packman, Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Yellow (yuhong)
+ @Pt.AcceptedRating Yellow (yuhong)
+ @see ptolemy.math.Interpolation
+ */
 public class Interpolator extends SequenceSource {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -166,7 +165,7 @@ public class Interpolator extends SequenceSource {
 
             for (int i = 0; i < valuesValue.length(); i++) {
                 _values[i] = ((DoubleToken) valuesValue.getElement(i))
-                    .doubleValue();
+                        .doubleValue();
             }
 
             _interpolation.setValues(_values);
@@ -177,13 +176,14 @@ public class Interpolator extends SequenceSource {
             int previous = 0;
 
             for (int i = 0; i < indexesValue.length(); i++) {
-                _indexes[i] = ((IntToken) indexesValue.getElement(i)).intValue();
+                _indexes[i] = ((IntToken) indexesValue.getElement(i))
+                        .intValue();
 
                 // Check nondecreasing property.
                 if (_indexes[i] < previous) {
                     throw new IllegalActionException(this,
                             "Value of indexes is not nondecreasing "
-                            + "and nonnegative.");
+                                    + "and nonnegative.");
                 }
 
                 previous = _indexes[i];
@@ -236,7 +236,9 @@ public class Interpolator extends SequenceSource {
     ////                         private variables                 ////
     // Cache of indexes array value.
     private transient int[] _indexes;
+
     private int _iterationCount = 0;
+
     private Interpolation _interpolation;
 
     // Cache of values array value.

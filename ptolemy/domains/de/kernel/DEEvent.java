@@ -1,30 +1,30 @@
 /* A DE event in the DE domain.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.de.kernel;
 
 import ptolemy.actor.Actor;
@@ -32,48 +32,47 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DEEvent
 
 /**
-   This class defines the structure of events in the DE domain.
-   Conceptually, a DE event is a trigger that contains a tag and a reference to
-   its destination actor. The purpose of a DE event is to schedule its
-   destination actor to fire at the timestamp and microstep specified by
-   its tag.
-   <p>
-   A tag is a tuple of a timestamp and a microstep. The timestamp is the model
-   time when the event exists. The microstep defines the order of a sequence
-   of (simultaneous) events that exist at the same model time.
-   <p>
-   A DE event is associated with a destination, which is either an actor or
-   an IO port of an actor. A DE event, whose destination is an actor, is
-   called a <i>pure</i> event. A pure event does not have a destination IO
-   port. A DE event, whose destination is an IO port, is called a
-   <i>trigger</i> event. A trigger event has a destination actor, which is
-   the container of the destination IO port.
-   <p>
-   A DE event also has a depth, which is the topology information of its
-   destinations. For a pure event, the depth is that of its destination actor.
-   For a trigger event, the depth is that of its destination IO port. A larger
-   value of depth indicates a lower priority when the simulator processes
-   events with the same tag.
-   <p>
-   Two DE events can be compared to see which one happens first. The order
-   is defined by the relationship between their time stamps, microsteps, and
-   depths. See {@link DEEventQueue} for more details. DE events can be compared
-   by using the compareTo() method.
-   <p>
-   This class is final to improve the simulation performance because new
-   events get created and discarded through the whole simulation.
+ This class defines the structure of events in the DE domain.
+ Conceptually, a DE event is a trigger that contains a tag and a reference to
+ its destination actor. The purpose of a DE event is to schedule its
+ destination actor to fire at the timestamp and microstep specified by
+ its tag.
+ <p>
+ A tag is a tuple of a timestamp and a microstep. The timestamp is the model
+ time when the event exists. The microstep defines the order of a sequence
+ of (simultaneous) events that exist at the same model time.
+ <p>
+ A DE event is associated with a destination, which is either an actor or
+ an IO port of an actor. A DE event, whose destination is an actor, is
+ called a <i>pure</i> event. A pure event does not have a destination IO
+ port. A DE event, whose destination is an IO port, is called a
+ <i>trigger</i> event. A trigger event has a destination actor, which is
+ the container of the destination IO port.
+ <p>
+ A DE event also has a depth, which is the topology information of its
+ destinations. For a pure event, the depth is that of its destination actor.
+ For a trigger event, the depth is that of its destination IO port. A larger
+ value of depth indicates a lower priority when the simulator processes
+ events with the same tag.
+ <p>
+ Two DE events can be compared to see which one happens first. The order
+ is defined by the relationship between their time stamps, microsteps, and
+ depths. See {@link DEEventQueue} for more details. DE events can be compared
+ by using the compareTo() method.
+ <p>
+ This class is final to improve the simulation performance because new
+ events get created and discarded through the whole simulation.
 
-   @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (hyzheng)
-   @Pt.AcceptedRating Green (hyzheng)
-*/
+ @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Green (hyzheng)
+ */
 public final class DEEvent implements Comparable {
     /** Construct a pure event with the specified destination actor,
      *  timestamp, microstep, and depth.
@@ -184,7 +183,7 @@ public final class DEEvent implements Comparable {
      */
     public final boolean hasTheSameTagAs(DEEvent event) {
         return (timeStamp().equals(event.timeStamp()))
-            && (microstep() == event.microstep());
+                && (microstep() == event.microstep());
     }
 
     /** Return the destination IO port of this event. Note that
@@ -216,13 +215,14 @@ public final class DEEvent implements Comparable {
     public String toString() {
         if (_ioPort != null) {
             return "DEEvent(time = " + _timestamp + ", microstep = "
-                + _microstep + ", depth = " + _depth + ", dest = "
-                + ((NamedObj) _actor).getFullName() + "." + _ioPort.getName()
-                + ").";
+                    + _microstep + ", depth = " + _depth + ", dest = "
+                    + ((NamedObj) _actor).getFullName() + "."
+                    + _ioPort.getName() + ").";
         } else {
             return "DEEvent(time = " + _timestamp + ", microstep = "
-                + _microstep + ", depth = " + _depth + ", dest = "
-                + ((NamedObj) _actor).getFullName() + ")" + " -- A PURE EVENT.";
+                    + _microstep + ", depth = " + _depth + ", dest = "
+                    + ((NamedObj) _actor).getFullName() + ")"
+                    + " -- A PURE EVENT.";
         }
     }
 

@@ -1,30 +1,30 @@
 /* FIXME comment
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptinyos.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -35,7 +35,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// MicaActor
@@ -132,30 +131,37 @@ public class MicaActor extends PtinyOSActor {
     /** FIXME comment
      */
     public PortParameter temperature;
+
     public PortParameter microphone;
+
     public PortParameter accelx;
+
     public PortParameter accely;
+
     public PortParameter magx;
+
     public PortParameter magy;
 
     /* From tinyos-1.x/tos/platform/pc/sensorboard.h
 
-    enum {
-    TOS_ADC_PHOTO_PORT = 1,
-    TOS_ADC_TEMP_PORT = 2,
-    TOS_ADC_MIC_PORT = 3,
-    TOS_ADC_ACCEL_X_PORT = 4,
-    TOS_ADC_ACCEL_Y_PORT = 5,
-    TOS_ADC_MAG_X_PORT = 6,
-    // TOS_ADC_VOLTAGE_PORT = 7,  defined this in hardware.h
-    TOS_ADC_MAG_Y_PORT = 8,
-    };
-    */
+     enum {
+     TOS_ADC_PHOTO_PORT = 1,
+     TOS_ADC_TEMP_PORT = 2,
+     TOS_ADC_MIC_PORT = 3,
+     TOS_ADC_ACCEL_X_PORT = 4,
+     TOS_ADC_ACCEL_Y_PORT = 5,
+     TOS_ADC_MAG_X_PORT = 6,
+     // TOS_ADC_VOLTAGE_PORT = 7,  defined this in hardware.h
+     TOS_ADC_MAG_Y_PORT = 8,
+     };
+     */
 
     /** LED output ports
      */
     public TypedIOPort ledRed;
+
     public TypedIOPort ledGreen;
+
     public TypedIOPort ledYellow;
 
     ///////////////////////////////////////////////////////////////////

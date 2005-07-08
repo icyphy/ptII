@@ -1,30 +1,30 @@
 /* A Poisson process clock source.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.Director;
@@ -43,54 +43,53 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PoissonClock
 
 /**
-   This actor produces a signal that is piecewise constant, with transitions
-   between levels taken at times given by a Poisson process.
-   It has various uses.  Its simplest use in the DE domain
-   is to generate a sequence of events at intervals that are spaced
-   randomly, according to an exponential distribution.
-   In CT, it can be used to generate a piecewise constant waveform
-   with randomly spaced transition times.
-   In both domains, the output value can cycle through a set of values.
-   <p>
-   The mean time between events is given by the <i>meanTime</i> parameter.
-   An <i>event</i> is defined to be the transition to a new output value.
-   The default mean time is 1.0.
-   <p>
-   The <i>values</i> parameter must contain an ArrayToken, or an
-   exception will be thrown when it is set.
-   By default the elements of the array are IntTokens with values 1 and 0,
-   Thus, the default output value is always 1 or 0.
-   <p>
-   In the initialize() method and in each invocation of the fire() method,
-   the actor uses the fireAt() method of the director to request
-   the next firing.  The first firing is always at the start time, unless
-   the parameter <i>fireAtStart</i> is changed to <i>false</i>.
-   It may in addition fire at any time in response to a trigger
-   input.  On such firings, it simply repeats the most recent output
-   (or generates a new output if the time is suitable.)
-   Thus, the trigger, in effect, asks the actor what its current
-   output value is. Some directors, such as those in CT, may also fire the
-   actor at other times, without requiring a trigger input.  Again, the actor
-   simply repeats the previous output.
-   Thus, the output can be viewed as samples of the piecewise
-   constant waveform,
-   where the time of each sample is the time of the firing that
-   produced it.
-   <p>
-   The type of the output can be any token type.  This type is inferred from
-   the element type of the <i>values</i> parameter.
+ This actor produces a signal that is piecewise constant, with transitions
+ between levels taken at times given by a Poisson process.
+ It has various uses.  Its simplest use in the DE domain
+ is to generate a sequence of events at intervals that are spaced
+ randomly, according to an exponential distribution.
+ In CT, it can be used to generate a piecewise constant waveform
+ with randomly spaced transition times.
+ In both domains, the output value can cycle through a set of values.
+ <p>
+ The mean time between events is given by the <i>meanTime</i> parameter.
+ An <i>event</i> is defined to be the transition to a new output value.
+ The default mean time is 1.0.
+ <p>
+ The <i>values</i> parameter must contain an ArrayToken, or an
+ exception will be thrown when it is set.
+ By default the elements of the array are IntTokens with values 1 and 0,
+ Thus, the default output value is always 1 or 0.
+ <p>
+ In the initialize() method and in each invocation of the fire() method,
+ the actor uses the fireAt() method of the director to request
+ the next firing.  The first firing is always at the start time, unless
+ the parameter <i>fireAtStart</i> is changed to <i>false</i>.
+ It may in addition fire at any time in response to a trigger
+ input.  On such firings, it simply repeats the most recent output
+ (or generates a new output if the time is suitable.)
+ Thus, the trigger, in effect, asks the actor what its current
+ output value is. Some directors, such as those in CT, may also fire the
+ actor at other times, without requiring a trigger input.  Again, the actor
+ simply repeats the previous output.
+ Thus, the output can be viewed as samples of the piecewise
+ constant waveform,
+ where the time of each sample is the time of the firing that
+ produced it.
+ <p>
+ The type of the output can be any token type.  This type is inferred from
+ the element type of the <i>values</i> parameter.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (yuhong)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Yellow (yuhong)
+ */
 public class PoissonClock extends TimedSource {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -161,7 +160,7 @@ public class PoissonClock extends TimedSource {
             if (mean <= 0.0) {
                 throw new IllegalActionException(this,
                         "meanTime is required to be positive.  meanTime given: "
-                        + mean);
+                                + mean);
             }
         } else if (attribute == values) {
             ArrayToken val = (ArrayToken) (values.getToken());
@@ -232,7 +231,7 @@ public class PoissonClock extends TimedSource {
             getDirector().fireAt(this, currentTime);
         } else {
             double meanTimeValue = ((DoubleToken) meanTime.getToken())
-                .doubleValue();
+                    .doubleValue();
             double exp = -Math.log((1 - Math.random())) * meanTimeValue;
             Director director = getDirector();
             _nextFiringTime = director.getModelTime().add(exp);
@@ -250,7 +249,7 @@ public class PoissonClock extends TimedSource {
 
         if (_boundaryCrossed) {
             double meanTimeValue = ((DoubleToken) meanTime.getToken())
-                .doubleValue();
+                    .doubleValue();
             double exp = -Math.log((1 - Math.random())) * meanTimeValue;
             Director director = getDirector();
             _nextFiringTime = director.getModelTime().add(exp);
@@ -287,6 +286,7 @@ public class PoissonClock extends TimedSource {
 
     // The index of the current output.
     private transient int _tentativeCurrentOutputIndex;
+
     private transient int _currentOutputIndex;
 
     // The next firing time requested of the director.

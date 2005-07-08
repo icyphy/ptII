@@ -1,30 +1,30 @@
 /* The graph controller for interface automata models.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.fsm.ia;
 
 import java.awt.event.ActionEvent;
@@ -43,20 +43,19 @@ import ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.fsm.FSMGraphController;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomatonGraphController
 
 /**
-   A Graph Controller for interface automata models.  This controller adds
-   the "Compose With" menu item to the Graph menu.
+ A Graph Controller for interface automata models.  This controller adds
+ the "Compose With" menu item to the Graph menu.
 
-   @author Steve Neuendorffer, Yuhong Xiong, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (yuhong)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer, Yuhong Xiong, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (yuhong)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class InterfaceAutomatonGraphController extends FSMGraphController {
     /** Create a new controller with the specified directory of the current
      *  model. The directory is for setting the current directory of
@@ -107,8 +106,8 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
         public ComposeWithAction() {
             super("Compose With");
             putValue("tooltip", "Compose with another interface automaton");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_C));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+                    KeyEvent.VK_C));
         }
 
         /** Compose with another interface automaton by first opening a file
@@ -119,8 +118,8 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
         public void actionPerformed(ActionEvent e) {
             // NOTE: This code is mostly copied from Top.
             JFileChooser fileDialog = new JFileChooser();
-            fileDialog.setDialogTitle(
-                    "Select an interface automaton to compose with.");
+            fileDialog
+                    .setDialogTitle("Select an interface automaton to compose with.");
 
             if (_directory != null) {
                 fileDialog.setCurrentDirectory(_directory);
@@ -158,11 +157,11 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
 
                     // compose the two interface automata and show result
                     InterfaceAutomaton model1 = (InterfaceAutomaton) getFrame()
-                        .getModel();
+                            .getModel();
                     InterfaceAutomatonGraphFrame graphFrame2 = (InterfaceAutomatonGraphFrame) newAutomatonTableau
-                        .getFrame();
+                            .getFrame();
                     InterfaceAutomaton model2 = (InterfaceAutomaton) graphFrame2
-                        .getModel();
+                            .getModel();
 
                     InterfaceAutomaton composition = model1.compose(model2);
                     configuration.openModel(composition);

@@ -1,30 +1,30 @@
 /* An applet containing CSP Dining Philosophers demo.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 import java.applet.Applet;
@@ -47,32 +47,31 @@ import ptolemy.domains.csp.kernel.CSPDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-
 ///////////////////////////////////////////////////////////////
 //// DiningApplet
 
 /**
-   Applet containing Dining Philosophers demo. This demo uses the
-   both the time and conditional communication constructs of the CSP
-   domain in Ptolemy II. It represents the classic concurrency problem,
-   first described by Dijkstra in 1965, which has 5 philosophers sitting
-   around a table with one chopstick between each pair of philosophers. To
-   eat a philosopher must have both chopsticks beside it. Each philosopher
-   thinks for a while, then grabs one chopstick, then the other, eats for
-   a while and puts the chopsticks down. This cycle continues.
-   <p>
-   NOTE: This applet predates much of the infrastructure in Ptolemy II
-   for constructing applets, and also predates swing. It probably should
-   not be used as a model for how to construct applets in Ptolemy II.
-   <p>
-   @author Neil Smyth
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ Applet containing Dining Philosophers demo. This demo uses the
+ both the time and conditional communication constructs of the CSP
+ domain in Ptolemy II. It represents the classic concurrency problem,
+ first described by Dijkstra in 1965, which has 5 philosophers sitting
+ around a table with one chopstick between each pair of philosophers. To
+ eat a philosopher must have both chopsticks beside it. Each philosopher
+ thinks for a while, then grabs one chopstick, then the other, eats for
+ a while and puts the chopsticks down. This cycle continues.
+ <p>
+ NOTE: This applet predates much of the infrastructure in Ptolemy II
+ for constructing applets, and also predates swing. It probably should
+ not be used as a model for how to construct applets in Ptolemy II.
+ <p>
+ @author Neil Smyth
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class DiningApplet extends Applet implements Runnable,
-                                                    PhilosopherListener {
+        PhilosopherListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -147,59 +146,59 @@ public class DiningApplet extends Applet implements Runnable,
             Chopstick f5 = new Chopstick(univ, "Chopstick5");
 
             // Now connect up the Actors
-            univ.connect((TypedIOPort) p1.getPort("leftIn"),
-                    (TypedIOPort) f5.getPort("rightOut"));
-            univ.connect((TypedIOPort) p1.getPort("leftOut"),
-                    (TypedIOPort) f5.getPort("rightIn"));
-            univ.connect((TypedIOPort) p1.getPort("rightIn"),
-                    (TypedIOPort) f1.getPort("leftOut"));
-            univ.connect((TypedIOPort) p1.getPort("rightOut"),
-                    (TypedIOPort) f1.getPort("leftIn"));
+            univ.connect((TypedIOPort) p1.getPort("leftIn"), (TypedIOPort) f5
+                    .getPort("rightOut"));
+            univ.connect((TypedIOPort) p1.getPort("leftOut"), (TypedIOPort) f5
+                    .getPort("rightIn"));
+            univ.connect((TypedIOPort) p1.getPort("rightIn"), (TypedIOPort) f1
+                    .getPort("leftOut"));
+            univ.connect((TypedIOPort) p1.getPort("rightOut"), (TypedIOPort) f1
+                    .getPort("leftIn"));
 
-            univ.connect((TypedIOPort) p2.getPort("leftIn"),
-                    (TypedIOPort) f1.getPort("rightOut"));
-            univ.connect((TypedIOPort) p2.getPort("leftOut"),
-                    (TypedIOPort) f1.getPort("rightIn"));
-            univ.connect((TypedIOPort) p2.getPort("rightIn"),
-                    (TypedIOPort) f2.getPort("leftOut"));
-            univ.connect((TypedIOPort) p2.getPort("rightOut"),
-                    (TypedIOPort) f2.getPort("leftIn"));
+            univ.connect((TypedIOPort) p2.getPort("leftIn"), (TypedIOPort) f1
+                    .getPort("rightOut"));
+            univ.connect((TypedIOPort) p2.getPort("leftOut"), (TypedIOPort) f1
+                    .getPort("rightIn"));
+            univ.connect((TypedIOPort) p2.getPort("rightIn"), (TypedIOPort) f2
+                    .getPort("leftOut"));
+            univ.connect((TypedIOPort) p2.getPort("rightOut"), (TypedIOPort) f2
+                    .getPort("leftIn"));
 
-            univ.connect((TypedIOPort) p3.getPort("leftIn"),
-                    (TypedIOPort) f2.getPort("rightOut"));
+            univ.connect((TypedIOPort) p3.getPort("leftIn"), (TypedIOPort) f2
+                    .getPort("rightOut"));
 
-            univ.connect((TypedIOPort) p3.getPort("leftOut"),
-                    (TypedIOPort) f2.getPort("rightIn"));
+            univ.connect((TypedIOPort) p3.getPort("leftOut"), (TypedIOPort) f2
+                    .getPort("rightIn"));
 
-            univ.connect((TypedIOPort) p3.getPort("rightIn"),
-                    (TypedIOPort) f3.getPort("leftOut"));
+            univ.connect((TypedIOPort) p3.getPort("rightIn"), (TypedIOPort) f3
+                    .getPort("leftOut"));
 
-            univ.connect((TypedIOPort) p3.getPort("rightOut"),
-                    (TypedIOPort) f3.getPort("leftIn"));
+            univ.connect((TypedIOPort) p3.getPort("rightOut"), (TypedIOPort) f3
+                    .getPort("leftIn"));
 
-            univ.connect((TypedIOPort) p4.getPort("leftIn"),
-                    (TypedIOPort) f3.getPort("rightOut"));
+            univ.connect((TypedIOPort) p4.getPort("leftIn"), (TypedIOPort) f3
+                    .getPort("rightOut"));
 
-            univ.connect((TypedIOPort) p4.getPort("leftOut"),
-                    (TypedIOPort) f3.getPort("rightIn"));
+            univ.connect((TypedIOPort) p4.getPort("leftOut"), (TypedIOPort) f3
+                    .getPort("rightIn"));
 
-            univ.connect((TypedIOPort) p4.getPort("rightIn"),
-                    (TypedIOPort) f4.getPort("leftOut"));
+            univ.connect((TypedIOPort) p4.getPort("rightIn"), (TypedIOPort) f4
+                    .getPort("leftOut"));
 
-            univ.connect((TypedIOPort) p4.getPort("rightOut"),
-                    (TypedIOPort) f4.getPort("leftIn"));
+            univ.connect((TypedIOPort) p4.getPort("rightOut"), (TypedIOPort) f4
+                    .getPort("leftIn"));
 
-            univ.connect((TypedIOPort) p5.getPort("leftIn"),
-                    (TypedIOPort) f4.getPort("rightOut"));
+            univ.connect((TypedIOPort) p5.getPort("leftIn"), (TypedIOPort) f4
+                    .getPort("rightOut"));
 
-            univ.connect((TypedIOPort) p5.getPort("leftOut"),
-                    (TypedIOPort) f4.getPort("rightIn"));
+            univ.connect((TypedIOPort) p5.getPort("leftOut"), (TypedIOPort) f4
+                    .getPort("rightIn"));
 
-            univ.connect((TypedIOPort) p5.getPort("rightIn"),
-                    (TypedIOPort) f5.getPort("leftOut"));
+            univ.connect((TypedIOPort) p5.getPort("rightIn"), (TypedIOPort) f5
+                    .getPort("leftOut"));
 
-            univ.connect((TypedIOPort) p5.getPort("rightOut"),
-                    (TypedIOPort) f5.getPort("leftIn"));
+            univ.connect((TypedIOPort) p5.getPort("rightOut"), (TypedIOPort) f5
+                    .getPort("leftIn"));
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
             ex.printStackTrace();
@@ -215,8 +214,8 @@ public class DiningApplet extends Applet implements Runnable,
         Panel controlPanel = new Panel();
 
         /*
-          add( _createRunControls(3), "West" );
-        */
+         add( _createRunControls(3), "West" );
+         */
         add(controlPanel, "West");
 
         // Add a time display and go/stop buttons to control panel
@@ -249,10 +248,10 @@ public class DiningApplet extends Applet implements Runnable,
             _table.repaint();
 
             /* To slow down the model, uncomment this...
-               try {
-               Thread.currentThread().sleep(100);
-               } catch (InterruptedException e) {}
-            */
+             try {
+             Thread.currentThread().sleep(100);
+             } catch (InterruptedException e) {}
+             */
         }
     }
 
@@ -293,16 +292,24 @@ public class DiningApplet extends Applet implements Runnable,
 
     // The buttons and text fields on the control panel.
     public Label _currentTimeLabel;
+
     public Button _goButton;
+
     public Button _stopButton;
+
     public TextField _eatingRateBox;
+
     public TextField _thinkingRateBox;
 
     // the panel containing the animation for the applet.
     public TablePanel _table;
+
     public Philosopher[] _philosophers = new Philosopher[5];
+
     public TypedCompositeActor univ;
+
     public CSPDirector _localDirector;
+
     public Manager _manager;
 
     ///////////////////////////////////////////////////////////////////
@@ -323,7 +330,7 @@ public class DiningApplet extends Applet implements Runnable,
                 if (_localDirector != null) {
                     // get the current time from director.
                     double currentTime = _localDirector.getModelTime()
-                        .getDoubleValue();
+                            .getDoubleValue();
                     _currentTimeLabel.setText("Current time = "
                             + nf.format(currentTime));
 

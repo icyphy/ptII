@@ -1,32 +1,32 @@
 /*
-  @Copyright (c) 2004-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
 
-*/
+ */
 package ptolemy.caltrop.actors;
 
 import java.util.ArrayList;
@@ -72,31 +72,31 @@ import caltrop.interpreter.util.ImportUtil;
 ////AbstractCalInterpreter
 
 /**
-   This class is the base class for actors that interpret CAL source
-   inside the Ptolemy II framework. It configures itself according to an
-   {@link caltrop.interpreter.ast.Actor Actor} data structure (setting
-   up ports, parameters, types etc.) and then proceeds to execute as the
-   actor by interpreting the actions using the {@link
-   ptolemy.caltrop.ddi.util.DataflowActorInterpreter
-   DataflowActorInterpreter} infrastructure.
+ This class is the base class for actors that interpret CAL source
+ inside the Ptolemy II framework. It configures itself according to an
+ {@link caltrop.interpreter.ast.Actor Actor} data structure (setting
+ up ports, parameters, types etc.) and then proceeds to execute as the
+ actor by interpreting the actions using the {@link
+ ptolemy.caltrop.ddi.util.DataflowActorInterpreter
+ DataflowActorInterpreter} infrastructure.
 
-   <p> The actor interpreter is configured by a context that injects the
-   appropriate <tt>Token</tt>-based value system into the evaluation of
-   the actions. This is implemented in the class {@link
-   ptolemy.caltrop.PtolemyPlatform PtolemyPlatform}.
+ <p> The actor interpreter is configured by a context that injects the
+ appropriate <tt>Token</tt>-based value system into the evaluation of
+ the actions. This is implemented in the class {@link
+ ptolemy.caltrop.PtolemyPlatform PtolemyPlatform}.
 
-   <p> For further documentation on CAL, see the
-   <a href = "http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport">Language Report</a>.
+ <p> For further documentation on CAL, see the
+ <a href = "http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport">Language Report</a>.
 
-   @author J&#246;rn W. Janneck <jwj@acm.org>, Christopher Chang, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Red (cxh)
-   @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
-   @see caltrop.interpreter.Context
-   @see PtolemyPlatform
-*/
+ @author J&#246;rn W. Janneck <jwj@acm.org>, Christopher Chang, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
+ @see caltrop.interpreter.Context
+ @see PtolemyPlatform
+ */
 abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     /** Construct an actor in the given workspace.
@@ -134,7 +134,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         super.preinitialize();
 
         Environment env = new HashEnvironment(new CacheEnvironment(_env,
-                                                      _theContext), _theContext);
+                _theContext), _theContext);
 
         try {
             _bindActorParameters(env);
@@ -152,13 +152,13 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         try {
             isLegal = _ddi.isLegalActor();
         } catch (RuntimeException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Actor is not a valid " + _ddi.getName() + " actor.");
+            throw new IllegalActionException(this, ex, "Actor is not a valid "
+                    + _ddi.getName() + " actor.");
         }
 
         if (!_ddi.isLegalActor()) {
-            throw new IllegalActionException(this,
-                    "Actor is not a valid " + _ddi.getName() + " actor.");
+            throw new IllegalActionException(this, "Actor is not a valid "
+                    + _ddi.getName() + " actor.");
         }
 
         _ddi.setupActor();
@@ -220,7 +220,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
             if ((container != null)
                     && (container.getEntity(actor.getName()) != this)) {
                 _lastGeneratedActorName = ((CompositeEntity) getContainer())
-                    .uniqueName(actor.getName());
+                        .uniqueName(actor.getName());
                 setName(_lastGeneratedActorName);
             }
         }
@@ -229,13 +229,12 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     }
 
     protected void _attachActorIcon(String name) {
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
-                + "<text x=\"-3\" y=\"5\" " + "style=\"font-size:18\">\n" + "CAL\n"
-                + "</text>\n" + "<text x=\"-16\" y=\"17\" "
-                + "style=\"font-size:10\">\n" + name + "\n" + "</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-20\" y=\"-20\" " + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-3\" y=\"5\" "
+                + "style=\"font-size:18\">\n" + "CAL\n" + "</text>\n"
+                + "<text x=\"-16\" y=\"17\" " + "style=\"font-size:10\">\n"
+                + name + "\n" + "</text>\n" + "</svg>\n");
     }
 
     // Get the Ptolemy type that corresponds to the given type expression.
@@ -283,7 +282,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
                 // Note: this assumes that declarations are
                 // ordered by eager dependency
                 Object value = (valExpr == null) ? _theContext.createNull()
-                    : eval.evaluate(valExpr);
+                        : eval.evaluate(valExpr);
                 env.bind(var, value);
             }
         }
@@ -291,9 +290,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     // Get a DDI appropriate for the actor's director.
     private DDI _getDDI(Environment env) {
-        DDIFactory pluginFactory = (DDIFactory) _directorToDDIMap.get(getDirector()
-                .getClass()
-                .getName());
+        DDIFactory pluginFactory = (DDIFactory) _directorToDDIMap
+                .get(getDirector().getClass().getName());
 
         if (pluginFactory != null) {
             return pluginFactory.create(this, _actor, _theContext, env);
@@ -305,8 +303,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     // Create parameters of the Ptolemy actor to correspond with the
     // interface specified in the CAL code.
-    private void _refreshParameters()
-            throws IllegalActionException, NameDuplicationException {
+    private void _refreshParameters() throws IllegalActionException,
+            NameDuplicationException {
         Set parNames = new HashSet();
 
         if (_actor.getParameters() != null) {
@@ -335,8 +333,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     // Create ports of the Ptolemy actor to correspond with the
     // interface specified in the CAL code.
     private void _refreshTypedIOPorts(PortDecl[] ports, boolean isInput,
-            boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+            boolean isOutput) throws IllegalActionException,
+            NameDuplicationException {
         Set portNames = new HashSet();
 
         // Create new ports.
@@ -345,8 +343,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
             if ((port != null)
                     && ((port.isInput() != isInput)
-                            || (port.isOutput() != isOutput)
-                            || (port.isMultiport() != ports[i].isMultiport()))) {
+                            || (port.isOutput() != isOutput) || (port
+                            .isMultiport() != ports[i].isMultiport()))) {
                 port.setContainer(null);
                 port = null;
             }
@@ -361,7 +359,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
         // Release any ports which are no longer used.
         for (Iterator i = isInput ? inputPortList().iterator()
-                 : outputPortList().iterator(); i.hasNext();) {
+                : outputPortList().iterator(); i.hasNext();) {
             IOPort p = (IOPort) i.next();
 
             if (!portNames.contains(p.getName())) {
@@ -371,8 +369,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
         // Set the types.
         for (int i = 0; i < ports.length; i++) {
-            ((TypedIOPort) getPort(ports[i].getName())).setTypeEquals(_getPtolemyType(
-                                                                              ports[i].getType()));
+            ((TypedIOPort) getPort(ports[i].getName()))
+                    .setTypeEquals(_getPtolemyType(ports[i].getType()));
         }
     }
 
@@ -401,11 +399,11 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     // The default global environment.
     private final static Environment _globalEnv = PtolemyPlatform.thePlatform
-    .createGlobalEnvironment();
+            .createGlobalEnvironment();
 
     // The Ptolemy-specific context
     private final static Context _theContext = PtolemyPlatform.thePlatform
-    .context();
+            .context();
 
     // Map from director name to DDI.
     private final static Map _directorToDDIMap = new HashMap();
@@ -425,12 +423,12 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     static {
         importHandlers = new ArrayList();
         importHandlers.add(new EnvironmentFactoryImportHandler(
-                                   PtolemyPlatform.thePlatform));
+                PtolemyPlatform.thePlatform));
         importHandlers.add(new CalScriptImportHandler(
-                                   PtolemyPlatform.thePlatform));
+                PtolemyPlatform.thePlatform));
         importHandlers.add(new ClassLoadingImportHandler(
-                                   PtolemyPlatform.thePlatform,
-                                   AbstractCalInterpreter.class.getClassLoader()));
+                PtolemyPlatform.thePlatform, AbstractCalInterpreter.class
+                        .getClassLoader()));
     }
 
     // Map of substitutions from CAL types to Ptolemy types.
@@ -445,5 +443,6 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     }
 
     private String _lastGeneratedActorName = null;
+
     private final static String defaultNamePrefix = "CalInterpreter";
 }

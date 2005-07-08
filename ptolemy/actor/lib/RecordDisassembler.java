@@ -1,30 +1,30 @@
 /* An actor that disassembles a RecordToken to multiple outputs.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import java.util.Iterator;
@@ -48,29 +48,28 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// RecordDisassembler
 
 /**
-   On each firing, read one RecordToken from the input port and send out
-   the fields of the RecordToken to multiple output ports.
-   The labels for the RecordToken must match the names of the output ports.
-   If the received token contains more fields than the output
-   ports, the extra fields are ignored.
-   To use this class, instantiate it, and then add output ports (instances
-   of TypedIOPort).  This actor is polymorphic. The type constraint is that
-   the type of each output port is no less than the type of the corresponding
-   record field.
+ On each firing, read one RecordToken from the input port and send out
+ the fields of the RecordToken to multiple output ports.
+ The labels for the RecordToken must match the names of the output ports.
+ If the received token contains more fields than the output
+ ports, the extra fields are ignored.
+ To use this class, instantiate it, and then add output ports (instances
+ of TypedIOPort).  This actor is polymorphic. The type constraint is that
+ the type of each output port is no less than the type of the corresponding
+ record field.
 
-   @author Yuhong Xiong, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (yuhong)
-   @Pt.AcceptedRating Yellow (cxh)
-   @see RecordAssembler
-   @see ArrayElement
-*/
+ @author Yuhong Xiong, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (yuhong)
+ @Pt.AcceptedRating Yellow (cxh)
+ @see RecordAssembler
+ @see ArrayElement
+ */
 public class RecordDisassembler extends TypedAtomicActor {
     /** Construct a RecordDisassembler with the given container and name.
      *  @param container The container.
@@ -86,8 +85,8 @@ public class RecordDisassembler extends TypedAtomicActor {
 
         input = new TypedIOPort(this, "input", true, false);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"0\" y=\"0\" width=\"6\" "
                 + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
     }
 

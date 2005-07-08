@@ -1,31 +1,31 @@
 /* A token that contains a 2-D boolean matrix.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-There are currently no interesting operations implemented.
-*/
+ There are currently no interesting operations implemented.
+ */
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
@@ -38,19 +38,18 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// BooleanMatrixToken
 
 /**
-   A token that contains a 2-D boolean matrix.
+ A token that contains a 2-D boolean matrix.
 
-   @author Yuhong Xiong, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Yuhong Xiong, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class BooleanMatrixToken extends MatrixToken {
     /** Construct an BooleanMatrixToken with a one by one matrix. The
      *  only element in the matrix has value false.
@@ -120,7 +119,7 @@ public class BooleanMatrixToken extends MatrixToken {
         if (tokens.length != (rows * columns)) {
             throw new IllegalActionException(
                     "BooleanMatrixToken: The specified"
-                    + " array is not of the correct length");
+                            + " array is not of the correct length");
         }
 
         _rowCount = rows;
@@ -132,7 +131,7 @@ public class BooleanMatrixToken extends MatrixToken {
 
             if (token instanceof BooleanToken) {
                 _value[i / columns][i % columns] = ((BooleanToken) token)
-                    .booleanValue();
+                        .booleanValue();
             } else {
                 throw new IllegalActionException("BooleanMatrixToken: Element "
                         + i + " in the array with value " + token
@@ -182,8 +181,9 @@ public class BooleanMatrixToken extends MatrixToken {
         int compare = TypeLattice.compare(BaseType.BOOLEAN_MATRIX, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "[boolean]"));
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(token,
+                            "[boolean]"));
         }
 
         // try boolean
@@ -198,7 +198,7 @@ public class BooleanMatrixToken extends MatrixToken {
         // The argument is below BooleanMatrixToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "[boolean]"));
+                "[boolean]"));
     }
 
     /** Return true if the argument is an instance of BooleanMatrixToken
@@ -395,6 +395,8 @@ public class BooleanMatrixToken extends MatrixToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private boolean[][] _value = null;
+
     private int _rowCount = 0;
+
     private int _columnCount = 0;
 }

@@ -1,30 +1,30 @@
 /* Downsample a stream by the specified amount.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.data.IntToken;
@@ -35,33 +35,32 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DownSample
 
 /**
-   This actor downsamples an input stream by an integer factor by
-   removing tokens.  The downsample factor is given by the <i>factor</i>
-   parameter. On each firing, this actor consumes <i>factor</i> tokens from the
-   input and sends only one of them to the output.  The one sent
-   depends on the <i>phase</i> parameter.  If <i>phase</i> is 0, then
-   the most recent one (the last one consumed) is sent.  If <i>phase</i>
-   is 1, then the next most recent one is sent. The value of <i>phase</i>
-   can range up to <i>factor</i>-1, in which case the first one consumed
-   is sent. By default, the <i>factor</i> parameter is 2,
-   so the input sample rate is twice that of the output.
-   The default value for <i>phase</i> is 0.
-   <p>
-   This actor is data polymorphic. It can accept any token
-   type on the input.
+ This actor downsamples an input stream by an integer factor by
+ removing tokens.  The downsample factor is given by the <i>factor</i>
+ parameter. On each firing, this actor consumes <i>factor</i> tokens from the
+ input and sends only one of them to the output.  The one sent
+ depends on the <i>phase</i> parameter.  If <i>phase</i> is 0, then
+ the most recent one (the last one consumed) is sent.  If <i>phase</i>
+ is 1, then the next most recent one is sent. The value of <i>phase</i>
+ can range up to <i>factor</i>-1, in which case the first one consumed
+ is sent. By default, the <i>factor</i> parameter is 2,
+ so the input sample rate is twice that of the output.
+ The default value for <i>phase</i> is 0.
+ <p>
+ This actor is data polymorphic. It can accept any token
+ type on the input.
 
-   @see UpSample
-   @author Steve Neuendorffer, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
+ @see UpSample
+ @author Steve Neuendorffer, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
 public class DownSample extends SDFTransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -115,15 +114,15 @@ public class DownSample extends SDFTransformer {
             int factorValue = ((IntToken) factor.getToken()).intValue();
 
             if (factorValue <= 0) {
-                throw new IllegalActionException(this,
-                        "Invalid factor: " + factorValue);
+                throw new IllegalActionException(this, "Invalid factor: "
+                        + factorValue);
             }
         } else if (attribute == phase) {
             int phaseValue = ((IntToken) phase.getToken()).intValue();
 
             if (phaseValue < 0) {
-                throw new IllegalActionException(this,
-                        "Invalid phase: " + phaseValue);
+                throw new IllegalActionException(this, "Invalid phase: "
+                        + phaseValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -144,8 +143,8 @@ public class DownSample extends SDFTransformer {
         int phaseValue = ((IntToken) phase.getToken()).intValue();
 
         if (phaseValue >= factorValue) {
-            throw new IllegalActionException(this,
-                    "Phase is out of range: " + phaseValue);
+            throw new IllegalActionException(this, "Phase is out of range: "
+                    + phaseValue);
         }
 
         // Send the token.

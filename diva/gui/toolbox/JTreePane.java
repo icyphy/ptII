@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.gui.toolbox;
 
 import java.awt.Dimension;
@@ -45,7 +45,6 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import diva.gui.BasicFrame;
-
 
 /**
  * In the case of a small number of panes, a JTabbedPane or a JTreePane
@@ -107,28 +106,29 @@ public class JTreePane extends JSplitPane {
         _defaultPanel = new JPanel();
 
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new Entry(
-                                                                         this, null, name, _defaultPanel));
+                this, null, name, _defaultPanel));
         DefaultTreeModel model = new DefaultTreeModel(node);
         _tree = new JTree(model);
 
         TreeNode[] nodePath = node.getPath();
         TreePath path = new TreePath(nodePath);
         _tree.expandPath(path);
-        _tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        _tree.getSelectionModel().setSelectionMode(
+                TreeSelectionModel.SINGLE_TREE_SELECTION);
         _tree.addTreeSelectionListener(new TreeSelectionListener() {
-                public void valueChanged(TreeSelectionEvent e) {
-                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) _tree
+            public void valueChanged(TreeSelectionEvent e) {
+                DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) _tree
                         .getLastSelectedPathComponent();
 
-                    if (treeNode == null) {
-                        return;
-                    }
-
-                    Entry entry = (Entry) treeNode.getUserObject();
-                    setSelectedTitle(entry._title);
-                    refresh();
+                if (treeNode == null) {
+                    return;
                 }
-            });
+
+                Entry entry = (Entry) treeNode.getUserObject();
+                setSelectedTitle(entry._title);
+                refresh();
+            }
+        });
 
         _scrollPane = new JScrollPane(_tree);
         setTopComponent(_scrollPane);
@@ -231,13 +231,13 @@ public class JTreePane extends JSplitPane {
     public void insertEntry(String parent, String title, Icon icon,
             JComponent component, String tip) {
         /*
-          Icon disabledIcon = null;
-          if (icon != null && icon instanceof ImageIcon) {
-          disabledIcon = new ImageIcon(
-          GrayFilter.createDisabledImage(
-          ((ImageIcon)icon).getImage()));
-          }
-        */
+         Icon disabledIcon = null;
+         if (icon != null && icon instanceof ImageIcon) {
+         disabledIcon = new ImageIcon(
+         GrayFilter.createDisabledImage(
+         ((ImageIcon)icon).getImage()));
+         }
+         */
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode();
         newNode.setUserObject(new Entry(this, icon, title, component));
 
@@ -293,7 +293,7 @@ public class JTreePane extends JSplitPane {
      */
     public void removeEntry(String title) {
         // FIXME: this find the entry and then does nothing?
-        /* Entry entry = */ _findEntry(title);
+        /* Entry entry = */_findEntry(title);
 
         refresh();
     }
@@ -302,7 +302,7 @@ public class JTreePane extends JSplitPane {
      * Set the disabled icon for the button at the given index.
      */
     public void setDisabledIconAt(String title, Icon icon) {
-        /* Entry p = */ _findEntry(title);
+        /* Entry p = */_findEntry(title);
 
         //        p._button.setDisabledIcon(icon);
     }
@@ -377,7 +377,7 @@ public class JTreePane extends JSplitPane {
 
         while (nodes.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) nodes
-                .nextElement();
+                    .nextElement();
             Entry entry = (Entry) node.getUserObject();
 
             if ((entry != null) && (entry._title.equals(title))) {
@@ -393,9 +393,13 @@ public class JTreePane extends JSplitPane {
      */
     private class Entry extends Object {
         JTreePane _parent;
+
         Icon _icon;
+
         String _title;
+
         JComponent _component;
+
         boolean _enabled;
 
         Entry(JTreePane parent, Icon icon, String title, JComponent component) {

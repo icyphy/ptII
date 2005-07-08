@@ -1,35 +1,32 @@
 /* An actor that reads an array of images.
 
-@Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
-*/
-
-
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 
 package ptolemy.domains.gr.lib.vr;
-
 
 import ij.ImagePlus;
 import ij.ImageStack;
@@ -50,17 +47,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 ////StackReader
 /**
-   An actor that reads an array of images.
+ An actor that reads an array of images.
 
-   @see ptolemy.actor.lib.medicalimaging
+ @see ptolemy.actor.lib.medicalimaging
 
-   @author T. Crawford
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red
-   @Pt.AcceptedRating Red
+ @author T. Crawford
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red
+ @Pt.AcceptedRating Red
 
-*/
+ */
 public class StackToImage extends SDFTransformer {
     /**Construct an actor with the given container and name.
      * @param container The container
@@ -97,13 +94,13 @@ public class StackToImage extends SDFTransformer {
 
     //public FilePortParameter input;
     public Parameter xResolution;
-    public Parameter yResolution;
-    public Parameter stackSize;
 
+    public Parameter yResolution;
+
+    public Parameter stackSize;
 
     ////////////////////////////////////////////////////////////////////
     ////////                public methods                     ////////
-
 
     /** Output the data read in the prefire.
      *  @exception IllegalActionException If there's no director.
@@ -111,9 +108,9 @@ public class StackToImage extends SDFTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         _index++;
-        ObjectToken objectToken = (ObjectToken)input.get(0);
-        _currentImagePlus = (ImagePlus)objectToken.getValue();
-        for(int i = 0; i< _stackSize; i++){
+        ObjectToken objectToken = (ObjectToken) input.get(0);
+        _currentImagePlus = (ImagePlus) objectToken.getValue();
+        for (int i = 0; i < _stackSize; i++) {
             //_currentImagePlus.setSlice(_index);
             _currentImagePlus.setSlice(i);
             //System.out.println("Output Slice " + _index);
@@ -126,44 +123,42 @@ public class StackToImage extends SDFTransformer {
         }
     }
 
-
-    public void initialize() throws IllegalActionException
-    {
+    public void initialize() throws IllegalActionException {
         // _parameterPort =  input.getPort();
-        _xResolution = ((IntToken)xResolution.getToken()).intValue();
-        _yResolution = ((IntToken)yResolution.getToken()).intValue();
-        _stackSize = ((IntToken)stackSize.getToken()).intValue();
+        _xResolution = ((IntToken) xResolution.getToken()).intValue();
+        _yResolution = ((IntToken) yResolution.getToken()).intValue();
+        _stackSize = ((IntToken) stackSize.getToken()).intValue();
 
     }
 
     /*public boolean prefire() throws IllegalActionException {
-      ObjectToken objectToken = (ObjectToken)input.get(0);
-      _currentImagePlus = (ImagePlus)objectToken.getValue();
-      Token rateToken = input_tokenConsumptionRate.getToken();
-      int required = ((IntToken) rateToken).intValue();
+     ObjectToken objectToken = (ObjectToken)input.get(0);
+     _currentImagePlus = (ImagePlus)objectToken.getValue();
+     Token rateToken = input_tokenConsumptionRate.getToken();
+     int required = ((IntToken) rateToken).intValue();
 
-      // Derived classes may convert the input port to a multiport.
-      for (int i = 0; i < input.getWidth(); i++) {
-      if (!input.hasToken(i, required)) {
-      if (_debugging) {
-      _debug("Called prefire(), which returns false");
-      }
+     // Derived classes may convert the input port to a multiport.
+     for (int i = 0; i < input.getWidth(); i++) {
+     if (!input.hasToken(i, required)) {
+     if (_debugging) {
+     _debug("Called prefire(), which returns false");
+     }
 
-      return false;
-      }
-      }
+     return false;
+     }
+     }
 
-      return super.prefire();
+     return super.prefire();
 
-      }*/
+     }*/
 
-    public boolean postfire() throws IllegalActionException{
-        if (!_stopRequested && _index < _stackSize){
+    public boolean postfire() throws IllegalActionException {
+        if (!_stopRequested && _index < _stackSize) {
             if (_debugging) {
                 _debug("Called postfire(), which returns true");
             }
             return true;
-        }else{
+        } else {
             if (_debugging) {
                 _debug("Called postfire(), which returns false");
             }
@@ -182,10 +177,8 @@ public class StackToImage extends SDFTransformer {
     //Image that is readin
     private ColorProcessor _colorProcessor;
 
-
     //Image that is readin
     private ImageStack _imageStack;
-
 
     // Image that is read in.
     private Image _image;

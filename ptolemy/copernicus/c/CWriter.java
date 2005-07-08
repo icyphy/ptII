@@ -1,30 +1,30 @@
 /*
-  A transformer that writes C source code.
+ A transformer that writes C source code.
 
-  Copyright (c) 2002-2005 The University of Maryland.
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 2002-2005 The University of Maryland.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.c;
 
 import java.io.IOException;
@@ -37,14 +37,13 @@ import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 
-
 /** A transformer that writes C source code.
-    @author Shuvra S. Bhattacharyya
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ @author Shuvra S. Bhattacharyya
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class CWriter extends SceneTransformer {
     /** Test if the internal transform associated with this writer has
      *  completed.
@@ -84,7 +83,7 @@ public class CWriter extends SceneTransformer {
         // copernicus.c.options.
         String outDir = soot.PhaseOptions.getString(options, "outDir");
         String mainFile = soot.PhaseOptions.getString(options, "targetPackage")
-            + ".Main";
+                + ".Main";
 
         // Initialize generation of overridden methods.
         OverriddenMethodGenerator.init();
@@ -96,15 +95,14 @@ public class CWriter extends SceneTransformer {
         ArrayList classList = new ArrayList();
 
         /* Adds all classes to list. We just want main class.
-           for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-           classes.hasNext(); classList.add(classes.next()));
-        */
+         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
+         classes.hasNext(); classList.add(classes.next()));
+         */
         classList.add(Scene.v().getMainClass());
 
         StringBuffer sourcesList = new StringBuffer();
 
-        for (Iterator sootClasses = classList.iterator();
-             sootClasses.hasNext();) {
+        for (Iterator sootClasses = classList.iterator(); sootClasses.hasNext();) {
             SootClass sootClass = (SootClass) sootClasses.next();
 
             // Determine the base of the source code file names.
@@ -121,13 +119,13 @@ public class CWriter extends SceneTransformer {
              } else {
              fileName = "";
              }
-            */
+             */
             fileName = CNames.classNameToFileName(sootClass.getName());
 
             //fileName += sootClass.getName();
             // FIXME: move these out of the loop?
             HeaderFileGenerator hGenerator = new HeaderFileGenerator();
-            /*CodeFileGenerator cGenerator = */ new CodeFileGenerator();
+            /*CodeFileGenerator cGenerator = */new CodeFileGenerator();
             StubFileGenerator sGenerator = new StubFileGenerator();
             CNames.setup();
 
@@ -177,7 +175,7 @@ public class CWriter extends SceneTransformer {
              code = cGenerator.generate(sootClass);
              FileHandler.write(fileName + ".c", code);
              sourcesList.append(" " + fileName + ".c");
-            */
+             */
 
             // Generate all required files, including the files for the
             // main class.
@@ -202,8 +200,8 @@ public class CWriter extends SceneTransformer {
             System.out.println("Done generating C code files for " + fileName);
         }
 
-        MakefileWriter.addMakefileSubstitution("@cFiles@",
-                sourcesList.toString());
+        MakefileWriter.addMakefileSubstitution("@cFiles@", sourcesList
+                .toString());
 
         _completedTransform = true;
     }
@@ -217,6 +215,7 @@ public class CWriter extends SceneTransformer {
 
     // Flag that indicates whether transform has been completed.
     private boolean _completedTransform = false;
+
     private static CWriter instance = new CWriter();
 
     private CWriter() {

@@ -1,30 +1,30 @@
 /* Base class for graph controllers in Ptolemy.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.basic;
 
 import java.awt.EventQueue;
@@ -69,26 +69,25 @@ import diva.graph.GraphUtilities;
 import diva.graph.NodeController;
 import diva.gui.toolbox.MenuCreator;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// BasicGraphController
 
 /**
-   A base class for Ptolemy II graph controllers. This extends the base
-   class with an association with a configuration. The configuration is
-   central to a Ptolemy GUI, and is used by derived classes to perform
-   various functions such as opening models or their documentation.
-   The class also provides a strategy pattern interface for a controller
-   to add commands to the menu or toolbar of the frame it is controlling.
+ A base class for Ptolemy II graph controllers. This extends the base
+ class with an association with a configuration. The configuration is
+ central to a Ptolemy GUI, and is used by derived classes to perform
+ various functions such as opening models or their documentation.
+ The class also provides a strategy pattern interface for a controller
+ to add commands to the menu or toolbar of the frame it is controlling.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public abstract class BasicGraphController extends AbstractGraphController
-    implements DebugListener, ValueListener {
+        implements DebugListener, ValueListener {
     /** Create a new basic controller.
      */
     public BasicGraphController() {
@@ -167,11 +166,12 @@ public abstract class BasicGraphController extends AbstractGraphController
             // its own controller, which means its own context menu
             // and its own interactors.
             if (semanticObject instanceof NamedObj) {
-                List factoryList = ((NamedObj) semanticObject).attributeList(NodeControllerFactory.class);
+                List factoryList = ((NamedObj) semanticObject)
+                        .attributeList(NodeControllerFactory.class);
 
                 if (factoryList.size() > 0) {
                     NodeControllerFactory factory = (NodeControllerFactory) factoryList
-                        .get(0);
+                            .get(0);
                     NamedObjController controller = factory.create(this);
                     controller.setConfiguration(getConfiguration());
                     _initializeInteraction(controller);
@@ -210,7 +210,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _openBaseClassAction));
+                    _openBaseClassAction));
         }
     }
 
@@ -252,77 +252,76 @@ public abstract class BasicGraphController extends AbstractGraphController
             // Have to defer this to the event thread, or repaint
             // doesn't work properly.
             Runnable action = new Runnable() {
-                    public void run() {
-                        Locatable location = (Locatable) settable;
-                        Figure figure = getFigure(location);
-                        Point2D origin = figure.getOrigin();
-                        double originalUpperLeftX = origin.getX();
-                        double originalUpperLeftY = origin.getY();
+                public void run() {
+                    Locatable location = (Locatable) settable;
+                    Figure figure = getFigure(location);
+                    Point2D origin = figure.getOrigin();
+                    double originalUpperLeftX = origin.getX();
+                    double originalUpperLeftY = origin.getY();
 
-                        // NOTE: the following call may trigger an evaluation,
-                        // which results in another recursive call to this method.
-                        // Thus, we ignore the inside call and detect it with a
-                        // private variable.
-                        double[] newLocation;
+                    // NOTE: the following call may trigger an evaluation,
+                    // which results in another recursive call to this method.
+                    // Thus, we ignore the inside call and detect it with a
+                    // private variable.
+                    double[] newLocation;
 
-                        try {
-                            _inValueChanged = true;
-                            newLocation = location.getLocation();
-                        } finally {
-                            _inValueChanged = false;
-                        }
+                    try {
+                        _inValueChanged = true;
+                        newLocation = location.getLocation();
+                    } finally {
+                        _inValueChanged = false;
+                    }
 
-                        double translationX = newLocation[0]
-                            - originalUpperLeftX;
-                        double translationY = newLocation[1]
-                            - originalUpperLeftY;
+                    double translationX = newLocation[0] - originalUpperLeftX;
+                    double translationY = newLocation[1] - originalUpperLeftY;
 
-                        if ((translationX != 0.0) || (translationY != 0.0)) {
-                            // The translate method supposedly handles the required
-                            // repaint.
-                            figure.translate(translationX, translationY);
+                    if ((translationX != 0.0) || (translationY != 0.0)) {
+                        // The translate method supposedly handles the required
+                        // repaint.
+                        figure.translate(translationX, translationY);
 
-                            // Reroute edges linked to this figure.
-                            GraphModel model = getGraphModel();
-                            Object userObject = figure.getUserObject();
+                        // Reroute edges linked to this figure.
+                        GraphModel model = getGraphModel();
+                        Object userObject = figure.getUserObject();
 
-                            if (userObject != null) {
-                                Iterator inEdges = model.inEdges(userObject);
+                        if (userObject != null) {
+                            Iterator inEdges = model.inEdges(userObject);
 
-                                while (inEdges.hasNext()) {
-                                    Figure connector = getFigure(inEdges.next());
+                            while (inEdges.hasNext()) {
+                                Figure connector = getFigure(inEdges.next());
 
-                                    if (connector instanceof Connector) {
-                                        ((Connector) connector).reroute();
-                                    }
+                                if (connector instanceof Connector) {
+                                    ((Connector) connector).reroute();
                                 }
+                            }
 
-                                Iterator outEdges = model.outEdges(userObject);
+                            Iterator outEdges = model.outEdges(userObject);
 
-                                while (outEdges.hasNext()) {
-                                    Figure connector = getFigure(outEdges.next());
+                            while (outEdges.hasNext()) {
+                                Figure connector = getFigure(outEdges.next());
 
-                                    if (connector instanceof Connector) {
-                                        ((Connector) connector).reroute();
-                                    }
+                                if (connector instanceof Connector) {
+                                    ((Connector) connector).reroute();
                                 }
+                            }
 
-                                if (model.isComposite(userObject)) {
-                                    Iterator edges = GraphUtilities
+                            if (model.isComposite(userObject)) {
+                                Iterator edges = GraphUtilities
                                         .partiallyContainedEdges(userObject,
                                                 model);
 
-                                    while (edges.hasNext()) {
-                                        Figure connector = getFigure(edges.next());
+                                while (edges.hasNext()) {
+                                    Figure connector = getFigure(edges.next());
 
-                                        if (connector instanceof Connector) {
-                                            ((Connector) connector).reroute();
-                                        }
+                                    if (connector instanceof Connector) {
+                                        ((Connector) connector).reroute();
                                     }
                                 }
                             }
                         }
-                    } /* end of run() method */}; /* end of Runnable definition. */
+                    }
+                } /* end of run() method */
+            }; /* end of Runnable definition. */
 
             if (EventQueue.isDispatchThread()) {
                 action.run();
@@ -382,9 +381,9 @@ public abstract class BasicGraphController extends AbstractGraphController
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _openBaseClassAction));
+                    _openBaseClassAction));
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _unitSolverDialogAction));
+                    _unitSolverDialogAction));
         }
     }
 
@@ -453,8 +452,8 @@ public abstract class BasicGraphController extends AbstractGraphController
          */
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
-                MessageHandler.error(
-                        "Cannot open base class without a configuration.");
+                MessageHandler
+                        .error("Cannot open base class without a configuration.");
                 return;
             }
 
@@ -470,7 +469,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             try {
                 if (target instanceof InstantiableNamedObj) {
                     InstantiableNamedObj deferTo = (InstantiableNamedObj) ((InstantiableNamedObj) target)
-                        .getParent();
+                            .getParent();
 
                     if (deferTo != null) {
                         _configuration.openModel(deferTo);
@@ -492,10 +491,12 @@ public abstract class BasicGraphController extends AbstractGraphController
                 // Target does not defer and does not have a defined "source".
                 // Assume its base class is a Java class and open the source
                 // code.
-                String sourceFileName = StringUtilities.objectToSourceFileName(target);
-                URL sourceURL = target.getClass().getClassLoader().getResource(sourceFileName);
-                _configuration.openModel(null, sourceURL,
-                        sourceURL.toExternalForm());
+                String sourceFileName = StringUtilities
+                        .objectToSourceFileName(target);
+                URL sourceURL = target.getClass().getClassLoader().getResource(
+                        sourceFileName);
+                _configuration.openModel(null, sourceURL, sourceURL
+                        .toExternalForm());
             } catch (Exception ex) {
                 MessageHandler.error("Open base class failed.", ex);
             }
@@ -515,9 +516,9 @@ public abstract class BasicGraphController extends AbstractGraphController
         public void actionPerformed(ActionEvent e) {
             // Only makes sense if this is an ActorGraphFrame.
             if (_frame instanceof ActorGraphFrame) {
-                DialogTableau dialogTableau = DialogTableau.createDialog(_frame,
-                        _configuration, ((ActorGraphFrame) _frame).getEffigy(),
-                        UnitSolverDialog.class,
+                DialogTableau dialogTableau = DialogTableau.createDialog(
+                        _frame, _configuration, ((ActorGraphFrame) _frame)
+                                .getEffigy(), UnitSolverDialog.class,
                         (Entity) ((ActorGraphFrame) _frame).getModel());
 
                 if (dialogTableau != null) {
@@ -548,7 +549,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             if (source != null) {
                 Object object = source.getUserObject();
                 return (NamedObj) getController().getGraphModel()
-                    .getSemanticObject(object);
+                        .getSemanticObject(object);
             } else {
                 return (NamedObj) getController().getGraphModel().getRoot();
             }

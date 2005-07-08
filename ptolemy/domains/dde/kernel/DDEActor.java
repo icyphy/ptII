@@ -1,31 +1,31 @@
 /* An optional base class for DDE actors.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.dde.kernel;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -36,38 +36,37 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DDEActor
 
 /**
-   An optional base class for DDE actors. DDEActors are intended to
-   execute as autonomous processes that maintain a distributed notion
-   of time. In a DDE model, each actor is controlled by a unique
-   DDEThread. Each DDEThread maintains its actor's local notion of
-   time. Local time information is dependent on the time stamps
-   associated with tokens that are consumed by an actor. More
-   precisely, an actor's local notion of time is equivalent to the
-   maximum time stamp of all tokens that the actor has consumed.
-   Constraints on the consumption of tokens are described in the
-   documentation for DDEThread. Note that consumed tokens may include
-   NullTokens. A NullToken is a subclass of Token that is communicated
-   solely for the purpose of advancing the local notion of time of the
-   actor that consumes the NullToken.
-   <P>
-   The DDE model of computation supports typed, polymorphic actors and
-   does not require this base class for implementation; this class is
-   purely optional. This class provides convenient syntactic shortcuts
-   for developing actors that operate according to DDE semantics.
+ An optional base class for DDE actors. DDEActors are intended to
+ execute as autonomous processes that maintain a distributed notion
+ of time. In a DDE model, each actor is controlled by a unique
+ DDEThread. Each DDEThread maintains its actor's local notion of
+ time. Local time information is dependent on the time stamps
+ associated with tokens that are consumed by an actor. More
+ precisely, an actor's local notion of time is equivalent to the
+ maximum time stamp of all tokens that the actor has consumed.
+ Constraints on the consumption of tokens are described in the
+ documentation for DDEThread. Note that consumed tokens may include
+ NullTokens. A NullToken is a subclass of Token that is communicated
+ solely for the purpose of advancing the local notion of time of the
+ actor that consumes the NullToken.
+ <P>
+ The DDE model of computation supports typed, polymorphic actors and
+ does not require this base class for implementation; this class is
+ purely optional. This class provides convenient syntactic shortcuts
+ for developing actors that operate according to DDE semantics.
 
-   @author John S. Davis II
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (davisj)
-   @Pt.AcceptedRating Yellow (yuhong)
-   @see ptolemy.domains.dde.kernel.DDEThread
-   @see ptolemy.domains.dde.kernel.NullToken
-*/
+ @author John S. Davis II
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Yellow (davisj)
+ @Pt.AcceptedRating Yellow (yuhong)
+ @see ptolemy.domains.dde.kernel.DDEThread
+ @see ptolemy.domains.dde.kernel.NullToken
+ */
 public class DDEActor extends TypedAtomicActor {
     /** Construct a DDEActor with no container and a name that
      *  is an empty string.
@@ -162,7 +161,7 @@ public class DDEActor extends TypedAtomicActor {
         if (thread instanceof DDEThread) {
             TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
             DDEReceiver lowestReceiver = (DDEReceiver) timeKeeper
-                .getFirstReceiver();
+                    .getFirstReceiver();
 
             if (lowestReceiver.hasToken()) {
                 _lastPort = (TypedIOPort) lowestReceiver.getContainer();
@@ -171,8 +170,7 @@ public class DDEActor extends TypedAtomicActor {
                 return _getNextInput();
             }
         } else {
-            throw new IllegalActionException(this,
-                    "Illegal attempt "
+            throw new IllegalActionException(this, "Illegal attempt "
                     + "to execute a DDEActor by a non-DDEThread.");
         }
     }

@@ -1,30 +1,30 @@
 /* An extension of Locator with a graphical rendition of the transmit range.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.Director;
@@ -40,27 +40,26 @@ import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// GraphicalLocator
 
 /**
-   This class is an extension of the Locator actor that adds an
-   <i>outputRange</i> parameter and an icon that is a circle with
-   a radius defined by the value of this parameter. In addition,
-   this class provides the output channel with a transmit property named
-   "range" with value equal to the value of its <i>outputRange</i>
-   parameter.  Thus, if the output channel is an instance of
-   LimitedRangeChannel, then the <i>outputRange</i> parameter
-   will define the range of transmission.
+ This class is an extension of the Locator actor that adds an
+ <i>outputRange</i> parameter and an icon that is a circle with
+ a radius defined by the value of this parameter. In addition,
+ this class provides the output channel with a transmit property named
+ "range" with value equal to the value of its <i>outputRange</i>
+ parameter.  Thus, if the output channel is an instance of
+ LimitedRangeChannel, then the <i>outputRange</i> parameter
+ will define the range of transmission.
 
-   @author Philip Baldwin, Xiaojun Liu, and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-   @see LimitedRangeChannel
-*/
+ @author Philip Baldwin, Xiaojun Liu, and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ @see LimitedRangeChannel
+ */
 public class GraphicalLocator extends Locator {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -99,8 +98,8 @@ public class GraphicalLocator extends Locator {
         _circle.lineColor.setToken("{0.0, 0.5, 0.5, 1.0}");
 
         // Create the green antenna shape.
-        ResizablePolygonAttribute antenna = new ResizablePolygonAttribute(node_icon,
-                "antenna2");
+        ResizablePolygonAttribute antenna = new ResizablePolygonAttribute(
+                node_icon, "antenna2");
         antenna.vertices.setToken("{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}");
         antenna.width.setToken("10");
         antenna.height.setToken("30");

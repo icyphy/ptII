@@ -1,29 +1,29 @@
 /* A transformer that replaces port communication in an SDF model
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.HashMap;
@@ -74,29 +74,28 @@ import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.LocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// InlinePortTransformer
 
 /**
-   A Transformer that is responsible for inlining the communication
-   between ports.  The connections between the ports are taken from
-   the model specified in the constructor of this transformer.
+ A Transformer that is responsible for inlining the communication
+ between ports.  The connections between the ports are taken from
+ the model specified in the constructor of this transformer.
 
-   FIXME: currently we try to speed things up if the buffersize is only
-   one by removing the index update overhead.  Note that there are other
-   optimizations that can be made here (for instance, if we can
-   statically determine all the channel references (which is trivially
-   true if there is only one channel), then there is no need to have the
-   index or portbuffer arrays.
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
-public class InlinePortTransformer extends SceneTransformer
-    implements HasPhaseOptions {
+ FIXME: currently we try to speed things up if the buffersize is only
+ one by removing the index update overhead.  Note that there are other
+ optimizations that can be made here (for instance, if we can
+ statically determine all the channel references (which is trivially
+ true if there is only one channel), then there is no need to have the
+ index or portbuffer arrays.
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class InlinePortTransformer extends SceneTransformer implements
+        HasPhaseOptions {
     /** Construct a new transformer
      */
     private InlinePortTransformer(CompositeActor model) {
@@ -119,7 +118,7 @@ public class InlinePortTransformer extends SceneTransformer
     public static String getBufferFieldName(TypedIORelation relation,
             int channel, ptolemy.data.type.Type type) {
         return "_" + StringUtilities.sanitizeName(relation.getName()) + "_"
-            + channel + "_" + StringUtilities.sanitizeName(type.toString());
+                + channel + "_" + StringUtilities.sanitizeName(type.toString());
     }
 
     /** Return the port inliner for the given model.
@@ -166,8 +165,8 @@ public class InlinePortTransformer extends SceneTransformer
         Director director = model.getDirector();
 
         // Loop over all the model instance classes.
-        for (Iterator entities = model.deepEntityList().iterator();
-             entities.hasNext();) {
+        for (Iterator entities = model.deepEntityList().iterator(); entities
+                .hasNext();) {
             ComponentEntity entity = (ComponentEntity) entities.next();
             String className = ModelTransformer.getInstanceClassName(entity,
                     _options);
@@ -196,8 +195,8 @@ public class InlinePortTransformer extends SceneTransformer
     private void _inlinePortCalls(SootClass modelClass, CompositeActor model,
             PortInliner inliner) {
         // Loop through all the methods and inline calls on ports.
-        for (Iterator methods = modelClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = modelClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod method = (SootMethod) methods.next();
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
@@ -216,16 +215,16 @@ public class InlinePortTransformer extends SceneTransformer
         }
 
         // Loop over all the model instance classes.
-        for (Iterator entities = model.deepEntityList().iterator();
-             entities.hasNext();) {
+        for (Iterator entities = model.deepEntityList().iterator(); entities
+                .hasNext();) {
             ComponentEntity entity = (ComponentEntity) entities.next();
             String className = ModelTransformer.getInstanceClassName(entity,
                     _options);
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
             // Loop through all the methods and replace calls on ports.
-            for (Iterator methods = entityClass.getMethods().iterator();
-                 methods.hasNext();) {
+            for (Iterator methods = entityClass.getMethods().iterator(); methods
+                    .hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
@@ -261,8 +260,8 @@ public class InlinePortTransformer extends SceneTransformer
         //         // This will help us figure out where locals are defined.
         //         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         //         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
-        for (Iterator units = body.getUnits().snapshotIterator();
-             units.hasNext();) {
+        for (Iterator units = body.getUnits().snapshotIterator(); units
+                .hasNext();) {
             Stmt stmt = (Stmt) units.next();
 
             if (!stmt.containsInvokeExpr()) {
@@ -279,7 +278,8 @@ public class InlinePortTransformer extends SceneTransformer
                     RefType type = (RefType) r.getBase().getType();
 
                     // Inline calls to connections changed.
-                    if (r.getMethod().equals(PtolemyUtilities.connectionsChangedMethod)) {
+                    if (r.getMethod().equals(
+                            PtolemyUtilities.connectionsChangedMethod)) {
                         // If we are calling connections changed on one of the classes
                         // we are generating code for, then inline it.
                         if (type.getSootClass().isApplicationClass()) {
@@ -287,20 +287,21 @@ public class InlinePortTransformer extends SceneTransformer
 
                             if (r instanceof VirtualInvokeExpr) {
                                 // Now inline the resulting call.
-                                List methodList = Scene.v().getActiveHierarchy()
-                                    .resolveAbstractDispatch(type
-                                            .getSootClass(),
-                                            PtolemyUtilities.connectionsChangedMethod);
+                                List methodList = Scene
+                                        .v()
+                                        .getActiveHierarchy()
+                                        .resolveAbstractDispatch(
+                                                type.getSootClass(),
+                                                PtolemyUtilities.connectionsChangedMethod);
 
                                 if (methodList.size() == 1) {
                                     // Inline the method.
                                     inlinee = (SootMethod) methodList.get(0);
                                 } else {
                                     String string = "Can't inline " + stmt
-                                        + " in method " + method + "\n";
+                                            + " in method " + method + "\n";
 
-                                    for (int i = 0; i < methodList.size();
-                                         i++) {
+                                    for (int i = 0; i < methodList.size(); i++) {
                                         string += ("target = "
                                                 + methodList.get(i) + "\n");
                                     }
@@ -309,18 +310,20 @@ public class InlinePortTransformer extends SceneTransformer
                                 }
                             } else if (r instanceof SpecialInvokeExpr) {
                                 inlinee = Scene.v().getActiveHierarchy()
-                                    .resolveSpecialDispatch((SpecialInvokeExpr) r,
-                                            method);
+                                        .resolveSpecialDispatch(
+                                                (SpecialInvokeExpr) r, method);
                             }
 
-                            if (!inlinee.getDeclaringClass().isApplicationClass()) {
+                            if (!inlinee.getDeclaringClass()
+                                    .isApplicationClass()) {
                                 inlinee.getDeclaringClass().setLibraryClass();
                             }
 
                             inlinee.retrieveActiveBody();
 
                             if (debug) {
-                                System.out.println("Inlining method call: " + r);
+                                System.out
+                                        .println("Inlining method call: " + r);
                             }
 
                             SiteInliner.inlineSite(inlinee, stmt, method);
@@ -343,14 +346,13 @@ public class InlinePortTransformer extends SceneTransformer
                     Value[] argValues = new Value[r.getArgCount()];
                     int constantArgCount = 0;
 
-                    for (Iterator args = r.getArgs().iterator();
-                         args.hasNext();) {
+                    for (Iterator args = r.getArgs().iterator(); args.hasNext();) {
                         Value arg = (Value) args.next();
 
                         //System.out.println("arg = " + arg);
                         if (Evaluator.isValueConstantValued(arg)) {
                             argValues[constantArgCount++] = Evaluator
-                                .getConstantValueOf(arg);
+                                    .getConstantValueOf(arg);
 
                             // System.out.println("argument = " + argValues[argCount-1]);
                         } else {
@@ -361,12 +363,12 @@ public class InlinePortTransformer extends SceneTransformer
                     boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
 
                     if (SootUtilities.derivesFrom(type.getSootClass(),
-                                PtolemyUtilities.componentPortClass)) {
+                            PtolemyUtilities.componentPortClass)) {
                         // If we are invoking a method on a port
                         // class, then attempt to get the constant
                         // value of the port.
-                        TypedIOPort port = (TypedIOPort) analysis.getObject((Local) r
-                                .getBase());
+                        TypedIOPort port = (TypedIOPort) analysis
+                                .getObject((Local) r.getBase());
 
                         //     System.out.println("reference to port = " + port);
                         if (port == null) {
@@ -381,13 +383,15 @@ public class InlinePortTransformer extends SceneTransformer
                         }
 
                         // Inline namedObj methods on the attribute.
-                        if (r.getMethod().getSubSignature().equals(PtolemyUtilities.getFullNameMethod
-                                    .getSubSignature())) {
+                        if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.getFullNameMethod
+                                        .getSubSignature())) {
                             box.setValue(StringConstant.v(port.getFullName()));
                         }
 
-                        if (r.getMethod().getSubSignature().equals(PtolemyUtilities.getNameMethod
-                                    .getSubSignature())) {
+                        if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.getNameMethod
+                                        .getSubSignature())) {
                             box.setValue(StringConstant.v(port.getName()));
                         }
 
@@ -396,21 +400,22 @@ public class InlinePortTransformer extends SceneTransformer
                         if ((port.getWidth() == 0)
                                 && (methodName.equals("hasToken")
                                         || methodName.equals("hasRoom")
-                                        || methodName.equals("get")
-                                        || methodName.equals("put"))) {
+                                        || methodName.equals("get") || methodName
+                                        .equals("put"))) {
                             // NOTE: broadcast is legal on a zero
                             // width port.
                             // If we try to get on a port with
                             // zero width, then throw a runtime
                             // exception.
-                            Local local = SootUtilities.createRuntimeException(body,
-                                    stmt,
-                                    methodName
-                                    + "() called on a port with zero width: "
-                                    + port.getFullName() + "!");
-                            body.getUnits().insertBefore(Jimple.v()
-                                    .newThrowStmt(local),
-                                    stmt);
+                            Local local = SootUtilities
+                                    .createRuntimeException(
+                                            body,
+                                            stmt,
+                                            methodName
+                                                    + "() called on a port with zero width: "
+                                                    + port.getFullName() + "!");
+                            body.getUnits().insertBefore(
+                                    Jimple.v().newThrowStmt(local), stmt);
 
                             if (stmt instanceof DefinitionStmt) {
                                 // be sure we replace with the
@@ -450,7 +455,8 @@ public class InlinePortTransformer extends SceneTransformer
                             } else {
                                 box.setValue(IntConstant.v(0));
                             }
-                        } else if (r.getMethod().getName().equals("isMultiport")) {
+                        } else if (r.getMethod().getName()
+                                .equals("isMultiport")) {
                             if (debug) {
                                 System.out.println("replacing isMultiport at "
                                         + stmt);
@@ -462,8 +468,10 @@ public class InlinePortTransformer extends SceneTransformer
                                 box.setValue(IntConstant.v(0));
                             }
                         } else if (r.getMethod().getName().equals("getWidth")
-                                || r.getMethod().getName().equals("numberOfSources")
-                                || r.getMethod().getName().equals("numberOfSinks")) {
+                                || r.getMethod().getName().equals(
+                                        "numberOfSources")
+                                || r.getMethod().getName().equals(
+                                        "numberOfSinks")) {
                             if (debug) {
                                 System.out.println("replacing getWidth at "
                                         + stmt);
@@ -471,12 +479,12 @@ public class InlinePortTransformer extends SceneTransformer
 
                             // Reflect and invoke the same method on our port
                             Object object = SootUtilities
-                                .reflectAndInvokeMethod(port,
-                                        r.getMethod(), argValues);
+                                    .reflectAndInvokeMethod(port,
+                                            r.getMethod(), argValues);
 
                             // System.out.println("method result  = " + constant);
                             Constant constant = SootUtilities
-                                .convertArgumentToConstantValue(object);
+                                    .convertArgumentToConstantValue(object);
 
                             // replace the method invocation.
                             box.setValue(constant);
@@ -524,9 +532,9 @@ public class InlinePortTransformer extends SceneTransformer
                             // nothing.
                             if (port.getWidth() == 0) {
                                 if (debug) {
-                                    System.out.println(
-                                            "removing width zero broadcast at"
-                                            + stmt);
+                                    System.out
+                                            .println("removing width zero broadcast at"
+                                                    + stmt);
                                 }
 
                                 body.getUnits().remove(stmt);
@@ -571,8 +579,8 @@ public class InlinePortTransformer extends SceneTransformer
         //         // This will help us figure out where locals are defined.
         //         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         //         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
-        for (Iterator units = body.getUnits().snapshotIterator();
-             units.hasNext();) {
+        for (Iterator units = body.getUnits().snapshotIterator(); units
+                .hasNext();) {
             Stmt stmt = (Stmt) units.next();
 
             if (!stmt.containsInvokeExpr()) {
@@ -589,7 +597,8 @@ public class InlinePortTransformer extends SceneTransformer
                     RefType type = (RefType) r.getBase().getType();
 
                     // Inline calls to connections changed.
-                    if (r.getMethod().equals(PtolemyUtilities.connectionsChangedMethod)) {
+                    if (r.getMethod().equals(
+                            PtolemyUtilities.connectionsChangedMethod)) {
                         // If we are calling connections changed on one of the classes
                         // we are generating code for, then inline it.
                         if (type.getSootClass().isApplicationClass()) {
@@ -597,20 +606,21 @@ public class InlinePortTransformer extends SceneTransformer
 
                             if (r instanceof VirtualInvokeExpr) {
                                 // Now inline the resulting call.
-                                List methodList = Scene.v().getActiveHierarchy()
-                                    .resolveAbstractDispatch(type
-                                            .getSootClass(),
-                                            PtolemyUtilities.connectionsChangedMethod);
+                                List methodList = Scene
+                                        .v()
+                                        .getActiveHierarchy()
+                                        .resolveAbstractDispatch(
+                                                type.getSootClass(),
+                                                PtolemyUtilities.connectionsChangedMethod);
 
                                 if (methodList.size() == 1) {
                                     // Inline the method.
                                     inlinee = (SootMethod) methodList.get(0);
                                 } else {
                                     String string = "Can't inline " + stmt
-                                        + " in method " + method + "\n";
+                                            + " in method " + method + "\n";
 
-                                    for (int i = 0; i < methodList.size();
-                                         i++) {
+                                    for (int i = 0; i < methodList.size(); i++) {
                                         string += ("target = "
                                                 + methodList.get(i) + "\n");
                                     }
@@ -619,18 +629,20 @@ public class InlinePortTransformer extends SceneTransformer
                                 }
                             } else if (r instanceof SpecialInvokeExpr) {
                                 inlinee = Scene.v().getActiveHierarchy()
-                                    .resolveSpecialDispatch((SpecialInvokeExpr) r,
-                                            method);
+                                        .resolveSpecialDispatch(
+                                                (SpecialInvokeExpr) r, method);
                             }
 
-                            if (!inlinee.getDeclaringClass().isApplicationClass()) {
+                            if (!inlinee.getDeclaringClass()
+                                    .isApplicationClass()) {
                                 inlinee.getDeclaringClass().setLibraryClass();
                             }
 
                             inlinee.retrieveActiveBody();
 
                             if (debug) {
-                                System.out.println("Inlining method call: " + r);
+                                System.out
+                                        .println("Inlining method call: " + r);
                             }
 
                             SiteInliner.inlineSite(inlinee, stmt, method);
@@ -653,14 +665,13 @@ public class InlinePortTransformer extends SceneTransformer
                     Value[] argValues = new Value[r.getArgCount()];
                     int constantArgCount = 0;
 
-                    for (Iterator args = r.getArgs().iterator();
-                         args.hasNext();) {
+                    for (Iterator args = r.getArgs().iterator(); args.hasNext();) {
                         Value arg = (Value) args.next();
 
                         //System.out.println("arg = " + arg);
                         if (Evaluator.isValueConstantValued(arg)) {
                             argValues[constantArgCount++] = Evaluator
-                                .getConstantValueOf(arg);
+                                    .getConstantValueOf(arg);
 
                             // System.out.println("argument = " + argValues[argCount-1]);
                         } else {
@@ -671,12 +682,12 @@ public class InlinePortTransformer extends SceneTransformer
                     boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
 
                     if (SootUtilities.derivesFrom(type.getSootClass(),
-                                PtolemyUtilities.componentPortClass)) {
+                            PtolemyUtilities.componentPortClass)) {
                         // If we are invoking a method on a port
                         // class, then attempt to get the constant
                         // value of the port.
-                        TypedIOPort port = (TypedIOPort) analysis.getObject((Local) r
-                                .getBase());
+                        TypedIOPort port = (TypedIOPort) analysis
+                                .getObject((Local) r.getBase());
 
                         //     System.out.println("reference to port = " + port);
                         if (port == null) {
@@ -693,13 +704,15 @@ public class InlinePortTransformer extends SceneTransformer
                         //                                     stmt, box, r, (Typeable)port);
                         //                         }
                         // Inline namedObj methods on the attribute.
-                        if (r.getMethod().getSubSignature().equals(PtolemyUtilities.getFullNameMethod
-                                    .getSubSignature())) {
+                        if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.getFullNameMethod
+                                        .getSubSignature())) {
                             box.setValue(StringConstant.v(port.getFullName()));
                         }
 
-                        if (r.getMethod().getSubSignature().equals(PtolemyUtilities.getNameMethod
-                                    .getSubSignature())) {
+                        if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.getNameMethod
+                                        .getSubSignature())) {
                             box.setValue(StringConstant.v(port.getName()));
                         }
 
@@ -748,7 +761,8 @@ public class InlinePortTransformer extends SceneTransformer
                             } else {
                                 box.setValue(IntConstant.v(0));
                             }
-                        } else if (r.getMethod().getName().equals("isMultiport")) {
+                        } else if (r.getMethod().getName()
+                                .equals("isMultiport")) {
                             // return true.
                             if (port.isMultiport()) {
                                 box.setValue(IntConstant.v(1));
@@ -758,12 +772,12 @@ public class InlinePortTransformer extends SceneTransformer
                         } else if (r.getMethod().getName().equals("getWidth")) {
                             // Reflect and invoke the same method on our port
                             Object object = SootUtilities
-                                .reflectAndInvokeMethod(port,
-                                        r.getMethod(), argValues);
+                                    .reflectAndInvokeMethod(port,
+                                            r.getMethod(), argValues);
 
                             // System.out.println("method result  = " + constant);
                             Constant constant = SootUtilities
-                                .convertArgumentToConstantValue(object);
+                                    .convertArgumentToConstantValue(object);
 
                             // replace the method invocation.
                             box.setValue(constant);
@@ -850,11 +864,12 @@ public class InlinePortTransformer extends SceneTransformer
                     UnitValueBoxPair pair = (UnitValueBoxPair) pairs.next();
 
                     if (pair.getUnit() instanceof DefinitionStmt) {
-                        DefinitionStmt useStmt = (DefinitionStmt) pair.getUnit();
+                        DefinitionStmt useStmt = (DefinitionStmt) pair
+                                .getUnit();
 
                         if (useStmt.getLeftOp() instanceof FieldRef) {
                             SootField field = ((FieldRef) useStmt.getLeftOp())
-                                .getField();
+                                    .getField();
                             return _getFieldValueTag(field);
                         }
                     }
@@ -893,8 +908,12 @@ public class InlinePortTransformer extends SceneTransformer
     }
 
     private static Map _modelToPortInliner = new HashMap();
+
     private CompositeActor _model;
+
     private boolean _debug;
+
     private Map _options;
+
     private String _phaseName;
 }

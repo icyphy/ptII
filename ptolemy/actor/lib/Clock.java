@@ -1,30 +1,30 @@
 /* A clock source.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.util.Time;
@@ -43,56 +43,55 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Clock
 
 /**
-   This actor produces a periodic signal, a sequence of events at
-   regularly spaced intervals. It can generate finite pulses by specifying
-   a finite <i>numberOfCycles</i>. The numberOfCycles has a default value
-   as -1, indicating infinite length of executions. If numberOfCycles is
-   a positive number, once the specified number of cycles has been completed,
-   then this actor returns false from the postfire method. FIXME: is this
-   the desired behavior?
-   <p>
-   At the beginning of each time interval of length given by <i>period</i>,
-   this actor initiates a sequence of output events with values given by
-   <i>values</i> and offset into the period given by <i>offsets</i>.
-   These parameters contain arrays, which are required to have the same length.
-   The <i>offsets</i> array contains doubles, which
-   must be nondecreasing and nonnegative,
-   or an exception will be thrown when it is set.
-   Moreover, its largest entry must be smaller than <i>period</i>
-   or an exception will be thrown by the fire() method.
-   <p>
-   The <i>values</i> parameter by default
-   contains an array of IntTokens with values 1 and 0.  The default
-   <i>offsets</i> array is {0.0, 1.0}.  Thus, the default output will be
-   alternating 1 and 0 with 50% duty cycle.  The default period
-   is 2.0.
-   <p>
-   The actor uses the fireAt() method of the director to request
-   firing at the beginning of each period plus each of the offsets.
-   <p>
-   The type of the output can be any token type. This type is inferred
-   from the element type of the <i>values</i> parameter.
-   <p>
-   This actor is a timed source; the untimed version is Pulse.
-   <p>
-   There is another kind of clock called ContinuousClock, which produces
-   a square wave instead of a sequence of events. The ContinuousClock
-   is a special actor for continuous-time domain. One of their key differences
-   is that a Clock outputs a DISCRETE signal while a ContinuousClock outputs
-   a CONTINUOUS signal.
+ This actor produces a periodic signal, a sequence of events at
+ regularly spaced intervals. It can generate finite pulses by specifying
+ a finite <i>numberOfCycles</i>. The numberOfCycles has a default value
+ as -1, indicating infinite length of executions. If numberOfCycles is
+ a positive number, once the specified number of cycles has been completed,
+ then this actor returns false from the postfire method. FIXME: is this
+ the desired behavior?
+ <p>
+ At the beginning of each time interval of length given by <i>period</i>,
+ this actor initiates a sequence of output events with values given by
+ <i>values</i> and offset into the period given by <i>offsets</i>.
+ These parameters contain arrays, which are required to have the same length.
+ The <i>offsets</i> array contains doubles, which
+ must be nondecreasing and nonnegative,
+ or an exception will be thrown when it is set.
+ Moreover, its largest entry must be smaller than <i>period</i>
+ or an exception will be thrown by the fire() method.
+ <p>
+ The <i>values</i> parameter by default
+ contains an array of IntTokens with values 1 and 0.  The default
+ <i>offsets</i> array is {0.0, 1.0}.  Thus, the default output will be
+ alternating 1 and 0 with 50% duty cycle.  The default period
+ is 2.0.
+ <p>
+ The actor uses the fireAt() method of the director to request
+ firing at the beginning of each period plus each of the offsets.
+ <p>
+ The type of the output can be any token type. This type is inferred
+ from the element type of the <i>values</i> parameter.
+ <p>
+ This actor is a timed source; the untimed version is Pulse.
+ <p>
+ There is another kind of clock called ContinuousClock, which produces
+ a square wave instead of a sequence of events. The ContinuousClock
+ is a special actor for continuous-time domain. One of their key differences
+ is that a Clock outputs a DISCRETE signal while a ContinuousClock outputs
+ a CONTINUOUS signal.
 
-   @see ptolemy.domains.ct.lib.ContinuousClock
-   @author Edward A. Lee, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (yuhong)
-*/
+ @see ptolemy.domains.ct.lib.ContinuousClock
+ @author Edward A. Lee, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Yellow (yuhong)
+ */
 public class Clock extends TimedSource {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -192,24 +191,25 @@ public class Clock extends TimedSource {
 
             for (int i = 0; i < offsetsValue.length(); i++) {
                 _offsets[i] = ((DoubleToken) offsetsValue.getElement(i))
-                    .doubleValue();
+                        .doubleValue();
 
                 // Check nondecreasing property.
                 if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,
                             "Value of offsets is not nondecreasing "
-                            + "and nonnegative.");
+                                    + "and nonnegative.");
                 }
 
                 previous = _offsets[i];
             }
         } else if (attribute == period) {
-            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+            double periodValue = ((DoubleToken) period.getToken())
+                    .doubleValue();
 
             if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Period is required to be positive.  " + "Period given: "
-                        + periodValue);
+                        "Period is required to be positive.  "
+                                + "Period given: " + periodValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -267,11 +267,14 @@ public class Clock extends TimedSource {
         // for some time, as might happen for example in a hybrid system).
         // But do not do this if we are before the first iteration.
         if (_tentativeCycleCount > 0) {
-            while (_tentativeCycleStartTime.add(periodValue).compareTo(currentTime) < 0) {
-                _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
+            while (_tentativeCycleStartTime.add(periodValue).compareTo(
+                    currentTime) < 0) {
+                _tentativeCycleStartTime = _tentativeCycleStartTime
+                        .add(periodValue);
             }
 
-            Time currentPhaseTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+            Time currentPhaseTime = _tentativeCycleStartTime
+                    .add(_offsets[_tentativePhase]);
 
             // Adjust the phase if time has moved beyond the current phase.
             if (currentTime.compareTo(currentPhaseTime) == 0) {
@@ -285,15 +288,16 @@ public class Clock extends TimedSource {
                     _tentativePhase = 0;
 
                     // Schedule the first firing in the next period.
-                    _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
+                    _tentativeCycleStartTime = _tentativeCycleStartTime
+                            .add(periodValue);
 
                     // Indicate that the cycle count should increase.
                     _tentativeCycleCountIncrement++;
                 }
 
                 if (_offsets[_tentativePhase] >= periodValue) {
-                    throw new IllegalActionException(this,
-                            "Offset number " + _tentativePhase + " with value "
+                    throw new IllegalActionException(this, "Offset number "
+                            + _tentativePhase + " with value "
                             + _offsets[_tentativePhase]
                             + " must be strictly less than the "
                             + "period, which is " + periodValue);
@@ -302,7 +306,8 @@ public class Clock extends TimedSource {
                 // Schedule the next firing in this period.
                 // NOTE: In the TM domain, this may not occur if we have
                 // missed a deadline.  As a consequence, the clock will stop.
-                _tentativeNextFiringTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+                _tentativeNextFiringTime = _tentativeCycleStartTime
+                        .add(_offsets[_tentativePhase]);
 
                 if (_debugging) {
                     _debug("next firing is at " + _tentativeNextFiringTime);
@@ -315,10 +320,11 @@ public class Clock extends TimedSource {
                 // serves as a source, when the cycle limit is reached, it should stop
                 // producing more events and consequently the model stops.
                 int cycleLimit = ((IntToken) numberOfCycles.getToken())
-                    .intValue();
+                        .intValue();
 
                 if (cycleLimit > 0) {
-                    Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
+                    Time stopTime = _tentativeStartTime.add(cycleLimit
+                            * periodValue);
 
                     if (currentTime.compareTo(stopTime) >= 0) {
                         _tentativeCurrentValue = _tentativeCurrentValue.zero();
@@ -476,8 +482,7 @@ public class Clock extends TimedSource {
         // Now, we leave it up to the director, unless the value
         // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
         if (!_done
-                && (_tentativeNextFiringTime.compareTo(
-                            Time.NEGATIVE_INFINITY) != 0)) {
+                && (_tentativeNextFiringTime.compareTo(Time.NEGATIVE_INFINITY) != 0)) {
             getDirector().fireAt(this, _tentativeNextFiringTime);
 
             if (_debugging) {
@@ -489,8 +494,7 @@ public class Clock extends TimedSource {
         // This should be computed after the above so that a firing
         // gets requested for the tail end of the output pulses.
         _done = _done
-            || ((cycleLimit > 0) && (_cycleCount > cycleLimit)
-                    && (_phase == 0));
+                || ((cycleLimit > 0) && (_cycleCount > cycleLimit) && (_phase == 0));
 
         if (_done) {
             _cycleCount = 0;

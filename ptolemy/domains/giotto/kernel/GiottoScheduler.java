@@ -1,30 +1,30 @@
 /* The scheduler for the Giotto domain.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.giotto.kernel;
 
 import java.util.Arrays;
@@ -45,51 +45,50 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// GiottoScheduler
 
 /**
-   This class generates schedules for the actors in a CompositeActor
-   according to the Giotto semantics.
-   <p>
-   A schedule is represented by a list. Consider the following CompositeActor:
-   <pre>
-   +-----------------------+
-   |           A           |
-   +-----------------------+
-   +-----------------------+
-   |           B           |
-   +-----------------------+
-   +---------+   +---------+
-   |    C    |   |    C    |
-   +---------+   +---------+
-   </pre>
-   There are three actors A, B, and C, where C runs twice as often as A and B.
-   The list representing the schedule for this CompositeActor looks as follows:
-   <pre>
-   +-------+                         +-------+
-   | | | --------------------------->| | |nil|
-   +-|-----+                         +-|-----+
-   |                                 |
-   V                                 V
-   +-------+  +-------+  +-------+   +-------+
-   | | | ---->| | | ---->| | |nil|   | | |nil|
-   +-|-----+  +-|-----+  +-|-----+   +-|-----+
-   |          |          |           |
-   V          V          V           V
-   +---+      +---+      +---+       +---+
-   | A |      | B |      | c |       | c |
-   +---+      +---+      +---+       +---+
+ This class generates schedules for the actors in a CompositeActor
+ according to the Giotto semantics.
+ <p>
+ A schedule is represented by a list. Consider the following CompositeActor:
+ <pre>
+ +-----------------------+
+ |           A           |
+ +-----------------------+
+ +-----------------------+
+ |           B           |
+ +-----------------------+
+ +---------+   +---------+
+ |    C    |   |    C    |
+ +---------+   +---------+
+ </pre>
+ There are three actors A, B, and C, where C runs twice as often as A and B.
+ The list representing the schedule for this CompositeActor looks as follows:
+ <pre>
+ +-------+                         +-------+
+ | | | --------------------------->| | |nil|
+ +-|-----+                         +-|-----+
+ |                                 |
+ V                                 V
+ +-------+  +-------+  +-------+   +-------+
+ | | | ---->| | | ---->| | |nil|   | | |nil|
+ +-|-----+  +-|-----+  +-|-----+   +-|-----+
+ |          |          |           |
+ V          V          V           V
+ +---+      +---+      +---+       +---+
+ | A |      | B |      | c |       | c |
+ +---+      +---+      +---+       +---+
 
-   </pre>
+ </pre>
 
-   @author Christoph Kirsch, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (cm)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author Christoph Kirsch, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (cm)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class GiottoScheduler extends Scheduler {
     /** Construct a Giotto scheduler with no container (director)
      *  in the default workspace.
@@ -120,8 +119,8 @@ public class GiottoScheduler extends Scheduler {
      */
     public static int getFrequency(Actor actor) {
         try {
-            Parameter parameter = (Parameter) ((NamedObj) actor).getAttribute(
-                    "frequency");
+            Parameter parameter = (Parameter) ((NamedObj) actor)
+                    .getAttribute("frequency");
 
             if (parameter != null) {
                 IntToken intToken = (IntToken) parameter.getToken();
@@ -169,17 +168,22 @@ public class GiottoScheduler extends Scheduler {
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
-        CompositeActor compositeActor = (CompositeActor) (director.getContainer());
+        CompositeActor compositeActor = (CompositeActor) (director
+                .getContainer());
         List actorList = compositeActor.deepEntityList();
         int actorCount = actorList.size();
 
         if (actorCount < 1) {
-            throw new NotSchedulableException(this, "Could not get schedule, "
-                    + "the number of deeply contained entities for '"
-                    + compositeActor.getFullName() + "' is " + actorCount
-                    + ", which is less than 1."
-                    + "If you have empty composite actors, try adding an  actor"
-                    + "to the inside of one of the empty composite actors.");
+            throw new NotSchedulableException(
+                    this,
+                    "Could not get schedule, "
+                            + "the number of deeply contained entities for '"
+                            + compositeActor.getFullName()
+                            + "' is "
+                            + actorCount
+                            + ", which is less than 1."
+                            + "If you have empty composite actors, try adding an  actor"
+                            + "to the inside of one of the empty composite actors.");
         }
 
         int[] frequencyArray = new int[actorCount];
@@ -188,8 +192,7 @@ public class GiottoScheduler extends Scheduler {
         ListIterator actorListIterator = actorList.listIterator();
 
         int i = 0;
-        int biggestFrequency = 
-            _candidateFrequencies[_candidateFrequencies.length-1];
+        int biggestFrequency = _candidateFrequencies[_candidateFrequencies.length - 1];
 
         while (actorListIterator.hasNext()) {
             Actor actor = (Actor) actorListIterator.next();
@@ -199,21 +202,28 @@ public class GiottoScheduler extends Scheduler {
                 // _unitTimeIncrement for the director.
                 frequencyArray[i] = frequency;
                 i++;
-            } else if (frequency > biggestFrequency){
-                throw new NotSchedulableException(this,
-                        "The specified frequency " 
-                        + frequency + " is bigger than the allowed biggest " 
-                        + "frequency " + biggestFrequency + ". \n Try "
-                        + "introducing hierarchies or reducing the period " 
-                        + "parameter of the director to achieve shorter " 
-                        + "execution time.");
+            } else if (frequency > biggestFrequency) {
+                throw new NotSchedulableException(
+                        this,
+                        "The specified frequency "
+                                + frequency
+                                + " is bigger than the allowed biggest "
+                                + "frequency "
+                                + biggestFrequency
+                                + ". \n Try "
+                                + "introducing hierarchies or reducing the period "
+                                + "parameter of the director to achieve shorter "
+                                + "execution time.");
             } else {
-                throw new NotSchedulableException(this,
-                        "Cannot assign a frequency " 
-                        + frequency + " to " + actor.getName() 
-                        + ", because time cannot be calculated accurately. \n"
-                        + " A good frequency will be of 2^m*5^n, where m and n"
-                        + " are non-negative integers.");
+                throw new NotSchedulableException(
+                        this,
+                        "Cannot assign a frequency "
+                                + frequency
+                                + " to "
+                                + actor.getName()
+                                + ", because time cannot be calculated accurately. \n"
+                                + " A good frequency will be of 2^m*5^n, where m and n"
+                                + " are non-negative integers.");
             }
         }
 
@@ -337,28 +347,28 @@ public class GiottoScheduler extends Scheduler {
     ////                         private variables                 ////
     // This is a list of frequencies that can be used to calculate 
     // _unitTimeIncrement accurately.
-    private static int[] _candidateFrequencies = new int[] {
-            1, 2, 4, 5, 8, 10, 16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 
-            160, 200, 250, 256, 320, 400, 500, 512, 625, 640, 800, 1000, 1024, 
-            1250, 1280, 1600, 2000, 2048, 2500, 2560, 3125, 3200, 4000, 4096, 
-            5000, 5120, 6250, 6400, 8000, 8192, 10000, 10240, 12500, 12800, 
-            15625, 16000, 16384, 20000, 20480, 25000, 25600, 31250, 32000, 
-            32768, 40000, 40960, 50000, 51200, 62500, 64000, 65536, 78125, 
-            80000, 81920, 100000 };
-    
+    private static int[] _candidateFrequencies = new int[] { 1, 2, 4, 5, 8, 10,
+            16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 160, 200, 250, 256,
+            320, 400, 500, 512, 625, 640, 800, 1000, 1024, 1250, 1280, 1600,
+            2000, 2048, 2500, 2560, 3125, 3200, 4000, 4096, 5000, 5120, 6250,
+            6400, 8000, 8192, 10000, 10240, 12500, 12800, 15625, 16000, 16384,
+            20000, 20480, 25000, 25600, 31250, 32000, 32768, 40000, 40960,
+            50000, 51200, 62500, 64000, 65536, 78125, 80000, 81920, 100000 };
+
     private int _giottoSchedulerTime = 0;
+
     private int _lcm = 1;
-    
+
     /* This class implements the Comparator interface for actors
-       based on the <I>frequency</I> parameter of the actors.
-       The frequency of an actor which does not have a <I>frequency</I>
-       parameter is _DEFAULT_GIOTTO_FREQUENCY.
-       Given two actors A1 and A2, compare(A1, A2) is -1 (A1 < A2) if A1's
-       frequency is strictly less than A2's frequency, or compare(A1, A2) is 0
-       (A1 == A2) if A1's frequency is equal to A2's frequency, or
-       compare(A1, A2) is 1 (A1 > A2) if A1's frequency is strictly greater
-       than A2's frequency.
-    */
+     based on the <I>frequency</I> parameter of the actors.
+     The frequency of an actor which does not have a <I>frequency</I>
+     parameter is _DEFAULT_GIOTTO_FREQUENCY.
+     Given two actors A1 and A2, compare(A1, A2) is -1 (A1 < A2) if A1's
+     frequency is strictly less than A2's frequency, or compare(A1, A2) is 0
+     (A1 == A2) if A1's frequency is equal to A2's frequency, or
+     compare(A1, A2) is 1 (A1 > A2) if A1's frequency is strictly greater
+     than A2's frequency.
+     */
     private class GiottoActorComparator implements Comparator {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
@@ -380,8 +390,7 @@ public class GiottoScheduler extends Scheduler {
                     && actor2 instanceof Actor) {
                 if (getFrequency((Actor) actor1) < getFrequency((Actor) actor2)) {
                     return -1;
-                } else if (getFrequency((Actor) actor1) == getFrequency(
-                                   (Actor) actor2)) {
+                } else if (getFrequency((Actor) actor1) == getFrequency((Actor) actor2)) {
                     return 0;
                 } else {
                     return 1;

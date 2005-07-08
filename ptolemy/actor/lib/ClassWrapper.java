@@ -1,30 +1,30 @@
 /* An actor that wraps (an instance of) a Java class.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import java.lang.reflect.Constructor;
@@ -52,44 +52,43 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ClassWrapper
 
 /**
-   This actor wraps (an instance of) a Java class specified by the
-   <i>className</i> parameter. The actor has no port when created.
-   If an input port is added to the actor, the name of the port is
-   interpreted as the name of a method of the Java class. When the
-   actor is fired and a token is received from this input port, the
-   content of the token is treated as the argument(s) for invoking
-   the method. If the method has a return value and the actor has
-   an output port named <i>methodName</i>Result, the return value
-   is wrapped in a token that is sent to the output port.
-   <p>
-   For example, suppose the specified class has a method named foo
-   and the actor has an input port of the same name. If method foo
-   takes no argument, the token received from port <i>foo</i> is
-   treated as the trigger for invoking the method, and its content
-   is ignored. If method foo takes arguments, the input token
-   should be a record token whose field values are used as the
-   arguments. The field labels of the record token should be "arg1",
-   "arg2", etc. For example, if method foo takes two double arguments,
-   the record token "{arg1 = 0.0, arg2 = 1.0}" can be the input.
+ This actor wraps (an instance of) a Java class specified by the
+ <i>className</i> parameter. The actor has no port when created.
+ If an input port is added to the actor, the name of the port is
+ interpreted as the name of a method of the Java class. When the
+ actor is fired and a token is received from this input port, the
+ content of the token is treated as the argument(s) for invoking
+ the method. If the method has a return value and the actor has
+ an output port named <i>methodName</i>Result, the return value
+ is wrapped in a token that is sent to the output port.
+ <p>
+ For example, suppose the specified class has a method named foo
+ and the actor has an input port of the same name. If method foo
+ takes no argument, the token received from port <i>foo</i> is
+ treated as the trigger for invoking the method, and its content
+ is ignored. If method foo takes arguments, the input token
+ should be a record token whose field values are used as the
+ arguments. The field labels of the record token should be "arg1",
+ "arg2", etc. For example, if method foo takes two double arguments,
+ the record token "{arg1 = 0.0, arg2 = 1.0}" can be the input.
 
-   A special case is when method foo takes one argument, the token
-   containing the argument value can be input directly, and does not
-   need to be put into a record token.
-   <p>
-   FIXME: Need to set type constraints appropriately.
-   Need (and how) to handle overloaded methods.
+ A special case is when method foo takes one argument, the token
+ containing the argument value can be input directly, and does not
+ need to be put into a record token.
+ <p>
+ FIXME: Need to set type constraints appropriately.
+ Need (and how) to handle overloaded methods.
 
-   @author Xiaojun Liu
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (liuxj)
-   @Pt.AcceptedRating Red (liuxj)
-*/
+ @author Xiaojun Liu
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (liuxj)
+ @Pt.AcceptedRating Red (liuxj)
+ */
 public class ClassWrapper extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructor, create
@@ -149,8 +148,8 @@ public class ClassWrapper extends TypedAtomicActor {
         try {
             _class = Class.forName(className.getExpression());
         } catch (ClassNotFoundException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot find specified " + "class " + className.getExpression());
+            throw new IllegalActionException(this, ex, "Cannot find specified "
+                    + "class " + className.getExpression());
         }
 
         _methodTable = new Hashtable();
@@ -172,8 +171,7 @@ public class ClassWrapper extends TypedAtomicActor {
             }
 
             if (m == null) {
-                throw new IllegalActionException(this,
-                        "The specified class "
+                throw new IllegalActionException(this, "The specified class "
                         + "does not have a method of the same name as input "
                         + "port " + portName);
             }
@@ -205,8 +203,8 @@ public class ClassWrapper extends TypedAtomicActor {
                 Constructor constructor = _class.getConstructor(new Class[0]);
                 _instance = constructor.newInstance(new Object[0]);
             } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
-                        "Cannot create an " + "instance of the specified class");
+                throw new IllegalActionException(this, ex, "Cannot create an "
+                        + "instance of the specified class");
             }
         }
     }
@@ -238,8 +236,8 @@ public class ClassWrapper extends TypedAtomicActor {
             if (argv instanceof RecordToken) {
                 argRecord = (RecordToken) argv;
             } else if (args > 1) {
-                throw new IllegalActionException(this,
-                        "cannot convert " + "input token to method call arguments.");
+                throw new IllegalActionException(this, "cannot convert "
+                        + "input token to method call arguments.");
             }
 
             for (int i = 0; i < args; ++i) {
@@ -286,8 +284,8 @@ public class ClassWrapper extends TypedAtomicActor {
             throw new IllegalActionException(this, ex.getTargetException(),
                     "Error invoking method " + m.getName());
         } catch (Exception ex) {
-            new IllegalActionException(this, ex,
-                    "Error invoking method " + m.getName());
+            new IllegalActionException(this, ex, "Error invoking method "
+                    + m.getName());
         }
 
         Token resultToken = null;
@@ -312,9 +310,8 @@ public class ClassWrapper extends TypedAtomicActor {
         } else if (result instanceof FixPoint) {
             resultToken = new FixToken((FixPoint) result);
         } else {
-            throw new IllegalActionException(this,
-                    "Result of method call " + port.getName()
-                    + " is not a supported type: boolean, "
+            throw new IllegalActionException(this, "Result of method call "
+                    + port.getName() + " is not a supported type: boolean, "
                     + "complex, fixpoint, double, int, long  and String, "
                     + "or a Token.");
         }

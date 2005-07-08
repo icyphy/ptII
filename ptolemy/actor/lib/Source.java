@@ -1,30 +1,30 @@
 /* Base class for simple source actors.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -33,40 +33,39 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Source
 
 /**
-   Base for simple data sources.  This provides an output
-   port and a trigger input port, both exposed as public variables.
-   The trigger port is a multiport with undeclared type, meaning that
-   you can supply it with any data type.  The trigger port can also be
-   left unconnected.  The purpose of the trigger input is to
-   (optionally) supply events that cause the actor to fire.  If the
-   port is connected to something, then this actor will check it
-   for a token and return false from prefire() if there is no token.
-   each channel of the trigger input, if any, and then discards the
-   token.
+ Base for simple data sources.  This provides an output
+ port and a trigger input port, both exposed as public variables.
+ The trigger port is a multiport with undeclared type, meaning that
+ you can supply it with any data type.  The trigger port can also be
+ left unconnected.  The purpose of the trigger input is to
+ (optionally) supply events that cause the actor to fire.  If the
+ port is connected to something, then this actor will check it
+ for a token and return false from prefire() if there is no token.
+ each channel of the trigger input, if any, and then discards the
+ token.
 
-   <p>
+ <p>
 
-   Some derived classes may attach additional significance to an input
-   on the trigger port. For example, they might fix the type and attach
-   some significance to the value.  Note that it is not recommend to
-   use getWidth() on the port to determine whether the port is connected,
-   since the width may be greater than zero even if there
-   is no actual source of data.  This can occur, for example, if a trigger port
-   is connected to the inside of a port of an opaque composite actor, and
-   there is nothing connected to the outside of that port. It is not
-   recommended to make the behavior of an actor dependent on a global
-   property such as whether there is ultimately a source of data.
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (bilung)
-*/
+ Some derived classes may attach additional significance to an input
+ on the trigger port. For example, they might fix the type and attach
+ some significance to the value.  Note that it is not recommend to
+ use getWidth() on the port to determine whether the port is connected,
+ since the width may be greater than zero even if there
+ is no actual source of data.  This can occur, for example, if a trigger port
+ is connected to the inside of a port of an opaque composite actor, and
+ there is nothing connected to the outside of that port. It is not
+ recommended to make the behavior of an actor dependent on a global
+ property such as whether there is ultimately a source of data.
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (bilung)
+ */
 public abstract class Source extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.

@@ -1,30 +1,30 @@
 /* Monitor integration steps so that a threshold is not crossed in one step.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -41,31 +41,30 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ThresholdMonitor
 
 /**
-   Output <i>true</i> if the input value is in the interval
-   [<i>a</i>, <i>b</i>], which is centered at <i>thresholdCenter</i>
-   and has width <i>thresholdWidth</i>.  This actor controls
-   the integration step size so that the input does
-   not cross the threshold without producing at least one
-   <i>true</i> output. The output can be used as a pure event
-   to trigger other events or state transitions.
-   When the input crosses the interval in
-   one step, this actor will report that the integration step is
-   not accurate and refines the new step size by bisecting the
-   old step size.
+ Output <i>true</i> if the input value is in the interval
+ [<i>a</i>, <i>b</i>], which is centered at <i>thresholdCenter</i>
+ and has width <i>thresholdWidth</i>.  This actor controls
+ the integration step size so that the input does
+ not cross the threshold without producing at least one
+ <i>true</i> output. The output can be used as a pure event
+ to trigger other events or state transitions.
+ When the input crosses the interval in
+ one step, this actor will report that the integration step is
+ not accurate and refines the new step size by bisecting the
+ old step size.
 
-   @author  Jie Liu
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (cxh)
-*/
-public class ThresholdMonitor extends TypedAtomicActor
-    implements CTStepSizeControlActor {
+ @author  Jie Liu
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class ThresholdMonitor extends TypedAtomicActor implements
+        CTStepSizeControlActor {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -92,8 +91,8 @@ public class ThresholdMonitor extends TypedAtomicActor
         new Parameter(output, "signalType", new StringToken("DISCRETE"));
 
         _thWidth = (double) 1e-2;
-        thresholdWidth = new Parameter(this, "thresholdWidth",
-                new DoubleToken(_thWidth));
+        thresholdWidth = new Parameter(this, "thresholdWidth", new DoubleToken(
+                _thWidth));
 
         _thCenter = (double) 0.0;
         thresholdCenter = new Parameter(this, "thresholdCenter",
@@ -132,7 +131,8 @@ public class ThresholdMonitor extends TypedAtomicActor
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if ((attribute == thresholdCenter) || (attribute == thresholdWidth)) {
-            _thCenter = ((DoubleToken) thresholdCenter.getToken()).doubleValue();
+            _thCenter = ((DoubleToken) thresholdCenter.getToken())
+                    .doubleValue();
             _thWidth = Math.abs(((DoubleToken) thresholdWidth.getToken())
                     .doubleValue());
 
@@ -250,8 +250,7 @@ public class ThresholdMonitor extends TypedAtomicActor
     public boolean isOutputAccurate() {
         if (!_first) {
             if (((_lastInput >= _upperBound) && (_thisInput <= _lowerBound))
-                    || ((_lastInput <= _lowerBound)
-                            && (_thisInput >= _upperBound))) {
+                    || ((_lastInput <= _lowerBound) && (_thisInput >= _upperBound))) {
                 _debug(getFullName() + "one step crosses the threshold"
                         + "cutting the step size in half.");
                 _accurate = false;

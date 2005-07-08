@@ -51,7 +51,6 @@ import diva.canvas.toolbox.LabelFigure;
 import diva.canvas.toolbox.LabelWrapper;
 import diva.gui.BasicFrame;
 
-
 /**
  * This tutorial illustrates how to use LabelFigure and related classes.
  *
@@ -96,53 +95,21 @@ public class LabelTutorial {
         FigureLayer layer = graphicsPane.getForegroundLayer();
 
         // The data to display
-        int[] anchors = {
-            SwingConstants.CENTER,
-            SwingConstants.NORTH,
-            SwingConstants.NORTH_EAST,
-            SwingConstants.EAST,
-            SwingConstants.SOUTH_EAST,
-            SwingConstants.SOUTH,
-            SwingConstants.SOUTH_WEST,
-            SwingConstants.WEST,
-            SwingConstants.NORTH_WEST
-        };
+        int[] anchors = { SwingConstants.CENTER, SwingConstants.NORTH,
+                SwingConstants.NORTH_EAST, SwingConstants.EAST,
+                SwingConstants.SOUTH_EAST, SwingConstants.SOUTH,
+                SwingConstants.SOUTH_WEST, SwingConstants.WEST,
+                SwingConstants.NORTH_WEST };
 
-        String[] labels = {
-            "center",
-            "north",
-            "north-east",
-            "east",
-            "south-east",
-            "south",
-            "south-west",
-            "west",
-            "north-west"
-        };
+        String[] labels = { "center", "north", "north-east", "east",
+                "south-east", "south", "south-west", "west", "north-west" };
 
-        String[] fonts = {
-            "Dialog",
-            "DialogInput",
-            "Monospaced",
-            "Serif",
-            "SansSerif",
-            "Symbol",
-            "Times",
-            "Courier",
-            "Helvetica"
-        };
+        String[] fonts = { "Dialog", "DialogInput", "Monospaced", "Serif",
+                "SansSerif", "Symbol", "Times", "Courier", "Helvetica" };
 
-        int[] styles = {
-            Font.PLAIN,
-            Font.BOLD,
-            Font.ITALIC,
-            Font.BOLD | Font.ITALIC,
-            Font.PLAIN,
-            Font.BOLD,
-            Font.ITALIC,
-            Font.BOLD | Font.ITALIC,
-            Font.PLAIN
-        };
+        int[] styles = { Font.PLAIN, Font.BOLD, Font.ITALIC,
+                Font.BOLD | Font.ITALIC, Font.PLAIN, Font.BOLD, Font.ITALIC,
+                Font.BOLD | Font.ITALIC, Font.PLAIN };
 
         // Draw a rectangle to position them
         BasicRectangle square = new BasicRectangle(160, 80, 120, 120);
@@ -198,11 +165,11 @@ public class LabelTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    LabelTutorial ex = new LabelTutorial();
-                    ex.createLabels();
-                    ex.createLabeledWrappers();
-                }
-            });
+            public void run() {
+                LabelTutorial ex = new LabelTutorial();
+                ex.createLabels();
+                ex.createLabeledWrappers();
+            }
+        });
     }
 }

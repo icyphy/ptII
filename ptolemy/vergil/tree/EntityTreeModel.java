@@ -1,30 +1,30 @@
 /* A tree model for Ptolemy II objects, for use with JTree.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.tree;
 
 import java.util.ArrayList;
@@ -43,24 +43,23 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// EntityTreeModel
 
 /**
 
-A tree model for Ptolemy II objects. This class makes it easy to
-view ptolemy models in a JTree, which renders the hierarchy.
-This base class handles only composite entities and their contained
-entities.  It does not include entities that are class definitions.
-Derived classes represent more (or less) of the Ptolemy II model.
+ A tree model for Ptolemy II objects. This class makes it easy to
+ view ptolemy models in a JTree, which renders the hierarchy.
+ This base class handles only composite entities and their contained
+ entities.  It does not include entities that are class definitions.
+ Derived classes represent more (or less) of the Ptolemy II model.
 
-@author Steve Neuendorffer and Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Red (eal)
-@Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class EntityTreeModel implements TreeModel {
     /** Create a new tree model with the specified root.
      *  Normally the root is an instance of CompositeEntity, but other
@@ -204,40 +203,39 @@ public class EntityTreeModel implements TreeModel {
             // System.out.println("change = " + change);
             // Note that this should be in the swing thread.
             SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        ArrayList path = new ArrayList();
-                        Object root = getRoot();
+                public void run() {
+                    ArrayList path = new ArrayList();
+                    Object root = getRoot();
 
-                        // If the change request is local, then it
-                        // should return non-null to this method.
-                        NamedObj locality = change.getLocality();
+                    // If the change request is local, then it
+                    // should return non-null to this method.
+                    NamedObj locality = change.getLocality();
 
-                        if (locality == null) {
-                            path.add(0, root);
-                        } else {
-                            // The change has a declared locality.
-                            // Construct a path to that locality.
-                            NamedObj container = locality;
+                    if (locality == null) {
+                        path.add(0, root);
+                    } else {
+                        // The change has a declared locality.
+                        // Construct a path to that locality.
+                        NamedObj container = locality;
 
-                            while (container != root) {
-                                if (container == null) {
-                                    // This should not occur, but if it
-                                    // does, we revert to just using the
-                                    // root.
-                                    path = new ArrayList();
-                                    path.add(0, root);
-                                    break;
-                                }
-
-                                path.add(0, container);
-                                container = container.getContainer();
+                        while (container != root) {
+                            if (container == null) {
+                                // This should not occur, but if it
+                                // does, we revert to just using the
+                                // root.
+                                path = new ArrayList();
+                                path.add(0, root);
+                                break;
                             }
-                        }
 
-                        valueForPathChanged(new TreePath(path.toArray()),
-                                locality);
+                            path.add(0, container);
+                            container = container.getContainer();
+                        }
                     }
-                });
+
+                    valueForPathChanged(new TreePath(path.toArray()), locality);
+                }
+            });
         }
 
         /** Trigger an update of the tree.  If the change

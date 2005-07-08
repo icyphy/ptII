@@ -1,29 +1,29 @@
 /* An analysis for detecting objects that must be aliased to each other.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.kernel;
 
 import java.util.Collection;
@@ -49,18 +49,17 @@ import soot.jimple.JimpleBody;
 import soot.jimple.NewExpr;
 import soot.util.queue.ChunkedQueue;
 
-
 /** Collect all the classes that a set of classes depends on.  This includes:
-    Any superclass.
-    Any interface.
-    The declaring class of any field or method referenced from the class.
+ Any superclass.
+ Any interface.
+ The declaring class of any field or method referenced from the class.
 
-    @author Steve Neuendorffer
-    @version $Id$
-    @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class DependedClasses {
     /** Create a new set of classes that contains all of the classes that are
      *  required to load the given set of initial classes.
@@ -116,8 +115,8 @@ public class DependedClasses {
         _addClasses(theClass.getInterfaces());
 
         // Grab the types of all fields.
-        for (Iterator fields = theClass.getFields().iterator();
-             fields.hasNext();) {
+        for (Iterator fields = theClass.getFields().iterator(); fields
+                .hasNext();) {
             SootField field = (SootField) fields.next();
             Type type = field.getType();
 
@@ -126,14 +125,14 @@ public class DependedClasses {
             }
         }
 
-        for (Iterator methods = theClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = theClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             //   System.out.println("processing method = " + method);
             // Grab the classes of all arguments.
-            for (Iterator types = method.getParameterTypes().iterator();
-                 types.hasNext();) {
+            for (Iterator types = method.getParameterTypes().iterator(); types
+                    .hasNext();) {
                 Type type = (Type) types.next();
 
                 if (type instanceof RefType) {
@@ -167,8 +166,8 @@ public class DependedClasses {
             for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
                 Unit unit = (Unit) units.next();
 
-                for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
-                     boxes.hasNext();) {
+                for (Iterator boxes = unit.getUseAndDefBoxes().iterator(); boxes
+                        .hasNext();) {
                     ValueBox box = (ValueBox) boxes.next();
                     Value value = box.getValue();
 
@@ -188,7 +187,7 @@ public class DependedClasses {
                         }
                     } else if (value instanceof NewExpr) {
                         SootClass refClass = ((NewExpr) value).getBaseType()
-                            .getSootClass();
+                                .getSootClass();
 
                         if (!refClass.equals(theClass)) {
                             _addClass(refClass);
@@ -200,5 +199,6 @@ public class DependedClasses {
     }
 
     private ChunkedQueue _unprocessedClasses;
+
     private List _reachableClasses;
 }

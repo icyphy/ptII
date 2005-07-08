@@ -1,30 +1,30 @@
 /* Base class for integrators in the CT domain.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.kernel;
 
 import java.util.Iterator;
@@ -43,72 +43,71 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CTBaseIntegrator
 
 /**
-   The base class for integrators in the continuous-time (CT) domain.
-   An integrator has one input port and one output port. Conceptually,
-   the input is the derivative of the output w.r.t. time. So an ordinary
-   differential equation (ODE) dx/dt = f(x, t) can be built by:
-   <P>
-   <pre>
-   <pre>               +---------------+
-   <pre>        dx/dt  |               |   x
-   <pre>    +--------->|   Integrator  |---------+----->
-   <pre>    |          |               |         |
-   <pre>    |          +---------------+         |
-   <pre>    |                                    |
-   <pre>    |             |---------|            |
-   <pre>    +-------------| f(x, t) |<-----------+
-   <pre>                  |---------|
-   </pre></pre></pre></pre></pre></pre></pre></pre></pre></pre>
+ The base class for integrators in the continuous-time (CT) domain.
+ An integrator has one input port and one output port. Conceptually,
+ the input is the derivative of the output w.r.t. time. So an ordinary
+ differential equation (ODE) dx/dt = f(x, t) can be built by:
+ <P>
+ <pre>
+ <pre>               +---------------+
+ <pre>        dx/dt  |               |   x
+ <pre>    +--------->|   Integrator  |---------+----->
+ <pre>    |          |               |         |
+ <pre>    |          +---------------+         |
+ <pre>    |                                    |
+ <pre>    |             |---------|            |
+ <pre>    +-------------| f(x, t) |<-----------+
+ <pre>                  |---------|
+ </pre></pre></pre></pre></pre></pre></pre></pre></pre></pre>
 
-   <P>
-   An integrator is a dynamic actor that can emit a token (a state) at a time
-   without knowing the input at that time. An integrator is a step size control
-   actor that can control the accuracy of the ODE solution by adjusting step
-   sizes. An integrator has memory, which is its state.
-   <P>
-   To help solving the ODE, a set of internal variables are used:<BR>
-   <I>state</I>: This is the value of the state variable at a time point,
-   which has beed confirmed by all the step size control actors.
-   <I>tentative state</I>: This is the value of the state variable
-   which has not been confirmed. It is a starting point for other actors
-   to estimate the accuracy of this integration step.
-   <I>history</I>: The previous states and their derivatives. History may
-   be used by multistep integration methods.
-   <P>
-   For different ODE solving methods, the functionality
-   of an integrator may be different. The delegation and strategy design
-   patterns are used in this class, basic abstract ODESolver class, and the
-   concrete ODE solver classes. Some solver-dependent methods of integrators
-   delegate to the concrete ODE solvers.
-   <P>
-   An integrator has one parameter: the <i>initialState</i>. At the
-   initialization stage of the simulation, the state of the integrator is
-   set to the initial state. Changes of the <i>initialState</i> made during
-   execution cause the state to be reset to the specified value.
-   The default value of the parameter is 0.0 of type double.
-   <P>
-   An integrator can possibly have several auxiliary variables for the
-   the ODE solvers to use. The number of the auxiliary variables is checked
-   before each iteration. The ODE solver class provides the number of
-   variables needed for that particular solver.
-   The auxiliary variables can be set and get by setAuxVariables()
-   and getAuxVariables() methods.
+ <P>
+ An integrator is a dynamic actor that can emit a token (a state) at a time
+ without knowing the input at that time. An integrator is a step size control
+ actor that can control the accuracy of the ODE solution by adjusting step
+ sizes. An integrator has memory, which is its state.
+ <P>
+ To help solving the ODE, a set of internal variables are used:<BR>
+ <I>state</I>: This is the value of the state variable at a time point,
+ which has beed confirmed by all the step size control actors.
+ <I>tentative state</I>: This is the value of the state variable
+ which has not been confirmed. It is a starting point for other actors
+ to estimate the accuracy of this integration step.
+ <I>history</I>: The previous states and their derivatives. History may
+ be used by multistep integration methods.
+ <P>
+ For different ODE solving methods, the functionality
+ of an integrator may be different. The delegation and strategy design
+ patterns are used in this class, basic abstract ODESolver class, and the
+ concrete ODE solver classes. Some solver-dependent methods of integrators
+ delegate to the concrete ODE solvers.
+ <P>
+ An integrator has one parameter: the <i>initialState</i>. At the
+ initialization stage of the simulation, the state of the integrator is
+ set to the initial state. Changes of the <i>initialState</i> made during
+ execution cause the state to be reset to the specified value.
+ The default value of the parameter is 0.0 of type double.
+ <P>
+ An integrator can possibly have several auxiliary variables for the
+ the ODE solvers to use. The number of the auxiliary variables is checked
+ before each iteration. The ODE solver class provides the number of
+ variables needed for that particular solver.
+ The auxiliary variables can be set and get by setAuxVariables()
+ and getAuxVariables() methods.
 
-   @author Jie Liu, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (yuhong)
-   @see ODESolver
-   @see CTDirector
-*/
+ @author Jie Liu, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (hyzheng)
+ @Pt.AcceptedRating Red (yuhong)
+ @see ODESolver
+ @see CTDirector
+ */
 public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
-                                                                  CTStepSizeControlActor, CTDynamicActor, CTStatefulActor {
+        CTStepSizeControlActor, CTDynamicActor, CTStatefulActor {
     /** Construct an integrator, with a name and a container.
      *  The integrator is in the same workspace as the container.
      *
@@ -170,7 +169,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
             throws IllegalActionException {
         if (attribute == initialState) {
             _tentativeState = ((DoubleToken) initialState.getToken())
-                .doubleValue();
+                    .doubleValue();
             _state = _tentativeState;
         } else {
             super.attributeChanged(attribute);
@@ -341,8 +340,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
         _derivative = _tentativeDerivative;
 
         if (_debugging) {
-            _debug(getName(),
-                    " initialize: initial state = " + _tentativeState
+            _debug(getName(), " initialize: initial state = " + _tentativeState
                     + " derivative = " + _tentativeDerivative);
         }
 
@@ -651,7 +649,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
 
                 _entries.addFirst(entry);
                 _stepsize = ((CTDirector) _container.getDirector())
-                    .getCurrentStepSize();
+                        .getCurrentStepSize();
             } else {
                 throw new IllegalActionException(getContainer(),
                         "The history capacity is less than or equal to 0.");
@@ -674,7 +672,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
         public void rebalance(double currentStepSize)
                 throws IllegalActionException {
             double timeResolution = ((CTDirector) _container.getDirector())
-                .getTimeResolution();
+                    .getTimeResolution();
 
             if (Math.abs(currentStepSize - _stepsize) > timeResolution) {
                 double[][] history = toDoubleArray();
@@ -701,7 +699,8 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
                                 history[size - 1], (i * ratio) - size + 1);
                     }
 
-                    _entries.addLast(new DoubleDouble(newEntry[0], newEntry[1]));
+                    _entries
+                            .addLast(new DoubleDouble(newEntry[0], newEntry[1]));
                 }
 
                 _stepsize = currentStepSize;
@@ -760,9 +759,9 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
             double g4 = (3 * s2) - (2 * s);
             double[] result = new double[2];
             result[0] = (h1 * p1[0]) + (h2 * p2[0]) + (h3 * p1[1])
-                + (h4 * p2[1]);
+                    + (h4 * p2[1]);
             result[1] = (g1 * p1[0]) + (g2 * p2[0]) + (g3 * p1[1])
-                + (g4 * p2[1]);
+                    + (g4 * p2[1]);
             return result;
         }
 

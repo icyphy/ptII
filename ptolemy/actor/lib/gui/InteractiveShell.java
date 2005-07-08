@@ -1,30 +1,30 @@
 /* An interactive shell that reads and writes strings.
 
-@Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.gui;
 
 import java.awt.Container;
@@ -56,36 +56,35 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// InteractiveShell
 
 /**
-   This actor creates a command shell on the screen, sending commands
-   that are typed by the user to its output port, and reporting strings
-   received at its input by displaying them.  Each time it fires, it
-   reads the input, displays it, then displays a command prompt
-   (which by default is "&gt;&gt"), and waits for a command to be
-   typed.  The command is terminated by an enter or return character,
-   which then results in the command being produced on the output.
-   In a typical use of this actor, it will be preceded by a SampleDelay
-   actor which will provide an initial welcome message or instructions.
-   The output will then be routed to some subsystem for processing,
-   and the result will be fed back to the input.
-   <p>
-   Note that because of complexities in Swing, if you resize the display
-   window, then, unlike the plotters, the new size will not be persistent.
-   That is, if you save the model and then re-open it, the new size is
-   forgotten.  The position, however, is persistent.
+ This actor creates a command shell on the screen, sending commands
+ that are typed by the user to its output port, and reporting strings
+ received at its input by displaying them.  Each time it fires, it
+ reads the input, displays it, then displays a command prompt
+ (which by default is "&gt;&gt"), and waits for a command to be
+ typed.  The command is terminated by an enter or return character,
+ which then results in the command being produced on the output.
+ In a typical use of this actor, it will be preceded by a SampleDelay
+ actor which will provide an initial welcome message or instructions.
+ The output will then be routed to some subsystem for processing,
+ and the result will be fed back to the input.
+ <p>
+ Note that because of complexities in Swing, if you resize the display
+ window, then, unlike the plotters, the new size will not be persistent.
+ That is, if you save the model and then re-open it, the new size is
+ forgotten.  The position, however, is persistent.
 
-   @author  Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author  Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class InteractiveShell extends TypedAtomicActor implements Placeable,
-                                                                  ShellInterpreter {
+        ShellInterpreter {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -113,11 +112,10 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         _windowProperties = new WindowPropertiesAttribute(this,
                 "_windowProperties");
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-14\" y=\"-14\" " + "width=\"28\" height=\"28\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
+                + "style=\"fill:lightGrey\"/>\n" + "<rect x=\"-14\" y=\"-14\" "
+                + "width=\"28\" height=\"28\" " + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"-10,-10, -5,-5, -10,0\" "
                 + "style=\"stroke:black\"/>\n"
                 + "<polyline points=\"-7,-10, -2,-5, -7,0\" "
@@ -258,12 +256,12 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
             if (containerEffigy == null) {
                 throw new IllegalActionException(this,
                         "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                                + toplevel().getFullName());
             }
 
             try {
-                ExpressionShellEffigy shellEffigy = new ExpressionShellEffigy(containerEffigy,
-                        containerEffigy.uniqueName("shell"));
+                ExpressionShellEffigy shellEffigy = new ExpressionShellEffigy(
+                        containerEffigy, containerEffigy.uniqueName("shell"));
 
                 // The default identifier is "Unnamed", which is no good for
                 // two reasons: Wrong title bar label, and it causes a save-as
@@ -459,18 +457,18 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    if (shell != null) {
-                        if (_container != null) {
-                            _container.remove(shell);
-                            _container.invalidate();
-                            _container.repaint();
-                        } else if (_frame != null) {
-                            _frame.dispose();
-                        }
+            public void run() {
+                if (shell != null) {
+                    if (_container != null) {
+                        _container.remove(shell);
+                        _container.invalidate();
+                        _container.repaint();
+                    } else if (_frame != null) {
+                        _frame.dispose();
                     }
                 }
-            });
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////

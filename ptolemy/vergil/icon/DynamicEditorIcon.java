@@ -1,30 +1,30 @@
 /* An icon that displays specified text.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.icon;
 
 import java.lang.ref.WeakReference;
@@ -40,33 +40,32 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DynamicEditorIcon
 
 /**
-   An icon that provides for the possibility that figures may be
-   dynamically updated.  While some icons are generally 'static' and it
-   is simplest to regenerate new figures when their attributes change,
-   other icons are more 'dynamic'.  For instance, some icons might
-   display live video or a live plot.  This icon provides some basic
-   infrastructure for dealing with such cases.
+ An icon that provides for the possibility that figures may be
+ dynamically updated.  While some icons are generally 'static' and it
+ is simplest to regenerate new figures when their attributes change,
+ other icons are more 'dynamic'.  For instance, some icons might
+ display live video or a live plot.  This icon provides some basic
+ infrastructure for dealing with such cases.
 
-   The main difficulty is that, by design, an icon cannot keep track of
-   the figures it creates, otherwise there is a possibility for memory
-   leaks or inconsistencies in the case of multiple views.  This class
-   solves the problem by using a WeakReferences to keep track of
-   generated figures.  These references do not prevent objects from being
-   garbage collected.  This class also provides a 'safe' iterator that
-   can be used to traverse the weak references without the normal
-   associated nastiness.
+ The main difficulty is that, by design, an icon cannot keep track of
+ the figures it creates, otherwise there is a possibility for memory
+ leaks or inconsistencies in the case of multiple views.  This class
+ solves the problem by using a WeakReferences to keep track of
+ generated figures.  These references do not prevent objects from being
+ garbage collected.  This class also provides a 'safe' iterator that
+ can be used to traverse the weak references without the normal
+ associated nastiness.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class DynamicEditorIcon extends EditorIcon {
     /** Construct an icon in the specified workspace and name.
      *  This constructor is typically used in conjunction with
@@ -111,7 +110,8 @@ public class DynamicEditorIcon extends EditorIcon {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DynamicEditorIcon newObject = (DynamicEditorIcon) super.clone(workspace);
+        DynamicEditorIcon newObject = (DynamicEditorIcon) super
+                .clone(workspace);
         newObject._figures = new LinkedList();
         return newObject;
     }
@@ -138,48 +138,47 @@ public class DynamicEditorIcon extends EditorIcon {
     protected Iterator _liveFigureIterator() {
         final Iterator iterator = _figures.listIterator();
         return new Iterator() {
-                public boolean hasNext() {
-                    // Pull the next valid element out of the list of
-                    // WeakReferences.
-                    while ((_object == null) && iterator.hasNext()) {
-                        _object = ((WeakReference) iterator.next()).get();
-
-                        if (_object == null) {
-                            iterator.remove();
-                        }
-                    }
-
-                    return _object != null;
-                }
-
-                public Object next() throws NoSuchElementException {
-                    // Just to make sure that someone wasn't stupid
-                    // and didn't call hasNext();
-                    while ((_object == null) && iterator.hasNext()) {
-                        _object = ((WeakReference) iterator.next()).get();
-
-                        if (_object == null) {
-                            iterator.remove();
-                        }
-                    }
+            public boolean hasNext() {
+                // Pull the next valid element out of the list of
+                // WeakReferences.
+                while ((_object == null) && iterator.hasNext()) {
+                    _object = ((WeakReference) iterator.next()).get();
 
                     if (_object == null) {
-                        throw new NoSuchElementException(
-                                "The iterator is empty.");
-                    } else {
-                        Object object = _object;
-                        _object = null;
-                        return object;
+                        iterator.remove();
                     }
                 }
 
-                public void remove() throws UnsupportedOperationException {
-                    throw new UnsupportedOperationException(
-                            "The remove() operation is unsupported.");
+                return _object != null;
+            }
+
+            public Object next() throws NoSuchElementException {
+                // Just to make sure that someone wasn't stupid
+                // and didn't call hasNext();
+                while ((_object == null) && iterator.hasNext()) {
+                    _object = ((WeakReference) iterator.next()).get();
+
+                    if (_object == null) {
+                        iterator.remove();
+                    }
                 }
 
-                private Object _object;
-            };
+                if (_object == null) {
+                    throw new NoSuchElementException("The iterator is empty.");
+                } else {
+                    Object object = _object;
+                    _object = null;
+                    return object;
+                }
+            }
+
+            public void remove() throws UnsupportedOperationException {
+                throw new UnsupportedOperationException(
+                        "The remove() operation is unsupported.");
+            }
+
+            private Object _object;
+        };
     }
 
     /** Trim the list of figures to discard entries that are no longer

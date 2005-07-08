@@ -1,30 +1,30 @@
 /* Pattern match a string to a regular expression.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.string;
 
 import java.util.regex.Matcher;
@@ -43,23 +43,22 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// StringMatches
 
 /**
-   Pattern match a string to a regular expression and output a true if it
-   matches and a false if it does not. For a reference on regular
-   expression syntax see:
-   <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
-   http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
+ Pattern match a string to a regular expression and output a true if it
+ matches and a false if it does not. For a reference on regular
+ expression syntax see:
+ <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
+ http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
 
-   @author Antonio Yordan-Nones, Colin Cochran (contributor Edward A. Lee)
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (djstone)
-   @Pt.AcceptedRating Green (eal)
-*/
+ @author Antonio Yordan-Nones, Colin Cochran (contributor Edward A. Lee)
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (djstone)
+ @Pt.AcceptedRating Green (eal)
+ */
 public class StringMatches extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, this constructs
@@ -81,12 +80,14 @@ public class StringMatches extends TypedAtomicActor {
         pattern = new PortParameter(this, "pattern");
         pattern.setStringMode(true);
         pattern.setExpression("");
-        (new SingletonParameter(pattern.getPort(), "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(pattern.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         matchString = new PortParameter(this, "matchString");
         matchString.setStringMode(true);
         matchString.setExpression("");
-        (new SingletonParameter(matchString.getPort(), "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(matchString.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);
@@ -124,14 +125,14 @@ public class StringMatches extends TypedAtomicActor {
         if (attribute == pattern) {
             try {
                 String patternValue = ((StringToken) pattern.getToken())
-                    .stringValue();
+                        .stringValue();
                 _pattern = Pattern.compile(patternValue);
             } catch (PatternSyntaxException ex) {
                 String patternValue = ((StringToken) pattern.getToken())
-                    .stringValue();
+                        .stringValue();
                 throw new IllegalActionException(this, ex,
-                        "Failed to compile regular expression \"" + patternValue
-                        + "\"");
+                        "Failed to compile regular expression \""
+                                + patternValue + "\"");
             }
         } else {
             super.attributeChanged(attribute);
@@ -149,7 +150,7 @@ public class StringMatches extends TypedAtomicActor {
         matchString.update();
 
         String matchStringValue = ((StringToken) matchString.getToken())
-            .stringValue();
+                .stringValue();
         Matcher match = _pattern.matcher(matchStringValue);
         output.send(0, new BooleanToken(match.find()));
     }

@@ -1,31 +1,31 @@
 /* An actor that reads a URL naming a directory and outputs each
-   element of the directory one at a time.
+ element of the directory one at a time.
 
-   @Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the
-   above copyright notice and the following two paragraphs appear in all
-   copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION 2
-   COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib;
 
 import java.io.BufferedReader;
@@ -49,41 +49,40 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// URLDirectoryReader
 
 /**
-   This actor reads a URL and if the URL names a directory, it outputs
-   the name of each file or subdirectory contained in the directory.
-   If the URL names a file, then it outputs the name of that file.
+ This actor reads a URL and if the URL names a directory, it outputs
+ the name of each file or subdirectory contained in the directory.
+ If the URL names a file, then it outputs the name of that file.
 
-   <p>If the <i>repeat</i> flag is true, then the sequence of file
-   names is repeated indefinitely.
-   If the <i>refresh</i> flag is true, and the <i>repeat</i> flag is
-   true, then the directory is re-read before repeating the sequence of
-   files and subdirectories.
+ <p>If the <i>repeat</i> flag is true, then the sequence of file
+ names is repeated indefinitely.
+ If the <i>refresh</i> flag is true, and the <i>repeat</i> flag is
+ true, then the directory is re-read before repeating the sequence of
+ files and subdirectories.
 
-   <p>If the <i>endsWith</i> String parameter is non-null and non-empty,
-   then only file names or subdirectories that end with the value
-   of the <i>endsWith</i> parameter are output.
+ <p>If the <i>endsWith</i> String parameter is non-null and non-empty,
+ then only file names or subdirectories that end with the value
+ of the <i>endsWith</i> parameter are output.
 
-   <p>One alternative implementation would be that if the URL named a file,
-   then the actor would output the names of the files and subdirectories
-   in the directory that contains the file.
-   <br>Another alternative implementation would output the names of the
-   files and subdirectories in an array.
-   <br>An extension would be to include a filter parameter that could be
-   a regular expression that would allow us to filter the file names.
-   <br> Should this actor extend URLReader or SequenceActor?
+ <p>One alternative implementation would be that if the URL named a file,
+ then the actor would output the names of the files and subdirectories
+ in the directory that contains the file.
+ <br>Another alternative implementation would output the names of the
+ files and subdirectories in an array.
+ <br>An extension would be to include a filter parameter that could be
+ a regular expression that would allow us to filter the file names.
+ <br> Should this actor extend URLReader or SequenceActor?
 
-   @author  Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (liuj)
-   @deprecated Use DirectoryListing instead.
-*/
+ @author  Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (liuj)
+ @deprecated Use DirectoryListing instead.
+ */
 public class URLDirectoryReader extends URLReader {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -280,9 +279,7 @@ public class URLDirectoryReader extends URLReader {
                     String[] results = new String[resultsList.size()];
                     return (String[]) (resultsList.toArray(results));
                 } else if (file.isFile()) {
-                    return new String[] {
-                        file.toString()
-                    };
+                    return new String[] { file.toString() };
                 } else {
                     throw new IllegalActionException("'" + source
                             + "' is neither a file " + "or a directory?");
@@ -326,7 +323,8 @@ public class URLDirectoryReader extends URLReader {
         if (!contentType.startsWith("text/html")
                 && !contentType.startsWith("text/plain")) {
             throw new RuntimeException("Could not parse '" + source
-                    + "', it is not \"text/html\", " + "or \"text/plain\", it is: "
+                    + "', it is not \"text/html\", "
+                    + "or \"text/plain\", it is: "
                     + urlConnection.getContentType());
         }
 
@@ -335,8 +333,8 @@ public class URLDirectoryReader extends URLReader {
         BufferedReader in = null;
 
         try {
-            in = new BufferedReader(new InputStreamReader(
-                                            urlConnection.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(urlConnection
+                    .getInputStream()));
 
             if (!contentType.startsWith("text/plain")
                     && !urlConnection.getURL().toString().endsWith("/")) {
@@ -397,9 +395,10 @@ public class URLDirectoryReader extends URLReader {
                                             // exists.
                                             if ((endsWith == null)
                                                     || (endsWith.length() == 0)
-                                                    || target.endsWith(
-                                                            endsWith)) {
-                                                resultsList.add(source + target);
+                                                    || target
+                                                            .endsWith(endsWith)) {
+                                                resultsList
+                                                        .add(source + target);
                                             }
 
                                             sawHREF = false;

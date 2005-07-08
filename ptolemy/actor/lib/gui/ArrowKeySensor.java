@@ -1,30 +1,30 @@
 /* An actor which pops up a keystroke-sensing JFrame.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.gui;
 
 import java.awt.BorderLayout;
@@ -47,40 +47,39 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import diva.gui.toolbox.FocusMouseListener;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ArrowKeySensor
 
 /**
-   Detect when the user presses or releases an arrow key and produce an
-   integer on the corresponding output.
+ Detect when the user presses or releases an arrow key and produce an
+ integer on the corresponding output.
 
-   <p>When this actor is preinitialized, it pops up a new JFrame window on
-   the desktop, usually in the upper left hand corner of the screen.
-   When this JFrame has the focus (such as when it has been clicked on)
-   it is capable of sensing keystrokes.
+ <p>When this actor is preinitialized, it pops up a new JFrame window on
+ the desktop, usually in the upper left hand corner of the screen.
+ When this JFrame has the focus (such as when it has been clicked on)
+ it is capable of sensing keystrokes.
 
-   <p>This actor senses only the four non-numeric-pad arrow-key
-   keystrokes.  This actor responds to key releases as well as key
-   presses.  Upon each key press, the integer 1 is broadcast from the
-   corresponding output.  Upon each key release, the integer 0 is output.
+ <p>This actor senses only the four non-numeric-pad arrow-key
+ keystrokes.  This actor responds to key releases as well as key
+ presses.  Upon each key press, the integer 1 is broadcast from the
+ corresponding output.  Upon each key release, the integer 0 is output.
 
-   <p>This actor contains a private inner class which generated the JFrame.
-   The frame sets up call-backs which react to the keystrokes.  When called,
-   these call the director's fireAtCurrentTime() method.  This causes
-   the director to call fire() on the actor.   The actor then broadcasts
-   tokens from one or both outputs depending on which keystroke(s) have
-   occurred since the actor was last fired.
+ <p>This actor contains a private inner class which generated the JFrame.
+ The frame sets up call-backs which react to the keystrokes.  When called,
+ these call the director's fireAtCurrentTime() method.  This causes
+ the director to call fire() on the actor.   The actor then broadcasts
+ tokens from one or both outputs depending on which keystroke(s) have
+ occurred since the actor was last fired.
 
-   <p>NOTE: This actor only works in the DE domain due to its reliance on
-   this director's fireAtCurrentTime() method.
+ <p>NOTE: This actor only works in the DE domain due to its reliance on
+ this director's fireAtCurrentTime() method.
 
-   @author Winthrop Williams
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (winthrop)
-   @Pt.AcceptedRating Red (winthrop)
-*/
+ @author Winthrop Williams
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (winthrop)
+ @Pt.AcceptedRating Red (winthrop)
+ */
 public class ArrowKeySensor extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -202,12 +201,19 @@ public class ArrowKeySensor extends TypedAtomicActor {
      *  (press or release) takes precedence.
      */
     private boolean _upKeyPressed = false;
+
     private boolean _leftKeyPressed = false;
+
     private boolean _rightKeyPressed = false;
+
     private boolean _downKeyPressed = false;
+
     private boolean _upKeyReleased = false;
+
     private boolean _leftKeyReleased = false;
+
     private boolean _rightKeyReleased = false;
+
     private boolean _downKeyReleased = false;
 
     ///////////////////////////////////////////////////////////////////
@@ -223,71 +229,71 @@ public class ArrowKeySensor extends TypedAtomicActor {
         public MyFrame() {
             // up-arrow call-backs
             ActionListener myUpPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        _upKeyPressed = true;
-                        _upKeyReleased = false;
-                        _tryCallingFireAtCurrentTime();
-                    }
-                };
+                public void actionPerformed(ActionEvent e) {
+                    _upKeyPressed = true;
+                    _upKeyReleased = false;
+                    _tryCallingFireAtCurrentTime();
+                }
+            };
 
             ActionListener myUpReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        _upKeyReleased = true;
-                        _upKeyPressed = false;
-                        _tryCallingFireAtCurrentTime();
-                    }
-                };
+                public void actionPerformed(ActionEvent e) {
+                    _upKeyReleased = true;
+                    _upKeyPressed = false;
+                    _tryCallingFireAtCurrentTime();
+                }
+            };
 
             // left-arrow call-backs
             ActionListener myLeftPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        _leftKeyPressed = true;
-                        _leftKeyReleased = false;
-                        _tryCallingFireAtCurrentTime();
-                    }
-                };
+                public void actionPerformed(ActionEvent e) {
+                    _leftKeyPressed = true;
+                    _leftKeyReleased = false;
+                    _tryCallingFireAtCurrentTime();
+                }
+            };
 
             ActionListener myLeftReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        _leftKeyReleased = true;
-                        _leftKeyPressed = false;
-                        _tryCallingFireAtCurrentTime();
-                    }
-                };
+                public void actionPerformed(ActionEvent e) {
+                    _leftKeyReleased = true;
+                    _leftKeyPressed = false;
+                    _tryCallingFireAtCurrentTime();
+                }
+            };
 
             // right-arrow call-backs
             ActionListener myRightPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        _rightKeyPressed = true;
-                        _rightKeyReleased = false;
-                        _tryCallingFireAtCurrentTime();
-                    }
-                };
+                public void actionPerformed(ActionEvent e) {
+                    _rightKeyPressed = true;
+                    _rightKeyReleased = false;
+                    _tryCallingFireAtCurrentTime();
+                }
+            };
 
             ActionListener myRightReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        _rightKeyReleased = true;
-                        _rightKeyPressed = false;
-                        _tryCallingFireAtCurrentTime();
-                    }
-                };
+                public void actionPerformed(ActionEvent e) {
+                    _rightKeyReleased = true;
+                    _rightKeyPressed = false;
+                    _tryCallingFireAtCurrentTime();
+                }
+            };
 
             // down-arrow call-backs
             ActionListener myDownPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        _downKeyPressed = true;
-                        _downKeyReleased = false;
-                        _tryCallingFireAtCurrentTime();
-                    }
-                };
+                public void actionPerformed(ActionEvent e) {
+                    _downKeyPressed = true;
+                    _downKeyReleased = false;
+                    _tryCallingFireAtCurrentTime();
+                }
+            };
 
             ActionListener myDownReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        _downKeyReleased = true;
-                        _downKeyPressed = false;
-                        _tryCallingFireAtCurrentTime();
-                    }
-                };
+                public void actionPerformed(ActionEvent e) {
+                    _downKeyReleased = true;
+                    _downKeyPressed = false;
+                    _tryCallingFireAtCurrentTime();
+                }
+            };
 
             getContentPane().setLayout(new BorderLayout());
 
@@ -316,20 +322,17 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myLeftReleasedListener,
-                    "LeftReleased",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                    "LeftReleased", KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0,
+                            true), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Registration of right-arrow call-backs.
             label.registerKeyboardAction(myRightPressedListener,
-                    "RightPressed",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                    "RightPressed", KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
+                            0, false), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myRightReleasedListener,
-                    "RightReleased",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                    "RightReleased", KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
+                            0, true), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Registration of down-arrow call-backs.
             label.registerKeyboardAction(myDownPressedListener, "DownPressed",
@@ -337,9 +340,8 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myDownReleasedListener,
-                    "DownReleased",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                    "DownReleased", KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0,
+                            true), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.setRequestFocusEnabled(true);
             label.addMouseListener(new FocusMouseListener());

@@ -21,10 +21,10 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.dt.kernel;
 
 import java.util.Iterator;
@@ -46,32 +46,31 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DTReceiver
 
 /**
 
-A first-in, first-out (FIFO) queue receiver with variable
-capacity. Tokens are put into the receiver with the put() method, and
-removed from the receiver with the get() method. The token removed is
-the oldest one in the receiver.  Time is incremented by a fixed amount
-<i>delta time</i> every time the get() method is called. Each receiver
-has its own value of delta time.  We calculate delta time as "period /
-(rate * repetitions)" where:
+ A first-in, first-out (FIFO) queue receiver with variable
+ capacity. Tokens are put into the receiver with the put() method, and
+ removed from the receiver with the get() method. The token removed is
+ the oldest one in the receiver.  Time is incremented by a fixed amount
+ <i>delta time</i> every time the get() method is called. Each receiver
+ has its own value of delta time.  We calculate delta time as "period /
+ (rate * repetitions)" where:
 
-<UL>
-    <LI> period is the execution time of the director per iteration
-    <LI> rate   is the rate of the port that holds this receiver
-    <LI> repetitions is the firing count per iteration of the actor
-              that holds this receiver
-</UL>
-@author C. Fong
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Yellow (chf)
-@Pt.AcceptedRating Yellow (vogel)
-*/
+ <UL>
+ <LI> period is the execution time of the director per iteration
+ <LI> rate   is the rate of the port that holds this receiver
+ <LI> repetitions is the firing count per iteration of the actor
+ that holds this receiver
+ </UL>
+ @author C. Fong
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (chf)
+ @Pt.AcceptedRating Yellow (vogel)
+ */
 public class DTReceiver extends SDFReceiver {
     /** Construct an empty receiver with no container.
      */
@@ -90,7 +89,7 @@ public class DTReceiver extends SDFReceiver {
         _init();
 
         Time localTime = new Time(((Actor) container.getContainer())
-                            .getDirector());
+                .getDirector());
         initializeLocalTime(localTime);
     }
 
@@ -106,7 +105,7 @@ public class DTReceiver extends SDFReceiver {
         _init();
 
         Time localTime = new Time(((Actor) container.getContainer())
-                            .getDirector());
+                .getDirector());
         initializeLocalTime(localTime);
     }
 
@@ -129,10 +128,10 @@ public class DTReceiver extends SDFReceiver {
 
         if (_from == null) {
             throw new InternalErrorException(
-                "internal DT error: Receiver with null source");
+                    "internal DT error: Receiver with null source");
         } else {
-            Parameter param = (Parameter) _fromPort.getAttribute(
-                    "tokenProductionRate");
+            Parameter param = (Parameter) _fromPort
+                    .getAttribute("tokenProductionRate");
 
             if (param == null) {
                 _outrate = 1;
@@ -143,7 +142,8 @@ public class DTReceiver extends SDFReceiver {
             if ((isCompositeContainer) && (_toPort.isOutput())) {
                 _inRate = 1;
             } else {
-                param = (Parameter) _toPort.getAttribute("tokenConsumptionRate");
+                param = (Parameter) _toPort
+                        .getAttribute("tokenConsumptionRate");
 
                 if (param == null) {
                     _inRate = 1;
@@ -157,9 +157,9 @@ public class DTReceiver extends SDFReceiver {
             DTDirector localDirector;
 
             if ((containerActor instanceof TypedCompositeActor)
-                            && (!containerPort.isOutput())) {
+                    && (!containerPort.isOutput())) {
                 localDirector = (DTDirector) containerActor
-                                .getExecutiveDirector();
+                        .getExecutiveDirector();
             } else {
                 localDirector = (DTDirector) containerActor.getDirector();
             }
@@ -201,12 +201,12 @@ public class DTReceiver extends SDFReceiver {
 
         Iterator portListIterator = listOfConnectedPorts.iterator();
 
-foundReceiver:
-        while (portListIterator.hasNext()) {
+        foundReceiver: while (portListIterator.hasNext()) {
             connectedPort = (IOPort) portListIterator.next();
 
             if (connectedPort.isOutput() == true) {
-                Receiver[][] remoteReceivers = connectedPort.getRemoteReceivers();
+                Receiver[][] remoteReceivers = connectedPort
+                        .getRemoteReceivers();
 
                 for (int i = 0; i < connectedPort.getWidth(); i++) {
                     for (int j = 0; j < remoteReceivers[i].length; j++) {
@@ -216,7 +216,7 @@ foundReceiver:
 
                             if (_fromPort == null) {
                                 throw new InternalErrorException(
-                                    "DT error: Receiver with null source");
+                                        "DT error: Receiver with null source");
                             }
 
                             break foundReceiver;
@@ -230,7 +230,7 @@ foundReceiver:
 
                 if (_fromPort == null) {
                     throw new InternalErrorException(
-                        "internal DT error: Receiver with null source");
+                            "internal DT error: Receiver with null source");
                 }
 
                 break foundReceiver;
@@ -243,7 +243,7 @@ foundReceiver:
 
         if (_fromPort == null) {
             throw new InternalErrorException(
-                "internal DT error: Receiver with null source");
+                    "internal DT error: Receiver with null source");
         }
     }
 
@@ -345,7 +345,7 @@ foundReceiver:
     public void put(Token token) {
         if (_fromPort == null) {
             throw new InternalErrorException(
-                "internal DT error: Receiver with null source");
+                    "internal DT error: Receiver with null source");
         }
 
         super.put(token);

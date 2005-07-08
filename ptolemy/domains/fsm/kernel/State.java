@@ -1,29 +1,29 @@
 /* A state in an FSMActor.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.fsm.kernel;
 
 import java.util.Iterator;
@@ -45,33 +45,32 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// State
 
 /**
-   A State has two ports: one for linking incoming transitions, the other for
-   outgoing transitions. When the FSMActor containing a state is the mode
-   controller of a modal model, the state can be refined by one or more
-   instances of TypedActor. The refinements must have the same container
-   as the FSMActor. During execution of a modal model, only the mode
-   controller and the refinements of the current state of the mode
-   controller react to input to the modal model and produce
-   output. The outgoing transitions from a state are either preemptive or
-   non-preemptive. When a modal model is fired, if a preemptive transition
-   from the current state of the mode controller is chosen, the refinements of
-   the current state are not fired. Otherwise the refinements are fired before
-   choosing a non-preemptive transition.
+ A State has two ports: one for linking incoming transitions, the other for
+ outgoing transitions. When the FSMActor containing a state is the mode
+ controller of a modal model, the state can be refined by one or more
+ instances of TypedActor. The refinements must have the same container
+ as the FSMActor. During execution of a modal model, only the mode
+ controller and the refinements of the current state of the mode
+ controller react to input to the modal model and produce
+ output. The outgoing transitions from a state are either preemptive or
+ non-preemptive. When a modal model is fired, if a preemptive transition
+ from the current state of the mode controller is chosen, the refinements of
+ the current state are not fired. Otherwise the refinements are fired before
+ choosing a non-preemptive transition.
 
-   @author Xiaojun Liu
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (liuxj)
-   @Pt.AcceptedRating Yellow (kienhuis)
-   @see Transition
-   @see FSMActor
-   @see FSMDirector
-*/
+ @author Xiaojun Liu
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (liuxj)
+ @Pt.AcceptedRating Yellow (kienhuis)
+ @see Transition
+ @see FSMActor
+ @see FSMDirector
+ */
 public class State extends ComponentEntity {
     /** Construct a state with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -95,8 +94,7 @@ public class State extends ComponentEntity {
         outgoingPort = new ComponentPort(this, "outgoingPort");
         refinementName = new StringAttribute(this, "refinementName");
 
-        _attachText("_iconDescription",
-                "<svg>\n"
+        _attachText("_iconDescription", "<svg>\n"
                 + "<circle cx=\"0\" cy=\"0\" r=\"20\" style=\"fill:white\"/>\n"
                 + "</svg>\n");
 
@@ -160,12 +158,12 @@ public class State extends ComponentEntity {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         State newObject = (State) super.clone(workspace);
-        newObject.incomingPort = (ComponentPort) newObject.getPort(
-                "incomingPort");
-        newObject.outgoingPort = (ComponentPort) newObject.getPort(
-                "outgoingPort");
-        newObject.refinementName = (StringAttribute) newObject.getAttribute(
-                "refinementName");
+        newObject.incomingPort = (ComponentPort) newObject
+                .getPort("incomingPort");
+        newObject.outgoingPort = (ComponentPort) newObject
+                .getPort("outgoingPort");
+        newObject.refinementName = (StringAttribute) newObject
+                .getAttribute("refinementName");
         newObject._refinementVersion = -1;
         newObject._transitionListVersion = -1;
         newObject._nonpreemptiveTransitionList = new LinkedList();
@@ -212,7 +210,7 @@ public class State extends ComponentEntity {
 
             Nameable container = getContainer();
             TypedCompositeActor containerContainer = (TypedCompositeActor) container
-                .getContainer();
+                    .getContainer();
             int index = 0;
 
             while (tokenizer.hasMoreTokens()) {
@@ -223,12 +221,13 @@ public class State extends ComponentEntity {
                             "Malformed list of refinements: " + names);
                 }
 
-                TypedActor element = (TypedActor) containerContainer.getEntity(name);
+                TypedActor element = (TypedActor) containerContainer
+                        .getEntity(name);
 
                 if (element == null) {
-                    throw new IllegalActionException(this,
-                            "Cannot find " + "refinement with name \"" + name
-                            + "\" in " + containerContainer.getFullName());
+                    throw new IllegalActionException(this, "Cannot find "
+                            + "refinement with name \"" + name + "\" in "
+                            + containerContainer.getFullName());
                 }
 
                 _refinement[index++] = element;

@@ -1,31 +1,31 @@
 /* A buffer supporting the playback of audio data and the the
-   writing of audio data to a sound file.
+ writing of audio data to a sound file.
 
-   Copyright (c) 2000-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.media.javasound;
 
 import java.io.ByteArrayInputStream;
@@ -42,73 +42,72 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-
 /////////////////////////////////////////////////////////////
 //// SoundPlayback
 
 /**
-   A buffer supporting the playback of audio data and the the
-   writing of audio data to a sound file.
+ A buffer supporting the playback of audio data and the the
+ writing of audio data to a sound file.
 
-   <h2>Overview</h2>
-   A buffer supporting the real-time playback of audio and the writing
-   of audio data to a sound file. Single channel
-   (mono) and multichannel audio (stereo) are supported. This class,
-   along with SoundCapture, intends to provide an easy to use interface
-   to Java Sound, Java's audio API. Java Sound supports the writing
-   of audio data to a sound file or the computer's audio output port,
-   but only at the byte level, which is audio format specific. This class,
-   however, provides higher level support for the writing of double
-   or integer valued samples to the computer's audio output port or
-   any supported sound file type. This class is therefore useful when
-   it one desires to playback audio samples in an audio format independent
-   way.
-   <p>
-   Depending on available system resources, it may be possible to
-   run an instance of this class and an instance of SoundCapture
-   concurrently. This allows for the concurrent capture, signal
-   processing, and playback of audio data.
-   <p>
-   <h2>Usage</h2>
-   Two constructors are provided. One constructor creates a sound playback
-   object that sends audio data to the speaker. If this constructor is
-   used, there will be a small
-   delay between the time that the audio data is delivered to this
-   object and the time that the corresponding audio is actually
-   heard. This latency can be adjusted by setting the <i>bufferSize</i>
-   constructor parameter.  Another constructor
-   creates a sound playback object that sends audio data to a sound
-   file.
-   <p>
-   After calling the appropriate constructor, startPlayback()
-   must be called to initialize the audio system.
-   The putSamples() or putSamplesInt() method should then be repeatedly
-   called to deliver the audio data to the audio output device
-   (speaker or file). The audio samples delivered to putSamples()
-   should be in the proper range, or clipping will occur.
-   putSamples() expects the samples to be in the range (-1, 1).
-   putSamplesInt() expects the samples to be in the range
-   (-2^(bits_per_sample/2), 2^(bits_per_sample/2)), where
-   bits_per_sample is the number of bits per sample.
-   Note that it is possible (but probably
-   not useful) to interleave calls to putSamples() and
-   putSamplesInt().
-   Finally, after no more audio playback is desired, stopPlayback()
-   should be called to free up audio system resources.
-   <p>
-   <h2>Security issues</h2>Applications have no restrictions on the
-   capturing or playback of audio. Applet code is not allowed to
-   write native files by default. The .java.policy file must be
-   modified to grant applets more privileges.
-   <p>
-   Note: Requires Java 2 v1.3.0 or later.
-   @author Brian K. Vogel
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (vogel)
-   @Pt.AcceptedRating Yellow (cxh)
-   @see ptolemy.media.javasound.SoundCapture
-*/
+ <h2>Overview</h2>
+ A buffer supporting the real-time playback of audio and the writing
+ of audio data to a sound file. Single channel
+ (mono) and multichannel audio (stereo) are supported. This class,
+ along with SoundCapture, intends to provide an easy to use interface
+ to Java Sound, Java's audio API. Java Sound supports the writing
+ of audio data to a sound file or the computer's audio output port,
+ but only at the byte level, which is audio format specific. This class,
+ however, provides higher level support for the writing of double
+ or integer valued samples to the computer's audio output port or
+ any supported sound file type. This class is therefore useful when
+ it one desires to playback audio samples in an audio format independent
+ way.
+ <p>
+ Depending on available system resources, it may be possible to
+ run an instance of this class and an instance of SoundCapture
+ concurrently. This allows for the concurrent capture, signal
+ processing, and playback of audio data.
+ <p>
+ <h2>Usage</h2>
+ Two constructors are provided. One constructor creates a sound playback
+ object that sends audio data to the speaker. If this constructor is
+ used, there will be a small
+ delay between the time that the audio data is delivered to this
+ object and the time that the corresponding audio is actually
+ heard. This latency can be adjusted by setting the <i>bufferSize</i>
+ constructor parameter.  Another constructor
+ creates a sound playback object that sends audio data to a sound
+ file.
+ <p>
+ After calling the appropriate constructor, startPlayback()
+ must be called to initialize the audio system.
+ The putSamples() or putSamplesInt() method should then be repeatedly
+ called to deliver the audio data to the audio output device
+ (speaker or file). The audio samples delivered to putSamples()
+ should be in the proper range, or clipping will occur.
+ putSamples() expects the samples to be in the range (-1, 1).
+ putSamplesInt() expects the samples to be in the range
+ (-2^(bits_per_sample/2), 2^(bits_per_sample/2)), where
+ bits_per_sample is the number of bits per sample.
+ Note that it is possible (but probably
+ not useful) to interleave calls to putSamples() and
+ putSamplesInt().
+ Finally, after no more audio playback is desired, stopPlayback()
+ should be called to free up audio system resources.
+ <p>
+ <h2>Security issues</h2>Applications have no restrictions on the
+ capturing or playback of audio. Applet code is not allowed to
+ write native files by default. The .java.policy file must be
+ modified to grant applets more privileges.
+ <p>
+ Note: Requires Java 2 v1.3.0 or later.
+ @author Brian K. Vogel
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (vogel)
+ @Pt.AcceptedRating Yellow (cxh)
+ @see ptolemy.media.javasound.SoundCapture
+ */
 public class SoundPlayback {
     /** Construct a sound playback object that plays audio through the
      *  computer's speaker. Note
@@ -189,7 +188,8 @@ public class SoundPlayback {
      *   this parameter, but typical values are 64-2024.
      */
     public SoundPlayback(String fileName, float sampleRate,
-            int sampleSizeInBits, int channels, int bufferSize, int putSamplesSize) {
+            int sampleSizeInBits, int channels, int bufferSize,
+            int putSamplesSize) {
         _isAudioPlaybackActive = false;
         this._playbackMode = "file";
         this._fileName = fileName;
@@ -245,8 +245,8 @@ public class SoundPlayback {
      *  inactive. That is, If startPlayback() has not yet been called
      *  or if stopPlayback() has already been called.
      */
-    public void putSamples(double[][] putSamplesArray)
-            throws IOException, IllegalStateException {
+    public void putSamples(double[][] putSamplesArray) throws IOException,
+            IllegalStateException {
         if (_isAudioPlaybackActive == true) {
             if (_playbackMode.equals("speaker")) {
                 // Convert array of double valued samples into
@@ -258,7 +258,8 @@ public class SoundPlayback {
                 // be written to the output device.
                 // Note: consumptionRate is amount of data to write, in bytes.
                 // Now write the array to output device.
-                _sourceLine.write(_data, 0, _putSamplesSize * _frameSizeInBytes);
+                _sourceLine
+                        .write(_data, 0, _putSamplesSize * _frameSizeInBytes);
             } else if (_playbackMode.equals("file")) {
                 // Convert array of double valued samples into
                 // the proper byte array format.
@@ -319,8 +320,8 @@ public class SoundPlayback {
      *  inactive. That is, If startPlayback() has not yet been called
      *  or if stopPlayback() has already been called.
      */
-    public void putSamplesInt(int[][] putSamplesArray)
-            throws IOException, IllegalStateException {
+    public void putSamplesInt(int[][] putSamplesArray) throws IOException,
+            IllegalStateException {
         if (_isAudioPlaybackActive == true) {
             if (_playbackMode.equals("speaker")) {
                 // Convert array of double valued samples into
@@ -332,7 +333,8 @@ public class SoundPlayback {
                 // be written to the output device.
                 // Note: consumptionRate is amount of data to write, in bytes.
                 // Now write the array to output device.
-                _sourceLine.write(_data, 0, _putSamplesSize * _frameSizeInBytes);
+                _sourceLine
+                        .write(_data, 0, _putSamplesSize * _frameSizeInBytes);
             } else if (_playbackMode.equals("file")) {
                 // Convert array of double valued samples into
                 // the proper byte array format.
@@ -714,22 +716,34 @@ public class SoundPlayback {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int _productionRate;
+
     private String _fileName;
+
     private String _playbackMode;
+
     private int _sampleSizeInBits;
+
     private int _putSamplesSize;
+
     private float _sampleRate;
+
     private int _channels;
+
     private int _bufferSize;
+
     private SourceDataLine _sourceLine;
 
     // Array of audio samples in byte format.
     private byte[] _data;
+
     private int _frameSizeInBytes;
+
     private ArrayList _toFileBuffer;
 
     // This is the format of _toFileBuffer.
     private AudioFormat _playToFileFormat;
+
     private int _bytesPerSample;
+
     private boolean _isAudioPlaybackActive;
 }

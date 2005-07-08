@@ -1,34 +1,34 @@
 /*
 
-A C code generator for generating "header files" (.h files) that implement
-Java classes.
+ A C code generator for generating "header files" (.h files) that implement
+ Java classes.
 
-Copyright (c) 2001-2005 The University of Maryland.
-All rights reserved.
+ Copyright (c) 2001-2005 The University of Maryland.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.Iterator;
@@ -36,17 +36,16 @@ import java.util.Iterator;
 import soot.SootClass;
 import soot.SootMethod;
 
-
 /** A C code generator for generating "header files" (.h files) that implement
-    Java classes.
+ Java classes.
 
-    @author Shuvra S. Bhattacharyya, Ankush Varma
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (ssb)
-    @Pt.AcceptedRating Red (ssb)
+ @author Shuvra S. Bhattacharyya, Ankush Varma
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (ssb)
+ @Pt.AcceptedRating Red (ssb)
 
-*/
+ */
 public class HeaderFileGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ///////////////             public fields             ///////////
@@ -106,7 +105,8 @@ public class HeaderFileGenerator extends CodeGenerator {
         _requiredTypeMap.putAll(CSG.getRequiredTypeMap());
 
         // Generate the structure for instances of this class.
-        InstanceStructureGenerator ISG = new InstanceStructureGenerator(_context);
+        InstanceStructureGenerator ISG = new InstanceStructureGenerator(
+                _context);
         bodyCode.append(ISG.generate(source));
         _requiredTypeMap.putAll(ISG.getRequiredTypeMap());
 
@@ -156,7 +156,7 @@ public class HeaderFileGenerator extends CodeGenerator {
 
         // Return an appropriate concatenation of the code strings.
         return headerCode.toString() + bodyCode.toString()
-            + footerCode.toString();
+                + footerCode.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -184,8 +184,8 @@ public class HeaderFileGenerator extends CodeGenerator {
             String fileName = new String((String) includeFiles.next());
 
             fileName = CNames.sanitize(fileName.substring(0,
-                                               fileName.length() - 3))
-                + StubFileGenerator.stubFileNameSuffix() + "\"";
+                    fileName.length() - 3))
+                    + StubFileGenerator.stubFileNameSuffix() + "\"";
 
             headerCode.append(fileName);
 
@@ -212,8 +212,8 @@ public class HeaderFileGenerator extends CodeGenerator {
             String fileName = new String((String) requiredTypes.next());
 
             fileName = CNames.sanitize(fileName.substring(0,
-                                               fileName.length() - 2))
-                + StubFileGenerator.stubFileNameSuffix() + "\"";
+                    fileName.length() - 2))
+                    + StubFileGenerator.stubFileNameSuffix() + "\"";
 
             headerCode.append(fileName);
 
@@ -239,12 +239,12 @@ public class HeaderFileGenerator extends CodeGenerator {
 
     // The end of a comment for generated code that is to be
     // commented-out.
-    private static final String _closeComment =
-    "**********************************" + _commentEnd + "\n";
+    private static final String _closeComment = "**********************************"
+            + _commentEnd + "\n";
 
     // The beginning of a comment for generated code that is to be
     // The beginning of a comment for generated code that is to be
     // commented-out.
     private static final String _openComment = _commentStart
-    + "**********************************\n";
+            + "**********************************\n";
 }

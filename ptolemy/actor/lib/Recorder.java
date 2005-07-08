@@ -1,30 +1,30 @@
 /* Record all input tokens for later querying.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import java.util.ArrayList;
@@ -43,32 +43,31 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Recorder
 
 /**
-   Record all input tokens for later querying.  This actor can be used for
-   testing configurations of actors.  It can also be used in programs that
-   invoke Ptolemy models and wish to query the results after the model
-   is run.  The input tokens are read in the postfire() method so that
-   in domains with fixed-point semantics, only the final, settled value
-   is recorded.  The current time is also recorded for each value.
-   <p>
-   The <i>capacity</i> parameter limits the size of the record.
-   If the capacity is set to zero, then no tokens are recorded, but
-   the total number of input tokens is counted.  You can access
-   the count via the getCount() method.  If the capacity is 1,
-   then only the most recently seen token on each channel is recorded.
-   If the capacity is negative (the default), then the capacity
-   is infinite.
+ Record all input tokens for later querying.  This actor can be used for
+ testing configurations of actors.  It can also be used in programs that
+ invoke Ptolemy models and wish to query the results after the model
+ is run.  The input tokens are read in the postfire() method so that
+ in domains with fixed-point semantics, only the final, settled value
+ is recorded.  The current time is also recorded for each value.
+ <p>
+ The <i>capacity</i> parameter limits the size of the record.
+ If the capacity is set to zero, then no tokens are recorded, but
+ the total number of input tokens is counted.  You can access
+ the count via the getCount() method.  If the capacity is 1,
+ then only the most recently seen token on each channel is recorded.
+ If the capacity is negative (the default), then the capacity
+ is infinite.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (bilung)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (bilung)
+ */
 public class Recorder extends Sink {
     /** Construct an actor with an input multiport that can accept any
      *  Token.
@@ -213,7 +212,7 @@ public class Recorder extends Sink {
         if (capacityValue != 0) {
             _records.add(record);
             _timeRecord.add(new Double(getDirector().getModelTime()
-                                    .getDoubleValue()));
+                    .getDoubleValue()));
 
             if ((capacityValue > 0) && (_records.size() > capacityValue)) {
                 // Remove the first element.

@@ -1,31 +1,31 @@
 /* A composite actor that executes a submodel in fire().
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor.lib.hoc;
 
 import java.util.Iterator;
@@ -41,74 +41,73 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// RunCompositeActor
 
 /**
-   This is a composite actor that can executes the contained model
-   completely, as if it were a top-level model, on each firing.
-   This can be used to define an actor whose firing behavior
-   is given by a complete execution of a submodel.
-   <p>
-   An instance of this actor can have ports added to it.  If it has
-   input ports, then on each firing, before executing the referenced
-   model, this actor will read an input token from the input port, if
-   there is one, and use it to set the value of a top-level parameter
-   in the referenced model that has the same name as the port, if there
-   is one.  The simplest way to ensure that there is a matching parameter
-   is to use a PortParameter for inputs.  However, this actor will work
-   also for ordinary ports. In this case, if this actor has a
-   parameter with the same name as the port, and it is an instance
-   of Variable (or its derived class Parameter), then the token
-   read at the input is moved into it using its setToken() method.
-   Otherwise, if it is an instance of Settable, then a string representation
-   of the token is copied using the setExpression() method.
-   Input ports should not be multiports, and if they are, then
-   all but the first channel will be ignored.
-   <p>
-   If this actor has output ports and the contained model is executed,
-   then upon completion of that execution, if this actor has parameters
-   whose names match those of the output ports, then the final value of
-   those parameters is sent to the output ports. If such a parameter is an
-   instance of Variable (or its derived class Parameter), then its
-   contained token is sent to the output token. Otherwise, if it is an
-   instance of Settable, then a string token is produced on the output
-   with its value equal to that returned by getExpression() of the
-   Settable. Output ports should not be multiports. If they are,
-   then all but the first channel will be ignored.
-   A typical use of this actor will use the SetVariable actor
-   inside to define the value of the output port.
-   <p>
-   In preinitialize(), type constraints are set up so that input
-   and output ports with (name) matching parameters are constrained
-   to have compatible types. Note that if the ports or parameters
-   are changed during execution, then it will be necessary to set
-   up matching type constraints by hand.  Since this isn't possible
-   to do from Vergil, the ports and parameters of this actor
-   should not be changed using Vergil during execution.
-   <p>
-   The subclass of this may need to call a method, for example prefire(),
-   of  the superclass of this when execute the inside model. Since Java
-   doesn't supported super.super.prefire(), this class uses a boolean
-   variable <i>_isSubclassOfRunCompositeActor</i> to provide a mechanism to
-   call the method of the superclass of this. To to so, Subclass of this can
-   set the <i>_isSubclassOfRunCompositeActor</i> to be true.
-   <p>
-   This actor also overrides the requestChange() method and the
-   executeChangerRequests() method to execute the given change. It does not
-   delegate the change request to the container, but executes the request
-   immediately or records it, depending on whether setDeferringChangeRequests()
-   has been called with a true argument.
+ This is a composite actor that can executes the contained model
+ completely, as if it were a top-level model, on each firing.
+ This can be used to define an actor whose firing behavior
+ is given by a complete execution of a submodel.
+ <p>
+ An instance of this actor can have ports added to it.  If it has
+ input ports, then on each firing, before executing the referenced
+ model, this actor will read an input token from the input port, if
+ there is one, and use it to set the value of a top-level parameter
+ in the referenced model that has the same name as the port, if there
+ is one.  The simplest way to ensure that there is a matching parameter
+ is to use a PortParameter for inputs.  However, this actor will work
+ also for ordinary ports. In this case, if this actor has a
+ parameter with the same name as the port, and it is an instance
+ of Variable (or its derived class Parameter), then the token
+ read at the input is moved into it using its setToken() method.
+ Otherwise, if it is an instance of Settable, then a string representation
+ of the token is copied using the setExpression() method.
+ Input ports should not be multiports, and if they are, then
+ all but the first channel will be ignored.
+ <p>
+ If this actor has output ports and the contained model is executed,
+ then upon completion of that execution, if this actor has parameters
+ whose names match those of the output ports, then the final value of
+ those parameters is sent to the output ports. If such a parameter is an
+ instance of Variable (or its derived class Parameter), then its
+ contained token is sent to the output token. Otherwise, if it is an
+ instance of Settable, then a string token is produced on the output
+ with its value equal to that returned by getExpression() of the
+ Settable. Output ports should not be multiports. If they are,
+ then all but the first channel will be ignored.
+ A typical use of this actor will use the SetVariable actor
+ inside to define the value of the output port.
+ <p>
+ In preinitialize(), type constraints are set up so that input
+ and output ports with (name) matching parameters are constrained
+ to have compatible types. Note that if the ports or parameters
+ are changed during execution, then it will be necessary to set
+ up matching type constraints by hand.  Since this isn't possible
+ to do from Vergil, the ports and parameters of this actor
+ should not be changed using Vergil during execution.
+ <p>
+ The subclass of this may need to call a method, for example prefire(),
+ of  the superclass of this when execute the inside model. Since Java
+ doesn't supported super.super.prefire(), this class uses a boolean
+ variable <i>_isSubclassOfRunCompositeActor</i> to provide a mechanism to
+ call the method of the superclass of this. To to so, Subclass of this can
+ set the <i>_isSubclassOfRunCompositeActor</i> to be true.
+ <p>
+ This actor also overrides the requestChange() method and the
+ executeChangerRequests() method to execute the given change. It does not
+ delegate the change request to the container, but executes the request
+ immediately or records it, depending on whether setDeferringChangeRequests()
+ has been called with a true argument.
 
-   @author Edward A. Lee, Yang Zhao
-   @version $Id$
-   @since Ptolemy II 4.0
-   @see ModelReference
-   @see ptolemy.actor.lib.SetVariable
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author Edward A. Lee, Yang Zhao
+ @version $Id$
+ @since Ptolemy II 4.0
+ @see ModelReference
+ @see ptolemy.actor.lib.SetVariable
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class RunCompositeActor extends LifeCycleManager {
     /** Construct an actor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the

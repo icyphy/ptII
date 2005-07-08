@@ -1,30 +1,30 @@
 /* A clock source for sequence-capable domains.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -44,54 +44,53 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SequentialClock
 
 /**
-   A clock source for sequence-capable domains.  This actor is considerably
-   simpler than the Clock actor.  On each firing, it produces the next value
-   from its <i>values</i> parameter, and schedules another firing at
-   a future time determined by the <i>offsets</i> and <i>period</i> parameters.
-   <p>
-   This actor can be used in the DE domain
-   to generate a sequence of events at regularly spaced
-   intervals.  It cannot be used in CT, because CT will invoke it at times
-   where it has not requested a firing, and it will inappropriately advance
-   to the next output value.
-   <p>
-   At the beginning of each time interval of length given by <i>period</i>,
-   it initiates a sequence of output events with values given by
-   <i>values</i> and offset into the period given by <i>offsets</i>.
-   These parameters contain arrays, which are required to have the same length.
-   The <i>offsets</i> array must be nondecreasing and nonnegative,
-   or an exception will be thrown when it is set.
-   Moreover, its largest entry must be smaller than <i>period</i>
-   or an exception will be thrown by the fire() method.
-   <p>
-   The <i>values</i> parameter by default
-   contains an array of IntTokens with values 1 and 0.  The default
-   <i>offsets</i> array is {0.0, 1.0}.  Thus, the default output will be
-   alternating 1 and 0 with 50% duty cycle.  The default period
-   is 2.0.
-   <p>
-   The actor uses the fireAt() method of the director to request
-   firing at the beginning of each period plus each of the offsets.
-   It assumes that all of its firings are in response to such
-   requests.
-   <p>
-   The type of the output can be any token type. This type is inferred from the
-   element type of the <i>values</i> parameter.
-   <p>
-   This actor is a timed source; the untimed version is Pulse.
+ A clock source for sequence-capable domains.  This actor is considerably
+ simpler than the Clock actor.  On each firing, it produces the next value
+ from its <i>values</i> parameter, and schedules another firing at
+ a future time determined by the <i>offsets</i> and <i>period</i> parameters.
+ <p>
+ This actor can be used in the DE domain
+ to generate a sequence of events at regularly spaced
+ intervals.  It cannot be used in CT, because CT will invoke it at times
+ where it has not requested a firing, and it will inappropriately advance
+ to the next output value.
+ <p>
+ At the beginning of each time interval of length given by <i>period</i>,
+ it initiates a sequence of output events with values given by
+ <i>values</i> and offset into the period given by <i>offsets</i>.
+ These parameters contain arrays, which are required to have the same length.
+ The <i>offsets</i> array must be nondecreasing and nonnegative,
+ or an exception will be thrown when it is set.
+ Moreover, its largest entry must be smaller than <i>period</i>
+ or an exception will be thrown by the fire() method.
+ <p>
+ The <i>values</i> parameter by default
+ contains an array of IntTokens with values 1 and 0.  The default
+ <i>offsets</i> array is {0.0, 1.0}.  Thus, the default output will be
+ alternating 1 and 0 with 50% duty cycle.  The default period
+ is 2.0.
+ <p>
+ The actor uses the fireAt() method of the director to request
+ firing at the beginning of each period plus each of the offsets.
+ It assumes that all of its firings are in response to such
+ requests.
+ <p>
+ The type of the output can be any token type. This type is inferred from the
+ element type of the <i>values</i> parameter.
+ <p>
+ This actor is a timed source; the untimed version is Pulse.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (yuhong)
-   @deprecated Use Clock instead.
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (yuhong)
+ @deprecated Use Clock instead.
+ */
 public class SequentialClock extends TypedAtomicActor implements SequenceActor {
     // NOTE: This cannot extend Source, because it doesn't have a trigger
     // input.  This is too bad, since it results in a lot of duplicated
@@ -185,24 +184,25 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
             for (int i = 0; i < offsetsValue.length(); i++) {
                 _offsets[i] = ((DoubleToken) offsetsValue.getElement(i))
-                    .doubleValue();
+                        .doubleValue();
 
                 // Check nondecreasing property.
                 if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,
                             "Value of offsets is not nondecreasing "
-                            + "and nonnegative.");
+                                    + "and nonnegative.");
                 }
 
                 previous = _offsets[i];
             }
         } else if (attribute == period) {
-            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+            double periodValue = ((DoubleToken) period.getToken())
+                    .doubleValue();
 
             if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Period is required to be positive.  " + "Period given: "
-                        + periodValue);
+                        "Period is required to be positive.  "
+                                + "Period given: " + periodValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -286,9 +286,10 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         }
 
         if (_offsets[_phase] >= periodValue) {
-            throw new IllegalActionException(this,
-                    "Offset number " + _phase + " with value " + _offsets[_phase]
-                    + " must be less than the " + "period, which is " + periodValue);
+            throw new IllegalActionException(this, "Offset number " + _phase
+                    + " with value " + _offsets[_phase]
+                    + " must be less than the " + "period, which is "
+                    + periodValue);
         }
 
         Time nextIterationTime = _cycleStartTime.add(_offsets[_phase]);

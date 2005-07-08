@@ -1,31 +1,31 @@
 /* Generate discrete events by sampling a CT signal whenever there
-   is a trigger.
+ is a trigger.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -40,22 +40,21 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CTTriggeredSampler
 
 /**
-   This actor samples the continuous input signal when there is a discrete
-   event presents at the "trigger" input.
-   The actor has a multi-input port and a multi-output port. Signals in
-   each input channel are sampled and produced to corresponding output
-   channel.
-   @author Jie Liu
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ This actor samples the continuous input signal when there is a discrete
+ event presents at the "trigger" input.
+ The actor has a multi-input port and a multi-output port. Signals in
+ each input channel are sampled and produced to corresponding output
+ channel.
+ @author Jie Liu
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class CTTriggeredSampler extends Transformer implements CTEventGenerator {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -82,9 +81,9 @@ public class CTTriggeredSampler extends Transformer implements CTEventGenerator 
         new Parameter(trigger, "signalType", new StringToken("DISCRETE"));
 
         // The trigger input has a generic type.
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"-30,10 2,10 2,0\"/>\n"
                 + "<polyline points=\"-30,-10 -20,-10 -20,0 -10,0 10,-7\"/>\n"
                 + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
@@ -109,7 +108,8 @@ public class CTTriggeredSampler extends Transformer implements CTEventGenerator 
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CTTriggeredSampler newObject = (CTTriggeredSampler) super.clone(workspace);
+        CTTriggeredSampler newObject = (CTTriggeredSampler) super
+                .clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
@@ -127,8 +127,7 @@ public class CTTriggeredSampler extends Transformer implements CTEventGenerator 
         if (director.isDiscretePhase() && hasCurrentEvent()) {
             trigger.get(0);
 
-            for (int i = 0; i < Math.min(input.getWidth(), output.getWidth());
-                 i++) {
+            for (int i = 0; i < Math.min(input.getWidth(), output.getWidth()); i++) {
                 if (input.hasToken(i)) {
                     output.send(i, input.get(i));
                 }

@@ -1,31 +1,31 @@
 /* A token that contains a string.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.data;
 
 import ptolemy.data.type.BaseType;
@@ -34,25 +34,24 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// StringToken
 
 /**
-   A token that contains a string, or more specifically, a reference
-   to an instance of String.  The reference is never null, although it may
-   be an empty string ("").
-   Note that when this token is cloned, the clone will refer to exactly
-   the same String object.  However, a String object in Java is immutable,
-   so there is no risk when two tokens refer to the same string that
-   one of the strings will be changed.
+ A token that contains a string, or more specifically, a reference
+ to an instance of String.  The reference is never null, although it may
+ be an empty string ("").
+ Note that when this token is cloned, the clone will refer to exactly
+ the same String object.  However, a String object in Java is immutable,
+ so there is no risk when two tokens refer to the same string that
+ one of the strings will be changed.
 
-   @author Edward A. Lee, Neil Smyth, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (wbwu)
-*/
+ @author Edward A. Lee, Neil Smyth, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (wbwu)
+ */
 public class StringToken extends AbstractConvertibleToken {
     /** Construct a token with an empty string.
      */
@@ -84,7 +83,8 @@ public class StringToken extends AbstractConvertibleToken {
             } else {
                 // The string already has a \" in it.
                 // 1. Substitute a special word for every instance of \"
-                String backslashed = _value.replaceAll("\\\\\"", "MaGiCBakSlash");
+                String backslashed = _value.replaceAll("\\\\\"",
+                        "MaGiCBakSlash");
 
                 // 2. Substitute \" for every remaining "
                 String backslashed2 = backslashed.replaceAll("\"", "\\\\\"");
@@ -92,7 +92,8 @@ public class StringToken extends AbstractConvertibleToken {
                 // 3. Add the leading and trailing " and substitute
                 //    \" for every instance of the special word
                 _toString = "\""
-                    + backslashed2.replaceAll("MaGiCBakSlash", "\\\\\"") + "\"";
+                        + backslashed2.replaceAll("MaGiCBakSlash", "\\\\\"")
+                        + "\"";
             }
         }
     }
@@ -122,8 +123,8 @@ public class StringToken extends AbstractConvertibleToken {
         int compare = TypeLattice.compare(BaseType.STRING, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
-            throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "string"));
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(token, "string"));
         }
 
         if (token instanceof MatrixToken || token instanceof ScalarToken
@@ -135,7 +136,7 @@ public class StringToken extends AbstractConvertibleToken {
         // The argument is below StringToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "string"));
+                "string"));
     }
 
     /** Return true if the argument is an instance of StringToken with the
@@ -228,7 +229,7 @@ public class StringToken extends AbstractConvertibleToken {
      */
     protected Token _divide(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("divide", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Test for closeness of the values of this Token and the argument
@@ -255,8 +256,8 @@ public class StringToken extends AbstractConvertibleToken {
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
         StringToken convertedArgument = (StringToken) rightArgument;
-        return BooleanToken.getInstance(toString().compareTo(convertedArgument
-                                                .toString()) == 0);
+        return BooleanToken.getInstance(toString().compareTo(
+                convertedArgument.toString()) == 0);
     }
 
     /** Return a new token whose value is the value of this token
@@ -270,7 +271,7 @@ public class StringToken extends AbstractConvertibleToken {
      */
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -286,7 +287,7 @@ public class StringToken extends AbstractConvertibleToken {
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("multiply", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -301,7 +302,7 @@ public class StringToken extends AbstractConvertibleToken {
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("subtract", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     ///////////////////////////////////////////////////////////////////

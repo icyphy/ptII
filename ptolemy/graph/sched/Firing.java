@@ -1,30 +1,30 @@
 /* A schedule element that contains a reference to a firing element.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.graph.sched;
 
 import java.util.ConcurrentModificationException;
@@ -36,36 +36,35 @@ import java.util.NoSuchElementException;
 
 import ptolemy.kernel.util.InvalidStateException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Firing
 
 /**
-   This class is a ScheduleElement that contains a reference to a
-   firing element.  The firingElement could be any Object.
-   This class is used together with the Schedule class to
-   construct a Schedule. The setFiringElement() method is used to create the
-   reference to a firing element. The getFiringElement() method will return a
-   reference to this firing element.
-   <p>
+ This class is a ScheduleElement that contains a reference to a
+ firing element.  The firingElement could be any Object.
+ This class is used together with the Schedule class to
+ construct a Schedule. The setFiringElement() method is used to create the
+ reference to a firing element. The getFiringElement() method will return a
+ reference to this firing element.
+ <p>
 
-   It is more efficient to use this class than to simply maintain a list of
-   firing elements since firing elements will often firing multiple times
-   consecutively.  Using
-   this class (and the Schedule data structure in general) greatly reduces the
-   memory requirements of most large schedules.
+ It is more efficient to use this class than to simply maintain a list of
+ firing elements since firing elements will often firing multiple times
+ consecutively.  Using
+ this class (and the Schedule data structure in general) greatly reduces the
+ memory requirements of most large schedules.
 
-   @author Shahrooz Shahparnia, Mingyung Ko,
-   University of Maryland at College Park based on a file by
-   Brian K. Vogel, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating red (shahrooz)
-   @Pt.AcceptedRating red (ssb)
-   @see ptolemy.graph.sched.Firing
-   @see ptolemy.graph.sched.Schedule
-   @see ptolemy.graph.sched.ScheduleElement
-*/
+ @author Shahrooz Shahparnia, Mingyung Ko,
+ University of Maryland at College Park based on a file by
+ Brian K. Vogel, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating red (shahrooz)
+ @Pt.AcceptedRating red (ssb)
+ @see ptolemy.graph.sched.Firing
+ @see ptolemy.graph.sched.Schedule
+ @see ptolemy.graph.sched.ScheduleElement
+ */
 public class Firing extends ScheduleElement {
     /** Construct a firing with a default iteration count equal to one
      *  and with no parent schedule.
@@ -165,8 +164,8 @@ public class Firing extends ScheduleElement {
      */
     public void setFiringElement(Object firingElement) {
         if (this.firingElementClass() != null) {
-            if (this.firingElementClass().isAssignableFrom(firingElement
-                        .getClass())) {
+            if (this.firingElementClass().isAssignableFrom(
+                    firingElement.getClass())) {
                 _incrementVersion();
                 _firingElement = firingElement;
 
@@ -281,6 +280,7 @@ public class Firing extends ScheduleElement {
         }
 
         private long _startingVersion;
+
         private int _currentElement;
     }
 

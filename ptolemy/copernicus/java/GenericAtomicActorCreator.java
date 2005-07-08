@@ -1,29 +1,29 @@
 /* An interface for classes that replaces port methods.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.HashMap;
@@ -52,18 +52,17 @@ import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.toolkits.scalar.LocalSplitter;
 import soot.util.Chain;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// GenericAtomicActorCreator
 
 /**
 
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
-@Pt.ProposedRating Red (cxh)
-@Pt.AcceptedRating Red (cxh)
-*/
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class GenericAtomicActorCreator implements AtomicActorCreator {
     /** Generate a new class with the given name that can take the
      *  place of the given actor.  Use the given options when
@@ -122,8 +121,8 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         Entity classEntity = null;
 
         try {
-            classEntity = (Entity) ModelTransformer._findDeferredInstance(entity)
-                .clone(null);
+            classEntity = (Entity) ModelTransformer._findDeferredInstance(
+                    entity).clone(null);
 
             // The cloning process results an object that defers change
             // requests.  By default, we do not want to defer change
@@ -182,7 +181,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             // initializes the attributes.
             SootMethod method = theClass.getMethodByName("preinitialize");
             JimpleBody body = (JimpleBody) method.getActiveBody();
-            /* Stmt insertPoint = */ body.getFirstNonIdentityStmt();
+            /* Stmt insertPoint = */body.getFirstNonIdentityStmt();
 
             // Do we initialize parameters in preinitialize or in the
             // constructor?
@@ -244,8 +243,8 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
     }
 
     private static void _removeAttributeInitialization(SootClass theClass) {
-        for (Iterator methods = theClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = theClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             // Only do this in the constructor.  FIXME: should also
@@ -256,8 +255,8 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
 
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
-            for (Iterator units = body.getUnits().snapshotIterator();
-                 units.hasNext();) {
+            for (Iterator units = body.getUnits().snapshotIterator(); units
+                    .hasNext();) {
                 Stmt stmt = (Stmt) units.next();
 
                 if (!stmt.containsInvokeExpr()) {
@@ -276,18 +275,22 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                 if (r.getMethod().getName().equals("attributeChanged")
                         || r.getMethod().getName().equals("setExpression")
                         || r.getMethod().getName().equals("setToken")
-                        || r.getMethod().getName().equals("setTokenConsumptionRate")
-                        || r.getMethod().getName().equals("setTokenProductionRate")
-                        || r.getMethod().getName().equals("setTokenInitProduction")) {
+                        || r.getMethod().getName().equals(
+                                "setTokenConsumptionRate")
+                        || r.getMethod().getName().equals(
+                                "setTokenProductionRate")
+                        || r.getMethod().getName().equals(
+                                "setTokenInitProduction")) {
                     body.getUnits().remove(stmt);
                 }
 
-                if (r.getMethod().getSubSignature().equals(PtolemyUtilities.variableConstructorWithToken
-                            .getSubSignature())) {
+                if (r.getMethod().getSubSignature().equals(
+                        PtolemyUtilities.variableConstructorWithToken
+                                .getSubSignature())) {
                     SootClass variableClass = r.getMethod().getDeclaringClass();
                     SootMethod constructorWithoutToken = variableClass
-                        .getMethod(PtolemyUtilities.variableConstructorWithoutToken
-                                .getSubSignature());
+                            .getMethod(PtolemyUtilities.variableConstructorWithoutToken
+                                    .getSubSignature());
 
                     // Replace the three-argument
                     // constructor with a two-argument
@@ -307,10 +310,11 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                     // just deal with it now...
                     // Create a new two-argument constructor.
                     InstanceInvokeExpr expr = (InstanceInvokeExpr) r;
-                    stmt.getInvokeExprBox().setValue(Jimple.v()
-                            .newSpecialInvokeExpr((Local) expr
-                                    .getBase(), constructorWithoutToken,
-                                    r.getArg(0), r.getArg(1)));
+                    stmt.getInvokeExprBox().setValue(
+                            Jimple.v().newSpecialInvokeExpr(
+                                    (Local) expr.getBase(),
+                                    constructorWithoutToken, r.getArg(0),
+                                    r.getArg(1)));
                 }
             }
         }

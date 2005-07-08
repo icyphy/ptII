@@ -1,31 +1,31 @@
 /* Director for the real-time processes  model of computation.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj)
-@AcceptedRating Red (liuj)
-*/
+ @ProposedRating Red (liuj)
+ @AcceptedRating Red (liuj)
+ */
 package ptolemy.domains.rtp.kernel;
 
 import ptolemy.actor.Actor;
@@ -43,21 +43,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// RTPDirector
 
 /**
 
-FIXME: document this.
+ FIXME: document this.
 
-FIXME: How to stop a model???
+ FIXME: How to stop a model???
 
-@see ptolemy.domains.rtp.kernel.RTPReceiver
+ @see ptolemy.domains.rtp.kernel.RTPReceiver
 
-@author  Jie Liu
-@version $Id$
-*/
+ @author  Jie Liu
+ @version $Id$
+ */
 public class RTPDirector extends ProcessDirector implements TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -67,8 +66,8 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public RTPDirector()
-            throws IllegalActionException, NameDuplicationException {
+    public RTPDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
         _init();
     }
@@ -82,8 +81,8 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public RTPDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public RTPDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -137,8 +136,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      *  @return The current computer time.
      */
     public Time getModelTime() {
-        double currentTime = (double) (System.currentTimeMillis()
-                - _realStartTime);
+        double currentTime = (double) (System.currentTimeMillis() - _realStartTime);
 
         try {
             return new Time(this, currentTime);
@@ -251,8 +249,8 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
     /** Initialize the director by creating a scheduler and iterations
      *  parameter.
      */
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         executionDuration = new Parameter(this, "executionDuration",
                 new LongToken(10000));
         executionDuration.setTypeEquals(BaseType.LONG);

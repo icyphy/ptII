@@ -1,30 +1,30 @@
 /* A nondeterministic merge actor for PN.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.pn.kernel;
 
 import java.io.Writer;
@@ -47,29 +47,28 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Merge
 
 /**
-   This actor takes any number of input streams and merges them
-   nondeterministically.  This actor is intended for use in the
-   PN domain. Itis a composite actor that
-   creates its own contents.  It contains a PNDirector and one
-   actor for each input channel (it creates these actors automatically
-   when a connection is created to the input multiport).  The contained
-   actors are special actors (implemented as an instance of an inner class)
-   that read from the port of this actor and write to the port of
-   this actor. They have no ports of their own.  The lifecycle of the
-   contained actors (when they are started or stopped) is handled by
-   the PNDirector in the usual way.
+ This actor takes any number of input streams and merges them
+ nondeterministically.  This actor is intended for use in the
+ PN domain. Itis a composite actor that
+ creates its own contents.  It contains a PNDirector and one
+ actor for each input channel (it creates these actors automatically
+ when a connection is created to the input multiport).  The contained
+ actors are special actors (implemented as an instance of an inner class)
+ that read from the port of this actor and write to the port of
+ this actor. They have no ports of their own.  The lifecycle of the
+ contained actors (when they are started or stopped) is handled by
+ the PNDirector in the usual way.
 
-   @author Edward A. Lee, Haibo Zeng
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author Edward A. Lee, Haibo Zeng
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class NondeterministicMerge extends TypedCompositeActor {
     /** Construct an actor in the specified container with the specified
      *  name. Create ports and make the input port a multiport.
@@ -99,11 +98,11 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 "_cardinal");
         channelCardinal.setExpression("SOUTH");
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
                 + "style=\"fill:red\"/>\n" + "</svg>\n");
 
-        /*PNDirector director = */ new MergeDirector(this, "director");
+        /*PNDirector director = */new MergeDirector(this, "director");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -209,6 +208,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
             _channelIndex = 0;
             _channelValue = new IntToken(_channelIndex);
         }
+
         public ChannelActor(int index, NondeterministicMerge container)
                 throws IllegalActionException, NameDuplicationException {
             super(container, "ChannelActor" + index);
@@ -227,8 +227,9 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 if (!NondeterministicMerge.this._stopRequested
                         && input.hasToken(_channelIndex)) {
                     if (_debugging) {
-                        NondeterministicMerge.this._debug(
-                                "Waiting for input from channel " + _channelIndex);
+                        NondeterministicMerge.this
+                                ._debug("Waiting for input from channel "
+                                        + _channelIndex);
                     }
 
                     // NOTE: Writing to the port of the host actor.
@@ -240,7 +241,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
                     // We synchronize on the director because the send()
                     // may call wait() on the director of the container,
                     // so synchronizing on anything else could cause deadlock.
-                    synchronized (((NondeterministicMerge)getContainer()).getExecutiveDirector()) {
+                    synchronized (((NondeterministicMerge) getContainer())
+                            .getExecutiveDirector()) {
                         output.send(0, result);
                         channel.send(0, _channelValue);
                     }
@@ -271,6 +273,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
         }
 
         private int _channelIndex;
+
         private IntToken _channelValue;
     }
 

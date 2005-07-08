@@ -1,30 +1,30 @@
 /* An Icon is the graphical representation of an entity or attribute.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -56,57 +56,56 @@ import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
 import diva.gui.toolbox.FigureIcon;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// EditorIcon
 
 /**
-   An icon is the visual representation of an entity or attribute.
-   The visual representation is a Diva Figure. This class is an attribute
-   that serves as a factory for such figures. This base class creates the
-   figure by composing the figures of any contained attributes that have
-   icons.  If there are no such contained attributes, then it creates a
-   default figure that is a white rectangle. This class also provides
-   a facility for generating a Swing icon (i.e. an instance of
-   javax.swing.Icon) from that figure (the createIcon() method).
-   <p>
-   The icon consists of a background figure, created by the
-   createBackgroundFigure() method, and a decorated version, created
-   by the createFigure() method.  The decorated version has, in this
-   base class, a label showing the name of the entity, unless the entity
-   contains a parameter called "_hideName" with value true.
-   The swing icon created by createIcon() does not include the
-   decorations, but rather is only the background figure.
-   <p>
-   Derived classes may simply populate this attribute with other
-   visible attributes (attributes that contain icons), or they can
-   override the createBackgroundFigure() method.  This will affect
-   both the Diva Figure and the Swing Icon representations.
-   Derived classes can also create the figure or the icon in a
-   different way entirely (for example, starting with a Swing
-   icon and creating the figure using a SwingWrapper) by overriding
-   both createBackgroundFigure() and createIcon(). However, the
-   icon editor provided by EditIconFrame and EditIconTableau
-   will only show (and allow editing) of those icon components
-   created by populating this attribute with other visible
-   attributes.
-   <p>
-   This attribute contains another attribute that is an
-   instance of EditIconTableau. This has the effect that
-   an instance of Configuration, when it attempts to open
-   an instance of this class, will use EditIconTableau,
-   which in turn uses EditIconFrame to provide an icon
-   editor.
+ An icon is the visual representation of an entity or attribute.
+ The visual representation is a Diva Figure. This class is an attribute
+ that serves as a factory for such figures. This base class creates the
+ figure by composing the figures of any contained attributes that have
+ icons.  If there are no such contained attributes, then it creates a
+ default figure that is a white rectangle. This class also provides
+ a facility for generating a Swing icon (i.e. an instance of
+ javax.swing.Icon) from that figure (the createIcon() method).
+ <p>
+ The icon consists of a background figure, created by the
+ createBackgroundFigure() method, and a decorated version, created
+ by the createFigure() method.  The decorated version has, in this
+ base class, a label showing the name of the entity, unless the entity
+ contains a parameter called "_hideName" with value true.
+ The swing icon created by createIcon() does not include the
+ decorations, but rather is only the background figure.
+ <p>
+ Derived classes may simply populate this attribute with other
+ visible attributes (attributes that contain icons), or they can
+ override the createBackgroundFigure() method.  This will affect
+ both the Diva Figure and the Swing Icon representations.
+ Derived classes can also create the figure or the icon in a
+ different way entirely (for example, starting with a Swing
+ icon and creating the figure using a SwingWrapper) by overriding
+ both createBackgroundFigure() and createIcon(). However, the
+ icon editor provided by EditIconFrame and EditIconTableau
+ will only show (and allow editing) of those icon components
+ created by populating this attribute with other visible
+ attributes.
+ <p>
+ This attribute contains another attribute that is an
+ instance of EditIconTableau. This has the effect that
+ an instance of Configuration, when it attempts to open
+ an instance of this class, will use EditIconTableau,
+ which in turn uses EditIconFrame to provide an icon
+ editor.
 
-   @author Steve Neuendorffer, John Reekie, Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Red (johnr)
-   @see EditIconFrame
-   @see EditIconTableau
-   @see ptolemy.actor.gui.Configuration
-*/
+ @author Steve Neuendorffer, John Reekie, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Red (johnr)
+ @see EditIconFrame
+ @see EditIconTableau
+ @see ptolemy.actor.gui.Configuration
+ */
 public class EditorIcon extends Attribute {
     /** Construct an icon in the specified workspace and name.
      *  This constructor is typically used in conjunction with
@@ -197,7 +196,7 @@ public class EditorIcon extends Attribute {
             // "visible attribute" containing an attribute named "_icon"
             // that actually has the icon.
             Iterator subIcons = attribute.attributeList(EditorIcon.class)
-                .iterator();
+                    .iterator();
 
             while (subIcons.hasNext()) {
                 EditorIcon subIcon = (EditorIcon) subIcons.next();
@@ -231,8 +230,8 @@ public class EditorIcon extends Attribute {
                         }
                     }
 
-                    Locatable location = (Locatable) attribute.getAttribute("_location",
-                            Locatable.class);
+                    Locatable location = (Locatable) attribute.getAttribute(
+                            "_location", Locatable.class);
 
                     if (location != null) {
                         double[] locationValue = location.getLocation();
@@ -296,8 +295,8 @@ public class EditorIcon extends Attribute {
                 } else {
                     LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
                             SwingConstants.CENTER);
-                    label.translateTo(backBounds.getCenterX(),
-                            backBounds.getCenterY());
+                    label.translateTo(backBounds.getCenterX(), backBounds
+                            .getCenterY());
                     figure.add(label);
                 }
             }
@@ -420,19 +419,19 @@ public class EditorIcon extends Attribute {
         // look like:
 
         /*
-          StringBuffer moml = new StringBuffer();
-          moml.append("<group name=\"auto\">" +
-          "<property name=\"defaultFigure\" " +
-          "class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">\n" +
-          "<property name=\"width\" value=\"60\"/>\n" +
-          "<property name=\"height\" value=\"40\"/>\n" +
-          "<property name=\"centered\" value=\"true\"/>\n" +
-          "<property name=\"fillColor\" value=\"{1.0, 1.0, 1.0, 1.0}\"/>\n" +
-          "</property></group>" );
-          MoMLChangeRequest request = new MoMLChangeRequest(
-          this, this, moml.toString());
-          requestChange(request);
-        */
+         StringBuffer moml = new StringBuffer();
+         moml.append("<group name=\"auto\">" +
+         "<property name=\"defaultFigure\" " +
+         "class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">\n" +
+         "<property name=\"width\" value=\"60\"/>\n" +
+         "<property name=\"height\" value=\"40\"/>\n" +
+         "<property name=\"centered\" value=\"true\"/>\n" +
+         "<property name=\"fillColor\" value=\"{1.0, 1.0, 1.0, 1.0}\"/>\n" +
+         "</property></group>" );
+         MoMLChangeRequest request = new MoMLChangeRequest(
+         this, this, moml.toString());
+         requestChange(request);
+         */
         return new BasicRectangle(-30, -20, 60, 40, Color.white, 1);
     }
 

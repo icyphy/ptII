@@ -1,30 +1,30 @@
 /** A GUI widget for configuring arguments. Largely inspired of PortConfigurer
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package jni;
 
 import java.util.HashSet;
@@ -38,23 +38,22 @@ import ptolemy.gui.QueryListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ArgumentConfigurer
 
 /**
-   This class is an editor to configure the arguments of an object.
-   It supports setting kind :input, output, in-output or return and a type
-   and adding and removing arguments. Only arguments that extend the Argument
-   class are listed, since more primitive Argument cannot be configured
-   in this way.
+ This class is an editor to configure the arguments of an object.
+ It supports setting kind :input, output, in-output or return and a type
+ and adding and removing arguments. Only arguments that extend the Argument
+ class are listed, since more primitive Argument cannot be configured
+ in this way.
 
-   @author Steve Neuendorffer, Edward A. Lee, V. Arnould (Thales)
-   @version $Id$
-   @since Ptolemy II 2.3
-   @Pt.ProposedRating Red (vincent.arnould)
-   @Pt.AcceptedRating Red (vincent.arnould)
-*/
+ @author Steve Neuendorffer, Edward A. Lee, V. Arnould (Thales)
+ @version $Id$
+ @since Ptolemy II 2.3
+ @Pt.ProposedRating Red (vincent.arnould)
+ @Pt.AcceptedRating Red (vincent.arnould)
+ */
 public class ArgumentConfigurer extends Query implements QueryListener {
     /** Construct a argument configurer for the specified entity.
      *  @param object The entity to configure.
@@ -75,10 +74,10 @@ public class ArgumentConfigurer extends Query implements QueryListener {
             if (candidate instanceof Argument) {
                 Argument argument = (Argument) candidate;
                 setColumns(1);
-                addLine(argument.getName() + "Name",
-                        argument.getName() + "Name", argument.getName());
-                addLine(argument.getName() + "CType",
-                        argument.getName() + "C or C++ Type", argument.getCType());
+                addLine(argument.getName() + "Name", argument.getName()
+                        + "Name", argument.getName());
+                addLine(argument.getName() + "CType", argument.getName()
+                        + "C or C++ Type", argument.getCType());
 
                 Set optionsDefault = new HashSet();
 
@@ -94,8 +93,9 @@ public class ArgumentConfigurer extends Query implements QueryListener {
                     optionsDefault.add("return");
                 }
 
-                addSelectButtons(argument.getName() + "Kind",
-                        argument.getName() + "Kind:", _optionsArray, optionsDefault);
+                addSelectButtons(argument.getName() + "Kind", argument
+                        .getName()
+                        + "Kind:", _optionsArray, optionsDefault);
             }
         }
     }
@@ -126,7 +126,8 @@ public class ArgumentConfigurer extends Query implements QueryListener {
                     try {
                         argument.setName(newName);
                     } catch (Exception e) {
-                        MessageHandler.error("This name is already used ! : ", e);
+                        MessageHandler.error("This name is already used ! : ",
+                                e);
                         continue;
                     }
 
@@ -147,7 +148,8 @@ public class ArgumentConfigurer extends Query implements QueryListener {
                     try {
                         argument.validate();
                     } catch (IllegalActionException e) {
-                        MessageHandler.error("TRT :No way to update MoML! : ", e);
+                        MessageHandler.error("TRT :No way to update MoML! : ",
+                                e);
                     }
                 }
             }
@@ -172,9 +174,5 @@ public class ArgumentConfigurer extends Query implements QueryListener {
     private GenericJNIActor _object;
 
     // The possible configurations for a argument.
-    private String[] _optionsArray = {
-        "input",
-        "output",
-        "return"
-    };
+    private String[] _optionsArray = { "input", "output", "return" };
 }

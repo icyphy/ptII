@@ -1,32 +1,32 @@
 /*
-  @Copyright (c) 2003-2005 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
 
-*/
+ */
 package ptolemy.caltrop.ddi.util;
 
 import java.util.ArrayList;
@@ -51,45 +51,44 @@ import caltrop.interpreter.ast.OutputExpression;
 import caltrop.interpreter.ast.Statement;
 import caltrop.interpreter.environment.Environment;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DataFlowActorInterpreter
 
 /**
-   The actor interpreter provides an abstract interface to the execution
-   of an actor. It provides a number of operations on the actions of an
-   actor, allowing clients to test them for firability and execute them.
+ The actor interpreter provides an abstract interface to the execution
+ of an actor. It provides a number of operations on the actions of an
+ actor, allowing clients to test them for firability and execute them.
 
-   <p> An instance of this class maintains some internal state
-   identifying the action it currently works on. It expects its methods
-   to be called in a particular order, viz.<br> {@link
-   #actionSetup(caltrop.interpreter.ast.Action) actionSetup(action)} --
-   {@link #actionEvaluatePrecondition() actionEvaluatePrecondition()} --
-   {@link #actionStep() actionStep()} -- {@link #actionComputeOutputs()
-   actionComputeOutputs()}
+ <p> An instance of this class maintains some internal state
+ identifying the action it currently works on. It expects its methods
+ to be called in a particular order, viz.<br> {@link
+ #actionSetup(caltrop.interpreter.ast.Action) actionSetup(action)} --
+ {@link #actionEvaluatePrecondition() actionEvaluatePrecondition()} --
+ {@link #actionStep() actionStep()} -- {@link #actionComputeOutputs()
+ actionComputeOutputs()}
 
-   <br>
-   During such a sequence, the methods operate on action <em>n</em>,
-   which was selected by the call to {@link
-   #actionSetup(caltrop.interpreter.ast.Action) actionSetup(action)}.
+ <br>
+ During such a sequence, the methods operate on action <em>n</em>,
+ which was selected by the call to {@link
+ #actionSetup(caltrop.interpreter.ast.Action) actionSetup(action)}.
 
-   At any point in time, the client may call {@link #actionClear()
-   actionClear()}, which deselects the action and deletes the references
-   to the resources used by the action environment created during setup.
+ At any point in time, the client may call {@link #actionClear()
+ actionClear()}, which deselects the action and deletes the references
+ to the resources used by the action environment created during setup.
 
-   @author J&#246;rn W. Janneck
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-   @see caltrop.interpreter.ast.Actor
-   @see caltrop.interpreter.ast.Action
-   @see #actionSetup
-   @see #actionEvaluatePrecondition
-   @see #actionStep
-   @see #actionComputeOutputs
-   @see #actionClear
-*/
+ @author J&#246;rn W. Janneck
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ @see caltrop.interpreter.ast.Actor
+ @see caltrop.interpreter.ast.Action
+ @see #actionSetup
+ @see #actionEvaluatePrecondition
+ @see #actionStep
+ @see #actionComputeOutputs
+ @see #actionClear
+ */
 public class DataflowActorInterpreter {
     /**
      * Set up the local environment of the specified action. This
@@ -115,8 +114,8 @@ public class DataflowActorInterpreter {
 
             if (repExpr == null) {
                 for (int j = 0; j < vars.length; j++) {
-                    final InputChannel channel = ((InputPort) (inputPortMap.get(inputPattern
-                                                                       .getPortname()))).getChannel(0); // FIXME
+                    final InputChannel channel = ((InputPort) (inputPortMap
+                            .get(inputPattern.getPortname()))).getChannel(0); // FIXME
                     local.bind(vars[j], new SingleTokenReaderThunk(channel, j));
                 }
             } else {
@@ -126,11 +125,10 @@ public class DataflowActorInterpreter {
                         repExprThunk);
 
                 for (int j = 0; j < vars.length; j++) {
-                    final InputChannel channel = ((InputPort) (inputPortMap.get(inputPattern
-                                                                       .getPortname()))).getChannel(0); // FIXME
-                    local.bind(vars[j],
-                            new MultipleTokenReaderThunk(channel, j, vars.length,
-                                    repExprThunk, context));
+                    final InputChannel channel = ((InputPort) (inputPortMap
+                            .get(inputPattern.getPortname()))).getChannel(0); // FIXME
+                    local.bind(vars[j], new MultipleTokenReaderThunk(channel,
+                            j, vars.length, repExprThunk, context));
                 }
             }
         }
@@ -143,8 +141,8 @@ public class DataflowActorInterpreter {
             if (v == null) {
                 local.bind(decls[i].getName(), null);
             } else {
-                local.bind(decls[i].getName(),
-                        new SimpleThunk(v, context, local));
+                local.bind(decls[i].getName(), new SimpleThunk(v, context,
+                        local));
             }
         }
 
@@ -175,7 +173,7 @@ public class DataflowActorInterpreter {
         if (envAction == null) {
             throw new InterpreterException(
                     "DataflowActorInterpreter: Must call actionSetup() "
-                    + "before calling actionEvaluatePrecondition().");
+                            + "before calling actionEvaluatePrecondition().");
         }
 
         final Action action = envAction;
@@ -185,8 +183,8 @@ public class DataflowActorInterpreter {
             final InputPattern inputPattern = inputPatterns[i];
 
             // FIXME: handle multiports
-            final InputChannel channel = ((InputPort) (inputPortMap.get(inputPattern
-                                                               .getPortname()))).getChannel(0);
+            final InputChannel channel = ((InputPort) (inputPortMap
+                    .get(inputPattern.getPortname()))).getChannel(0);
 
             if (inputPattern.getRepeatExpr() == null) {
                 if (!channel.hasAvailable(inputPattern.getVariables().length)) {
@@ -194,11 +192,11 @@ public class DataflowActorInterpreter {
                     return false;
                 }
             } else {
-                int repeatVal = context.intValue(env.get(
-                                                         new EnvironmentKey(inputPattern.getPortname())));
+                int repeatVal = context.intValue(env.get(new EnvironmentKey(
+                        inputPattern.getPortname())));
 
-                if (!channel.hasAvailable(
-                            inputPattern.getVariables().length * repeatVal)) {
+                if (!channel.hasAvailable(inputPattern.getVariables().length
+                        * repeatVal)) {
                     // System.out.println("Not enough repeated inputs:" + inputPattern.getVariables().length * repeatVal);
                     return false;
                 }
@@ -231,7 +229,7 @@ public class DataflowActorInterpreter {
         if (envAction == null) {
             throw new InterpreterException(
                     "DataflowActorInterpreter: Must call actionSetup() "
-                    + "before calling actionStep().");
+                            + "before calling actionStep().");
         }
 
         // First evaluate the action-level thunks, so that their value
@@ -258,21 +256,21 @@ public class DataflowActorInterpreter {
         if (envAction == null) {
             throw new InterpreterException(
                     "DataflowActorInterpreter: Must call actionSetup() "
-                    + "before calling actionComputeOutputs().");
+                            + "before calling actionComputeOutputs().");
         }
 
         final Action action = envAction;
         final ExprEvaluator eval = new ExprEvaluator(context, env);
         final OutputExpression[] outputExpressions = action
-            .getOutputExpressions();
+                .getOutputExpressions();
 
         for (int i = 0; i < outputExpressions.length; i++) {
             final OutputExpression outputExpression = outputExpressions[i];
             final Expression[] expressions = outputExpression.getExpressions();
             final Expression repeatExpr = outputExpression.getRepeatExpr();
 
-            final OutputChannel channel = ((OutputPort) (outputPortMap.get(outputExpression
-                                                                 .getPortname()))).getChannel(0);
+            final OutputChannel channel = ((OutputPort) (outputPortMap
+                    .get(outputExpression.getPortname()))).getChannel(0);
 
             // FIXME: handle multiports
             if (repeatExpr != null) {
@@ -303,33 +301,33 @@ public class DataflowActorInterpreter {
      */
 
     /*public Map actionComputeOutputProfile() {
-      if (envAction < 0) {
-      throw new InterpreterException(
-      "DataflowActorInterpreter: Must call actionSetup() "
-      + "before calling actionComputeOutputs().");
-      }
-      Map profile = new HashMap();
-      final Action action = actor.getActions()[envAction];
-      final ExprEvaluator eval = new ExprEvaluator(context, env);
-      final OutputExpression [] outputExpressions =
-      action.getOutputExpressions();
-      for (int i = 0; i < outputExpressions.length; i++) {
-      final OutputExpression outputExpression = outputExpressions[i];
-      final Expression [] expressions =
-      outputExpression.getExpressions();
-      final Expression repeatExpr = outputExpression.getRepeatExpr();
+     if (envAction < 0) {
+     throw new InterpreterException(
+     "DataflowActorInterpreter: Must call actionSetup() "
+     + "before calling actionComputeOutputs().");
+     }
+     Map profile = new HashMap();
+     final Action action = actor.getActions()[envAction];
+     final ExprEvaluator eval = new ExprEvaluator(context, env);
+     final OutputExpression [] outputExpressions =
+     action.getOutputExpressions();
+     for (int i = 0; i < outputExpressions.length; i++) {
+     final OutputExpression outputExpression = outputExpressions[i];
+     final Expression [] expressions =
+     outputExpression.getExpressions();
+     final Expression repeatExpr = outputExpression.getRepeatExpr();
 
-      int repeatValue = 1;
+     int repeatValue = 1;
 
-      // FIXME: handle multiports
-      if (repeatExpr != null) {
-      repeatValue = context.intValue(eval.evaluate(repeatExpr));
-      }
-      profile.put(new ChannelID(outputExpression.getPortname(), 0),
-      new Integer(repeatValue * expressions.length));
-      }
-      return profile;
-      }*/
+     // FIXME: handle multiports
+     if (repeatExpr != null) {
+     repeatValue = context.intValue(eval.evaluate(repeatExpr));
+     }
+     profile.put(new ChannelID(outputExpression.getPortname(), 0),
+     new Integer(repeatValue * expressions.length));
+     }
+     return profile;
+     }*/
 
     /**
      * Clear action selection. The reference to the environment is
@@ -390,10 +388,15 @@ public class DataflowActorInterpreter {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     protected Actor actor;
+
     protected Context context;
+
     protected Environment actorEnv;
+
     protected Environment env = null;
+
     protected Action envAction = null;
+
     protected Map inputPortMap;
 
     public void setOutputPortMap(Map outputPortMap) {
@@ -411,8 +414,8 @@ public class DataflowActorInterpreter {
      * us to defer the reading operation to the time when the token is
      * actually needed.
      */
-    protected static class SingleTokenReaderThunk
-        implements Environment.VariableContainer {
+    protected static class SingleTokenReaderThunk implements
+            Environment.VariableContainer {
         public Object value() {
             if (val == this) {
                 val = channel.get(index);
@@ -444,12 +447,14 @@ public class DataflowActorInterpreter {
         }
 
         private InputChannel channel;
+
         private int index;
+
         private Object val;
     }
 
-    protected static class MultipleTokenReaderThunk
-        implements Environment.VariableContainer {
+    protected static class MultipleTokenReaderThunk implements
+            Environment.VariableContainer {
         public Object value() {
             freeze();
             return val;
@@ -486,10 +491,15 @@ public class DataflowActorInterpreter {
         }
 
         private InputChannel channel;
+
         private int offset;
+
         private int period;
+
         private SimpleThunk repeatExpr;
+
         private Object val;
+
         private Context context;
     }
 

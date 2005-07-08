@@ -8,28 +8,27 @@ import java.util.Enumeration;
 
 import com.microstar.xml.XmlParser;
 
-
 /**
-  * Demonstration application showing DTD queries.
-  * <p>Usage: <code>java DtdDemo &lt;url&gt;</code>
-  * <p>Or, use it as an applet, supplying the URL as the <code>url</code>
-  * parameter.
-  * <p>Note: This does not preserve any processing instructions
-  * or parameter entities in the DTD; otherwise, produces a fully expanded
-  * and normalised version.
-  * @author Copyright (c) 1997, 1998 by Microstar Software Ltd.;
-  * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
-  * @version 1.1
-  * @since Ptolemy II 0.2
-  * @see com.microstar.xml.XmlParser
-  * @see com.microstar.xml.XmlHandler
-  * @see XmlApp
-  */
+ * Demonstration application showing DTD queries.
+ * <p>Usage: <code>java DtdDemo &lt;url&gt;</code>
+ * <p>Or, use it as an applet, supplying the URL as the <code>url</code>
+ * parameter.
+ * <p>Note: This does not preserve any processing instructions
+ * or parameter entities in the DTD; otherwise, produces a fully expanded
+ * and normalised version.
+ * @author Copyright (c) 1997, 1998 by Microstar Software Ltd.;
+ * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
+ * @version 1.1
+ * @since Ptolemy II 0.2
+ * @see com.microstar.xml.XmlParser
+ * @see com.microstar.xml.XmlHandler
+ * @see XmlApp
+ */
 public class DtdDemo extends XmlApp {
     /**
-      * Entry point for an application (applets enter through XmlApp.init()).
-      * @see XmlApp
-      */
+     * Entry point for an application (applets enter through XmlApp.init()).
+     * @see XmlApp
+     */
     public static void main(String[] args) throws Exception {
         DtdDemo demo = new DtdDemo();
 
@@ -42,28 +41,28 @@ public class DtdDemo extends XmlApp {
     }
 
     /**
-      * Print a comment showing where the DTD (if any) begins.
-      */
+     * Print a comment showing where the DTD (if any) begins.
+     */
     public void startDocument() {
         displayText("<-- Start of DTD -->\n");
     }
 
     /**
-      * Print a comment showing where the DTD (if any) ends.
-      */
+     * Print a comment showing where the DTD (if any) ends.
+     */
     public void endDocument(int errorCount) {
         displayText("<-- End of DTD -->");
     }
 
     /**
-      * Dump the DTD.
-      * <p>Once this event is received, we know that the DTD is
-      * completely parsed, and can use AElfred's query routines
-      * to reconstruct a normalised version of it.
-      * @see #dumpNotations
-      * @see #dumpEntities
-      * @see #dumpElements
-      */
+     * Dump the DTD.
+     * <p>Once this event is received, we know that the DTD is
+     * completely parsed, and can use AElfred's query routines
+     * to reconstruct a normalised version of it.
+     * @see #dumpNotations
+     * @see #dumpEntities
+     * @see #dumpElements
+     */
     public void doctypeDecl(String name, String pubid, String sysid) {
         dumpNotations();
         dumpEntities();
@@ -71,9 +70,9 @@ public class DtdDemo extends XmlApp {
     }
 
     /**
-      * Produce normalised declarations for all notations.
-      * @see #makeExternalIdentifiers
-      */
+     * Produce normalised declarations for all notations.
+     * @see #makeExternalIdentifiers
+     */
     public void dumpNotations() {
         Enumeration notationNames = parser.declaredNotations();
         String nname;
@@ -92,10 +91,10 @@ public class DtdDemo extends XmlApp {
     }
 
     /**
-      * Produce normalised declarations for all general entities.
-      * @see #makeLiteral
-      * @see #makeExternalIdentifiers
-      */
+     * Produce normalised declarations for all general entities.
+     * @see #makeLiteral
+     * @see #makeExternalIdentifiers
+     */
     public void dumpEntities() {
         Enumeration entityNames = parser.declaredEntities();
         String ename;
@@ -126,15 +125,17 @@ public class DtdDemo extends XmlApp {
 
             // External binary entity
             case XmlParser.ENTITY_NDATA:
-                value = makeExternalIdentifiers(parser.getEntityPublicId(ename),
-                        parser.getEntitySystemId(ename).toString()) + "NDATA "
-                    + parser.getEntityNotationName(ename);
+                value = makeExternalIdentifiers(
+                        parser.getEntityPublicId(ename), parser
+                                .getEntitySystemId(ename).toString())
+                        + "NDATA " + parser.getEntityNotationName(ename);
                 break;
 
             // External text entity
             case XmlParser.ENTITY_TEXT:
-                value = makeExternalIdentifiers(parser.getEntityPublicId(ename),
-                        parser.getEntitySystemId(ename).toString());
+                value = makeExternalIdentifiers(
+                        parser.getEntityPublicId(ename), parser
+                                .getEntitySystemId(ename).toString());
                 break;
             }
 
@@ -144,9 +145,9 @@ public class DtdDemo extends XmlApp {
     }
 
     /**
-      * Produce normalised declarations for all elements.
-      * @see #dumpAttributes
-      */
+     * Produce normalised declarations for all elements.
+     * @see #dumpAttributes
+     */
     public void dumpElements() {
         Enumeration elementNames = parser.declaredElements();
         String elname;
@@ -192,10 +193,10 @@ public class DtdDemo extends XmlApp {
     }
 
     /**
-      * Dump attributes for an element.
-      * @see #makeAttributeType
-      * @see #makeAttributeValue
-      */
+     * Dump attributes for an element.
+     * @see #makeAttributeType
+     * @see #makeAttributeValue
+     */
     public void dumpAttributes(String elname) {
         Enumeration attributeNames = parser.declaredAttributes(elname);
         String aname;
@@ -230,8 +231,8 @@ public class DtdDemo extends XmlApp {
     }
 
     /**
-      * Generate the attribute type as a normalised string.
-      */
+     * Generate the attribute type as a normalised string.
+     */
     public String makeAttributeType(String elname, String aname) {
         // Construct a string equivalent
         // of the attribute type.
@@ -275,9 +276,9 @@ public class DtdDemo extends XmlApp {
     }
 
     /**
-      * Generate a full attribute default value.
-      * @see #makeLiteral
-      */
+     * Generate a full attribute default value.
+     * @see #makeLiteral
+     */
     public String makeAttributeValue(String elname, String aname) {
         // Generate a default value based
         // on the type.
@@ -293,16 +294,17 @@ public class DtdDemo extends XmlApp {
 
         case XmlParser.ATTRIBUTE_DEFAULT_FIXED:
             return "#FIXED "
-            + makeLiteral(parser.getAttributeDefaultValue(elname, aname));
+                    + makeLiteral(parser
+                            .getAttributeDefaultValue(elname, aname));
         }
 
         return null;
     }
 
     /**
-      * Construct a string equivalent of external identifiers.
-      * @see #makeLiteral
-      */
+     * Construct a string equivalent of external identifiers.
+     * @see #makeLiteral
+     */
     public String makeExternalIdentifiers(String pubid, String sysid) {
         String extId = "";
 
@@ -320,8 +322,8 @@ public class DtdDemo extends XmlApp {
     }
 
     /**
-      * Quote a literal, and escape any '"' or non-ASCII characters within it.
-      */
+     * Quote a literal, and escape any '"' or non-ASCII characters within it.
+     */
     public String makeLiteral(String data) {
         char[] ch = data.toCharArray();
         StringBuffer buf = new StringBuffer();

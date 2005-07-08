@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.gui;
 
 import java.awt.Component;
@@ -31,7 +31,6 @@ import java.net.URL;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 
 /**
  * A Default storage policy that is useful for most applications.  This
@@ -67,9 +66,9 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                 if (d.isDirty()) {
                     // ask if the user wants to save
                     Component parent = d.getApplication().getAppContext()
-                        .makeComponent();
+                            .makeComponent();
                     String message = "Do you want to save your changes to "
-                        + d.getTitle();
+                            + d.getTitle();
                     String title = "Closing Document";
                     int val = JOptionPane.showConfirmDialog(parent, message,
                             title, JOptionPane.YES_NO_CANCEL_OPTION,
@@ -205,8 +204,8 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                     return false;
                 }
 
-                d.getApplication().getAppContext().showStatus("Saved "
-                        + d.getTitle());
+                d.getApplication().getAppContext().showStatus(
+                        "Saved " + d.getTitle());
                 d.setDirty(false);
             }
         }
@@ -236,8 +235,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                 if (chosenFile.exists()) {
                     // Query on overwrite
                     int opt = JOptionPane.showConfirmDialog(context
-                            .makeComponent(),
-                            "File \"" + chosenFile.getName()
+                            .makeComponent(), "File \"" + chosenFile.getName()
                             + "\" exists. Overwrite?", "Overwrite file?",
                             JOptionPane.YES_NO_OPTION);
 

@@ -23,7 +23,7 @@
  HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package ptolemy.distributed.actor;
 
 import java.util.HashMap;
@@ -41,19 +41,19 @@ import ptolemy.kernel.util.Workspace;
 //// DistributedDirector
 
 /**
-   The DistributedDirector extends Director to function on a distributed
-   environment. It provides receivers of the type DistributedSDFReceiver.
-   //TODO: Make it more generic that the type of receivers it provides can be
-   changed in case different MoC are to be implemented.
+ The DistributedDirector extends Director to function on a distributed
+ environment. It provides receivers of the type DistributedSDFReceiver.
+ //TODO: Make it more generic that the type of receivers it provides can be
+ changed in case different MoC are to be implemented.
 
-   @see ptolemy.actor.Director
+ @see ptolemy.actor.Director
 
-   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (kapokasa)
+ @Pt.AcceptedRating Red (cxh)
+ */
 
 public class DistributedDirector extends Director {
 
@@ -93,7 +93,6 @@ public class DistributedDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Return the map from ID to the receiver containing the ID.
      *  @return A HashMap from ID to the receiver containing the ID.
      */
@@ -119,8 +118,8 @@ public class DistributedDirector extends Director {
             receiver = new DistributedSDFReceiver(ID);
             idsReceiversMap.put(ID, receiver);
             if (VERBOSE) {
-                System.out.println("DistributedDirector.Created receiver: " +
-                                    ID);
+                System.out.println("DistributedDirector.Created receiver: "
+                        + ID);
             }
         } else {
             ID = new Integer(lastId);
@@ -136,8 +135,8 @@ public class DistributedDirector extends Director {
      */
     public void setListOfIds(LinkedList list) {
         if (VERBOSE) {
-            System.out.println("DistributedDirector.setListOfIds: " +
-                               list.toString());
+            System.out.println("DistributedDirector.setListOfIds: "
+                    + list.toString());
         }
         listOfIds = list;
     }

@@ -1,30 +1,30 @@
 /* Linearization of the Climb mode.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.demo.Helicopter;
 
 import java.util.StringTokenizer;
@@ -40,20 +40,19 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ClimbLinearizer
 
 /**
-   Linearization of the Climb mode
-   Vx = -a0(Px-CPx)-a1*DPx-a2*DDPx-a3*D3Px-a4*D4Px
-   Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
-   @author  Jie Liu
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ Linearization of the Climb mode
+ Vx = -a0(Px-CPx)-a1*DPx-a2*DDPx-a3*D3Px-a4*D4Px
+ Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
+ @author  Jie Liu
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
 public class ClimbLinearizer extends TypedAtomicActor {
     /** Constructor
      */
@@ -168,24 +167,26 @@ public class ClimbLinearizer extends TypedAtomicActor {
      *        when needed.
      */
     public void fire() throws IllegalActionException {
-        /* double Px = */ ((DoubleToken) inputPx.get(0)).doubleValue();
+        /* double Px = */((DoubleToken) inputPx.get(0)).doubleValue();
 
         double DPx = ((DoubleToken) inputDPx.get(0)).doubleValue();
         double DDPx = ((DoubleToken) inputDDPx.get(0)).doubleValue();
         double D3Px = ((DoubleToken) inputD3Px.get(0)).doubleValue();
         double D4Px = ((DoubleToken) inputD4Px.get(0)).doubleValue();
 
-        /* double Pz = */ ((DoubleToken) inputPz.get(0)).doubleValue();
+        /* double Pz = */((DoubleToken) inputPz.get(0)).doubleValue();
 
         double DPz = ((DoubleToken) inputDPz.get(0)).doubleValue();
         double DDPz = ((DoubleToken) inputDDPz.get(0)).doubleValue();
         double D3Pz = ((DoubleToken) inputD3Pz.get(0)).doubleValue();
         double D4Pz = ((DoubleToken) inputD4Pz.get(0)).doubleValue();
 
-        double Vx = -1.0 * ((_alphaV[0] * (DPx - _cVx)) + (_alphaV[1] * DDPx)
-                + (_alphaV[2] * D3Px) + (_alphaV[3] * D4Px));
-        double Vz = -1.0 * ((_alphaV[0] * (DPz - _cVz)) + (_alphaV[1] * DDPz)
-                + (_alphaV[2] * D3Pz) + (_alphaV[3] * D4Pz));
+        double Vx = -1.0
+                * ((_alphaV[0] * (DPx - _cVx)) + (_alphaV[1] * DDPx)
+                        + (_alphaV[2] * D3Px) + (_alphaV[3] * D4Px));
+        double Vz = -1.0
+                * ((_alphaV[0] * (DPz - _cVz)) + (_alphaV[1] * DDPz)
+                        + (_alphaV[2] * D3Pz) + (_alphaV[3] * D4Pz));
 
         double V = Math.sqrt((DPx * DPx) + (DPz * DPz));
         double R = Math.PI / 2.0;
@@ -300,12 +301,9 @@ public class ClimbLinearizer extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private double[] _alphaV = {
-        100.0,
-        110.0,
-        57.0,
-        12.80
-    };
+    private double[] _alphaV = { 100.0, 110.0, 57.0, 12.80 };
+
     private double _cVx;
+
     private double _cVz;
 }

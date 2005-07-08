@@ -1,65 +1,64 @@
 /* Base class for data capsules.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// AbstractNotConvertibleToken
 
 /**
-   The Token base class provides a very general interface for building
-   new data types.  However, in many ways, the interface is rather
-   complex in order to allow operations between tokens that are defined
-   in different classes.  In particular, this requires the duplicate
-   operation() and operationReverse() methods.
+ The Token base class provides a very general interface for building
+ new data types.  However, in many ways, the interface is rather
+ complex in order to allow operations between tokens that are defined
+ in different classes.  In particular, this requires the duplicate
+ operation() and operationReverse() methods.
 
-   <p> This base class is intended to make it easy to implement tokens
-   where operations are only defined for other tokens that are defined in
-   the same class.  In these cases, the operation() and
-   operationReverse() method can share the same code.  This class
-   implements these methods to ensure that the argument of each operation
-   is actually an instance of the correct class.  The implementation then
-   defers to a protected _operation() method.  These protected methods
-   should be overridden in derived classes to provide type-specific
-   operations.
+ <p> This base class is intended to make it easy to implement tokens
+ where operations are only defined for other tokens that are defined in
+ the same class.  In these cases, the operation() and
+ operationReverse() method can share the same code.  This class
+ implements these methods to ensure that the argument of each operation
+ is actually an instance of the correct class.  The implementation then
+ defers to a protected _operation() method.  These protected methods
+ should be overridden in derived classes to provide type-specific
+ operations.
 
-   <p> This class is used a base class for ArrayToken and RecordToken.
-   Note that these classes actually represent tokens having different
-   types in the type lattice.
+ <p> This class is used a base class for ArrayToken and RecordToken.
+ Note that these classes actually represent tokens having different
+ types in the type lattice.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public abstract class AbstractNotConvertibleToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -77,8 +76,9 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public Token add(Token rightArgument) throws IllegalActionException {
         if (getClass() != (rightArgument.getClass())) {
-            throw new IllegalActionException(notSupportedDifferentClassesMessage(
-                                                     "add", this, rightArgument));
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("add", this,
+                            rightArgument));
         }
 
         try {
@@ -87,8 +87,8 @@ public abstract class AbstractNotConvertibleToken extends Token {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("add", this, rightArgument));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "add", this, rightArgument));
         }
     }
 
@@ -106,8 +106,9 @@ public abstract class AbstractNotConvertibleToken extends Token {
     public Token addReverse(ptolemy.data.Token leftArgument)
             throws IllegalActionException {
         if (getClass() != (leftArgument.getClass())) {
-            throw new IllegalActionException(notSupportedDifferentClassesMessage(
-                                                     "addReverse", this, leftArgument));
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("addReverse", this,
+                            leftArgument));
         }
 
         try {
@@ -116,8 +117,8 @@ public abstract class AbstractNotConvertibleToken extends Token {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("addReverse", this, leftArgument));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "addReverse", this, leftArgument));
         }
     }
 
@@ -134,8 +135,9 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public Token divide(Token rightArgument) throws IllegalActionException {
         if (getClass() != (rightArgument.getClass())) {
-            throw new IllegalActionException(notSupportedDifferentClassesMessage(
-                                                     "divide", this, rightArgument));
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("divide", this,
+                            rightArgument));
         }
 
         try {
@@ -144,8 +146,8 @@ public abstract class AbstractNotConvertibleToken extends Token {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("divide", this, rightArgument));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "divide", this, rightArgument));
         }
     }
 
@@ -164,8 +166,9 @@ public abstract class AbstractNotConvertibleToken extends Token {
     public Token divideReverse(Token leftArgument)
             throws IllegalActionException {
         if (getClass() != (leftArgument.getClass())) {
-            throw new IllegalActionException(notSupportedDifferentClassesMessage(
-                                                     "divideReverse", this, leftArgument));
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("divideReverse", this,
+                            leftArgument));
         }
 
         try {
@@ -174,8 +177,8 @@ public abstract class AbstractNotConvertibleToken extends Token {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("divideReverse", this, leftArgument));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "divideReverse", this, leftArgument));
         }
     }
 
@@ -198,8 +201,9 @@ public abstract class AbstractNotConvertibleToken extends Token {
     public BooleanToken isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
         if (getClass() != (token.getClass())) {
-            throw new IllegalActionException(notSupportedDifferentClassesMessage(
-                                                     "isCloseTo", this, token));
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("isCloseTo", this,
+                            token));
         }
 
         try {
@@ -208,8 +212,8 @@ public abstract class AbstractNotConvertibleToken extends Token {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("isCloseTo", this, token));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "isCloseTo", this, token));
         }
     }
 
@@ -228,8 +232,9 @@ public abstract class AbstractNotConvertibleToken extends Token {
     public BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         if (getClass() != (rightArgument.getClass())) {
-            throw new IllegalActionException(notSupportedDifferentClassesMessage(
-                                                     "isEqualTo", this, rightArgument));
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("isEqualTo", this,
+                            rightArgument));
         }
 
         return _isEqualTo(rightArgument);
@@ -248,8 +253,9 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public Token modulo(Token rightArgument) throws IllegalActionException {
         if (getClass() != (rightArgument.getClass())) {
-            throw new IllegalActionException(notSupportedDifferentClassesMessage(
-                                                     "modulo", this, rightArgument));
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("modulo", this,
+                            rightArgument));
         }
 
         try {
@@ -258,8 +264,8 @@ public abstract class AbstractNotConvertibleToken extends Token {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("modulo", this, rightArgument));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "modulo", this, rightArgument));
         }
     }
 
@@ -278,8 +284,9 @@ public abstract class AbstractNotConvertibleToken extends Token {
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
         if (getClass() != (leftArgument.getClass())) {
-            throw new IllegalActionException(notSupportedDifferentClassesMessage(
-                                                     "moduloReverse", this, leftArgument));
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("moduloReverse", this,
+                            leftArgument));
         }
 
         try {
@@ -288,8 +295,8 @@ public abstract class AbstractNotConvertibleToken extends Token {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("moduloReverse", this, leftArgument));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "moduloReverse", this, leftArgument));
         }
     }
 
@@ -306,8 +313,9 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public Token multiply(Token rightArgument) throws IllegalActionException {
         if (getClass() != (rightArgument.getClass())) {
-            throw new IllegalActionException(notSupportedDifferentClassesMessage(
-                                                     "multiply", this, rightArgument));
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("multiply", this,
+                            rightArgument));
         }
 
         try {
@@ -316,8 +324,8 @@ public abstract class AbstractNotConvertibleToken extends Token {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("multiply", this, rightArgument));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "multiply", this, rightArgument));
         }
     }
 
@@ -336,8 +344,9 @@ public abstract class AbstractNotConvertibleToken extends Token {
     public Token multiplyReverse(Token leftArgument)
             throws IllegalActionException {
         if (getClass() != (leftArgument.getClass())) {
-            throw new IllegalActionException(notSupportedDifferentClassesMessage(
-                                                     "multiplyReverse", this, leftArgument));
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("multiplyReverse",
+                            this, leftArgument));
         }
 
         try {
@@ -346,8 +355,8 @@ public abstract class AbstractNotConvertibleToken extends Token {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("multiplyReverse", this, leftArgument));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "multiplyReverse", this, leftArgument));
         }
     }
 
@@ -365,10 +374,10 @@ public abstract class AbstractNotConvertibleToken extends Token {
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return (operation + " method not supported between "
-                + firstToken.getClass().getName() + " '" + firstToken.toString()
-                + "' and " + secondToken.getClass().getName() + " '"
-                + secondToken.toString()
-                + "' because the tokens have different classes.");
+                + firstToken.getClass().getName() + " '"
+                + firstToken.toString() + "' and "
+                + secondToken.getClass().getName() + " '"
+                + secondToken.toString() + "' because the tokens have different classes.");
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -384,8 +393,9 @@ public abstract class AbstractNotConvertibleToken extends Token {
      */
     public Token subtract(Token rightArgument) throws IllegalActionException {
         if (getClass() != (rightArgument.getClass())) {
-            throw new IllegalActionException(notSupportedDifferentClassesMessage(
-                                                     "subtract", this, rightArgument));
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("subtract", this,
+                            rightArgument));
         }
 
         try {
@@ -394,8 +404,8 @@ public abstract class AbstractNotConvertibleToken extends Token {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("subtract", this, rightArgument));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "subtract", this, rightArgument));
         }
     }
 
@@ -413,8 +423,9 @@ public abstract class AbstractNotConvertibleToken extends Token {
     public Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
         if (getClass() != (leftArgument.getClass())) {
-            throw new IllegalActionException(notSupportedDifferentClassesMessage(
-                                                     "subtractReverse", this, leftArgument));
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("subtractReverse",
+                            this, leftArgument));
         }
 
         try {
@@ -423,8 +434,8 @@ public abstract class AbstractNotConvertibleToken extends Token {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("subtractReverse", this, leftArgument));
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "subtractReverse", this, leftArgument));
         }
     }
 

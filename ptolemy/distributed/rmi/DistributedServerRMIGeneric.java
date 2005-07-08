@@ -1,28 +1,28 @@
 /* A distributed server to execute ptolemy actors in a distributed manner.
 
-@Copyright (c) 2005 The Regents of Aalborg University.
-All rights reserved.
+ @Copyright (c) 2005 The Regents of Aalborg University.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
-HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
+ HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 
 package ptolemy.distributed.rmi;
 
@@ -57,24 +57,24 @@ import ptolemy.kernel.util.KernelException;
 //// DistributedServerRMIGeneric
 
 /**
-   A distributed server to execute ptolemy actors in a distributed manner.
-   It uses Jini as discovery protocol. It performs the following tasks:
-   <ul>
-   <li>Prepares for discovery of a service locator.
-   <li>Loading of various settings as Unicast locators and service class.
-   <li>Discovers the service locator (unicast, multicast or both).
-   <li>Creates and exports the service proxy (that allows for RMI calls).
-   <li>Stays alive.
-   </ul>
-   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ A distributed server to execute ptolemy actors in a distributed manner.
+ It uses Jini as discovery protocol. It performs the following tasks:
+ <ul>
+ <li>Prepares for discovery of a service locator.
+ <li>Loading of various settings as Unicast locators and service class.
+ <li>Discovers the service locator (unicast, multicast or both).
+ <li>Creates and exports the service proxy (that allows for RMI calls).
+ <li>Stays alive.
+ </ul>
+ @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (kapokasa)
+ @Pt.AcceptedRating Red (cxh)
+ */
 
 public class DistributedServerRMIGeneric implements ServiceIDListener,
-                                                    DiscoveryListener {
+        DiscoveryListener {
 
     /** Construct a DistributedServerRMIGeneric with a configuration file.
      *  It performs the following tasks:
@@ -97,24 +97,22 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
 
         try {
             System.out.println("Starting server in: ");
-            System.out.println("    " +
-                               InetAddress.getLocalHost().getHostName() +
-                               " (" +
-                               InetAddress.getLocalHost().getHostAddress() +
-                               ")");
+            System.out.println("    "
+                    + InetAddress.getLocalHost().getHostName() + " ("
+                    + InetAddress.getLocalHost().getHostAddress() + ")");
         } catch (UnknownHostException e) {
             KernelException.stackTraceToString(e);
         }
 
         getConfiguration(configFileName);
 
-        System.out.println("Setting codebase property " + codebase );
+        System.out.println("Setting codebase property " + codebase);
         System.setProperty("java.rmi.manager.codebase", codebase);
 
-        System.out.println("Exporting service " + service );
+        System.out.println("Exporting service " + service);
         try {
             proxy = exporter.export(service);
-        } catch(java.rmi.server.ExportException e) {
+        } catch (java.rmi.server.ExportException e) {
             KernelException.stackTraceToString(e);
         }
 
@@ -125,24 +123,24 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
 
         try {
             LookupDiscoveryManager mgr = new LookupDiscoveryManager(groups,
-                    unicastLocators,  // unicast locators
+                    unicastLocators, // unicast locators
                     this); // DiscoveryListener
 
             if (serviceID != null) {
                 new JoinManager(proxy, // service proxy
-                        entries,  // attr sets
-                        serviceID,  // ServiceID
-                        mgr,   // DiscoveryManager
+                        entries, // attr sets
+                        serviceID, // ServiceID
+                        mgr, // DiscoveryManager
                         new LeaseRenewalManager());
             } else {
                 new JoinManager(proxy, // service proxy
-                        entries,  // attr sets
-                        this,  // ServiceIDListener
-                        mgr,   // DiscoveryManager
+                        entries, // attr sets
+                        this, // ServiceIDListener
+                        mgr, // DiscoveryManager
                         new LeaseRenewalManager());
             }
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             KernelException.stackTraceToString(e);
         }
     }
@@ -175,9 +173,9 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
             ServiceRegistrar registrar = registrars[n];
 
             try {
-                System.out.println("Found a service locator at " +
-                                   registrar.getLocator().getHost());
-            } catch(RemoteException e) {
+                System.out.println("Found a service locator at "
+                        + registrar.getLocator().getHost());
+            } catch (RemoteException e) {
                 KernelException.stackTraceToString(e);
             }
         }
@@ -196,10 +194,10 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
 
         // stay around forever
         Object keepAlive = new Object();
-        synchronized(keepAlive) {
+        synchronized (keepAlive) {
             try {
                 keepAlive.wait();
-            } catch(InterruptedException e) {
+            } catch (InterruptedException e) {
                 // do nothing
             }
         }
@@ -219,19 +217,19 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
 
         // try to save the service ID in a file
         /*
-          if (serviceIdFile != null) {
-          DataOutputStream dout = null;
-          try {
-          dout = new DataOutputStream(new FileOutputStream(serviceIdFile));
-          serviceID.writeBytes(dout);
-          dout.flush();
-          dout.close();
-          System.out.println("Service id saved in " +  serviceIdFile);
-          } catch(Exception e) {
-          // ignore
-          }
-          }
-        */
+         if (serviceIdFile != null) {
+         DataOutputStream dout = null;
+         try {
+         dout = new DataOutputStream(new FileOutputStream(serviceIdFile));
+         serviceID.writeBytes(dout);
+         dout.flush();
+         dout.close();
+         System.out.println("Service id saved in " +  serviceIdFile);
+         } catch(Exception e) {
+         // ignore
+         }
+         }
+         */
     }
 
     /** Try to load the service ID from file. It isn't an error if we
@@ -242,15 +240,15 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
      */
 
     public void tryRetrieveServiceId(File serviceIdFile) {
-        System.out.print("Trying to retrieve ServiceID from: " +
-                         serviceIdFile.getAbsolutePath() + "... ");
+        System.out.print("Trying to retrieve ServiceID from: "
+                + serviceIdFile.getAbsolutePath() + "... ");
         DataInputStream din = null;
         try {
             din = new DataInputStream(new FileInputStream(serviceIdFile));
             serviceID = new ServiceID(din);
             System.out.println("Found service ID in file " + serviceIdFile);
             din.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("Not Found.");
         }
     }
@@ -276,9 +274,9 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
 
         // We have to get a configuration file or we can't continue
         try {
-            configuration = ConfigurationProvider.getInstance(
-                                new String[] {configFileName});
-        } catch(ConfigurationException e) {
+            configuration = ConfigurationProvider
+                    .getInstance(new String[] { configFileName });
+        } catch (ConfigurationException e) {
             System.err.println(e.toString());
             KernelException.stackTraceToString(e);
         }
@@ -286,23 +284,20 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
         // The config file must have an exporter, a service and a codebase
         try {
             System.out.print("Reading exporter: ");
-            exporter = (Exporter) configuration.getEntry(SERVER,
-                    "exporter",
+            exporter = (Exporter) configuration.getEntry(SERVER, "exporter",
                     Exporter.class);
             System.out.println(exporter);
             System.out.print("Reading service: ");
-            service = (Remote) configuration.getEntry(SERVER,
-                    "service",
+            service = (Remote) configuration.getEntry(SERVER, "service",
                     Remote.class);
             System.out.println(service);
             System.out.print("Reading codebase: ");
-            codebase = (String) configuration.getEntry(SERVER,
-                    "codebase",
+            codebase = (String) configuration.getEntry(SERVER, "codebase",
                     String.class);
             System.out.println(codebase);
-        } catch(NoSuchEntryException  e) {
+        } catch (NoSuchEntryException e) {
             System.err.println("No config entry for " + e);
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.err.println(e.toString());
             KernelException.stackTraceToString(e);
         }
@@ -310,47 +305,36 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
         // These fields can fallback to a default value
         try {
             System.out.println("Reading unicastLocators: ");
-            unicastLocators = (LookupLocator[])
-                configuration.getEntry( SERVER,
-                        "unicastLocators",
-                        LookupLocator[].class,
-                        null); // default
+            unicastLocators = (LookupLocator[]) configuration.getEntry(SERVER,
+                    "unicastLocators", LookupLocator[].class, null); // default
             for (int i = 0; i < unicastLocators.length; i++) {
                 System.out.println("    " + unicastLocators[i]);
             }
 
             System.out.println("Reading entries: ");
-            entries = (Entry[])
-                configuration.getEntry( SERVER,
-                        "entries",
-                        Entry[].class,
-                        null); // default
+            entries = (Entry[]) configuration.getEntry(SERVER, "entries",
+                    Entry[].class, null); // default
             for (int i = 0; i < entries.length; i++) {
                 System.out.println("    " + entries[i]);
             }
             System.out.print("Reading serviceIdFile: ");
-            serviceIdFile = (File)
-                configuration.getEntry( SERVER,
-                        "serviceIdFile",
-                        File.class,
-                        null); // default
+            serviceIdFile = (File) configuration.getEntry(SERVER,
+                    "serviceIdFile", File.class, null); // default
             System.out.println(serviceIdFile);
             System.out.println("Reading groups: ");
-            groups = (String[]) configuration.getEntry( SERVER,
-                    "groups",
-                    String[].class,
-                    null); // default
+            groups = (String[]) configuration.getEntry(SERVER, "groups",
+                    String[].class, null); // default
             if (groups.length != 0) {
                 for (int i = 0; i < groups.length; i++) {
                     System.out.println("    " + groups[i]);
                 }
             } else {
                 groups = LookupDiscovery.ALL_GROUPS;
-                System.out.println("    No groups specified, using" +
-                                   " LookupDiscovery.ALL_GROUPS.");
+                System.out.println("    No groups specified, using"
+                        + " LookupDiscovery.ALL_GROUPS.");
             }
 
-        } catch(ConfigurationException e) {
+        } catch (ConfigurationException e) {
             KernelException.stackTraceToString(e);
         }
     }

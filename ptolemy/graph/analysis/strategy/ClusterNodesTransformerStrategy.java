@@ -1,27 +1,27 @@
 /* A mirror transformer for graphs.
 
-Copyright (c) 2003-2005 The University of Maryland. All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The University of Maryland. All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
 
-*/
+ */
 package ptolemy.graph.analysis.strategy;
 
 import java.util.ArrayList;
@@ -34,25 +34,24 @@ import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
 
-
 //////////////////////////////////////////////////////////////////////////
 ////  ClusterNodesTransformerStrategy
 
 /**
-   Strategy for cluster transformers for graphs. The nodes of a graph given
-   in a collection are being removed (clustered) and all of them are replaced
-   by a single node called super node.
-   <p>
+ Strategy for cluster transformers for graphs. The nodes of a graph given
+ in a collection are being removed (clustered) and all of them are replaced
+ by a single node called super node.
+ <p>
 
-   @see ptolemy.graph.analysis.ClusterNodesAnalysis
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (shahrooz)
-   @Pt.AcceptedRating Red (ssb)
-   @author Shahrooz Shahparnia based on a method by Ming Yung Ko.
-   @version $Id$
-*/
-public class ClusterNodesTransformerStrategy extends CachedStrategy
-    implements ClusterNodesTransformer {
+ @see ptolemy.graph.analysis.ClusterNodesAnalysis
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (shahrooz)
+ @Pt.AcceptedRating Red (ssb)
+ @author Shahrooz Shahparnia based on a method by Ming Yung Ko.
+ @version $Id$
+ */
+public class ClusterNodesTransformerStrategy extends CachedStrategy implements
+        ClusterNodesTransformer {
     /** Construct a clusterer for a given graph.
      *  @param graph The given graph.
      *  @param nodeCollection The collection of nodes to be clustered.
@@ -171,14 +170,15 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy
 
             if (nodesToRemove.contains(edge.source())) {
                 if (edge.hasWeight()) {
-                    newEdge = new Edge(_superNode, edge.sink(), edge.getWeight());
+                    newEdge = new Edge(_superNode, edge.sink(), edge
+                            .getWeight());
                 } else {
                     newEdge = new Edge(_superNode, edge.sink());
                 }
             } else if (nodesToRemove.contains(edge.sink())) {
                 if (edge.hasWeight()) {
-                    newEdge = new Edge(edge.source(), _superNode,
-                            edge.getWeight());
+                    newEdge = new Edge(edge.source(), _superNode, edge
+                            .getWeight());
                 } else {
                     newEdge = new Edge(edge.source(), _superNode);
                 }
@@ -219,5 +219,6 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Node _superNode;
+
     private Collection _nodeCollection;
 }

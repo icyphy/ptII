@@ -27,7 +27,7 @@
  COPYRIGHTENDKEY
 
 
-*/
+ */
 package diva.gui.tutorial;
 
 import javax.swing.JComponent;
@@ -38,7 +38,6 @@ import javax.swing.event.DocumentListener;
 
 import diva.gui.AbstractView;
 
-
 /**
  * A simple MDI text editor view.  FIXME
  *
@@ -47,6 +46,7 @@ import diva.gui.AbstractView;
  */
 public class TextView extends AbstractView {
     private JEditorPane _editorPane;
+
     private JScrollPane _scrollPane;
 
     public TextView(TextDocument doc) {
@@ -66,19 +66,20 @@ public class TextView extends AbstractView {
             // Get notified every time text is changed in the component to update
             // our text document.  The "Document" here is a
             // javax.swing.text.Document.  Don't get confused!
-            _editorPane.getDocument().addDocumentListener(new DocumentListener() {
-                    public void changedUpdate(DocumentEvent e) {
-                        getTextDocument().setText(_editorPane.getText());
-                    }
+            _editorPane.getDocument().addDocumentListener(
+                    new DocumentListener() {
+                        public void changedUpdate(DocumentEvent e) {
+                            getTextDocument().setText(_editorPane.getText());
+                        }
 
-                    public void insertUpdate(DocumentEvent e) {
-                        getTextDocument().setText(_editorPane.getText());
-                    }
+                        public void insertUpdate(DocumentEvent e) {
+                            getTextDocument().setText(_editorPane.getText());
+                        }
 
-                    public void removeUpdate(DocumentEvent e) {
-                        getTextDocument().setText(_editorPane.getText());
-                    }
-                });
+                        public void removeUpdate(DocumentEvent e) {
+                            getTextDocument().setText(_editorPane.getText());
+                        }
+                    });
             _scrollPane = new JScrollPane(_editorPane);
         }
 

@@ -1,30 +1,30 @@
 /* A count and a list of schedule elements.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.sched;
 
 import java.util.ArrayList;
@@ -37,79 +37,78 @@ import ptolemy.actor.Actor;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Schedule
 
 /**
-   This class represents a static schedule of actor executions.  An
-   instance of this class is returned by the scheduler of a model to
-   represent order of actor firings in the model.  A schedule consists of
-   a list of schedule elements and the number of times the schedule
-   should repeat (called the <i>iteration count</i>). <p>
+ This class represents a static schedule of actor executions.  An
+ instance of this class is returned by the scheduler of a model to
+ represent order of actor firings in the model.  A schedule consists of
+ a list of schedule elements and the number of times the schedule
+ should repeat (called the <i>iteration count</i>). <p>
 
-   Each element of
-   the schedule is represented by an instance of the ScheduleElement
-   class.  Each element may correspond to a number of firings of a single
-   actor (represented by the Firing class) or an entire sub-schedule
-   (represented by a hierarchically contained instance of this class).
-   This nesting allows this concise representation of looped schedules.
-   The nesting can be arbitrarily deep, but must be a tree where the
-   leaf nodes represent actor firings.  It is up to the scheduler to
-   enforce this requirement. <p>
+ Each element of
+ the schedule is represented by an instance of the ScheduleElement
+ class.  Each element may correspond to a number of firings of a single
+ actor (represented by the Firing class) or an entire sub-schedule
+ (represented by a hierarchically contained instance of this class).
+ This nesting allows this concise representation of looped schedules.
+ The nesting can be arbitrarily deep, but must be a tree where the
+ leaf nodes represent actor firings.  It is up to the scheduler to
+ enforce this requirement. <p>
 
-   The add() and remove() methods are used to add or
-   remove schedule elements. Only elements of type ScheduleElement (Schedule
-   or Firing) may be added to the schedule list. Otherwise an exception will
-   occur. <p>
+ The add() and remove() methods are used to add or
+ remove schedule elements. Only elements of type ScheduleElement (Schedule
+ or Firing) may be added to the schedule list. Otherwise an exception will
+ occur. <p>
 
-   The iteration count is set by the
-   setIterationCount() method. If this method is not invoked, a default value
-   of one will be used. <p>
+ The iteration count is set by the
+ setIterationCount() method. If this method is not invoked, a default value
+ of one will be used. <p>
 
-   As an example, suppose that we have an SDF graph containing actors
-   A, B, C, and D, with the firing order ABCBCBCDD.
+ As an example, suppose that we have an SDF graph containing actors
+ A, B, C, and D, with the firing order ABCBCBCDD.
 
-   This firing order can be represented by a simple looped schedule.  The
-   code to create this schedule appears below.
+ This firing order can be represented by a simple looped schedule.  The
+ code to create this schedule appears below.
 
-   <p>
-   <pre>
-   Schedule S = new Schedule();
-   Firing S1 = new Firing();
-   Schedule S2 = new Schedule();
-   Firing S3 = new Firing();
-   S.add(S1);
-   S.add(S2);
-   S.add(S3);
-   S1.setActor(A);
-   S2.setIterationCount(3);
-   Firing S2_1 = new Firing();
-   Firing S2_2 = new Firing();
-   S2_1.setActor(B);
-   S2_2.setActor(C);
-   S2.add(S2_1);
-   S2.add(S2_2);
-   S3.setIterationCount(2);
-   S3.setActor(D);
-   </pre>
-   <p>
+ <p>
+ <pre>
+ Schedule S = new Schedule();
+ Firing S1 = new Firing();
+ Schedule S2 = new Schedule();
+ Firing S3 = new Firing();
+ S.add(S1);
+ S.add(S2);
+ S.add(S3);
+ S1.setActor(A);
+ S2.setIterationCount(3);
+ Firing S2_1 = new Firing();
+ Firing S2_2 = new Firing();
+ S2_1.setActor(B);
+ S2_2.setActor(C);
+ S2.add(S2_1);
+ S2.add(S2_2);
+ S3.setIterationCount(2);
+ S3.setActor(D);
+ </pre>
+ <p>
 
-   Note that this implementation is not synchronized. It is therefore not safe
-   for a thread to make modifications to the schedule structure while
-   multiple threads are concurrently accessing the schedule.
-   <h1>References</h1>
-   S. S. Bhattacharyya, P K. Murthy, and E. A. Lee,
-   Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.
+ Note that this implementation is not synchronized. It is therefore not safe
+ for a thread to make modifications to the schedule structure while
+ multiple threads are concurrently accessing the schedule.
+ <h1>References</h1>
+ S. S. Bhattacharyya, P K. Murthy, and E. A. Lee,
+ Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.
 
-   @author Brian K. Vogel, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (vogel)
-   @Pt.AcceptedRating Yellow (chf)
-   @see ptolemy.actor.sched.Firing
-   @see ptolemy.actor.sched.ScheduleElement
-*/
+ @author Brian K. Vogel, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (vogel)
+ @Pt.AcceptedRating Yellow (chf)
+ @see ptolemy.actor.sched.Firing
+ @see ptolemy.actor.sched.ScheduleElement
+ */
 public class Schedule extends ScheduleElement {
     /** Construct a schedule with iteration count of one and an
      *  empty schedule list. This constructor should be used when
@@ -382,11 +381,17 @@ public class Schedule extends ScheduleElement {
         }
 
         private Iterator _firingIterator;
+
         private Firing _currentFiring;
+
         private Actor _currentActor;
+
         private long _currentVersion;
+
         private int _currentIteration;
+
         private boolean _advance;
+
         private boolean _lastHasNext;
     }
 
@@ -465,7 +470,8 @@ public class Schedule extends ScheduleElement {
                     // Throw runtime exception.
                     throw new InternalErrorException(
                             "Encountered a ScheduleElement that "
-                            + "is not an instance " + "of Schedule or Firing.");
+                                    + "is not an instance "
+                                    + "of Schedule or Firing.");
                 }
 
                 _advance = false;
@@ -528,8 +534,7 @@ public class Schedule extends ScheduleElement {
 
             if (node == null) {
                 return null;
-            } else if (node.size() > (++_horizontalNodePosition[_currentDepth
-                                              + 1])) {
+            } else if (node.size() > (++_horizontalNodePosition[_currentDepth + 1])) {
                 return node;
             } else if ((++_iterationCounts[_currentDepth]) < node
                     .getIterationCount()) {
@@ -582,7 +587,8 @@ public class Schedule extends ScheduleElement {
             } else if (node.size() > _horizontalNodePosition[_currentDepth + 1]) {
                 _currentDepth++;
 
-                ScheduleElement nodeElement = node.get(_horizontalNodePosition[_currentDepth]);
+                ScheduleElement nodeElement = node
+                        .get(_horizontalNodePosition[_currentDepth]);
 
                 if (nodeElement instanceof Firing) {
                     return nodeElement;
@@ -592,7 +598,8 @@ public class Schedule extends ScheduleElement {
             } else if (node.size() == 0) {
                 Schedule scheduleNode = _backTrack(_currentNode);
                 return _findLeafNode(scheduleNode);
-            } else if (_iterationCounts[_currentDepth] < node.getIterationCount()) {
+            } else if (_iterationCounts[_currentDepth] < node
+                    .getIterationCount()) {
                 ScheduleElement nodeElement = node.get(0);
                 _currentDepth++;
 
@@ -609,17 +616,21 @@ public class Schedule extends ScheduleElement {
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
         private boolean _advance;
+
         private ScheduleElement _currentNode;
+
         private boolean _lastHasNext;
 
         // The current depth in the schedule tree.
         private int _currentDepth;
+
         private long _startingVersion;
 
         // This array contains the iteration counts of schedule elements
         // indexed by tree depth.
         // This array will grow to the depth of the schedule tree.
         private int[] _iterationCounts;
+
         private int[] _horizontalNodePosition;
     }
 

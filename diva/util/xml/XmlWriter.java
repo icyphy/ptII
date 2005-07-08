@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 // From aelfred's demo classes:
 // DtdDemo.java: demonstration application showing DTD queries.
 // NO WARRANTY! See README, and copyright below.
@@ -39,7 +39,6 @@ import java.util.Enumeration;
 import com.microstar.xml.XmlParser;
 
 import diva.util.LoggableOp;
-
 
 /**
  * Given a tree of XmlElements, an object of this class generates
@@ -94,8 +93,7 @@ public class XmlWriter extends LoggableOp {
     /** Write the given XmlDocument to a given Writer. If an error
      * occurs while writing, then an IOException will be thrown.
      */
-    public void write(XmlDocument document, Writer out)
-            throws IOException {
+    public void write(XmlDocument document, Writer out) throws IOException {
         out.write("<?xml version=\"" + _xmlVersion + "\" standalone=\"no\"?>");
         out.write("\n");
         out.write("<!DOCTYPE " + document.getRoot().getType());
@@ -135,8 +133,7 @@ public class XmlWriter extends LoggableOp {
     /** Write the DTD of the given XmlDocument to a given Writer. If an error
      * occurs while writing, then an IOException will be thrown.
      */
-    public void writeDTD(XmlDocument document, Writer out)
-            throws IOException {
+    public void writeDTD(XmlDocument document, Writer out) throws IOException {
         String dtd = document.getDTD();
 
         if (dtd != null) {
@@ -193,22 +190,24 @@ public class XmlWriter extends LoggableOp {
             value = null;
 
             switch (_parser.getEntityType(ename)) {
-                // Internal text entity
+            // Internal text entity
             case XmlParser.ENTITY_INTERNAL:
                 value = makeLiteral(_parser.getEntityValue(ename));
                 break;
 
-                // External binary entity
+            // External binary entity
             case XmlParser.ENTITY_NDATA:
-                value = makeExternalIdentifiers(_parser.getEntityPublicId(ename),
-                        _parser.getEntitySystemId(ename).toString()) + "NDATA "
-                    + _parser.getEntityNotationName(ename);
+                value = makeExternalIdentifiers(_parser
+                        .getEntityPublicId(ename), _parser.getEntitySystemId(
+                        ename).toString())
+                        + "NDATA " + _parser.getEntityNotationName(ename);
                 break;
 
-                // External text entity
+            // External text entity
             case XmlParser.ENTITY_TEXT:
-                value = makeExternalIdentifiers(_parser.getEntityPublicId(ename),
-                        _parser.getEntitySystemId(ename).toString());
+                value = makeExternalIdentifiers(_parser
+                        .getEntityPublicId(ename), _parser.getEntitySystemId(
+                        ename).toString());
                 break;
             }
 
@@ -264,8 +263,7 @@ public class XmlWriter extends LoggableOp {
      * @see #makeAttributeType(String, String)
      * @see #makeAttributeValue(String, String)
      */
-    void writeDTDAttributes(String elname, Writer out)
-            throws IOException {
+    void writeDTDAttributes(String elname, Writer out) throws IOException {
         Enumeration attributeNames = _parser.declaredAttributes(elname);
         String aname;
         String type;
@@ -354,7 +352,8 @@ public class XmlWriter extends LoggableOp {
 
         case XmlParser.ATTRIBUTE_DEFAULT_FIXED:
             return "#FIXED "
-                + makeLiteral(_parser.getAttributeDefaultValue(elname, aname));
+                    + makeLiteral(_parser.getAttributeDefaultValue(elname,
+                            aname));
         }
 
         return null;

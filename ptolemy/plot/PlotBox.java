@@ -1,30 +1,30 @@
 /* A labeled box for signal plots.
 
-@Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.plot;
 
 import java.awt.Color;
@@ -78,7 +78,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-
 // TO DO:
 //   - Augment getColorByName to support a full complement of colors
 //     (get the color list from Tycho).
@@ -86,157 +85,157 @@ import javax.swing.SwingUtilities;
 //// PlotBox
 
 /**
-   This class provides a labeled box within which to place a data plot.
-   A title, X and Y axis labels, tick marks, and a legend are all supported.
-   Zooming in and out is supported.  To zoom in, drag the mouse
-   downwards to draw a box.  To zoom out, drag the mouse upward.
-   <p>
-   The box can be configured either through a file with commands or
-   through direct invocation of the public methods of the class.
-   <p>
-   When calling the methods, in most cases the changes will not
-   be visible until paintComponent() has been called.  To request that this
-   be done, call repaint().
-   <p>
-   A small set of key bindings are provided for convenience.
-   They are:
-   <ul>
-   <li> Cntrl-c: Export the plot to the clipboard (in PlotML).
-   <li> D: Dump the plot to standard output (in PlotML).
-   <li> E: Export the plot to standard output in EPS format.
-   <li> F: Fill the plot.
-   <li> H or ?: Display a simple help message.
-   <li> Cntrl-D or Q: quit
-   </ul>
-   These commands are provided in a menu by the PlotFrame class.
-   Note that exporting to the clipboard is not allowed in applets
-   (it used to be), so this will result in an error message.
-   <p>
-   At this time, the two export commands produce encapsulated postscript
-   tuned for black-and-white printers.  In the future, more formats may
-   supported.
-   Exporting to the clipboard and to standard output, in theory,
-   is allowed for applets, unlike writing to a file. Thus, these
-   key bindings provide a simple mechanism to obtain a high-resolution
-   image of the plot from an applet, suitable for incorporation in
-   a document. However, in some browsers, exporting to standard out
-   triggers a security violation.  You can use the JDK appletviewer instead.
-   <p>
-   To read commands from a file or URL, the preferred technique is
-   to use one of the classes in the plotml package.  That package
-   supports both PlotML, an XML extension for plots, and a historical
-   file format specific to ptplot.  The historical file format is
-   understood by the read() method in this class.
-   The syntax of the historical format, documented below, is rudimentary,
-   and will probably not be extended as ptplot evolves.  Nonetheless,
-   we document it here since it is directly supported by this class.
-   <p>
-   The historical format for the file allows any number
-   commands, one per line.  Unrecognized commands and commands with
-   syntax errors are ignored.  Comments are denoted by a line starting
-   with a pound sign "#".  The recognized commands include:
-   <pre>
-   TitleText: <i>string</i>
-   XLabel: <i>string</i>
-   YLabel: <i>string</i>
-   </pre>
-   These commands provide a title and labels for the X (horizontal) and Y
-   (vertical) axes.
-   A <i>string</i> is simply a sequence of characters, possibly
-   including spaces.  There is no need here to surround them with
-   quotation marks, and in fact, if you do, the quotation marks will
-   be included in the labels.
-   <p>
-   The ranges of the X and Y axes can be optionally given by commands like:
-   <pre>
-   XRange: <i>min</i>, <i>max</i>
-   YRange: <i>min</i>, <i>max</i>
-   </pre>
-   The arguments <i>min</i> and <i>max</i> are numbers, possibly
-   including a sign and a decimal point. If they are not specified,
-   then the ranges are computed automatically from the data and padded
-   slightly so that datapoints are not plotted on the axes.
-   <p>
-   The tick marks for the axes are usually computed automatically from
-   the ranges.  Every attempt is made to choose reasonable positions
-   for the tick marks regardless of the data ranges (powers of
-   ten multiplied by 1, 2, or 5 are used).  However, they can also be
-   specified explicitly using commands like:
-   <pre>
-   XTicks: <i>label position, label position, ...</i>
-   YTicks: <i>label position, label position, ...</i>
-   </pre>
-   A <i>label</i> is a string that must be surrounded by quotation
-   marks if it contains any spaces.  A <i>position</i> is a number
-   giving the location of the tick mark along the axis.  For example,
-   a horizontal axis for a frequency domain plot might have tick marks
-   as follows:
-   <pre>
-   XTicks: -PI -3.14159, -PI/2 -1.570795, 0 0, PI/2 1.570795, PI 3.14159
-   </pre>
-   Tick marks could also denote years, months, days of the week, etc.
-   <p>
-   The X and Y axes can use a logarithmic scale with the following commands:
-   <pre>
-   XLog: on
-   YLog: on
-   </pre>
-   The grid labels represent powers of 10.  Note that if a logarithmic
-   scale is used, then the values must be positive.  Non-positive values
-   will be silently dropped.  Note further that when using logarithmic
-   axes that the log of input data is taken as the data is added to the plot.
-   This means that <pre>XLog: on</pre> or <pre>YLog: on</pre> should
-   appear before any data.  Also, the value of the XTicks, YTicks,
-   XRange or YRange directives should be in log units.
-   So, <pre>XTicks: 1K 3</pre> will display the string <pre>1K</pre>
-   at the 1000 mark.
-   <p>
-   By default, tick marks are connected by a light grey background grid.
-   This grid can be turned off with the following command:
-   <pre>
-   Grid: off
-   </pre>
-   It can be turned back on with
-   <pre>
-   Grid: on
-   </pre>
-   Also, by default, the first ten data sets are shown each in a unique color.
-   The use of color can be turned off with the command:
-   <pre>
-   Color: off
-   </pre>
-   It can be turned back on with
-   <pre>
-   Color: on
-   </pre>
-   Finally, the rather specialized command
-   <pre>
-   Wrap: on
-   </pre>
-   enables wrapping of the X (horizontal) axis, which means that if
-   a point is added with X out of range, its X value will be modified
-   modulo the range so that it lies in range. This command only has an
-   effect if the X range has been set explicitly. It is designed specifically
-   to support oscilloscope-like behavior, where the X value of points is
-   increasing, but the display wraps it around to left. A point that lands
-   on the right edge of the X range is repeated on the left edge to give
-   a better sense of continuity. The feature works best when points do land
-   precisely on the edge, and are plotted from left to right, increasing
-   in X.
-   <p>
-   All of the above commands can also be invoked directly by calling the
-   the corresponding public methods from some Java procedure.
-   <p>
-   This class uses features of JDK 1.2, and hence if used in an applet,
-   it can only be viewed by a browser that supports JDK 1.2, or a plugin.
+ This class provides a labeled box within which to place a data plot.
+ A title, X and Y axis labels, tick marks, and a legend are all supported.
+ Zooming in and out is supported.  To zoom in, drag the mouse
+ downwards to draw a box.  To zoom out, drag the mouse upward.
+ <p>
+ The box can be configured either through a file with commands or
+ through direct invocation of the public methods of the class.
+ <p>
+ When calling the methods, in most cases the changes will not
+ be visible until paintComponent() has been called.  To request that this
+ be done, call repaint().
+ <p>
+ A small set of key bindings are provided for convenience.
+ They are:
+ <ul>
+ <li> Cntrl-c: Export the plot to the clipboard (in PlotML).
+ <li> D: Dump the plot to standard output (in PlotML).
+ <li> E: Export the plot to standard output in EPS format.
+ <li> F: Fill the plot.
+ <li> H or ?: Display a simple help message.
+ <li> Cntrl-D or Q: quit
+ </ul>
+ These commands are provided in a menu by the PlotFrame class.
+ Note that exporting to the clipboard is not allowed in applets
+ (it used to be), so this will result in an error message.
+ <p>
+ At this time, the two export commands produce encapsulated postscript
+ tuned for black-and-white printers.  In the future, more formats may
+ supported.
+ Exporting to the clipboard and to standard output, in theory,
+ is allowed for applets, unlike writing to a file. Thus, these
+ key bindings provide a simple mechanism to obtain a high-resolution
+ image of the plot from an applet, suitable for incorporation in
+ a document. However, in some browsers, exporting to standard out
+ triggers a security violation.  You can use the JDK appletviewer instead.
+ <p>
+ To read commands from a file or URL, the preferred technique is
+ to use one of the classes in the plotml package.  That package
+ supports both PlotML, an XML extension for plots, and a historical
+ file format specific to ptplot.  The historical file format is
+ understood by the read() method in this class.
+ The syntax of the historical format, documented below, is rudimentary,
+ and will probably not be extended as ptplot evolves.  Nonetheless,
+ we document it here since it is directly supported by this class.
+ <p>
+ The historical format for the file allows any number
+ commands, one per line.  Unrecognized commands and commands with
+ syntax errors are ignored.  Comments are denoted by a line starting
+ with a pound sign "#".  The recognized commands include:
+ <pre>
+ TitleText: <i>string</i>
+ XLabel: <i>string</i>
+ YLabel: <i>string</i>
+ </pre>
+ These commands provide a title and labels for the X (horizontal) and Y
+ (vertical) axes.
+ A <i>string</i> is simply a sequence of characters, possibly
+ including spaces.  There is no need here to surround them with
+ quotation marks, and in fact, if you do, the quotation marks will
+ be included in the labels.
+ <p>
+ The ranges of the X and Y axes can be optionally given by commands like:
+ <pre>
+ XRange: <i>min</i>, <i>max</i>
+ YRange: <i>min</i>, <i>max</i>
+ </pre>
+ The arguments <i>min</i> and <i>max</i> are numbers, possibly
+ including a sign and a decimal point. If they are not specified,
+ then the ranges are computed automatically from the data and padded
+ slightly so that datapoints are not plotted on the axes.
+ <p>
+ The tick marks for the axes are usually computed automatically from
+ the ranges.  Every attempt is made to choose reasonable positions
+ for the tick marks regardless of the data ranges (powers of
+ ten multiplied by 1, 2, or 5 are used).  However, they can also be
+ specified explicitly using commands like:
+ <pre>
+ XTicks: <i>label position, label position, ...</i>
+ YTicks: <i>label position, label position, ...</i>
+ </pre>
+ A <i>label</i> is a string that must be surrounded by quotation
+ marks if it contains any spaces.  A <i>position</i> is a number
+ giving the location of the tick mark along the axis.  For example,
+ a horizontal axis for a frequency domain plot might have tick marks
+ as follows:
+ <pre>
+ XTicks: -PI -3.14159, -PI/2 -1.570795, 0 0, PI/2 1.570795, PI 3.14159
+ </pre>
+ Tick marks could also denote years, months, days of the week, etc.
+ <p>
+ The X and Y axes can use a logarithmic scale with the following commands:
+ <pre>
+ XLog: on
+ YLog: on
+ </pre>
+ The grid labels represent powers of 10.  Note that if a logarithmic
+ scale is used, then the values must be positive.  Non-positive values
+ will be silently dropped.  Note further that when using logarithmic
+ axes that the log of input data is taken as the data is added to the plot.
+ This means that <pre>XLog: on</pre> or <pre>YLog: on</pre> should
+ appear before any data.  Also, the value of the XTicks, YTicks,
+ XRange or YRange directives should be in log units.
+ So, <pre>XTicks: 1K 3</pre> will display the string <pre>1K</pre>
+ at the 1000 mark.
+ <p>
+ By default, tick marks are connected by a light grey background grid.
+ This grid can be turned off with the following command:
+ <pre>
+ Grid: off
+ </pre>
+ It can be turned back on with
+ <pre>
+ Grid: on
+ </pre>
+ Also, by default, the first ten data sets are shown each in a unique color.
+ The use of color can be turned off with the command:
+ <pre>
+ Color: off
+ </pre>
+ It can be turned back on with
+ <pre>
+ Color: on
+ </pre>
+ Finally, the rather specialized command
+ <pre>
+ Wrap: on
+ </pre>
+ enables wrapping of the X (horizontal) axis, which means that if
+ a point is added with X out of range, its X value will be modified
+ modulo the range so that it lies in range. This command only has an
+ effect if the X range has been set explicitly. It is designed specifically
+ to support oscilloscope-like behavior, where the X value of points is
+ increasing, but the display wraps it around to left. A point that lands
+ on the right edge of the X range is repeated on the left edge to give
+ a better sense of continuity. The feature works best when points do land
+ precisely on the edge, and are plotted from left to right, increasing
+ in X.
+ <p>
+ All of the above commands can also be invoked directly by calling the
+ the corresponding public methods from some Java procedure.
+ <p>
+ This class uses features of JDK 1.2, and hence if used in an applet,
+ it can only be viewed by a browser that supports JDK 1.2, or a plugin.
 
-   @author Edward A. Lee, Christopher Hylands, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger
+ @author Edward A. Lee, Christopher Hylands, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger
 
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class PlotBox extends JPanel implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////
@@ -417,10 +416,10 @@ public class PlotBox extends JPanel implements Printable {
             // be performed in the event dispatch thread.
             if (!_actionsDeferred) {
                 Runnable doActions = new Runnable() {
-                        public void run() {
-                            _executeDeferredActions();
-                        }
-                    };
+                    public void run() {
+                        _executeDeferredActions();
+                    }
+                };
 
                 try {
                     // NOTE: Using invokeAndWait() here risks causing
@@ -479,7 +478,7 @@ public class PlotBox extends JPanel implements Printable {
     public synchronized BufferedImage exportImage() {
         Rectangle rectangle = new Rectangle(_preferredWidth, _preferredHeight);
         return exportImage(new BufferedImage(rectangle.width, rectangle.height,
-                                   BufferedImage.TYPE_INT_ARGB), rectangle,
+                BufferedImage.TYPE_INT_ARGB), rectangle,
                 _defaultImageRenderingHints(), false);
     }
 
@@ -493,7 +492,7 @@ public class PlotBox extends JPanel implements Printable {
      */
     public synchronized BufferedImage exportImage(Rectangle rectangle) {
         return exportImage(new BufferedImage(rectangle.width, rectangle.height,
-                                   BufferedImage.TYPE_INT_ARGB), rectangle,
+                BufferedImage.TYPE_INT_ARGB), rectangle,
                 _defaultImageRenderingHints(), false);
     }
 
@@ -537,8 +536,8 @@ public class PlotBox extends JPanel implements Printable {
      *  @return The modified bufferedImage.
      */
     public synchronized BufferedImage exportImage(BufferedImage bufferedImage) {
-        return exportImage(bufferedImage,
-                new Rectangle(bufferedImage.getWidth(), bufferedImage.getHeight()),
+        return exportImage(bufferedImage, new Rectangle(bufferedImage
+                .getWidth(), bufferedImage.getHeight()),
                 _defaultImageRenderingHints(), true);
     }
 
@@ -598,28 +597,9 @@ public class PlotBox extends JPanel implements Printable {
         // FIXME: This is a poor excuse for a list of colors and values.
         // We should use a hash table here.
         // Note that Color decode() wants the values to start with 0x.
-        String[][] names = {
-            {
-                "black",
-                "00000"
-            },
-            {
-                "white",
-                "ffffff"
-            },
-            {
-                "red",
-                "ff0000"
-            },
-            {
-                "green",
-                "00ff00"
-            },
-            {
-                "blue",
-                "0000ff"
-            }
-        };
+        String[][] names = { { "black", "00000" }, { "white", "ffffff" },
+                { "red", "ff0000" }, { "green", "00ff00" },
+                { "blue", "0000ff" } };
 
         for (int i = 0; i < names.length; i++) {
             if (name.equals(names[i][0])) {
@@ -703,7 +683,6 @@ public class PlotBox extends JPanel implements Printable {
     //             return super.getMaximumSize();
     //         }
     //     }
-
     /** Get the minimum size of this component.
      *  This is simply the dimensions specified by setSize(),
      *  if this has been called.  Otherwise, return whatever the base
@@ -718,7 +697,6 @@ public class PlotBox extends JPanel implements Printable {
     //             return super.getMinimumSize();
     //         }
     //     }
-
     /** Get the current plot rectangle.
      *  Note that Rectangle returned by this method is calculated
      *  from the values of {@link #_ulx}, {@link #_uly},
@@ -1057,8 +1035,8 @@ public class PlotBox extends JPanel implements Printable {
         double scalex = format.getImageableWidth() / (double) getWidth();
         double scaley = format.getImageableHeight() / (double) getHeight();
         double scale = Math.min(scalex, scaley);
-        graphics2D.translate((int) format.getImageableX(),
-                (int) format.getImageableY());
+        graphics2D.translate((int) format.getImageableX(), (int) format
+                .getImageableY());
         graphics2D.scale(scale, scale);
         _drawPlot(graphics, true);
         return Printable.PAGE_EXISTS;
@@ -1280,8 +1258,8 @@ public class PlotBox extends JPanel implements Printable {
             // FIXME: If we failed to get an image, then the letter "R"
             // Is not likely to fit into a 20x20 button.
             _resetButton.setPreferredSize(new Dimension(20, 20));
-            _resetButton.setToolTipText(
-                    "Reset X and Y ranges to their original values");
+            _resetButton
+                    .setToolTipText("Reset X and Y ranges to their original values");
             _resetButton.addActionListener(new ButtonListener());
             add(_resetButton);
         }
@@ -1640,10 +1618,10 @@ public class PlotBox extends JPanel implements Printable {
 
         if (dtd == null) {
             output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
-            output.println(
-                    "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
-            output.println(
-                    "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
+            output
+                    .println("<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
+            output
+                    .println("    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
         } else {
             output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
             output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
@@ -1837,15 +1815,15 @@ public class PlotBox extends JPanel implements Printable {
         graphics.setPaintMode();
 
         /* NOTE: The following seems to be unnecessary with Swing...
-           if (clearfirst) {
-           // NOTE: calling clearRect() here permits the background
-           // color to show through, but it messes up printing.
-           // Printing results in black-on-black title and axis labels.
-           graphics.setColor(_background);
-           graphics.drawRect(0, 0, drawRect.width, drawRect.height);
-           graphics.setColor(Color.black);
-           }
-        */
+         if (clearfirst) {
+         // NOTE: calling clearRect() here permits the background
+         // color to show through, but it messes up printing.
+         // Printing results in black-on-black title and axis labels.
+         graphics.setColor(_background);
+         graphics.drawRect(0, 0, drawRect.width, drawRect.height);
+         graphics.setColor(Color.black);
+         }
+         */
 
         // If an error message has been set, display it and return.
         if (_errorMsg != null) {
@@ -1888,10 +1866,10 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_specifiedPlotRectangle != null) {
             workingPlotRectangle = new Rectangle(Math.max(0,
-                                                         _specifiedPlotRectangle.x),
-                    Math.max(0, _specifiedPlotRectangle.y),
-                    Math.min(drawRect.width, _specifiedPlotRectangle.width),
-                    Math.min(drawRect.height, _specifiedPlotRectangle.height));
+                    _specifiedPlotRectangle.x), Math.max(0,
+                    _specifiedPlotRectangle.y), Math.min(drawRect.width,
+                    _specifiedPlotRectangle.width), Math.min(drawRect.height,
+                    _specifiedPlotRectangle.height));
         }
 
         // Vertical space for title, if appropriate.
@@ -1937,7 +1915,8 @@ public class PlotBox extends JPanel implements Printable {
             graphics.setFont(_superscriptFont);
 
             if (!_xlog) {
-                graphics.drawString(superscript, xSPos, ySPos - halflabelheight);
+                graphics
+                        .drawString(superscript, xSPos, ySPos - halflabelheight);
                 xSPos -= _labelFontMetrics.stringWidth("x10");
                 graphics.setFont(_labelFont);
                 graphics.drawString("x10", xSPos, ySPos);
@@ -2037,8 +2016,8 @@ public class PlotBox extends JPanel implements Printable {
                 yTmpStart = _gridStep(ygrid, yStart, yStep, _ylog);
             }
 
-            for (double ypos = yTmpStart; ypos <= _ytickMax;
-                 ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
+            for (double ypos = yTmpStart; ypos <= _ytickMax; ypos = _gridStep(
+                    ygrid, ypos, yStep, _ylog)) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) {
                     break;
@@ -2081,7 +2060,7 @@ public class PlotBox extends JPanel implements Printable {
         } else {
             if (_ylabel != null) {
                 _ulx = widesty + _labelFontMetrics.stringWidth("W")
-                    + _leftPadding;
+                        + _leftPadding;
             } else {
                 _ulx = widesty + _leftPadding;
             }
@@ -2131,8 +2110,8 @@ public class PlotBox extends JPanel implements Printable {
             // Set to false if we don't need the exponent
             boolean needExponent = _ylog;
 
-            for (double ypos = yTmpStart; ypos <= _ytickMax;
-                 ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
+            for (double ypos = yTmpStart; ypos <= _ytickMax; ypos = _gridStep(
+                    ygrid, ypos, yStep, _ylog)) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) {
                     break;
@@ -2179,11 +2158,10 @@ public class PlotBox extends JPanel implements Printable {
                     double tmpStep = (yStep > 1.0) ? 1.0 : yStep;
 
                     for (double ypos = _gridStep(unlabeledgrid, yStart,
-                                 tmpStep, _ylog); ypos <= _ytickMax;
-                         ypos = _gridStep(unlabeledgrid, ypos,
-                                 tmpStep, _ylog)) {
+                            tmpStep, _ylog); ypos <= _ytickMax; ypos = _gridStep(
+                            unlabeledgrid, ypos, tmpStep, _ylog)) {
                         int yCoord1 = _lry
-                            - (int) ((ypos - _ytickMin) * _ytickscale);
+                                - (int) ((ypos - _ytickMin) * _ytickscale);
 
                         if (_grid && (yCoord1 != _uly) && (yCoord1 != _lry)) {
                             graphics.setColor(Color.lightGray);
@@ -2206,9 +2184,8 @@ public class PlotBox extends JPanel implements Printable {
             if (_yExp != 0) {
                 graphics.drawString("x10", 2, titley);
                 graphics.setFont(_superscriptFont);
-                graphics.drawString(Integer.toString(_yExp),
-                        _labelFontMetrics.stringWidth("x10") + 2,
-                        titley - halflabelheight);
+                graphics.drawString(Integer.toString(_yExp), _labelFontMetrics
+                        .stringWidth("x10") + 2, titley - halflabelheight);
                 graphics.setFont(_labelFont);
             }
         } else {
@@ -2241,9 +2218,9 @@ public class PlotBox extends JPanel implements Printable {
                 }
 
                 // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(label,
-                        _ulx - _labelFontMetrics.stringWidth(label) - 3,
-                        yCoord1 + offset);
+                graphics.drawString(label, _ulx
+                        - _labelFontMetrics.stringWidth(label) - 3, yCoord1
+                        + offset);
             }
         }
 
@@ -2282,8 +2259,8 @@ public class PlotBox extends JPanel implements Printable {
                     }
 
                     // Allow two extra digits (decimal point and sign).
-                    int maxlabelwidth = charwidth * (numfracdigits + 2
-                            + intdigits);
+                    int maxlabelwidth = charwidth
+                            * (numfracdigits + 2 + intdigits);
 
                     // Compute new estimate of number of ticks.
                     int savenx = nx;
@@ -2321,8 +2298,8 @@ public class PlotBox extends JPanel implements Printable {
 
             // Label the x axis.  The labels are quantized so that
             // they don't have excess resolution.
-            for (double xpos = xTmpStart; xpos <= _xtickMax;
-                 xpos = _gridStep(xgrid, xpos, xStep, _xlog)) {
+            for (double xpos = xTmpStart; xpos <= _xtickMax; xpos = _gridStep(
+                    xgrid, xpos, xStep, _xlog)) {
                 String xticklabel;
 
                 if (_xlog) {
@@ -2346,10 +2323,11 @@ public class PlotBox extends JPanel implements Printable {
                 }
 
                 int labxpos = xCoord1
-                    - (_labelFontMetrics.stringWidth(xticklabel) / 2);
+                        - (_labelFontMetrics.stringWidth(xticklabel) / 2);
 
                 // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(xticklabel, labxpos, _lry + 3 + labelheight);
+                graphics
+                        .drawString(xticklabel, labxpos, _lry + 3 + labelheight);
             }
 
             if (_xlog) {
@@ -2367,11 +2345,10 @@ public class PlotBox extends JPanel implements Printable {
 
                 if (unlabeledgrid.size() > 0) {
                     for (double xpos = _gridStep(unlabeledgrid, xTmpStart,
-                                 tmpStep, _xlog); xpos <= _xtickMax;
-                         xpos = _gridStep(unlabeledgrid, xpos,
-                                 tmpStep, _xlog)) {
+                            tmpStep, _xlog); xpos <= _xtickMax; xpos = _gridStep(
+                            unlabeledgrid, xpos, tmpStep, _xlog)) {
                         xCoord1 = _ulx
-                            + (int) ((xpos - _xtickMin) * _xtickscale);
+                                + (int) ((xpos - _xtickMin) * _xtickscale);
 
                         if (_grid && (xCoord1 != _ulx) && (xCoord1 != _lrx)) {
                             graphics.setColor(Color.lightGray);
@@ -2385,8 +2362,8 @@ public class PlotBox extends JPanel implements Printable {
                 if (needExponent) {
                     _xExp = (int) Math.floor(xTmpStart);
                     graphics.setFont(_superscriptFont);
-                    graphics.drawString(Integer.toString(_xExp), xSPos,
-                            ySPos - halflabelheight);
+                    graphics.drawString(Integer.toString(_xExp), xSPos, ySPos
+                            - halflabelheight);
                     xSPos -= _labelFontMetrics.stringWidth("x10");
                     graphics.setFont(_labelFont);
                     graphics.drawString("x10", xSPos, ySPos);
@@ -2416,13 +2393,13 @@ public class PlotBox extends JPanel implements Printable {
 
                 // Find  the start position of x label.
                 int labxpos = xCoord1
-                    - (_labelFontMetrics.stringWidth(label) / 2);
+                        - (_labelFontMetrics.stringWidth(label) / 2);
 
                 // If the labels are not overlapped, proceed.
                 if (labxpos > preLength) {
                     // calculate the length of the label
                     preLength = xCoord1
-                        + (_labelFontMetrics.stringWidth(label) / 2) + 10;
+                            + (_labelFontMetrics.stringWidth(label) / 2) + 10;
 
                     // Draw the label.
                     // NOTE: 3 pixel spacing between axis and labels.
@@ -2451,7 +2428,7 @@ public class PlotBox extends JPanel implements Printable {
             graphics.setFont(_titleFont);
 
             int titlex = _ulx
-                + ((width - _titleFontMetrics.stringWidth(_title)) / 2);
+                    + ((width - _titleFontMetrics.stringWidth(_title)) / 2);
             graphics.drawString(_title, titlex, titley);
         }
 
@@ -2459,7 +2436,7 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_xlabel != null) {
             int labelx = _ulx
-                + ((width - _labelFontMetrics.stringWidth(_xlabel)) / 2);
+                    + ((width - _labelFontMetrics.stringWidth(_xlabel)) / 2);
             graphics.drawString(_xlabel, labelx, ySPos);
         }
 
@@ -2469,8 +2446,9 @@ public class PlotBox extends JPanel implements Printable {
             int yl = _ylabel.length();
 
             if (graphics instanceof Graphics2D) {
-                int starty = (_uly + ((_lry - _uly) / 2)
-                        + (_labelFontMetrics.stringWidth(_ylabel) / 2)) - charwidth;
+                int starty = (_uly + ((_lry - _uly) / 2) + (_labelFontMetrics
+                        .stringWidth(_ylabel) / 2))
+                        - charwidth;
                 Graphics2D g2d = (Graphics2D) graphics;
 
                 // NOTE: Fudge factor so label doesn't touch axis labels.
@@ -2482,12 +2460,13 @@ public class PlotBox extends JPanel implements Printable {
                 // Not graphics 2D, no support for rotation.
                 // Vertical label is fairly complex to draw.
                 int starty = (_uly + ((_lry - _uly) / 2))
-                    - (yl * halflabelheight) + labelheight;
+                        - (yl * halflabelheight) + labelheight;
 
                 for (int i = 0; i < yl; i++) {
                     String nchar = _ylabel.substring(i, i + 1);
                     int cwidth = _labelFontMetrics.stringWidth(nchar);
-                    graphics.drawString(nchar, charcenter - (cwidth / 2), starty);
+                    graphics.drawString(nchar, charcenter - (cwidth / 2),
+                            starty);
                     starty += labelheight;
                 }
             }
@@ -2524,7 +2503,7 @@ public class PlotBox extends JPanel implements Printable {
         }
 
         boolean pointinside = (ypos <= _lry) && (ypos >= _uly)
-            && (xpos <= _lrx) && (xpos >= _ulx);
+                && (xpos <= _lrx) && (xpos >= _ulx);
 
         if (!pointinside && clip) {
             return;
@@ -2536,17 +2515,20 @@ public class PlotBox extends JPanel implements Printable {
     /** Display basic information in its own window.
      */
     protected void _help() {
-        String message = "Ptolemy plot package\n" + "By: Edward A. Lee\n"
-            + "and Christopher Hylands\n" + "Version " + PTPLOT_RELEASE
-            + ", Build: $Id$\n\n"
-            + "Key bindings:\n"
-            + "   Cntrl-c:  copy plot to clipboard (EPS format), if permitted\n"
-            + "   D: dump plot data to standard out\n"
-            + "   E: export plot to standard out (EPS format)\n"
-            + "   F: fill plot\n"
-            + "   H or ?: print help message (this message)\n"
-            + "   Cntrl-D or Q: quit\n" + "For more information, see\n"
-            + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n";
+        String message = "Ptolemy plot package\n"
+                + "By: Edward A. Lee\n"
+                + "and Christopher Hylands\n"
+                + "Version "
+                + PTPLOT_RELEASE
+                + ", Build: $Id$\n\n"
+                + "Key bindings:\n"
+                + "   Cntrl-c:  copy plot to clipboard (EPS format), if permitted\n"
+                + "   D: dump plot data to standard out\n"
+                + "   E: export plot to standard out (EPS format)\n"
+                + "   F: fill plot\n"
+                + "   H or ?: print help message (this message)\n"
+                + "   Cntrl-D or Q: quit\n" + "For more information, see\n"
+                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n";
         JOptionPane.showMessageDialog(this, message,
                 "Ptolemy Plot Help Window", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -2803,7 +2785,9 @@ public class PlotBox extends JPanel implements Printable {
 
     // Whether the ranges have been given.
     protected transient boolean _xRangeGiven = false;
+
     protected transient boolean _yRangeGiven = false;
+
     protected transient boolean _rangesGivenByZooming = false;
 
     /** @serial The given X and Y ranges.
@@ -2936,18 +2920,17 @@ public class PlotBox extends JPanel implements Printable {
     // There are 11 colors so that combined with the
     // 10 marks of the Plot class, we can distinguish 110
     // distinct data sets.
-    static protected Color[] _colors = {
-        new Color(0xff0000), // red
-        new Color(0x0000ff), // blue
-        new Color(0x00aaaa), // cyan-ish
-        new Color(0x000000), // black
-        new Color(0xffa500), // orange
-        new Color(0x53868b), // cadetblue4
-        new Color(0xff7f50), // coral
-        new Color(0x45ab1f), // dark green-ish
-        new Color(0x90422d), // sienna-ish
-        new Color(0xa0a0a0), // grey-ish
-        new Color(0x14ff14), // green-ish
+    static protected Color[] _colors = { new Color(0xff0000), // red
+            new Color(0x0000ff), // blue
+            new Color(0x00aaaa), // cyan-ish
+            new Color(0x000000), // black
+            new Color(0xffa500), // orange
+            new Color(0x53868b), // cadetblue4
+            new Color(0xff7f50), // coral
+            new Color(0x45ab1f), // dark green-ish
+            new Color(0x90422d), // sienna-ish
+            new Color(0xa0a0a0), // grey-ish
+            new Color(0x14ff14), // green-ish
     };
 
     /** @serial Width and height of component in pixels. */
@@ -2965,7 +2948,6 @@ public class PlotBox extends JPanel implements Printable {
     /** @serial Indicator that size has been set. */
 
     //protected boolean _sizeHasBeenSet = false;
-
     /** @serial The document base we use to find the _filespec.
      * NOTE: Use of this variable is deprecated.  But it is made available
      * to derived classes for backward compatibility.
@@ -3262,7 +3244,8 @@ public class PlotBox extends JPanel implements Printable {
                     // Using == on doubles is bad if the numbers are close,
                     // but not exactly equal.
                     if (Math.abs(((Double) oldgrid.elementAt(oldgridi))
-                                .doubleValue() - logval) > 0.00001) {
+                            .doubleValue()
+                            - logval) > 0.00001) {
                         grid.addElement(new Double(logval));
                     }
                 } else {
@@ -3286,10 +3269,9 @@ public class PlotBox extends JPanel implements Printable {
 
         // Set gridCurJuke so that the value in grid is greater than
         // or equal to x.  This sets us up to process the first point.
-        for (_gridCurJuke = -1;
-             ((_gridCurJuke + 1) < grid.size())
-                 && (x >= ((Double) grid.elementAt(_gridCurJuke + 1))
-                         .doubleValue()); _gridCurJuke++) {
+        for (_gridCurJuke = -1; ((_gridCurJuke + 1) < grid.size())
+                && (x >= ((Double) grid.elementAt(_gridCurJuke + 1))
+                        .doubleValue()); _gridCurJuke++) {
         }
 
         return grid;
@@ -3302,10 +3284,8 @@ public class PlotBox extends JPanel implements Printable {
         double x = pos - Math.floor(pos);
         int i;
 
-        for (i = 0;
-             (i < grid.size())
-                 && (x >= ((Double) grid.elementAt(i)).doubleValue());
-             i++) {
+        for (i = 0; (i < grid.size())
+                && (x >= ((Double) grid.elementAt(i)).doubleValue()); i++) {
         }
 
         if (i >= grid.size()) {
@@ -3338,7 +3318,7 @@ public class PlotBox extends JPanel implements Printable {
             }
 
             return _gridBase
-                + ((Double) grid.elementAt(_gridCurJuke)).doubleValue();
+                    + ((Double) grid.elementAt(_gridCurJuke)).doubleValue();
         } else {
             return pos + step;
         }
@@ -3821,9 +3801,8 @@ public class PlotBox extends JPanel implements Printable {
                     int x_diff = Math.abs(_zoomx - _zoomxn);
                     int y_diff = Math.abs(_zoomy - _zoomyn);
                     graphics.setXORMode(_boxColor);
-                    graphics.drawRect(_zoomx - 15 - x_diff,
-                            _zoomy - 15 - y_diff, 30 + (x_diff * 2),
-                            30 + (y_diff * 2));
+                    graphics.drawRect(_zoomx - 15 - x_diff, _zoomy - 15
+                            - y_diff, 30 + (x_diff * 2), 30 + (y_diff * 2));
                 }
 
                 if (y < _zoomy) {
@@ -3833,9 +3812,8 @@ public class PlotBox extends JPanel implements Printable {
                     int x_diff = Math.abs(_zoomx - _zoomxn);
                     int y_diff = Math.abs(_zoomy - _zoomyn);
                     graphics.setXORMode(_boxColor);
-                    graphics.drawRect(_zoomx - 15 - x_diff,
-                            _zoomy - 15 - y_diff, 30 + (x_diff * 2),
-                            30 + (y_diff * 2));
+                    graphics.drawRect(_zoomx - 15 - x_diff, _zoomy - 15
+                            - y_diff, 30 + (x_diff * 2), 30 + (y_diff * 2));
                     _drawn = true;
                     return;
                 } else {
@@ -4027,14 +4005,20 @@ public class PlotBox extends JPanel implements Printable {
     // Variables keeping track of the interactive zoom box.
     // Initialize to impossible values.
     private transient int _zoomx = -1;
+
     private transient int _zoomy = -1;
+
     private transient int _zoomxn = -1;
+
     private transient int _zoomyn = -1;
 
     // Control whether we are zooming in or out.
     private transient boolean _zoomin = false;
+
     private transient boolean _zoomout = false;
+
     private transient boolean _drawn = false;
+
     private transient boolean _zooming = false;
 
     // NOTE: It is unfortunate to have to include the DTD here, but there
@@ -4204,9 +4188,10 @@ public class PlotBox extends JPanel implements Printable {
                     export(null);
 
                     String message = "Encapsulated PostScript (EPS) "
-                        + "exported to clipboard.";
+                            + "exported to clipboard.";
                     JOptionPane.showMessageDialog(PlotBox.this, message,
-                            "Ptolemy Plot Message", JOptionPane.INFORMATION_MESSAGE);
+                            "Ptolemy Plot Message",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
 
                 break;
@@ -4218,7 +4203,8 @@ public class PlotBox extends JPanel implements Printable {
 
                     String message = "Plot data sent to standard out.";
                     JOptionPane.showMessageDialog(PlotBox.this, message,
-                            "Ptolemy Plot Message", JOptionPane.INFORMATION_MESSAGE);
+                            "Ptolemy Plot Message",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
 
                 if (_control) {
@@ -4234,9 +4220,10 @@ public class PlotBox extends JPanel implements Printable {
                     export(System.out);
 
                     String message = "Encapsulated PostScript (EPS) "
-                        + "exported to standard out.";
+                            + "exported to standard out.";
                     JOptionPane.showMessageDialog(PlotBox.this, message,
-                            "Ptolemy Plot Message", JOptionPane.INFORMATION_MESSAGE);
+                            "Ptolemy Plot Message",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
 
                 break;
@@ -4276,7 +4263,7 @@ public class PlotBox extends JPanel implements Printable {
                 break;
 
             default:
-                // None
+            // None
             }
         }
 
@@ -4293,7 +4280,7 @@ public class PlotBox extends JPanel implements Printable {
                 break;
 
             default:
-                // None
+            // None
             }
         }
 
@@ -4303,6 +4290,7 @@ public class PlotBox extends JPanel implements Printable {
         }
 
         private boolean _control = false;
+
         private boolean _shift = false;
     }
 }

@@ -1,29 +1,29 @@
 /* A tableau for evaluating Exec expression interactively.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui.exec;
 
 import java.awt.BorderLayout;
@@ -47,20 +47,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ExecShellTableau
 
 /**
-   A tableau that provides a Exec Shell for interacting with Ptjacl,
-   a 100% Java implementation of Exec
+ A tableau that provides a Exec Shell for interacting with Ptjacl,
+ a 100% Java implementation of Exec
 
-   @author Christopher Hylands and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class ExecShellTableau extends Tableau implements ShellInterpreter {
     /** Create a new tableau.
      *  The tableau is itself an entity contained by the effigy
@@ -115,7 +114,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
      *  The output automatically gets a trailing newline appended.
      */
     public void stderr( /*final*/
-            String text) {
+    String text) {
         _frame._shellTextArea.appendJTextArea(text + "\n");
     }
 
@@ -152,8 +151,8 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
          */
-        public ExecShellFrame(Tableau tableau)
-                throws IllegalActionException, NameDuplicationException {
+        public ExecShellFrame(Tableau tableau) throws IllegalActionException,
+                NameDuplicationException {
             super(tableau);
 
             JPanel component = new JPanel();
@@ -170,7 +169,8 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
         ////                         protected methods                 ////
         protected void _help() {
             try {
-                URL doc = getClass().getClassLoader().getResource("ptolemy/actor/gui/ptjacl/help.htm");
+                URL doc = getClass().getClassLoader().getResource(
+                        "ptolemy/actor/gui/ptjacl/help.htm");
                 getConfiguration().openModel(null, doc, doc.toExternalForm());
             } catch (Exception ex) {
                 System.out.println("ExecShellTableau._help(): " + ex);
@@ -240,7 +240,8 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
                 // Preprocess by removing lines that begin with '#'
                 // and converting substrings that begin and end
                 // with double quotes into one array element.
-                final String[] commandTokens = StringUtilities.tokenizeForExec((String) command);
+                final String[] commandTokens = StringUtilities
+                        .tokenizeForExec((String) command);
 
                 //stdout("About to execute:\n");
                 StringBuffer statusCommand = new StringBuffer();
@@ -267,19 +268,19 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
                 _interpreter = runtime.exec(commandTokens);
 
                 // Set up a Thread to read in any error messages
-                _StreamReaderThread errorGobbler = new _StreamReaderThread(_interpreter
-                        .getErrorStream(), this);
+                _StreamReaderThread errorGobbler = new _StreamReaderThread(
+                        _interpreter.getErrorStream(), this);
 
                 // Set up a Thread to read in any output messages
-                _StreamReaderThread outputGobbler = new _StreamReaderThread(_interpreter
-                        .getInputStream(), this);
+                _StreamReaderThread outputGobbler = new _StreamReaderThread(
+                        _interpreter.getInputStream(), this);
 
                 // Start up the Threads
                 errorGobbler.start();
                 outputGobbler.start();
 
                 try {
-                    /*int processReturnCode = */ _interpreter.waitFor();
+                    /*int processReturnCode = */_interpreter.waitFor();
 
                     synchronized (this) {
                         _interpreter = null;
@@ -292,7 +293,8 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
                 }
             } catch (final IOException io) {
                 stderr("IOException: "
-                        + ptolemy.kernel.util.KernelException.stackTraceToString(io));
+                        + ptolemy.kernel.util.KernelException
+                                .stackTraceToString(io));
             }
         } catch (InterruptedException e) {
             //_interpreter.destroy();
@@ -316,13 +318,15 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
         // Read lines from the _inputStream and output them.
         public void run() {
             try {
-                InputStreamReader inputStreamReader = new InputStreamReader(_inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                InputStreamReader inputStreamReader = new InputStreamReader(
+                        _inputStream);
+                BufferedReader bufferedReader = new BufferedReader(
+                        inputStreamReader);
                 String line = null;
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _execShellTableau.stdout( /*_streamType + ">" +*/
-                            line);
+                    line);
                 }
             } catch (IOException ioe) {
                 _execShellTableau.stderr("IOException: " + ioe);
@@ -331,6 +335,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
 
         // Stream to read from.
         private InputStream _inputStream;
+
         private ExecShellTableau _execShellTableau;
     }
 }

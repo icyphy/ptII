@@ -1,30 +1,30 @@
 /* Utilities used to manipulate files
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.util;
 
 import java.io.BufferedInputStream;
@@ -40,22 +40,21 @@ import java.io.Writer;
 import java.net.URI;
 import java.net.URL;
 
-
 // Avoid importing any packages from ptolemy.* here so that we
 // can ship Ptplot.
 //////////////////////////////////////////////////////////////////////////
 //// FileUtilities
 
 /**
-   A collection of utilities for manipulating files
-   These utilities do not depend on any other ptolemy.* packages.
+ A collection of utilities for manipulating files
+ These utilities do not depend on any other ptolemy.* packages.
 
-   @author Christopher Brooks
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (cxh)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @author Christopher Brooks
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class FileUtilities {
     /** Instances of this class cannot be created.
      */
@@ -88,11 +87,11 @@ public class FileUtilities {
         // have the same file.
         // FIXME: should we check for !/ and !\ everywhere?
         if (sourceFile.getPath().indexOf("!/") == -1
-                && sourceFile.getPath().indexOf("!\\") == -1 ) {
+                && sourceFile.getPath().indexOf("!\\") == -1) {
 
             try {
-                if (sourceFile.getCanonicalFile().toURL()
-                        .sameFile(destinationURL)) {
+                if (sourceFile.getCanonicalFile().toURL().sameFile(
+                        destinationURL)) {
                     return false;
                 }
             } catch (IOException ex) {
@@ -100,7 +99,7 @@ public class FileUtilities {
                 // IOException constructor does not take a cause
                 IOException ioException = new IOException(
                         "Cannot find canonical file name of '" + sourceFile
-                        + "'");
+                                + "'");
                 ioException.initCause(ex);
                 throw ioException;
             }
@@ -116,7 +115,7 @@ public class FileUtilities {
 
             try {
                 output = new BufferedOutputStream(new FileOutputStream(
-                                                          destinationFile));
+                        destinationFile));
 
                 int c;
 
@@ -184,8 +183,8 @@ public class FileUtilities {
                 URI newURI = base.resolve(name);
                 //file = new File(newURI);
                 String urlString = newURI.getPath();
-                file = new File(StringUtilities.substitute(urlString,
-                                        "%20", " "));
+                file = new File(StringUtilities.substitute(urlString, "%20",
+                        " "));
             }
         }
 
@@ -231,8 +230,7 @@ public class FileUtilities {
         // "xxxxxxCLASSPATHxxxxxx",then attempt to open the file
         // relative to the classpath.
         // NOTE: Use the dummy variable constant set up in the constructor.
-        if (name.startsWith(_CLASSPATH_VALUE)
-                || name.startsWith("$CLASSPATH")) {
+        if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {
             // Try relative to classpath.
             String classpathKey;
 
@@ -257,7 +255,7 @@ public class FileUtilities {
                     // IOException constructor does not take a cause
                     IOException ioException = new IOException(
                             "Cannot look up class \"" + referenceClassName
-                            + "\" or get its ClassLoader.");
+                                    + "\" or get its ClassLoader.");
                     ioException.initCause(ex);
                     throw ioException;
                 }
@@ -308,21 +306,24 @@ public class FileUtilities {
                     // demos that have actors that have defaults FileParameters
                     // like "$PTII/doc/img/PtolemyII.jpg", then resolve()
                     // bombs.
-                    String name2 =
-                        StringUtilities.substitute(name, "%20", " ");
+                    String name2 = StringUtilities.substitute(name, "%20", " ");
                     try {
                         newURI = baseDirectory.resolve(name2);
                         name = name2;
                     } catch (Exception ex2) {
                         IOException io = new IOException(
-                                "Problem with URI format in '" + name + "'. "
-                                + "and '" + name2 + "' "
-                                + "This can happen if the file name "
-                                + "is not absolute"
-                                + "and is not present relative to the "
-                                + "directory in which the specified model "
-                                + "was read (which was '"
-                                + baseDirectory + "')");
+                                "Problem with URI format in '"
+                                        + name
+                                        + "'. "
+                                        + "and '"
+                                        + name2
+                                        + "' "
+                                        + "This can happen if the file name "
+                                        + "is not absolute"
+                                        + "and is not present relative to the "
+                                        + "directory in which the specified model "
+                                        + "was read (which was '"
+                                        + baseDirectory + "')");
                         io.initCause(ex2);
                         throw io;
                     }
@@ -334,7 +335,7 @@ public class FileUtilities {
                     if (newURI.getScheme() != null
                             && newURI.getAuthority() == null) {
                         urlString = urlString.substring(0, 6) + "//"
-                            + urlString.substring(6);
+                                + urlString.substring(6);
                         //} else {
                         // urlString = urlString.substring(0, 6) + "/"
                         // + urlString.substring(6);
@@ -342,12 +343,15 @@ public class FileUtilities {
                     return new URL(urlString);
                 } catch (Exception ex3) {
                     IOException io = new IOException(
-                            "Problem with URI format in '" + urlString + "'. "
-                            + "This can happen if the '" + urlString
-                            + "' is not absolute"
-                            + " and is not present relative to the directory"
-                            + " in which the specified model was read"
-                            + " (which was '" + baseDirectory + "')");
+                            "Problem with URI format in '"
+                                    + urlString
+                                    + "'. "
+                                    + "This can happen if the '"
+                                    + urlString
+                                    + "' is not absolute"
+                                    + " and is not present relative to the directory"
+                                    + " in which the specified model was read"
+                                    + " (which was '" + baseDirectory + "')");
                     io.initCause(ex3);
                     throw io;
                 }

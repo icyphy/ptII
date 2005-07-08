@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.graph.basic;
 
 import java.awt.GridLayout;
@@ -31,7 +31,6 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
-
 
 /**
  * The graph demo demonstrates basic graph editing and layout
@@ -66,31 +65,32 @@ public class BasicGraphDemo {
     public BasicGraphDemo(AppContext context) {
         final BasicGraphModel model = new BasicGraphModel();
         JGraph jg = new JGraph(new GraphPane(new BasicGraphController(), model));
-        JGraph jg2 = new JGraph(new GraphPane(new BasicGraphController(), model));
+        JGraph jg2 = new JGraph(
+                new GraphPane(new BasicGraphController(), model));
 
         context.getContentPane().setLayout(new GridLayout(2, 1));
         context.getContentPane().add(jg);
         context.getContentPane().add(jg2);
 
         /*
-          GraphController controller = jg.getGraphPane().getGraphController();
-          final BasicLayoutTarget target = new BasicLayoutTarget(controller);
-          JButton but = new JButton("Layout");
-          but.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent evt) {
-          //                GlobalLayout l = new GridAnnealingLayout();
-          GlobalLayout l = new LevelLayout();
-          l.layout(target, model.getRoot());
-          }
-          });
-          context.getContentPane().add("South", but);
+         GraphController controller = jg.getGraphPane().getGraphController();
+         final BasicLayoutTarget target = new BasicLayoutTarget(controller);
+         JButton but = new JButton("Layout");
+         but.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent evt) {
+         //                GlobalLayout l = new GridAnnealingLayout();
+         GlobalLayout l = new LevelLayout();
+         l.layout(target, model.getRoot());
+         }
+         });
+         context.getContentPane().add("South", but);
 
-          ActionListener deletionListener = new DeletionListener();
-          jg.registerKeyboardAction(deletionListener, "Delete",
-          KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-          JComponent.WHEN_IN_FOCUSED_WINDOW);
-          jg.setRequestFocusEnabled(true);
-        */
+         ActionListener deletionListener = new DeletionListener();
+         jg.registerKeyboardAction(deletionListener, "Delete",
+         KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+         JComponent.WHEN_IN_FOCUSED_WINDOW);
+         jg.setRequestFocusEnabled(true);
+         */
         context.setSize(600, 400);
         context.setVisible(true);
     }

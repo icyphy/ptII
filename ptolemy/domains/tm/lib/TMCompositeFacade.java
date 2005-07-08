@@ -1,30 +1,30 @@
 /* A Ptolemy thread that provide a facade for a composite actor.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.tm.lib;
 
 import java.util.Iterator;
@@ -44,22 +44,21 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.PtolemyThread;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TMCompositeFacade
 
 /**
-   A facade for a composite actor that creates and executes its internal
-   model a background process
-   <P>
-   FIXME: EXPERIMENTAL.
-   <P>
-   @author Jie Liu
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (liuj)
-*/
+ A facade for a composite actor that creates and executes its internal
+ model a background process
+ <P>
+ FIXME: EXPERIMENTAL.
+ <P>
+ @author Jie Liu
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (liuj)
+ */
 public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
     /** Construct an actor with the specified container and name.
      *  There is one parameter which is the full class name of
@@ -76,8 +75,8 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
         super(container, name);
         priority = new Parameter(this, "priority", new IntToken(10));
         priority.setTypeEquals(BaseType.INT);
-        executionTime = new Parameter(this, "executionTime",
-                new DoubleToken(0.0));
+        executionTime = new Parameter(this, "executionTime", new DoubleToken(
+                0.0));
         executionTime.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -100,7 +99,8 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == executionTime) {
-            double time = ((DoubleToken) executionTime.getToken()).doubleValue();
+            double time = ((DoubleToken) executionTime.getToken())
+                    .doubleValue();
 
             if (time < 0.0) {
                 throw new IllegalActionException(this,
@@ -203,8 +203,11 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
     ////                         private variables                 ////
     // Indicating whether the execution of the internal model is idle.
     private boolean _idle = true;
+
     private double _executionTime;
+
     private PtolemyThread _directorThread;
+
     private int _priority;
 
     ///////////////////////////////////////////////////////////////////

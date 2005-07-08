@@ -1,30 +1,30 @@
 /* A graph model for basic ptolemy models.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.kernel;
 
 import java.util.Iterator;
@@ -45,31 +45,30 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Vertex;
 import diva.graph.modular.CompositeModel;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CompositePtolemyModel
 
 /**
-   A diva node model for a Ptolemy II composite entity. Each element of
-   the graph model is represented by an instance of Locatable, which is
-   an attribute contained by a Ptolemy II object.  If a Ptolemy II object
-   is found that does not contain a Locatable, then one is created if needed.
-   The graph model consists of locations for various elements in the composite.
-   In particular, one location will be included for each contained entity, port,
-   director, and visible attribute.  In each case except visible attributes,
-   if there is no location, then a default location is created.
-   Visible attributes are included in the graph only if they already
-   contain a location. In addition, for any relation that links more
-   than two ports and does not contain a Vertex, this class will
-   create a Vertex.
+ A diva node model for a Ptolemy II composite entity. Each element of
+ the graph model is represented by an instance of Locatable, which is
+ an attribute contained by a Ptolemy II object.  If a Ptolemy II object
+ is found that does not contain a Locatable, then one is created if needed.
+ The graph model consists of locations for various elements in the composite.
+ In particular, one location will be included for each contained entity, port,
+ director, and visible attribute.  In each case except visible attributes,
+ if there is no location, then a default location is created.
+ Visible attributes are included in the graph only if they already
+ contain a location. In addition, for any relation that links more
+ than two ports and does not contain a Vertex, this class will
+ create a Vertex.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Red (johnr)
-   @see ptolemy.kernel.util.Location
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Red (johnr)
+ @see ptolemy.kernel.util.Location
+ */
 public class CompositePtolemyModel implements CompositeModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -174,8 +173,8 @@ public class CompositePtolemyModel implements CompositeModel {
             // Add a graph node for every class definition.
             // The node is actually the location contained by the entity.
             // If the entity does not contain a location, then create one.
-            Iterator classes = ((CompositeEntity) composite).classDefinitionList()
-                .iterator();
+            Iterator classes = ((CompositeEntity) composite)
+                    .classDefinitionList().iterator();
 
             while (classes.hasNext()) {
                 ComponentEntity entity = (ComponentEntity) classes.next();
@@ -186,7 +185,7 @@ public class CompositePtolemyModel implements CompositeModel {
             // The node is actually the location contained by the entity.
             // If the entity does not contain a location, then create one.
             Iterator entities = ((CompositeEntity) composite).entityList()
-                .iterator();
+                    .iterator();
 
             while (entities.hasNext()) {
                 ComponentEntity entity = (ComponentEntity) entities.next();
@@ -213,10 +212,11 @@ public class CompositePtolemyModel implements CompositeModel {
             // for FSMs, but it is harmless to include it, so there is no
             // real need to subclass this to remove it.
             Iterator relations = ((CompositeEntity) composite).relationList()
-                .iterator();
+                    .iterator();
 
             while (relations.hasNext()) {
-                ComponentRelation relation = (ComponentRelation) relations.next();
+                ComponentRelation relation = (ComponentRelation) relations
+                        .next();
                 List vertexList = relation.attributeList(Vertex.class);
 
                 if (vertexList.size() != 0) {

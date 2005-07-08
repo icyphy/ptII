@@ -1,29 +1,29 @@
 /* Run a list of commands
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.gui;
 
 import java.io.BufferedReader;
@@ -36,25 +36,24 @@ import java.util.List;
 
 import ptolemy.util.StringUtilities;
 
-
 /** Execute commands in a subprocess.  This class does not use swing,
-    for a graphical interface, see the derived class {@link JTextAreaExec}.
+ for a graphical interface, see the derived class {@link JTextAreaExec}.
 
-    <p>Loosely based on Example1.java from
-    http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
-    <p>See also
-    http://developer.java.sun.com/developer/qow/archive/135/index.jsp
-    and
-    http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html
+ <p>Loosely based on Example1.java from
+ http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
+ <p>See also
+ http://developer.java.sun.com/developer/qow/archive/135/index.jsp
+ and
+ http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html
 
-    @see JTextAreaExec
+ @see JTextAreaExec
 
-    @author Christopher Hylands
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class StreamExec {
     /** Create a StreamExec. */
     public StreamExec() {
@@ -187,7 +186,7 @@ public class StreamExec {
                     // and converting substrings that begin and end
                     // with double quotes into one array element.
                     final String[] commandTokens = StringUtilities
-                        .tokenizeForExec((String) commands.next());
+                            .tokenizeForExec((String) commands.next());
 
                     stdout("About to execute:\n");
 
@@ -216,14 +215,12 @@ public class StreamExec {
                     _process = runtime.exec(commandTokens);
 
                     // Set up a Thread to read in any error messages
-                    _StreamReaderThread errorGobbler =
-                        new _StreamReaderThread(_process
-                            .getErrorStream(), "ERROR", this);
+                    _StreamReaderThread errorGobbler = new _StreamReaderThread(
+                            _process.getErrorStream(), "ERROR", this);
 
                     // Set up a Thread to read in any output messages
-                    _StreamReaderThread outputGobbler =
-                        new _StreamReaderThread(_process
-                            .getInputStream(), "OUTPUT", this);
+                    _StreamReaderThread outputGobbler = new _StreamReaderThread(
+                            _process.getInputStream(), "OUTPUT", this);
 
                     // Start up the Threads
                     errorGobbler.start();
@@ -277,15 +274,15 @@ public class StreamExec {
         // Read lines from the _inputStream and output them.
         public void run() {
             try {
-                InputStreamReader inputStreamReader =
-                    new InputStreamReader(_inputStream);
-                BufferedReader bufferedReader =
-                    new BufferedReader(inputStreamReader);
+                InputStreamReader inputStreamReader = new InputStreamReader(
+                        _inputStream);
+                BufferedReader bufferedReader = new BufferedReader(
+                        inputStreamReader);
                 String line = null;
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _streamExec.stdout( /*_streamType + ">" +*/
-                            line);
+                    line);
                 }
             } catch (IOException ioe) {
                 _streamExec.stderr("IOException: " + ioe);
@@ -297,6 +294,7 @@ public class StreamExec {
 
         // Description of the Stream that we print, usually "OUTPUT" or "ERROR"
         private String _streamType;
+
         private StreamExec _streamExec;
     }
 

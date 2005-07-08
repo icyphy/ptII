@@ -1,29 +1,29 @@
 /* A class that replaces HS port methods.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.Collections;
@@ -59,44 +59,43 @@ import soot.jimple.Stmt;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.util.Chain;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// HSPortInliner
 
 /**
-   A class that inlines methods on ports for HS models.
+ A class that inlines methods on ports for HS models.
 
-   This class creates a set of appropriately sized circular buffers for
-   each channel in a particular composite actor.  These buffers are
-   referred to by static fields of the model.  Inside each actor in the
-   composite, an array of integer indexes into the circular buffer is
-   generated for each port.  Port method invocations where the channel
-   index can be statically determined are replaced with references to the
-   appropriate buffer in the model, and an index update instructions for
-   the appropriate index in the actor.
+ This class creates a set of appropriately sized circular buffers for
+ each channel in a particular composite actor.  These buffers are
+ referred to by static fields of the model.  Inside each actor in the
+ composite, an array of integer indexes into the circular buffer is
+ generated for each port.  Port method invocations where the channel
+ index can be statically determined are replaced with references to the
+ appropriate buffer in the model, and an index update instructions for
+ the appropriate index in the actor.
 
-   In cases where the channel cannot be statically determined for a given
-   invocation point, e.g. a for loop over all of the channels of a
-   trigger input port to read and discard the data, a second reference to
-   each buffer exists in the actors.  These references are in a array
-   that can be indexed by the channel of a port, and are called "buffer
-   references".
+ In cases where the channel cannot be statically determined for a given
+ invocation point, e.g. a for loop over all of the channels of a
+ trigger input port to read and discard the data, a second reference to
+ each buffer exists in the actors.  These references are in a array
+ that can be indexed by the channel of a port, and are called "buffer
+ references".
 
-   Additionally, index fields and buffer references are also created for
-   each port in the model for handling "inside" port methods...
+ Additionally, index fields and buffer references are also created for
+ each port in the model for handling "inside" port methods...
 
-   FIXME: currently we try to speed things up if the buffersize is only
-   one by removing the index update overhead.  Note that there are other
-   optimizations that can be made here (for instance, if we can
-   statically determine all the channel references (which is trivially
-   true if there is only one channel), then there is no need to have the
-   index or portbuffer arrays.
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ FIXME: currently we try to speed things up if the buffersize is only
+ one by removing the index update overhead.  Note that there are other
+ optimizations that can be made here (for instance, if we can
+ statically determine all the channel references (which is trivially
+ true if there is only one channel), then there is no need to have the
+ index or portbuffer arrays.
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class HSPortInliner implements PortInliner {
     /** Construct a new transformer
      */
@@ -134,19 +133,20 @@ public class HSPortInliner implements PortInliner {
         // Refer directly to the buffer in the _model
         int channel = 0;
 
-        for (Iterator relations = port.linkedRelationList().iterator();
-             relations.hasNext();) {
+        for (Iterator relations = port.linkedRelationList().iterator(); relations
+                .hasNext();) {
             TypedIORelation relation = (TypedIORelation) relations.next();
 
             for (int i = 0; i < relation.getWidth(); i++, channel++) {
-                SootField arrayField = _modelClass.getFieldByName(InlinePortTransformer
-                        .getBufferFieldName(relation, i,
-                                port.getType()));
+                SootField arrayField = _modelClass
+                        .getFieldByName(InlinePortTransformer
+                                .getBufferFieldName(relation, i, port.getType()));
 
                 // assign the value.
-                body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                     .newStaticFieldRef(arrayField),
-                                                     expr.getArg(0)), stmt);
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                Jimple.v().newStaticFieldRef(arrayField),
+                                expr.getArg(0)), stmt);
             }
         }
 
@@ -174,8 +174,9 @@ public class HSPortInliner implements PortInliner {
                 channelValue, false);
 
         // assign the value.
-        body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnLocal,
-                                             Jimple.v().newStaticFieldRef(field)), stmt);
+        body.getUnits().insertBefore(
+                Jimple.v().newAssignStmt(returnLocal,
+                        Jimple.v().newStaticFieldRef(field)), stmt);
 
         // We may be calling get without setting the return value
         // to anything.
@@ -207,8 +208,9 @@ public class HSPortInliner implements PortInliner {
                 channelValue, true);
 
         // assign the value.
-        body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnLocal,
-                                             Jimple.v().newStaticFieldRef(field)), stmt);
+        body.getUnits().insertBefore(
+                Jimple.v().newAssignStmt(returnLocal,
+                        Jimple.v().newStaticFieldRef(field)), stmt);
 
         // We may be calling get without setting the return value
         // to anything.
@@ -235,9 +237,9 @@ public class HSPortInliner implements PortInliner {
                 channelValue, false);
 
         // assign the value.
-        body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                             .newStaticFieldRef(field),
-                                             expr.getArg(1)), stmt);
+        body.getUnits().insertBefore(
+                Jimple.v().newAssignStmt(Jimple.v().newStaticFieldRef(field),
+                        expr.getArg(1)), stmt);
         body.getUnits().remove(stmt);
     }
 
@@ -249,7 +251,7 @@ public class HSPortInliner implements PortInliner {
         if (expr.getArgCount() != 2) {
             throw new RuntimeException(
                     "multirate sendInside not supported on port "
-                    + port.getFullName() + ".");
+                            + port.getFullName() + ".");
         }
 
         Value channelValue = expr.getArg(0);
@@ -258,9 +260,9 @@ public class HSPortInliner implements PortInliner {
                 channelValue, true);
 
         // assign the value.
-        body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                             .newStaticFieldRef(field),
-                                             expr.getArg(1)), stmt);
+        body.getUnits().insertBefore(
+                Jimple.v().newAssignStmt(Jimple.v().newStaticFieldRef(field),
+                        expr.getArg(1)), stmt);
         body.getUnits().remove(stmt);
     }
 
@@ -286,16 +288,16 @@ public class HSPortInliner implements PortInliner {
         Chain clinitUnits = clinitBody.getUnits();
 
         // Loop over all the relations, creating buffers for each channel.
-        for (Iterator relations = _model.relationList().iterator();
-             relations.hasNext();) {
+        for (Iterator relations = _model.relationList().iterator(); relations
+                .hasNext();) {
             TypedIORelation relation = (TypedIORelation) relations.next();
 
             // Determine the types that the relation is connected to.
             Map typeMap = new HashMap();
             List destinationPortList = relation.linkedDestinationPortList();
 
-            for (Iterator destinationPorts = destinationPortList.iterator();
-                 destinationPorts.hasNext();) {
+            for (Iterator destinationPorts = destinationPortList.iterator(); destinationPorts
+                    .hasNext();) {
                 TypedIOPort port = (TypedIOPort) destinationPorts.next();
                 ptolemy.data.type.Type type = port.getType();
                 typeMap.put(type.toString(), type);
@@ -303,8 +305,9 @@ public class HSPortInliner implements PortInliner {
 
             for (Iterator types = typeMap.keySet().iterator(); types.hasNext();) {
                 ptolemy.data.type.Type type = (ptolemy.data.type.Type) typeMap
-                    .get(types.next());
-                RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
+                        .get(types.next());
+                RefType tokenType = PtolemyUtilities
+                        .getSootTypeForTokenType(type);
 
                 String fieldName = relation.getName() + "_bufferLocal";
                 Local arrayLocal = Jimple.v().newLocal(fieldName, tokenType);
@@ -312,17 +315,17 @@ public class HSPortInliner implements PortInliner {
 
                 for (int i = 0; i < relation.getWidth(); i++) {
                     SootField field = new SootField(InlinePortTransformer
-                            .getBufferFieldName(relation, i, type),
-                            tokenType, Modifier.PUBLIC | Modifier.STATIC);
+                            .getBufferFieldName(relation, i, type), tokenType,
+                            Modifier.PUBLIC | Modifier.STATIC);
                     _modelClass.addField(field);
 
                     // Tag the field with the type.
                     field.addTag(new TypeTag(type));
 
                     // Note: reverse order!
-                    clinitUnits.addFirst(Jimple.v().newAssignStmt(Jimple.v()
-                                                 .newStaticFieldRef(field),
-                                                 NullConstant.v()));
+                    clinitUnits.addFirst(Jimple.v().newAssignStmt(
+                            Jimple.v().newStaticFieldRef(field),
+                            NullConstant.v()));
                 }
             }
         }
@@ -339,20 +342,26 @@ public class HSPortInliner implements PortInliner {
 
         // Convert the type, if we need to.
         if (typeLocal != null) {
-            list.add(Jimple.v().newAssignStmt(tokenLocal,
-                             Jimple.v().newInterfaceInvokeExpr(typeLocal,
-                                     PtolemyUtilities.typeConvertMethod, inputTokenLocal)));
+            list.add(Jimple.v().newAssignStmt(
+                    tokenLocal,
+                    Jimple.v()
+                            .newInterfaceInvokeExpr(typeLocal,
+                                    PtolemyUtilities.typeConvertMethod,
+                                    inputTokenLocal)));
 
-            list.add(Jimple.v().newAssignStmt(outputTokenLocal,
-                             Jimple.v().newCastExpr(tokenLocal,
-                                     outputTokenLocal.getType())));
+            list.add(Jimple.v().newAssignStmt(
+                    outputTokenLocal,
+                    Jimple.v().newCastExpr(tokenLocal,
+                            outputTokenLocal.getType())));
 
             // store the converted token.
-            list.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(bufferLocal,
-                                                      indexLocal), outputTokenLocal));
+            list.add(Jimple.v().newAssignStmt(
+                    Jimple.v().newArrayRef(bufferLocal, indexLocal),
+                    outputTokenLocal));
         } else {
-            list.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(bufferLocal,
-                                                      indexLocal), inputTokenLocal));
+            list.add(Jimple.v().newAssignStmt(
+                    Jimple.v().newArrayRef(bufferLocal, indexLocal),
+                    inputTokenLocal));
         }
 
         return list;
@@ -371,15 +380,16 @@ public class HSPortInliner implements PortInliner {
 
         // increment the position.
         list.add(Jimple.v().newAssignStmt(indexLocal,
-                         Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
+                Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
 
         // wrap around.
         list.add(Jimple.v().newAssignStmt(indexLocal,
-                         Jimple.v().newRemExpr(indexLocal, bufferSizeValue)));
+                Jimple.v().newRemExpr(indexLocal, bufferSizeValue)));
 
         // store back.
-        list.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(indexArrayLocal,
-                                                  channelValue), indexLocal));
+        list.add(Jimple.v().newAssignStmt(
+                Jimple.v().newArrayRef(indexArrayLocal, channelValue),
+                indexLocal));
         return list;
     }
 
@@ -397,7 +407,8 @@ public class HSPortInliner implements PortInliner {
         if (Evaluator.isValueConstantValued(channelValue)) {
             // If we know the channel, then refer directly to the buffer in the
             // _model
-            int argChannel = ((IntConstant) Evaluator.getConstantValueOf(channelValue)).value;
+            int argChannel = ((IntConstant) Evaluator
+                    .getConstantValueOf(channelValue)).value;
             int channel = 0;
             List relationList;
 
@@ -407,15 +418,15 @@ public class HSPortInliner implements PortInliner {
                 relationList = port.linkedRelationList();
             }
 
-            for (Iterator relations = relationList.iterator();
-                 relations.hasNext();) {
+            for (Iterator relations = relationList.iterator(); relations
+                    .hasNext();) {
                 TypedIORelation relation = (TypedIORelation) relations.next();
 
                 for (int i = 0; i < relation.getWidth(); i++, channel++) {
                     if (channel == argChannel) {
-                        SootField arrayField = modelClass.getFieldByName(InlinePortTransformer
-                                .getBufferFieldName(relation, i,
-                                        type));
+                        SootField arrayField = modelClass
+                                .getFieldByName(InlinePortTransformer
+                                        .getBufferFieldName(relation, i, type));
 
                         return arrayField;
                     }
@@ -494,10 +505,16 @@ public class HSPortInliner implements PortInliner {
     }
 
     private CompositeActor _model;
+
     private SootClass _modelClass;
+
     private Map _options;
+
     private Map _portToTypeNameToBufferField;
+
     private Map _portToIndexArrayField;
+
     private Map _portToTypeNameToInsideBufferField;
+
     private Map _portToInsideIndexArrayField;
 }

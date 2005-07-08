@@ -1,50 +1,49 @@
 /* UnitTerm
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_3
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_3
+ COPYRIGHTENDKEY
+ */
 package ptolemy.data.unit;
 
 import ptolemy.kernel.util.IllegalActionException;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitTerm
 
 /** UnitTerm represents a term in a Unit Expression.
-    A UnitTerm has 1) an exponent and 2) an element.
-    The element
-    can be either 1) a Unit, 2) a variable, or 3) a
-    Unit Expression. These choices for element are mutually exclusive.
-    UnitTerms are usually constructed as a result of parsing a Unit Expression.
+ A UnitTerm has 1) an exponent and 2) an element.
+ The element
+ can be either 1) a Unit, 2) a variable, or 3) a
+ Unit Expression. These choices for element are mutually exclusive.
+ UnitTerms are usually constructed as a result of parsing a Unit Expression.
 
-    @author Rowland R Johnson
-    @version $Id$
-    @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (rowland)
-    @Pt.AcceptedRating Red (rowland)
-*/
+ @author Rowland R Johnson
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (rowland)
+ @Pt.AcceptedRating Red (rowland)
+ */
 public class UnitTerm implements UnitPresentation {
     /**
      * Construct a UnitTerm with no element.
@@ -275,11 +274,18 @@ public class UnitTerm implements UnitPresentation {
 
     ////                         private variables                 ////
     private static final int _UNIT = 1;
+
     private static final int _UNITEXPR = 2;
+
     private static final int _VARIABLE = 3;
+
     private int _exponent = 1;
+
     private int _type = -1;
+
     private Unit _unit = null;
+
     private UnitExpr _unitExpr = null;
+
     private String _variable = null;
 }

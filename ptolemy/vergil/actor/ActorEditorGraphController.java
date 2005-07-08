@@ -1,30 +1,30 @@
 /* The graph controller for vergil.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.actor;
 
 import java.awt.Toolkit;
@@ -74,26 +74,25 @@ import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.JContextMenu;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ActorEditorGraphController
 
 /**
-   A Graph Controller for the Ptolemy II schematic editor.  In addition to the
-   interaction allowed in the viewer, this controller allows nodes to be
-   dragged and dropped onto its graph.  Relations can be created by
-   control-clicking on the background.  Links can be created by control-clicking
-   and dragging on a port or a relation.  In addition links can be created by
-   clicking and dragging on the ports that are inside an entity.
-   Anything can be deleted by selecting it and pressing
-   the delete key on the keyboard.
+ A Graph Controller for the Ptolemy II schematic editor.  In addition to the
+ interaction allowed in the viewer, this controller allows nodes to be
+ dragged and dropped onto its graph.  Relations can be created by
+ control-clicking on the background.  Links can be created by control-clicking
+ and dragging on a port or a relation.  In addition links can be created by
+ clicking and dragging on the ports that are inside an entity.
+ Anything can be deleted by selecting it and pressing
+ the delete key on the keyboard.
 
-   @author Steve Neuendorffer, Contributor: Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
-*/
+ @author Steve Neuendorffer, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+ */
 public class ActorEditorGraphController extends ActorViewerGraphController {
     /** Create a new basic controller with default
      *  terminal and edge interactors.
@@ -120,12 +119,14 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         diva.gui.GUIUtilities.addMenuItem(menu, _newInoutPortAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInoutPortAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
-        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputMultiportAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar,
+                _newInputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar,
                 _newOutputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInoutMultiportAction);
-        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInoutMultiportAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar,
+                _newInoutMultiportAction);
 
         menu.addSeparator();
 
@@ -134,12 +135,16 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newRelationAction);
 
         // Add hot key for create instance action.
-        diva.gui.GUIUtilities.addHotKey(getFrame().getJGraph(),
-                ((ClassDefinitionController) _classDefinitionController)._createInstanceAction);
+        diva.gui.GUIUtilities
+                .addHotKey(
+                        getFrame().getJGraph(),
+                        ((ClassDefinitionController) _classDefinitionController)._createInstanceAction);
 
         // Add hot key for create subclass action.
-        diva.gui.GUIUtilities.addHotKey(getFrame().getJGraph(),
-                ((ClassDefinitionController) _classDefinitionController)._createSubclassAction);
+        diva.gui.GUIUtilities
+                .addHotKey(
+                        getFrame().getJGraph(),
+                        ((ClassDefinitionController) _classDefinitionController)._createSubclassAction);
     }
 
     /** Set the configuration.  The configuration is used when
@@ -220,16 +225,17 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor) _portController.getNodeInteractor())
-            .addInteractor(_linkCreator);
+                .addInteractor(_linkCreator);
         ((CompositeInteractor) _entityPortController.getNodeInteractor())
-            .addInteractor(_linkCreator);
+                .addInteractor(_linkCreator);
         ((CompositeInteractor) _relationController.getNodeInteractor())
-            .addInteractor(_linkCreator);
+                .addInteractor(_linkCreator);
 
         LinkCreator linkCreator2 = new LinkCreator();
-        linkCreator2.setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK, 0));
+        linkCreator2
+                .setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK, 0));
         ((CompositeInteractor) _entityPortController.getNodeInteractor())
-            .addInteractor(linkCreator2);
+                .addInteractor(linkCreator2);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -265,27 +271,33 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     private ListenToActorFactory _listenToActorFactory;
 
     /** Action for creating a new input port. */
-    private Action _newInputPortAction = new NewPortAction(ExternalIOPortController._GENERIC_INPUT,
-            "New input port", KeyEvent.VK_I);
+    private Action _newInputPortAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_INPUT, "New input port",
+            KeyEvent.VK_I);
 
     /** Action for creating a new output port. */
-    private Action _newOutputPortAction = new NewPortAction(ExternalIOPortController._GENERIC_OUTPUT,
-            "New output port", KeyEvent.VK_O);
+    private Action _newOutputPortAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_OUTPUT, "New output port",
+            KeyEvent.VK_O);
 
     /** Action for creating a new input/output port. */
-    private Action _newInoutPortAction = new NewPortAction(ExternalIOPortController._GENERIC_INOUT,
-            "New input/output port", KeyEvent.VK_P);
+    private Action _newInoutPortAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_INOUT, "New input/output port",
+            KeyEvent.VK_P);
 
     /** Action for creating a new input multiport. */
-    private Action _newInputMultiportAction = new NewPortAction(ExternalIOPortController._GENERIC_INPUT_MULTIPORT,
+    private Action _newInputMultiportAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_INPUT_MULTIPORT,
             "New input multiport", KeyEvent.VK_N);
 
     /** Action for creating a new output multiport. */
-    private Action _newOutputMultiportAction = new NewPortAction(ExternalIOPortController._GENERIC_OUTPUT_MULTIPORT,
+    private Action _newOutputMultiportAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_OUTPUT_MULTIPORT,
             "New output multiport", KeyEvent.VK_U);
 
     /** Action for creating a new inout multiport. */
-    private Action _newInoutMultiportAction = new NewPortAction(ExternalIOPortController._GENERIC_INOUT_MULTIPORT,
+    private Action _newInoutMultiportAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_INOUT_MULTIPORT,
             "New input/output multiport", KeyEvent.VK_T);
 
     /** Action for creating a new relation. */
@@ -305,9 +317,10 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      *  http://lists.apple.com/archives/java-dev User: archives,
      *  passwd: archives
      */
-    private MouseFilter _shortcutFilter = new MouseFilter(InputEvent.BUTTON1_MASK,
-            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
-            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+    private MouseFilter _shortcutFilter = new MouseFilter(
+            InputEvent.BUTTON1_MASK, Toolkit.getDefaultToolkit()
+                    .getMenuShortcutKeyMask(), Toolkit.getDefaultToolkit()
+                    .getMenuShortcutKeyMask());
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -338,10 +351,10 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 Site tailSite;
 
                 // Temporary sites.  One of these will get blown away later.
-                headSite = new AutonomousSite(layer, event.getLayerX(),
-                        event.getLayerY());
-                tailSite = new AutonomousSite(layer, event.getLayerX(),
-                        event.getLayerY());
+                headSite = new AutonomousSite(layer, event.getLayerX(), event
+                        .getLayerY());
+                tailSite = new AutonomousSite(layer, event.getLayerX(), event
+                        .getLayerY());
 
                 // Render the edge.
                 Connector c = getEdgeController(link).render(link, layer,
@@ -349,8 +362,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
                 // get the actual attach site.
                 tailSite = getEdgeController(link).getConnectorTarget()
-                    .getTailSite(c, source,
-                            event.getLayerX(), event.getLayerY());
+                        .getTailSite(c, source, event.getLayerX(),
+                                event.getLayerY());
 
                 if (tailSite == null) {
                     throw new RuntimeException("Invalid connector target: "
@@ -409,6 +422,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         }
 
         private ActorController.ListenToActorAction _action;
+
         private Configuration _configuration;
     }
 
@@ -426,8 +440,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
             putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             putValue("tooltip", "Control-click to create a new relation");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_R));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+                    KeyEvent.VK_R));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -440,7 +454,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     || (getSourceType() == MENUBAR_TYPE)) {
                 // No location in the action, so put it in the middle.
                 BasicGraphFrame frame = ActorEditorGraphController.this
-                    .getFrame();
+                        .getFrame();
                 Point2D center;
 
                 if (frame != null) {
@@ -458,7 +472,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             } else {
                 // Transform
                 AffineTransform current = getGraphPane().getTransformContext()
-                    .getTransform();
+                        .getTransform();
                 AffineTransform inverse;
 
                 try {
@@ -481,7 +495,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             if (!(toplevel instanceof CompositeEntity)) {
                 throw new InternalErrorException(
                         "Cannot invoke NewRelationAction on an object "
-                        + "that is not a CompositeEntity.");
+                                + "that is not a CompositeEntity.");
             }
 
             final String relationName = toplevel.uniqueName("relation");

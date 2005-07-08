@@ -1,30 +1,30 @@
 /* The numeric rounding strategy classes.
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.math;
 
 import java.io.Serializable;
@@ -32,64 +32,63 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Rounding
 
 /**
-   The Rounding class provides a type safe enumeration of strategies for
-   handling loss of numeric resolution. Rounding is typically resolved when
-   quantization constraints are applied to a computed result in order
-   to satisfy the requirements of the type to which the result is to be
-   assigned.
-   <p>
-   The rounding strategies are
-   <ul>
-   <li>
-   <i>ceiling</i>: Round all inexact values towards plus infinity.
-   <li>
-   <i>floor</i> or <i>truncate</i>: Round all inexact values towards minus
-   infinity.
-   <li>
-   <i>up</i>: Round all inexact values away from zero.
-   <li>
-   <i>down</i>: Round all inexact values towards zero.
-   <li>
-   <i>half_ceiling</i> or <i>nearest</i>: Round to the nearest value and
-   the half-way value towards plus infinity.
-   <li>
-   <i>half_floor</i>: Round to the nearest value and the
-   half-way value towards minus infinity.
-   <li>
-   <i>half_up</i>: Round to the nearest value and the half-way value away
-   from zero.
-   <li>
-   <i>half_down</i>: Round to the nearest value and the half-way value towards
-   zero.
-   <li>
-   <i>half_even</i> or <i>convergent</i>: Round to the nearest value and the
-   half-way value to an even value.
-   <li>
-   <i>unnecessary</i>: Generate an exception for any inexact value.
-   </ul>
+ The Rounding class provides a type safe enumeration of strategies for
+ handling loss of numeric resolution. Rounding is typically resolved when
+ quantization constraints are applied to a computed result in order
+ to satisfy the requirements of the type to which the result is to be
+ assigned.
+ <p>
+ The rounding strategies are
+ <ul>
+ <li>
+ <i>ceiling</i>: Round all inexact values towards plus infinity.
+ <li>
+ <i>floor</i> or <i>truncate</i>: Round all inexact values towards minus
+ infinity.
+ <li>
+ <i>up</i>: Round all inexact values away from zero.
+ <li>
+ <i>down</i>: Round all inexact values towards zero.
+ <li>
+ <i>half_ceiling</i> or <i>nearest</i>: Round to the nearest value and
+ the half-way value towards plus infinity.
+ <li>
+ <i>half_floor</i>: Round to the nearest value and the
+ half-way value towards minus infinity.
+ <li>
+ <i>half_up</i>: Round to the nearest value and the half-way value away
+ from zero.
+ <li>
+ <i>half_down</i>: Round to the nearest value and the half-way value towards
+ zero.
+ <li>
+ <i>half_even</i> or <i>convergent</i>: Round to the nearest value and the
+ half-way value to an even value.
+ <li>
+ <i>unnecessary</i>: Generate an exception for any inexact value.
+ </ul>
 
-   A specific strategy may be chosen dynamically by invoking forName() or
-   getName() with one of the above strategy names. Alternatively a strategy
-   may be selected by using one of the static singletons.
-   <p>
-   The <i>truncate</i> and <i>nearest</i> strategies should be preferred since they
-   correspond to capabilities available on many processors. Other
-   rounding strategies may require costly code on practical hardware.
-   <p>
-   The active class functionality is provided by the quantize method which is
-   normally invoked from Quantization.quantize.
+ A specific strategy may be chosen dynamically by invoking forName() or
+ getName() with one of the above strategy names. Alternatively a strategy
+ may be selected by using one of the static singletons.
+ <p>
+ The <i>truncate</i> and <i>nearest</i> strategies should be preferred since they
+ correspond to capabilities available on many processors. Other
+ rounding strategies may require costly code on practical hardware.
+ <p>
+ The active class functionality is provided by the quantize method which is
+ normally invoked from Quantization.quantize.
 
-   @author Ed Willink
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (Ed.Willink)
-   @Pt.AcceptedRating Red
-*/
+ @author Ed Willink
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Red (Ed.Willink)
+ @Pt.AcceptedRating Red
+ */
 public abstract class Rounding implements Cloneable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -159,7 +158,6 @@ public abstract class Rounding implements Cloneable, Serializable {
     //        int typeInfo = RoundingLattice.compare(this, type);
     //        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
     //    }
-
     /** Return the value of intPart after adjustment for loss of fracPart.
      *  @return The rounded value.
      */
@@ -246,6 +244,7 @@ public abstract class Rounding implements Cloneable, Serializable {
     }
 
     public static final RoundFloor FLOOR = new RoundFloor();
+
     public static final RoundFloor TRUNCATE = FLOOR;
 
     /** The round to nearest and halves towards plus infinity (nearest)
@@ -263,6 +262,7 @@ public abstract class Rounding implements Cloneable, Serializable {
     }
 
     public static final RoundHalfCeiling HALF_CEILING = new RoundHalfCeiling();
+
     public static final RoundHalfCeiling NEAREST = HALF_CEILING;
 
     /** The round to nearest and halves towards zero rounding strategy */
@@ -302,6 +302,7 @@ public abstract class Rounding implements Cloneable, Serializable {
     }
 
     public static final RoundHalfEven HALF_EVEN = new RoundHalfEven();
+
     public static final RoundHalfEven CONVERGENT = HALF_EVEN;
 
     /** The round to nearest and halves towards minus infinity

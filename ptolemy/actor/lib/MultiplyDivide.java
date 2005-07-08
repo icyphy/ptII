@@ -1,30 +1,30 @@
 /* A polymorphic multiplier/divider.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -34,48 +34,47 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MultiplyDivide
 
 /**
 
-A polymorphic multiplier and/or divider.  This adder has two input
-ports, both of which are multiports, and one output port, which is
-not.  The types on the ports are undeclared and will be resolved by
-the type resolution mechanism. Data that arrives on the input port
-named <i>multiply</i> will be multiplied, and data that arrives on
-the input port named <i>divide</i> will be divided.  Any token type
-supporting multiplication and division can be used.  In most
-domains, either input port can be left unconnected.  Thus, to get a
-simple multiplier (with no division), just leave the <i>divide</i>
-input unconnected.
+ A polymorphic multiplier and/or divider.  This adder has two input
+ ports, both of which are multiports, and one output port, which is
+ not.  The types on the ports are undeclared and will be resolved by
+ the type resolution mechanism. Data that arrives on the input port
+ named <i>multiply</i> will be multiplied, and data that arrives on
+ the input port named <i>divide</i> will be divided.  Any token type
+ supporting multiplication and division can be used.  In most
+ domains, either input port can be left unconnected.  Thus, to get a
+ simple multiplier (with no division), just leave the <i>divide</i>
+ input unconnected.
 
-<p>
-Currently, the type system is quite liberal about the resolved
-types it will permit at the inputs. In particular, it may permit
-the <i>multiply</i> and <i>divide</i> inputs to resolve to types
-that cannot in fact be multiplied or divided.  In these cases, a
-run-time error will occur.  In the future, we hope that the type
-system will intercept such errors before run time.
+ <p>
+ Currently, the type system is quite liberal about the resolved
+ types it will permit at the inputs. In particular, it may permit
+ the <i>multiply</i> and <i>divide</i> inputs to resolve to types
+ that cannot in fact be multiplied or divided.  In these cases, a
+ run-time error will occur.  In the future, we hope that the type
+ system will intercept such errors before run time.
 
-<p>
-This actor does not require that each input channel have a token
-upon firing. It will multiply or divide available tokens at the
-inputs and ignore the channels that do not have tokens.  It
-consumes at most one input token from each port.  If no input
-tokens are available on the <i>multiply</i> inputs, then a
-numerator of one is assumed for the division operations.  The "one"
-is obtained by calling the one() method of the first token seen at
-the <i>divide</i> input.  If no input tokens are available at all,
-then no output is produced.
+ <p>
+ This actor does not require that each input channel have a token
+ upon firing. It will multiply or divide available tokens at the
+ inputs and ignore the channels that do not have tokens.  It
+ consumes at most one input token from each port.  If no input
+ tokens are available on the <i>multiply</i> inputs, then a
+ numerator of one is assumed for the division operations.  The "one"
+ is obtained by calling the one() method of the first token seen at
+ the <i>divide</i> input.  If no input tokens are available at all,
+ then no output is produced.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.3
-@Pt.ProposedRating Green (eal)
-@Pt.AcceptedRating Green (bilung)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (bilung)
+ */
 public class MultiplyDivide extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -94,9 +93,9 @@ public class MultiplyDivide extends TypedAtomicActor {
         divide = new TypedIOPort(this, "divide", true, false);
         divide.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
                 + "<line x1=\"-15\" y1=\"-15\" x2=\"-5\" y2=\"-5\"/>"
                 + "<line x1=\"-15\" y1=\"-5\" x2=\"-5\" y2=\"-15\"/>"
                 + "<line x1=\"-15\" y1=\"10\" x2=\"-5\" y2=\"10\"/>"

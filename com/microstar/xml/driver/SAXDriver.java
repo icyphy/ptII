@@ -25,53 +25,63 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.microstar.xml.XmlHandler;
 import com.microstar.xml.XmlParser;
 
-
 /**
-  * A SAX driver for Microstar's &AElig;lfred XML parser.
-  *
-  * <p>This driver acts as a front-end for &AElig;lfred, and
-  * translates &AElig;lfred's events into SAX events.  It
-  * implements the SAX parser interface, and you can use it without
-  * directly calling &AElig;lfred at all:</p>
-  *
-  * <pre>
-  * org.xml.sax.Parser parser = new com.microstar.xml.SAXDriver();
-  * </pre>
-  *
-  * <p>When you are using SAX, you do not need to use the
-  * <code>XmlParser</code> or <code>XmlHandler</code> classes at
-  * all: this class is your entry point.</p>
-  *
-  * <p>This driver is based on the 1.0gamma version of SAX,
-  * available from http://www.megginson.com/SAX/</p>
-  *
-  * @author Copyright (c) 1998 by Microstar Software Ltd.
-  * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
-  * @version 1.1
-  * @since Ptolemy II 0.2
-  * @see XmlParser
-  */
+ * A SAX driver for Microstar's &AElig;lfred XML parser.
+ *
+ * <p>This driver acts as a front-end for &AElig;lfred, and
+ * translates &AElig;lfred's events into SAX events.  It
+ * implements the SAX parser interface, and you can use it without
+ * directly calling &AElig;lfred at all:</p>
+ *
+ * <pre>
+ * org.xml.sax.Parser parser = new com.microstar.xml.SAXDriver();
+ * </pre>
+ *
+ * <p>When you are using SAX, you do not need to use the
+ * <code>XmlParser</code> or <code>XmlHandler</code> classes at
+ * all: this class is your entry point.</p>
+ *
+ * <p>This driver is based on the 1.0gamma version of SAX,
+ * available from http://www.megginson.com/SAX/</p>
+ *
+ * @author Copyright (c) 1998 by Microstar Software Ltd.
+ * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
+ * @version 1.1
+ * @since Ptolemy II 0.2
+ * @see XmlParser
+ */
 public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader//implements XmlHandler, Locator, AttributeList, Parser
- {
+{
     //
     // Variables.
     //
     //private HandlerBase base = new HandlerBase();
     private DefaultHandler base = new DefaultHandler();
+
     private XmlParser parser;
+
     private boolean seenDTDEvents = false;
 
     // Encapsulate the default behaviour
     // from HandlerBase
     private EntityResolver entityResolver = base;
+
     private DTDHandler dtdHandler = base;
+
     private ContentHandler documentHandler = base;
+
     private ErrorHandler errorHandler = base;
+
     private String elementName = null;
+
     private Stack entityStack = new Stack();
+
     private Vector attributeNames = new Vector();
+
     private Vector attributeValues = new Vector();
+
     private Hashtable properties = new Hashtable();
+
     private Hashtable features = new Hashtable();
 
     //
@@ -85,70 +95,70 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader//im
     //
 
     /**
-      * Set the locale.
-      */
+     * Set the locale.
+     */
     public void setLocale(Locale locale) throws SAXException {
         throw new SAXException(
-            "AElfred driver does not yet have locale support.");
+                "AElfred driver does not yet have locale support.");
     }
 
     /**
-      * Set the entity resolver for this parser.
-      * @param handler The object to receive entity events.
-      */
+     * Set the entity resolver for this parser.
+     * @param handler The object to receive entity events.
+     */
     public void setEntityResolver(EntityResolver resolver) {
         this.entityResolver = resolver;
     }
 
     /**
-      * Set the DTD handler for this parser.
-      * @param handler The object to receive DTD events.
-      */
+     * Set the DTD handler for this parser.
+     * @param handler The object to receive DTD events.
+     */
     public void setDTDHandler(DTDHandler handler) {
         this.dtdHandler = handler;
     }
 
     /**
-      * Set the document handler for this parser.
-      * @param handler The object to receive document events.
-      */
+     * Set the document handler for this parser.
+     * @param handler The object to receive document events.
+     */
     public void setDocumentHandler(ContentHandler handler) {
         this.documentHandler = handler;
     }
 
     /**
-      * Set the error handler for this parser.
-      * @param handler The object to receive error events.
-      */
+     * Set the error handler for this parser.
+     * @param handler The object to receive error events.
+     */
     public void setErrorHandler(ErrorHandler handler) {
         this.errorHandler = handler;
     }
 
     /**
-      * Parse a document.
-      * <p>If you want anything useful to happen, you should set
-      * at least one type of handler.
-      * @param source The XML input source.
-      * @see #setEntityResolver
-      * @see #setDTDHandler
-      * @see #setDocumentHandler
-      * @see #setErrorHandler
-      * @exception SAXException The handlers may throw any exception.
-      */
+     * Parse a document.
+     * <p>If you want anything useful to happen, you should set
+     * at least one type of handler.
+     * @param source The XML input source.
+     * @see #setEntityResolver
+     * @see #setDTDHandler
+     * @see #setDocumentHandler
+     * @see #setErrorHandler
+     * @exception SAXException The handlers may throw any exception.
+     */
     public void parse(InputSource source) throws SAXException {
         parser = new XmlParser();
         parser.setHandler(this);
 
         try {
             if (source.getCharacterStream() != null) {
-                parser.parse(source.getSystemId(), source.getPublicId(),
-                    source.getCharacterStream());
+                parser.parse(source.getSystemId(), source.getPublicId(), source
+                        .getCharacterStream());
             } else if (source.getByteStream() != null) {
-                parser.parse(source.getSystemId(), source.getPublicId(),
-                    source.getByteStream(), source.getEncoding());
+                parser.parse(source.getSystemId(), source.getPublicId(), source
+                        .getByteStream(), source.getEncoding());
             } else {
-                parser.parse(source.getSystemId(), source.getPublicId(),
-                    source.getEncoding());
+                parser.parse(source.getSystemId(), source.getPublicId(), source
+                        .getEncoding());
             }
         } catch (SAXException e) {
             throw e;
@@ -171,15 +181,15 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader//im
     }
 
     /**
-      * Parse an XML document from a system identifier (URI).
-      */
+     * Parse an XML document from a system identifier (URI).
+     */
     public void parse(String systemId) throws SAXException {
         parse(new InputSource(systemId));
     }
 
     /**
-      * Close any streams provided.
-      */
+     * Close any streams provided.
+     */
     private void closeStreams(InputSource source) throws IOException {
         if (source.getCharacterStream() != null) {
             source.getCharacterStream().close();
@@ -197,12 +207,12 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader//im
     //
 
     /**
-      * Implement com.microstar.xml.XmlHandler#startDocument.
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#startDocument
-      * @exception SAXException May throw any exception.
-      */
+     * Implement com.microstar.xml.XmlHandler#startDocument.
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#startDocument
+     * @exception SAXException May throw any exception.
+     */
     public void startDocument() throws SAXException {
         documentHandler.setDocumentLocator(this);
         documentHandler.startDocument();
@@ -211,25 +221,25 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader//im
     }
 
     /**
-      * Implement com.microstar.xml.XmlHandler#endDocument.
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#endDocument
-      * @exception SAXException May throw any exception.
-      */
+     * Implement com.microstar.xml.XmlHandler#endDocument.
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#endDocument
+     * @exception SAXException May throw any exception.
+     */
     public void endDocument() throws SAXException {
         documentHandler.endDocument();
     }
 
     /**
-      * Implement com.microstar.xml.XmlHandler.resolveSystemId
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#resolveEntity
-      * @exception SAXException May throw any exception.
-      */
+     * Implement com.microstar.xml.XmlHandler.resolveSystemId
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#resolveEntity
+     * @exception SAXException May throw any exception.
+     */
     public Object resolveEntity(String publicId, String systemId)
-        throws SAXException, IOException {
+            throws SAXException, IOException {
         InputSource source = entityResolver.resolveEntity(publicId, systemId);
 
         if (source == null) {
@@ -247,48 +257,48 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader//im
     }
 
     /**
-      * Implement com.microstar.xml.XmlHandler#startExternalEntity.
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#startExternalEntity
-      * @exception SAXException May throw any exception.
-      */
+     * Implement com.microstar.xml.XmlHandler#startExternalEntity.
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#startExternalEntity
+     * @exception SAXException May throw any exception.
+     */
     public void startExternalEntity(String systemId) throws SAXException {
         entityStack.push(systemId);
     }
 
     /**
-      * Implement com.microstar.xml.XmlHandler#endExternalEntity.
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#endExternalEntity
-      * @exception SAXException May throw any exception.
-      */
+     * Implement com.microstar.xml.XmlHandler#endExternalEntity.
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#endExternalEntity
+     * @exception SAXException May throw any exception.
+     */
     public void endExternalEntity(String systemId) throws SAXException {
         entityStack.pop();
     }
 
     /**
-      * Implement com.microstar.xml.XmlHandler#doctypeDecl.
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#doctypeDecl
-      * @exception SAXException May throw any exception.
-      */
+     * Implement com.microstar.xml.XmlHandler#doctypeDecl.
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#doctypeDecl
+     * @exception SAXException May throw any exception.
+     */
     public void doctypeDecl(String name, String publicId, String systemId)
-        throws SAXException {
+            throws SAXException {
         // no op
     }
 
     /**
-      * Implement com.microstar.xml.XmlHandler#attribute.
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#attribute
-      * @exception SAXException May throw any exception.
-      */
+     * Implement com.microstar.xml.XmlHandler#attribute.
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#attribute
+     * @exception SAXException May throw any exception.
+     */
     public void attribute(String aname, String value, boolean isSpecified)
-        throws SAXException {
+            throws SAXException {
         if (value != null) {
             attributeNames.addElement(aname);
             attributeValues.addElement(value);
@@ -296,12 +306,12 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader//im
     }
 
     /**
-      * Implement com.microstar.xml.XmlHandler#startElement.
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#startElement
-      * @exception SAXException May throw any exception.
-      */
+     * Implement com.microstar.xml.XmlHandler#startElement.
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#startElement
+     * @exception SAXException May throw any exception.
+     */
     public void startElement(String elname) throws SAXException {
         // We should deliver all DTD events
         // before the first startElement event.
@@ -320,70 +330,69 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader//im
     }
 
     /**
-      * Implement com.microstar.xml.XmlHandler#endElement.
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#endElement
-      * @exception SAXException May throw any exception.
-      */
+     * Implement com.microstar.xml.XmlHandler#endElement.
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#endElement
+     * @exception SAXException May throw any exception.
+     */
     public void endElement(String elname) throws SAXException {
         //documentHandler.endElement(elname);
         documentHandler.endElement("", elname, "");
     }
 
     /**
-      * Implement com.microstar.xml.XmlHandler#charData.
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#charData
-      * @exception SAXException May throw any exception.
-      */
-    public void charData(char[] ch, int start, int length)
-        throws SAXException {
+     * Implement com.microstar.xml.XmlHandler#charData.
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#charData
+     * @exception SAXException May throw any exception.
+     */
+    public void charData(char[] ch, int start, int length) throws SAXException {
         documentHandler.characters(ch, start, length);
     }
 
     /**
-      * Implement com.microstar.xml.XmlHandler#ignorableWhitespace.
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#ignorableWhitespace
-      * @exception SAXException May throw any exception.
-      */
+     * Implement com.microstar.xml.XmlHandler#ignorableWhitespace.
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#ignorableWhitespace
+     * @exception SAXException May throw any exception.
+     */
     public void ignorableWhitespace(char[] ch, int start, int length)
-        throws SAXException {
+            throws SAXException {
         documentHandler.ignorableWhitespace(ch, start, length);
     }
 
     /**
-      * Implement com.microstar.xml.XmlHandler#processingInstruction.
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#processingInstruction
-      * @exception SAXException May throw any exception.
-      */
+     * Implement com.microstar.xml.XmlHandler#processingInstruction.
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#processingInstruction
+     * @exception SAXException May throw any exception.
+     */
     public void processingInstruction(String target, String data)
-        throws SAXException {
+            throws SAXException {
         documentHandler.processingInstruction(target, data);
     }
 
     /**
-      * Implement com.microstar.xml.XmlHandler#error.
-      * <p>Translate to the SAX interface.
-      * <p>Users should never invoke this method directly.
-      * @see com.microstar.xml.XmlHandler#error
-      * @exception SAXException May throw any exception.
-      */
+     * Implement com.microstar.xml.XmlHandler#error.
+     * <p>Translate to the SAX interface.
+     * <p>Users should never invoke this method directly.
+     * @see com.microstar.xml.XmlHandler#error
+     * @exception SAXException May throw any exception.
+     */
     public void error(String message, String url, int line, int column)
-        throws SAXException {
+            throws SAXException {
         errorHandler.fatalError(new SAXParseException(message, null, url, line,
                 column));
     }
 
     /**
-      * Before the first startElement event, deliver all notation
-      * and unparsed entity declarations.
-      */
+     * Before the first startElement event, deliver all notation
+     * and unparsed entity declarations.
+     */
     private void deliverDTDEvents() throws SAXException {
         String ename;
         String nname;

@@ -1,30 +1,30 @@
 /* A merge actor whose output type is the union of input types.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.de.lib;
 
 import java.util.Iterator;
@@ -47,33 +47,32 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// UnionMerge
 
 /**
-   A timed merge actor for the DE domain. Its operation is similar to
-   the Merge actor but the output type is the union of the inputs.
-   The labels for the output UnionToken are the names of the input
-   ports. To use this actor, instantiate it, and then add input ports
-   (instances of TypedIOPort).
-   <p>
-   There is a boolean parameter <i>discardEvents</i> associated
-   with this actor, which decides how to handle simultaneously
-   available inputs.  Each time this actor fires, it reads the first
-   available tokens from an input port and sends them to the output
-   port. If the <i>discardEvents</i> parameter is configured to true,
-   then this actor discards all the remaining inputs in the rest of
-   ports. Otherwise, this actor requests refirings at the current
-   time until no more events are left in the ports. By default,
-   the discardEvents parameter is false.
+ A timed merge actor for the DE domain. Its operation is similar to
+ the Merge actor but the output type is the union of the inputs.
+ The labels for the output UnionToken are the names of the input
+ ports. To use this actor, instantiate it, and then add input ports
+ (instances of TypedIOPort).
+ <p>
+ There is a boolean parameter <i>discardEvents</i> associated
+ with this actor, which decides how to handle simultaneously
+ available inputs.  Each time this actor fires, it reads the first
+ available tokens from an input port and sends them to the output
+ port. If the <i>discardEvents</i> parameter is configured to true,
+ then this actor discards all the remaining inputs in the rest of
+ ports. Otherwise, this actor requests refirings at the current
+ time until no more events are left in the ports. By default,
+ the discardEvents parameter is false.
 
-   @author Edward A. Lee, Haiyang Zheng, Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 6.0
-   @Pt.ProposedRating Red (yuhongx)
-   @Pt.AcceptedRating Red (yuhongx)
-*/
+ @author Edward A. Lee, Haiyang Zheng, Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 6.0
+ @Pt.ProposedRating Red (yuhongx)
+ @Pt.AcceptedRating Red (yuhongx)
+ */
 public class UnionMerge extends DEActor {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -89,13 +88,13 @@ public class UnionMerge extends DEActor {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
-        
+
         discardEvents = new Parameter(this, "discardEvents");
         discardEvents.setExpression("false");
         discardEvents.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
                 + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
@@ -106,7 +105,7 @@ public class UnionMerge extends DEActor {
      *  type of the input ports.
      */
     public TypedIOPort output;
-    
+
     /** A flag to indicate whether the input events can be discarded.
      *  Its default value is false.
      */
@@ -125,12 +124,12 @@ public class UnionMerge extends DEActor {
      */
     public void fire() throws IllegalActionException {
         boolean discard = ((BooleanToken) discardEvents.getToken())
-            .booleanValue();
+                .booleanValue();
         Token firstAvailableToken = null;
 
         Object[] portArray = inputPortList().toArray();
         int size = portArray.length;
-        
+
         // If tokens can be discarded, this actor sends
         // out the first available tokens only. It discards all
         // remaining tokens from other input ports.
@@ -214,4 +213,3 @@ public class UnionMerge extends DEActor {
         return constraints;
     }
 }
-

@@ -1,30 +1,30 @@
 /* A base class for Ptolemy applets.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.awt.event.ActionEvent;
@@ -45,88 +45,87 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplet
 
 /**
-   This class provides a convenient way to make applets out of Ptolemy II
-   models.  It assumes that the model is defined as a Java class that
-   extends NamedObj, with the classname given by the
-   <i>modelClass</i> applet parameter. If that model does not contain
-   a manager, then this class will create one for it.
-   <p>
-   This class offers a number of alternatives that control the visual
-   appearance of the applet. By default, the applet places on the screen
-   a set of control buttons that can be used to start, stop, pause, and
-   resume the model.  Below those buttons, it places the visual elements
-   of any actors in the model that implement the Placeable interface,
-   such as plotters or textual output.
-   <p>
-   The applet parameters are:
-   <ul>
+ This class provides a convenient way to make applets out of Ptolemy II
+ models.  It assumes that the model is defined as a Java class that
+ extends NamedObj, with the classname given by the
+ <i>modelClass</i> applet parameter. If that model does not contain
+ a manager, then this class will create one for it.
+ <p>
+ This class offers a number of alternatives that control the visual
+ appearance of the applet. By default, the applet places on the screen
+ a set of control buttons that can be used to start, stop, pause, and
+ resume the model.  Below those buttons, it places the visual elements
+ of any actors in the model that implement the Placeable interface,
+ such as plotters or textual output.
+ <p>
+ The applet parameters are:
+ <ul>
 
-   <li>
-   <i>background</i>: The background color, typically given as a hex
-   number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
-   component, <i>gg</i> gives the green component, and <i>bb</i> gives
-   the blue component.
+ <li>
+ <i>background</i>: The background color, typically given as a hex
+ number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
+ component, <i>gg</i> gives the green component, and <i>bb</i> gives
+ the blue component.
 
-   <li>
-   <i>controls</i>:
-   This gives a comma-separated list
-   of any subset of the words "buttons", "topParameters", and
-   "directorParameters" (case insensitive), or the word "none".
-   If this parameter is not given, then it is equivalent to
-   giving "buttons", and only the control buttons mentioned above
-   will be displayed.  If the parameter is given, and its value is "none",
-   then no controls are placed on the screen.  If the word "topParameters"
-   is included in the comma-separated list, then controls for the
-   top-level parameters of the model are placed on the screen, below
-   the buttons.  If the word "directorParameters" is included,
-   then controls for the director parameters are also included.
+ <li>
+ <i>controls</i>:
+ This gives a comma-separated list
+ of any subset of the words "buttons", "topParameters", and
+ "directorParameters" (case insensitive), or the word "none".
+ If this parameter is not given, then it is equivalent to
+ giving "buttons", and only the control buttons mentioned above
+ will be displayed.  If the parameter is given, and its value is "none",
+ then no controls are placed on the screen.  If the word "topParameters"
+ is included in the comma-separated list, then controls for the
+ top-level parameters of the model are placed on the screen, below
+ the buttons.  If the word "directorParameters" is included,
+ then controls for the director parameters are also included.
 
-   <li>
-   <i>modelClass</i>: The fully qualified class name of a Java class
-   that extends NamedObj.  This class defines the model.
+ <li>
+ <i>modelClass</i>: The fully qualified class name of a Java class
+ that extends NamedObj.  This class defines the model.
 
-   <li>
-   <i>orientation</i>: This can have value "horizontal", "vertical", or
-   "controls_only" (case insensitive).  If it is "vertical", then the
-   controls are placed above the visual elements of the Placeable actors.
-   This is the default.  If it is "horizontal", then the controls
-   are placed to the left of the visual elements.  If it is "controls_only"
-   then no visual elements are placed.
+ <li>
+ <i>orientation</i>: This can have value "horizontal", "vertical", or
+ "controls_only" (case insensitive).  If it is "vertical", then the
+ controls are placed above the visual elements of the Placeable actors.
+ This is the default.  If it is "horizontal", then the controls
+ are placed to the left of the visual elements.  If it is "controls_only"
+ then no visual elements are placed.
 
-   <li>
-   <i>autoRun</i>: This can have value "true", or "false".  If it is
-   "true", then the model will be run when the applet's start() method is
-   called.  If false, then the model will not be run automatically.  The
-   default is "true".
-   </ul>
+ <li>
+ <i>autoRun</i>: This can have value "true", or "false".  If it is
+ "true", then the model will be run when the applet's start() method is
+ called.  If false, then the model will not be run automatically.  The
+ default is "true".
+ </ul>
 
-   <p>
-   To create a model in a different way, say without a <i>modelClass</i>
-   applet parameter, you may extend this class and override the
-   protected method _createModel().  If you wish to alter the way
-   that the model is represented on the screen, you can extend this
-   class an override the _createView() method.  The rendition in this class
-   is an instance of ModelPane.
-   <p>
-   This class provides a number of methods that might be useful even
-   if its init() or _createModel() methods are not appropriate for a
-   given applet.  Specifically, it provides a mechanism for reporting
-   errors and exceptions; and it provide an applet parameter for
-   controlling the background color.
+ <p>
+ To create a model in a different way, say without a <i>modelClass</i>
+ applet parameter, you may extend this class and override the
+ protected method _createModel().  If you wish to alter the way
+ that the model is represented on the screen, you can extend this
+ class an override the _createView() method.  The rendition in this class
+ is an instance of ModelPane.
+ <p>
+ This class provides a number of methods that might be useful even
+ if its init() or _createModel() methods are not appropriate for a
+ given applet.  Specifically, it provides a mechanism for reporting
+ errors and exceptions; and it provide an applet parameter for
+ controlling the background color.
 
-   @see ModelPane
-   @see Placeable
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (johnr)
-*/
+ @see ModelPane
+ @see Placeable
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (johnr)
+ */
 public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -163,10 +162,10 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      */
     public String getAppletInfo() {
         return "Ptolemy applet for Ptolemy II "
-            + VersionAttribute.CURRENT_VERSION
-            + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
-            + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
-            + "\n(Build: $Id$)";
+                + VersionAttribute.CURRENT_VERSION
+                + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
+                + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
+                + "\n(Build: $Id$)";
     }
 
     /** Describe the applet parameters.
@@ -174,27 +173,12 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      */
     public String[][] getParameterInfo() {
         String[][] newInfo = {
-            {
-                "modelClass",
-                "",
-                "Class name for an instance of NamedObj"
-            },
-            {
-                "orientation",
-                "",
-                "Orientation: vertical, horizontal, or controls_only"
-            },
-            {
-                "controls",
-                "",
-                "List of on-screen controls"
-            },
-            {
-                "autoRun",
-                "boolean",
-                "Determines if the model is run automatically"
-            }
-        };
+                { "modelClass", "", "Class name for an instance of NamedObj" },
+                { "orientation", "",
+                        "Orientation: vertical, horizontal, or controls_only" },
+                { "controls", "", "List of on-screen controls" },
+                { "autoRun", "boolean",
+                        "Determines if the model is run automatically" } };
         return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
 
@@ -315,8 +299,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *   exception to allow derived classes wide latitude as to which
      *   exception to throw.
      */
-    protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
+    protected NamedObj _createModel(Workspace workspace) throws Exception {
         NamedObj result = null;
 
         // Look for modelClass applet parameter.
@@ -356,7 +339,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
             if (!foundConstructor) {
                 throw new IllegalActionException(
                         "Cannot find a suitable constructor for "
-                        + modelSpecification);
+                                + modelSpecification);
             }
         }
 
@@ -421,7 +404,8 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
         if (orientationSpec != null) {
             if (orientationSpec.trim().toLowerCase().equals("horizontal")) {
                 orientation = ModelPane.HORIZONTAL;
-            } else if (orientationSpec.trim().toLowerCase().equals("controls_only")) {
+            } else if (orientationSpec.trim().toLowerCase().equals(
+                    "controls_only")) {
                 orientation = ModelPane.CONTROLS_ONLY;
             }
         }
@@ -511,7 +495,9 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private JButton _goButton;
+
     private JButton _stopButton;
+
     private Manager.State _previousState;
 
     ///////////////////////////////////////////////////////////////////

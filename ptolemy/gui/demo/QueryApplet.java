@@ -1,30 +1,30 @@
 /* Applet demonstrating the Query class.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.gui.demo;
 
 import javax.swing.UIManager;
@@ -33,20 +33,19 @@ import ptolemy.gui.BasicJApplet;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// QueryApplet
 
 /**
-   Applet demonstrating the Query class.
+ Applet demonstrating the Query class.
 
-   @author  Edward A. Lee, Manda Sutijono
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (eal)
-   @see ptolemy.gui.Query
-*/
+ @author  Edward A. Lee, Manda Sutijono
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (eal)
+ @see ptolemy.gui.Query
+ */
 public class QueryApplet extends BasicJApplet implements QueryListener {
     /** Constructor.
      */
@@ -85,27 +84,15 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
         _query.addLine("line", "Entry box", "default entry");
         _query.addDisplay("display", "Display", "displayed string");
 
-        String[] choices = {
-            "a",
-            "b",
-            "c"
-        };
+        String[] choices = { "a", "b", "c" };
         _query.addChoice("choice", "Choice", choices, "b");
 
-        String[] moreChoices = {
-            "d",
-            "e",
-            "f"
-        };
-        _query.addChoice("editchoice", "Editable Choice", moreChoices, "d", true);
+        String[] moreChoices = { "d", "e", "f" };
+        _query.addChoice("editchoice", "Editable Choice", moreChoices, "d",
+                true);
         _query.addSlider("slider", "Slider", 0, -100, 100);
 
-        String[] options = {
-            "mayonnaise",
-            "mustard",
-            "both",
-            "none"
-        };
+        String[] options = { "mayonnaise", "mustard", "both", "none" };
         _query.addRadioButtons("radio", "Radio buttons", options, "none");
 
         try {

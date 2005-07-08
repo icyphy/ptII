@@ -1,30 +1,30 @@
 /* A Relation links ports, and therefore the entities that contain them.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.kernel;
 
 import java.util.Collections;
@@ -40,42 +40,41 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Relation
 
 /**
-   A Relation links ports, and therefore the entities that contain them.
-   To link a port to a relation, use the link() method
-   in the Port class.  To remove a link, use the unlink() method in the
-   Port class.
-   <p>
-   Relations can also be linked to other Relations.
-   To create such a link, use the link() method of this class.
-   To remove such a link, use the unlink() method. A group of linked
-   relations behaves exactly as if it were one relation directly linked
-   to all the ports linked to by each relation. In particular, the
-   connectedPortList() method of the Port class returns the same list
-   whether a single relation is used or a relation group. The order
-   in which the ports are listed is the order in which links were
-   made between the port and relations in the relation group.
-   It is not relevant which relation in a relation group the port
-   links to.
-   <p>
-   Derived classes may wish to disallow links under certain circumstances,
-   for example if the proposed port is not an instance of an appropriate
-   subclass of Port, or if the relation cannot support any more links.
-   Such derived classes should override the protected method _checkPort()
-   or _checkRelation() to throw an exception.
+ A Relation links ports, and therefore the entities that contain them.
+ To link a port to a relation, use the link() method
+ in the Port class.  To remove a link, use the unlink() method in the
+ Port class.
+ <p>
+ Relations can also be linked to other Relations.
+ To create such a link, use the link() method of this class.
+ To remove such a link, use the unlink() method. A group of linked
+ relations behaves exactly as if it were one relation directly linked
+ to all the ports linked to by each relation. In particular, the
+ connectedPortList() method of the Port class returns the same list
+ whether a single relation is used or a relation group. The order
+ in which the ports are listed is the order in which links were
+ made between the port and relations in the relation group.
+ It is not relevant which relation in a relation group the port
+ links to.
+ <p>
+ Derived classes may wish to disallow links under certain circumstances,
+ for example if the proposed port is not an instance of an appropriate
+ subclass of Port, or if the relation cannot support any more links.
+ Such derived classes should override the protected method _checkPort()
+ or _checkRelation() to throw an exception.
 
-   @author Edward A. Lee, Neil Smyth
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (acataldo)
-   @see Port
-   @see Entity
-*/
+ @author Edward A. Lee, Neil Smyth
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (acataldo)
+ @see Port
+ @see Entity
+ */
 public class Relation extends NamedObj {
 
     /** Construct a relation in the default workspace with an empty string
@@ -194,7 +193,7 @@ public class Relation extends NamedObj {
     public List linkedObjectsList() {
         try {
             _workspace.getReadAccess();
-            
+
             // NOTE: This should probably be cached.
 
             // Unfortunately, CrossRefList returns an enumeration only.
@@ -237,8 +236,8 @@ public class Relation extends NamedObj {
                     result.add(next);
                 } else {
                     // Must be another relation.
-                    result.addAll(((Relation)next)
-                            ._linkedPortList(null, exceptRelations));
+                    result.addAll(((Relation) next)._linkedPortList(null,
+                            exceptRelations));
                 }
             }
             return result;
@@ -271,13 +270,13 @@ public class Relation extends NamedObj {
                 Object link = links.nextElement();
 
                 if (link instanceof Port) {
-                    if (link!= except) {
+                    if (link != except) {
                         result.add(link);
                     }
                 } else {
                     // Must be another relation.
-                    result.addAll(((Relation)link)
-                            ._linkedPortList(except, exceptRelations));
+                    result.addAll(((Relation) link)._linkedPortList(except,
+                            exceptRelations));
                 }
             }
             return result;
@@ -379,9 +378,9 @@ public class Relation extends NamedObj {
             // tests would not be needed.
             for (i = 0; i < size; i++) {
                 if (linkedObjectsArray[i] instanceof Port) {
-                    ((Port)linkedObjectsArray[i]).unlink(this);
+                    ((Port) linkedObjectsArray[i]).unlink(this);
                 } else {
-                    ((Relation)linkedObjectsArray[i]).unlink(this);
+                    ((Relation) linkedObjectsArray[i]).unlink(this);
                 }
             }
         } finally {
@@ -466,13 +465,11 @@ public class Relation extends NamedObj {
                 while (links.hasMoreElements()) {
                     Object object = links.nextElement();
                     if (object instanceof Port) {
-                        result.append((((Port)object)
-                                              ._description(detail,
-                                                      indent + 1, 2) + "\n"));
+                        result.append((((Port) object)._description(detail,
+                                indent + 1, 2) + "\n"));
                     } else {
-                        result.append((((Relation)object)
-                                              ._description(detail,
-                                                      indent + 1, 2) + "\n"));
+                        result.append((((Relation) object)._description(detail,
+                                indent + 1, 2) + "\n"));
                     }
                 }
 
@@ -510,14 +507,14 @@ public class Relation extends NamedObj {
                     + "but it is " + container.getClass().getName());
         }
 
-        Relation candidate =
-            ((CompositeEntity) container).getRelation(relativeName);
+        Relation candidate = ((CompositeEntity) container)
+                .getRelation(relativeName);
 
         if ((candidate != null) && !getClass().isInstance(candidate)) {
-            throw new IllegalActionException(this,
-                    "Expected " + candidate.getFullName()
-                    + " to be an instance of " + getClass().getName()
-                    + ", but it is " + candidate.getClass().getName());
+            throw new IllegalActionException(this, "Expected "
+                    + candidate.getFullName() + " to be an instance of "
+                    + getClass().getName() + ", but it is "
+                    + candidate.getClass().getName());
         }
 
         return candidate;
@@ -566,10 +563,10 @@ public class Relation extends NamedObj {
                 }
             } else {
                 // Link must be to a relation.
-                Relation relation = (Relation)link;
+                Relation relation = (Relation) link;
                 if (!exceptRelations.contains(relation)) {
                     result.addAll(relation._linkedPortList(exceptPort,
-                                          exceptRelations));
+                            exceptRelations));
                 }
             }
         }
@@ -590,7 +587,7 @@ public class Relation extends NamedObj {
             while (links.hasMoreElements()) {
                 Object link = links.nextElement();
                 if (link instanceof Relation) {
-                    ((Relation)link)._relationGroup(list);
+                    ((Relation) link)._relationGroup(list);
                 }
             }
         }

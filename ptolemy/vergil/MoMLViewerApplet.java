@@ -1,30 +1,30 @@
 /* Applet that displays a vergil block diagram.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil;
 
 import java.awt.BorderLayout;
@@ -47,62 +47,61 @@ import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MoMLViewerApplet
 
 /**
-   This applet displays a graph view of a specified MoML file.
-   <p>
-   The applet parameters are:
-   <ul>
-   <li>
-   <i>background</i>: The background color, typically given as a hex
-   number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
-   component, <i>gg</i> gives the green component, and <i>bb</i> gives
-   the blue component.
-   <li>
-   <i>configuration</i>:
-   The relative pathname to a Ptolemy II xml configuration file.
-   for example, if the configuration applet parameter is set to
-   "ptolemy/configs/full/configuration.xml", then the user will
-   have the full vergil interface, including look inside capability.
-   (<b>Experimental</b>).
-   <li>
-   <i>controls</i>:
-   This gives a comma-separated list
-   of any subset of the words "buttons", "topParameters", and
-   "directorParameters" (case insensitive), or the word "none".
-   If this parameter is not given, then it is equivalent to
-   giving "buttons", and only the control buttons mentioned above
-   will be displayed.  If the parameter is given, and its value is "none",
-   then no controls are placed on the screen.  If the word "topParameters"
-   is included in the comma-separated list, then controls for the
-   top-level parameters of the model are placed on the screen, below
-   the buttons.  If the word "directorParameters" is included,
-   then controls for the director parameters are also included.
-   This parameter is ignored unless <i>includeRunPanel</i> is given as "true".
-   <li>
-   <i>includeRunPanel</i>: An indicator to include a run panel below the
-   schematic.  The value must be "true" or no run panel will be displayed.
-   <li>
-   <i>modelURL</i>: The name of a URI (or URL) containing the
-   MoML file that defines the model.
-   <li>
-   <i>orientation</i>: This can have value "horizontal", "vertical", or
-   "controls_only" (case insensitive).  If it is "vertical", then the
-   controls are placed above the visual elements of the Placeable actors.
-   This is the default.  If it is "horizontal", then the controls
-   are placed to the left of the visual elements.  If it is "controls_only"
-   then no visual elements are placed.
-   </ul>
+ This applet displays a graph view of a specified MoML file.
+ <p>
+ The applet parameters are:
+ <ul>
+ <li>
+ <i>background</i>: The background color, typically given as a hex
+ number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
+ component, <i>gg</i> gives the green component, and <i>bb</i> gives
+ the blue component.
+ <li>
+ <i>configuration</i>:
+ The relative pathname to a Ptolemy II xml configuration file.
+ for example, if the configuration applet parameter is set to
+ "ptolemy/configs/full/configuration.xml", then the user will
+ have the full vergil interface, including look inside capability.
+ (<b>Experimental</b>).
+ <li>
+ <i>controls</i>:
+ This gives a comma-separated list
+ of any subset of the words "buttons", "topParameters", and
+ "directorParameters" (case insensitive), or the word "none".
+ If this parameter is not given, then it is equivalent to
+ giving "buttons", and only the control buttons mentioned above
+ will be displayed.  If the parameter is given, and its value is "none",
+ then no controls are placed on the screen.  If the word "topParameters"
+ is included in the comma-separated list, then controls for the
+ top-level parameters of the model are placed on the screen, below
+ the buttons.  If the word "directorParameters" is included,
+ then controls for the director parameters are also included.
+ This parameter is ignored unless <i>includeRunPanel</i> is given as "true".
+ <li>
+ <i>includeRunPanel</i>: An indicator to include a run panel below the
+ schematic.  The value must be "true" or no run panel will be displayed.
+ <li>
+ <i>modelURL</i>: The name of a URI (or URL) containing the
+ MoML file that defines the model.
+ <li>
+ <i>orientation</i>: This can have value "horizontal", "vertical", or
+ "controls_only" (case insensitive).  If it is "vertical", then the
+ controls are placed above the visual elements of the Placeable actors.
+ This is the default.  If it is "horizontal", then the controls
+ are placed to the left of the visual elements.  If it is "controls_only"
+ then no visual elements are placed.
+ </ul>
 
-   @author  Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (eal)
-*/
+ @author  Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class MoMLViewerApplet extends MoMLApplet {
     // FIXME: this is a total hack as a placeholder for a general
     // implementation going through configurations.
@@ -116,17 +115,8 @@ public class MoMLViewerApplet extends MoMLApplet {
      */
     public String[][] getParameterInfo() {
         String[][] newinfo = {
-            {
-                "includeRunPanel",
-                "",
-                "Indicator to include run panel"
-            },
-            {
-                "configuration",
-                "",
-                "Ptolemy II configuration"
-            },
-        };
+                { "includeRunPanel", "", "Indicator to include run panel" },
+                { "configuration", "", "Ptolemy II configuration" }, };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
@@ -148,8 +138,7 @@ public class MoMLViewerApplet extends MoMLApplet {
      *  @return A model.
      *  @exception Exception If something goes wrong.
      */
-    protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
+    protected NamedObj _createModel(Workspace workspace) throws Exception {
         // Do not filter out graphical classes.
         // FIXME: if we have a configuration, then we are parsing
         // the model twice!!!
@@ -170,8 +159,10 @@ public class MoMLViewerApplet extends MoMLApplet {
 
         if (configurationPath != null) {
             try {
-                URL specificationURL = MoMLApplication.specToURL(configurationPath);
-                _configuration = MoMLApplication.readConfiguration(specificationURL);
+                URL specificationURL = MoMLApplication
+                        .specToURL(configurationPath);
+                _configuration = MoMLApplication
+                        .readConfiguration(specificationURL);
                 report("Opened '" + specificationURL + "': " + _configuration);
             } catch (Exception ex) {
                 throw new RuntimeException("Failed to open '"
@@ -231,8 +222,8 @@ public class MoMLViewerApplet extends MoMLApplet {
         boolean boundsSet = false;
 
         try {
-            SizeAttribute vergilBounds = (SizeAttribute) _toplevel.getAttribute("_vergilSize",
-                    SizeAttribute.class);
+            SizeAttribute vergilBounds = (SizeAttribute) _toplevel
+                    .getAttribute("_vergilSize", SizeAttribute.class);
             boundsSet = vergilBounds.setSize(modelViewer);
         } catch (Throwable throwable) {
             // Ignore and set to default.

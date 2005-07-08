@@ -1,29 +1,29 @@
 /* A representative of a ptolemy model
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -48,26 +48,25 @@ import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyEffigy
 
 /**
-   An effigy for a Ptolemy II model.
-   An effigy represents model metadata, and is contained by the
-   model directory or by another effigy.  This class adds to the base
-   class an association with a Ptolemy II model. The model, strictly
-   speaking, is any Ptolemy II object (an instance of NamedObj).
-   The Effigy class extends CompositeEntity, so an instance of Effigy
-   can contain entities.  By convention, an effigy contains all
-   open instances of Tableau associated with the model.
+ An effigy for a Ptolemy II model.
+ An effigy represents model metadata, and is contained by the
+ model directory or by another effigy.  This class adds to the base
+ class an association with a Ptolemy II model. The model, strictly
+ speaking, is any Ptolemy II object (an instance of NamedObj).
+ The Effigy class extends CompositeEntity, so an instance of Effigy
+ can contain entities.  By convention, an effigy contains all
+ open instances of Tableau associated with the model.
 
-   @author Steve Neuendorffer and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (janneck)
-*/
+ @author Steve Neuendorffer and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (janneck)
+ */
 public class PtolemyEffigy extends Effigy implements ChangeListener {
     /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
@@ -239,7 +238,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 && !(container instanceof PtolemyEffigy)) {
             throw new IllegalActionException(this, container,
                     "The container can only be set to an "
-                    + "instance of ModelDirectory or PtolemyEffigy.");
+                            + "instance of ModelDirectory or PtolemyEffigy.");
         }
     }
 
@@ -307,8 +306,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 // Create a blank effigy.
                 // Use the strategy pattern so derived classes can
                 // override this.
-                PtolemyEffigy effigy = _newEffigy(container,
-                        container.uniqueName("effigy"));
+                PtolemyEffigy effigy = _newEffigy(container, container
+                        .uniqueName("effigy"));
 
                 // If this factory contains an entity called "blank", then
                 // clone that.
@@ -359,16 +358,16 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         // the HSIFEffigyFactory here.
                         System.out.println("Warning: Could not open up '"
                                 + input + "' because it ends with '.hsif'.\n"
-                                + "Try running " + "$PTII/bin/vergil -hyvisual "
-                                + input);
+                                + "Try running "
+                                + "$PTII/bin/vergil -hyvisual " + input);
                     }
 
                     return null;
                 }
 
                 // Create a blank effigy.
-                PtolemyEffigy effigy = _newEffigy(container,
-                        container.uniqueName("effigy"));
+                PtolemyEffigy effigy = _newEffigy(container, container
+                        .uniqueName("effigy"));
 
                 MoMLParser parser = new MoMLParser();
 
@@ -390,8 +389,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             // If we are running under Web Start, we
                             // might have a URL that refers to another
                             // jar file.
-                            URL anotherURL = ClassUtilities.jarURLEntryResource(input
-                                    .toString());
+                            URL anotherURL = ClassUtilities
+                                    .jarURLEntryResource(input.toString());
 
                             if (anotherURL != null) {
                                 toplevel = parser.parse(base, anotherURL);
@@ -415,8 +414,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             // Identify the URI from which the model was read
                             // by inserting an attribute into both the model
                             // and the effigy.
-                            URIAttribute uriAttribute = new URIAttribute(toplevel,
-                                    "_uri");
+                            URIAttribute uriAttribute = new URIAttribute(
+                                    toplevel, "_uri");
                             URI inputURI = null;
 
                             try {
@@ -432,9 +431,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                 // is a %20 instead of a space.  This could
                                 // cause problems in Web Start
                                 String inputExternalFormFixed = StringUtilities
-                                    .substitute(input
-                                            .toExternalForm(), " ",
-                                            "%20");
+                                        .substitute(input.toExternalForm(),
+                                                " ", "%20");
 
                                 try {
                                     inputURI = new URI(inputExternalFormFixed);
@@ -461,25 +459,25 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         if (throwable instanceof StackOverflowError) {
                             Throwable newThrowable = new StackOverflowError(
                                     "StackOverflowError: "
-                                    + "Which often indicates that a class "
-                                    + "could not be found, but there was "
-                                    + "possibly a moml file with that same "
-                                    + "name in the directory that referred "
-                                    + "to the class, so we got into a loop."
-                                    + "For example: We had "
-                                    + "actor/lib/joystick/Joystick.java "
-                                    + "and "
-                                    + "actor/lib/joystick/joystick.xml, "
-                                    + "but "
-                                    + "the .class file would not load "
-                                    + "because of a classpath problem, "
-                                    + "so we kept "
-                                    + "loading joystick.xml which "
-                                    + "referred to Joystick and because "
-                                    + "of Windows "
-                                    + "filename case insensitivity, "
-                                    + "we found joystick.xml, which put "
-                                    + "us in a loop.");
+                                            + "Which often indicates that a class "
+                                            + "could not be found, but there was "
+                                            + "possibly a moml file with that same "
+                                            + "name in the directory that referred "
+                                            + "to the class, so we got into a loop."
+                                            + "For example: We had "
+                                            + "actor/lib/joystick/Joystick.java "
+                                            + "and "
+                                            + "actor/lib/joystick/joystick.xml, "
+                                            + "but "
+                                            + "the .class file would not load "
+                                            + "because of a classpath problem, "
+                                            + "so we kept "
+                                            + "loading joystick.xml which "
+                                            + "referred to Joystick and because "
+                                            + "of Windows "
+                                            + "filename case insensitivity, "
+                                            + "we found joystick.xml, which put "
+                                            + "us in a loop.");
                             newThrowable.initCause(throwable);
                             throwable = newThrowable;
                         }
@@ -491,8 +489,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         // effigies open.  We check for that condition,
                         // and report the error here.  Otherwise, we
                         // pass the error to the caller.
-                        ModelDirectory dir = (ModelDirectory) effigy.topEffigy()
-                            .getContainer();
+                        ModelDirectory dir = (ModelDirectory) effigy
+                                .topEffigy().getContainer();
                         List effigies = dir.entityList(Effigy.class);
 
                         // We might get to here if we are running a
@@ -556,8 +554,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  @return A new effigy.
          */
         protected PtolemyEffigy _newEffigy(CompositeEntity container,
-                String name)
-                throws IllegalActionException, NameDuplicationException {
+                String name) throws IllegalActionException,
+                NameDuplicationException {
             return new PtolemyEffigy(container, name);
         }
     }

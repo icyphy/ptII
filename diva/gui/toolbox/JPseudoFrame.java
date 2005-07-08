@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.gui.toolbox;
 
 import java.awt.Component;
@@ -41,7 +41,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenuBar;
 import javax.swing.UIManager;
 import javax.swing.event.EventListenerList;
-
 
 /**
  * JPseudoFrame is not a Frame at all, but a widget that enables a
@@ -131,46 +130,46 @@ public abstract class JPseudoFrame extends JComponent {
         _iconifyButton.setBounds(0, 2, 16, 14);
         _iconifyButton.setRequestFocusEnabled(false);
         _iconifyButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        setIcon(true);
-                    } catch (PropertyVetoException ex) {
-                    }
-
-                    fireInternalAction("iconified");
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    setIcon(true);
+                } catch (PropertyVetoException ex) {
                 }
-            });
+
+                fireInternalAction("iconified");
+            }
+        });
         add(_iconifyButton);
 
-        _minimizeButton = new JButton((Icon) ui.get(
-                                              "InternalFrame.minimizeIcon"));
+        _minimizeButton = new JButton((Icon) ui
+                .get("InternalFrame.minimizeIcon"));
         _minimizeButton.setBounds(16, 2, 16, 14);
         _minimizeButton.setRequestFocusEnabled(false);
         _minimizeButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        setMaximum(false);
-                    } catch (PropertyVetoException ex) {
-                    }
-
-                    fireInternalAction("minimized");
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    setMaximum(false);
+                } catch (PropertyVetoException ex) {
                 }
-            });
+
+                fireInternalAction("minimized");
+            }
+        });
         add(_minimizeButton);
 
         _closeButton = new JButton((Icon) ui.get("InternalFrame.closeIcon"));
         _closeButton.setBounds(34, 2, 16, 14);
         _closeButton.setRequestFocusEnabled(false);
         _closeButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        setClosed(true);
-                    } catch (PropertyVetoException ex) {
-                    }
-
-                    fireInternalAction("closed");
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    setClosed(true);
+                } catch (PropertyVetoException ex) {
                 }
-            });
+
+                fireInternalAction("closed");
+            }
+        });
         add(_closeButton);
     }
 
@@ -183,7 +182,8 @@ public abstract class JPseudoFrame extends JComponent {
     /** Fire an action event
      */
     protected void fireInternalAction(String name) {
-        ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, name);
+        ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+                name);
         Object[] listeners = _listeners.getListenerList();
 
         for (int i = listeners.length - 2; i >= 0; i -= 2) {

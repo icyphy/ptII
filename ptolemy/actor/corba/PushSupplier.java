@@ -1,32 +1,32 @@
 /* An actor that sends data to a remote consumer.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj)
-@AcceptedRating Yellow (janneck)
-*/
+ @ProposedRating Yellow (liuj)
+ @AcceptedRating Yellow (janneck)
+ */
 package ptolemy.actor.corba;
 
 import java.util.StringTokenizer;
@@ -47,26 +47,25 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PushSupplier
 
 /**
-   An actor that send data to a remote consumer.
+ An actor that send data to a remote consumer.
 
-   Specify the ORB initial property with the<i>ORBInitProperties<i>
-   paremerter, for example:
-   "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
-   where "xyz.eecs.berkeley.edu" is the machine runing name server, and
-   "1050" is the port for name service.
+ Specify the ORB initial property with the<i>ORBInitProperties<i>
+ paremerter, for example:
+ "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
+ where "xyz.eecs.berkeley.edu" is the machine runing name server, and
+ "1050" is the port for name service.
 
-   Specify the name of the consumer with <i>ConsumerName<i> that it wants
-   to send data to.
+ Specify the name of the consumer with <i>ConsumerName<i> that it wants
+ to send data to.
 
-   @author Yang Zhao
-   @version $Id$
-   @since Ptolemy II 1.0
-*/
+ @author Yang Zhao
+ @version $Id$
+ @since Ptolemy II 1.0
+ */
 public class PushSupplier extends Sink {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -113,8 +112,8 @@ public class PushSupplier extends Sink {
         super.initialize();
 
         // String tokenize the parameter ORBInitProperties
-        StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
-                                                         .getToken()).stringValue());
+        StringTokenizer st = new StringTokenizer(
+                ((StringToken) ORBInitProperties.getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
 
@@ -164,7 +163,7 @@ public class PushSupplier extends Sink {
             } catch (CorbaIllegalActionException ex) {
                 throw new IllegalActionException(this,
                         "remote actor throws IllegalActionException"
-                        + ex.getMessage());
+                                + ex.getMessage());
             }
         }
     }
@@ -180,8 +179,8 @@ public class PushSupplier extends Sink {
             _debug(getName(), " ORB initialized");
 
             //get the root naming context
-            org.omg.CORBA.Object objRef = _orb.resolve_initial_references(
-                    "NameService");
+            org.omg.CORBA.Object objRef = _orb
+                    .resolve_initial_references("NameService");
             NamingContext ncRef = NamingContextHelper.narrow(objRef);
 
             if (ncRef != null) {
@@ -189,21 +188,20 @@ public class PushSupplier extends Sink {
             }
 
             //resolve the remote consumer reference in Naming
-            NameComponent namecomp = new NameComponent(((StringToken) remoteConsumerName
-                                                               .getToken()).stringValue(), "");
-            _debug(getName(), " looking for name: ",
-                    (remoteConsumerName.getToken()).toString());
+            NameComponent namecomp = new NameComponent(
+                    ((StringToken) remoteConsumerName.getToken()).stringValue(),
+                    "");
+            _debug(getName(), " looking for name: ", (remoteConsumerName
+                    .getToken()).toString());
 
-            NameComponent[] path = {
-                namecomp
-            };
+            NameComponent[] path = { namecomp };
 
             // locate the remote actor
             while (!_stopRequested) {
                 try {
                     _debug("before try to get remote consumer.");
                     _remoteConsumer = ptolemy.actor.corba.CorbaIOUtil.pushConsumerHelper
-                        .narrow(ncRef.resolve(path));
+                            .narrow(ncRef.resolve(path));
                     _debug("after try to get remote consumer.");
 
                     if (_remoteConsumer instanceof pushConsumer) {
@@ -219,8 +217,7 @@ public class PushSupplier extends Sink {
                     }
                 } catch (Exception exp) {
                     // ignor here and retry.
-                    _debug(
-                            "failed to resolve the remote consumer. will try again.");
+                    _debug("failed to resolve the remote consumer. will try again.");
 
                     try {
                         Thread.sleep(1000);
@@ -232,11 +229,12 @@ public class PushSupplier extends Sink {
             }
         } catch (UserException ex) {
             //ex.printStackTrace();
-            throw new IllegalActionException(this,
+            throw new IllegalActionException(
+                    this,
                     " initialize ORB failed. Please make sure the "
-                    + "naming server has already started and the "
-                    + "ORBInitProperty parameter is configured correctly. "
-                    + "the error message is: " + ex.getMessage());
+                            + "naming server has already started and the "
+                            + "ORBInitProperty parameter is configured correctly. "
+                            + "the error message is: " + ex.getMessage());
         }
     }
 

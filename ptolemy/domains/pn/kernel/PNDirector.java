@@ -1,30 +1,30 @@
 /* Director for Kahn-MacQueen process network semantics.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.pn.kernel;
 
 import java.lang.ref.WeakReference;
@@ -46,61 +46,60 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PNDirector
 
 /**
-   A PNDirector governs the execution of a CompositeActor with extended
-   Kahn-MacQueen process networks (PN) semantics. This model of computation has
-   been extended to support mutations of graphs in a non-deterministic way.
-   <p>
-   The thread that calls the various execution methods (initialize, prefire, fire
-   and postfire) on the director is referred to as the <i>directing thread</i>.
-   This directing thread might be the main thread responsible for the execution
-   of the entire simulation or might be the thread created by the executive
-   director of the containing composite actor.
-   <p>
-   In the PN domain, the director creates a thread (an instance of
-   ProcessThread), representing a Kahn process, for each actor in the model.
-   The threads are created in initialize() and started in the prefire() method
-   of the ProcessDirector. A process is considered <i>active</i> from its
-   creation until its termination. An active process can block when trying to
-   read from a channel (read-blocked), when trying to write to a channel
-   (write-blocked) or when waiting for a queued topology change request to be
-   processed (mutation-blocked).
-   <p>
-   A <i>deadlock</i> is when all the active processes are blocked.
-   The director is responsible for handling deadlocks during execution.
-   This director handles two different sorts of deadlocks, <i>real deadlock</i>
-   and <i>artificial deadlock</i>.
-   <p>
-   A real deadlock is when all the processes are blocked on a read meaning that
-   no process can proceed until it receives new data. The execution can be
-   terminated, if desired, in such a situation. If the container of this director
-   does not have any input ports (as is in the case of a top-level composite
-   actor), then the executive director or manager terminates the execution.
-   If the container has input ports, then it is up to the
-   executive director of the container to decide on the termination of the
-   execution. To terminate the execution after detection of a real deadlock, the
-   manager or the executive director calls wrapup() on the director.
-   <p>
-   An artificial deadlock is when all processes are blocked and at least one
-   process is blocked on a write. In this case the director increases the
-   capacity of the receiver with the smallest capacity amongst all the
-   receivers on which a process is blocked on a write.
-   This breaks the deadlock and the execution can resume.
-   If the increase results in a capacity that exceeds the value of
-   <i>maximumQueueCapacity</i>, then instead of breaking the deadlock,
-   an exception is thrown.  This can be used to detect erroneous models
-   that require unbounded queues.
+ A PNDirector governs the execution of a CompositeActor with extended
+ Kahn-MacQueen process networks (PN) semantics. This model of computation has
+ been extended to support mutations of graphs in a non-deterministic way.
+ <p>
+ The thread that calls the various execution methods (initialize, prefire, fire
+ and postfire) on the director is referred to as the <i>directing thread</i>.
+ This directing thread might be the main thread responsible for the execution
+ of the entire simulation or might be the thread created by the executive
+ director of the containing composite actor.
+ <p>
+ In the PN domain, the director creates a thread (an instance of
+ ProcessThread), representing a Kahn process, for each actor in the model.
+ The threads are created in initialize() and started in the prefire() method
+ of the ProcessDirector. A process is considered <i>active</i> from its
+ creation until its termination. An active process can block when trying to
+ read from a channel (read-blocked), when trying to write to a channel
+ (write-blocked) or when waiting for a queued topology change request to be
+ processed (mutation-blocked).
+ <p>
+ A <i>deadlock</i> is when all the active processes are blocked.
+ The director is responsible for handling deadlocks during execution.
+ This director handles two different sorts of deadlocks, <i>real deadlock</i>
+ and <i>artificial deadlock</i>.
+ <p>
+ A real deadlock is when all the processes are blocked on a read meaning that
+ no process can proceed until it receives new data. The execution can be
+ terminated, if desired, in such a situation. If the container of this director
+ does not have any input ports (as is in the case of a top-level composite
+ actor), then the executive director or manager terminates the execution.
+ If the container has input ports, then it is up to the
+ executive director of the container to decide on the termination of the
+ execution. To terminate the execution after detection of a real deadlock, the
+ manager or the executive director calls wrapup() on the director.
+ <p>
+ An artificial deadlock is when all processes are blocked and at least one
+ process is blocked on a write. In this case the director increases the
+ capacity of the receiver with the smallest capacity amongst all the
+ receivers on which a process is blocked on a write.
+ This breaks the deadlock and the execution can resume.
+ If the increase results in a capacity that exceeds the value of
+ <i>maximumQueueCapacity</i>, then instead of breaking the deadlock,
+ an exception is thrown.  This can be used to detect erroneous models
+ that require unbounded queues.
 
-   @author Mudit Goel, Edward A. Lee, Xiaowen Xin
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (mudit)
-   @Pt.AcceptedRating Green (davisj)
-*/
+ @author Mudit Goel, Edward A. Lee, Xiaowen Xin
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (mudit)
+ @Pt.AcceptedRating Green (davisj)
+ */
 public class PNDirector extends CompositeProcessDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -113,8 +112,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public PNDirector()
-            throws IllegalActionException, NameDuplicationException {
+    public PNDirector() throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -131,8 +129,8 @@ public class PNDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public PNDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public PNDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -235,7 +233,7 @@ public class PNDirector extends CompositeProcessDirector {
         // be set in preinitialize().
         try {
             int capacity = ((IntToken) initialQueueCapacity.getToken())
-                .intValue();
+                    .intValue();
             receiver.setCapacity(capacity);
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
@@ -276,20 +274,20 @@ public class PNDirector extends CompositeProcessDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        
+
         // Check that no relation has multiple sources of data connected to it.
         // FIXME: This only detects the error at this level of the hierarchy.
         // Probably need to recursively descend into composite actors.
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
         Iterator relations = container.relationList().iterator();
         while (relations.hasNext()) {
-        	IORelation relation = (IORelation)relations.next();
+            IORelation relation = (IORelation) relations.next();
             if (relation.linkedSourcePortList().size() > 1) {
                 throw new IllegalActionException(relation,
                         "Relation has multiple sources of data,"
-                        + " which is not allowed in PN."
-                        + " If you want nondeterministic merge,"
-                        + " use the NondeterministicMerge actor.");   
+                                + " which is not allowed in PN."
+                                + " If you want nondeterministic merge,"
+                                + " use the NondeterministicMerge actor.");
             }
         }
 
@@ -329,9 +327,9 @@ public class PNDirector extends CompositeProcessDirector {
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
-        return new String [] {
-            "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
-            "ptolemy.domains.fsm.kernel.FSMDirector"};
+        return new String[] {
+                "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
+                "ptolemy.domains.fsm.kernel.FSMDirector" };
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -433,15 +431,14 @@ public class PNDirector extends CompositeProcessDirector {
             capacity = 1;
         } else {
             int maximumCapacity = ((IntToken) maximumQueueCapacity.getToken())
-                .intValue();
+                    .intValue();
 
             if ((maximumCapacity > 0) && ((capacity * 2) > maximumCapacity)) {
-                String msg =
-                        "Queue size exceeds the maximum capacity in port "
+                String msg = "Queue size exceeds the maximum capacity in port "
                         + smallestCapacityQueue.getContainer().getFullName()
-						+ ". Perhaps you have an unbounded queue?";
+                        + ". Perhaps you have an unbounded queue?";
                 if (_debugging) {
-                	_debug(msg);
+                    _debug(msg);
                 }
                 throw new IllegalActionException(this, msg);
             }
@@ -469,9 +466,9 @@ public class PNDirector extends CompositeProcessDirector {
      *  @param receiver The receiver that is blocked.
      *  @param readBlocked Whether this is read or write blocked.
      */
-    protected synchronized void _actorBlocked(
-        PNQueueReceiver receiver, boolean readBlocked) {
-        if(readBlocked) {
+    protected synchronized void _actorBlocked(PNQueueReceiver receiver,
+            boolean readBlocked) {
+        if (readBlocked) {
             _readBlockCount++;
         } else {
             _writeBlockCount++;
@@ -488,9 +485,9 @@ public class PNDirector extends CompositeProcessDirector {
      *  @param receiver The receiver that is unblocked.
      *  @param readBlocked Whether this is read or write blocked.
      */
-    protected synchronized void _actorUnBlocked(
-        PNQueueReceiver receiver, boolean readBlocked) {
-        if(readBlocked) {
+    protected synchronized void _actorUnBlocked(PNQueueReceiver receiver,
+            boolean readBlocked) {
+        if (readBlocked) {
             _readBlockCount--;
         } else {
             _writeBlockCount--;
@@ -564,8 +561,8 @@ public class PNDirector extends CompositeProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
                 new IntToken(1));
         initialQueueCapacity.setTypeEquals(BaseType.INT);
@@ -580,7 +577,7 @@ public class PNDirector extends CompositeProcessDirector {
 
     /** List of process listeners. */
     private LinkedList _processListeners = new LinkedList();
-    
+
     /** The list of all receivers that this director has created. */
     private LinkedList _receivers = new LinkedList();
 }

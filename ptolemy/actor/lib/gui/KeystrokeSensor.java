@@ -1,30 +1,30 @@
 /* An actor which detects Control-C and Control-V events
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.gui;
 
 import java.awt.BorderLayout;
@@ -47,38 +47,37 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import diva.gui.toolbox.FocusMouseListener;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// KeystrokeSensor
 
 /**
-   Detect when the user types Control-C (for Copy) or Control-V (for Paste)
-   and produce an event on the corresponding output.
+ Detect when the user types Control-C (for Copy) or Control-V (for Paste)
+ and produce an event on the corresponding output.
 
-   <p>When this actor is preinitialized, it pops up a new JFrame window on
-   the desktop, usually in the upper left hand corner of the screen.
-   When this JFrame has the focus (such as when it has been clicked on)
-   it is capable of sensing keystrokes.
+ <p>When this actor is preinitialized, it pops up a new JFrame window on
+ the desktop, usually in the upper left hand corner of the screen.
+ When this JFrame has the focus (such as when it has been clicked on)
+ it is capable of sensing keystrokes.
 
-   <p>Only two keystrokes are sensed, control-C (for copy) and control-V
-   (for paste).  This actor is designed to work with SystemClipboard.java.
+ <p>Only two keystrokes are sensed, control-C (for copy) and control-V
+ (for paste).  This actor is designed to work with SystemClipboard.java.
 
-   <p>The actor contains a private inner class which generates the JFrame.
-   This frame sets up call-backs which react to the keystrokes.  When
-   called back, these in turn call the director's fireAtCurrentTime()
-   method.  This causes the director to call fire() on the actor.  The
-   actor then broadcasts tokens from one or both outputs depending on
-   which keystroke(s) have occurred since the actor was last fired.
+ <p>The actor contains a private inner class which generates the JFrame.
+ This frame sets up call-backs which react to the keystrokes.  When
+ called back, these in turn call the director's fireAtCurrentTime()
+ method.  This causes the director to call fire() on the actor.  The
+ actor then broadcasts tokens from one or both outputs depending on
+ which keystroke(s) have occurred since the actor was last fired.
 
-   <p>NOTE: This actor only works in DE due to its reliance on the
-   director's fireAtCurrentTime() method.
+ <p>NOTE: This actor only works in DE due to its reliance on the
+ director's fireAtCurrentTime() method.
 
-   @author Winthrop Williams
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (winthrop)
-   @Pt.AcceptedRating Red (winthrop)
-*/
+ @author Winthrop Williams
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (winthrop)
+ @Pt.AcceptedRating Red (winthrop)
+ */
 public class KeystrokeSensor extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -153,6 +152,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
      *  the last firing og the actor.
      */
     private boolean _copyKeyPressed = false;
+
     private boolean _pasteKeyPressed = false;
 
     ///////////////////////////////////////////////////////////////////
@@ -166,34 +166,34 @@ public class KeystrokeSensor extends TypedAtomicActor {
         public MyFrame() {
             // Copy call-back
             ActionListener myCopyListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        _copyKeyPressed = true;
+                public void actionPerformed(ActionEvent e) {
+                    _copyKeyPressed = true;
 
-                        try {
-                            getDirector().fireAtCurrentTime(KeystrokeSensor.this);
-                        } catch (IllegalActionException ex) {
-                            System.out.println(this
-                                    + "Ex calling fireAtCurrentTime");
-                            throw new RuntimeException("-fireAt* C catch-");
-                        }
+                    try {
+                        getDirector().fireAtCurrentTime(KeystrokeSensor.this);
+                    } catch (IllegalActionException ex) {
+                        System.out.println(this
+                                + "Ex calling fireAtCurrentTime");
+                        throw new RuntimeException("-fireAt* C catch-");
                     }
-                };
+                }
+            };
 
             // Paste call-back
             ActionListener myPasteListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        _pasteKeyPressed = true;
+                public void actionPerformed(ActionEvent e) {
+                    _pasteKeyPressed = true;
 
-                        try {
-                            getDirector().fireAtCurrentTime(KeystrokeSensor.this);
-                        } catch (IllegalActionException ex) {
-                            System.out.println("--" + ex.toString() + "--");
-                            System.out.println(this
-                                    + "Exception calling fireAtCurrentTime");
-                            throw new RuntimeException("-fireAt* catch-");
-                        }
+                    try {
+                        getDirector().fireAtCurrentTime(KeystrokeSensor.this);
+                    } catch (IllegalActionException ex) {
+                        System.out.println("--" + ex.toString() + "--");
+                        System.out.println(this
+                                + "Exception calling fireAtCurrentTime");
+                        throw new RuntimeException("-fireAt* catch-");
                     }
-                };
+                }
+            };
 
             getContentPane().setLayout(new BorderLayout());
 
@@ -201,13 +201,13 @@ public class KeystrokeSensor extends TypedAtomicActor {
             getContentPane().add(label);
 
             // Paste registration of call-back.
-            label.registerKeyboardAction(myPasteListener, "Paste",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
+            label.registerKeyboardAction(myPasteListener, "Paste", KeyStroke
+                    .getKeyStroke(KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Copy registration of call-back.
-            label.registerKeyboardAction(myCopyListener, "Copy",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_C, java.awt.Event.CTRL_MASK),
+            label.registerKeyboardAction(myCopyListener, "Copy", KeyStroke
+                    .getKeyStroke(KeyEvent.VK_C, java.awt.Event.CTRL_MASK),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.setRequestFocusEnabled(true);

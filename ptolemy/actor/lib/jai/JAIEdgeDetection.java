@@ -1,29 +1,29 @@
 /* An actor that does edge detection on a javax.media.jai.RenderedOp.
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.jai;
 
 import javax.media.jai.JAI;
@@ -40,23 +40,22 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// JAIEdgeDetection
 
 /**
-   An actor that does edge detection on a image.  This is done by taking
-   the image and separately convolving it with two different masks.  The
-   two results are squared, summed together, and square rooted to give the
-   final image.  The user may specify one, or both masks.  A series of
-   predefined masks are available for the user to use.
+ An actor that does edge detection on a image.  This is done by taking
+ the image and separately convolving it with two different masks.  The
+ two results are squared, summed together, and square rooted to give the
+ final image.  The user may specify one, or both masks.  A series of
+ predefined masks are available for the user to use.
 
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author James Yeh
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class JAIEdgeDetection extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -115,6 +114,7 @@ public class JAIEdgeDetection extends Transformer {
      *  must be specified if the user chooses to do so.
      */
     public StringAttribute firstMask;
+
     public StringAttribute secondMask;
 
     /** The first user specified mask, and its corresponding x and
@@ -154,7 +154,8 @@ public class JAIEdgeDetection extends Transformer {
         } else if (attribute == specifiedFirstMask) {
             _firstMaskData = ((DoubleMatrixToken) specifiedFirstMask.getToken());
         } else if (attribute == specifiedSecondMask) {
-            _secondMaskData = ((DoubleMatrixToken) specifiedSecondMask.getToken());
+            _secondMaskData = ((DoubleMatrixToken) specifiedSecondMask
+                    .getToken());
         } else {
             super.attributeChanged(attribute);
         }
@@ -289,8 +290,8 @@ public class JAIEdgeDetection extends Transformer {
         } else if (maskName.equals("Zero")) {
             return _ZERO_FILTER;
         } else {
-            throw new IllegalActionException(this,
-                    "Unrecognized Mask type: " + maskName);
+            throw new IllegalActionException(this, "Unrecognized Mask type: "
+                    + maskName);
         }
     }
 
@@ -299,181 +300,85 @@ public class JAIEdgeDetection extends Transformer {
 
     /** The ArrayTokens contained the the User Specified Mask Fields */
     private DoubleMatrixToken _firstMaskData;
+
     private DoubleMatrixToken _secondMaskData;
 
     /** The KernelJAI's that contain the masks to be used in edge
      *  detection.
      */
     private KernelJAI _firstKernelJAI;
+
     private KernelJAI _secondKernelJAI;
 
     /** The choice of mask. */
     private int _firstMask;
+
     private int _secondMask;
-    private double[][] _initialMatrix = {
-        {
-            0.0F,
-            0.0F,
-            0.0F
-        },
-        {
-            0.0F,
-            0.707F,
-            0.0F
-        },
-        {
-            0.0F,
-            0.0F,
-            0.0F
-        }
-    };
+
+    private double[][] _initialMatrix = { { 0.0F, 0.0F, 0.0F },
+            { 0.0F, 0.707F, 0.0F }, { 0.0F, 0.0F, 0.0F } };
 
     /** Prespecified masks that the user may use */
-    private static final float[] _sobelHorizontalFilter = {
-        1.0F,
-        0.0F,
-        -1.0F,
-        2.0F,
-        0.0F,
-        -2.0F,
-        1.0F,
-        0.0F,
-        -1.0F
-    };
-    private static final float[] _sobelVerticalFilter = {
-        -1.0F,
-        -2.0F,
-        -1.0F,
-        0.0F,
-        0.0F,
-        0.0F,
-        1.0F,
-        2.0F,
-        1.0F
-    };
-    private static final float[] _robertsHorizontalFilter = {
-        0.0F,
-        0.0F,
-        -1.0F,
-        0.0F,
-        1.0F,
-        0.0F,
-        0.0F,
-        0.0F,
-        0.0F
-    };
-    private static final float[] _robertsVerticalFilter = {
-        -1.0F,
-        0.0F,
-        0.0F,
-        0.0F,
-        1.0F,
-        0.0F,
-        0.0F,
-        0.0F,
-        0.0F
-    };
-    private static final float[] _prewittHorizontalFilter = {
-        1.0F,
-        0.0F,
-        -1.0F,
-        1.0F,
-        0.0F,
-        -1.0F,
-        1.0F,
-        0.0F,
-        -1.0F
-    };
-    private static final float[] _prewittVerticalFilter = {
-        -1.0F,
-        -1.0F,
-        -1.0F,
-        0.0F,
-        0.0F,
-        0.0F,
-        1.0F,
-        1.0F,
-        1.0F
-    };
-    private static final float[] _freiAndChenHorizontalFilter = {
-        1.0F,
-        0.0F,
-        -1.0F,
-        1.414F,
-        0.0F,
-        -1.414F,
-        1.0F,
-        0.0F,
-        -1.0F
-    };
-    private static final float[] _freiAndChenVerticalFilter = {
-        -1.0F,
-        -1.414F,
-        -1.0F,
-        0.0F,
-        0.0F,
-        0.0F,
-        1.0F,
-        1.414F,
-        1.0F
-    };
-    private static final float[] _transparentFilter = {
-        0.0F,
-        0.0F,
-        0.0F,
-        0.0F,
-        0.707F,
-        0.0F,
-        0.0F,
-        0.0F,
-        0.0F
-    };
-    private static final float[] _zeroFilter = {
-        0.0F,
-        0.0F,
-        0.0F,
-        0.0F,
-        0.0F,
-        0.0F,
-        0.0F,
-        0.0F,
-        0.0F
-    };
-    private static final float[] _diagonalFilter = {
-        1.0F,
-        1.0F,
-        0.0F,
-        1.0F,
-        0.0F,
-        -1.0F,
-        0.0F,
-        -1.0F,
-        -1.0F
-    };
-    private static final float[] _backDiagonalFilter = {
-        0.0F,
-        1.0F,
-        1.0F,
-        -1.0F,
-        0.0F,
-        1.0F,
-        -1.0F,
-        -1.0F,
-        0.0F
-    };
+    private static final float[] _sobelHorizontalFilter = { 1.0F, 0.0F, -1.0F,
+            2.0F, 0.0F, -2.0F, 1.0F, 0.0F, -1.0F };
+
+    private static final float[] _sobelVerticalFilter = { -1.0F, -2.0F, -1.0F,
+            0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F };
+
+    private static final float[] _robertsHorizontalFilter = { 0.0F, 0.0F,
+            -1.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F };
+
+    private static final float[] _robertsVerticalFilter = { -1.0F, 0.0F, 0.0F,
+            0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F };
+
+    private static final float[] _prewittHorizontalFilter = { 1.0F, 0.0F,
+            -1.0F, 1.0F, 0.0F, -1.0F, 1.0F, 0.0F, -1.0F };
+
+    private static final float[] _prewittVerticalFilter = { -1.0F, -1.0F,
+            -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F };
+
+    private static final float[] _freiAndChenHorizontalFilter = { 1.0F, 0.0F,
+            -1.0F, 1.414F, 0.0F, -1.414F, 1.0F, 0.0F, -1.0F };
+
+    private static final float[] _freiAndChenVerticalFilter = { -1.0F, -1.414F,
+            -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 1.414F, 1.0F };
+
+    private static final float[] _transparentFilter = { 0.0F, 0.0F, 0.0F, 0.0F,
+            0.707F, 0.0F, 0.0F, 0.0F, 0.0F };
+
+    private static final float[] _zeroFilter = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F,
+            0.0F, 0.0F, 0.0F, 0.0F };
+
+    private static final float[] _diagonalFilter = { 1.0F, 1.0F, 0.0F, 1.0F,
+            0.0F, -1.0F, 0.0F, -1.0F, -1.0F };
+
+    private static final float[] _backDiagonalFilter = { 0.0F, 1.0F, 1.0F,
+            -1.0F, 0.0F, 1.0F, -1.0F, -1.0F, 0.0F };
 
     //Constants used for more efficient execution
     private static final int _BACKDIAGONAL = 0;
+
     private static final int _DIAGONAL = 1;
+
     private static final int _FREICHEN_HORIZONTAL = 2;
+
     private static final int _FREICHEN_VERTICAL = 3;
+
     private static final int _PREWITT_HORIZONTAL = 4;
+
     private static final int _PREWITT_VERTICAL = 5;
+
     private static final int _ROBERTS_HORIZONTAL = 6;
+
     private static final int _ROBERTS_VERTICAL = 7;
+
     private static final int _SOBEL_HORIZONTAL = 8;
+
     private static final int _SOBEL_VERTICAL = 9;
+
     private static final int _TRANSPARENT = 10;
+
     private static final int _USER_SPECIFIED = 11;
+
     private static final int _ZERO_FILTER = 12;
 }

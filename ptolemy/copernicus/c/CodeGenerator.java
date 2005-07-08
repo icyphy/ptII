@@ -1,33 +1,33 @@
 /*
 
-A base class for C code generators in Ptolemy II.
+ A base class for C code generators in Ptolemy II.
 
-Copyright (c) 2001-2005 The University of Maryland.
-All rights reserved.
+ Copyright (c) 2001-2005 The University of Maryland.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.copernicus.c;
 
 import java.util.HashMap;
@@ -39,16 +39,15 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
 
-
 /** A base class for C code generators in Ptolemy II.
 
-@author Shuvra S. Bhattacharyya
-@version $Id$
-@since Ptolemy II 2.0
-@Pt.ProposedRating Red (ssb)
-@Pt.AcceptedRating Red (ssb)
+ @author Shuvra S. Bhattacharyya
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (ssb)
+ @Pt.AcceptedRating Red (ssb)
 
-*/
+ */
 public abstract class CodeGenerator {
     /** Construct a new code generator */
     public CodeGenerator() {
@@ -97,8 +96,8 @@ public abstract class CodeGenerator {
             String name = i.next().toString();
 
             code = code + "#ifndef A_DEF_" + name + "\n" + "#define A_DEF_"
-                + name + "\n" + "typedef PCCG_ARRAY_INSTANCE_PTR " + name
-                + ";\n" + "#endif\n";
+                    + name + "\n" + "typedef PCCG_ARRAY_INSTANCE_PTR " + name
+                    + ";\n" + "#endif\n";
         }
 
         return code;
@@ -115,7 +114,7 @@ public abstract class CodeGenerator {
 
         if (includeFiles.hasNext()) {
             headerCode.append(_comment("System, runtime and "
-                                      + "CSwitch-generated include files"));
+                    + "CSwitch-generated include files"));
         }
 
         while (includeFiles.hasNext()) {
@@ -244,13 +243,14 @@ public abstract class CodeGenerator {
                 source = ((RefType) type).getSootClass();
             } else if ((type instanceof ArrayType)
                     && (((ArrayType) type).baseType instanceof RefType)) {
-                source = ((RefType) (((ArrayType) type).baseType)).getSootClass();
+                source = ((RefType) (((ArrayType) type).baseType))
+                        .getSootClass();
             }
 
             if (source != null) {
                 if (!_requiredTypeMap.containsKey(source)) {
-                    _requiredTypeMap.put(source,
-                            CNames.includeFileNameOf(source));
+                    _requiredTypeMap.put(source, CNames
+                            .includeFileNameOf(source));
                 }
             }
         }

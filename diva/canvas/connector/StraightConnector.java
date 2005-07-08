@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.canvas.connector;
 
 import java.awt.geom.Line2D;
@@ -31,7 +31,6 @@ import java.awt.geom.Point2D;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;
 import diva.canvas.TransformContext;
-
 
 /** A Connector that draws itself in a straight line.
  *
@@ -45,6 +44,7 @@ public class StraightConnector extends AbstractConnector {
      * line, for use by the label positioning code.
      */
     private Point2D _headPt;
+
     private Point2D _tailPt;
 
     /** Create a new straight connector between the given
@@ -62,7 +62,8 @@ public class StraightConnector extends AbstractConnector {
      */
     public void repositionLabel() {
         if (getLabelFigure() != null) {
-            Point2D pt = new Point2D.Double((_headPt.getX() + _tailPt.getX()) / 2,
+            Point2D pt = new Point2D.Double(
+                    (_headPt.getX() + _tailPt.getX()) / 2,
                     (_headPt.getY() + _tailPt.getY()) / 2);
             getLabelFigure().translateTo(pt);
             getLabelFigure().autoAnchor(getShape());
@@ -169,8 +170,9 @@ public class StraightConnector extends AbstractConnector {
         repaint();
 
         Line2D line = (Line2D) getShape();
-        line.setLine(line.getX1() + x, line.getY1() + y, line.getX2() + x,
-                line.getY2() + y);
+        line.setLine(line.getX1() + x, line.getY1() + y, line.getX2() + x, line
+                .getY2()
+                + y);
 
         if (getLabelFigure() != null) {
             getLabelFigure().translate(x, y);

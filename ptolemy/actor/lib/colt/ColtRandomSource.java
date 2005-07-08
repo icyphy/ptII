@@ -1,30 +1,30 @@
 /* Base class for Colt Random Sources.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.colt;
 
 import java.util.Iterator;
@@ -48,48 +48,47 @@ import edu.cornell.lassp.houle.RngPack.Ranecu;
 import edu.cornell.lassp.houle.RngPack.Ranlux;
 import edu.cornell.lassp.houle.RngPack.Ranmar;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ColtRandomSource
 
 /** Base class for Colt random sources.
-    This base class manages the seed and the choice of
-    random number generator class.  When the random number
-    generator class is set for any one actor in a model,
-    it gets set to match in all other actors within the
-    same top-level container (unless this actor is within
-    an EntityLibrary).  When the seed gets set
-    to 0L in any one actor in a model, it gets set
-    to 0L for all other actors within the same top-level
-    container. When it gets set to anything other than
-    0L, then it will be set for all other actors in
-    the model in a pattern that ensures that every
-    actor has a different seed.
-    <p>
-    A seed of zero is interpreted to mean that no seed is specified,
-    which means that each execution of the model could result in
-    distinct data. For the value 0, the seed is set to
-    System.currentTimeMillis() + hashCode(), which means that
-    with extremely high probability, two distinct actors will have
-    distinct seeds.  The seed is set when the seed parameter value
-    is given, typically right after construction of the actor.
-    Subsequent runs of the same model, therefore, will continue
-    using the same seed.
-    <p>
-    If the <i>resetOnEachRun</i> parameter is true (it is
-    false by default), then each run resets the random number
-    generator. If the seed is non-zero, then this makes
-    each run identical.  This is useful for constructing
-    tests. If the seed is zero, then a new seed is generated
-    on each run using the same technique described above
-    (combining current time and the hash code).
+ This base class manages the seed and the choice of
+ random number generator class.  When the random number
+ generator class is set for any one actor in a model,
+ it gets set to match in all other actors within the
+ same top-level container (unless this actor is within
+ an EntityLibrary).  When the seed gets set
+ to 0L in any one actor in a model, it gets set
+ to 0L for all other actors within the same top-level
+ container. When it gets set to anything other than
+ 0L, then it will be set for all other actors in
+ the model in a pattern that ensures that every
+ actor has a different seed.
+ <p>
+ A seed of zero is interpreted to mean that no seed is specified,
+ which means that each execution of the model could result in
+ distinct data. For the value 0, the seed is set to
+ System.currentTimeMillis() + hashCode(), which means that
+ with extremely high probability, two distinct actors will have
+ distinct seeds.  The seed is set when the seed parameter value
+ is given, typically right after construction of the actor.
+ Subsequent runs of the same model, therefore, will continue
+ using the same seed.
+ <p>
+ If the <i>resetOnEachRun</i> parameter is true (it is
+ false by default), then each run resets the random number
+ generator. If the seed is non-zero, then this makes
+ each run identical.  This is useful for constructing
+ tests. If the seed is zero, then a new seed is generated
+ on each run using the same technique described above
+ (combining current time and the hash code).
 
-    @author David Bauer, Kostas Oikonomou, and Edward A. Lee
-    @version $Id$
-    @since Ptolemy II 4.1
-    @Pt.ProposedRating Yellow (eal)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ @author David Bauer, Kostas Oikonomou, and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public abstract class ColtRandomSource extends Source {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -186,8 +185,8 @@ public abstract class ColtRandomSource extends Source {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == generatorClass) {
-            String generatorClassValue = ((StringToken) generatorClass.getToken())
-                .stringValue();
+            String generatorClassValue = ((StringToken) generatorClass
+                    .getToken()).stringValue();
 
             if ((generatorClassValue != null)
                     && !generatorClassValue.equals(_generatorClassName)) {
@@ -364,16 +363,17 @@ public abstract class ColtRandomSource extends Source {
         NamedObj root = seed.getRoot();
 
         if (root != null) {
-            Iterator sharedParameters = seed.sharedParameterList(root).iterator();
+            Iterator sharedParameters = seed.sharedParameterList(root)
+                    .iterator();
             long value = 0L;
 
             while (sharedParameters.hasNext()) {
                 ColtSeedParameter candidate = (ColtSeedParameter) sharedParameters
-                    .next();
+                        .next();
 
                 if (candidate != seed) {
                     long candidateValue = ((LongToken) candidate.getToken())
-                        .longValue();
+                            .longValue();
 
                     if (candidateValue != 0L) {
                         if (candidateValue >= value) {

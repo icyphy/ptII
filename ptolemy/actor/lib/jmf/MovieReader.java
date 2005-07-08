@@ -1,31 +1,31 @@
 /* An actor that outputs frames from a video file.
 
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.jmf;
 
 import java.io.File;
@@ -57,23 +57,22 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MovieReader
 
 /**
-   This actor loads a video file (MPEG, AVI, or Quicktime files only), and
-   outputs each frame as a JMFImageToken.
+ This actor loads a video file (MPEG, AVI, or Quicktime files only), and
+ outputs each frame as a JMFImageToken.
 
-   <p>Note that not all formats are supported, for details, see the JMF faq at:
-   <a href="http://java.sun.com/products/java-media/jmf/reference/faqs/index.html#in_browser" target="_top">http://java.sun.com/products/java-media/jmf/reference/faqs/index.html</a>
+ <p>Note that not all formats are supported, for details, see the JMF faq at:
+ <a href="http://java.sun.com/products/java-media/jmf/reference/faqs/index.html#in_browser" target="_top">http://java.sun.com/products/java-media/jmf/reference/faqs/index.html</a>
 
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author James Yeh
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class MovieReader extends Source implements ControllerListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -88,8 +87,8 @@ public class MovieReader extends Source implements ControllerListener {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");
-        fileOrURL.setExpression(
-                "$CLASSPATH/ptolemy/actor/lib/jmf/MrPtolemy.mov");
+        fileOrURL
+                .setExpression("$CLASSPATH/ptolemy/actor/lib/jmf/MrPtolemy.mov");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -130,8 +129,7 @@ public class MovieReader extends Source implements ControllerListener {
                         // does not deal with jar urls because it cannot
                         // find a data source, so we copy the jar file.
                         copyFileName = JNLPUtilities.saveJarURLAsTempFile(url
-                                .toString(), "JMFMovieReader",
-                                null, null);
+                                .toString(), "JMFMovieReader", null, null);
 
                         File copyFile = new File(copyFileName);
                         urlCopy = copyFile.toURL();
@@ -140,11 +138,15 @@ public class MovieReader extends Source implements ControllerListener {
                         // Ignore this exception, throw the original.
                         throw new IllegalActionException(this, ex,
                                 "Invalid URL.\n(Tried copying the file '"
-                                + url.toString() + "', to '"
-                                + ((urlCopy == null) ? "null" : urlCopy.toString())
-                                + "', (copyFileName was: '" + copyFileName
-                                + "') but that failed with:\n"
-                                + KernelException.stackTraceToString(ex2));
+                                        + url.toString()
+                                        + "', to '"
+                                        + ((urlCopy == null) ? "null" : urlCopy
+                                                .toString())
+                                        + "', (copyFileName was: '"
+                                        + copyFileName
+                                        + "') but that failed with:\n"
+                                        + KernelException
+                                                .stackTraceToString(ex2));
                     }
                 }
             }
@@ -202,12 +204,14 @@ public class MovieReader extends Source implements ControllerListener {
         try {
             _player = Manager.createPlayer(_dataSource);
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
+            throw new IllegalActionException(
+                    this,
+                    ex,
                     "Failed to create a player for the data source. "
-                    + "Note that you may need to run jmfinit, which is found "
-                    + "in the JMF directory, for example c:/Program Files/"
-                    + "JMF2.1.1/bin.  The data source was: "
-                    + _dataSource.getLocator().toExternalForm());
+                            + "Note that you may need to run jmfinit, which is found "
+                            + "in the JMF directory, for example c:/Program Files/"
+                            + "JMF2.1.1/bin.  The data source was: "
+                            + _dataSource.getLocator().toExternalForm());
         }
 
         _player.addControllerListener(this);
@@ -215,34 +219,40 @@ public class MovieReader extends Source implements ControllerListener {
         _player.realize();
 
         if (!_waitForState(Controller.Realized)) {
-            throw new IllegalActionException(null,
+            throw new IllegalActionException(
+                    null,
                     "Failed to realize player, last controller event was: "
-                    + _stateTransitionEvent + "\nThe data source was: "
-                    + _dataSource.getLocator().toExternalForm()
-                    + "\nNote that not all formats are supported, see:\n"
-                    + "http://java.sun.com/products/java-media/jmf/reference/faqs/index.html");
+                            + _stateTransitionEvent
+                            + "\nThe data source was: "
+                            + _dataSource.getLocator().toExternalForm()
+                            + "\nNote that not all formats are supported, see:\n"
+                            + "http://java.sun.com/products/java-media/jmf/reference/faqs/index.html");
         }
 
         String framePostioningControlName = "javax.media.control.FramePositioningControl";
-        _framePositioningControl = (FramePositioningControl) _player.getControl(framePostioningControlName);
+        _framePositioningControl = (FramePositioningControl) _player
+                .getControl(framePostioningControlName);
 
         if (_framePositioningControl == null) {
             throw new IllegalActionException(this,
                     "Failed to get Frame Positioning Control '"
-                    + framePostioningControlName + "' possible controls are:\n"
-                    + _controlNames() + "\nThe data source was: "
-                    + _dataSource.getLocator().toExternalForm());
+                            + framePostioningControlName
+                            + "' possible controls are:\n" + _controlNames()
+                            + "\nThe data source was: "
+                            + _dataSource.getLocator().toExternalForm());
         }
 
         String frameGrabbingControlName = "javax.media.control.FrameGrabbingControl";
-        _frameGrabbingControl = (FrameGrabbingControl) _player.getControl(frameGrabbingControlName);
+        _frameGrabbingControl = (FrameGrabbingControl) _player
+                .getControl(frameGrabbingControlName);
 
         if (_frameGrabbingControl == null) {
             throw new IllegalActionException(this,
                     "Failed to get Frame Grabbing Control '"
-                    + frameGrabbingControlName + "' possible controls are:\n"
-                    + _controlNames() + "\nThe data source was: "
-                    + _dataSource.getLocator().toExternalForm());
+                            + frameGrabbingControlName
+                            + "' possible controls are:\n" + _controlNames()
+                            + "\nThe data source was: "
+                            + _dataSource.getLocator().toExternalForm());
         }
 
         _player.prefetch();
@@ -250,8 +260,8 @@ public class MovieReader extends Source implements ControllerListener {
         if (!_waitForState(Controller.Prefetched)) {
             throw new IllegalActionException(this,
                     "Failed to prefetch player, last controller event was: "
-                    + _stateTransitionEvent + "\nThe data source was: "
-                    + _dataSource.getLocator().toExternalForm());
+                            + _stateTransitionEvent + "\nThe data source was: "
+                            + _dataSource.getLocator().toExternalForm());
         }
 
         //load first frame
@@ -291,7 +301,7 @@ public class MovieReader extends Source implements ControllerListener {
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed block the processor until it state"
-                        + " transition completed.");
+                                + " transition completed.");
             }
         }
 

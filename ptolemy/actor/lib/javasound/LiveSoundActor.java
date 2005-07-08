@@ -1,30 +1,30 @@
 /* An actor that reads in audio samples and plays the audio data.
 
-@Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION 2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.lib.javasound;
 
 import java.io.IOException;
@@ -42,27 +42,26 @@ import ptolemy.media.javasound.LiveSound;
 import ptolemy.media.javasound.LiveSoundEvent;
 import ptolemy.media.javasound.LiveSoundListener;
 
-
 /////////////////////////////////////////////////////////
 //// LiveSoundActor
 
 /**
-   This actor forms a base class for actors that interact with real-time
-   sound through the ptolemy.media.LiveSound class.  This class manages the
-   parameters for live sound.
-   <p>
-   Note: Requires Java 2 v1.3.0 or later.
-   @author Steve Neuendorffer
-   @version  $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (chf)
-   @see ptolemy.media.javasound.LiveSound
-   @see AudioPlayer
-   @see AudioCapture
-*/
-public class LiveSoundActor extends TypedAtomicActor
-    implements LiveSoundListener {
+ This actor forms a base class for actors that interact with real-time
+ sound through the ptolemy.media.LiveSound class.  This class manages the
+ parameters for live sound.
+ <p>
+ Note: Requires Java 2 v1.3.0 or later.
+ @author Steve Neuendorffer
+ @version  $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (chf)
+ @see ptolemy.media.javasound.LiveSound
+ @see AudioPlayer
+ @see AudioCapture
+ */
+public class LiveSoundActor extends TypedAtomicActor implements
+        LiveSoundListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -151,8 +150,9 @@ public class LiveSoundActor extends TypedAtomicActor
                 if (channelsInt < 1) {
                     throw new IllegalActionException(this,
                             "Attempt to set channels parameter to an illegal "
-                            + "value of: " + channelsInt
-                            + " . The value must be a " + "positive integer.");
+                                    + "value of: " + channelsInt
+                                    + " . The value must be a "
+                                    + "positive integer.");
                 }
 
                 // Only set the channels if it is different than
@@ -161,7 +161,8 @@ public class LiveSoundActor extends TypedAtomicActor
                     LiveSound.setChannels(channelsInt);
                 }
             } else if (attribute == sampleRate) {
-                int sampleRateInt = ((IntToken) sampleRate.getToken()).intValue();
+                int sampleRateInt = ((IntToken) sampleRate.getToken())
+                        .intValue();
 
                 // Only set the sample rate if it is different than
                 // the currently active sample rate.
@@ -171,7 +172,7 @@ public class LiveSoundActor extends TypedAtomicActor
                 }
             } else if (attribute == bitsPerSample) {
                 int bitsPerSampleInt = ((IntToken) bitsPerSample.getToken())
-                    .intValue();
+                        .intValue();
 
                 // Only set the bitsPerSample if it is different than
                 // the currently active bitsPerSample.
@@ -186,7 +187,7 @@ public class LiveSoundActor extends TypedAtomicActor
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Cannot perform audio playback "
-                    + "with the specified parameter values.");
+                            + "with the specified parameter values.");
         }
     }
 
@@ -216,7 +217,7 @@ public class LiveSoundActor extends TypedAtomicActor
 
                 // Get the current value of this actor's sampleRate parameter.
                 int thisActorSampleRate = ((IntToken) sampleRate.getToken())
-                    .intValue();
+                        .intValue();
 
                 // Only set the sampleRate parameter if it is different from
                 // the new sample rate.
@@ -229,7 +230,7 @@ public class LiveSoundActor extends TypedAtomicActor
 
                 // Get the current value of this actor's sampleRate parameter.
                 int thisActorChannels = ((IntToken) channels.getToken())
-                    .intValue();
+                        .intValue();
 
                 // Only set the channels parameter if it is different from
                 // the new channels.
@@ -242,8 +243,8 @@ public class LiveSoundActor extends TypedAtomicActor
 
                 // Get the current value of this actor's bitsPerSample
                 // parameter.
-                int thisActorBitsPerSample = ((IntToken) bitsPerSample.getToken())
-                    .intValue();
+                int thisActorBitsPerSample = ((IntToken) bitsPerSample
+                        .getToken()).intValue();
 
                 // Only set the channels parameter if it is different from
                 // the new channels.

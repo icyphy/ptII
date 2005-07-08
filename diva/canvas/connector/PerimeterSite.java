@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.canvas.connector;
 
 import java.awt.Shape;
@@ -34,7 +34,6 @@ import java.awt.geom.Rectangle2D;
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
 import diva.util.java2d.Polygon2D;
-
 
 /** A site that locates itself on the perimeter of a figure.
  * It implements the setNormal() method to change its position
@@ -177,9 +176,9 @@ public class PerimeterSite extends AbstractSite {
                     y1 = polygon.getY(vertexPair);
 
                     double A = ((x0 - xCenter) * (py - yCenter))
-                        - ((y0 - yCenter) * (px - xCenter));
+                            - ((y0 - yCenter) * (px - xCenter));
                     double B = ((y1 - y0) * (px - xCenter))
-                        - ((x1 - x0) * (py - yCenter));
+                            - ((x1 - x0) * (py - yCenter));
                     double t = A / B;
 
                     // Must be between (x0,y0) and (x1,y1)
@@ -187,14 +186,14 @@ public class PerimeterSite extends AbstractSite {
                         double tx = x0 + ((x1 - x0) * t);
                         double ty = y0 + ((y1 - y0) * t);
                         boolean xGood = ((tx >= xCenter) && (px >= xCenter))
-                            || ((tx < xCenter) && (px < xCenter));
+                                || ((tx < xCenter) && (px < xCenter));
                         boolean yGood = ((ty >= yCenter) && (py >= yCenter))
-                            || ((ty < yCenter) && (py < yCenter));
+                                || ((ty < yCenter) && (py < yCenter));
 
                         // Must be on (px,py) side of (xCenter, yCenter)
                         if (xGood && yGood) {
                             double r = ((tx - xCenter) * (tx - xCenter))
-                                + ((ty - yCenter) * (ty - yCenter));
+                                    + ((ty - yCenter) * (ty - yCenter));
 
                             if (r > max_r) {
                                 pointx = tx;

@@ -1,32 +1,32 @@
 /* An aggregation of SDF actors for Cache Aware Scheduling experiments.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-@ProposedRating Red (sanjeev)
-@AcceptedRating Red (sanjeev)
-*/
+ @ProposedRating Red (sanjeev)
+ @AcceptedRating Red (sanjeev)
+ */
 package ptolemy.apps.cacheAwareScheduler.kernel;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -43,17 +43,16 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
 
 /**
-   This is a composite actor for use in the sdf domain to conduct experiments
-   with the cache aware scheudler.
+ This is a composite actor for use in the sdf domain to conduct experiments
+ with the cache aware scheudler.
 
-   @author Sanjeev Kohli
-   @version $Id$
-*/
+ @author Sanjeev Kohli
+ @version $Id$
+ */
 public class CASDFComposite extends TypedCompositeActor {
     /** Construct a composite actor with a name and a container.
      *  The container argument must not be null, or a
@@ -99,8 +98,8 @@ public class CASDFComposite extends TypedCompositeActor {
                 "MyScheduler");
 
         // Randomly generate a vectorization factor for the SDF Director
-        sdfDirector.vectorizationFactor.setExpression(
-                "1 + roundToInt(random()*9)");
+        sdfDirector.vectorizationFactor
+                .setExpression("1 + roundToInt(random()*9)");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -163,15 +162,15 @@ public class CASDFComposite extends TypedCompositeActor {
                 if (i == 0) {
                     actors[i].input_tokenConsumptionRate.setToken("0");
                 } else {
-                    actors[i].input_tokenConsumptionRate.setToken(
-                            "1 + roundToInt(random()*9)");
+                    actors[i].input_tokenConsumptionRate
+                            .setToken("1 + roundToInt(random()*9)");
                 }
 
                 if (i == (totalActors - 1)) {
                     actors[i].output_tokenProductionRate.setToken("0");
                 } else {
-                    actors[i].output_tokenProductionRate.setToken(
-                            "1 + roundToInt(random()*9)");
+                    actors[i].output_tokenProductionRate
+                            .setToken("1 + roundToInt(random()*9)");
                 }
 
                 // Connect the input and output ports to the previous and next

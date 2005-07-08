@@ -1,30 +1,30 @@
 /* An actor that scales the input 3D shape
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.lib;
 
 import javax.media.j3d.Node;
@@ -40,28 +40,27 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Scale3D
 
 /** Conceptually, this actor takes 3D geometry in its input and
-    produces a scaled version in its output. In reality, this actor
-    encapsulates a Java3D TransformGroup which is converted into a node in
-    the resulting Java3D scene graph. This actor will only have meaning in
-    the GR domain. Scaling can be done uniformly or non-uniformly.
-    Uniform scaling scales the input geometry equally in all
-    directions. Uniform scaling is done through modification of the
-    <i>scaleFactor</i> parameter. Non-uniform scaling involves
-    preferential scaling of the input geometry in a specified Cartesian
-    axis.  Non-uniform scaling is done through modification of the
-    <i>xScale<i>, <i>yScale<i/>, and <i>zScale<i/> parameters.
+ produces a scaled version in its output. In reality, this actor
+ encapsulates a Java3D TransformGroup which is converted into a node in
+ the resulting Java3D scene graph. This actor will only have meaning in
+ the GR domain. Scaling can be done uniformly or non-uniformly.
+ Uniform scaling scales the input geometry equally in all
+ directions. Uniform scaling is done through modification of the
+ <i>scaleFactor</i> parameter. Non-uniform scaling involves
+ preferential scaling of the input geometry in a specified Cartesian
+ axis.  Non-uniform scaling is done through modification of the
+ <i>xScale<i>, <i>yScale<i/>, and <i>zScale<i/> parameters.
 
-    @author C. Fong
-    @version $Id$
-    @since Ptolemy II 1.0
-    @Pt.ProposedRating Red (chf)
-    @Pt.AcceptedRating Red (chf)
-*/
+ @author C. Fong
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (chf)
+ @Pt.AcceptedRating Red (chf)
+ */
 public class Scale3D extends GRTransform {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -129,7 +128,7 @@ public class Scale3D extends GRTransform {
 
         Transform3D scaleTransform = new Transform3D();
         scaleTransform.setScale(new Vector3d(_getScaleX(), _getScaleY(),
-                                        _getScaleZ()));
+                _getScaleZ()));
         _transformNode.setTransform(scaleTransform);
     }
 

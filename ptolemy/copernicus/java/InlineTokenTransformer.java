@@ -1,29 +1,29 @@
 /* A transformer that inlines references to tokens.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
@@ -64,29 +64,28 @@ import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.SimpleLocalDefs;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// InlineTokenTransformer
 
 /**
-   A Transformer that is responsible for inlining the values of tokens.
-   Whenever a method is invoked on a token, this transformer attempts to
-   compile-time evaluate that method call.  Usually this will involve
-   inserting the constant value of the token, if this transformer can
-   determine what that value is.  Information about the values of tokens
-   comes from two places: Analysis of token constructors (using the
-   TokenConstructorAnalysis class) and value information that is
-   annotated into the model by previous transformation steps using a
-   ValueTag.
+ A Transformer that is responsible for inlining the values of tokens.
+ Whenever a method is invoked on a token, this transformer attempts to
+ compile-time evaluate that method call.  Usually this will involve
+ inserting the constant value of the token, if this transformer can
+ determine what that value is.  Information about the values of tokens
+ comes from two places: Analysis of token constructors (using the
+ TokenConstructorAnalysis class) and value information that is
+ annotated into the model by previous transformation steps using a
+ ValueTag.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
-public class InlineTokenTransformer extends SceneTransformer
-    implements HasPhaseOptions {
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
+public class InlineTokenTransformer extends SceneTransformer implements
+        HasPhaseOptions {
     /** Construct a new transformer
      */
     private InlineTokenTransformer(CompositeActor model) {
@@ -120,8 +119,8 @@ public class InlineTokenTransformer extends SceneTransformer
         System.out.println("InlineTokenTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-             classes.hasNext();) {
+        for (Iterator classes = Scene.v().getApplicationClasses().iterator(); classes
+                .hasNext();) {
             SootClass theClass = (SootClass) classes.next();
             _inlineTokenCalls(theClass);
         }
@@ -135,8 +134,8 @@ public class InlineTokenTransformer extends SceneTransformer
 
         // Inline calls to token methods that can be statically
         // evaluated.
-        for (Iterator methods = actorClass.getMethods().iterator();
-             methods.hasNext();) {
+        for (Iterator methods = actorClass.getMethods().iterator(); methods
+                .hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             // What about static methods?
@@ -176,8 +175,8 @@ public class InlineTokenTransformer extends SceneTransformer
                 // for them.
                 _tokenAnalysis = new TokenConstructorAnalysis(body, _localDefs);
 
-                for (Iterator units = body.getUnits().snapshotIterator();
-                     units.hasNext();) {
+                for (Iterator units = body.getUnits().snapshotIterator(); units
+                        .hasNext();) {
                     Stmt stmt = (Stmt) units.next();
 
                     if (!stmt.containsInvokeExpr()) {
@@ -233,7 +232,7 @@ public class InlineTokenTransformer extends SceneTransformer
             }
 
             if (SootUtilities.derivesFrom(type.getSootClass(),
-                        PtolemyUtilities.tokenClass)) {
+                    PtolemyUtilities.tokenClass)) {
                 // if we are invoking a method on a token class, then
                 // attempt to get the constant value of the token.
                 Token token = getTokenValue((Local) r.getBase(), unit,
@@ -269,25 +268,27 @@ public class InlineTokenTransformer extends SceneTransformer
                     if (returnType instanceof ArrayType) {
                     } else if (returnType instanceof RefType) {
                         SootClass returnClass = ((RefType) returnType)
-                            .getSootClass();
+                                .getSootClass();
 
                         if (SootUtilities.derivesFrom(returnClass,
-                                    PtolemyUtilities.tokenClass)) {
+                                PtolemyUtilities.tokenClass)) {
                             if (_debug) {
                                 System.out.println("handling as token type");
                             }
 
                             Local local = PtolemyUtilities
-                                .buildConstantTokenLocal(body,
-                                        unit, (Token) object, "token");
+                                    .buildConstantTokenLocal(body, unit,
+                                            (Token) object, "token");
                             box.setValue(local);
                             doneSomething = true;
-                        } else if (returnClass.getName().equals("java.lang.String")) {
+                        } else if (returnClass.getName().equals(
+                                "java.lang.String")) {
                             if (_debug) {
                                 System.out.println("handling as string type");
                             }
 
-                            Constant constant = StringConstant.v((String) object);
+                            Constant constant = StringConstant
+                                    .v((String) object);
                             box.setValue(constant);
                             doneSomething = true;
                         }
@@ -299,7 +300,7 @@ public class InlineTokenTransformer extends SceneTransformer
 
                         // Must be a primitive type...
                         Constant constant = SootUtilities
-                            .convertArgumentToConstantValue(object);
+                                .convertArgumentToConstantValue(object);
                         box.setValue(constant);
                         doneSomething = true;
                     } else {
@@ -357,18 +358,22 @@ public class InlineTokenTransformer extends SceneTransformer
             }
         } else {
             /*System.out.println("more than one definition of = " + local);
-              for (Iterator i = definitionList.iterator();
-              i.hasNext();) {
-              System.out.println(i.next().toString());
-              }*/
+             for (Iterator i = definitionList.iterator();
+             i.hasNext();) {
+             System.out.println(i.next().toString());
+             }*/
         }
 
         return null;
     }
 
     private CompositeActor _model;
+
     private boolean _debug;
+
     private Map _options;
+
     private LocalDefs _localDefs;
+
     private TokenConstructorAnalysis _tokenAnalysis;
 }

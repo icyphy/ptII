@@ -1,32 +1,31 @@
 /* Utilities used to manipulate strings.
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.util;
-
 
 // Note that classes in ptolemy.util do not depend on any
 // other ptolemy packages.
@@ -41,21 +40,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// StringUtilities
 
 /**
-   A collection of utilities for manipulating strings.
-   These utilities do not depend on any other ptolemy.* packages.
+ A collection of utilities for manipulating strings.
+ These utilities do not depend on any other ptolemy.* packages.
 
 
-   @author Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class StringUtilities {
     /** Instances of this class cannot be created.
      */
@@ -85,7 +83,7 @@ public class StringUtilities {
         }
 
         return longName.substring(0, 37) + ". . ."
-            + longName.substring(longName.length() - 38);
+                + longName.substring(longName.length() - 38);
     }
 
     /** Return a string with a maximum line length of <i>length</i>
@@ -219,8 +217,7 @@ public class StringUtilities {
                 // Constants.java depends on this when running with
                 // -sandbox.
                 SecurityException security = new SecurityException(
-                        "Could not find '" + propertyName
-                        + "' System property");
+                        "Could not find '" + propertyName + "' System property");
                 security.initCause(ex);
                 throw security;
             }
@@ -273,7 +270,7 @@ public class StringUtilities {
 
             // PTII variable was not set
             URL namedObjURL = Thread.currentThread().getContextClassLoader()
-                .getResource(namedObjPath);
+                    .getResource(namedObjPath);
 
             if (namedObjURL != null) {
                 String namedObjFileName = namedObjURL.getFile();
@@ -308,17 +305,17 @@ public class StringUtilities {
                 // RMptsupport.jar or
                 // XMptsupport.jar1088483703686
                 String ptsupportJarName = File.separator + "DMptolemy"
-                    + File.separator + "RMptsupport.jar";
+                        + File.separator + "RMptsupport.jar";
 
                 if (home.endsWith(ptsupportJarName)) {
-                    home = home.substring(0,
-                            home.length() - ptsupportJarName.length());
+                    home = home.substring(0, home.length()
+                            - ptsupportJarName.length());
                 } else {
                     ptsupportJarName = "/DMptolemy/XMptsupport.jar";
 
                     if (home.lastIndexOf(ptsupportJarName) != -1) {
-                        home = home.substring(0,
-                                home.lastIndexOf(ptsupportJarName));
+                        home = home.substring(0, home
+                                .lastIndexOf(ptsupportJarName));
                     }
                 }
             }
@@ -331,12 +328,10 @@ public class StringUtilities {
             if (home == null) {
                 throw new RuntimeException("Could not find "
                         + "'ptolemy.ptII.dir'" + " property.  "
-                        + "Also tried loading '"
-                        + namedObjPath
+                        + "Also tried loading '" + namedObjPath
                         + "' as a resource and working from that. "
                         + "Vergil should be "
-                        + "invoked with -Dptolemy.ptII.dir"
-                        + "=\"$PTII\"");
+                        + "invoked with -Dptolemy.ptII.dir" + "=\"$PTII\"");
             }
 
             try {
@@ -374,10 +369,11 @@ public class StringUtilities {
      *  @see #PREFERENCES_DIRECTORY
      */
     public static String preferencesDirectory() throws IOException {
-        String preferencesDirectoryName = StringUtilities.getProperty(
-                "user.home") + StringUtilities.getProperty("file.separator")
-            + StringUtilities.PREFERENCES_DIRECTORY
-            + StringUtilities.getProperty("file.separator");
+        String preferencesDirectoryName = StringUtilities
+                .getProperty("user.home")
+                + StringUtilities.getProperty("file.separator")
+                + StringUtilities.PREFERENCES_DIRECTORY
+                + StringUtilities.getProperty("file.separator");
         File preferencesDirectory = new File(preferencesDirectoryName);
 
         if (!preferencesDirectory.isDirectory()) {
@@ -498,7 +494,7 @@ public class StringUtilities {
                 // characters.  If we find one, then we use that
                 // as the place to insert a newline.
                 int lastSpaceIndex = token.substring(i, i + length)
-                    .lastIndexOf(" ");
+                        .lastIndexOf(" ");
 
                 if (lastSpaceIndex < 0) {
                     // No space found, just insert a new line after length
@@ -599,15 +595,15 @@ public class StringUtilities {
         } else {
             try {
                 String prefixCanonicalPath = (new File(prefix))
-                    .getCanonicalPath();
+                        .getCanonicalPath();
 
                 String stringCanonicalPath = (new File(string))
-                    .getCanonicalPath();
+                        .getCanonicalPath();
 
                 if (stringCanonicalPath.startsWith(prefixCanonicalPath)) {
                     return replacement
-                        + stringCanonicalPath.substring(
-                                prefixCanonicalPath.length());
+                            + stringCanonicalPath.substring(prefixCanonicalPath
+                                    .length());
                 }
             } catch (Throwable throwable) {
                 // ignore.
@@ -645,8 +641,8 @@ public class StringUtilities {
         // Parse the command into tokens
         List commandList = new LinkedList();
 
-        StreamTokenizer streamTokenizer =
-            new StreamTokenizer(new StringReader(inputString));
+        StreamTokenizer streamTokenizer = new StreamTokenizer(new StringReader(
+                inputString));
 
         // We reset the syntax so that we don't convert to numbers,
         // otherwise, if PTII is "d:\\tmp\\ptII\ 2.0", then
@@ -698,7 +694,7 @@ public class StringUtilities {
                         + streamTokenizer.nval + "'.  We should not be "
                         + "tokenizing numbers");
 
-                //break;
+            //break;
             case StreamTokenizer.TT_EOL:
                 break;
 
@@ -770,13 +766,12 @@ public class StringUtilities {
         // This method is static so that we can reuse it in places
         // like copernicus/kernel/Copernicus and actor/gui/MoMLApplication
         String result = "Usage: " + commandTemplate + "\n\n"
-            + "Options that take values:\n";
+                + "Options that take values:\n";
 
         int i;
 
         for (i = 0; i < commandOptions.length; i++) {
-            result += (" " + commandOptions[i][0] + " " + commandOptions[i][1]
-                    + "\n");
+            result += (" " + commandOptions[i][0] + " " + commandOptions[i][1] + "\n");
         }
 
         result += "\nBoolean flags:\n";

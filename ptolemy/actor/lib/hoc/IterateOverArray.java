@@ -1,30 +1,30 @@
 /* An actor that iterates a contained actor over input arrays.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.hoc;
 
 import java.io.IOException;
@@ -74,117 +74,116 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.HandlesInternalLinks;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// IterateOverArray
 
 /**
-   This actor iterates the contained actor or model over input arrays.
-   To use it, either drop an actor on it and provide arrays to the inputs,
-   or use a default configuration where the actor contains
-   an instance of IterateComposite. In the latter case,
-   you can simply look inside and
-   populate that actor with a submodel that will be applied to the
-   array elements.  The submodel is required to have a director.
-   An SDF director will
-   often be sufficient for operations taken on array elements,
-   but other directors can be used as well.
-   Note that this inside director should not impose a limit
-   on the number of iterations of the inside model. If it does,
-   then that limit will be respected, which may result in a failure
-   to iterate over all the input data.
-   <p>
-   Each input port expects an array. When this actor fires,
-   an array is read on each input port that has one, and its
-   contents are provided sequentially to the contained actor or model.
-   This actor then iterates the contained actor or model until either
-   there are no more input data for the actor or the prefire()
-   method of the actor or model
-   returns false. If postfire() of the actor returns false,
-   then postfire() of this actor will return false, requesting
-   a halt to execution of the model.  The outputs from the
-   contained actor are collected into arrays that are
-   produced on the outputs of this actor.
-   <p>
-   A special variable named "iterationCount" can be used in
-   any expression setting the value of a parameter of this actor
-   or its contents. This variable has an integer value that
-   starts at 1 during the first iteration of the contained
-   actor(s) and is incremented by 1 on each firing. If the
-   inside actors consume one token on each firing, then
-   its final value will be the size of the input array(s).
-   <p>
-   This actor is properly viewed as a "higher-order component" in
-   that its contained actor is a parameter that specifies how to
-   operate on input arrays.  It is inspired by the higher-order
-   functions of functional languages, but unlike those, the
-   contained actor need not be functional. That is, it can have
-   state.
-   <p>
-   Note that you cannot place class definitions inside this
-   actor. There should be no need to because class instances
-   inside it can be instances of classes defined outside of it.
-   <p>
-   This actor (and many of the other higher-order components)
-   has its intellectual roots in the higher-order functions
-   of functional languages, which have been in use since
-   the 1970s. Similar actors were implemented in Ptolemy
-   Classic, and are described in Lee & Parks, "Dataflow
-   Process Networks," <i>Proceedings of the IEEE</i>, 1995.
-   Those were inspired by [2].
-   Alternative approaches are found dataflow visual programming
-   since the beginning (Sutherland in the 1960s, Prograph and
-   Labview in the 1980s), and in time-based visual languages
-   (Simulink in the 1990s).
-   <p>
-   There are a number of known bugs or limitations in this
-   implementation:
-   <ul>
-   <li>
-   FIXME: When you drop in an actor, and then another actor,
-   and then select "undo," the second actor is deleted without
-   the first one being re-created. Thus, undo is only a partial
-   undo.  The fix to this is extremely complicated. Probably the
-   only viable mechanism is to use UndoStackAttribute.getUndoInfo()
-   to get the undo stack and then to manipulate the contents
-   of that stack directly.
-   <li>
-   FIXME: There should be an option to reset between
-   firings of the inside actor.
-   <li> FIXME: If you drop a new actor onto an
-   IterateOverArray in a subclass, it will replace the
-   version inherited from the prototype. This is not right,
-   since it violates the derivation invariant. Any attempt
-   to modify the contained object in the prototype will trigger
-   an exception.  There are two possible fixes. One is to
-   relax the derivation invariant and allow derived objects
-   to not perfectly mirror the hierarchy of the prototype.
-   Another is for this class to somehow refuse to accept
-   the new object in a subclass. But it is not obvious how
-   to do this.
-   <li>
-   FIXME: If an instance of IterateOverArray in a derived class has
-   overridden values of parameters, those are lost if contained
-   entity of the instance in the base class is replaced and
-   then an undo is requested.
-   </ul>
-   <p><b>References</b>
-   <p><ol>
-   <li> E. A. Lee and T. M. Parks, "Dataflow Process Networks,"
-   Proceedings of the IEEE, 83(5): 773-801, May, 1995.
-   <li> H. J. Reekie, "Toward Effective Programming for
-   Parallel Digital Signal Processing," Ph.D. Thesis,
-   University of Technology, Sydney, Sydney, Australia, 1992.
-   </ol>
+ This actor iterates the contained actor or model over input arrays.
+ To use it, either drop an actor on it and provide arrays to the inputs,
+ or use a default configuration where the actor contains
+ an instance of IterateComposite. In the latter case,
+ you can simply look inside and
+ populate that actor with a submodel that will be applied to the
+ array elements.  The submodel is required to have a director.
+ An SDF director will
+ often be sufficient for operations taken on array elements,
+ but other directors can be used as well.
+ Note that this inside director should not impose a limit
+ on the number of iterations of the inside model. If it does,
+ then that limit will be respected, which may result in a failure
+ to iterate over all the input data.
+ <p>
+ Each input port expects an array. When this actor fires,
+ an array is read on each input port that has one, and its
+ contents are provided sequentially to the contained actor or model.
+ This actor then iterates the contained actor or model until either
+ there are no more input data for the actor or the prefire()
+ method of the actor or model
+ returns false. If postfire() of the actor returns false,
+ then postfire() of this actor will return false, requesting
+ a halt to execution of the model.  The outputs from the
+ contained actor are collected into arrays that are
+ produced on the outputs of this actor.
+ <p>
+ A special variable named "iterationCount" can be used in
+ any expression setting the value of a parameter of this actor
+ or its contents. This variable has an integer value that
+ starts at 1 during the first iteration of the contained
+ actor(s) and is incremented by 1 on each firing. If the
+ inside actors consume one token on each firing, then
+ its final value will be the size of the input array(s).
+ <p>
+ This actor is properly viewed as a "higher-order component" in
+ that its contained actor is a parameter that specifies how to
+ operate on input arrays.  It is inspired by the higher-order
+ functions of functional languages, but unlike those, the
+ contained actor need not be functional. That is, it can have
+ state.
+ <p>
+ Note that you cannot place class definitions inside this
+ actor. There should be no need to because class instances
+ inside it can be instances of classes defined outside of it.
+ <p>
+ This actor (and many of the other higher-order components)
+ has its intellectual roots in the higher-order functions
+ of functional languages, which have been in use since
+ the 1970s. Similar actors were implemented in Ptolemy
+ Classic, and are described in Lee & Parks, "Dataflow
+ Process Networks," <i>Proceedings of the IEEE</i>, 1995.
+ Those were inspired by [2].
+ Alternative approaches are found dataflow visual programming
+ since the beginning (Sutherland in the 1960s, Prograph and
+ Labview in the 1980s), and in time-based visual languages
+ (Simulink in the 1990s).
+ <p>
+ There are a number of known bugs or limitations in this
+ implementation:
+ <ul>
+ <li>
+ FIXME: When you drop in an actor, and then another actor,
+ and then select "undo," the second actor is deleted without
+ the first one being re-created. Thus, undo is only a partial
+ undo.  The fix to this is extremely complicated. Probably the
+ only viable mechanism is to use UndoStackAttribute.getUndoInfo()
+ to get the undo stack and then to manipulate the contents
+ of that stack directly.
+ <li>
+ FIXME: There should be an option to reset between
+ firings of the inside actor.
+ <li> FIXME: If you drop a new actor onto an
+ IterateOverArray in a subclass, it will replace the
+ version inherited from the prototype. This is not right,
+ since it violates the derivation invariant. Any attempt
+ to modify the contained object in the prototype will trigger
+ an exception.  There are two possible fixes. One is to
+ relax the derivation invariant and allow derived objects
+ to not perfectly mirror the hierarchy of the prototype.
+ Another is for this class to somehow refuse to accept
+ the new object in a subclass. But it is not obvious how
+ to do this.
+ <li>
+ FIXME: If an instance of IterateOverArray in a derived class has
+ overridden values of parameters, those are lost if contained
+ entity of the instance in the base class is replaced and
+ then an undo is requested.
+ </ul>
+ <p><b>References</b>
+ <p><ol>
+ <li> E. A. Lee and T. M. Parks, "Dataflow Process Networks,"
+ Proceedings of the IEEE, 83(5): 773-801, May, 1995.
+ <li> H. J. Reekie, "Toward Effective Programming for
+ Parallel Digital Signal Processing," Ph.D. Thesis,
+ University of Technology, Sydney, Sydney, Australia, 1992.
+ </ol>
 
-   @author Edward A. Lee, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (neuendor)
-*/
-public class IterateOverArray extends TypedCompositeActor
-    implements HandlesInternalLinks {
+ @author Edward A. Lee, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (neuendor)
+ */
+public class IterateOverArray extends TypedCompositeActor implements
+        HandlesInternalLinks {
     /** Create an actor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -211,11 +210,10 @@ public class IterateOverArray extends TypedCompositeActor
         _iterationCount = new Variable(this, "iterationCount", new IntToken(0));
         _iterationCount.setTypeEquals(BaseType.INT);
 
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
-                + "<text x=\"-6\" y=\"10\"" + "style=\"font-size:24\">?</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-6\" y=\"10\""
+                + "style=\"font-size:24\">?</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -233,8 +231,8 @@ public class IterateOverArray extends TypedCompositeActor
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         IterateOverArray result = (IterateOverArray) super.clone(workspace);
 
-        result._iterationCount = (Variable) result.getAttribute(
-                "iterationCount");
+        result._iterationCount = (Variable) result
+                .getAttribute("iterationCount");
 
         // Fix port associations.
         Iterator entities = result.entityList().iterator();
@@ -325,7 +323,7 @@ public class IterateOverArray extends TypedCompositeActor
         if (entity.isClassDefinition()) {
             throw new IllegalActionException(this,
                     "Cannot place a class definition in an "
-                    + "IterateOverArray actor.");
+                            + "IterateOverArray actor.");
         }
 
         super._addEntity(entity);
@@ -334,103 +332,102 @@ public class IterateOverArray extends TypedCompositeActor
         // ports and connections to the new entity.
         ChangeRequest request = new ChangeRequest(this, // originator
                 "Adjust contained entities, ports and parameters") {
-                // Override this to indicate that the change is localized.
-                // This keeps the EntityTreeModel from closing open libraries
-                // when notified of this change.
-                public NamedObj getLocality() {
-                    return IterateOverArray.this;
-                }
+            // Override this to indicate that the change is localized.
+            // This keeps the EntityTreeModel from closing open libraries
+            // when notified of this change.
+            public NamedObj getLocality() {
+                return IterateOverArray.this;
+            }
 
-                protected void _execute() throws Exception {
-                    // NOTE: We defer to a change request
-                    // because only at this point can we be sure that the
-                    // change request that triggered this has completed (i.e. that
-                    // the entity being added has been added.
-                    synchronized (this) {
-                        try {
-                            workspace().getWriteAccess();
+            protected void _execute() throws Exception {
+                // NOTE: We defer to a change request
+                // because only at this point can we be sure that the
+                // change request that triggered this has completed (i.e. that
+                // the entity being added has been added.
+                synchronized (this) {
+                    try {
+                        workspace().getWriteAccess();
 
-                            // Entity most recently added.
-                            ComponentEntity entity = null;
+                        // Entity most recently added.
+                        ComponentEntity entity = null;
 
-                            // Delete any previously contained entities.
-                            // The strategy here is a bit tricky if this IterateOverArray
-                            // is within a class definition (that is, if it has derived objects).
-                            // The key is that derived objects do not permit deletion (via
-                            // MoML) of contained entities. They cannot because this would
-                            // violate the invariant of classes where derived objects
-                            // always contain the same objects as their parents.
-                            // Thus, if this is derived, we _cannot_ delete contained
-                            // entities. Thus, we should not generate entity removal
-                            // commands.
-                            List priorEntities = entityList();
-                            Iterator priors = priorEntities.iterator();
+                        // Delete any previously contained entities.
+                        // The strategy here is a bit tricky if this IterateOverArray
+                        // is within a class definition (that is, if it has derived objects).
+                        // The key is that derived objects do not permit deletion (via
+                        // MoML) of contained entities. They cannot because this would
+                        // violate the invariant of classes where derived objects
+                        // always contain the same objects as their parents.
+                        // Thus, if this is derived, we _cannot_ delete contained
+                        // entities. Thus, we should not generate entity removal
+                        // commands.
+                        List priorEntities = entityList();
+                        Iterator priors = priorEntities.iterator();
 
-                            while (priors.hasNext()) {
-                                ComponentEntity prior = (ComponentEntity) priors
+                        while (priors.hasNext()) {
+                            ComponentEntity prior = (ComponentEntity) priors
                                     .next();
 
-                                // If there is at least one more contained object,
-                                // then delete this one.
-                                // NOTE: How do we prevent the user from attempting to
-                                // override the contained object in a subclass?
-                                // It doesn't work to not remove this if the object
-                                // is derived, because then derived objects won't
-                                // track the prototype.
-                                if (priors.hasNext()) {
-                                    prior.setContainer(null);
-                                } else {
-                                    // The last entity in the entityList is
-                                    // the one that we just added.
-                                    entity = prior;
-                                }
+                            // If there is at least one more contained object,
+                            // then delete this one.
+                            // NOTE: How do we prevent the user from attempting to
+                            // override the contained object in a subclass?
+                            // It doesn't work to not remove this if the object
+                            // is derived, because then derived objects won't
+                            // track the prototype.
+                            if (priors.hasNext()) {
+                                prior.setContainer(null);
+                            } else {
+                                // The last entity in the entityList is
+                                // the one that we just added.
+                                entity = prior;
                             }
+                        }
 
-                            if (entity == null) {
-                                // Nothing to do.
-                                return;
-                            }
+                        if (entity == null) {
+                            // Nothing to do.
+                            return;
+                        }
 
-                            Iterator entityPorts = entity.portList().iterator();
+                        Iterator entityPorts = entity.portList().iterator();
 
-                            while (entityPorts.hasNext()) {
-                                ComponentPort insidePort = (ComponentPort) entityPorts
+                        while (entityPorts.hasNext()) {
+                            ComponentPort insidePort = (ComponentPort) entityPorts
                                     .next();
-                                String name = insidePort.getName();
+                            String name = insidePort.getName();
 
-                                // The outside port may already exist (e.g.
-                                // as a consequence of cloning).
-                                IteratePort newPort = (IteratePort) getPort(name);
+                            // The outside port may already exist (e.g.
+                            // as a consequence of cloning).
+                            IteratePort newPort = (IteratePort) getPort(name);
 
-                                if (newPort == null) {
-                                    newPort = (IteratePort) newPort(name);
-                                }
+                            if (newPort == null) {
+                                newPort = (IteratePort) newPort(name);
+                            }
 
-                                if (insidePort instanceof IOPort) {
-                                    IOPort castPort = (IOPort) insidePort;
-                                    newPort.setMultiport(castPort.isMultiport());
-                                    newPort.setInput(castPort.isInput());
-                                    newPort.setOutput(castPort.isOutput());
-                                }
+                            if (insidePort instanceof IOPort) {
+                                IOPort castPort = (IOPort) insidePort;
+                                newPort.setMultiport(castPort.isMultiport());
+                                newPort.setInput(castPort.isInput());
+                                newPort.setOutput(castPort.isOutput());
+                            }
 
-                                // Set up inside connections.
-                                // Do this only if they are not already connected.
-                                List connectedPorts = insidePort
+                            // Set up inside connections.
+                            // Do this only if they are not already connected.
+                            List connectedPorts = insidePort
                                     .connectedPortList();
 
-                                if (!connectedPorts.contains(newPort)) {
-                                    ComponentRelation relation = newRelation(uniqueName(
-                                                                                     "relation"));
-                                    newPort.link(relation);
-                                    insidePort.link(relation);
-                                }
+                            if (!connectedPorts.contains(newPort)) {
+                                ComponentRelation relation = newRelation(uniqueName("relation"));
+                                newPort.link(relation);
+                                insidePort.link(relation);
                             }
-                        } finally {
-                            workspace().doneWriting();
                         }
+                    } finally {
+                        workspace().doneWriting();
                     }
                 }
-            };
+            }
+        };
 
         requestChange(request);
     }
@@ -444,12 +441,12 @@ public class IterateOverArray extends TypedCompositeActor
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the actor.
      */
-    protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+    protected void _addPort(Port port) throws IllegalActionException,
+            NameDuplicationException {
         if (!(port instanceof IteratePort)) {
             throw new IllegalActionException(this,
                     "IterateOverArray ports are required to be "
-                    + "instances of IteratePort");
+                            + "instances of IteratePort");
         }
 
         super._addPort(port);
@@ -464,75 +461,74 @@ public class IterateOverArray extends TypedCompositeActor
 
         ChangeRequest request = new ChangeRequest(this,
                 "Add a port on the inside") {
-                // Override this to indicate that the change is localized.
-                // This keeps the EntityTreeModel from closing open libraries
-                // when notified of this change.
-                public NamedObj getLocality() {
-                    return IterateOverArray.this;
-                }
+            // Override this to indicate that the change is localized.
+            // This keeps the EntityTreeModel from closing open libraries
+            // when notified of this change.
+            public NamedObj getLocality() {
+                return IterateOverArray.this;
+            }
 
-                protected void _execute() throws Exception {
-                    // NOTE: We defer the construction of the MoML
-                    // change request to here because only at this
-                    // point can we be sure that the change request
-                    // that triggered this has completed.
-                    synchronized (this) {
-                        // Create and connect a matching inside port
-                        // on contained entities.
-                        // NOTE: We assume this propagates to derived
-                        // objects because _addPort is called when
-                        // MoML is parsed to add a port to
-                        // IterateOverArray. Even the IterateComposite
-                        // uses MoML to add this port, so this will
-                        // result in propagation.
-                        try {
-                            workspace().getWriteAccess();
-                            _inAddPort = true;
+            protected void _execute() throws Exception {
+                // NOTE: We defer the construction of the MoML
+                // change request to here because only at this
+                // point can we be sure that the change request
+                // that triggered this has completed.
+                synchronized (this) {
+                    // Create and connect a matching inside port
+                    // on contained entities.
+                    // NOTE: We assume this propagates to derived
+                    // objects because _addPort is called when
+                    // MoML is parsed to add a port to
+                    // IterateOverArray. Even the IterateComposite
+                    // uses MoML to add this port, so this will
+                    // result in propagation.
+                    try {
+                        workspace().getWriteAccess();
+                        _inAddPort = true;
 
-                            String portName = castPort.getName();
-                            Iterator entities = entityList().iterator();
+                        String portName = castPort.getName();
+                        Iterator entities = entityList().iterator();
 
-                            if (entities.hasNext()) {
-                                Entity insideEntity = (Entity) entities.next();
-                                Port insidePort = insideEntity.getPort(portName);
+                        if (entities.hasNext()) {
+                            Entity insideEntity = (Entity) entities.next();
+                            Port insidePort = insideEntity.getPort(portName);
 
-                                if (insidePort == null) {
-                                    insidePort = insideEntity.newPort(portName);
+                            if (insidePort == null) {
+                                insidePort = insideEntity.newPort(portName);
 
-                                    if (insidePort instanceof IOPort) {
-                                        IOPort castInsidePort = (IOPort) insidePort;
-                                        castInsidePort.setInput(castPort
-                                                .isInput());
-                                        castInsidePort.setOutput(castPort
-                                                .isOutput());
-                                        castInsidePort.setMultiport(castPort
-                                                .isMultiport());
-                                    }
-                                }
-
-                                if (insidePort instanceof MirrorPort) {
-                                    castPort.setAssociatedPort((MirrorPort) insidePort);
-                                }
-
-                                // Create a link only if it doesn't already exist.
-                                List connectedPorts = insidePort
-                                    .connectedPortList();
-
-                                if (!connectedPorts.contains(castPort)) {
-                                    // There is no connection. Create one.
-                                    ComponentRelation newRelation = newRelation(uniqueName(
-                                                                                        "relation"));
-                                    insidePort.link(newRelation);
-                                    castPort.link(newRelation);
+                                if (insidePort instanceof IOPort) {
+                                    IOPort castInsidePort = (IOPort) insidePort;
+                                    castInsidePort.setInput(castPort.isInput());
+                                    castInsidePort.setOutput(castPort
+                                            .isOutput());
+                                    castInsidePort.setMultiport(castPort
+                                            .isMultiport());
                                 }
                             }
-                        } finally {
-                            workspace().doneWriting();
-                            _inAddPort = false;
+
+                            if (insidePort instanceof MirrorPort) {
+                                castPort
+                                        .setAssociatedPort((MirrorPort) insidePort);
+                            }
+
+                            // Create a link only if it doesn't already exist.
+                            List connectedPorts = insidePort
+                                    .connectedPortList();
+
+                            if (!connectedPorts.contains(castPort)) {
+                                // There is no connection. Create one.
+                                ComponentRelation newRelation = newRelation(uniqueName("relation"));
+                                insidePort.link(newRelation);
+                                castPort.link(newRelation);
+                            }
                         }
+                    } finally {
+                        workspace().doneWriting();
+                        _inAddPort = false;
                     }
                 }
-            };
+            }
+        };
 
         requestChange(request);
     }
@@ -561,7 +557,7 @@ public class IterateOverArray extends TypedCompositeActor
 
             while (destinationPorts.hasNext()) {
                 TypedIOPort destinationPort = (TypedIOPort) destinationPorts
-                    .next();
+                        .next();
                 isUndeclared = destinationPort.getTypeTerm().isSettable();
 
                 if (!isUndeclared) {
@@ -579,7 +575,7 @@ public class IterateOverArray extends TypedCompositeActor
                         // The source port belongs to me, but not the
                         // destination.
                         Type srcElementType = ((ArrayType) srcDeclared)
-                            .getElementType();
+                                .getElementType();
                         compare = TypeLattice.compare(srcElementType,
                                 destinationDeclared);
                     } else if ((sourcePort.getContainer() != this)
@@ -587,7 +583,7 @@ public class IterateOverArray extends TypedCompositeActor
                         // The destination port belongs to me, but not
                         // the source.
                         Type destinationElementType = ((ArrayType) destinationDeclared)
-                            .getElementType();
+                                .getElementType();
                         compare = TypeLattice.compare(srcDeclared,
                                 destinationElementType);
                     } else {
@@ -598,8 +594,7 @@ public class IterateOverArray extends TypedCompositeActor
                     if ((compare == CPO.HIGHER)
                             || (compare == CPO.INCOMPARABLE)) {
                         Inequality inequality = new Inequality(sourcePort
-                                .getTypeTerm(),
-                                destinationPort.getTypeTerm());
+                                .getTypeTerm(), destinationPort.getTypeTerm());
                         result.add(inequality);
                     }
                 }
@@ -783,12 +778,13 @@ public class IterateOverArray extends TypedCompositeActor
                     if (!(sourcePortType instanceof ArrayType)) {
                         throw new InternalErrorException(
                                 "Source port was expected to be an array type: "
-                                + sourcePort.getFullName() + ", but it had type: "
-                                + sourcePortType);
+                                        + sourcePort.getFullName()
+                                        + ", but it had type: "
+                                        + sourcePortType);
                     }
 
                     InequalityTerm elementTerm = ((ArrayType) sourcePortType)
-                        .getElementTypeTerm();
+                            .getElementTypeTerm();
                     Inequality ineq = new Inequality(elementTerm,
                             destinationPort.getTypeTerm());
                     result.add(ineq);
@@ -798,12 +794,13 @@ public class IterateOverArray extends TypedCompositeActor
                     if (!(destinationPortType instanceof ArrayType)) {
                         throw new InternalErrorException(
                                 "Destination port was expected to be an array type: "
-                                + destinationPort.getFullName()
-                                + ", but it had type: " + destinationPortType);
+                                        + destinationPort.getFullName()
+                                        + ", but it had type: "
+                                        + destinationPortType);
                     }
 
                     InequalityTerm elementTerm = ((ArrayType) destinationPortType)
-                        .getElementTypeTerm();
+                            .getElementTypeTerm();
                     Inequality ineq = new Inequality(sourcePort.getTypeTerm(),
                             elementTerm);
                     result.add(ineq);
@@ -882,8 +879,8 @@ public class IterateOverArray extends TypedCompositeActor
          *  @exception NameDuplicationException If the port name
          *  collides with a name already in the actor.
          */
-        protected void _addPort(final Port port)
-                throws IllegalActionException, NameDuplicationException {
+        protected void _addPort(final Port port) throws IllegalActionException,
+                NameDuplicationException {
             if (!(port instanceof MirrorPort)) {
                 throw new IllegalActionException(this,
                         "Ports in IterateOverArray$IterateComposite must be MirrorPort.");
@@ -901,38 +898,37 @@ public class IterateOverArray extends TypedCompositeActor
             // being added is fully constructed.
             ChangeRequest request = new ChangeRequest(this,
                     "Add mirror port to the container.") {
-                    // Override this to indicate that the change is localized.
-                    // This keeps the EntityTreeModel from closing open libraries
-                    // when notified of this change.
-                    public NamedObj getLocality() {
-                        return getContainer();
-                    }
+                // Override this to indicate that the change is localized.
+                // This keeps the EntityTreeModel from closing open libraries
+                // when notified of this change.
+                public NamedObj getLocality() {
+                    return getContainer();
+                }
 
-                    protected void _execute() throws Exception {
-                        try {
-                            workspace().getWriteAccess();
+                protected void _execute() throws Exception {
+                    try {
+                        workspace().getWriteAccess();
 
-                            // The port may already exist (if we are
-                            // inside a clone() call).
-                            IteratePort newPort = (IteratePort) container
+                        // The port may already exist (if we are
+                        // inside a clone() call).
+                        IteratePort newPort = (IteratePort) container
                                 .getPort(port.getName());
 
-                            if (newPort == null) {
-                                newPort = (IteratePort) container.newPort(port
-                                        .getName());
-                            }
-
-                            if (port instanceof IOPort) {
-                                newPort.setInput(((IOPort) port).isInput());
-                                newPort.setOutput(((IOPort) port).isOutput());
-                                newPort.setMultiport(((IOPort) port)
-                                        .isMultiport());
-                            }
-                        } finally {
-                            workspace().doneWriting();
+                        if (newPort == null) {
+                            newPort = (IteratePort) container.newPort(port
+                                    .getName());
                         }
+
+                        if (port instanceof IOPort) {
+                            newPort.setInput(((IOPort) port).isInput());
+                            newPort.setOutput(((IOPort) port).isOutput());
+                            newPort.setMultiport(((IOPort) port).isMultiport());
+                        }
+                    } finally {
+                        workspace().doneWriting();
                     }
-                };
+                }
+            };
 
             container.requestChange(request);
         }
@@ -981,7 +977,7 @@ public class IterateOverArray extends TypedCompositeActor
                 if (!((ComponentEntity) actor).isOpaque()) {
                     throw new IllegalActionException(container,
                             "Inside actor is not opaque "
-                            + "(perhaps it needs a director).");
+                                    + "(perhaps it needs a director).");
                 }
 
                 int result = Actor.COMPLETED;
@@ -993,14 +989,14 @@ public class IterateOverArray extends TypedCompositeActor
 
                     if (_debugging) {
                         _debug(new FiringEvent(this, actor,
-                                       FiringEvent.BEFORE_ITERATE, iterationCount));
+                                FiringEvent.BEFORE_ITERATE, iterationCount));
                     }
 
                     result = actor.iterate(1);
 
                     if (_debugging) {
                         _debug(new FiringEvent(this, actor,
-                                       FiringEvent.AFTER_ITERATE, iterationCount));
+                                FiringEvent.AFTER_ITERATE, iterationCount));
                     }
 
                     // Should return if there is no more input data,
@@ -1113,8 +1109,8 @@ public class IterateOverArray extends TypedCompositeActor
                             Token t = port.get(i);
 
                             if (_debugging) {
-                                _debug(getName(),
-                                        "transferring input from " + port.getName());
+                                _debug(getName(), "transferring input from "
+                                        + port.getName());
                             }
 
                             ArrayToken arrayToken = (ArrayToken) t;
@@ -1158,11 +1154,11 @@ public class IterateOverArray extends TypedCompositeActor
 
                     if (list.size() != 0) {
                         Token[] tokens = (Token[]) list.toArray(new Token[list
-                                                                        .size()]);
+                                .size()]);
 
                         if (_debugging) {
-                            _debug(getName(),
-                                    "transferring output to " + port.getName());
+                            _debug(getName(), "transferring output to "
+                                    + port.getName());
                         }
 
                         port.send(i, new ArrayToken(tokens));
@@ -1209,6 +1205,7 @@ public class IterateOverArray extends TypedCompositeActor
             // This constructor is needed for Shallow codgen.
             super(workspace);
         }
+
         // NOTE: This class has to be static because otherwise the
         // constructor has an extra argument (the first argument,
         // actually) that is an instance of the enclosing class.
@@ -1282,16 +1279,17 @@ public class IterateOverArray extends TypedCompositeActor
                     _workspace.getReadAccess();
 
                     ArrayType type = (ArrayType) getType();
-                    int compare = TypeLattice.compare(token.getType(),
-                            type.getElementType());
+                    int compare = TypeLattice.compare(token.getType(), type
+                            .getElementType());
 
                     if ((compare == CPO.HIGHER)
                             || (compare == CPO.INCOMPARABLE)) {
                         throw new IllegalActionException(
                                 "Run-time type checking failed. Token type: "
-                                + token.getType().toString() + ", port: "
-                                + getFullName() + ", port type: "
-                                + getType().toString());
+                                        + token.getType().toString()
+                                        + ", port: " + getFullName()
+                                        + ", port type: "
+                                        + getType().toString());
                     }
 
                     // Note that the getRemoteReceivers() method doesn't throw
@@ -1308,7 +1306,7 @@ public class IterateOverArray extends TypedCompositeActor
 
                 for (int j = 0; j < farReceivers[channelIndex].length; j++) {
                     TypedIOPort port = (TypedIOPort) farReceivers[channelIndex][j]
-                        .getContainer();
+                            .getContainer();
                     Token newToken = port.convert(token);
                     farReceivers[channelIndex][j].put(newToken);
                 }

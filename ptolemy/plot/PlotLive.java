@@ -1,30 +1,30 @@
 /* A live signal plotter.
 
-@Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.plot;
 
 import java.awt.event.ActionEvent;
@@ -32,37 +32,36 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PlotLive
 
 /**
-   Plot signals dynamically, where points can be added at any time
-   and the display will be updated.  This should be normally used
-   with some finite persistence so that old points are erased as new
-   points are added.  Unfortunately, the most efficient way to erase
-   old points is to draw graphics using the "exclusive or" mode, which
-   introduces quite a number of artifacts.  When lines are drawn
-   between points, where they overlap the points the line becomes
-   white. Moreover, if two lines or points overlap completely, they
-   disappear.
-   <p>
-   This class is abstract, so it must be used by creating a derived
-   class.  To use it, create a derived class with an
-   addPoints() method. Your class may also set graph parameters like
-   titles and axis labels in the constructor by calling
-   methods in the Plot or PlotBox classes (both of which are base classes).
-   The addPoints() method should call addPoint() of the Plot base
-   class to dynamically add points to the plot.  This method is called
-   within a thread separate from the applet thread, so the zooming
-   mechanism and buttons remain live.
+ Plot signals dynamically, where points can be added at any time
+ and the display will be updated.  This should be normally used
+ with some finite persistence so that old points are erased as new
+ points are added.  Unfortunately, the most efficient way to erase
+ old points is to draw graphics using the "exclusive or" mode, which
+ introduces quite a number of artifacts.  When lines are drawn
+ between points, where they overlap the points the line becomes
+ white. Moreover, if two lines or points overlap completely, they
+ disappear.
+ <p>
+ This class is abstract, so it must be used by creating a derived
+ class.  To use it, create a derived class with an
+ addPoints() method. Your class may also set graph parameters like
+ titles and axis labels in the constructor by calling
+ methods in the Plot or PlotBox classes (both of which are base classes).
+ The addPoints() method should call addPoint() of the Plot base
+ class to dynamically add points to the plot.  This method is called
+ within a thread separate from the applet thread, so the zooming
+ mechanism and buttons remain live.
 
-   @author Edward A. Lee, Christopher Hylands, Contributor: Jeff Lane
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Edward A. Lee, Christopher Hylands, Contributor: Jeff Lane
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public abstract class PlotLive extends Plot implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

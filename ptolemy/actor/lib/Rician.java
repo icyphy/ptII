@@ -1,30 +1,30 @@
 /* An actor that outputs a random sequence with a Rician distribution.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
@@ -34,34 +34,33 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Rician
 
 /**
-   Produce a random sequence with a Rician distribution.
-   A Rician random variable is defined as follows:
-   Let Z = sqrt(X<sup>2</sup> + Y<sup>2</sup>), where X and Y are statistically
-   independent Gaussian random variables with means given by parameters
-   <i>xMean</i> and <i>yMean</i> respectively, and common variance given by
-   parameter <i>standardDeviation</i>.
-   <p>
-   The default values of <i>xMean</i> and <i>yMean</i> are both set to be zero,
-   in which the distribution is also called a Rayleigh distribution. Hence,
-   the actor is by default a Rayleigh random generator.
-   <p>
-   On each iteration, a new random number is produced. The output port
-   is of type DoubleToken. The values that are generated are independent
-   and identically distributed with the means and the standard deviation
-   given by parameters. In addition, the seed can be specified as a
-   parameter to control the sequence that is generated.
+ Produce a random sequence with a Rician distribution.
+ A Rician random variable is defined as follows:
+ Let Z = sqrt(X<sup>2</sup> + Y<sup>2</sup>), where X and Y are statistically
+ independent Gaussian random variables with means given by parameters
+ <i>xMean</i> and <i>yMean</i> respectively, and common variance given by
+ parameter <i>standardDeviation</i>.
+ <p>
+ The default values of <i>xMean</i> and <i>yMean</i> are both set to be zero,
+ in which the distribution is also called a Rayleigh distribution. Hence,
+ the actor is by default a Rayleigh random generator.
+ <p>
+ On each iteration, a new random number is produced. The output port
+ is of type DoubleToken. The values that are generated are independent
+ and identically distributed with the means and the standard deviation
+ given by parameters. In addition, the seed can be specified as a
+ parameter to control the sequence that is generated.
 
-   @author Ye Zhou
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (bilung)
-*/
+ @author Ye Zhou
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (bilung)
+ */
 public class Rician extends RandomSource {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -129,11 +128,11 @@ public class Rician extends RandomSource {
         double xMeanValue = ((DoubleToken) (xMean.getToken())).doubleValue();
         double yMeanValue = ((DoubleToken) (yMean.getToken())).doubleValue();
         double standardDeviationValue = ((DoubleToken) (standardDeviation
-                                                 .getToken())).doubleValue();
+                .getToken())).doubleValue();
         double xRawNum = _random.nextGaussian();
         double yRawNum = _random.nextGaussian();
-        _current = java.lang.Math.sqrt(java.lang.Math.pow((xRawNum * standardDeviationValue)
-                                               + xMeanValue, 2)
+        _current = java.lang.Math.sqrt(java.lang.Math.pow(
+                (xRawNum * standardDeviationValue) + xMeanValue, 2)
                 + java.lang.Math.pow((yRawNum * standardDeviationValue)
                         + yMeanValue, 2));
     }

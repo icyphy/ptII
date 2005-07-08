@@ -1,66 +1,65 @@
 /* An interpolator for a specified array of indexes and values.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.math;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// Interpolation
 
 /**
-   This class provides algorithms to do interpolation. Currently, zero,
-   first, and third order interpolations are supported. These are the
-   interpolation orders most often used in practice. zero order interpolation
-   holds the last reference value; first order does linear interpolation;
-   and third order interpolation is based on the Hermite curves in chapter
-   11 of "Computer Graphic, Principles and Practice", by Foley, van Dam, Feiner
-   and Hughes, 2nd ed. in C, 1996.
-   <p>
-   The setValues() method specifies the reference values as a double
-   array. setIndexes() specifies the indexes of those values as an
-   int array. These two arrays must have the same length, and the indexes
-   must be increasing and non-negative; otherwise an exception will be thrown.
-   The values are periodic if a positive period is set by setPeriod(). In
-   this case, the period must be greater than the largest index, and
-   values within the index range 0 to (period-1) are repeated indefinitely.
-   If the period is zero, the values are not periodic, and the values
-   outside the range of the indexes are considered to be 0.0.
-   The interpolation order is set by setOrder().
-   <p>
-   The default reference values are {1.0, 0.0} and the indexes are {0, 1}.
-   The default period is 2 and the order is 0.
-   <p>
+ This class provides algorithms to do interpolation. Currently, zero,
+ first, and third order interpolations are supported. These are the
+ interpolation orders most often used in practice. zero order interpolation
+ holds the last reference value; first order does linear interpolation;
+ and third order interpolation is based on the Hermite curves in chapter
+ 11 of "Computer Graphic, Principles and Practice", by Foley, van Dam, Feiner
+ and Hughes, 2nd ed. in C, 1996.
+ <p>
+ The setValues() method specifies the reference values as a double
+ array. setIndexes() specifies the indexes of those values as an
+ int array. These two arrays must have the same length, and the indexes
+ must be increasing and non-negative; otherwise an exception will be thrown.
+ The values are periodic if a positive period is set by setPeriod(). In
+ this case, the period must be greater than the largest index, and
+ values within the index range 0 to (period-1) are repeated indefinitely.
+ If the period is zero, the values are not periodic, and the values
+ outside the range of the indexes are considered to be 0.0.
+ The interpolation order is set by setOrder().
+ <p>
+ The default reference values are {1.0, 0.0} and the indexes are {0, 1}.
+ The default period is 2 and the order is 0.
+ <p>
 
-   @author Sarah Packman, Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (yuhong)
-   @Pt.AcceptedRating red (cxh)
-*/
+ @author Sarah Packman, Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (yuhong)
+ @Pt.AcceptedRating red (cxh)
+ */
 public class Interpolation {
     /** Construct an instance of Interpolation using the default parameters.
      */
@@ -195,7 +194,7 @@ public class Interpolation {
 
         if (_order == 1) {
             return vStart
-                + (((index - iStart) * (vEnd - vStart)) / (iEnd - iStart));
+                    + (((index - iStart) * (vEnd - vStart)) / (iEnd - iStart));
         }
 
         // order is 3. Need the points before Start and the point after End
@@ -243,8 +242,8 @@ public class Interpolation {
         }
 
         // computer the tangent at Start and End.
-        double tanBefore2Start = (vStart - vBeforeStart) / (iStart
-                - iBeforeStart);
+        double tanBefore2Start = (vStart - vBeforeStart)
+                / (iStart - iBeforeStart);
         double tanStart2End = (vEnd - vStart) / (iEnd - iStart);
         double tanEnd2After = (vAfterEnd - vEnd) / (iAfterEnd - iEnd);
 
@@ -355,19 +354,16 @@ public class Interpolation {
         // compute the interpolated value
         double indexSqr = index * index;
         return (coef[0] * indexSqr * index) + (coef[1] * indexSqr)
-            + (coef[2] * index) + coef[3];
+                + (coef[2] * index) + coef[3];
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private int[] _indexes = {
-        0,
-        1
-    };
-    private double[] _values = {
-        1.0,
-        0.0
-    };
+    private int[] _indexes = { 0, 1 };
+
+    private double[] _values = { 1.0, 0.0 };
+
     private int _period = 2;
+
     private int _order = 0;
 }

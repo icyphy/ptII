@@ -1,31 +1,31 @@
 /* Read from a file and create a function of three variables.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-@ProposedRating Red (acataldo)
-@AcceptedRating Red (reviewmoderator)
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ @ProposedRating Red (acataldo)
+ @AcceptedRating Red (reviewmoderator)
+ */
 package ptolemy.apps.softwalls;
 
 import java.io.BufferedReader;
@@ -40,21 +40,20 @@ import java.util.StringTokenizer;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ThreeDFunction
 
 /**
-   This creates a function of three variables, defined over some subset
-   of R^3.  The function is read from a file which stores the value of the
-   function along a lattice of gridpoints.  The begining of the file also
-   specifes the index value at each gridpoint, which in turn specifies the
-   subset of R^3 for which the dataset is defined.
+ This creates a function of three variables, defined over some subset
+ of R^3.  The function is read from a file which stores the value of the
+ function along a lattice of gridpoints.  The begining of the file also
+ specifes the index value at each gridpoint, which in turn specifies the
+ subset of R^3 for which the dataset is defined.
 
-   @author Adam Cataldo, Christopher X. Brooks
-   @version $Id$
-   @since Ptolemy II 2.0.1
-*/
+ @author Adam Cataldo, Christopher X. Brooks
+ @version $Id$
+ @since Ptolemy II 2.0.1
+ */
 public class ThreeDFunction implements Serializable {
     /** Construct the functional representation of the 3D dataset by
      *  reading a compressed file.
@@ -77,7 +76,6 @@ public class ThreeDFunction implements Serializable {
     //         // Read compressed data and do not write out uncompressed data.
     //         //this(bufferedReader, true, null);
     //     }
-
     /** Construct the functional representation of the 3D dataset by
      *  reading a compressed file.
      *
@@ -165,24 +163,24 @@ public class ThreeDFunction implements Serializable {
             // in a separate directory that might not be in the classpath,
             // so we first look as a regular file and then look in the
             // classpath.
-            URL url = getClass().getClassLoader().getResource(fileParameter
-                    .stringValue());
+            URL url = getClass().getClassLoader().getResource(
+                    fileParameter.stringValue());
 
             if (url == null) {
                 throw new IllegalActionException(fileParameter, ex,
                         "Cannot find file '" + fileParameter
-                        + "'. Also looked in classpath for '"
-                        + fileParameter.stringValue() + "'");
+                                + "'. Also looked in classpath for '"
+                                + fileParameter.stringValue() + "'");
             }
 
             try {
-                reader = new BufferedReader(new InputStreamReader(
-                                                    url.openStream()));
+                reader = new BufferedReader(new InputStreamReader(url
+                        .openStream()));
                 System.out.println("Opening URL: " + url);
             } catch (IOException ex2) {
                 throw new IllegalActionException(fileParameter, ex2,
                         "Cannot find file '" + fileParameter
-                        + "', failed to open '" + url + "'");
+                                + "', failed to open '" + url + "'");
             }
         }
 
@@ -258,11 +256,13 @@ public class ThreeDFunction implements Serializable {
                 // The fileParameter might point to something in a jar file
                 // so we get the basename by hand.
                 if (baseName.indexOf("/") != -1) {
-                    outputFileName = baseName.substring(baseName.lastIndexOf(
-                                                                "/") + 1, baseName.length()) + ".out";
+                    outputFileName = baseName.substring(baseName
+                            .lastIndexOf("/") + 1, baseName.length())
+                            + ".out";
                 } else if (baseName.indexOf("\\") != -1) {
-                    outputFileName = baseName.substring(baseName.lastIndexOf(
-                                                                "\\") + 1, baseName.length()) + ".out";
+                    outputFileName = baseName.substring(baseName
+                            .lastIndexOf("\\") + 1, baseName.length())
+                            + ".out";
                 } else {
                     outputFileName = baseName + ".out";
                 }
@@ -281,8 +281,8 @@ public class ThreeDFunction implements Serializable {
                 }
             }
         } catch (Exception ex) {
-            throw new IllegalActionException(null, ex,
-                    "Failed to parse '" + reader + "'");
+            throw new IllegalActionException(null, ex, "Failed to parse '"
+                    + reader + "'");
         } finally {
             if (reader != null) {
                 try {
@@ -363,7 +363,7 @@ public class ThreeDFunction implements Serializable {
             xDis = ((x - _xLowerBound) / _xStepSize) - x0Index;
             yDis = ((y - _yLowerBound) / _yStepSize) - y0Index;
             thetaDis = ((theta - _thetaLowerBound) / _thetaStepSize)
-                - theta0Index;
+                    - theta0Index;
 
             // Through a for loop, compute the value.  At each step
             // of the for loop, add the contribution from one of the
@@ -399,7 +399,7 @@ public class ThreeDFunction implements Serializable {
 
                         point = _values[xIndex][yIndex][thetaIndex];
                         value = value
-                            + (point * xWeight * yWeight * thetaWeight);
+                                + (point * xWeight * yWeight * thetaWeight);
                     }
                 }
             }
@@ -448,7 +448,8 @@ public class ThreeDFunction implements Serializable {
                             sawFirst = true;
                             output.write(last + "\n");
                         } else {
-                            long current = Math.round(_values[x][y][t] * 1000.0);
+                            long current = Math
+                                    .round(_values[x][y][t] * 1000.0);
                             output.write(last - current + "\n");
                             last = current;
                         }

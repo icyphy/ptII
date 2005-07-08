@@ -1,29 +1,29 @@
 /* Director for the heterochronous dataflow model of computation.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.hdf.kernel;
 
 import ptolemy.actor.CompositeActor;
@@ -44,54 +44,53 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 ////////////////////////////////////////////////////////////////////
 //// HDFDirector
 
 /**
-   The Heterochronous Dataflow (HDF) domain is an extension of the
-   Synchronous Dataflow (SDF) domain and implements the HDF model of
-   computation [1]. In SDF, the set of port rates (called rate signatures)
-   of an actor are constant. In HDF, however, rate signatures are allowed
-   to change between iterations of the HDF schedule.
-   <p>
-   This director is often used with HDFFSMDirector. The HDFFSMDirector
-   governs the execution of a modal model. The change of rate signatures can
-   be modeled by state transitions of the modal model, in which each state
-   refinement infers a set of rate signatures. Within each state, the HDF
-   model behaves like an SDF model.
-   <p>
-   This director recomputes the schedules dynamically. To improve efficiency,
-   this director uses a CachedSDFScheduler. A CachedSDFScheduler caches
-   schedules labeled by their corresponding rate signatures, with the most
-   recently used at the beginning of the queue. Therefore, when a state in HDF
-   is revisited, the schedule identified by its rate signatures in the cache
-   is used. We do not need to recompute the schedule.
-   <p>
-   The size of the cache in the CachedSDFScheduler is set by the
-   <i>scheduleCacheSize</i> parameter of HDFDirector. The default value of
-   this parameter is 100. If the cache is full, the least recently used
-   schedule (at the end of the cache) is discarded.
-   <p>
-   <b>References</b>
-   <p>
-   <OL>
-   <LI>
-   A. Girault, B. Lee, and E. A. Lee,
-   ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">
-   Hierarchical Finite State Machines with Multiple Concurrency Models</A>,
-   '' April 13, 1998.</LI>
-   </ol>
+ The Heterochronous Dataflow (HDF) domain is an extension of the
+ Synchronous Dataflow (SDF) domain and implements the HDF model of
+ computation [1]. In SDF, the set of port rates (called rate signatures)
+ of an actor are constant. In HDF, however, rate signatures are allowed
+ to change between iterations of the HDF schedule.
+ <p>
+ This director is often used with HDFFSMDirector. The HDFFSMDirector
+ governs the execution of a modal model. The change of rate signatures can
+ be modeled by state transitions of the modal model, in which each state
+ refinement infers a set of rate signatures. Within each state, the HDF
+ model behaves like an SDF model.
+ <p>
+ This director recomputes the schedules dynamically. To improve efficiency,
+ this director uses a CachedSDFScheduler. A CachedSDFScheduler caches
+ schedules labeled by their corresponding rate signatures, with the most
+ recently used at the beginning of the queue. Therefore, when a state in HDF
+ is revisited, the schedule identified by its rate signatures in the cache
+ is used. We do not need to recompute the schedule.
+ <p>
+ The size of the cache in the CachedSDFScheduler is set by the
+ <i>scheduleCacheSize</i> parameter of HDFDirector. The default value of
+ this parameter is 100. If the cache is full, the least recently used
+ schedule (at the end of the cache) is discarded.
+ <p>
+ <b>References</b>
+ <p>
+ <OL>
+ <LI>
+ A. Girault, B. Lee, and E. A. Lee,
+ ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">
+ Hierarchical Finite State Machines with Multiple Concurrency Models</A>,
+ '' April 13, 1998.</LI>
+ </ol>
 
-   @see HDFFSMDirector
-   @see CachedSDFScheduler
+ @see HDFFSMDirector
+ @see CachedSDFScheduler
 
-   @author Ye Zhou. Contributor: Brian K. Vogel
-   @version $Id$
-   @since Ptolemy II 5.0
-   @Pt.ProposedRating Red (zhouye)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Ye Zhou. Contributor: Brian K. Vogel
+ @version $Id$
+ @since Ptolemy II 5.0
+ @Pt.ProposedRating Red (zhouye)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class HDFDirector extends SDFDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -101,8 +100,8 @@ public class HDFDirector extends SDFDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public HDFDirector()
-            throws IllegalActionException, NameDuplicationException {
+    public HDFDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
         _init();
     }
@@ -116,8 +115,8 @@ public class HDFDirector extends SDFDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public HDFDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public HDFDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -167,7 +166,8 @@ public class HDFDirector extends SDFDirector {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == scheduleCacheSize) {
-            int cacheSize = ((IntToken) scheduleCacheSize.getToken()).intValue();
+            int cacheSize = ((IntToken) scheduleCacheSize.getToken())
+                    .intValue();
             ((CachedSDFScheduler) getScheduler()).constructCaches(cacheSize);
         }
         super.attributeChanged(attribute);
@@ -204,7 +204,7 @@ public class HDFDirector extends SDFDirector {
      *  preinitialize throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        ((CachedSDFScheduler)getScheduler()).clearCaches();
+        ((CachedSDFScheduler) getScheduler()).clearCaches();
         super.preinitialize();
     }
 
@@ -220,11 +220,11 @@ public class HDFDirector extends SDFDirector {
     public void setScheduler(Scheduler scheduler)
             throws IllegalActionException, NameDuplicationException {
         if (!(scheduler instanceof SDFScheduler)) {
-        	throw new IllegalActionException(this,
-        			"Scheduler is required to be an instance of SDFScheduler");
+            throw new IllegalActionException(this,
+                    "Scheduler is required to be an instance of SDFScheduler");
         }
         // FIXME: Instead, should fix the buffer sizes calculation.
-        ((SDFScheduler)scheduler).constrainBufferSizes.setExpression("false");
+        ((SDFScheduler) scheduler).constrainBufferSizes.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -234,8 +234,8 @@ public class HDFDirector extends SDFDirector {
      *  default scheduler of the class CachedSDFScheduler and a 
      *  cacheSize parameter with default value 100.
      */
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
 
         // During construction, create the scheduleCacheSize parameter
         // with default value of 100.

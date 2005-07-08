@@ -1,30 +1,30 @@
 /* A class defines how the Pursuer moves.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.demo.EvaderAndPursuer;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -44,27 +44,26 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Pursuer
 
 /**
-   The pursuer moves from a leaf node of the spanning tree to its parent node
-   to track the envader.
+ The pursuer moves from a leaf node of the spanning tree to its parent node
+ to track the envader.
 
-   see the Sensor class for how the spanning tree is constructed.
+ see the Sensor class for how the spanning tree is constructed.
 
-   FIXME: Currently, the workRange is not really used, but I plan to use it
-   to define a work area for a pursuer, so that when there are multi pursuers,
-   each one can only take care of a particular part of the field to catch
-   the evader more quickly.
+ FIXME: Currently, the workRange is not really used, but I plan to use it
+ to define a work area for a pursuer, so that when there are multi pursuers,
+ each one can only take care of a particular part of the field to catch
+ the evader more quickly.
 
-   @author Yang Zhao
-   @version $ $
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (pjb2e)
-*/
+ @author Yang Zhao
+ @version $ $
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (pjb2e)
+ */
 public class Pursuer extends TypedAtomicActor {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -151,8 +150,8 @@ public class Pursuer extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         //super.fire();
         Entity container = (Entity) this.getContainer();
-        Location locationAttribute = (Location) container.getAttribute("_location",
-                Location.class);
+        Location locationAttribute = (Location) container.getAttribute(
+                "_location", Location.class);
 
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
@@ -180,12 +179,11 @@ public class Pursuer extends TypedAtomicActor {
             IntToken d = (IntToken) inputToken.get("depth");
 
             if ((time.doubleValue() > _timeValue)
-                    || ((time.doubleValue() == _timeValue)
-                            && (d.intValue() < _parentDepth))) {
+                    || ((time.doubleValue() == _timeValue) && (d.intValue() < _parentDepth))) {
                 //the root node may have been changed
                 //or there is a shorter path.
-                ArrayToken locationArray = (ArrayToken) inputToken.get(
-                        "location");
+                ArrayToken locationArray = (ArrayToken) inputToken
+                        .get("location");
                 int length = locationArray.length();
                 _parentLocation = new double[length];
 
@@ -209,8 +207,8 @@ public class Pursuer extends TypedAtomicActor {
         super.initialize();
 
         Entity container = (Entity) this.getContainer();
-        Location locationAttribute = (Location) container.getAttribute("_location",
-                Location.class);
+        Location locationAttribute = (Location) container.getAttribute(
+                "_location", Location.class);
 
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
@@ -251,10 +249,10 @@ public class Pursuer extends TypedAtomicActor {
             result[1] = (spd * dy) / d;
 
             /*if (!_inWorkRange(_myLocation[0] + result[0],
-              _myLocation[1] + result[1])) {
-              result[0] = 0.0;
-              result[1] = 0.0;
-              }*/
+             _myLocation[1] + result[1])) {
+             result[0] = 0.0;
+             result[1] = 0.0;
+             }*/
         }
 
         return result;
@@ -267,8 +265,8 @@ public class Pursuer extends TypedAtomicActor {
         int dimensions = rangeValue.length();
 
         if (dimensions < 2) {
-            throw new IllegalActionException(this,
-                    "Invalid range dimension: " + workRange.getExpression());
+            throw new IllegalActionException(this, "Invalid range dimension: "
+                    + workRange.getExpression());
         }
 
         _workRange = new double[dimensions][dimensions];
@@ -277,16 +275,16 @@ public class Pursuer extends TypedAtomicActor {
             ArrayToken lowHigh = (ArrayToken) rangeValue.getElement(i);
 
             if (lowHigh.length() < 2) {
-                throw new IllegalActionException(this,
-                        "Invalid range: " + workRange.getExpression());
+                throw new IllegalActionException(this, "Invalid range: "
+                        + workRange.getExpression());
             }
 
             double low = ((DoubleToken) lowHigh.getElement(0)).doubleValue();
             double high = ((DoubleToken) lowHigh.getElement(1)).doubleValue();
 
             if (high < low) {
-                throw new IllegalActionException(this,
-                        "Invalid range: " + workRange.getExpression());
+                throw new IllegalActionException(this, "Invalid range: "
+                        + workRange.getExpression());
             }
 
             _workRange[i][0] = low;
@@ -298,8 +296,7 @@ public class Pursuer extends TypedAtomicActor {
             throws IllegalActionException {
         return ((_workRange[0][0] <= xLocation)
                 && (xLocation <= _workRange[0][1])
-                && (_workRange[1][0] <= yLocation)
-                && (yLocation <= _workRange[1][1]));
+                && (_workRange[1][0] <= yLocation) && (yLocation <= _workRange[1][1]));
     }
 
     ///////////////////////////////////////////////////////////////////

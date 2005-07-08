@@ -1,28 +1,28 @@
 /* A base class for all 3D GR actors
-   Copyright (c) 2003-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.gr.kernel;
 
 import javax.media.j3d.Node;
@@ -32,23 +32,22 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// GRActor3D
 
 /**
-   An abstract base class for all 3D GR actors. Subclasses of this actor
-   include geometry actors, transform actors, interaction actors, and the
-   ViewScreen3D display actor.
+ An abstract base class for all 3D GR actors. Subclasses of this actor
+ include geometry actors, transform actors, interaction actors, and the
+ ViewScreen3D display actor.
 
-   @see ptolemy.domains.gr.lib
+ @see ptolemy.domains.gr.lib
 
-   @author C. Fong
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (liuxj)
-*/
+ @author C. Fong
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (liuxj)
+ */
 abstract public class GRActor3D extends GRActor {
     /** Create a new GRActor3D in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -77,8 +76,7 @@ abstract public class GRActor3D extends GRActor {
      *  @exception IllegalActionException Always thrown for this base class.
      */
     protected void _addChild(Node node) throws IllegalActionException {
-        throw new IllegalActionException(this,
-                "Cannot have child nodes.");
+        throw new IllegalActionException(this, "Cannot have child nodes.");
     }
 
     /** Return the Java3D node associated with this actor. Derived
@@ -96,8 +94,7 @@ abstract public class GRActor3D extends GRActor {
         if (actor instanceof ViewScreen3D) {
             _viewScreen = (ViewScreen3D) actor;
         } else {
-            throw new IllegalActionException(this,
-                    "Actor of class "
+            throw new IllegalActionException(this, "Actor of class "
                     + getClass().getName()
                     + " can only be used with a ViewScreen3D");
         }

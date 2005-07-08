@@ -1,30 +1,30 @@
 /* The type of base token classes.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.data.type;
 
 import java.io.Serializable;
@@ -48,20 +48,19 @@ import ptolemy.data.XMLToken;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// BaseType
 
 /**
-   The type of base token classes. This class provides a type safe
-   enumeration of base types.
+ The type of base token classes. This class provides a type safe
+ enumeration of base types.
 
-   @author Yuhong Xiong, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (yuhong)
-   @Pt.AcceptedRating Red
-*/
+ @author Yuhong Xiong, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Red (yuhong)
+ @Pt.AcceptedRating Red
+ */
 public abstract class BaseType implements Type, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -244,6 +243,7 @@ public abstract class BaseType implements Type, Serializable {
     }
 
     public static final BooleanType BOOLEAN = new BooleanType();
+
     public static final UnsizedMatrixType.BooleanMatrixType BOOLEAN_MATRIX = new UnsizedMatrixType.BooleanMatrixType();
 
     /** The unsigned byte data type */
@@ -279,6 +279,7 @@ public abstract class BaseType implements Type, Serializable {
     }
 
     public static final ComplexType COMPLEX = new ComplexType();
+
     public static final UnsizedMatrixType.ComplexMatrixType COMPLEX_MATRIX = new UnsizedMatrixType.ComplexMatrixType();
 
     /** The double data type */
@@ -297,6 +298,7 @@ public abstract class BaseType implements Type, Serializable {
     }
 
     public static final DoubleType DOUBLE = new DoubleType();
+
     public static final UnsizedMatrixType.DoubleMatrixType DOUBLE_MATRIX = new UnsizedMatrixType.DoubleMatrixType();
 
     /** The fix data type */
@@ -310,6 +312,7 @@ public abstract class BaseType implements Type, Serializable {
     //         }
     //     }
     public static final FixType FIX = FixType.BOTTOM; //new FixType();
+
     public static final UnsizedMatrixType.FixMatrixType FIX_MATRIX = new UnsizedMatrixType.FixMatrixType();
 
     /** The integer data type */
@@ -328,6 +331,7 @@ public abstract class BaseType implements Type, Serializable {
     }
 
     public static final IntType INT = new IntType();
+
     public static final UnsizedMatrixType.IntMatrixType INT_MATRIX = new UnsizedMatrixType.IntMatrixType();
 
     /** The long integer data type */
@@ -346,6 +350,7 @@ public abstract class BaseType implements Type, Serializable {
     }
 
     public static final LongType LONG = new LongType();
+
     public static final UnsizedMatrixType.LongMatrixType LONG_MATRIX = new UnsizedMatrixType.LongMatrixType();
 
     /** The matrix data type: The least upper bound of all the matrix types. */
@@ -358,8 +363,10 @@ public abstract class BaseType implements Type, Serializable {
         }
 
         public Token convert(Token t) throws IllegalActionException {
-            throw new IllegalActionException("Cannot convert token " + t
-                    + " to type numerical, because numerical is not a concrete type.");
+            throw new IllegalActionException(
+                    "Cannot convert token "
+                            + t
+                            + " to type numerical, because numerical is not a concrete type.");
         }
 
         public int getTypeHash() {
@@ -514,6 +521,7 @@ public abstract class BaseType implements Type, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Class _tokenClass;
+
     private String _name;
 
     // A map from type name to the type for all base types.

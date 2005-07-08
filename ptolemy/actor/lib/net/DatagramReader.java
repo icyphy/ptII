@@ -1,30 +1,30 @@
 /* An actor that asynchronously reads datagram packets.
 
-Copyright (c) 2001-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2001-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.net;
 
 import java.io.IOException;
@@ -52,146 +52,145 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DatagramReader
 
 /**
-   This actor reads datagram packets via a separate thread.  The thread
-   responds to datagrams whenever they arrive, giving the actor the ability
-   to read the datagrams asynchronously.
+ This actor reads datagram packets via a separate thread.  The thread
+ responds to datagrams whenever they arrive, giving the actor the ability
+ to read the datagrams asynchronously.
 
-   Datagrams are connectionless, open-loop internet communications.  Each
-   datagram packet contains data plus a return address.  The return
-   address consists of an IP address and a socket number.  Datagrams use
-   the UDP protocol under which no reply or confirmation is expected.
-   This is in contrast to TCP which expects confirmations and attempts to
-   deliver packets in order to the layer above TCP.  This can result in
-   long delays in the delivery of information across the network.  Because
-   UDP makes no such attempts, it never hangs and does not need to be timed out.
+ Datagrams are connectionless, open-loop internet communications.  Each
+ datagram packet contains data plus a return address.  The return
+ address consists of an IP address and a socket number.  Datagrams use
+ the UDP protocol under which no reply or confirmation is expected.
+ This is in contrast to TCP which expects confirmations and attempts to
+ deliver packets in order to the layer above TCP.  This can result in
+ long delays in the delivery of information across the network.  Because
+ UDP makes no such attempts, it never hangs and does not need to be timed out.
 
-   <p>NOTE: This actor has been developed to work in the Discrete Event
-   (DE) and Synchronous Data Flow (SDF) domains.  Use elsewhere with
-   caution.
+ <p>NOTE: This actor has been developed to work in the Discrete Event
+ (DE) and Synchronous Data Flow (SDF) domains.  Use elsewhere with
+ caution.
 
-   <p> <p>The simplest scenario has the thread constantly stalled
-   awaiting a packet.  When a packet arrives, the thread quickly queues
-   it in one of the buffers of the actor, calls the
-   getDirector().fireAtCurrentTime(), and then stalls again awaiting the
-   next packet.  By stalling again and again, the thread keeps the actor
-   aware at all times of incoming packets.  This is particularly
-   important if packets come in more quickly than the model can process
-   them.  Depending on the domain (e.g. DE) in which this actor is used,
-   the director may respond to the fireAtCurrentTime() call of the thread by
-   calling the fire() method of the actor.  In this case, fire() then
-   broadcasts the data received, along with the return address and return
-   socket number from which the datagram originated.
+ <p> <p>The simplest scenario has the thread constantly stalled
+ awaiting a packet.  When a packet arrives, the thread quickly queues
+ it in one of the buffers of the actor, calls the
+ getDirector().fireAtCurrentTime(), and then stalls again awaiting the
+ next packet.  By stalling again and again, the thread keeps the actor
+ aware at all times of incoming packets.  This is particularly
+ important if packets come in more quickly than the model can process
+ them.  Depending on the domain (e.g. DE) in which this actor is used,
+ the director may respond to the fireAtCurrentTime() call of the thread by
+ calling the fire() method of the actor.  In this case, fire() then
+ broadcasts the data received, along with the return address and return
+ socket number from which the datagram originated.
 
-   <p>The data portion of the packet is broadcast at the <i>output</i> port.
-   The type of the output is always an array of bytes.
+ <p>The data portion of the packet is broadcast at the <i>output</i> port.
+ The type of the output is always an array of bytes.
 
-   <p>The return address and socket number are broadcast as String and int
-   respectively.  These tell where the received datagram originated from.
+ <p>The return address and socket number are broadcast as String and int
+ respectively.  These tell where the received datagram originated from.
 
-   <p>The behavior of the actor under less simple scenarios is governed by
-   parameters of this actor.  Additional packet(s) can arrive while the
-   director is getting around to calling fire().  Conversely, the
-   director may make extra calls to fire(), even before any datagrams
-   have come in.  I call these the eager packet and eager director
-   scenarios respectively.
+ <p>The behavior of the actor under less simple scenarios is governed by
+ parameters of this actor.  Additional packet(s) can arrive while the
+ director is getting around to calling fire().  Conversely, the
+ director may make extra calls to fire(), even before any datagrams
+ have come in.  I call these the eager packet and eager director
+ scenarios respectively.
 
-   <p>Background: There are two packet buffers.  The thread and the fire()
-   method share these buffers and maintain consistency via synchronization
-   on the object <i>_syncFireAndThread</i>.  This synchronization prevents
-   conflicts when accessing the shared buffers and when accessing the
-   count of queued packets.
+ <p>Background: There are two packet buffers.  The thread and the fire()
+ method share these buffers and maintain consistency via synchronization
+ on the object <i>_syncFireAndThread</i>.  This synchronization prevents
+ conflicts when accessing the shared buffers and when accessing the
+ count of queued packets.
 
-   <p>The <i>overwrite</i> parameter applies to the eager packet
-   scenario.  Setting this parameter to true is useful in cases where it
-   is possible for data to come in too fast for the model to process.
-   This setting alleviates data gluts without undue loss of data when the
-   model is able to keep up.  When <i>overwrite</i> is set to true (the
-   default), the actor discards the packet already received in
-   favor of the new packet.  If false, the new packet is queued behind the
-   existing one.  In the latter case, both buffers are now full.  The
-   thread then waits for fire() to consume a queued packet before it
-   stalls again awaiting the next.  In all other cases (<i>overwrite</i>
-   true or no queued packets) the thread immediately stalls to await the
-   next packet.
+ <p>The <i>overwrite</i> parameter applies to the eager packet
+ scenario.  Setting this parameter to true is useful in cases where it
+ is possible for data to come in too fast for the model to process.
+ This setting alleviates data gluts without undue loss of data when the
+ model is able to keep up.  When <i>overwrite</i> is set to true (the
+ default), the actor discards the packet already received in
+ favor of the new packet.  If false, the new packet is queued behind the
+ existing one.  In the latter case, both buffers are now full.  The
+ thread then waits for fire() to consume a queued packet before it
+ stalls again awaiting the next.  In all other cases (<i>overwrite</i>
+ true or no queued packets) the thread immediately stalls to await the
+ next packet.
 
-   <p>The <i>blockAwaitingDatagram</i> parameter applies to the eager
-   director case.  This case comes up most often in SDF, where an actor
-   is expected to block in fire until an output can be produced.  If
-   true, a call to fire() will block unless or until a datagram has
-   arrived.  If false, then fire() returns without waiting, using the
-   <i>defaultOutput</i> parameter in place of real data.  The
-   <i>returnAddress</i> and <i>returnSocketNumber</i> ports have default
-   outputs as well, but they are not parameter-programmable.
+ <p>The <i>blockAwaitingDatagram</i> parameter applies to the eager
+ director case.  This case comes up most often in SDF, where an actor
+ is expected to block in fire until an output can be produced.  If
+ true, a call to fire() will block unless or until a datagram has
+ arrived.  If false, then fire() returns without waiting, using the
+ <i>defaultOutput</i> parameter in place of real data.  The
+ <i>returnAddress</i> and <i>returnSocketNumber</i> ports have default
+ outputs as well, but they are not parameter-programmable.
 
-   <p>
-   <p>NOTE: This actor has a parameter <i>localSocketNumber</i> for the port
-   number assigned to its local datagram socket.  Initially, the local
-   socket number is set to 4004.  There is no particular reason for choosing
-   this number, except that is noticeable in the code and in Vergil, thus
-   encouraging you to change it to any desired value in the range 0..65535.
-   Note that socket numbers 0..1023 are generally reserved and numbers 1024 and
-   above are generally available.
+ <p>
+ <p>NOTE: This actor has a parameter <i>localSocketNumber</i> for the port
+ number assigned to its local datagram socket.  Initially, the local
+ socket number is set to 4004.  There is no particular reason for choosing
+ this number, except that is noticeable in the code and in Vergil, thus
+ encouraging you to change it to any desired value in the range 0..65535.
+ Note that socket numbers 0..1023 are generally reserved and numbers 1024 and
+ above are generally available.
 
-   <p>Some commonly used port numbers (a.k.a. socket numbers) are shown below:
-   <pre>
-   Well-known Ports
-   (Commonly Used Ports)
-   7        (Echo)
-   21        (FTP)
-   23        (TELNET)
-   25        (SMTP)
-   53        (DNS)
-   79        (finger)
-   80        (HTTP)
-   110        (POP3)
-   119        (NNTP)
-   161        (SNMP)
-   162        (SNMP Trap)
-   </pre>
-   Reference:  http://192.168.1.1/Forward.htm
-   (A webpage hosted from within the Linksys BEFSR41 Cable/DSL Router)
+ <p>Some commonly used port numbers (a.k.a. socket numbers) are shown below:
+ <pre>
+ Well-known Ports
+ (Commonly Used Ports)
+ 7        (Echo)
+ 21        (FTP)
+ 23        (TELNET)
+ 25        (SMTP)
+ 53        (DNS)
+ 79        (finger)
+ 80        (HTTP)
+ 110        (POP3)
+ 119        (NNTP)
+ 161        (SNMP)
+ 162        (SNMP Trap)
+ </pre>
+ Reference:  http://192.168.1.1/Forward.htm
+ (A webpage hosted from within the Linksys BEFSR41 Cable/DSL Router)
 
-   <p>NOTE: This actor can also be configured to handle multicase datagram
-   socket. A MulticastSocket is a DatagramSocket with additional capabilities
-   to join groups of other multicast hosts on the internet. A multicast group
-   is specified by a class D IP address and a standard UDP port number.
-   When one member sends a packet to a multicast group, all recipients
-   subscribing to that host and port receive the packet.
-   Currently, The parameter <i>defaultReturnAddress</i> is overloaded to specify
-   a multicast datagram IP address. When the return address is a multicast IP
-   address, The parameter <i>localSocketNumber</i> is used to specify the
-   UDP port number for the multicast group. A multicast IP address
-   ranges from 224.0.0.0 to 239.255.255.255, inclusive. To send a packet to the
-   group, the sender can be either a DatagramSocket or a MulticastSocket. The
-   only difference is that MulticastSocket allows you to control the time-to-live
-   of the datagram. Don't use 224.0.0.1 ~ 224.255.255.255 when the live time of
-   is specified larger than 1.
+ <p>NOTE: This actor can also be configured to handle multicase datagram
+ socket. A MulticastSocket is a DatagramSocket with additional capabilities
+ to join groups of other multicast hosts on the internet. A multicast group
+ is specified by a class D IP address and a standard UDP port number.
+ When one member sends a packet to a multicast group, all recipients
+ subscribing to that host and port receive the packet.
+ Currently, The parameter <i>defaultReturnAddress</i> is overloaded to specify
+ a multicast datagram IP address. When the return address is a multicast IP
+ address, The parameter <i>localSocketNumber</i> is used to specify the
+ UDP port number for the multicast group. A multicast IP address
+ ranges from 224.0.0.0 to 239.255.255.255, inclusive. To send a packet to the
+ group, the sender can be either a DatagramSocket or a MulticastSocket. The
+ only difference is that MulticastSocket allows you to control the time-to-live
+ of the datagram. Don't use 224.0.0.1 ~ 224.255.255.255 when the live time of
+ is specified larger than 1.
 
-   <p>FIXME: we might not want to overload the <i>defaultReturnAddress</i> and
-   the <i>localSocketNumber</i> parameter...
+ <p>FIXME: we might not want to overload the <i>defaultReturnAddress</i> and
+ the <i>localSocketNumber</i> parameter...
 
-   <p>Another useful tidbit is the command 'netstat'.  This works in a
-   DOS prompt and also in the UNIX-like Bash shell.  In either shell,
-   enter 'netstat -an'.  This command shows current port allocations!  Ports
-   allocated to Ptolemy models are shown along with other port allocations.
-   Other useful network commands include 'ping' and 'tracert'.
-   Both TCP and UDP (datagram) ports are shown by netstat.
-   FIXME: Find out whether a TCP port using a specific number blocks a
-   UDP port from using that same number.
+ <p>Another useful tidbit is the command 'netstat'.  This works in a
+ DOS prompt and also in the UNIX-like Bash shell.  In either shell,
+ enter 'netstat -an'.  This command shows current port allocations!  Ports
+ allocated to Ptolemy models are shown along with other port allocations.
+ Other useful network commands include 'ping' and 'tracert'.
+ Both TCP and UDP (datagram) ports are shown by netstat.
+ FIXME: Find out whether a TCP port using a specific number blocks a
+ UDP port from using that same number.
 
-   @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward Lee
-   (Based on TiltSensor actor written
-   by Chamberlain Fong, Xiaojun Liu, Edward Lee)
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (winthrop)
-   @Pt.AcceptedRating Yellow (winthrop)
-*/
+ @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward Lee
+ (Based on TiltSensor actor written
+ by Chamberlain Fong, Xiaojun Liu, Edward Lee)
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Yellow (winthrop)
+ @Pt.AcceptedRating Yellow (winthrop)
+ */
 public class DatagramReader extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -450,8 +449,7 @@ public class DatagramReader extends TypedAtomicActor {
                 //Note: don't use 224.0.0.1 ~ 224.255.255.255 when the live time
                 //of the socket is specified larger than 1.
                 if ((_defaultReturnAddress.compareTo("224.0.0.1") >= 0)
-                        && (_defaultReturnAddress.compareTo(
-                                    "239.255.255.255") <= 0)) {
+                        && (_defaultReturnAddress.compareTo("239.255.255.255") <= 0)) {
                     _multiCast = true;
 
                     try {
@@ -459,7 +457,7 @@ public class DatagramReader extends TypedAtomicActor {
                     } catch (UnknownHostException ex) {
                         throw new IllegalActionException(this, ex,
                                 "The default remote "
-                                + "address specifies an unknown host");
+                                        + "address specifies an unknown host");
                     }
 
                     if (_multicastSocket != null) {
@@ -480,7 +478,7 @@ public class DatagramReader extends TypedAtomicActor {
                         } catch (IOException exp) {
                             throw new IllegalActionException(this, exp,
                                     "Disconnecting from the multicast group "
-                                    + "failed.");
+                                            + "failed.");
                         }
                     }
                 }
@@ -492,8 +490,8 @@ public class DatagramReader extends TypedAtomicActor {
             }
         } else if (attribute == defaultOutput) {
             synchronized (_syncDefaultOutputs) {
-                _defaultOutputToken = output.getType().convert(defaultOutput
-                        .getToken());
+                _defaultOutputToken = output.getType().convert(
+                        defaultOutput.getToken());
             }
 
             // In the case of <i>blockAwaitingDatagram</i> or <i>overwrite</i>,
@@ -511,7 +509,7 @@ public class DatagramReader extends TypedAtomicActor {
             }
         } else if (attribute == blockAwaitingDatagram) {
             _blockAwaitingDatagram = ((BooleanToken) (blockAwaitingDatagram
-                                              .getToken())).booleanValue();
+                    .getToken())).booleanValue();
 
             if (!_blockAwaitingDatagram) {
                 synchronized (_syncFireAndThread) {
@@ -557,7 +555,7 @@ public class DatagramReader extends TypedAtomicActor {
                     }
 
                     int newSocketNumber = ((IntToken) (localSocketNumber
-                                                   .getToken())).intValue();
+                            .getToken())).intValue();
 
                     if ((_multicastSocket != null)
                             && (newSocketNumber != _multicastSocket
@@ -582,11 +580,12 @@ public class DatagramReader extends TypedAtomicActor {
                             _multicastSocket.close();
 
                             try {
-                                _multicastSocket = new MulticastSocket(newSocketNumber);
+                                _multicastSocket = new MulticastSocket(
+                                        newSocketNumber);
                             } catch (Exception ex) {
                                 throw new InternalErrorException(this, ex,
                                         "Couldn't open new socket number "
-                                        + newSocketNumber);
+                                                + newSocketNumber);
                             }
 
                             if (_address != null) {
@@ -594,7 +593,8 @@ public class DatagramReader extends TypedAtomicActor {
                                     _multicastSocket.joinGroup(_address);
                                 } catch (IOException exp) {
                                     throw new IllegalActionException(
-                                            "can't join the multicast group" + exp);
+                                            "can't join the multicast group"
+                                                    + exp);
                                 }
                             }
                         }
@@ -624,7 +624,7 @@ public class DatagramReader extends TypedAtomicActor {
                             } catch (SocketException ex) {
                                 throw new InternalErrorException(this, ex,
                                         "Couldn't open new socket number "
-                                        + newSocketNumber);
+                                                + newSocketNumber);
                             }
                         }
                     }
@@ -643,7 +643,7 @@ public class DatagramReader extends TypedAtomicActor {
         } else if (attribute == actorBufferLength) {
             synchronized (_syncBufferLength) {
                 _actorBufferLength = ((IntToken) (actorBufferLength.getToken()))
-                    .intValue();
+                        .intValue();
             }
 
             // Just increment a flag here, so that before the next
@@ -780,9 +780,9 @@ public class DatagramReader extends TypedAtomicActor {
                     // Ensure that any change to the default output parameters
                     // occurs atomically with respect to its use here.
                     returnAddress.broadcast(new StringToken(
-                                                    _defaultReturnAddress));
+                            _defaultReturnAddress));
                     returnSocketNumber.broadcast(new IntToken(
-                                                         _defaultReturnSocketNumber));
+                            _defaultReturnSocketNumber));
                     output.broadcast(_defaultOutputToken);
                 }
             }
@@ -804,7 +804,7 @@ public class DatagramReader extends TypedAtomicActor {
         // Reset private variables
         _packetsAlreadyAwaitingFire = 0;
         _defaultReturnAddress = ((StringToken) defaultReturnAddress.getToken())
-            .stringValue();
+                .stringValue();
 
         //check whether is ip multicase datagram.
         if ((_defaultReturnAddress.compareTo("224.0.0.1") >= 0)
@@ -817,8 +817,8 @@ public class DatagramReader extends TypedAtomicActor {
         int portNumber = ((IntToken) (localSocketNumber.getToken())).intValue();
 
         if ((portNumber < 0) || (portNumber > 65535)) {
-            throw new IllegalActionException(this,
-                    localSocketNumber + " is outside the required 0..65535 range");
+            throw new IllegalActionException(this, localSocketNumber
+                    + " is outside the required 0..65535 range");
         }
 
         if (_debugging) {
@@ -841,17 +841,18 @@ public class DatagramReader extends TypedAtomicActor {
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to create a new multicast socket on port "
-                        + portNumber);
+                                + portNumber);
             }
 
             String address = ((StringToken) defaultReturnAddress.getToken())
-                .stringValue();
+                    .stringValue();
 
             try {
                 _address = InetAddress.getByName(address);
             } catch (UnknownHostException ex) {
                 throw new IllegalActionException(this, ex,
-                        "The default remote " + "address specifies an unknown host");
+                        "The default remote "
+                                + "address specifies an unknown host");
             }
 
             try {
@@ -1061,13 +1062,18 @@ public class DatagramReader extends TypedAtomicActor {
     ////                         private variables                 ////
     // Synchronization objects.  Used only for synchronization.
     private Object _syncFireAndThread = new Object();
+
     private Object _syncDefaultOutputs = new Object();
+
     private Object _syncBufferLength = new Object();
+
     private Object _syncSocket = new Object();
 
     // Cached copies of parameters:
     private int _actorBufferLength;
+
     private boolean _overwrite;
+
     private boolean _blockAwaitingDatagram;
 
     //whether is multicast datagram or not.
@@ -1075,7 +1081,9 @@ public class DatagramReader extends TypedAtomicActor {
 
     // Cashed copies of default outputs:
     private String _defaultReturnAddress;
+
     private int _defaultReturnSocketNumber;
+
     private Token _defaultOutputToken;
 
     // Packet buffer info.  Allocated lengths need to be kept track of
@@ -1084,17 +1092,23 @@ public class DatagramReader extends TypedAtomicActor {
     // allocated to the data buffer.  FIXME - could I do
     // .getData().Length() to get the byte array's length?
     private DatagramPacket _receivePacket = null;
+
     private DatagramPacket _broadcastPacket = null;
+
     private int _receiveAllocated = 0;
+
     private int _broadcastAllocated = 0;
 
     // Misc.
     private int _packetsAlreadyAwaitingFire = 0;
+
     private int _ChangeRequestedToPlatformBufferLength;
 
     // System resources allocated: DatagramSocket and Thread to read it.
     private DatagramSocket _socket;
+
     private MulticastSocket _multicastSocket;
+
     private SocketReadingThread _socketReadingThread;
 
     // Most recent non-default values output from the
@@ -1103,7 +1117,9 @@ public class DatagramReader extends TypedAtomicActor {
     // a <i>repeat</i> parameter is implemented.  Otherwise,
     // could have been local variables to the fire() method.
     private String _returnAddress;
+
     private int _returnSocketNumber;
+
     private Token _outputToken;
 
     //the remote address the packege from.
@@ -1118,6 +1134,7 @@ public class DatagramReader extends TypedAtomicActor {
 
     // Flags used for stopFire() capability.
     private boolean _fireIsWaiting = false;
+
     private boolean _stopFire = false;
 
     ///////////////////////////////////////////////////////////////////
@@ -1146,13 +1163,15 @@ public class DatagramReader extends TypedAtomicActor {
                             // platformBufferLength parameter value
                             // (in bytes).
                             if (((BooleanToken) setPlatformBufferLength
-                                        .getToken()).booleanValue()) {
+                                    .getToken()).booleanValue()) {
                                 if (_multiCast) {
-                                    _multicastSocket.setReceiveBufferSize(((IntToken) platformBufferLength
-                                                                                  .getToken()).intValue());
+                                    _multicastSocket
+                                            .setReceiveBufferSize(((IntToken) platformBufferLength
+                                                    .getToken()).intValue());
                                 } else {
-                                    _socket.setReceiveBufferSize(((IntToken) platformBufferLength
-                                                                         .getToken()).intValue());
+                                    _socket
+                                            .setReceiveBufferSize(((IntToken) platformBufferLength
+                                                    .getToken()).intValue());
                                 }
                             }
 
@@ -1184,7 +1203,8 @@ public class DatagramReader extends TypedAtomicActor {
                 synchronized (_syncBufferLength) {
                     if ((_receivePacket == null)
                             || (_receiveAllocated != _actorBufferLength)) {
-                        _receivePacket = new DatagramPacket(new byte[_actorBufferLength],
+                        _receivePacket = new DatagramPacket(
+                                new byte[_actorBufferLength],
                                 _actorBufferLength);
                         _receiveAllocated = _actorBufferLength;
                     }
@@ -1197,7 +1217,8 @@ public class DatagramReader extends TypedAtomicActor {
                     // when the thread is run for the first time.
                     // FIXME Maybe it is not necessary at all!
                     synchronized (_syncBufferLength) {
-                        _broadcastPacket = new DatagramPacket(new byte[_actorBufferLength],
+                        _broadcastPacket = new DatagramPacket(
+                                new byte[_actorBufferLength],
                                 _actorBufferLength);
                         _broadcastAllocated = _actorBufferLength;
                     }

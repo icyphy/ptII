@@ -1,57 +1,56 @@
 /* A library for mathematical operations on matrices of floats.
 
-Some algorithms are from
+ Some algorithms are from
 
-[1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
-Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
+ [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
+ Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
-    package ptolemy.math;
-
+ */
+package ptolemy.math;
 
 //////////////////////////////////////////////////////////////////////////
 //// FloatMatrixMath
 
 /**
-   This class provides a library for mathematical operations on
-   matrices of floats.
+ This class provides a library for mathematical operations on
+ matrices of floats.
 
-   Rows and column numbers of matrices are specified with zero-based indices.
+ Rows and column numbers of matrices are specified with zero-based indices.
 
-   All calls expect matrix arguments to be non-null. In addition, all
-   rows of the matrix are expected to have the same number of columns.
+ All calls expect matrix arguments to be non-null. In addition, all
+ rows of the matrix are expected to have the same number of columns.
 
-   @author Jeff Tsay
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (ctsay)
-   @Pt.AcceptedRating Yellow (ctsay)
-*/
+ @author Jeff Tsay
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (ctsay)
+ @Pt.AcceptedRating Yellow (ctsay)
+ */
 public class FloatMatrixMath {
     // private constructor prevents construction of this class.
     private FloatMatrixMath() {
@@ -111,8 +110,8 @@ public class FloatMatrixMath {
      *  using z as the left operand in all cases and the matrix elements
      *  as the right operands (op.operate(z, matrix[i][j])).
      */
-    public static final float[][] applyBinaryOperation(
-            FloatBinaryOperation op, final float z, final float[][] matrix) {
+    public static final float[][] applyBinaryOperation(FloatBinaryOperation op,
+            final float z, final float[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -132,8 +131,8 @@ public class FloatMatrixMath {
      *  using the matrix elements as the left operands and z as the right
      *  operand in all cases (op.operate(matrix[i][j], z)).
      */
-    public static final float[][] applyBinaryOperation(
-            FloatBinaryOperation op, final float[][] matrix, final float z) {
+    public static final float[][] applyBinaryOperation(FloatBinaryOperation op,
+            final float[][] matrix, final float z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -155,9 +154,8 @@ public class FloatMatrixMath {
      *  (op.operate(matrix1[i][j], matrix2[i][j])).  If the matrices
      *  are not the same size, throw an IllegalArgumentException.
      */
-    public static final float[][] applyBinaryOperation(
-            FloatBinaryOperation op, final float[][] matrix1,
-            final float[][] matrix2) {
+    public static final float[][] applyBinaryOperation(FloatBinaryOperation op,
+            final float[][] matrix1, final float[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -576,8 +574,9 @@ public class FloatMatrixMath {
         if (rows != array.length) {
             throw new IllegalArgumentException(
                     "preMultiply : array does not have the same number of "
-                    + "elements (" + array.length + ") as the number of rows "
-                    + "of the matrix (" + rows + ")");
+                            + "elements (" + array.length
+                            + ") as the number of rows " + "of the matrix ("
+                            + rows + ")");
         }
 
         float[] returnValue = new float[columns];
@@ -609,8 +608,9 @@ public class FloatMatrixMath {
         if (columns != array.length) {
             throw new IllegalArgumentException(
                     "postMultiply() : array does not have the same number "
-                    + "of elements (" + array.length + ") as the number of "
-                    + "columns of the matrix (" + columns + ")");
+                            + "of elements (" + array.length
+                            + ") as the number of " + "columns of the matrix ("
+                            + columns + ")");
         }
 
         float[] returnValue = new float[rows];
@@ -810,10 +810,7 @@ public class FloatMatrixMath {
             }
         }
 
-        return new float[][][] {
-            transpose(qT),
-            dotProducts
-        };
+        return new float[][][] { transpose(qT), dotProducts };
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -1088,8 +1085,7 @@ public class FloatMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if ((matrix1[i][j] > (matrix2[i][j] + errorMatrix[i][j]))
-                        || (matrix1[i][j] < (matrix2[i][j]
-                                    - errorMatrix[i][j]))) {
+                        || (matrix1[i][j] < (matrix2[i][j] - errorMatrix[i][j]))) {
                     return false;
                 }
             }
@@ -1127,8 +1123,8 @@ public class FloatMatrixMath {
             final float[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException("ptolemy.math.FloatMatrixMath."
-                    + caller + "() : matrix argument " + _dimensionString(matrix)
-                    + " is not a square matrix.");
+                    + caller + "() : matrix argument "
+                    + _dimensionString(matrix) + " is not a square matrix.");
         }
 
         return _rows(matrix);
@@ -1165,8 +1161,7 @@ public class FloatMatrixMath {
      * </ol>
      *  Orthogonalization is done with the Gram-Schmidt process.
      */
-    protected static final Object[] _orthogonalizeRows(
-            final float[][] rowArrays) {
+    protected static final Object[] _orthogonalizeRows(final float[][] rowArrays) {
         int rows = rowArrays.length;
         int columns = rowArrays[0].length;
         int nullity = 0;
@@ -1195,9 +1190,9 @@ public class FloatMatrixMath {
 
                 dotProductMatrix[j][i] = dotProduct;
 
-                rowArray = FloatArrayMath.subtract(rowArray,
-                        FloatArrayMath.scale(orthogonalMatrix[j],
-                                dotProduct * oneOverNormSquaredArray[j]));
+                rowArray = FloatArrayMath.subtract(rowArray, FloatArrayMath
+                        .scale(orthogonalMatrix[j], dotProduct
+                                * oneOverNormSquaredArray[j]));
             }
 
             // Compute the dot product between the input and output vector
@@ -1234,12 +1229,8 @@ public class FloatMatrixMath {
             }
         }
 
-        return new Object[] {
-            orthogonalMatrix,
-            dotProductMatrix,
-            oneOverNormSquaredArray,
-            new Integer(nullity)
-        };
+        return new Object[] { orthogonalMatrix, dotProductMatrix,
+                oneOverNormSquaredArray, new Integer(nullity) };
     }
 
     /** Return the number of rows of a matrix. */

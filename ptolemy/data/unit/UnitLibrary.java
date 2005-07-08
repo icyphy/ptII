@@ -1,29 +1,29 @@
 /* The Unit Library
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_3
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_3
+ COPYRIGHTENDKEY
+ */
 package ptolemy.data.unit;
 
 import java.net.URL;
@@ -36,24 +36,23 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// UnitLibrary
 
 /** A Library containing definitions of commonly used units.
 
-Currently, the Unit library is static in the sense that it is
-loaded when the system starts and is hard-wired to a particular
-Unit System (the System International Unit System). However, it
-should be easy to change the architecture so that multiple Unit
-Systems can be accommodated, and loaded on-the-fly.
+ Currently, the Unit library is static in the sense that it is
+ loaded when the system starts and is hard-wired to a particular
+ Unit System (the System International Unit System). However, it
+ should be easy to change the architecture so that multiple Unit
+ Systems can be accommodated, and loaded on-the-fly.
 
-@author Rowland R Johnson
-@version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Red (rowland)
-@Pt.AcceptedRating Red (rowland)
-*/
+ @author Rowland R Johnson
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (rowland)
+ @Pt.AcceptedRating Red (rowland)
+ */
 public class UnitLibrary {
     public UnitLibrary() {
     }
@@ -218,8 +217,11 @@ public class UnitLibrary {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private static boolean _debug = false;
+
     private static int _numCats;
+
     private static UParser _parser;
+
     private static Vector _unitsLibrary;
 
     static {
@@ -267,8 +269,8 @@ public class UnitLibrary {
             } else if (oldStyleUnit instanceof Parameter) {
                 String name = ((Parameter) oldStyleUnit).getName();
                 String expr = ((Parameter) oldStyleUnit).getExpression();
-                UnitNameExprPair pair = enclosingObject.new UnitNameExprPair(name,
-                        expr);
+                UnitNameExprPair pair = enclosingObject.new UnitNameExprPair(
+                        name, expr);
                 pairs.add(pair);
             }
         }
@@ -332,6 +334,7 @@ public class UnitLibrary {
         }
 
         private String _name;
+
         private String _uExpr;
     }
 }

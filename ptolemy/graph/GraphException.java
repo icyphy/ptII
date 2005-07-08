@@ -1,43 +1,42 @@
 /* Base exception for graph errors.
 
-Copyright (c) 2002-2005 The University of Maryland.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The University of Maryland.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package ptolemy.graph;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphException
 
 /**
-   Base exception for graph errors. This is also an instance of
-   <code>RuntimeException</code>.
+ Base exception for graph errors. This is also an instance of
+ <code>RuntimeException</code>.
 
-   @author Mingyung Ko, Shuvra S. Bhattacharyya
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (myko)
-   @Pt.AcceptedRating Red (ssb)
-*/
+ @author Mingyung Ko, Shuvra S. Bhattacharyya
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Red (myko)
+ @Pt.AcceptedRating Red (ssb)
+ */
 public class GraphException extends RuntimeException {
     /** The default constructor without arguments.
      */
@@ -66,7 +65,7 @@ public class GraphException extends RuntimeException {
      */
     static public String graphDump(Graph graph) {
         return "\nA Dump of the offending graph follows.\n" + graph.toString()
-            + "\n";
+                + "\n";
     }
 
     /** Return a dump of a graph element and the container graph suitable to
@@ -97,7 +96,7 @@ public class GraphException extends RuntimeException {
      */
     static public String weightDump(Object weight) {
         String dump = "\nThe weight is of class " + weight.getClass().getName()
-            + " and its description follows:\n" + weight.toString();
+                + " and its description follows:\n" + weight.toString();
         return dump;
     }
 
@@ -115,9 +114,11 @@ public class GraphException extends RuntimeException {
      */
     static protected String _elementDump(Object element, Graph graph,
             String elementDescriptor) {
-        String elementString = (element == null) ? "<null>" : element.toString();
+        String elementString = (element == null) ? "<null>" : element
+                .toString();
         return "\nDumps of the offending " + elementDescriptor
-            + " and graph follow.\n" + "The offending " + elementDescriptor + ":\n"
-            + elementString + "\nThe offending graph:\n" + graph.toString() + "\n";
+                + " and graph follow.\n" + "The offending " + elementDescriptor
+                + ":\n" + elementString + "\nThe offending graph:\n"
+                + graph.toString() + "\n";
     }
 }

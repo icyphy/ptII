@@ -1,30 +1,30 @@
 /* Thread class for process oriented domains.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.process;
 
 import java.io.InterruptedIOException;
@@ -37,42 +37,41 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ProcessThread
 
 /**
-   Thread class acting as a process for process oriented domains.
-   <P>
-   In process oriented domains, each actor acts as a separate process and
-   its execution is not centrally controlled by the director. Each process
-   runs concurrently with other processes and is responsible for calling
-   its execution methods.
-   <P>
-   This class provides the mechanism to implement the above.
-   An instance of this class can be created by passing an actor as an
-   argument to the constructor. This class runs as a separate thread on
-   being started and calls the execution methods on the actor, repeatedly.
-   Specifically, it calls initialize(), and then repeatedly calls
-   the prefire(), fire() and postfire() methods
-   of the actor. Before termination, this calls the wrapup() method of
-   the actor.
-   <P>
-   If an actor returns false in its postfire() methods, the
-   actor is never fired again and the thread or process terminates
-   after calling wrapup() on the actor.
-   <P>
-   An instance of this class is associated with an instance of ProcessDirector
-   as well as an instance of Actor. The _increaseActiveCount() of the director
-   is called from the constructor of this class, and the _decreaseActiveCount()
-   method is called at the end of the run() method, just before the thread terminates.
+ Thread class acting as a process for process oriented domains.
+ <P>
+ In process oriented domains, each actor acts as a separate process and
+ its execution is not centrally controlled by the director. Each process
+ runs concurrently with other processes and is responsible for calling
+ its execution methods.
+ <P>
+ This class provides the mechanism to implement the above.
+ An instance of this class can be created by passing an actor as an
+ argument to the constructor. This class runs as a separate thread on
+ being started and calls the execution methods on the actor, repeatedly.
+ Specifically, it calls initialize(), and then repeatedly calls
+ the prefire(), fire() and postfire() methods
+ of the actor. Before termination, this calls the wrapup() method of
+ the actor.
+ <P>
+ If an actor returns false in its postfire() methods, the
+ actor is never fired again and the thread or process terminates
+ after calling wrapup() on the actor.
+ <P>
+ An instance of this class is associated with an instance of ProcessDirector
+ as well as an instance of Actor. The _increaseActiveCount() of the director
+ is called from the constructor of this class, and the _decreaseActiveCount()
+ method is called at the end of the run() method, just before the thread terminates.
 
-   @author Mudit Goel, Neil Smyth, John S. Davis II
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (mudit)
-   @Pt.AcceptedRating Yellow (mudit)
-*/
+ @author Mudit Goel, Neil Smyth, John S. Davis II
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (mudit)
+ @Pt.AcceptedRating Yellow (mudit)
+ */
 public class ProcessThread extends PtolemyThread {
     /** Construct a thread to be used for the execution of the
      *  iteration methods of the actor. This increases the count of active
@@ -152,19 +151,16 @@ public class ProcessThread extends PtolemyThread {
                             // to a stopFire, then stop execution
                             // altogether and skip to wrapup().
                             if (_director.isStopRequested()) {
-                                _debug(
-                                        "-- Thread stop requested, so cancel iteration.");
+                                _debug("-- Thread stop requested, so cancel iteration.");
                                 break;
                             }
 
-                            _debug(
-                                    "-- Thread waiting for canceled pause request.");
+                            _debug("-- Thread waiting for canceled pause request.");
 
                             try {
                                 workspace.wait(_director);
                             } catch (InterruptedException ex) {
-                                _debug(
-                                        "-- Thread interrupted, so cancel iteration.");
+                                _debug("-- Thread interrupted, so cancel iteration.");
                                 break;
                             }
                         }
@@ -200,26 +196,27 @@ public class ProcessThread extends PtolemyThread {
 
                 if (thrownWhenIterate instanceof TerminateProcessException) {
                     // Process was terminated.
-                    _debug(
-                            "-- Blocked Receiver call threw TerminateProcessException.");
+                    _debug("-- Blocked Receiver call threw TerminateProcessException.");
                 } else if (thrownWhenIterate instanceof InterruptedException) {
                     // Process was terminated by call to stop();
                     _debug("-- Thread was interrupted: " + thrownWhenIterate);
                 } else if (thrownWhenIterate instanceof InterruptedIOException
-                        || ((thrownWhenIterate != null)
-                                && thrownWhenIterate.getCause() instanceof InterruptedIOException)) {
+                        || ((thrownWhenIterate != null) && thrownWhenIterate
+                                .getCause() instanceof InterruptedIOException)) {
                     // PSDF has problems here when run with JavaScope
                     _debug("-- IO was interrupted: " + thrownWhenIterate);
                 } else if (thrownWhenIterate instanceof IllegalActionException) {
                     _debug("-- Exception: " + thrownWhenIterate);
-                    _manager.notifyListenersOfException((IllegalActionException) thrownWhenIterate);
+                    _manager
+                            .notifyListenersOfException((IllegalActionException) thrownWhenIterate);
                 } else if (thrownWhenIterate != null) {
                     rethrow = true;
                 }
 
                 if (thrownWhenWrapup instanceof IllegalActionException) {
                     _debug("-- Exception: " + thrownWhenWrapup);
-                    _manager.notifyListenersOfException((IllegalActionException) thrownWhenWrapup);
+                    _manager
+                            .notifyListenersOfException((IllegalActionException) thrownWhenWrapup);
                 } else if (thrownWhenWrapup != null) {
                     // Must be a runtime exception.
                     // Call notifyListenerOfThrowable() here so that
@@ -247,7 +244,10 @@ public class ProcessThread extends PtolemyThread {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Actor _actor;
+
     private ProcessDirector _director;
+
     private Manager _manager;
+
     private String _name;
 }

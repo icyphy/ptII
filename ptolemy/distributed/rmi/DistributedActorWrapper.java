@@ -1,28 +1,28 @@
 /* Wrapper for a distributed actor.
 
-@Copyright (c) 2005 The Regents of Aalborg University.
-All rights reserved.
+ @Copyright (c) 2005 The Regents of Aalborg University.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL AALBORG UNIVERSITY BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ AALBORG UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
-HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
+ HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 package ptolemy.distributed.rmi;
 
 import java.net.InetAddress;
@@ -53,18 +53,18 @@ import ptolemy.moml.MoMLParser;
 //// DistributedActorWrapper
 
 /**
-   The DistributedActorWrapper implements the RemoteDistributedActor interface.
-   It is a remote distributed actor and wraps actors inside, making them
-   believe they are executed locally while they are distributed. It receives
-   rmi calls. The calls to methods that exist in the actor interface are
-   forwarded to the wrapped actor.
+ The DistributedActorWrapper implements the RemoteDistributedActor interface.
+ It is a remote distributed actor and wraps actors inside, making them
+ believe they are executed locally while they are distributed. It receives
+ rmi calls. The calls to methods that exist in the actor interface are
+ forwarded to the wrapped actor.
 
-   @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (kapokasa)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Daniel Lazaro Cuadrado (kapokasa@kom.aau.dk)
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (kapokasa)
+ @Pt.AcceptedRating Red (cxh)
+ */
 
 public class DistributedActorWrapper implements RemoteDistributedActor {
 
@@ -170,8 +170,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         String processedMoML = processMoML(moml);
 
         try {
-            compositeActor = (DistributedTypedCompositeActor)
-                                momlParser.parse(processedMoML);
+            compositeActor = (DistributedTypedCompositeActor) momlParser
+                    .parse(processedMoML);
             actor = (Actor) compositeActor.entityList().get(0);
         } catch (Exception e) {
             KernelException.stackTraceToString(e);
@@ -179,8 +179,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         }
 
         if (VERBOSE) {
-            System.out.println("MoML Comparison after loading: " +
-                    moml.equals(((ComponentEntity) actor).exportMoML()));
+            System.out.println("MoML Comparison after loading: "
+                    + moml.equals(((ComponentEntity) actor).exportMoML()));
         }
 
         System.out.println("Class: " + actor.getClass() + " loaded.");
@@ -256,8 +256,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         Token token = (Token) data.keySet().iterator().next();
         LinkedList idsList = (LinkedList) data.get(token);
         if (VERBOSE) {
-            System.out.println("Received data. Token: " + token.toString() +
-                                " ids: " + idsList);
+            System.out.println("Received data. Token: " + token.toString()
+                    + " ids: " + idsList);
         }
         for (Iterator ids = idsList.iterator(); ids.hasNext();) {
             Integer id = (Integer) ids.next();
@@ -298,43 +298,44 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  occur during the execution of a remote method call.
      */
 
-    public void setConnections(HashMap connections) throws
-                                                java.rmi.RemoteException {
+    public void setConnections(HashMap connections)
+            throws java.rmi.RemoteException {
         if (VERBOSE) {
-            System.out.println("Received Connections: " +
-                                connections.toString());
+            System.out.println("Received Connections: "
+                    + connections.toString());
         }
 
         int number = 0;
-        DistributedDirector director = (DistributedDirector)
-                                    compositeActor.getDirector();
+        DistributedDirector director = (DistributedDirector) compositeActor
+                .getDirector();
 
-        for (Iterator portsIterator = connections.keySet().iterator();
-             portsIterator.hasNext();) {
+        for (Iterator portsIterator = connections.keySet().iterator(); portsIterator
+                .hasNext();) {
 
             String portName = (String) portsIterator.next();
             IOPort port = (IOPort) ((ComponentEntity) actor).getPort(portName);
             DistributedTypedIORelation relation = null;
 
             if (port.isInput()) {
-                Integer[][] integerReceivers =
-                            (Integer[][]) connections.get(portName);
+                Integer[][] integerReceivers = (Integer[][]) connections
+                        .get(portName);
                 if (VERBOSE) {
-                    System.out.println("Receivers received for " +
-                            portName + "\n" +
-                            DistributedUtilities.
-                            integersArrayToString(integerReceivers));
+                    System.out.println("Receivers received for "
+                            + portName
+                            + "\n"
+                            + DistributedUtilities
+                                    .integersArrayToString(integerReceivers));
                 }
                 for (int i = 0; i < integerReceivers.length; i++) {
 
                     try {
-                        relation = (DistributedTypedIORelation)
-                            compositeActor.newRelation(portName + number);
+                        relation = (DistributedTypedIORelation) compositeActor
+                                .newRelation(portName + number);
                         number += 1;
                         if (VERBOSE) {
-                            System.out.println("> for Port : " + portName +
-                                               " created Relation: " +
-                                               relation.getName());
+                            System.out.println("> for Port : " + portName
+                                    + " created Relation: "
+                                    + relation.getName());
                         }
                         port.link(relation);
                     } catch (NameDuplicationException e) {
@@ -343,29 +344,29 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                         KernelException.stackTraceToString(e);
                     }
                 }
-                director.setListOfIds(DistributedUtilities.
-                                convertIntegersToList(integerReceivers));
+                director.setListOfIds(DistributedUtilities
+                        .convertIntegersToList(integerReceivers));
                 try {
                     port.createReceivers();
                 } catch (IllegalActionException e) {
                     KernelException.stackTraceToString(e);
                 }
                 if (VERBOSE) {
-                    System.out.println("Receivers created for " + portName +
-                            "\n" +
-                            DistributedUtilities.
-                                receiversArrayToString(port.getReceivers()));
+                    System.out.println("Receivers created for "
+                            + portName
+                            + "\n"
+                            + DistributedUtilities.receiversArrayToString(port
+                                    .getReceivers()));
                 }
             }
 
             if (port.isOutput()) {
                 try {
-                    relation = (DistributedTypedIORelation)
-                        compositeActor.newRelation(portName);
+                    relation = (DistributedTypedIORelation) compositeActor
+                            .newRelation(portName);
                     if (VERBOSE) {
-                        System.out.println("> for Port : " + portName +
-                                           " created Relation: " +
-                                           relation.getName());
+                        System.out.println("> for Port : " + portName
+                                + " created Relation: " + relation.getName());
                     }
                     port.link(relation);
                 } catch (NameDuplicationException e) {
@@ -373,14 +374,14 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                 } catch (IllegalActionException e) {
                     KernelException.stackTraceToString(e);
                 }
-                relation.setServicesReceiversListMap((HashMap)
-                                            connections.get(portName));
+                relation.setServicesReceiversListMap((HashMap) connections
+                        .get(portName));
             }
         }
         idsReceiversMap = director.getIdsReceiversMap();
         if (VERBOSE) {
-            System.out.println("IDs Receivers Map: " +
-                               idsReceiversMap.keySet().toString());
+            System.out.println("IDs Receivers Map: "
+                    + idsReceiversMap.keySet().toString());
         }
     }
 
@@ -396,25 +397,25 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
             System.out.println("Received port Types: " + portTypes.toString());
         }
 
-        for (Iterator portsIterator = portTypes.keySet().iterator();
-             portsIterator.hasNext();) {
+        for (Iterator portsIterator = portTypes.keySet().iterator(); portsIterator
+                .hasNext();) {
 
             String portName = (String) portsIterator.next();
-            TypedIOPort port = (TypedIOPort) ((ComponentEntity) actor).
-                getPort(portName);
+            TypedIOPort port = (TypedIOPort) ((ComponentEntity) actor)
+                    .getPort(portName);
             Type type = (Type) portTypes.get(portName);
             port.setTypeEquals(type);
 
             // This is not needed, does not trigger runtime type checking on
             // these ports.
             /*
-              if (port.isOutput()) {
-              DistributedTypedIORelation relation =
-                  (DistributedTypedIORelation)
-                  compositeActor.getRelation(portName);
-              relation.connectedPort().setTypeEquals(type);
-              }
-            */
+             if (port.isOutput()) {
+             DistributedTypedIORelation relation =
+             (DistributedTypedIORelation)
+             compositeActor.getRelation(portName);
+             relation.connectedPort().setTypeEquals(type);
+             }
+             */
         }
     }
 
@@ -483,11 +484,10 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
 
     private String processMoML(String moml) {
 
-        String header = "<entity name=\"model\" class=\"ptolemy.distributed." +
-                        "actor.DistributedTypedCompositeActor\">\n";
-        String director = "<property name=\"Distributed Director\" class=" +
-                          "\"ptolemy.distributed.actor." +
-                          "DistributedDirector\"/>";
+        String header = "<entity name=\"model\" class=\"ptolemy.distributed."
+                + "actor.DistributedTypedCompositeActor\">\n";
+        String director = "<property name=\"Distributed Director\" class="
+                + "\"ptolemy.distributed.actor." + "DistributedDirector\"/>";
         String footer = "\n</entity>";
         moml = header + director + moml + footer;
 

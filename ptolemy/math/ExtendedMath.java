@@ -1,48 +1,47 @@
 /* A library of additional mathematical operations beyond those provided
-   by the Java Math class.
+ by the Java Math class.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.math;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// ExtendedMath
 
 /**
-   ExtendedMath is a library of additional mathematical operations
-   beyond those provided by the Java Math class.
+ ExtendedMath is a library of additional mathematical operations
+ beyond those provided by the Java Math class.
 
-   @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (ctsay)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (ctsay)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class ExtendedMath {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -209,13 +208,13 @@ public class ExtendedMath {
 
     /** The smallest, normalized, positive double value with a single precision.
      */
-    public static final double SINGLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE =
-    Math.pow(2.0, -126);
+    public static final double SINGLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE = Math
+            .pow(2.0, -126);
 
     /** The smallest, normalized, positive double value with a double precision.
      */
-    public static final double DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE =
-    Math.pow(2.0, -1022);
+    public static final double DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE = Math
+            .pow(2.0, -1022);
 
     /** The constant value of a double representation that has all bits as
      *  1 except the sign bit, where only the significand contributes to the
@@ -223,8 +222,8 @@ public class ExtendedMath {
      *  where m is the number of bits for the significand. M is 52 for
      *  a double precision floating point number.
      */
-    public static final double DOUBLE_PRECISION_SIGNIFICAND_ONLY = 2.0
-    - Math.pow(2.0, -52);
+    public static final double DOUBLE_PRECISION_SIGNIFICAND_ONLY = 2.0 - Math
+            .pow(2.0, -52);
 
     /** The constant value of a double representation that has all bits as
      *  1 except the sign bit, where only the significand contributes to the
@@ -232,11 +231,12 @@ public class ExtendedMath {
      *  where m is the number of bits for the significand. M is 23 for
      *  a single precision floating point number.
      */
-    public static final double SINGLE_PRECISION_SIGNIFICAND_ONLY = 2.0
-    - Math.pow(2.0, -23);
+    public static final double SINGLE_PRECISION_SIGNIFICAND_ONLY = 2.0 - Math
+            .pow(2.0, -23);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private static final double _ONEOVERLN2 = 1.0 / Math.log(2.0);
+
     private static final double _ONEOVERLN10 = 1.0 / Math.log(10.0);
 }

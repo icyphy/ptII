@@ -1,31 +1,31 @@
 /* CachedMethod provides methods for reflecting methods based on token types.
 
-Copyright (c) 1998-2005 The Regents of the University of California and
-Research in Motion Limited.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California and
+ Research in Motion Limited.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
 
-*/
+ */
 package ptolemy.data.expr;
 
 import java.lang.reflect.InvocationTargetException;
@@ -42,114 +42,113 @@ import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CachedMethod
 
 /**
-   An instance of this class represents a method or function that is
-   invoked by the Ptolemy II expression evaluator.  Instances of this
-   class are returned by the static findMethod() method, and can be
-   invoked by the apply() method.  This class is used by the expression
-   language to find Java methods that are bound in expressions that use
-   function application, i.e. an ASTPtFunctionApplicationNode, and in method
-   invocation, i.e. an ASTPtMethodNode.
+ An instance of this class represents a method or function that is
+ invoked by the Ptolemy II expression evaluator.  Instances of this
+ class are returned by the static findMethod() method, and can be
+ invoked by the apply() method.  This class is used by the expression
+ language to find Java methods that are bound in expressions that use
+ function application, i.e. an ASTPtFunctionApplicationNode, and in method
+ invocation, i.e. an ASTPtMethodNode.
 
-   <p> This class is used to represent two distinct types of Java methods
-   that can be invoked.  The METHOD type corresponds to an instance
-   method of a java class, invoked on an object of an appropriate class
-   (the <it>base class</it>).  The FUNCTION type corresponds to a static
-   method of a java class.  These types corresponds to the two distinct
-   expression constructs that can be used to invoke Java methods.  The
-   type of construct reflected can be queried using the
-   getCachedMethodType() method, which returns either {@link #FUNCTION}
-   or {@link #METHOD}.  Additionally, this class can be used to represent
-   Java methods that were not found.  If the CachedMethod corresponds to
-   an invokeable Java method, then the isValid() method will return true.
-   CachedMethods that are not valid cannot be invoked by the invoke()
-   method.
+ <p> This class is used to represent two distinct types of Java methods
+ that can be invoked.  The METHOD type corresponds to an instance
+ method of a java class, invoked on an object of an appropriate class
+ (the <it>base class</it>).  The FUNCTION type corresponds to a static
+ method of a java class.  These types corresponds to the two distinct
+ expression constructs that can be used to invoke Java methods.  The
+ type of construct reflected can be queried using the
+ getCachedMethodType() method, which returns either {@link #FUNCTION}
+ or {@link #METHOD}.  Additionally, this class can be used to represent
+ Java methods that were not found.  If the CachedMethod corresponds to
+ an invokeable Java method, then the isValid() method will return true.
+ CachedMethods that are not valid cannot be invoked by the invoke()
+ method.
 
-   <p> This class provides several services that distinguish it from
-   Java's built-in reflection mechanism:
-   <ol>
-   <li> Methods are found based on name and the types of ptolemy token
-   arguments, represented by instances of the ptolemy.data.type.Type
-   base class.
-   <li> FUNCTIONS are searched for in a set of classes registered with the
-   parser.
-   <li> METHODS are searched for a base class, and in all superclasses of
-   the base class.
-   <li> Found methods, represented by instances of this class, are cached
-   and indexed to improve the speed of method lookup.  The cache is
-   synchronized so that it can be safely accessed from multiple
-   threads.
-   <li> Allows for the possibility of several automatic conversions that
-   increase the applicability of single methods
-   </ol>
+ <p> This class provides several services that distinguish it from
+ Java's built-in reflection mechanism:
+ <ol>
+ <li> Methods are found based on name and the types of ptolemy token
+ arguments, represented by instances of the ptolemy.data.type.Type
+ base class.
+ <li> FUNCTIONS are searched for in a set of classes registered with the
+ parser.
+ <li> METHODS are searched for a base class, and in all superclasses of
+ the base class.
+ <li> Found methods, represented by instances of this class, are cached
+ and indexed to improve the speed of method lookup.  The cache is
+ synchronized so that it can be safely accessed from multiple
+ threads.
+ <li> Allows for the possibility of several automatic conversions that
+ increase the applicability of single methods
+ </ol>
 
-   <p> The automatic conversions that are allowed on the arguments of
-   reflected Java methods can be particularly tricky to understand.  The
-   findMethod() method is fairly aggressive about finding valid methods
-   to invoke.  In particular, given a set of arguments with token types,
-   the findMethod() method might return a cached method that:
+ <p> The automatic conversions that are allowed on the arguments of
+ reflected Java methods can be particularly tricky to understand.  The
+ findMethod() method is fairly aggressive about finding valid methods
+ to invoke.  In particular, given a set of arguments with token types,
+ the findMethod() method might return a cached method that:
 
-   <ol>
-   <li> Accepts token arguments of exactly the same type.
-   <li> Accepts token arguments that are of a type that the given types can
-   be automatically converted to, as determined by the Ptolemy type
-   lattice.
-   <li> Accepts the corresponding Java native type of either of the first
-   two cases, i.e. an IntToken argument may reflect a method that
-   accepts a Java int.
-   <li> Accepts a corresponding Java array type, if the argument type is an
-   ArrayType.
-   <li> Accepts a corresponding Java array of array type, if the argument
-   type is a MatrixType.
-   </ol>
+ <ol>
+ <li> Accepts token arguments of exactly the same type.
+ <li> Accepts token arguments that are of a type that the given types can
+ be automatically converted to, as determined by the Ptolemy type
+ lattice.
+ <li> Accepts the corresponding Java native type of either of the first
+ two cases, i.e. an IntToken argument may reflect a method that
+ accepts a Java int.
+ <li> Accepts a corresponding Java array type, if the argument type is an
+ ArrayType.
+ <li> Accepts a corresponding Java array of array type, if the argument
+ type is a MatrixType.
+ </ol>
 
-   The underlying conversions are implemented by the {@link
-   ConversionUtilities} class, which has more specific documentation the
-   underlying conversions.  The inverse of the same conversions are
-   performed on the results of a Java method invocation, in order to
-   convert the result back into a Ptolemy token.
+ The underlying conversions are implemented by the {@link
+ ConversionUtilities} class, which has more specific documentation the
+ underlying conversions.  The inverse of the same conversions are
+ performed on the results of a Java method invocation, in order to
+ convert the result back into a Ptolemy token.
 
-   <p> Since there may be many methods that match a particular function
-   application or method invocation, under the above conversions, the
-   findMethod() method attempts to return the most specific Java method
-   that can be called.  Generally speaking, conversions are preferred in
-   the above order.  If one Java method is not clearly preferable to all
-   others, then the findMethod() method will throw an exception.  This
-   may happen if there are multiple functions defined with varying
-   argument types.
+ <p> Since there may be many methods that match a particular function
+ application or method invocation, under the above conversions, the
+ findMethod() method attempts to return the most specific Java method
+ that can be called.  Generally speaking, conversions are preferred in
+ the above order.  If one Java method is not clearly preferable to all
+ others, then the findMethod() method will throw an exception.  This
+ may happen if there are multiple functions defined with varying
+ argument types.
 
-   <p> Additionally, the findMethod() method may return a CachedMethod
-   that automatically "maps" arrays and matrices over a scalar function.
-   The result of invoking the CachedMethod is an array or matrix of
-   whatever type is returned by the original function.
+ <p> Additionally, the findMethod() method may return a CachedMethod
+ that automatically "maps" arrays and matrices over a scalar function.
+ The result of invoking the CachedMethod is an array or matrix of
+ whatever type is returned by the original function.
 
-   <p> As an example of how this works, evaluation of the expression
-   "fix([0.5, 0.1; 0.4, 0.3], 16, 1)" performs results in the invocation
-   of the method named "fix" in the ptolemy.data.expr.FixPointFunctions
-   that takes a Java double and two Java ints and returns an instance of
-   ptolemy.math.FixPoint.  This function is invoked once for each element
-   of the matrix (converting each DoubleToken into the corresponding
-   double, and each IntToken into the corresponding int), and the results
-   are packaged back into a 2x2 FixMatrixToken.
+ <p> As an example of how this works, evaluation of the expression
+ "fix([0.5, 0.1; 0.4, 0.3], 16, 1)" performs results in the invocation
+ of the method named "fix" in the ptolemy.data.expr.FixPointFunctions
+ that takes a Java double and two Java ints and returns an instance of
+ ptolemy.math.FixPoint.  This function is invoked once for each element
+ of the matrix (converting each DoubleToken into the corresponding
+ double, and each IntToken into the corresponding int), and the results
+ are packaged back into a 2x2 FixMatrixToken.
 
-   <p> Additional classes to be searched for static methods can be added
-   through the method registerFunctionClass() in PtParser.  This class
-   assumes that new classes are added to the search path before models
-   are constructed, and simply clears the internal cache and index when
-   new classes are registered.
+ <p> Additional classes to be searched for static methods can be added
+ through the method registerFunctionClass() in PtParser.  This class
+ assumes that new classes are added to the search path before models
+ are constructed, and simply clears the internal cache and index when
+ new classes are registered.
 
-   @author Zoltan Kemenczy, Research in Motion Limited., Steve Neuendorffer, Edward Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-   @see ptolemy.data.expr.ASTPtFunctionApplicationNode
-   @see ptolemy.data.expr.PtParser
-*/
+ @author Zoltan Kemenczy, Research in Motion Limited., Steve Neuendorffer, Edward Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ @see ptolemy.data.expr.ASTPtFunctionApplicationNode
+ @see ptolemy.data.expr.PtParser
+ */
 public class CachedMethod {
     /** Construct a new CachedMethod.  Generally speaking, it is not
      *  necessary for any users of this class to invoke this method.
@@ -209,7 +208,8 @@ public class CachedMethod {
         if (_method != null) {
             // The default is to look at the return type of the method.
             Class returnClass = _method.getReturnType();
-            _returnType = ConversionUtilities.convertJavaTypeToTokenType(returnClass);
+            _returnType = ConversionUtilities
+                    .convertJavaTypeToTokenType(returnClass);
 
             // Check to see if there is a function that
             // provides a better return type.
@@ -219,8 +219,8 @@ public class CachedMethod {
                 Class typeClass = Type.class;
                 java.util.Arrays.fill(typeArray, typeClass);
 
-                Method typeFunction = _method.getDeclaringClass().getMethod(_methodName
-                        + "ReturnType", typeArray);
+                Method typeFunction = _method.getDeclaringClass().getMethod(
+                        _methodName + "ReturnType", typeArray);
 
                 // Invoke the function, and save the return type.
                 try {
@@ -271,8 +271,7 @@ public class CachedMethod {
             return false;
         }
 
-        if ((_type & (FUNCTION + METHOD)) != (cachedMethod._type
-                    & (FUNCTION + METHOD))) {
+        if ((_type & (FUNCTION + METHOD)) != (cachedMethod._type & (FUNCTION + METHOD))) {
             return false;
         }
 
@@ -352,7 +351,7 @@ public class CachedMethod {
                 if (argumentTypes[i] instanceof ArrayType) {
                     hasArray = true;
                     newArgTypes[i] = ((ArrayType) argumentTypes[i])
-                        .getElementType();
+                            .getElementType();
                     isArrayArg[i] = true;
                 } else {
                     newArgTypes[i] = argumentTypes[i];
@@ -385,7 +384,7 @@ public class CachedMethod {
                 if (argumentTypes[i] instanceof UnsizedMatrixType) {
                     hasArray = true;
                     newArgTypes[i] = ((UnsizedMatrixType) argumentTypes[i])
-                        .getElementType();
+                            .getElementType();
                     isArrayArg[i] = true;
                 } else {
                     newArgTypes[i] = argumentTypes[i];
@@ -515,7 +514,8 @@ public class CachedMethod {
             }
 
             for (int i = 1; i < num; i++) {
-                methodArgValues[i - 1] = _conversions[i - 1].convert((ptolemy.data.Token) argValues[i]);
+                methodArgValues[i - 1] = _conversions[i - 1]
+                        .convert((ptolemy.data.Token) argValues[i]);
             }
 
             // for (int i = 0; i < num - 1; i++) {
@@ -532,11 +532,11 @@ public class CachedMethod {
             } catch (InvocationTargetException ex) {
                 throw new IllegalActionException(null, ex.getCause(),
                         "Error invoking method " + method + " on object "
-                        + argValues[0] + "\n");
+                                + argValues[0] + "\n");
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex,
                         "Error invoking method " + method + " on object "
-                        + argValues[0] + "\n");
+                                + argValues[0] + "\n");
             }
 
             return ConversionUtilities.convertJavaTypeToToken(result);
@@ -550,7 +550,8 @@ public class CachedMethod {
 
             for (int i = 0; i < num; i++) {
                 // System.out.println("Conversion = " + _conversions[i]);
-                methodArgValues[i] = _conversions[i].convert((ptolemy.data.Token) argValues[i]);
+                methodArgValues[i] = _conversions[i]
+                        .convert((ptolemy.data.Token) argValues[i]);
             }
 
             // for (int i = 0; i < num; i++) {
@@ -654,35 +655,39 @@ public class CachedMethod {
     // has type of zero.
 
     /** Impossible argument conversion. */
-    public static final ArgumentConversion IMPOSSIBLE_CONVERSION = new ArgumentConversion(0);
+    public static final ArgumentConversion IMPOSSIBLE_CONVERSION = new ArgumentConversion(
+            0);
 
     /** Conversion from an ArrayToken to a Token array (Token[]). */
-    public static final ArgumentConversion ARRAYTOKEN_CONVERSION = new ArgumentConversion(1) {
-            public Object convert(ptolemy.data.Token input)
-                    throws IllegalActionException {
-                // Convert ArrayToken to Token[]
-                return ((ArrayToken) input).arrayValue();
-            }
-        };
+    public static final ArgumentConversion ARRAYTOKEN_CONVERSION = new ArgumentConversion(
+            1) {
+        public Object convert(ptolemy.data.Token input)
+                throws IllegalActionException {
+            // Convert ArrayToken to Token[]
+            return ((ArrayToken) input).arrayValue();
+        }
+    };
 
     /** Conversion up to a higher type has preference 2... */
     /** Conversion from tokens to Java native types. */
-    public static final ArgumentConversion NATIVE_CONVERSION = new ArgumentConversion(3) {
-            public Object convert(ptolemy.data.Token input)
-                    throws IllegalActionException {
-                // Convert tokens to native types.
-                return ConversionUtilities.convertTokenToJavaType(input);
-            }
-        };
+    public static final ArgumentConversion NATIVE_CONVERSION = new ArgumentConversion(
+            3) {
+        public Object convert(ptolemy.data.Token input)
+                throws IllegalActionException {
+            // Convert tokens to native types.
+            return ConversionUtilities.convertTokenToJavaType(input);
+        }
+    };
 
     /** Identity conversion.  Does nothing. */
-    public static final ArgumentConversion IDENTITY_CONVERSION = new ArgumentConversion(4) {
-            public Object convert(ptolemy.data.Token input)
-                    throws IllegalActionException {
-                // The do nothing conversion.
-                return input;
-            }
-        };
+    public static final ArgumentConversion IDENTITY_CONVERSION = new ArgumentConversion(
+            4) {
+        public Object convert(ptolemy.data.Token input)
+                throws IllegalActionException {
+            // The do nothing conversion.
+            return input;
+        }
+    };
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -723,8 +728,10 @@ public class CachedMethod {
                 Class class2 = arguments2[j];
 
                 try {
-                    Type type1 = ConversionUtilities.convertJavaTypeToTokenType(class1);
-                    Type type2 = ConversionUtilities.convertJavaTypeToTokenType(class2);
+                    Type type1 = ConversionUtilities
+                            .convertJavaTypeToTokenType(class1);
+                    Type type2 = ConversionUtilities
+                            .convertJavaTypeToTokenType(class2);
 
                     if (TypeLattice.compare(type2, type1) == ptolemy.graph.CPO.LOWER) {
                         // Found one conversion where the second method
@@ -760,16 +767,17 @@ public class CachedMethod {
         }
 
         // ArrayTokens can be converted to Token[]
-        if (actual instanceof ArrayType && formal.isArray()
-                && formal.getComponentType().isAssignableFrom(ptolemy.data.Token.class)) {
+        if (actual instanceof ArrayType
+                && formal.isArray()
+                && formal.getComponentType().isAssignableFrom(
+                        ptolemy.data.Token.class)) {
             return ARRAYTOKEN_CONVERSION;
         }
 
         try {
             // Tokens can be converted to native types.
-            if (formal.isAssignableFrom(
-                        ConversionUtilities.convertTokenTypeToJavaType(
-                                actual))) {
+            if (formal.isAssignableFrom(ConversionUtilities
+                    .convertTokenTypeToJavaType(actual))) {
                 return NATIVE_CONVERSION;
             }
         } catch (IllegalActionException ex) {
@@ -782,9 +790,11 @@ public class CachedMethod {
             // give us a way to tell if primitive arguments are
             // acceptable
             if (formal.isPrimitive() || formal.isArray()) {
-                Type type = ConversionUtilities.convertJavaTypeToTokenType(formal);
+                Type type = ConversionUtilities
+                        .convertJavaTypeToTokenType(formal);
 
-                if (ptolemy.graph.CPO.LOWER == TypeLattice.compare(actual, type)) {
+                if (ptolemy.graph.CPO.LOWER == TypeLattice
+                        .compare(actual, type)) {
                     return new TypeArgumentConversion(type, NATIVE_CONVERSION);
                 }
             }
@@ -863,8 +873,8 @@ public class CachedMethod {
                 boolean match = true;
 
                 for (int j = 0; (j < arguments.length) && match; j++) {
-                    ArgumentConversion conversion = _getConversion(arguments[j],
-                            argumentTypes[j]);
+                    ArgumentConversion conversion = _getConversion(
+                            arguments[j], argumentTypes[j]);
 
                     // System.out.println("formalType is "
                     //        + arguments[j] + " " + arguments[j].getName());
@@ -881,8 +891,8 @@ public class CachedMethod {
                     // preferable to this one.  matchedConversions is
                     // the set of previously found conversions.
                     match = _areConversionsPreferable(conversions, arguments,
-                            matchedConversions,
-                            matchedMethod.getParameterTypes());
+                            matchedConversions, matchedMethod
+                                    .getParameterTypes());
                 }
 
                 if (match) {
@@ -942,16 +952,15 @@ public class CachedMethod {
                     // Compare to previous match, if there has
                     // been one.
                     if ((preferredMethod == null)
-                            || _areConversionsPreferable(conversions,
-                                    method.getParameterTypes(),
-                                    preferredConversions,
+                            || _areConversionsPreferable(conversions, method
+                                    .getParameterTypes(), preferredConversions,
                                     preferredMethod.getParameterTypes())) {
                         // Either there is no previous match,
                         // or the current match is preferable
                         // or equivalent to the previous match.
                         preferredMethod = method;
                         preferredConversions = (ArgumentConversion[]) conversions
-                            .clone();
+                                .clone();
                     }
                 }
             } catch (SecurityException security) {
@@ -1016,7 +1025,8 @@ public class CachedMethod {
         if (cachedMethod == null) {
             // Native convert the base class.
             // System.out.println("Checking for base conversion");
-            destTokenClass = ConversionUtilities.convertTokenTypeToJavaType(argumentTypes[0]);
+            destTokenClass = ConversionUtilities
+                    .convertTokenTypeToJavaType(argumentTypes[0]);
 
             Method method = _polymorphicGetMethod(destTokenClass, methodName,
                     methodArgTypes, conversions);
@@ -1166,11 +1176,12 @@ public class CachedMethod {
 
                 // FIXME: compare types.
                 if (TypeLattice.compare(_conversionType,
-                            argumentConversion._conversionType) == ptolemy.graph.CPO.LOWER) {
+                        argumentConversion._conversionType) == ptolemy.graph.CPO.LOWER) {
                     return true;
                 }
 
-                return _conversion.isPreferableTo(argumentConversion._conversion);
+                return _conversion
+                        .isPreferableTo(argumentConversion._conversion);
             } else {
                 return false;
             }
@@ -1180,10 +1191,11 @@ public class CachedMethod {
          */
         public String toString() {
             return "TypeConversion(" + _conversionType + ", " + _conversion
-                + ") " + _preference;
+                    + ") " + _preference;
         }
 
         private ptolemy.data.type.Type _conversionType;
+
         private ArgumentConversion _conversion;
     }
 
@@ -1199,8 +1211,8 @@ public class CachedMethod {
     public static class BaseConvertCachedMethod extends CachedMethod {
         private BaseConvertCachedMethod(String methodName,
                 Type[] argumentTypes, Method method,
-                ArgumentConversion baseConversion, ArgumentConversion[] conversions)
-                throws IllegalActionException {
+                ArgumentConversion baseConversion,
+                ArgumentConversion[] conversions) throws IllegalActionException {
             super(methodName, argumentTypes, method, conversions, METHOD);
             _baseConversion = baseConversion;
         }
@@ -1214,7 +1226,8 @@ public class CachedMethod {
 
         public ptolemy.data.Token invoke(Object[] argValues)
                 throws IllegalActionException {
-            argValues[0] = _baseConversion.convert((ptolemy.data.Token) argValues[0]);
+            argValues[0] = _baseConversion
+                    .convert((ptolemy.data.Token) argValues[0]);
             return super.invoke(argValues);
         }
 
@@ -1303,8 +1316,8 @@ public class CachedMethod {
             if (!isValid()) {
                 throw new IllegalActionException(
                         "The return type of the method " + toString()
-                        + " cannot be determined because "
-                        + "no matching method was found.");
+                                + " cannot be determined because "
+                                + "no matching method was found.");
             }
 
             Type elementType = _cachedMethod.getReturnType();
@@ -1318,6 +1331,7 @@ public class CachedMethod {
         }
 
         private CachedMethod _cachedMethod;
+
         private boolean[] _reducedArgs;
     }
 
@@ -1357,9 +1371,10 @@ public class CachedMethod {
                     if (argValues[i] instanceof MatrixToken) {
                         MatrixToken matrixToken = (MatrixToken) argValues[i];
 
-                        if ((xdim != 0) && (ydim != 0)
-                                && ((matrixToken.getRowCount() != ydim)
-                                        || (matrixToken.getColumnCount() != xdim))) {
+                        if ((xdim != 0)
+                                && (ydim != 0)
+                                && ((matrixToken.getRowCount() != ydim) || (matrixToken
+                                        .getColumnCount() != xdim))) {
                             throw new IllegalActionException("Argument " + i
                                     + " is a reducible matrixToken that "
                                     + "does not have compatible size!");
@@ -1376,7 +1391,8 @@ public class CachedMethod {
 
             // Collect the not reducible args.
             Object[] subArgs = (Object[]) argValues.clone();
-            ptolemy.data.Token[] tokenArray = new ptolemy.data.Token[xdim * ydim];
+            ptolemy.data.Token[] tokenArray = new ptolemy.data.Token[xdim
+                    * ydim];
 
             int pos = 0;
 
@@ -1385,7 +1401,7 @@ public class CachedMethod {
                     for (int i = 0; i < argValues.length; i++) {
                         if (_reducedArgs[i]) {
                             subArgs[i] = ((MatrixToken) argValues[i])
-                                .getElementAsToken(j, k);
+                                    .getElementAsToken(j, k);
                         }
                     }
 
@@ -1407,8 +1423,8 @@ public class CachedMethod {
             if (!isValid()) {
                 throw new IllegalActionException(
                         "The return type of the method " + toString()
-                        + " cannot be determined because "
-                        + "no matching method was found.");
+                                + " cannot be determined because "
+                                + "no matching method was found.");
             }
 
             Type elementType = _cachedMethod.getReturnType();
@@ -1422,6 +1438,7 @@ public class CachedMethod {
         }
 
         private CachedMethod _cachedMethod;
+
         private boolean[] _reducedArgs;
     }
 }

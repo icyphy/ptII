@@ -1,30 +1,30 @@
 /* A GR scene viewer
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.gr.lib;
 
 import java.awt.GraphicsConfiguration;
@@ -45,25 +45,24 @@ import ptolemy.vergil.icon.ImageIcon;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// IconViewScreen3D
 
 /**
-   A sink actor that renders a three-dimensional scene into an Icon.
+ A sink actor that renders a three-dimensional scene into an Icon.
 
-   NOTE: This doesn't seem to be possible (using the techniques I tried)
-   in the current version of Java3D without having the frame visible.
-   Alternatively, we would work on embedding a Canvas3D inside Diva, but
-   then we run into standard nastiness getting AWT objects to work inside
-   Swing objects.
+ NOTE: This doesn't seem to be possible (using the techniques I tried)
+ in the current version of Java3D without having the frame visible.
+ Alternatively, we would work on embedding a Canvas3D inside Diva, but
+ then we run into standard nastiness getting AWT objects to work inside
+ Swing objects.
 
-   @author Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (chf)
-   @Pt.AcceptedRating Red (chf)
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (chf)
+ @Pt.AcceptedRating Red (chf)
+ */
 public class IconViewScreen3D extends ViewScreen3D {
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
@@ -107,7 +106,8 @@ public class IconViewScreen3D extends ViewScreen3D {
      *  @return A new canvas.
      */
     protected Canvas3D _newCanvas() {
-        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
+        GraphicsConfiguration config = SimpleUniverse
+                .getPreferredConfiguration();
         return new CapturingCanvas3D(config, false);
     }
 
@@ -115,13 +115,13 @@ public class IconViewScreen3D extends ViewScreen3D {
     ////                         inner class                       ////
 
     /** Class CapturingCanvas3D, using the instructions from the Java3D
-        FAQ pages on how to capture a still image in jpeg format.
+     FAQ pages on how to capture a still image in jpeg format.
 
-        Peter Z. Kunszt
-        Johns Hopkins University
-        Dept of Physics and Astronomy
-        Baltimore MD
-    */
+     Peter Z. Kunszt
+     Johns Hopkins University
+     Dept of Physics and Astronomy
+     Baltimore MD
+     */
     private class CapturingCanvas3D extends Canvas3D {
         public CapturingCanvas3D(GraphicsConfiguration gc, boolean offscreen) {
             super(gc, offscreen);
@@ -149,8 +149,12 @@ public class IconViewScreen3D extends ViewScreen3D {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private BufferedImage _image;
+
     private int _frameWidth = 400;
+
     private int _frameHeight = 400;
+
     private int _frameNumber;
+
     private int _frameRateValue;
 }

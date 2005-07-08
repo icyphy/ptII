@@ -1,28 +1,28 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package diva.graph.basic;
 
 import java.awt.geom.Point2D;
@@ -40,7 +40,6 @@ import diva.graph.layout.LayoutTarget;
 import diva.util.Filter;
 import diva.util.FilteredIterator;
 import diva.util.ProxyIterator;
-
 
 /**
  * The basic set of information necessary to layout a graph: a mapping
@@ -140,7 +139,8 @@ public class BasicLayoutTarget implements LayoutTarget {
             double h = getLayoutPercentage() * p.getY();
             return new Rectangle2D.Double(x, y, w, h);
         } else if (model.isComposite(composite)) {
-            CompositeFigure cf = (CompositeFigure) _controller.getFigure(composite);
+            CompositeFigure cf = (CompositeFigure) _controller
+                    .getFigure(composite);
 
             if (cf != null) {
                 return cf.getShape().getBounds2D();
@@ -186,20 +186,19 @@ public class BasicLayoutTarget implements LayoutTarget {
         final GraphModel model = _controller.getGraphModel();
         ZList zlist = getGraphicsPane().getForegroundLayer().getFigures();
         Iterator i = zlist.getIntersectedFigures(r).figuresFromFront();
-        Iterator j = new FilteredIterator(i,
-                new Filter() {
-                    public boolean accept(Object o) {
-                        Figure f = (Figure) o;
-                        return (model.isNode(f.getUserObject()));
-                    }
-                });
+        Iterator j = new FilteredIterator(i, new Filter() {
+            public boolean accept(Object o) {
+                Figure f = (Figure) o;
+                return (model.isNode(f.getUserObject()));
+            }
+        });
 
         return new ProxyIterator(j) {
-                public Object next() {
-                    Figure nf = (Figure) super.next();
-                    return nf.getUserObject();
-                }
-            };
+            public Object next() {
+                Figure nf = (Figure) super.next();
+                return nf.getUserObject();
+            }
+        };
     }
 
     /**
@@ -209,18 +208,17 @@ public class BasicLayoutTarget implements LayoutTarget {
     public Iterator intersectingEdges(Rectangle2D r) {
         ZList zlist = getGraphicsPane().getForegroundLayer().getFigures();
         Iterator i = zlist.getIntersectedFigures(r).figuresFromFront();
-        Iterator j = new FilteredIterator(i,
-                new Filter() {
-                    public boolean accept(Object o) {
-                        return (o instanceof Connector);
-                    }
-                });
+        Iterator j = new FilteredIterator(i, new Filter() {
+            public boolean accept(Object o) {
+                return (o instanceof Connector);
+            }
+        });
         return new ProxyIterator(j) {
-                public Object next() {
-                    Connector ef = (Connector) super.next();
-                    return ef.getUserObject();
-                }
-            };
+            public Object next() {
+                Connector ef = (Connector) super.next();
+                return ef.getUserObject();
+            }
+        };
     }
 
     /**

@@ -1,56 +1,55 @@
 /* A library for mathematical operations on matrices of longs.
 
-Some algorithms are from
+ Some algorithms are from
 
-[1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
-Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
+ [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
+ Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
-    package ptolemy.math;
-
+ */
+package ptolemy.math;
 
 //////////////////////////////////////////////////////////////////////////
 //// LongMatrixMath
 
 /**
-   This class provides a library for mathematical operations on
-   matrices of longs.
+ This class provides a library for mathematical operations on
+ matrices of longs.
 
-   Rows and column numbers of matrices are specified with zero-based indices.
+ Rows and column numbers of matrices are specified with zero-based indices.
 
-   All calls expect matrix arguments to be non-null. In addition, all
-   rows of the matrix are expected to have the same number of columns.
-   @author Jeff Tsay
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (ctsay)
-   @Pt.AcceptedRating Yellow (ctsay)
-*/
+ All calls expect matrix arguments to be non-null. In addition, all
+ rows of the matrix are expected to have the same number of columns.
+ @author Jeff Tsay
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (ctsay)
+ @Pt.AcceptedRating Yellow (ctsay)
+ */
 public class LongMatrixMath {
     // private constructor prevents construction of this class.
     private LongMatrixMath() {
@@ -581,8 +580,9 @@ public class LongMatrixMath {
         if (rows != array.length) {
             throw new IllegalArgumentException(
                     "preMultiply : array does not have the same number of "
-                    + "elements (" + array.length + ") as the number of rows "
-                    + "of the matrix (" + rows + ")");
+                            + "elements (" + array.length
+                            + ") as the number of rows " + "of the matrix ("
+                            + rows + ")");
         }
 
         long[] returnValue = new long[columns];
@@ -614,8 +614,9 @@ public class LongMatrixMath {
         if (columns != array.length) {
             throw new IllegalArgumentException(
                     "postMultiply() : array does not have the same number "
-                    + "of elements (" + array.length + ") as the number of "
-                    + "columns of the matrix (" + columns + ")");
+                            + "of elements (" + array.length
+                            + ") as the number of " + "columns of the matrix ("
+                            + columns + ")");
         }
 
         long[] returnValue = new long[rows];
@@ -1056,8 +1057,7 @@ public class LongMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if ((matrix1[i][j] > (matrix2[i][j] + errorMatrix[i][j]))
-                        || (matrix1[i][j] < (matrix2[i][j]
-                                    - errorMatrix[i][j]))) {
+                        || (matrix1[i][j] < (matrix2[i][j] - errorMatrix[i][j]))) {
                     return false;
                 }
             }
@@ -1095,8 +1095,8 @@ public class LongMatrixMath {
             final long[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException("ptolemy.math.LongMatrixMath."
-                    + caller + "() : matrix argument " + _dimensionString(matrix)
-                    + " is not a square matrix.");
+                    + caller + "() : matrix argument "
+                    + _dimensionString(matrix) + " is not a square matrix.");
         }
 
         return _rows(matrix);

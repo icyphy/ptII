@@ -1,30 +1,30 @@
 /* An abstract attribute for a visible text annotation.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Color;
@@ -46,19 +46,18 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.TextIcon;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AbstractTextAttribute
 
 /**
-   An abstract base class for text annotations.
-   <p>
-   @author Edward A. Lee, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ An abstract base class for text annotations.
+ <p>
+ @author Edward A. Lee, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class AbstractTextAttribute extends Attribute {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -107,7 +106,7 @@ public class AbstractTextAttribute extends Attribute {
         fontFamily.setExpression("SansSerif");
 
         String[] families = GraphicsEnvironment.getLocalGraphicsEnvironment()
-            .getAvailableFontFamilyNames();
+                .getAvailableFontFamilyNames();
 
         for (int i = 0; i < families.length; i++) {
             fontFamily.addChoice(families[i]);
@@ -161,7 +160,7 @@ public class AbstractTextAttribute extends Attribute {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (((attribute == fontFamily) || (attribute == textSize)
-                    || (attribute == bold) || (attribute == italic))
+                || (attribute == bold) || (attribute == italic))
                 && !_inAttributeChanged) {
             try {
                 // Prevent redundant actions here... When we evaluate the
@@ -203,7 +202,8 @@ public class AbstractTextAttribute extends Attribute {
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AbstractTextAttribute result = (AbstractTextAttribute) super.clone(workspace);
+        AbstractTextAttribute result = (AbstractTextAttribute) super
+                .clone(workspace);
         result._icon = (TextIcon) result.getAttribute("_icon");
         return result;
     }

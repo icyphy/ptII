@@ -1,30 +1,30 @@
 /* A channel with a specified loss probability.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.wireless.lib;
 
 import java.util.Random;
@@ -43,40 +43,39 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ErasureChannel
 
 /**
-   Model of a wireless channel with a specified loss probability. If the
-   loss probability is greater than zero then on each
-   call to the transmit() method, for each receiver in range,
-   with the specified probability, the transmission to that
-   receiver will not occur.  Whether a transmission occurs to a particular
-   receiver is independent of whether it occurs to any other receiver.
-   <p>
-   For convenience, a variable named "distance" is available and
-   equal to the distance between the transmitter and the receiver
-   when the <i>lossProbability</i> is evaluated.  Thus, the
-   loss probability can be given as an expression that depends
-   on this distance.
-   <p>
-   The distance between the transmitter and receiver is determined
-   by the protected method _distanceBetween(), which is also used
-   to set the value of the <i>distance</i> variable that can be
-   used in the expression for loss probability.
-   In this base class, that method uses
-   the _location attribute of the transmit and receive actors,
-   which corresponds to the position of the icon in the Vergil
-   visual editor.  Subclasses may override this protected method
-   to provide some other notion of distance.
+ Model of a wireless channel with a specified loss probability. If the
+ loss probability is greater than zero then on each
+ call to the transmit() method, for each receiver in range,
+ with the specified probability, the transmission to that
+ receiver will not occur.  Whether a transmission occurs to a particular
+ receiver is independent of whether it occurs to any other receiver.
+ <p>
+ For convenience, a variable named "distance" is available and
+ equal to the distance between the transmitter and the receiver
+ when the <i>lossProbability</i> is evaluated.  Thus, the
+ loss probability can be given as an expression that depends
+ on this distance.
+ <p>
+ The distance between the transmitter and receiver is determined
+ by the protected method _distanceBetween(), which is also used
+ to set the value of the <i>distance</i> variable that can be
+ used in the expression for loss probability.
+ In this base class, that method uses
+ the _location attribute of the transmit and receive actors,
+ which corresponds to the position of the icon in the Vergil
+ visual editor.  Subclasses may override this protected method
+ to provide some other notion of distance.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (cxh)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class ErasureChannel extends AtomicWirelessChannel {
     /** Construct a channel with the given name and container.
      *  The container argument must not be null, or a
@@ -185,7 +184,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
 
         double experiment = _random.nextDouble();
         double probability = ((DoubleToken) lossProbability.getToken())
-            .doubleValue();
+                .doubleValue();
 
         if (_debugging) {
             _debug(" **** loss probability is: " + probability);

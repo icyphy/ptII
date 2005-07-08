@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.canvas.connector;
 
 import java.awt.geom.AffineTransform;
@@ -43,7 +43,6 @@ import diva.canvas.interactor.Manipulator;
 import diva.util.Filter;
 import diva.util.java2d.ShapeUtilities;
 
-
 /** An interactor for dragging one end of a connector. This is a
  * utility class designed for use in conjunction with
  * ConnectorManipulator.
@@ -56,6 +55,7 @@ public class ConnectorInteractor extends DragInteractor {
     /* The most recent coordinates
      */
     private double _prevX = 0.0;
+
     private double _prevY = 0.0;
 
     /** The connector
@@ -117,7 +117,8 @@ public class ConnectorInteractor extends DragInteractor {
      * it to a new autonomous site at the given coordinates
      */
     private void detach(double x, double y) {
-        Site newSite = new AutonomousSite(_connector.getTransformContext(), x, y);
+        Site newSite = new AutonomousSite(_connector.getTransformContext(), x,
+                y);
 
         if (_handle.getSite() == _connector.getHeadSite()) {
             _connector.setHeadSite(newSite);
@@ -139,9 +140,11 @@ public class ConnectorInteractor extends DragInteractor {
         Site ret = null;
 
         if (_handle.getSite() == _connector.getHeadSite()) {
-            ret = _manipulator._connectorTarget.getHeadSite(_connector, f, x, y);
+            ret = _manipulator._connectorTarget
+                    .getHeadSite(_connector, f, x, y);
         } else {
-            ret = _manipulator._connectorTarget.getTailSite(_connector, f, x, y);
+            ret = _manipulator._connectorTarget
+                    .getTailSite(_connector, f, x, y);
         }
 
         return ret;
@@ -152,9 +155,11 @@ public class ConnectorInteractor extends DragInteractor {
      */
     private Site findSite(Site s, double x, double y) {
         if (_handle.getSite() == _connector.getHeadSite()) {
-            return _manipulator._connectorTarget.getHeadSite(_connector, s, x, y);
+            return _manipulator._connectorTarget.getHeadSite(_connector, s, x,
+                    y);
         } else {
-            return _manipulator._connectorTarget.getTailSite(_connector, s, x, y);
+            return _manipulator._connectorTarget.getTailSite(_connector, s, x,
+                    y);
         }
     }
 
@@ -231,52 +236,51 @@ public class ConnectorInteractor extends DragInteractor {
     public void snapToSite(final FigureContainer container,
             final Rectangle2D hitRect) {
         //debug("SNAPPING TO SITE IN: " + container);
-        Figure figure = container.pick(hitRect,
-                new Filter() {
-                    public boolean accept(Object o) {
-                        // debug("checking = " + o);
-                        if (!(o instanceof Figure)) {
-                            return false;
-                        }
+        Figure figure = container.pick(hitRect, new Filter() {
+            public boolean accept(Object o) {
+                // debug("checking = " + o);
+                if (!(o instanceof Figure)) {
+                    return false;
+                }
 
-                        if (o instanceof ConnectorManipulator) {
-                            return false;
-                        }
+                if (o instanceof ConnectorManipulator) {
+                    return false;
+                }
 
-                        Figure f = (Figure) o;
+                Figure f = (Figure) o;
 
-                        if (f.getInteractor() == null) {
-                            return false;
-                        }
+                if (f.getInteractor() == null) {
+                    return false;
+                }
 
-                        TransformContext figureContext = f.getParent()
-                            .getTransformContext();
-                        TransformContext containerContext = container
-                            .getTransformContext();
-                        AffineTransform transform;
+                TransformContext figureContext = f.getParent()
+                        .getTransformContext();
+                TransformContext containerContext = container
+                        .getTransformContext();
+                AffineTransform transform;
 
-                        try {
-                            transform = figureContext.getTransform(containerContext)
-                                .createInverse();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                            return false;
-                        }
+                try {
+                    transform = figureContext.getTransform(containerContext)
+                            .createInverse();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    return false;
+                }
 
-                        Rectangle2D bounds = ShapeUtilities.transformBounds(hitRect,
-                                transform);
+                Rectangle2D bounds = ShapeUtilities.transformBounds(hitRect,
+                        transform);
 
-                        if (findSite(f, bounds.getCenterX(), bounds.getCenterY()) == null) {
-                            return false;
-                        }
+                if (findSite(f, bounds.getCenterX(), bounds.getCenterY()) == null) {
+                    return false;
+                }
 
-                        return true;
-                    }
-                });
+                return true;
+            }
+        });
 
         if (figure != null) {
-            Site snap = findSite(figure, hitRect.getCenterX(),
-                    hitRect.getCenterY());
+            Site snap = findSite(figure, hitRect.getCenterX(), hitRect
+                    .getCenterY());
 
             if (snap != null) {
                 _target = figure;
@@ -305,10 +309,11 @@ public class ConnectorInteractor extends DragInteractor {
             // all tests { intersects(), findSite() }
             // are done in proper coordinates
             TransformContext manipulatorContext = e.getLayerSource()
-                .getTransformContext();
+                    .getTransformContext();
             TransformContext targetContext = _target.getParent()
-                .getTransformContext();
-            AffineTransform transform = targetContext.getTransform(manipulatorContext);
+                    .getTransformContext();
+            AffineTransform transform = targetContext
+                    .getTransform(manipulatorContext);
             Rectangle2D bounds = _target.getBounds();
             bounds = ShapeUtilities.transformBounds(bounds, transform);
 
@@ -318,8 +323,8 @@ public class ConnectorInteractor extends DragInteractor {
                 Site current = _handle.getSite();
 
                 // FIXME: shouldn't this be x,y?
-                Site snap = findSite(current, bounds.getCenterX(),
-                        bounds.getCenterY());
+                Site snap = findSite(current, bounds.getCenterX(), bounds
+                        .getCenterY());
 
                 //debug("SNAP: " + snap);
                 if ((snap != null) && (snap != current)) {

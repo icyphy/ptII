@@ -1,30 +1,30 @@
 /* Utilities that manipulate strings using XSLT.
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.util;
 
 import java.io.ByteArrayOutputStream;
@@ -52,29 +52,28 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// XSLTUtilities
 
 /**
-   A collection of utilities for manipulating strings using XSLT.
-   These utilities do not depend on any other ptolemy.* packages.
+ A collection of utilities for manipulating strings using XSLT.
+ These utilities do not depend on any other ptolemy.* packages.
 
-   <p>This file uses Saxon, the XSLT and XQuery Processor
-   <a href="http://saxon.sourceforge.net/#in_browser" target="_top">http://saxon.sourceforge.net</a>.
+ <p>This file uses Saxon, the XSLT and XQuery Processor
+ <a href="http://saxon.sourceforge.net/#in_browser" target="_top">http://saxon.sourceforge.net</a>.
 
-   <p>Between Java 1.4.x and Java 1.5, Xalan was removed from the jar
-   files that are shipped.  Since Caltrop uses Saxon anyway, we now
-   use Saxon here as well.
+ <p>Between Java 1.4.x and Java 1.5, Xalan was removed from the jar
+ files that are shipped.  Since Caltrop uses Saxon anyway, we now
+ use Saxon here as well.
 
 
-   @author Christopher Hylands, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Green (eal) 
-     Pending Java 1.5 changes
-   @Pt.AcceptedRating Yellow (cxh)
-*/
+ @author Christopher Hylands, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Green (eal) 
+ Pending Java 1.5 changes
+ @Pt.AcceptedRating Yellow (cxh)
+ */
 public class XSLTUtilities {
     /** Instances of this class cannot be created.
      */
@@ -186,7 +185,7 @@ public class XSLTUtilities {
 
             StreamResult result = new StreamResult(outputStream);
             TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+                    .newInstance();
             Transformer serializer = transformerFactory.newTransformer();
             serializer.transform(new DOMSource(document), result);
             return outputStream.toString();
@@ -209,28 +208,27 @@ public class XSLTUtilities {
      */
     public static Document transform(Document inputDocument, String xslFileName)
             throws TransformerException, IOException {
-        TransformerFactory transformerFactory =
-            TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
         Transformer transformer = null;
 
         // Set a valid transformer.
         try {
-            transformer =
-                transformerFactory.newTransformer(new StreamSource(
-                                                          xslFileName));
+            transformer = transformerFactory.newTransformer(new StreamSource(
+                    xslFileName));
         } catch (javax.xml.transform.TransformerConfigurationException ex) {
             try {
                 // We might be in the Swing Event thread, so
                 // Thread.currentThread().getContextClassLoader()
                 // .getResource(entry) probably will not work.
                 Class refClass = Class.forName("ptolemy.util.XSLTUtilities");
-                URL entryURL =
-                    refClass.getClassLoader().getResource(xslFileName);
+                URL entryURL = refClass.getClassLoader().getResource(
+                        xslFileName);
 
                 if (entryURL != null) {
                     transformer = transformerFactory
-                        .newTransformer(new StreamSource(
-                                                entryURL.toString()));
+                            .newTransformer(new StreamSource(entryURL
+                                    .toString()));
                 } else {
                     IOException exception = new IOException("Failed to open '"
                             + xslFileName + "'");
@@ -293,10 +291,9 @@ public class XSLTUtilities {
             StreamSource source = new StreamSource(sourceFileName);
             StreamResult result = new StreamResult(resultStream);
             TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+                    .newInstance();
             Transformer transformer = transformerFactory
-                .newTransformer(new StreamSource(
-                                        xsltFileName));
+                    .newTransformer(new StreamSource(xsltFileName));
             transformer.setOutputProperty("indent", "yes");
             transformer.transform(source, result);
         } finally {
@@ -304,8 +301,7 @@ public class XSLTUtilities {
                 try {
                     resultStream.close();
                 } catch (Throwable throwable) {
-                    throw new RuntimeException(
-                            "Failed to close stream on "
+                    throw new RuntimeException("Failed to close stream on "
                             + resultFileName, throwable);
                 }
             }

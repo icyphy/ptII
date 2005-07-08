@@ -1,29 +1,29 @@
 /*
-  Copyright (c) 1998-2005 The Regents of the University of California
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN  BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
-  *
-  */
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ *
+ */
 package diva.canvas.interactor;
 
 import java.awt.Shape;
@@ -36,7 +36,6 @@ import java.util.Iterator;
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
 import diva.canvas.Site;
-
 
 /** PathGeometry represents a path. Actually, any shape. Its
  * defining shape is any instance of Shape, although generally
@@ -223,61 +222,61 @@ public class PathGeometry implements Geometry {
         }
 
         return new Iterator() {
-                // cursor is the current place in the iteration
-                int cursor = 0;
+            // cursor is the current place in the iteration
+            int cursor = 0;
 
-                // control_point is an internal counter to cursor, needed if the segment is quadratic or cubic.
-                int control_point = 0;
+            // control_point is an internal counter to cursor, needed if the segment is quadratic or cubic.
+            int control_point = 0;
 
-                public boolean hasNext() {
-                    return cursor < _vertexCount;
+            public boolean hasNext() {
+                return cursor < _vertexCount;
+            }
+
+            // Get the next Vertex
+            public Object next() {
+                // The first time through, getVertex() needs to be called
+                if (_vertices[cursor] == null) {
+                    getVertex(cursor);
                 }
 
-                // Get the next Vertex
-                public Object next() {
-                    // The first time through, getVertex() needs to be called
-                    if (_vertices[cursor] == null) {
-                        getVertex(cursor);
-                    }
+                // Depending on the type of segment
+                switch (_type[cursor]) {
+                // If a cubic curve, then make sure to include the two control points
+                case PathIterator.SEG_CUBICTO:
 
-                    // Depending on the type of segment
-                    switch (_type[cursor]) {
-                        // If a cubic curve, then make sure to include the two control points
-                    case PathIterator.SEG_CUBICTO:
-
-                        if (control_point == 0) {
-                            control_point = 1;
-                            return new Vertex(cursor, control_point);
-                        } else if (control_point == 1) {
-                            control_point = 2;
-                            return new Vertex(cursor, control_point);
-                        } else {
-                            control_point = 0;
-                            return _vertices[cursor++];
-                        }
-
-                        // If a quadratic curve, then make sure to include the one control point
-                    case PathIterator.SEG_QUADTO:
-
-                        if (control_point == 0) {
-                            control_point = 1;
-                            return new Vertex(cursor, control_point);
-                        } else {
-                            // Otherwise, there is no control points on the segment.
-                            control_point = 0;
-                            return _vertices[cursor++];
-                        }
-
-                    default:
+                    if (control_point == 0) {
+                        control_point = 1;
+                        return new Vertex(cursor, control_point);
+                    } else if (control_point == 1) {
+                        control_point = 2;
+                        return new Vertex(cursor, control_point);
+                    } else {
+                        control_point = 0;
                         return _vertices[cursor++];
                     }
-                }
 
-                public void remove() {
-                    throw new UnsupportedOperationException(
-                            "Vertex sites cannot be removed");
+                // If a quadratic curve, then make sure to include the one control point
+                case PathIterator.SEG_QUADTO:
+
+                    if (control_point == 0) {
+                        control_point = 1;
+                        return new Vertex(cursor, control_point);
+                    } else {
+                        // Otherwise, there is no control points on the segment.
+                        control_point = 0;
+                        return _vertices[cursor++];
+                    }
+
+                default:
+                    return _vertices[cursor++];
                 }
-            };
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException(
+                        "Vertex sites cannot be removed");
+            }
+        };
     }
 
     ///////////////////////////////////////////////////////////////////

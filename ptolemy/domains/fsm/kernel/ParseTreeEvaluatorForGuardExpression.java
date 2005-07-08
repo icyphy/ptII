@@ -1,30 +1,30 @@
 /* A visitor for parse trees of the guard expressions.
 
-Copyright (c) 2003-2005 The Regents of the University of California
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
 
-*/
+ */
 package ptolemy.domains.fsm.kernel;
 
 import java.util.Iterator;
@@ -43,73 +43,72 @@ import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParserConstants;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeEvaluatorForGuardExpression
 
 /**
-   This class extends the ParseTreeEvaluator class. It is specially
-   designed for guard expressions associated with transitions of FSM. An object
-   of this class is a visitor that visits a parse tree of a guard expression
-   and evaluates it into a token. Meanwhile, this visitor stores the type and
-   difference of all relations of the guard expression into a relation list.
-   Here a relation means an expression that does not contain a logical operator.
-   <p>
-   This visitor has two modes of operation: <i>construction</i> mode and
-   <i>update mode</i>. During the construction mode, this visitor constructs a
-   relation list where each element of the list corresponds to a relation of
-   the guard expression. The order of the elements is fixed and it is the same
-   as the order of the relations appear in the guard expression. If the guard
-   expression changes, the relation list will be reconstructed. During the
-   update mode, the relation list gets updated only. The order of the elements
-   get updated is the same order the relations of the guard expression get
-   evaluated.
-   <p>
-   When this visitor evaluates the parse tree, if the visiting node is a leaf
-   node and the evaluated token is a boolean token, or the visiting node
-   is a relational node, the visiting node is treated as a relation. The visitor
-   evaluates the 'difference' and 'relationType' of this relation, and stores
-   the evaluation results into the corresponding element in the relation list.
-   <p>
-   The 'difference' of a relation is calculated in the following way.
-   For a leaf node evaluated as a boolean token, the difference is
-   0. This situation corresponds to the "true", or "false", or "x_isPresent"
-   elements in a guard expression. For a relational node with the format
-   (scalarLeft relationOperator scalarRight), the difference is the absolute
-   double value of (scalarLeft - scalarRight).
-   <p>
-   The 'relationType' of a relation has 5 different types:
-   1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.  It
-   is calculated in the following way.
-   <p>
-   For a leaf node evaluated as a boolean token, its relationType is
-   decided by the boolean value of the result boolean token: 1 for
-   true and 2 for false.  For a relation node, (scalarLeft
-   relationOperator scalarRight), the relationType depends on the
-   relationOperator. If the relationOperator is '==' or '!=', the
-   relationType can be 3 indicating the two scalars equal or not equal.
-   FIXME:
-   4
-   indicating the left scalar is less than the right one, and 5 to
-   indicate left scalar is bigger than the right one. For the other kinds of
-   relation operators, the relationType is decided by the
-   boolean value of the evaluation result, i.e., 1 for true and 2 for false.
-   <p>
-   If the evaluator is in the construction mode, the relation information is
-   added into the relation list, if it is in the update mode, the corresponding
-   element of the relation List gets updated.
-   <p>
-   Note, this evaluator does not use short-circuit evaluation on
-   logical nodes, meaning all nodes will be evaluated.
+ This class extends the ParseTreeEvaluator class. It is specially
+ designed for guard expressions associated with transitions of FSM. An object
+ of this class is a visitor that visits a parse tree of a guard expression
+ and evaluates it into a token. Meanwhile, this visitor stores the type and
+ difference of all relations of the guard expression into a relation list.
+ Here a relation means an expression that does not contain a logical operator.
+ <p>
+ This visitor has two modes of operation: <i>construction</i> mode and
+ <i>update mode</i>. During the construction mode, this visitor constructs a
+ relation list where each element of the list corresponds to a relation of
+ the guard expression. The order of the elements is fixed and it is the same
+ as the order of the relations appear in the guard expression. If the guard
+ expression changes, the relation list will be reconstructed. During the
+ update mode, the relation list gets updated only. The order of the elements
+ get updated is the same order the relations of the guard expression get
+ evaluated.
+ <p>
+ When this visitor evaluates the parse tree, if the visiting node is a leaf
+ node and the evaluated token is a boolean token, or the visiting node
+ is a relational node, the visiting node is treated as a relation. The visitor
+ evaluates the 'difference' and 'relationType' of this relation, and stores
+ the evaluation results into the corresponding element in the relation list.
+ <p>
+ The 'difference' of a relation is calculated in the following way.
+ For a leaf node evaluated as a boolean token, the difference is
+ 0. This situation corresponds to the "true", or "false", or "x_isPresent"
+ elements in a guard expression. For a relational node with the format
+ (scalarLeft relationOperator scalarRight), the difference is the absolute
+ double value of (scalarLeft - scalarRight).
+ <p>
+ The 'relationType' of a relation has 5 different types:
+ 1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.  It
+ is calculated in the following way.
+ <p>
+ For a leaf node evaluated as a boolean token, its relationType is
+ decided by the boolean value of the result boolean token: 1 for
+ true and 2 for false.  For a relation node, (scalarLeft
+ relationOperator scalarRight), the relationType depends on the
+ relationOperator. If the relationOperator is '==' or '!=', the
+ relationType can be 3 indicating the two scalars equal or not equal.
+ FIXME:
+ 4
+ indicating the left scalar is less than the right one, and 5 to
+ indicate left scalar is bigger than the right one. For the other kinds of
+ relation operators, the relationType is decided by the
+ boolean value of the evaluation result, i.e., 1 for true and 2 for false.
+ <p>
+ If the evaluator is in the construction mode, the relation information is
+ added into the relation list, if it is in the update mode, the corresponding
+ element of the relation List gets updated.
+ <p>
+ Note, this evaluator does not use short-circuit evaluation on
+ logical nodes, meaning all nodes will be evaluated.
 
-   @author Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
-   @see RelationList
-   @see ptolemy.data.expr.ParseTreeEvaluator
-*/
+ @author Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (hyzheng)
+ @Pt.AcceptedRating Red (hyzheng)
+ @see RelationList
+ @see ptolemy.data.expr.ParseTreeEvaluator
+ */
 public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     /** Construct a parse tree evaluator for a guard expression with the
      *  given relation list of that guard expression and an error tolerance.
@@ -249,7 +248,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         if (_constructingRelationList) {
             _relationList.addRelation(_relationType, _difference);
         } else {
-            _relationList.setRelation(_relationIndex, _relationType, _difference);
+            _relationList.setRelation(_relationIndex, _relationType,
+                    _difference);
         }
 
         _relationIndex++;
@@ -337,7 +337,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // absent. If x is absent, we do not evaluate the "x < 10.0" part here.
         Set variablesOfNode = _variableCollector.collectFreeVariables(node);
         Iterator absentDiscreteVariables = _absentDiscreteVariables
-            .listIterator();
+                .listIterator();
 
         while (absentDiscreteVariables.hasNext()) {
             String variableName = (String) absentDiscreteVariables.next();
@@ -368,7 +368,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
         ptolemy.data.expr.Token operator = (ptolemy.data.expr.Token) node
-            .getOperator();
+                .getOperator();
         ptolemy.data.Token leftToken = tokens[0];
         ptolemy.data.Token rightToken = tokens[1];
 
@@ -393,7 +393,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             if ((leftToken instanceof ScalarToken)
                     && (rightToken instanceof ScalarToken)) {
                 // handle the relations like x == 2.0
-                ScalarToken difference = (ScalarToken) leftToken.subtract(rightToken);
+                ScalarToken difference = (ScalarToken) leftToken
+                        .subtract(rightToken);
 
                 if (((BooleanToken) result).booleanValue()) {
                     _relationType = 3;
@@ -419,8 +420,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         } else {
             // If the operator is neither about equal nor not-equal relations,
             // both tokens must be scalar tokens.
-            if (!((leftToken instanceof ScalarToken)
-                        && (rightToken instanceof ScalarToken))) {
+            if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
                 throw new IllegalActionException("The " + operator.image
                         + " operator can only be applied between scalars.");
             }
@@ -451,7 +451,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             }
 
             _difference = ((ScalarToken) leftScalar.subtract(rightScalar))
-                .doubleValue();
+                    .doubleValue();
         }
 
         _evaluatedChildToken = result;
@@ -459,7 +459,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         if (_constructingRelationList) {
             _relationList.addRelation(_relationType, _difference);
         } else {
-            _relationList.setRelation(_relationIndex, _relationType, _difference);
+            _relationList.setRelation(_relationIndex, _relationType,
+                    _difference);
         }
 
         _relationIndex++;

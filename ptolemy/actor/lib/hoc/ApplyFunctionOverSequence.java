@@ -1,30 +1,30 @@
 /* An actor that applies a function over each element of a sequence.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.hoc;
 
 import java.util.Iterator;
@@ -43,45 +43,44 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ApplyFunctionOverSequence
 
 /**
-   Apply a function over one or more input sequences.
-   This actor will collect tokens from each input port into arrays
-   and, when enough input tokens have arrived, pass those arrays
-   to the function specified either at the <i>function</i> parameter
-   or the port.
-   <p>
-   To use this actor, create any number of input ports, add
-   a parameter named <i>tokenConsumptionRate</i> to each input
-   port, and set the value of this parameter to the number
-   of tokens that you would like to be collected into an
-   array for each function application. Also, create
-   and set a parameter named <i>tokenProductionRate</i>
-   in the output port.  (If <i>tokenConsumptionRate</i>
-   or <i>tokenProductionRate</i> are not defined, then they
-   will be assumed to have value one).
-   Then define a function that takes as many array-valued
-   arguments as there are input ports and returns an
-   array-valued result. For example, the following function
-   will compute the FFT of the input array using the FFT()
-   function in the expression language:
-   <pre>
-   function(x:{double}) abs(FFT(x, 8))
-   </pre>
-   Note that if the <i>tokenConsumptionRate</i> of a port is
-   changed during the execution of the model, the change is
-   ignored until the next execution of the model.
+ Apply a function over one or more input sequences.
+ This actor will collect tokens from each input port into arrays
+ and, when enough input tokens have arrived, pass those arrays
+ to the function specified either at the <i>function</i> parameter
+ or the port.
+ <p>
+ To use this actor, create any number of input ports, add
+ a parameter named <i>tokenConsumptionRate</i> to each input
+ port, and set the value of this parameter to the number
+ of tokens that you would like to be collected into an
+ array for each function application. Also, create
+ and set a parameter named <i>tokenProductionRate</i>
+ in the output port.  (If <i>tokenConsumptionRate</i>
+ or <i>tokenProductionRate</i> are not defined, then they
+ will be assumed to have value one).
+ Then define a function that takes as many array-valued
+ arguments as there are input ports and returns an
+ array-valued result. For example, the following function
+ will compute the FFT of the input array using the FFT()
+ function in the expression language:
+ <pre>
+ function(x:{double}) abs(FFT(x, 8))
+ </pre>
+ Note that if the <i>tokenConsumptionRate</i> of a port is
+ changed during the execution of the model, the change is
+ ignored until the next execution of the model.
 
-   @author Steve Neuendorffer (Contributor: Edward A. Lee)
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Green (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-   @see ptolemy.actor.lib.hoc.ApplyFunction
-*/
+ @author Steve Neuendorffer (Contributor: Edward A. Lee)
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ @see ptolemy.actor.lib.hoc.ApplyFunction
+ */
 public class ApplyFunctionOverSequence extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -229,5 +228,6 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
     }
 
     private int _outputRate;
+
     private int[] _rate;
 }

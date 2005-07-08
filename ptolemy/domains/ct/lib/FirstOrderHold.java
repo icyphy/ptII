@@ -1,31 +1,31 @@
 /* An actor that takes a value and a derivative and does first order
-   projection.
+ projection.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -41,20 +41,19 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FirstOrderHold
 
 /**
-   Convert discrete events at the input to a continuous-time signal at the
-   output by projecting the value with the derivative.
+ Convert discrete events at the input to a continuous-time signal at the
+ output by projecting the value with the derivative.
 
-   @author Jie Liu
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (liuj)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author Jie Liu
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (liuj)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class FirstOrderHold extends Transformer implements CTWaveformGenerator {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -128,14 +127,14 @@ public class FirstOrderHold extends Transformer implements CTWaveformGenerator {
                 _time = director.getModelTime();
 
                 if (_debugging) {
-                    _debug(getFullName(), " get inputs: (" + _value,
-                            ", " + _derivative + ").");
+                    _debug(getFullName(), " get inputs: (" + _value, ", "
+                            + _derivative + ").");
                 }
             }
         }
 
         double timeInterval = director.getModelTime().subtract(_time)
-            .getDoubleValue();
+                .getDoubleValue();
         output.send(0, new DoubleToken(_value + (timeInterval * _derivative)));
     }
 
@@ -146,7 +145,8 @@ public class FirstOrderHold extends Transformer implements CTWaveformGenerator {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _value = ((DoubleToken) defaultValue.getToken()).doubleValue();
-        _derivative = ((DoubleToken) defaultDerivative.getToken()).doubleValue();
+        _derivative = ((DoubleToken) defaultDerivative.getToken())
+                .doubleValue();
         _time = getDirector().getModelTime();
     }
 
@@ -154,6 +154,8 @@ public class FirstOrderHold extends Transformer implements CTWaveformGenerator {
     ////                         private variables                 ////
     // Saved token.
     private double _value;
+
     private double _derivative;
+
     private Time _time;
 }

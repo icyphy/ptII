@@ -1,67 +1,66 @@
 /* A base class for runtime exceptions.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.kernel.util;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Collection;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// KernelRuntimeException
 
 /**
-   Base class for runtime exceptions.  This class extends the basic
-   Java RuntimeException with a constructor that can take a Nameable as
-   an argument.
+ Base class for runtime exceptions.  This class extends the basic
+ Java RuntimeException with a constructor that can take a Nameable as
+ an argument.
 
-   <p>This exception supports all the constructor forms of KernelException,
-   but is implemented as a RuntimeException so that it does not have to
-   be declared.
+ <p>This exception supports all the constructor forms of KernelException,
+ but is implemented as a RuntimeException so that it does not have to
+ be declared.
 
-   <p>The cause argument to the constructor is a Throwable that
-   caused the exception.  The cause argument is used when code throws
-   an exception and we want to rethrow the exception but print
-   the stacktrace where the first exception occurred.  This is called
-   exception chaining.
+ <p>The cause argument to the constructor is a Throwable that
+ caused the exception.  The cause argument is used when code throws
+ an exception and we want to rethrow the exception but print
+ the stacktrace where the first exception occurred.  This is called
+ exception chaining.
 
-   <p>JDK1.4 and later support exception chaining.  We are implementing
-   a version of exception chaining here ourselves so that we can use JVMs
-   earlier than JDK1.4.  See the {@link KernelException}
-   documentation for differences between our exception chaining
-   implementation and the JDK1.4 implementation.
+ <p>JDK1.4 and later support exception chaining.  We are implementing
+ a version of exception chaining here ourselves so that we can use JVMs
+ earlier than JDK1.4.  See the {@link KernelException}
+ documentation for differences between our exception chaining
+ implementation and the JDK1.4 implementation.
 
-   @author Edward A. Lee, Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (cxh)
-   @Pt.AcceptedRating Green (cxh)
-*/
+ @author Edward A. Lee, Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class KernelRuntimeException extends RuntimeException {
     /** Construct an exception with no specific detail message. */
     public KernelRuntimeException() {
@@ -110,7 +109,7 @@ public class KernelRuntimeException extends RuntimeException {
     public KernelRuntimeException(Nameable object1, Nameable object2,
             Throwable cause, String detail) {
         _setMessage(KernelException.generateMessage(object1, object2, cause,
-                            detail));
+                detail));
         _setCause(cause);
     }
 

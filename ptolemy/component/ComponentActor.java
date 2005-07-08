@@ -1,30 +1,30 @@
 /* A ComponentActor is outside component and inside actor.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.component;
 
 import java.util.HashMap;
@@ -52,20 +52,19 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ComponentActor
 
 /**
-   A Component is outside compatable with components and inside compatable
-   with actors.
+ A Component is outside compatable with components and inside compatable
+ with actors.
 
-   @author Yang Zhao
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating yellow (ellen_zh)
-   @Pt.AcceptedRating red (cxh)
-*/
+ @author Yang Zhao
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating yellow (ellen_zh)
+ @Pt.AcceptedRating red (cxh)
+ */
 public class ComponentActor extends TypedCompositeActor implements Component {
     /** Construct an entity with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -94,6 +93,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     public IOMethodPort input;
+
     public IOMethodPort output;
 
     ///////////////////////////////////////////////////////////////////
@@ -147,13 +147,14 @@ public class ComponentActor extends TypedCompositeActor implements Component {
             // NOTE: deepInsidePortList() is not the right thing here
             // since it will return the same port if it is opaque.
             Iterator insidePorts = ((ComponentPort) port).insidePortList()
-                .iterator();
+                    .iterator();
 
             try {
                 _inConnectionsChanged = true;
 
                 while (insidePorts.hasNext()) {
-                    ComponentPort insidePort = (ComponentPort) insidePorts.next();
+                    ComponentPort insidePort = (ComponentPort) insidePorts
+                            .next();
                     Entity portContainer = (Entity) insidePort.getContainer();
 
                     // Avoid an infinite loop where notifications are traded.
@@ -332,8 +333,11 @@ public class ComponentActor extends TypedCompositeActor implements Component {
 
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
+
     private transient List _cachedInputPorts;
+
     private transient long _outputPortsVersion = -1;
+
     private transient List _cachedOutputPorts;
 
     // Cached FunctionDependency object.
@@ -343,8 +347,8 @@ public class ComponentActor extends TypedCompositeActor implements Component {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _addIcon() {
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
                 + "height=\"40\" style=\"fill:white\"/>\n"
                 + "<polygon points=\"-20,-10 20,0 -20,10\" "
                 + "style=\"fill:blue\"/>\n" + "</svg>\n");
@@ -355,6 +359,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
 
     /** The container. */
     private CompositeEntity _container;
+
     private HashMap _methods;
 
     ///////////////////////////////////////////////////////////////////
@@ -444,7 +449,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
                             tokens[0] = t;
 
                             Iterator ports = this.deepConnectedPortList()
-                                .iterator();
+                                    .iterator();
                             MethodCallPort port = (MethodCallPort) ports.next();
 
                             //System.out.println("get the connected method call port");
@@ -591,6 +596,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
 
         // Lists of local receivers, indexed by relation.
         private Receiver[][] _insideReceivers;
+
         private boolean _isProviedPort = false;
     }
 }

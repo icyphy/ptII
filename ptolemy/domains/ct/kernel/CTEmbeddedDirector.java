@@ -1,29 +1,29 @@
 /* An embedded director for CT inside CT or FSM.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.domains.ct.kernel;
 
 import java.util.Iterator;
@@ -37,31 +37,30 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CTEmbeddedDirector
 
 /**
-   An embedded director for CT inside CT or FSM. Conceptually, this director
-   interacts with a continuous outside domain. As a consequence, this
-   director exposes its step size control information to the outer domain
-   through its container, which must be a CTCompositeActor.
-   <P>
-   Unlike the CTMixedSignalDirector, this director does not run ahead
-   of the global time and rollback, simply because the step size control
-   information is accessible from outer domain which has a continuous
-   time and understands the meaning of step size.
+ An embedded director for CT inside CT or FSM. Conceptually, this director
+ interacts with a continuous outside domain. As a consequence, this
+ director exposes its step size control information to the outer domain
+ through its container, which must be a CTCompositeActor.
+ <P>
+ Unlike the CTMixedSignalDirector, this director does not run ahead
+ of the global time and rollback, simply because the step size control
+ information is accessible from outer domain which has a continuous
+ time and understands the meaning of step size.
 
-   @see CTMultiSolverDirector
-   @see CTTransparentDirector
-   @author  Jie Liu, Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
-*/
-public class CTEmbeddedDirector extends CTMultiSolverDirector
-    implements CTTransparentDirector {
+ @see CTMultiSolverDirector
+ @see CTTransparentDirector
+ @author  Jie Liu, Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (hyzheng)
+ @Pt.AcceptedRating Red (hyzheng)
+ */
+public class CTEmbeddedDirector extends CTMultiSolverDirector implements
+        CTTransparentDirector {
     // FIXME: constrain this director to inherit the parameters of
     // the top-level CT director.
 
@@ -126,13 +125,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public void emitCurrentStates() {
         try {
-            Iterator dynamicActors = getScheduler().getSchedule()
-                .get(CTSchedule.DYNAMIC_ACTORS)
-                .actorIterator();
+            Iterator dynamicActors = getScheduler().getSchedule().get(
+                    CTSchedule.DYNAMIC_ACTORS).actorIterator();
 
             while (dynamicActors.hasNext() && !_stopRequested) {
                 CTDynamicActor dynamicActor = (CTDynamicActor) dynamicActors
-                    .next();
+                        .next();
                 dynamicActor.emitCurrentStates();
             }
         } catch (IllegalActionException e) {
@@ -273,13 +271,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         try {
             setModelTime(getIterationBeginTime());
 
-            Iterator statefulActors = getScheduler().getSchedule()
-                .get(CTSchedule.STATEFUL_ACTORS)
-                .actorIterator();
+            Iterator statefulActors = getScheduler().getSchedule().get(
+                    CTSchedule.STATEFUL_ACTORS).actorIterator();
 
             while (statefulActors.hasNext() && !_stopRequested) {
                 CTStatefulActor statefulActor = (CTStatefulActor) statefulActors
-                    .next();
+                        .next();
                 statefulActor.goToMarkedState();
             }
         } catch (IllegalActionException e) {
@@ -337,13 +334,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public void markState() {
         try {
-            Iterator statefulActors = getScheduler().getSchedule()
-                .get(CTSchedule.STATEFUL_ACTORS)
-                .actorIterator();
+            Iterator statefulActors = getScheduler().getSchedule().get(
+                    CTSchedule.STATEFUL_ACTORS).actorIterator();
 
             while (statefulActors.hasNext() && !_stopRequested) {
                 CTStatefulActor statefulActor = (CTStatefulActor) statefulActors
-                    .next();
+                        .next();
                 statefulActor.markState();
             }
         } catch (IllegalActionException e) {
@@ -417,8 +413,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public void preinitialize() throws IllegalActionException {
         if (!(getContainer() instanceof CTStepSizeControlActor)) {
-            throw new IllegalActionException(this,
-                    "can only be contained by "
+            throw new IllegalActionException(this, "can only be contained by "
                     + "a composite actor that implements "
                     + "the CTStepSizeControlActor "
                     + "interface, for example, a continuous "
