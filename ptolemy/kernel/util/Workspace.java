@@ -598,6 +598,35 @@ public final class Workspace implements Nameable, Serializable {
         }
     }
 
+    /** This method is equivalent to the single argument version except that
+     *  you can specify a timeout, which is in milliseconds. If value of the
+     *  timeout argument is zero, then the method is exactly equivalent
+     *  to the single argument version, and no timeout is implemented. If
+     *  the value is larger than zero, then the method returns if either
+     *  the thread is notified by another thread or the timeout expires.
+     *  @param obj The object that the thread wants to wait on.
+     *  @param timeout The maximum amount of time to wait, in milliseconds,
+     *   or zero to not specify a timeout.
+     *  @exception InterruptedException If the calling thread is interrupted
+     *   while waiting on the specified object and all the read accesses held
+     *   earlier by the thread are re-acquired.
+     *  @exception InternalErrorException If re-acquiring the read accesses
+     *   held earlier by the thread fails.
+     *  @see wait(Object)
+     */
+    public void wait(Object obj, long timeout) throws InterruptedException {
+        int depth = 0;
+        depth = _releaseAllReadPermissions();
+
+        try {
+            synchronized (obj) {
+                obj.wait(timeout);
+            }
+        } finally {
+            _reacquireReadPermissions(depth);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
