@@ -8,6 +8,7 @@
 #   sed 's@^Only in gen-3.1/src/ptII3.1devel/@@' /tmp/pt4j | sed 's@: @/@' | grep /lib/ > /tmp/pt4j.3
 
 onlyInFileNames=/tmp/pt4j.3
+onlyInFileNames=/tmp/s
 onlyInFiles=`cat $onlyInFileNames` 
 
 oldpackagepath=""
@@ -34,7 +35,13 @@ do
    echo "<dt><a href=\"codeDoc/$htmlFile\">`basename $file .java`</a>:"
     
    echo "<dd>(`grep @author $PTII/$file| sed 's/.*@author //'`)"
-   echo "`head -1 $PTII/$file| sed 's@^/\* @@'`"
+   summary=`awk '{ if (NF == 0) {
+                       exit
+                   } else {
+                       print $0
+                   }
+                 }' $PTII/$file | sed 's@^/\* @@'`
+   echo $summary
    echo ""
 done
 echo "</dl>"

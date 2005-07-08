@@ -14,10 +14,11 @@ ptii=`echo $PTII | sed 's@\\\@/@g'`
 htmFiles=`"$PTII/adm/bin/ptIItxtfiles" | grep '.htm$' | grep -v fixapplets | grep -v vendors`
 for file in $htmFiles
 do
-	grep -q '<OBJECT' "$file"
+	grep '<OBJECT' "$file" > /dev/null
 	retval=$?
 	if [ "$retval" = "0" ]; then	
 		echo $file
+		fix-files $minusNFlag "$file"
 		#$PTII/adm/bin/fixapplets141 $minusNFlag "$file"
 	fi
 done

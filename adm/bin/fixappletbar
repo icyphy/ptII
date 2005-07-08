@@ -23,10 +23,10 @@ do
      retval=$?
      if [ $retval != 0 ]; then
 	 echo "$file does not contain \"progressbar\""
-	 awk '{ if ($0 ~ /NAME = "scriptable" VALUE = "false"/) {
+	 awk '{ if ($0 ~ /NAME = "background" VALUE = /) {
                     print  "            <PARAM NAME = \"progressbar\" VALUE = \"true\"> \\"  
                 } else {
-                    if ($0 ~ /scriptable = "false"/) {
+                    if ($0 ~ /background = "/) {
                         print "            progressbar = \"true\" \\"
                     }
                 }
