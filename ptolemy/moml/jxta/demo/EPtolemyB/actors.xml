@@ -1,6 +1,0 @@
-<Actors>
-   <Actor>
-      <name="Gaussian"/>
-      <class="ptolemy.actor.lib.Gaussian"/>
-   <Actor>
-</Actors>
