@@ -1,30 +1,30 @@
 /* An executable entity.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor;
 
 import java.util.ArrayList;
@@ -43,27 +43,26 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AtomicActor
 
 /**
-   An AtomicActor is an executable entity that cannot itself contain
-   other actors. The Ports of AtomicActors are constrained to be IOPorts.
-   Derived classes may further constrain the ports by overriding the public
-   method newPort() to create a port of the appropriate subclass, and the
-   protected method _addPort() to throw an exception if its argument is a
-   port that is not of the appropriate subclass. In this base class, the
-   actor does nothing in the action methods (prefire, fire, ...).
+ An AtomicActor is an executable entity that cannot itself contain
+ other actors. The Ports of AtomicActors are constrained to be IOPorts.
+ Derived classes may further constrain the ports by overriding the public
+ method newPort() to create a port of the appropriate subclass, and the
+ protected method _addPort() to throw an exception if its argument is a
+ port that is not of the appropriate subclass. In this base class, the
+ actor does nothing in the action methods (prefire, fire, ...).
 
-   @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (neuendor)
-   @see ptolemy.actor.CompositeActor
-   @see ptolemy.actor.IOPort
-*/
+ @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (neuendor)
+ @see ptolemy.actor.CompositeActor
+ @see ptolemy.actor.IOPort
+ */
 public class AtomicActor extends ComponentEntity implements Actor {
     /** Construct an actor in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
@@ -600,8 +599,8 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @exception NameDuplicationException If the port name coincides with a
      *   name already in the entity.
      */
-    protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+    protected void _addPort(Port port) throws IllegalActionException,
+            NameDuplicationException {
         if (!(port instanceof IOPort)) {
             throw new IllegalActionException(this, port,
                     "Incompatible port class for this entity.");
@@ -632,7 +631,10 @@ public class AtomicActor extends ComponentEntity implements Actor {
     ////                         private variables                 ////
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
+
     private transient List _cachedInputPorts;
+
     private transient long _outputPortsVersion = -1;
+
     private transient List _cachedOutputPorts;
 }

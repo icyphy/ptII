@@ -1,30 +1,30 @@
 /* Filter for Parameter name changes.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.moml.filter;
 
 import java.util.HashMap;
@@ -34,58 +34,57 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ParameterNameChanges
 
 /** When this class is registered with the MoMLParser.setMoMLFilter()
-    method, it will cause MoMLParser to filter so that models from
-    earlier releases will run in the current release.
+ method, it will cause MoMLParser to filter so that models from
+ earlier releases will run in the current release.
 
-    <p>This class will filter for classes with Parameters where the parameter
-    name has changed.
+ <p>This class will filter for classes with Parameters where the parameter
+ name has changed.
 
-    <p>For example, after Ptolemy II 2.2, the PNDirector
-    changed in such a way that the 'Initial_queue_capacity' parameter
-    is now 'initialQueueCapacity'.
+ <p>For example, after Ptolemy II 2.2, the PNDirector
+ changed in such a way that the 'Initial_queue_capacity' parameter
+ is now 'initialQueueCapacity'.
 
-    <p>To add this
-    change to this filter, we add a code to the static section at
-    the bottom of the file.
-    <pre>
-    // PNDirectory: After 2.2, 'Initial_queue_capacity'
-    // property is now 'initialQueueCapacity'
+ <p>To add this
+ change to this filter, we add a code to the static section at
+ the bottom of the file.
+ <pre>
+ // PNDirectory: After 2.2, 'Initial_queue_capacity'
+ // property is now 'initialQueueCapacity'
 
-    HashMap pnDirectorChanges = new HashMap();
-    // Key = property name, Value = new class name
-    pnDirectorChanges.put("Initial_queue_capacity",
-    "initialQueueCapacity");
-    </pre>
-    The pnDirectorChange HashMap maps property names to the new
-    name
+ HashMap pnDirectorChanges = new HashMap();
+ // Key = property name, Value = new class name
+ pnDirectorChanges.put("Initial_queue_capacity",
+ "initialQueueCapacity");
+ </pre>
+ The pnDirectorChange HashMap maps property names to the new
+ name
 
-    <pre>
+ <pre>
 
-    _classesWithParameterNameChanges
-    .put("ptolemy.domains.pn.PNDirectory",
-    pnDirectorChanges);
-    </pre>
-    The _classesWithParameterNameChanges HashMap contains all the classes
-    such as PNDirectory that have changes and each class has a map
-    of the Parameter changes that are to be made.
+ _classesWithParameterNameChanges
+ .put("ptolemy.domains.pn.PNDirectory",
+ pnDirectorChanges);
+ </pre>
+ The _classesWithParameterNameChanges HashMap contains all the classes
+ such as PNDirectory that have changes and each class has a map
+ of the Parameter changes that are to be made.
 
-    <p> Conceptually, how the code works is that when we see a class while
-    parsing, we check to see if the class is in _classesWithParameterNameChanges.
-    If the class was present in the HashMap, then as we go through the
-    code, we look for property names that need to have their classes changed.
+ <p> Conceptually, how the code works is that when we see a class while
+ parsing, we check to see if the class is in _classesWithParameterNameChanges.
+ If the class was present in the HashMap, then as we go through the
+ code, we look for property names that need to have their classes changed.
 
 
-    @author Christopher Hylands
-    @version $Id$
-    @since Ptolemy II 2.2
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.2
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class ParameterNameChanges implements MoMLFilter {
     /** If the attributeName is "class" and attributeValue names a
      *  class that has had a Parameter names changed between releases,
@@ -141,8 +140,9 @@ public class ParameterNameChanges implements MoMLFilter {
                 // We found a class with a parameter name change.
                 _currentlyProcessingActorWithParameterNameChanges = true;
                 _currentActorFullName = container.getFullName() + "."
-                    + _lastNameSeen;
-                _propertyMap = (HashMap) _classesWithParameterNameChanges.get(attributeValue);
+                        + _lastNameSeen;
+                _propertyMap = (HashMap) _classesWithParameterNameChanges
+                        .get(attributeValue);
             } else if (_currentlyProcessingActorWithParameterNameChanges
                     && (_newName != null)) {
                 // We found a property class to change, and now we
@@ -158,7 +158,8 @@ public class ParameterNameChanges implements MoMLFilter {
             } else if (_currentlyProcessingActorWithParameterNameChanges
                     && (container != null)
                     && !container.getFullName().equals(_currentActorFullName)
-                    && !container.getFullName().startsWith(_currentActorFullName)) {
+                    && !container.getFullName().startsWith(
+                            _currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes
                 _currentlyProcessingActorWithParameterNameChanges = false;
@@ -192,7 +193,7 @@ public class ParameterNameChanges implements MoMLFilter {
             results.append("\t" + actor + "\n");
 
             HashMap propertyMap = (HashMap) _classesWithParameterNameChanges
-                .get(actor);
+                    .get(actor);
             Iterator properties = propertyMap.keySet().iterator();
 
             while (properties.hasNext()) {
@@ -239,15 +240,15 @@ public class ParameterNameChanges implements MoMLFilter {
 
         // Key = property name, Value = new class name
         pnDirectorChanges.put("Initial_queue_capacity", "initialQueueCapacity");
-        _classesWithParameterNameChanges.put("ptolemy.domains.pn.kernel.PNDirector",
-                pnDirectorChanges);
+        _classesWithParameterNameChanges.put(
+                "ptolemy.domains.pn.kernel.PNDirector", pnDirectorChanges);
 
         // VariableDelay: After 4.0, 'defaultDelay'
         // property is now 'delay'
         HashMap variableDelayChanges = new HashMap();
         variableDelayChanges.put("defaultDelay", "delay");
-        _classesWithParameterNameChanges.put("ptolemy.domains.de.lib.VariableDelay",
-                variableDelayChanges);
+        _classesWithParameterNameChanges.put(
+                "ptolemy.domains.de.lib.VariableDelay", variableDelayChanges);
 
         // ServerDelay: After 4.1, 'serviceTime'
         // property is now 'newServiceTime'

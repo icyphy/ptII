@@ -1,30 +1,30 @@
 /* Filter that adds _hideName to annotations
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.moml.filter;
 
 import ptolemy.data.BooleanToken;
@@ -35,20 +35,19 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// HideAnnotationNames
 
 /** When this class is registered with the MoMLParser.addMoMLFilter()
-    method, it will cause MoMLParser to add a _hideName property
-    property for any annotations.
+ method, it will cause MoMLParser to add a _hideName property
+ property for any annotations.
 
-    @author Christopher Hylands
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class HideAnnotationNames implements MoMLFilter {
     /** If the attributeName is "name" and attributeValue ends
      *  with "annotation", then
@@ -80,7 +79,7 @@ public class HideAnnotationNames implements MoMLFilter {
                 //          class="ptolemy.kernel.util.Attribute">
                 _currentlyProcessingAnnotation = true;
                 _currentAnnotationFullName = container.getFullName() + "."
-                    + attributeValue;
+                        + attributeValue;
             } else if (_currentlyProcessingAnnotation
                     && attributeValue.equals("_hideName")) {
                 // We are processing an annotation and it already
@@ -90,13 +89,13 @@ public class HideAnnotationNames implements MoMLFilter {
             }
         }
 
-        if (_currentlyProcessingAnnotation && (container != null)
+        if (_currentlyProcessingAnnotation
+                && (container != null)
                 && !container.getFullName().equals(_currentAnnotationFullName)
-                && ((_currentAnnotationFullName == null)
-                        || ((_currentAnnotationFullName != null)
-                                && !_currentAnnotationFullName.startsWith(
-                                        container.getFullName())))
-                && !container.getFullName().startsWith(_currentAnnotationFullName)) {
+                && ((_currentAnnotationFullName == null) || ((_currentAnnotationFullName != null) && !_currentAnnotationFullName
+                        .startsWith(container.getFullName())))
+                && !container.getFullName().startsWith(
+                        _currentAnnotationFullName)) {
             // We found another class in a different container
             // while handling an annotation.
             _currentlyProcessingAnnotation = false;
@@ -141,7 +140,7 @@ public class HideAnnotationNames implements MoMLFilter {
      */
     public String toString() {
         return getClass().getName() + ": If an annotation name ends with\n"
-            + "'annotation1', then add _hideName if necessary.\n";
+                + "'annotation1', then add _hideName if necessary.\n";
     }
 
     ///////////////////////////////////////////////////////////////////

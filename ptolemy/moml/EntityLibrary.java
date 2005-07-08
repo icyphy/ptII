@@ -1,30 +1,30 @@
 /* A hierarchical library of components specified in MoML.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.moml;
 
 import java.io.IOException;
@@ -47,104 +47,103 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// EntityLibrary
 
 /**
-   This class provides a hierarchical library of components specified
-   in MoML.  The contents are typically specified via the configure()
-   method, which is passed MoML code.  The MoML is evaluated
-   lazily; i.e. it is not actually evaluated until there is a request
-   for its contents, via a call to getEntity(), numEntities(),
-   entityList(), or any related method. You can also force evaluation
-   of the MoML by calling populate().  When you export MoML for this
-   object, the MoML description of the contents is wrapped in a configure
-   element.  This object contains an attribute with name "_libraryMarker",
-   which marks it as a library.  This is used by the library browser in
-   vergil to know to expand the composite entity.
-   <p>
-   The contents of the library can be entities, ports, relations, or
-   attributes.  I.e., it can contain anything contained by a CompositeEntity.
-   An attempt to access any of these will trigger populating the library.
-   <p>
-   The configure method can be given a URL or MoML text or both.
-   If it is given MoML text, that text will normally be wrapped in a
-   processing instruction, as follows:
-   <pre>
-   &lt;?moml
-   <group>
-   ... <i>MoML elements giving library contents</i> ...
-   </group>
-   ?&gt;
-   </pre>
-   The processing instruction, which is enclosed in "&lt;?" and "?&gt"
-   prevents premature evaluation of the MoML.  The processing instruction
-   has a <i>target</i>, "moml", which specifies that it contains MoML code.
-   The keyword "moml" in the processing instruction must
-   be exactly as above, or the entire processing instruction will
-   be ignored.  The populate() method
-   strips off the processing instruction and evaluates the MoML elements.
-   The group element allows the library contents to be given as a set
-   of elements (the MoML parser requires that there always be a single
-   top-level element, which in this case will be the group element).
-   <p>
-   One subtlety in using this class arises because of a problem typical
-   of lazy evaluation.  A number of exceptions may be thrown because of
-   errors in the MoML code when the MoML code is evaluated.  However,
-   since that code is evaluated lazily, it is evaluated in a context
-   where these exceptions are not expected.  There is no completely
-   clean solution to this problem; our solution is to translate all
-   exceptions to runtime exceptions in the populate() method.
-   This method, therefore, violates the condition for using runtime
-   exceptions in that the condition that causes these exceptions to
-   be thrown is not a testable precondition.
-   <p>
-   A second subtlety involves cloning.  When this class is cloned,
-   if the configure MoML text has not yet been evaluated, then the clone
-   is created with the same (unevaluated) MoML text, rather than being
-   populated with the contents specified by that text.  If the object
-   is cloned after being populated, the clone will also be populated.
-   <p>
-   A third subtlety involves the doc element.  Unfortunately, MoML
-   semantics define the doc element to replace any previously existing
-   doc elements.  But to find out whether there is any previously
-   existing doc element, the MoML parser calls getAttribute, which
-   has the effect of populating the library.  Thus, doc elements
-   should go inside the group, not outside.  For example, the
-   following organization results in no deferred evaluation:
-   <pre>
-   &lt;entity name="director library" class="ptolemy.moml.EntityLibrary"&gt;
-   &lt;doc&gt;default director library&lt;/doc&gt;
-   &lt;configure&gt;
-   &lt;?moml
-   &lt;group&gt;
-   ...
-   &lt;/group&gt;
-   ?&gt;
-   &lt;/configure&gt;
-   &lt;/entity&gt;
-   </pre>
-   The following, by contrast, is OK:
-   <pre>
-   &lt;entity name="director library" class="ptolemy.moml.EntityLibrary"&gt;
-   &lt;configure&gt;
-   &lt;?moml
-   &lt;group&gt;
-   &lt;doc&gt;default director library&lt;/doc&gt;
-   ...
-   &lt;/group&gt;
-   ?&gt;
-   &lt;/configure&gt;
-   &lt;/entity&gt;
-   </pre>
+ This class provides a hierarchical library of components specified
+ in MoML.  The contents are typically specified via the configure()
+ method, which is passed MoML code.  The MoML is evaluated
+ lazily; i.e. it is not actually evaluated until there is a request
+ for its contents, via a call to getEntity(), numEntities(),
+ entityList(), or any related method. You can also force evaluation
+ of the MoML by calling populate().  When you export MoML for this
+ object, the MoML description of the contents is wrapped in a configure
+ element.  This object contains an attribute with name "_libraryMarker",
+ which marks it as a library.  This is used by the library browser in
+ vergil to know to expand the composite entity.
+ <p>
+ The contents of the library can be entities, ports, relations, or
+ attributes.  I.e., it can contain anything contained by a CompositeEntity.
+ An attempt to access any of these will trigger populating the library.
+ <p>
+ The configure method can be given a URL or MoML text or both.
+ If it is given MoML text, that text will normally be wrapped in a
+ processing instruction, as follows:
+ <pre>
+ &lt;?moml
+ <group>
+ ... <i>MoML elements giving library contents</i> ...
+ </group>
+ ?&gt;
+ </pre>
+ The processing instruction, which is enclosed in "&lt;?" and "?&gt"
+ prevents premature evaluation of the MoML.  The processing instruction
+ has a <i>target</i>, "moml", which specifies that it contains MoML code.
+ The keyword "moml" in the processing instruction must
+ be exactly as above, or the entire processing instruction will
+ be ignored.  The populate() method
+ strips off the processing instruction and evaluates the MoML elements.
+ The group element allows the library contents to be given as a set
+ of elements (the MoML parser requires that there always be a single
+ top-level element, which in this case will be the group element).
+ <p>
+ One subtlety in using this class arises because of a problem typical
+ of lazy evaluation.  A number of exceptions may be thrown because of
+ errors in the MoML code when the MoML code is evaluated.  However,
+ since that code is evaluated lazily, it is evaluated in a context
+ where these exceptions are not expected.  There is no completely
+ clean solution to this problem; our solution is to translate all
+ exceptions to runtime exceptions in the populate() method.
+ This method, therefore, violates the condition for using runtime
+ exceptions in that the condition that causes these exceptions to
+ be thrown is not a testable precondition.
+ <p>
+ A second subtlety involves cloning.  When this class is cloned,
+ if the configure MoML text has not yet been evaluated, then the clone
+ is created with the same (unevaluated) MoML text, rather than being
+ populated with the contents specified by that text.  If the object
+ is cloned after being populated, the clone will also be populated.
+ <p>
+ A third subtlety involves the doc element.  Unfortunately, MoML
+ semantics define the doc element to replace any previously existing
+ doc elements.  But to find out whether there is any previously
+ existing doc element, the MoML parser calls getAttribute, which
+ has the effect of populating the library.  Thus, doc elements
+ should go inside the group, not outside.  For example, the
+ following organization results in no deferred evaluation:
+ <pre>
+ &lt;entity name="director library" class="ptolemy.moml.EntityLibrary"&gt;
+ &lt;doc&gt;default director library&lt;/doc&gt;
+ &lt;configure&gt;
+ &lt;?moml
+ &lt;group&gt;
+ ...
+ &lt;/group&gt;
+ ?&gt;
+ &lt;/configure&gt;
+ &lt;/entity&gt;
+ </pre>
+ The following, by contrast, is OK:
+ <pre>
+ &lt;entity name="director library" class="ptolemy.moml.EntityLibrary"&gt;
+ &lt;configure&gt;
+ &lt;?moml
+ &lt;group&gt;
+ &lt;doc&gt;default director library&lt;/doc&gt;
+ ...
+ &lt;/group&gt;
+ ?&gt;
+ &lt;/configure&gt;
+ &lt;/entity&gt;
+ </pre>
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (bilung)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (bilung)
+ */
 
 // FIXME: Have to do ports and relations.  Only done attributes and entities.
 public class EntityLibrary extends CompositeEntity implements Configurable {
@@ -501,7 +500,7 @@ public class EntityLibrary extends CompositeEntity implements Configurable {
 
                     if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
                         trimmed = trimmed.substring(2, trimmed.length() - 2)
-                            .trim();
+                                .trim();
 
                         if (trimmed.startsWith("moml")) {
                             trimmed = trimmed.substring(4).trim();

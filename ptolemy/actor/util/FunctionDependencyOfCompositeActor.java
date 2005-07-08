@@ -1,31 +1,31 @@
 /* An instance of FunctionDependencyOfCompositeActor describes the
-   function dependency between the outputs and the inputs of a composite actor.
+ function dependency between the outputs and the inputs of a composite actor.
 
-   Copyright (c) 2003-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.util;
 
 import java.util.Collection;
@@ -46,41 +46,40 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependenceOfCompositeActor
 
 /** An instance of FunctionDependencyOfCompositeActor describes the function
-    dependency between the outputs and inputs of a composite actor. In
-    particular, which outputs depend on which inputs. An output is depend on
-    an input if the token sent through an output port depends on the token
-    received from the input port in the same iteration.
+ dependency between the outputs and inputs of a composite actor. In
+ particular, which outputs depend on which inputs. An output is depend on
+ an input if the token sent through an output port depends on the token
+ received from the input port in the same iteration.
 
-    <p> This class provides both an abstracted view, which gives the function
-    dependency the output ports of a composite actor have on input ports, and
-    a detailed view from which the abstruct view is constructed.
-    The detailed view is a graph where the nodes correspond
-    to the ports of a composite actor and to the ports of all deeply
-    contained opaque actors, and the edges represent either the communication
-    dependencies implied by the connections within this composite actor or
-    the function dependencies of the contained opaque actors.
-    The detailed view is typically used by a director to construct a
-    schedule while the abstracted view is abstracted from the detailed view
-    for composition.
-    <p>
-    The detailed view may reveal dependency loops, which in many domains
-    means that the model cannot be executed.
-    To check whether there are such loops, use the getCycleNodes() method.
-    The method returns an array of IOPorts in such loops, or an empty
-    array if there are no such loops.
+ <p> This class provides both an abstracted view, which gives the function
+ dependency the output ports of a composite actor have on input ports, and
+ a detailed view from which the abstruct view is constructed.
+ The detailed view is a graph where the nodes correspond
+ to the ports of a composite actor and to the ports of all deeply
+ contained opaque actors, and the edges represent either the communication
+ dependencies implied by the connections within this composite actor or
+ the function dependencies of the contained opaque actors.
+ The detailed view is typically used by a director to construct a
+ schedule while the abstracted view is abstracted from the detailed view
+ for composition.
+ <p>
+ The detailed view may reveal dependency loops, which in many domains
+ means that the model cannot be executed.
+ To check whether there are such loops, use the getCycleNodes() method.
+ The method returns an array of IOPorts in such loops, or an empty
+ array if there are no such loops.
 
-    @see FunctionDependency
-    @author Haiyang Zheng
-    @version $Id$
-    @since Ptolemy II 4.0
-    @Pt.ProposedRating Green (hyzheng)
-    @Pt.AcceptedRating Green (zhouye)
-*/
+ @see FunctionDependency
+ @author Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Green (zhouye)
+ */
 public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     /** Construct a FunctionDependency for the given actor.
      *  @param compositeActor The composite actor with which this function
@@ -92,7 +91,8 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
      *   an entity with the specified name.
      */
     public FunctionDependencyOfCompositeActor(CompositeActor compositeActor,
-            String name) throws IllegalActionException, NameDuplicationException {
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         super(compositeActor, name);
     }
 
@@ -160,15 +160,15 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
             while (inputs.hasNext()) {
                 IOPort inputPort = (IOPort) inputs.next();
                 Collection reachableOutputs = _detailedDependencyGraph
-                    .reachableNodes(_detailedDependencyGraph.node(
-                                            inputPort));
+                        .reachableNodes(_detailedDependencyGraph
+                                .node(inputPort));
                 Iterator outputs = actor.outputPortList().listIterator();
 
                 while (outputs.hasNext()) {
                     IOPort outputPort = (IOPort) outputs.next();
 
-                    if (reachableOutputs.contains(_detailedDependencyGraph.node(
-                                                          outputPort))) {
+                    if (reachableOutputs.contains(_detailedDependencyGraph
+                            .node(outputPort))) {
                         _dependencyGraph.addEdge(inputPort, outputPort);
                     }
                 }
@@ -309,7 +309,8 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
 
                             if (embeddedActors.contains(ioPort.getContainer())
                                     || outputPorts.contains(ioPort)) {
-                                _detailedDependencyGraph.addEdge(outPort, ioPort);
+                                _detailedDependencyGraph.addEdge(outPort,
+                                        ioPort);
                             }
                         }
                     }
@@ -355,7 +356,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         while (actors.hasNext()) {
             Actor embeddedActor = (Actor) actors.next();
             FunctionDependency functionDependency = embeddedActor
-                .getFunctionDependency();
+                    .getFunctionDependency();
 
             if (functionDependency != null) {
                 _detailedDependencyGraph.addGraph(functionDependency

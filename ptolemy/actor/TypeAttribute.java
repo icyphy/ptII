@@ -1,29 +1,29 @@
 /* An attribute for defining a data type for a port.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1999-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor;
 
 import ptolemy.data.expr.Parameter;
@@ -32,58 +32,57 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypeAttribute
 
 /**
-   An attribute for defining a data type for a port.
-   Use setExpression() to define a data type, as in for example,
-   <pre>
-   attribute.setExpression("double");
-   </pre>
-   The class TypedIOPort recognizes when this attribute is inserted
-   and calls setTypeEquals() to define its type. In the above example,
-   the type of the port is set to double.
-   <p>
-   The type can be given by any expression that can be evaluated.
-   In fact, it would be equally valid to specify the type to be double
-   using
-   <pre>
-   attribute.setExpression("0.0");
-   </pre>
-   The Constants class defines the constant "double" to have the value
-   0.0, so that instead you may give the type by name.
-   The Constants class defines for convenience the following
-   constants: boolean, complex, double, fixedpoint, general,
-   int, long, matrix, object, scalar, string, and unknown.
-   The constant "unknown" has a rather special behavior, in that
-   it sets the type of the port to be unknown, allowing type resolution
-   to infer it.  The constant "matrix" designates a matrix
-   without specifying an element type, in contrast to, for example,
-   "[double]", which specifies a double matrix.
-   Similarly, the constant "scalar" designates a scalar of any type
-   (double, int, long, etc.).
-   The constant "general" designates any type.
-   <p>
-   Since the type is given by a "prototype" (an expression with the
-   appropriate type), any data type that can be given in an expression
-   can be specified as a type. For structured types, follow the
-   same syntax as in expressions. For example:
-   <pre>
-   {double} - double array
-   [int]    - int matrix
-   {field1 = string, field2 = int} - record with two fields
-   </pre>
+ An attribute for defining a data type for a port.
+ Use setExpression() to define a data type, as in for example,
+ <pre>
+ attribute.setExpression("double");
+ </pre>
+ The class TypedIOPort recognizes when this attribute is inserted
+ and calls setTypeEquals() to define its type. In the above example,
+ the type of the port is set to double.
+ <p>
+ The type can be given by any expression that can be evaluated.
+ In fact, it would be equally valid to specify the type to be double
+ using
+ <pre>
+ attribute.setExpression("0.0");
+ </pre>
+ The Constants class defines the constant "double" to have the value
+ 0.0, so that instead you may give the type by name.
+ The Constants class defines for convenience the following
+ constants: boolean, complex, double, fixedpoint, general,
+ int, long, matrix, object, scalar, string, and unknown.
+ The constant "unknown" has a rather special behavior, in that
+ it sets the type of the port to be unknown, allowing type resolution
+ to infer it.  The constant "matrix" designates a matrix
+ without specifying an element type, in contrast to, for example,
+ "[double]", which specifies a double matrix.
+ Similarly, the constant "scalar" designates a scalar of any type
+ (double, int, long, etc.).
+ The constant "general" designates any type.
+ <p>
+ Since the type is given by a "prototype" (an expression with the
+ appropriate type), any data type that can be given in an expression
+ can be specified as a type. For structured types, follow the
+ same syntax as in expressions. For example:
+ <pre>
+ {double} - double array
+ [int]    - int matrix
+ {field1 = string, field2 = int} - record with two fields
+ </pre>
 
-   @author Edward A. Lee, Xiaojun Liu
-   @version $Id$
-   @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-   @see TypedIOPort
-   @see ptolemy.data.expr.Constants
-*/
+ @author Edward A. Lee, Xiaojun Liu
+ @version $Id$
+ @since Ptolemy II 1.0
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ @see TypedIOPort
+ @see ptolemy.data.expr.Constants
+ */
 public class TypeAttribute extends Parameter {
     /** Construct a parameter in the specified workspace with an empty
      *  string as a name.
@@ -130,7 +129,7 @@ public class TypeAttribute extends Parameter {
         if (!(container instanceof TypedIOPort) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "TypeAttribute can only be contained by instances "
-                    + "of TypedIOPort.");
+                            + "of TypedIOPort.");
         }
     }
 }

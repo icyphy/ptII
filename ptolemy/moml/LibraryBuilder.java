@@ -42,49 +42,48 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating Red (berkley)
  * @Pt.AcceptedRating Red (berkley)
  */
-public abstract class LibraryBuilder
-{
-  ///////////////////////////////////////////////////////////////////
-  ////                         public methods                    ////
+public abstract class LibraryBuilder {
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-  /**
-   * Construct a library builder.
-   */
-  public LibraryBuilder() {
-    // Nothing to do, but makes it easier to use reflection.
-  }
+    /**
+     * Construct a library builder.
+     */
+    public LibraryBuilder() {
+        // Nothing to do, but makes it easier to use reflection.
+    }
 
-  /**
-   * Add a list of Attributes.
-   * @param attributeList The list of Attributes.
-   */
-  public void addAttributes(List attributeList) {
-    _attributes = attributeList;
-  }
+    /**
+     * Add a list of Attributes.
+     * @param attributeList The list of Attributes.
+     */
+    public void addAttributes(List attributeList) {
+        _attributes = attributeList;
+    }
 
-  /**
-   * Get the list of Attributes associated with this LibraryBuilder.
-   * @return The list of Attributes.
-   */
-  public List getAttributes() {
-    return _attributes;
-  }
+    /**
+     * Get the list of Attributes associated with this LibraryBuilder.
+     * @return The list of Attributes.
+     */
+    public List getAttributes() {
+        return _attributes;
+    }
 
-  /**
-   * Build the library.  This should be built in the form of a
-   * CompontentEntity See the VergilApplication code if you want an
-   * example of what the ComponentEntity should look like.
-   * @param workspace
-   * @return ComponentEntity
-   * @exception Exception
-   */
-  public abstract CompositeEntity buildLibrary(Workspace workspace)
-          throws Exception;
+    /**
+     * Build the library.  This should be built in the form of a
+     * CompontentEntity See the VergilApplication code if you want an
+     * example of what the ComponentEntity should look like.
+     * @param workspace
+     * @return ComponentEntity
+     * @exception Exception
+     */
+    public abstract CompositeEntity buildLibrary(Workspace workspace)
+            throws Exception;
 
-  ///////////////////////////////////////////////////////////////////
-  ////                         protected members                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                   ////
 
-  /** Attributes that can be added to a LibraryBuilder via moml configuration.
-   */
-  protected List _attributes;
+    /** Attributes that can be added to a LibraryBuilder via moml configuration.
+     */
+    protected List _attributes;
 }

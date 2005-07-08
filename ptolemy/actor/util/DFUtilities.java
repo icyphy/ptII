@@ -1,30 +1,30 @@
 /* Dataflow utilities
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.util;
 
 import java.util.Comparator;
@@ -43,23 +43,22 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
-
 ///////////////////////////////////////////////////////////
 //// DFUtilities
 
 /**
-   This class factors code out of the SDF domain, for use in different
-   schedulers, so that they can be implemented in a consistent fashion.
-   This interface contains static methods that are often useful from
-   outside of an SDFDirector, and so are provided here in an interface
-   that can be imported.
+ This class factors code out of the SDF domain, for use in different
+ schedulers, so that they can be implemented in a consistent fashion.
+ This interface contains static methods that are often useful from
+ outside of an SDFDirector, and so are provided here in an interface
+ that can be imported.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (neuendor)
-   @Pt.AcceptedRating Red (neuendor)
-*/
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Red (neuendor)
+ @Pt.AcceptedRating Red (neuendor)
+ */
 public class DFUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public inner classes              ////
@@ -73,8 +72,8 @@ public class DFUtilities {
                 // Compare full names.
                 NamedObj namedObject1 = (NamedObj) object1;
                 NamedObj namedObject2 = (NamedObj) object2;
-                int compare = namedObject1.getFullName().compareTo(namedObject2
-                        .getFullName());
+                int compare = namedObject1.getFullName().compareTo(
+                        namedObject2.getFullName());
 
                 if (compare != 0) {
                     return compare;
@@ -120,12 +119,12 @@ public class DFUtilities {
      *  valid expression.
      *  @see #setRate
      */
-    public static int getRate(IOPort port)
-            throws NotSchedulableException, IllegalActionException {
+    public static int getRate(IOPort port) throws NotSchedulableException,
+            IllegalActionException {
         if (port.isInput() && port.isOutput()) {
             throw new NotSchedulableException(port,
                     "Port is both an input and an output, which is not"
-                    + " allowed in SDF.");
+                            + " allowed in SDF.");
         } else if (port.isInput()) {
             return getTokenConsumptionRate(port);
         } else if (port.isOutput()) {
@@ -133,7 +132,7 @@ public class DFUtilities {
         } else {
             throw new NotSchedulableException(port,
                     "Port is neither an input and an output, which is not"
-                    + " allowed in SDF.");
+                            + " allowed in SDF.");
         }
     }
 

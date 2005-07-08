@@ -1,30 +1,30 @@
 /* Remove graphical classes
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.moml.filter;
 
 import java.util.HashMap;
@@ -34,23 +34,22 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// RemoveGraphicalClasses
 
 /** When this class is registered with the MoMLParser.setMoMLFilter()
-    method, it will cause MoMLParser to filter out graphical classes.
+ method, it will cause MoMLParser to filter out graphical classes.
 
-    <p>This is very useful for running applets with out requiring files
-    like diva.jar to be downloaded.  It is also used by the nightly build to
-    run tests when there is no graphical display present.
+ <p>This is very useful for running applets with out requiring files
+ like diva.jar to be downloaded.  It is also used by the nightly build to
+ run tests when there is no graphical display present.
 
-    @author  Edward A. Lee, Christopher Hylands
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ @author  Edward A. Lee, Christopher Hylands
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class RemoveGraphicalClasses implements MoMLFilter {
     /** Clear the map of graphical classes to be removed.
      */
@@ -179,9 +178,11 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // so we set it to null instead.
         _graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
                 "ptolemy.kernel.util.Attribute");
-        _graphicalClasses.put("ptolemy.vergil.toolbox.VisibleParameterEditorFactory",
+        _graphicalClasses.put(
+                "ptolemy.vergil.toolbox.VisibleParameterEditorFactory",
                 "ptolemy.kernel.util.Attribute");
-        _graphicalClasses.put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
+        _graphicalClasses.put(
+                "ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
@@ -189,34 +190,36 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // 4/04 BooleanSwitch uses EditorIcon
         _graphicalClasses.put("ptolemy.vergil.icon.EditorIcon", null);
 
-        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.EllipseAttribute",
-                null);
+        _graphicalClasses.put(
+                "ptolemy.vergil.kernel.attributes.EllipseAttribute", null);
 
-        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.FilledShapeAttribute",
-                null);
+        _graphicalClasses.put(
+                "ptolemy.vergil.kernel.attributes.FilledShapeAttribute", null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.IDAttribute",
                 null);
 
-        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ImageAttribute",
-                null);
+        _graphicalClasses.put(
+                "ptolemy.vergil.kernel.attributes.ImageAttribute", null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.LineAttribute",
                 null);
 
-        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ShapeAttribute",
+        _graphicalClasses.put(
+                "ptolemy.vergil.kernel.attributes.ShapeAttribute", null);
+
+        _graphicalClasses.put(
+                "ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute",
                 null);
 
-        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute",
-                null);
-
-        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.RectangleAttribute",
-                null);
+        _graphicalClasses.put(
+                "ptolemy.vergil.kernel.attributes.RectangleAttribute", null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.TextAttribute",
                 null);
 
-        _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
+                null);
         _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.CopyCatIcon", null);
@@ -237,7 +240,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
                 null);
         _graphicalClasses.put("ptolemy.vergil.toolbox"
-                + ".VisibleParameterEditorFactory", "ptolemy.kernel.util.Attribute");
+                + ".VisibleParameterEditorFactory",
+                "ptolemy.kernel.util.Attribute");
 
         // Shallow CG of actor/lib/test/auto/URLDirectoryReader3.xml fails
         // unless we remove CheckBoxStyle

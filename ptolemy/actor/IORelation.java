@@ -1,31 +1,31 @@
 /* Relation supporting message passing.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor;
 
 import java.util.Collections;
@@ -52,53 +52,52 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// IORelation
 
 /**
-   This class mediates connections between ports that can send data to
-   one another via message passing. One purpose of this relation is to
-   ensure that IOPorts are only connected to IOPorts. A second purpose
-   is to support the notion of a <i>width</i> to represent something
-   like a bus. By default an IORelation is not a bus, which means that
-   its width is one. Calling setWidth() with
-   an argument larger than one makes the relation a bus of fixed width.
-   Calling setWidth() with an argument of zero makes the relation
-   a bus with indeterminate width, in which case the width will be
-   inferred (if possible) from the context.  In particular,
-   if this relation is linked on the inside to a port with some
-   width, then the width of this relation will be inferred to
-   be the enough so that the widths of all inside linked relations
-   adds up to the outside width of the port.
-   The actual width of an IORelation
-   can never be less than one. If this IORelation is linked to another
-   instance of IORelation, then the width of the two IORelations is
-   constrained to be the same.
-   <p>
-   Instances of IORelation can only be linked to instances of IOPort
-   or instances of IORelation.
-   Derived classes may further constrain this to subclasses of IOPort
-   of IORelation.
-   Such derived classes should override the protected methods _checkPort()
-   and _checkRelation() to throw an exception.
-   <p>
-   To link a IOPort to an IORelation, use the link() or
-   liberalLink() method in the IOPort class.  To remove a link,
-   use the unlink() method. To link (unlink) an IORelation to an IORelation,
-   use the link() (unlink()) method of IORelation.
-   <p>
-   The container for instances of this class can only be instances of
-   CompositeActor.  Derived classes may wish to further constrain the
-   container to subclasses of ComponentEntity.  To do this, they should
-   override the _checkContainer() method.
+ This class mediates connections between ports that can send data to
+ one another via message passing. One purpose of this relation is to
+ ensure that IOPorts are only connected to IOPorts. A second purpose
+ is to support the notion of a <i>width</i> to represent something
+ like a bus. By default an IORelation is not a bus, which means that
+ its width is one. Calling setWidth() with
+ an argument larger than one makes the relation a bus of fixed width.
+ Calling setWidth() with an argument of zero makes the relation
+ a bus with indeterminate width, in which case the width will be
+ inferred (if possible) from the context.  In particular,
+ if this relation is linked on the inside to a port with some
+ width, then the width of this relation will be inferred to
+ be the enough so that the widths of all inside linked relations
+ adds up to the outside width of the port.
+ The actual width of an IORelation
+ can never be less than one. If this IORelation is linked to another
+ instance of IORelation, then the width of the two IORelations is
+ constrained to be the same.
+ <p>
+ Instances of IORelation can only be linked to instances of IOPort
+ or instances of IORelation.
+ Derived classes may further constrain this to subclasses of IOPort
+ of IORelation.
+ Such derived classes should override the protected methods _checkPort()
+ and _checkRelation() to throw an exception.
+ <p>
+ To link a IOPort to an IORelation, use the link() or
+ liberalLink() method in the IOPort class.  To remove a link,
+ use the unlink() method. To link (unlink) an IORelation to an IORelation,
+ use the link() (unlink()) method of IORelation.
+ <p>
+ The container for instances of this class can only be instances of
+ CompositeActor.  Derived classes may wish to further constrain the
+ container to subclasses of ComponentEntity.  To do this, they should
+ override the _checkContainer() method.
 
-   @author Edward A. Lee, Jie Liu
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (acataldo)
-*/
+ @author Edward A. Lee, Jie Liu
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (acataldo)
+ */
 public class IORelation extends ComponentRelation {
 
     /** Construct a relation in the default workspace with an empty string
@@ -149,7 +148,7 @@ public class IORelation extends ComponentRelation {
      *  to which this relation is linked on the inside.
      */
     public Parameter width;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -269,8 +268,8 @@ public class IORelation extends ComponentRelation {
 
                         seen.put(p, new Integer(occurrence));
 
-                        receivers =
-                            p._getReceiversLinkedToGroup(this, occurrence);
+                        receivers = p._getReceiversLinkedToGroup(this,
+                                occurrence);
                     } catch (IllegalActionException ex) {
                         throw new InternalErrorException(this, ex, null);
                     }
@@ -608,10 +607,10 @@ public class IORelation extends ComponentRelation {
             throw new IllegalActionException(this, relation,
                     "IORelation can only link to an IORelation.");
         }
-        if (((IORelation)relation)._width != _width) {
+        if (((IORelation) relation)._width != _width) {
             throw new IllegalActionException(this, relation,
-                    "Relations have different widths: " + _width
-                    + " != " + ((IORelation)relation)._width);
+                    "Relations have different widths: " + _width + " != "
+                            + ((IORelation) relation)._width);
         }
         super._checkRelation(relation, symmetric);
     }
@@ -762,18 +761,18 @@ public class IORelation extends ComponentRelation {
 
         return _inferredWidth;
     }
-    
+
     /** Create an initialize the width parameter. */
     private void _init() {
         try {
-        	width = new Parameter(this, "width");
+            width = new Parameter(this, "width");
             width.setExpression("1");
             width.setTypeEquals(BaseType.INT);
         } catch (KernelException ex) {
-        	throw new InternalErrorException(ex);
+            throw new InternalErrorException(ex);
         }
     }
-    
+
     /** Set the width of this relation and all relations in its
      *  relation group. The width is the number of
      *  channels that the relation represents.  If the argument
@@ -797,9 +796,9 @@ public class IORelation extends ComponentRelation {
     private void _setWidth(int width) throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
-            
+
             if (width == _width) {
-            	// No change.
+                // No change.
                 return;
             }
 
@@ -810,34 +809,34 @@ public class IORelation extends ComponentRelation {
                 } catch (InvalidStateException ex) {
                     throw new IllegalActionException(this,
                             "Cannot use unspecified width on this relation "
-                            + "because of its links.");
+                                    + "because of its links.");
                 }
             }
 
             // Check for non-multiports on a link.
             /* This is now allowed.
-            if (width != 1) {
-                Iterator ports = linkedPortList().iterator();
+             if (width != 1) {
+             Iterator ports = linkedPortList().iterator();
 
-                while (ports.hasNext()) {
-                    IOPort p = (IOPort) ports.next();
+             while (ports.hasNext()) {
+             IOPort p = (IOPort) ports.next();
 
-                    // Check for non-multiports.
-                    if (!p.isMultiport()) {
-                        throw new IllegalActionException(this, p,
-                                "Cannot make bus because the "
-                                + "relation is linked to a non-multiport.");
-                    }
-                }
-            }
-            */
+             // Check for non-multiports.
+             if (!p.isMultiport()) {
+             throw new IllegalActionException(this, p,
+             "Cannot make bus because the "
+             + "relation is linked to a non-multiport.");
+             }
+             }
+             }
+             */
 
             _width = width;
-            
+
             // Set the width of all relations in the relation group.
             Iterator relations = relationGroupList().iterator();
-            while(!_suppressWidthPropagation && relations.hasNext()) {
-                IORelation relation = (IORelation)relations.next();
+            while (!_suppressWidthPropagation && relations.hasNext()) {
+                IORelation relation = (IORelation) relations.next();
                 if (relation == this) {
                     continue;
                 }
@@ -890,11 +889,12 @@ public class IORelation extends ComponentRelation {
 
     // cached inferred width.
     private transient int _inferredWidth;
+
     private transient long _inferredWidthVersion = -1;
-    
+
     // Suppress propagation of width changes.
     private boolean _suppressWidthPropagation = false;
-    
+
     // The cached value of the width parameter.
     private int _width = 1;
 }

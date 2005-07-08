@@ -1,29 +1,29 @@
 /* Manages undo/redo actions on a MoML model.
 
-Copyright (c) 2000-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2000-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.moml;
 
 import ptolemy.kernel.undo.UndoAction;
@@ -31,30 +31,29 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MoMLUndoEntry
 
 /**
-   This is an undo action on the undo/redo stack.  The undo/redo stack
-   is stored in an instance of UndoInfoAttribute associated with the top-level
-   of a model.  If undo/redo is enabled, a MoMLParser will create entries
-   automatically and put them on the stack whenever it parses MoML.  So the
-   easiest mechanism to perform undoable actions is to specify those actions
-   in MoML and issue a MoMLChangeRequest to execute them. An alternative,
-   however, is to create an instance of this class with no MoML, using
-   the single argument constructor, and to override execute() to directly
-   perform the undo.
+ This is an undo action on the undo/redo stack.  The undo/redo stack
+ is stored in an instance of UndoInfoAttribute associated with the top-level
+ of a model.  If undo/redo is enabled, a MoMLParser will create entries
+ automatically and put them on the stack whenever it parses MoML.  So the
+ easiest mechanism to perform undoable actions is to specify those actions
+ in MoML and issue a MoMLChangeRequest to execute them. An alternative,
+ however, is to create an instance of this class with no MoML, using
+ the single argument constructor, and to override execute() to directly
+ perform the undo.
 
-   @see MoMLParser
-   @see ptolemy.kernel.undo.UndoStackAttribute
-   @see MoMLChangeRequest
-   @author  Neil Smyth and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @see MoMLParser
+ @see ptolemy.kernel.undo.UndoStackAttribute
+ @see MoMLChangeRequest
+ @author  Neil Smyth and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class MoMLUndoEntry implements UndoAction, ChangeListener {
     /** Create an undo entry comprised of the specified MoML code.
      *  @param context The context in which to execute the undo.

@@ -1,35 +1,35 @@
 /* A Director governs the execution of a CompositeActor.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-Review changeRequest / changeListener code.
-Review container relationship and new parent class.
-Win added methods fireAtCurrentTime(Actor) and
-Semantics of initialize(Actor) have changed.
-Also, review stop() method.
-*/
+ Review changeRequest / changeListener code.
+ Review container relationship and new parent class.
+ Win added methods fireAtCurrentTime(Actor) and
+ Semantics of initialize(Actor) have changed.
+ Also, review stop() method.
+ */
 package ptolemy.actor;
 
 import java.util.Iterator;
@@ -49,73 +49,72 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.math.ExtendedMath;
 import ptolemy.moml.SharedParameter;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Director
 
 /**
-   A Director governs the execution within a CompositeActor.  A composite actor
-   that contains a director is said to be <i>opaque</i>, and the execution model
-   within the composite actor is determined by the contained director.   This
-   director is called the <i>local director</i> of a composite actor.
-   A composite actor is also aware of the director of its container,
-   which is referred to as its <i>executive director</i>.
-   A director may also be contained by a CompositeEntity that is not a
-   CompositeActor, in which case it acts like any other entity within
-   that composite.
-   <p>
-   A top-level composite actor is generally associated with a <i>manager</i>
-   as well as a local director.  The Manager has overall responsibility for
-   executing the application, and is often associated with a GUI.   Top-level
-   composite actors have no executive director and getExecutiveDirector() will
-   return null.
-   <p>
-   A local director is responsible for invoking the actors contained by the
-   composite.  If there is no local director, then the executive director
-   is given the responsibility.  The getDirector() method of CompositeActor,
-   therefore, returns the local director, if there is one, and otherwise
-   returns the executive director.  Thus, it returns whichever director
-   is responsible for executing the contained actors, or null if there is none.
-   Whatever it returns is called simply the <i>director</i> (vs. local
-   director or executive director).
-   <p>
-   A director implements the action methods (preinitialize(),
-   initialize(), prefire(), fire(), postfire(), iterate(),
-   and wrapup()).  In this base class, default implementations
-   are provided that may or may not be useful in specific domains.   In general,
-   these methods will perform domain-dependent actions, and then call the
-   respective methods in all contained actors.
-   <p>
-   The director also provides methods to optimize the iteration portion of an
-   execution. This is done by setting the workspace to be read-only during
-   an iteration. In this base class, the default implementation results in
-   a read/write workspace. Derived classes (e.g. domain specific
-   directors) should override the _writeAccessRequired() method to report
-   that write access is not required. If none of the directors in a simulation
-   require write access, then it is safe to set the workspace to be read-only,
-   which will result in faster execution.
-   <p>
-   This class also specifies a parameter <i>timeResolution</i>. This is a double
-   with default 1E-10, which is 10<sup>-10</sup>.
-   All time values are rounded to the nearest multiple of this
-   value. If the value is changed during a run, an exception is thrown.
-   This is a shared parameter, which means
-   that all instances of Director in the model will have the same value for
-   this parameter. Changing one of them changes all of them.
-   <p>
-   The <i>timeResolution</i> parameter is not visible to the user
-   by default. Subclasses can make it visible by calling
-   <pre>
-   timeResolution.setVisibility(Settable.FULL);
-   </pre>
-   in their constructors.
+ A Director governs the execution within a CompositeActor.  A composite actor
+ that contains a director is said to be <i>opaque</i>, and the execution model
+ within the composite actor is determined by the contained director.   This
+ director is called the <i>local director</i> of a composite actor.
+ A composite actor is also aware of the director of its container,
+ which is referred to as its <i>executive director</i>.
+ A director may also be contained by a CompositeEntity that is not a
+ CompositeActor, in which case it acts like any other entity within
+ that composite.
+ <p>
+ A top-level composite actor is generally associated with a <i>manager</i>
+ as well as a local director.  The Manager has overall responsibility for
+ executing the application, and is often associated with a GUI.   Top-level
+ composite actors have no executive director and getExecutiveDirector() will
+ return null.
+ <p>
+ A local director is responsible for invoking the actors contained by the
+ composite.  If there is no local director, then the executive director
+ is given the responsibility.  The getDirector() method of CompositeActor,
+ therefore, returns the local director, if there is one, and otherwise
+ returns the executive director.  Thus, it returns whichever director
+ is responsible for executing the contained actors, or null if there is none.
+ Whatever it returns is called simply the <i>director</i> (vs. local
+ director or executive director).
+ <p>
+ A director implements the action methods (preinitialize(),
+ initialize(), prefire(), fire(), postfire(), iterate(),
+ and wrapup()).  In this base class, default implementations
+ are provided that may or may not be useful in specific domains.   In general,
+ these methods will perform domain-dependent actions, and then call the
+ respective methods in all contained actors.
+ <p>
+ The director also provides methods to optimize the iteration portion of an
+ execution. This is done by setting the workspace to be read-only during
+ an iteration. In this base class, the default implementation results in
+ a read/write workspace. Derived classes (e.g. domain specific
+ directors) should override the _writeAccessRequired() method to report
+ that write access is not required. If none of the directors in a simulation
+ require write access, then it is safe to set the workspace to be read-only,
+ which will result in faster execution.
+ <p>
+ This class also specifies a parameter <i>timeResolution</i>. This is a double
+ with default 1E-10, which is 10<sup>-10</sup>.
+ All time values are rounded to the nearest multiple of this
+ value. If the value is changed during a run, an exception is thrown.
+ This is a shared parameter, which means
+ that all instances of Director in the model will have the same value for
+ this parameter. Changing one of them changes all of them.
+ <p>
+ The <i>timeResolution</i> parameter is not visible to the user
+ by default. Subclasses can make it visible by calling
+ <pre>
+ timeResolution.setVisibility(Settable.FULL);
+ </pre>
+ in their constructors.
 
-   @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
+ @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
 public class Director extends Attribute implements Executable {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -186,7 +185,7 @@ public class Director extends Attribute implements Executable {
             // This is extremely frequently used, so cache the value.
             // Prevent this from changing during a run!
             double newResolution = ((DoubleToken) timeResolution.getToken())
-                .doubleValue();
+                    .doubleValue();
 
             if (newResolution != _timeResolution) {
                 NamedObj container = getContainer();
@@ -206,13 +205,15 @@ public class Director extends Attribute implements Executable {
                 }
 
                 if (newResolution <= ExtendedMath.DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE) {
-                    throw new IllegalActionException(this,
-                            "Invalid timeResolution: " + newResolution
-                            + "\n The value must be "
-                            + "greater than the smallest, normalized, "
-                            + "positive, double value with a double "
-                            + "precision: "
-                            + ExtendedMath.DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE);
+                    throw new IllegalActionException(
+                            this,
+                            "Invalid timeResolution: "
+                                    + newResolution
+                                    + "\n The value must be "
+                                    + "greater than the smallest, normalized, "
+                                    + "positive, double value with a double "
+                                    + "precision: "
+                                    + ExtendedMath.DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE);
                 }
 
                 _timeResolution = newResolution;
@@ -243,7 +244,7 @@ public class Director extends Attribute implements Executable {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "Attempted to transferInputs on a port is not an opaque"
-                    + "input port.");
+                            + "input port.");
         }
 
         boolean wasTransferred = false;
@@ -255,8 +256,8 @@ public class Director extends Attribute implements Executable {
                         Token t = port.get(i);
 
                         if (_debugging) {
-                            _debug(getName(),
-                                    "transferring input from " + port.getName());
+                            _debug(getName(), "transferring input from "
+                                    + port.getName());
                         }
 
                         port.sendInside(i, t);
@@ -266,8 +267,8 @@ public class Director extends Attribute implements Executable {
                     // No inside connection to transfer tokens to.
                     // In this case, consume one input token if there is one.
                     if (_debugging) {
-                        _debug(getName(),
-                                "Dropping single input from " + port.getName());
+                        _debug(getName(), "Dropping single input from "
+                                + port.getName());
                     }
 
                     if (port.hasToken(i)) {
@@ -303,7 +304,7 @@ public class Director extends Attribute implements Executable {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "Attempted to transferOutputs on a port that "
-                    + "is not an opaque input port.");
+                            + "is not an opaque input port.");
         }
 
         boolean wasTransferred = false;
@@ -314,8 +315,8 @@ public class Director extends Attribute implements Executable {
                     Token t = port.getInside(i);
 
                     if (_debugging) {
-                        _debug(getName(),
-                                "transferring output from " + port.getName());
+                        _debug(getName(), "transferring output from "
+                                + port.getName());
                     }
 
                     port.send(i, t);
@@ -356,7 +357,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
+                    .iterator();
             int iterationCount = 1;
 
             while (actors.hasNext() && !_stopRequested) {
@@ -364,7 +365,7 @@ public class Director extends Attribute implements Executable {
 
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.BEFORE_ITERATE, iterationCount));
+                            FiringEvent.BEFORE_ITERATE, iterationCount));
                 }
 
                 if (actor.iterate(1) == Actor.STOP_ITERATING) {
@@ -378,7 +379,7 @@ public class Director extends Attribute implements Executable {
 
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                                   FiringEvent.AFTER_ITERATE, iterationCount));
+                            FiringEvent.AFTER_ITERATE, iterationCount));
                 }
             }
         }
@@ -625,8 +626,8 @@ public class Director extends Attribute implements Executable {
             // Initialize the current time.
             if (containersContainer instanceof CompositeActor) {
                 // The container is an embedded model.
-                Time currentTime = ((CompositeActor) containersContainer).getDirector()
-                    .getModelTime();
+                Time currentTime = ((CompositeActor) containersContainer)
+                        .getDirector().getModelTime();
                 _currentTime = currentTime;
             } else {
                 // The container is at the top level.
@@ -637,14 +638,14 @@ public class Director extends Attribute implements Executable {
 
             // Initialize the contained actors.
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
+                    .iterator();
 
             while (actors.hasNext() && !_stopRequested) {
                 Actor actor = (Actor) actors.next();
 
                 if (_debugging) {
-                    _debug("Invoking initialize(): ",
-                            ((NamedObj) actor).getFullName());
+                    _debug("Invoking initialize(): ", ((NamedObj) actor)
+                            .getFullName());
                 }
 
                 initialize(actor);
@@ -806,7 +807,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof Actor) {
             Director executiveDirector = ((Actor) container)
-                .getExecutiveDirector();
+                    .getExecutiveDirector();
 
             if (executiveDirector != null) {
                 Time outTime = executiveDirector.getModelTime();
@@ -858,14 +859,14 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
+                    .iterator();
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
 
                 if (_debugging) {
-                    _debug("Invoking preinitialize(): ",
-                            ((NamedObj) actor).getFullName());
+                    _debug("Invoking preinitialize(): ", ((NamedObj) actor)
+                            .getFullName());
                 }
 
                 actor.preinitialize();
@@ -934,8 +935,8 @@ public class Director extends Attribute implements Executable {
      *   be thrown if the container argument is an instance of
      *   CompositeActor.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -949,8 +950,8 @@ public class Director extends Attribute implements Executable {
                 // use the most recently added one.
                 Director previous = null;
                 CompositeActor castContainer = (CompositeActor) oldContainer;
-                Iterator directors = castContainer.attributeList(Director.class)
-                    .iterator();
+                Iterator directors = castContainer
+                        .attributeList(Director.class).iterator();
 
                 while (directors.hasNext()) {
                     Director altDirector = (Director) directors.next();
@@ -1005,9 +1006,9 @@ public class Director extends Attribute implements Executable {
         int comparisonResult = _currentTime.compareTo(newTime);
 
         if (comparisonResult > 0) {
-            throw new IllegalActionException(this,
-                    "Attempt to move current " + "time backwards. (new time = "
-                    + newTime + ") < (current time = " + getModelTime() + ")");
+            throw new IllegalActionException(this, "Attempt to move current "
+                    + "time backwards. (new time = " + newTime
+                    + ") < (current time = " + getModelTime() + ")");
         } else if (comparisonResult < 0) {
             if (_debugging) {
                 _debug("==== Set current time to: " + newTime);
@@ -1029,7 +1030,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
+                    .iterator();
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
@@ -1062,7 +1063,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
+                    .iterator();
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
@@ -1079,9 +1080,7 @@ public class Director extends Attribute implements Executable {
      */
     public String[] suggestedModalModelDirectors() {
         // Default is just one suggestion.
-        String[] defaultSuggestions = {
-            "ptolemy.domains.fsm.kernel.FSMDirector"
-        };
+        String[] defaultSuggestions = { "ptolemy.domains.fsm.kernel.FSMDirector" };
         return defaultSuggestions;
     }
 
@@ -1110,7 +1109,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
+                    .iterator();
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
@@ -1168,7 +1167,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
+                    .iterator();
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
@@ -1267,10 +1266,9 @@ public class Director extends Attribute implements Executable {
     ////                         private methods                   ////
     // Add an XML graphic as a hint to UIs for rendering the director.
     private void _addIcon() {
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-50\" y=\"-15\" "
-                + "width=\"100\" height=\"30\" " + "style=\"fill:green\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-50\" y=\"-15\" " + "width=\"100\" height=\"30\" "
+                + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
     // Initialize parameters.

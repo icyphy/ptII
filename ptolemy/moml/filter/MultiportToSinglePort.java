@@ -1,29 +1,29 @@
 /* Filter to convert specific multiports of an actor to a single port.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.moml.filter;
 
 import java.util.HashMap;
@@ -33,45 +33,44 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MultiportToSinglePort
 
 /** A filter to convert specific multiports of specific
-    actors to a single ports.
+ actors to a single ports.
 
-    <p>When this class is registered with the MoMLParser.setMoMLFilter()
-    method, it will cause will cause MoMLParser to filter so that models from
-    earlier releases will run in the current release.
+ <p>When this class is registered with the MoMLParser.setMoMLFilter()
+ method, it will cause will cause MoMLParser to filter so that models from
+ earlier releases will run in the current release.
 
-    <p>The Autocorrelation actor changed between PtolemyII 2.x and 3.x
-    such that the output port is no longer a multiport.
+ <p>The Autocorrelation actor changed between PtolemyII 2.x and 3.x
+ such that the output port is no longer a multiport.
 
-    <pre>
-    // Autocorrelation
-    _actorsWithMultiPortToSinglePortChanges
-    .put("ptolemy.actor.lib.Autocorrelation, "output")
+ <pre>
+ // Autocorrelation
+ _actorsWithMultiPortToSinglePortChanges
+ .put("ptolemy.actor.lib.Autocorrelation, "output")
 
-    </pre>
+ </pre>
 
-    <p>The _actorsWithMultiPortToSinglePortChanges HashMap contains Strings
-    that name classes such as Autocorrelation that have multiports that should
-    be single ports.  The HashMap maps classnames to port names.
+ <p>The _actorsWithMultiPortToSinglePortChanges HashMap contains Strings
+ that name classes such as Autocorrelation that have multiports that should
+ be single ports.  The HashMap maps classnames to port names.
 
 
-    <p> Conceptually, how the code works is that when we see a class while
-    parsing, we check to see if the class is in
-    _actorsWithMultiPortToSinglePortChanges.
+ <p> Conceptually, how the code works is that when we see a class while
+ parsing, we check to see if the class is in
+ _actorsWithMultiPortToSinglePortChanges.
 
-    If the class was present in the HashMap, then as we go through the
-    code, we look for the named port and remove the multiport declaration
+ If the class was present in the HashMap, then as we go through the
+ code, we look for the named port and remove the multiport declaration
 
-    @author Christopher Hylands Brooks, Contributor: Edward A. Lee
-    @version $Id$
-    @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands Brooks, Contributor: Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class MultiportToSinglePort implements MoMLFilter {
     /** If the attributeName is "class" and attributeValue names a
      *  class that has had its port names changed between releases,
@@ -131,14 +130,14 @@ public class MultiportToSinglePort implements MoMLFilter {
         // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
         // which will open up a large xml file and then close after 2 seconds.
         if (attributeName.equals("class")) {
-            if (_actorsWithMultiPortToSinglePortChanges.containsKey(
-                        attributeValue)) {
+            if (_actorsWithMultiPortToSinglePortChanges
+                    .containsKey(attributeValue)) {
                 // We found a class with a property class change.
                 _currentlyProcessingActorWithPropertyClassChanges = true;
                 _currentActorFullName = container.getFullName() + "."
-                    + _lastNameSeen;
+                        + _lastNameSeen;
                 _portName = (String) _actorsWithMultiPortToSinglePortChanges
-                    .get(attributeValue);
+                        .get(attributeValue);
 
                 //             } else if (_currentlyProcessingActorWithPropertyClassChanges
                 //                     && _foundChange) {
@@ -155,7 +154,8 @@ public class MultiportToSinglePort implements MoMLFilter {
             } else if (_currentlyProcessingActorWithPropertyClassChanges
                     && (container != null)
                     && !container.getFullName().equals(_currentActorFullName)
-                    && !container.getFullName().startsWith(_currentActorFullName)) {
+                    && !container.getFullName().startsWith(
+                            _currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with multiport change
                 _foundChange = false;
@@ -184,12 +184,15 @@ public class MultiportToSinglePort implements MoMLFilter {
                 + "Below are the actors that are affected, along "
                 + "with the port name:\n");
         Iterator actors = _actorsWithMultiPortToSinglePortChanges.keySet()
-            .iterator();
+                .iterator();
 
         while (actors.hasNext()) {
             String actor = (String) actors.next();
-            results.append("\t" + actor + "\n"
-                    + (String) _actorsWithMultiPortToSinglePortChanges.get(actor));
+            results.append("\t"
+                    + actor
+                    + "\n"
+                    + (String) _actorsWithMultiPortToSinglePortChanges
+                            .get(actor));
         }
 
         return results.toString();
@@ -223,17 +226,17 @@ public class MultiportToSinglePort implements MoMLFilter {
         _actorsWithMultiPortToSinglePortChanges = new HashMap();
 
         // Autocorrelation
-        _actorsWithMultiPortToSinglePortChanges.put("ptolemy.domains.sdf.lib.Autocorrelation",
-                "output");
+        _actorsWithMultiPortToSinglePortChanges.put(
+                "ptolemy.domains.sdf.lib.Autocorrelation", "output");
 
-        _actorsWithMultiPortToSinglePortChanges.put("ptolemy.actor.lib.NonStrictTest",
-                "input");
+        _actorsWithMultiPortToSinglePortChanges.put(
+                "ptolemy.actor.lib.NonStrictTest", "input");
 
         // In Ptolemy II 3.0.2, SOC_FSM_SR_HDE.xml has a Const with multiport.
         _actorsWithMultiPortToSinglePortChanges.put("ptolemy.actor.lib.Const",
                 "output");
 
-        _actorsWithMultiPortToSinglePortChanges.put("ptolemy.actor.lib.gui.MatrixViewer",
-                "input");
+        _actorsWithMultiPortToSinglePortChanges.put(
+                "ptolemy.actor.lib.gui.MatrixViewer", "input");
     }
 }

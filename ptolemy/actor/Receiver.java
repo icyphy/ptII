@@ -1,71 +1,70 @@
 /* Interface for objects that can store tokens.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Receiver
 
 /**
-   Interface for objects that can hold tokens. An implementation of this
-   interface has two key methods: put() and get(). The put() method
-   deposits a token into the receiver. The get() method retrieves
-   a token that has been put. The order of
-   the retrieved tokens depends on specific implementations, and does not
-   necessarily match the order in which tokens have been put.
-   <p>
-   All implementations of this interface must follow these rules, regardless
-   of the number of threads that are accessing the receiver:
-   <ul>
-   <li> If hasToken() returns true, then the next call to get() must not
-   result in a NoTokenException being thrown.
-   <li> If hasRoom() returns true, then the next call to put() must not
-   result in a NoRoomException being thrown.
-   </ul>
-   In general, this means that multithreaded domains must provide
-   synchronization for receivers. Note that both NoTokenException
-   and NoRoomException are runtime exceptions, so they need not be
-   declared explicitly.
-   <p>
-   Objects that implement this interface can only be contained
-   by an instance of IOPort.
+ Interface for objects that can hold tokens. An implementation of this
+ interface has two key methods: put() and get(). The put() method
+ deposits a token into the receiver. The get() method retrieves
+ a token that has been put. The order of
+ the retrieved tokens depends on specific implementations, and does not
+ necessarily match the order in which tokens have been put.
+ <p>
+ All implementations of this interface must follow these rules, regardless
+ of the number of threads that are accessing the receiver:
+ <ul>
+ <li> If hasToken() returns true, then the next call to get() must not
+ result in a NoTokenException being thrown.
+ <li> If hasRoom() returns true, then the next call to put() must not
+ result in a NoRoomException being thrown.
+ </ul>
+ In general, this means that multithreaded domains must provide
+ synchronization for receivers. Note that both NoTokenException
+ and NoRoomException are runtime exceptions, so they need not be
+ declared explicitly.
+ <p>
+ Objects that implement this interface can only be contained
+ by an instance of IOPort.
 
-   @author Jie Liu, Edward A. Lee, Lukito Muliadi
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (bart)
-   @see Token
-*/
+ @author Jie Liu, Edward A. Lee, Lukito Muliadi
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (bart)
+ @see Token
+ */
 public interface Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -1,29 +1,29 @@
 /* An analysis that finds the constant variables in a ptolemy model
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor.util;
 
 import java.util.Collections;
@@ -52,48 +52,47 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// ConstVariableModelAnalysis
 
 /**
-   An analysis that traverses a model to determine all the constant
-   variables in a hierarchical model.  Basically, a constant variable in
-   a particular model is any variable in the model that is defined by a
-   expression of constants, or any variable that is defined by an
-   expression of constants and identifiers that reference other constant
-   variables.
+ An analysis that traverses a model to determine all the constant
+ variables in a hierarchical model.  Basically, a constant variable in
+ a particular model is any variable in the model that is defined by a
+ expression of constants, or any variable that is defined by an
+ expression of constants and identifiers that reference other constant
+ variables.
 
-   <p> This class computes the set of constant variables by computing the
-   set of variables that are not constant and then performing the
-   complement.  This is somewhat easier to compute.  The computation is
-   performed in two passes, the first of which extracts the set of
-   variables which must be not-constant either by not being evaluatable,
-   by inclusion in an initial set, by virtue of being a PortParameter
-   with an external connection, or by assignment from within a modal
-   model.  The second pass collects all the variables which are not
-   constant because they depend on other variables which are not
-   constant.  This class also recognizes dependence declarations
-   represented by the {@link DependencyDeclaration} class.
+ <p> This class computes the set of constant variables by computing the
+ set of variables that are not constant and then performing the
+ complement.  This is somewhat easier to compute.  The computation is
+ performed in two passes, the first of which extracts the set of
+ variables which must be not-constant either by not being evaluatable,
+ by inclusion in an initial set, by virtue of being a PortParameter
+ with an external connection, or by assignment from within a modal
+ model.  The second pass collects all the variables which are not
+ constant because they depend on other variables which are not
+ constant.  This class also recognizes dependence declarations
+ represented by the {@link DependencyDeclaration} class.
 
-   <p> This class also keeps track of the "change context" of each
-   dynamic variable.  The change context of a variable is an actor that
-   contains that variable.  During a firing of the actor, the variable's
-   value should not change.  This is important for supporting parameter
-   changes in the context of domains that perform scheduling based on
-   parameter values, like SDF.  The change context of a PortParameter
-   with an external connection is the container of the PortParameter.
-   The change context of a variable assigned by a finite state machine in
-   a modal model is the container of the finite state machine.  The
-   change context of asserted not constant variables and variables with
-   no expression are assumed to be the toplevel of the model.
+ <p> This class also keeps track of the "change context" of each
+ dynamic variable.  The change context of a variable is an actor that
+ contains that variable.  During a firing of the actor, the variable's
+ value should not change.  This is important for supporting parameter
+ changes in the context of domains that perform scheduling based on
+ parameter values, like SDF.  The change context of a PortParameter
+ with an external connection is the container of the PortParameter.
+ The change context of a variable assigned by a finite state machine in
+ a modal model is the container of the finite state machine.  The
+ change context of asserted not constant variables and variables with
+ no expression are assumed to be the toplevel of the model.
 
-   @author Stephen Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (neuendor)
-   @Pt.AcceptedRating Yellow (neuendor)
-*/
+ @author Stephen Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
+ */
 public class ConstVariableModelAnalysis {
     /** Analyze the given model to determine which variables must be
      *  constants and which variables may change dynamically during
@@ -161,7 +160,7 @@ public class ConstVariableModelAnalysis {
         Manager manager = toplevel.getManager();
 
         ConstVariableModelAnalysis analysis = (ConstVariableModelAnalysis) manager
-            .getAnalysis("ConstVariableModelAnalysis");
+                .getAnalysis("ConstVariableModelAnalysis");
 
         if (analysis == null) {
             analysis = new ConstVariableModelAnalysis(toplevel);
@@ -239,8 +238,8 @@ public class ConstVariableModelAnalysis {
     public Set getVariablesWithChangeContext(NamedObj container) {
         Set variableSet = new HashSet();
 
-        for (Iterator i = _variableToChangeContext.keySet().iterator();
-             i.hasNext();) {
+        for (Iterator i = _variableToChangeContext.keySet().iterator(); i
+                .hasNext();) {
             Object key = i.next();
             Object value = _variableToChangeContext.get(key);
 
@@ -269,8 +268,8 @@ public class ConstVariableModelAnalysis {
      *  and it depends on no other parameters
      */
     public boolean isIndependent(Variable variable) {
-        if (_dependencyGraph.backwardReachableNodes(_dependencyGraph.node(
-                                                            variable)).size() > 0) {
+        if (_dependencyGraph.backwardReachableNodes(
+                _dependencyGraph.node(variable)).size() > 0) {
             return false;
         } else {
             return true;
@@ -285,8 +284,8 @@ public class ConstVariableModelAnalysis {
         Variable variable = (Variable) declaration.getContainer();
         Node targetNode = _getNode(variable);
 
-        for (Iterator dependents = declaration.getDependents().iterator();
-             dependents.hasNext();) {
+        for (Iterator dependents = declaration.getDependents().iterator(); dependents
+                .hasNext();) {
             Variable dependent = (Variable) dependents.next();
             Node dependentNode = _getNode(dependent);
 
@@ -347,14 +346,14 @@ public class ConstVariableModelAnalysis {
             // Under what conditions is a PortParameter not associated
             // with a port?
             if ((port != null) && (port.getWidth() > 0)) {
-                _updateChangeContext(parameter,
-                        (Entity) parameter.getContainer());
+                _updateChangeContext(parameter, (Entity) parameter
+                        .getContainer());
             }
         }
 
         if (container instanceof ExplicitChangeContext) {
             List list = ((ExplicitChangeContext) container)
-                .getModifiedVariables();
+                    .getModifiedVariables();
 
             for (Iterator variables = list.iterator(); variables.hasNext();) {
                 Variable variable = (Variable) variables.next();
@@ -364,8 +363,8 @@ public class ConstVariableModelAnalysis {
         }
 
         // Recurse through the whole model.
-        for (Iterator attributes = container.attributeList().iterator();
-             attributes.hasNext();) {
+        for (Iterator attributes = container.attributeList().iterator(); attributes
+                .hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
             _collectConstraints(attribute);
         }
@@ -373,15 +372,15 @@ public class ConstVariableModelAnalysis {
         if (container instanceof CompositeEntity) {
             CompositeEntity composite = (CompositeEntity) container;
 
-            for (Iterator entities = composite.entityList().iterator();
-                 entities.hasNext();) {
+            for (Iterator entities = composite.entityList().iterator(); entities
+                    .hasNext();) {
                 _collectConstraints((Entity) entities.next());
             }
         }
 
         if (container instanceof Entity) {
-            for (Iterator ports = ((Entity) container).portList().iterator();
-                 ports.hasNext();) {
+            for (Iterator ports = ((Entity) container).portList().iterator(); ports
+                    .hasNext();) {
                 Port port = (Port) ports.next();
                 _collectConstraints(port);
             }
@@ -397,11 +396,11 @@ public class ConstVariableModelAnalysis {
         while (!workList.isEmpty()) {
             Variable variable = (Variable) workList.removeFirst();
             Node node = _dependencyGraph.node(variable);
-            Entity changeContext = (Entity) _variableToChangeContext.get(variable);
+            Entity changeContext = (Entity) _variableToChangeContext
+                    .get(variable);
 
             for (Iterator outputEdges = _dependencyGraph.outputEdges(node)
-                     .iterator();
-                 outputEdges.hasNext();) {
+                    .iterator(); outputEdges.hasNext();) {
                 Node sinkNode = ((Edge) outputEdges.next()).sink();
                 Variable targetVariable = (Variable) sinkNode.getWeight();
 
@@ -428,7 +427,8 @@ public class ConstVariableModelAnalysis {
     // return true if a change occurred
     private final boolean _updateChangeContext(Variable variable,
             Entity changeContext) {
-        Entity oldChangeContext = (Entity) _variableToChangeContext.get(variable);
+        Entity oldChangeContext = (Entity) _variableToChangeContext
+                .get(variable);
 
         //         System.out.println("variable = " + variable);
         //         System.out.println("oldChangeContext = " + oldChangeContext);
@@ -468,8 +468,12 @@ public class ConstVariableModelAnalysis {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private static ConstVariableModelAnalysis _previousCache;
+
     private static Entity _previousCacheToplevel;
+
     private DirectedGraph _dependencyGraph;
+
     private Map _variableToChangeContext;
+
     private CompositeActor _model;
 }

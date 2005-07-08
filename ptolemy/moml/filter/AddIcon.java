@@ -1,30 +1,30 @@
 /* Add icons to certain actors
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.moml.filter;
 
 import java.util.HashMap;
@@ -35,20 +35,19 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AddIcon
 
 /** Certain actors have specialized icons that display the value of
-    one of the parameters.  This filter adds icons to those actors when
-    necessary.
+ one of the parameters.  This filter adds icons to those actors when
+ necessary.
 
-    @author Christopher Hylands, Edward A. Lee
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class AddIcon implements MoMLFilter {
     /**  If the attributeName is "class" and attributeValue names a
      *        class that has had its port names changed between releases,
@@ -97,16 +96,18 @@ public class AddIcon implements MoMLFilter {
 
                 if (container != null) {
                     _currentActorFullName = container.getFullName() + "."
-                        + _lastNameSeen;
+                            + _lastNameSeen;
                 } else {
                     _currentActorFullName = "." + _lastNameSeen;
                 }
 
-                _iconMoML = (String) _actorsThatShouldHaveIcons.get(attributeValue);
+                _iconMoML = (String) _actorsThatShouldHaveIcons
+                        .get(attributeValue);
             } else if (_currentlyProcessingActorThatMayNeedAnIcon
                     && (container != null)
                     && !container.getFullName().equals(_currentActorFullName)
-                    && !container.getFullName().startsWith(_currentActorFullName)) {
+                    && !container.getFullName().startsWith(
+                            _currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes, so
                 _currentlyProcessingActorThatMayNeedAnIcon = false;
@@ -142,8 +143,8 @@ public class AddIcon implements MoMLFilter {
                 _parser.parse(null, _iconMoML);
                 MoMLParser.setModified(true);
             } catch (Exception ex) {
-                throw new IllegalActionException(null, ex,
-                        "Failed to parse\n" + _iconMoML);
+                throw new IllegalActionException(null, ex, "Failed to parse\n"
+                        + _iconMoML);
             }
         }
     }
@@ -192,34 +193,40 @@ public class AddIcon implements MoMLFilter {
         _actorsThatShouldHaveIcons = new HashMap();
 
         // In alphabetic order by actor class name.
-        _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Const",
-                "<property name=\"_icon\" "
-                + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
-                + "<property name=\"attributeName\" value=\"value\"/>\n"
-                + "<property name=\"displayWidth\" value=\"40\"/>\n"
-                + "</property>\n");
+        _actorsThatShouldHaveIcons
+                .put(
+                        "ptolemy.actor.lib.Const",
+                        "<property name=\"_icon\" "
+                                + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
+                                + "<property name=\"attributeName\" value=\"value\"/>\n"
+                                + "<property name=\"displayWidth\" value=\"40\"/>\n"
+                                + "</property>\n");
 
         // In alphabetic order by actor class name.
-        _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Expression",
-                "<property name=\"_icon\" "
-                + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
-                + "<property name=\"attributeName\" value=\"expression\"/>\n"
-                + "<property name=\"displayWidth\" value=\"60\"/>\n"
-                + "</property>\n");
+        _actorsThatShouldHaveIcons
+                .put(
+                        "ptolemy.actor.lib.Expression",
+                        "<property name=\"_icon\" "
+                                + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
+                                + "<property name=\"attributeName\" value=\"expression\"/>\n"
+                                + "<property name=\"displayWidth\" value=\"60\"/>\n"
+                                + "</property>\n");
 
         String functionIcon = "<property name=\"_icon\" "
-            + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
-            + "<property name=\"attributeName\" value=\"function\"/>\n"
-            + "</property>\n";
+                + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
+                + "<property name=\"attributeName\" value=\"function\"/>\n"
+                + "</property>\n";
 
         _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.MathFunction",
                 functionIcon);
 
-        _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Scale",
-                "<property name=\"_icon\" "
-                + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
-                + "<property name=\"attributeName\" value=\"factor\"/>\n"
-                + "</property>\n");
+        _actorsThatShouldHaveIcons
+                .put(
+                        "ptolemy.actor.lib.Scale",
+                        "<property name=\"_icon\" "
+                                + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
+                                + "<property name=\"attributeName\" value=\"factor\"/>\n"
+                                + "</property>\n");
 
         _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.TrigFunction",
                 functionIcon);

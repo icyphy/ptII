@@ -1,32 +1,32 @@
 /* A FunctionDependency is an abstract class that describes the function
-   dependency relation between the externally visible inputs and outputs
-   of an actor.
+ dependency relation between the externally visible inputs and outputs
+ of an actor.
 
-   Copyright (c) 2003-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.util;
 
 import java.util.Collection;
@@ -46,43 +46,42 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependency
 
 /** A FunctionDependency is an abstract class that describes the
-    function dependency that output ports of an associated actor
-    have on its input ports.  The associated actor is specified by
-    the constructor argument and cannot be changed once this object
-    is constructed.
-    <p>
-    An output port has a function dependency on an input port if
-    in its fire method, it sends tokens on the output port that
-    depend on tokens gotten from the input port.
-    <p>
-    This class uses a graph to describe the function dependency,
-    where the nodes of the graph correspond to the ports and an edge
-    indicates a function dependency. The edges go from input ports
-    to output ports that depend on them.
-    <p>
-    The dependency graph by default indicates complete dependency,
-    which means that each output port depends on all input ports.
-    This default dependency graph is constructed in the protected
-    method {@link #_constructDependencyGraph()}, which can be
-    overridden in subclasses to construct a more accurate
-    dependency graph. See {@link FunctionDependencyOfAtomicActor}
-    and {@link FunctionDependencyOfCompositeActor} for example
-    concrete subclasses. The composite actor version analyzes
-    the contained model to determine from the function dependencies
-    of the contained actors and from the connections what the
-    function dependencies of the composite actor are.
+ function dependency that output ports of an associated actor
+ have on its input ports.  The associated actor is specified by
+ the constructor argument and cannot be changed once this object
+ is constructed.
+ <p>
+ An output port has a function dependency on an input port if
+ in its fire method, it sends tokens on the output port that
+ depend on tokens gotten from the input port.
+ <p>
+ This class uses a graph to describe the function dependency,
+ where the nodes of the graph correspond to the ports and an edge
+ indicates a function dependency. The edges go from input ports
+ to output ports that depend on them.
+ <p>
+ The dependency graph by default indicates complete dependency,
+ which means that each output port depends on all input ports.
+ This default dependency graph is constructed in the protected
+ method {@link #_constructDependencyGraph()}, which can be
+ overridden in subclasses to construct a more accurate
+ dependency graph. See {@link FunctionDependencyOfAtomicActor}
+ and {@link FunctionDependencyOfCompositeActor} for example
+ concrete subclasses. The composite actor version analyzes
+ the contained model to determine from the function dependencies
+ of the contained actors and from the connections what the
+ function dependencies of the composite actor are.
 
-    @author Haiyang Zheng
-    @version $Id$
-    @since Ptolemy II 4.0
-    @Pt.ProposedRating Green (hyzheng)
-    @Pt.AcceptedRating Green (eal)
-*/
+ @author Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Green (eal)
+ */
 public abstract class FunctionDependency extends Attribute {
     /** Construct a FunctionDependency object for the given actor.
      *  @param container The container.
@@ -135,12 +134,12 @@ public abstract class FunctionDependency extends Attribute {
         // ensure that the input port is inside the dependency graph
         if (!inputPort.getContainer().equals(getContainer())) {
             throw new InternalErrorException("The input port "
-                    + inputPort.getName() + " does not belong to the " + "actor "
-                    + getContainer().getName());
+                    + inputPort.getName() + " does not belong to the "
+                    + "actor " + getContainer().getName());
         }
 
-        Collection reachableOutputs = _dependencyGraph.reachableNodes(_dependencyGraph
-                .node(inputPort));
+        Collection reachableOutputs = _dependencyGraph
+                .reachableNodes(_dependencyGraph.node(inputPort));
         Set dependentOutputPorts = new HashSet();
         Iterator outputs = reachableOutputs.iterator();
 
@@ -163,13 +162,12 @@ public abstract class FunctionDependency extends Attribute {
         // ensure that the output port is inside the dependency graph
         if (!outputPort.getContainer().equals(getContainer())) {
             throw new InternalErrorException("The output port "
-                    + outputPort.getName() + " does not belong to the " + "actor "
-                    + getContainer().getName());
+                    + outputPort.getName() + " does not belong to the "
+                    + "actor " + getContainer().getName());
         }
 
         Collection backwardReachableInputs = _dependencyGraph
-            .backwardReachableNodes(_dependencyGraph.node(
-                                            outputPort));
+                .backwardReachableNodes(_dependencyGraph.node(outputPort));
         Set dependentInputPorts = new HashSet();
         Iterator inputs = backwardReachableInputs.iterator();
 
@@ -183,8 +181,8 @@ public abstract class FunctionDependency extends Attribute {
 
     /** Add this attribute to the given container.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         super.setContainer(container);
         _functionDependencyVersion = -1;
     }
@@ -205,12 +203,13 @@ public abstract class FunctionDependency extends Attribute {
 
         // For each input and output port pair, add a directed
         // edge going from the input port to the output port.
-        Iterator inputs = ((Actor) getContainer()).inputPortList().listIterator();
+        Iterator inputs = ((Actor) getContainer()).inputPortList()
+                .listIterator();
 
         while (inputs.hasNext()) {
             IOPort inputPort = (IOPort) inputs.next();
             Iterator outputs = ((Actor) getContainer()).outputPortList()
-                .listIterator();
+                    .listIterator();
 
             while (outputs.hasNext()) {
                 // add an edge from the input port to the output port
@@ -245,7 +244,8 @@ public abstract class FunctionDependency extends Attribute {
 
         // include all the externally visible ports of the associated actor
         // as nodes in the graph
-        Iterator inputs = ((Actor) getContainer()).inputPortList().listIterator();
+        Iterator inputs = ((Actor) getContainer()).inputPortList()
+                .listIterator();
 
         while (inputs.hasNext()) {
             IOPort input = (IOPort) inputs.next();
@@ -253,7 +253,7 @@ public abstract class FunctionDependency extends Attribute {
         }
 
         Iterator outputs = ((Actor) getContainer()).outputPortList()
-            .listIterator();
+                .listIterator();
 
         while (outputs.hasNext()) {
             IOPort output = (IOPort) outputs.next();

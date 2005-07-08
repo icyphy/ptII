@@ -1,61 +1,60 @@
 /* Interface for defining how an object can be invoked.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.actor;
 
 import ptolemy.kernel.util.IllegalActionException;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// Executable
 
 /**
-   This interface defines the <i>action methods</i>, which determine
-   how an object can be invoked. It should be implemented by actors
-   and directors. In an execution of an application,
-   the preinitialize() and initialize() methods should be
-   invoked exactly once, followed by any number of iterations, followed
-   by exactly one invocation of the wrapup() method. An <i>iteration</i>
-   is defined to be one firing of the prefire() method, followed by
-   any number of firings of the fire() method, followed by one firing
-   of the postfire() method.
-   The prefire() method returns true to indicate that firing
-   can occur.  The postfire() method returns false if no further firings
-   should occur. The initialize(), fire() and postfire() methods may produce
-   output data.  The initialize() method runs after the topology has
-   stabilized (all higher-order function actors have executed) and
-   type resolution has been done.  The preinitialize() method runs
-   before these have happened.
+ This interface defines the <i>action methods</i>, which determine
+ how an object can be invoked. It should be implemented by actors
+ and directors. In an execution of an application,
+ the preinitialize() and initialize() methods should be
+ invoked exactly once, followed by any number of iterations, followed
+ by exactly one invocation of the wrapup() method. An <i>iteration</i>
+ is defined to be one firing of the prefire() method, followed by
+ any number of firings of the fire() method, followed by one firing
+ of the postfire() method.
+ The prefire() method returns true to indicate that firing
+ can occur.  The postfire() method returns false if no further firings
+ should occur. The initialize(), fire() and postfire() methods may produce
+ output data.  The initialize() method runs after the topology has
+ stabilized (all higher-order function actors have executed) and
+ type resolution has been done.  The preinitialize() method runs
+ before these have happened.
 
-   @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (davisj)
-*/
+ @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (davisj)
+ */
 public interface Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

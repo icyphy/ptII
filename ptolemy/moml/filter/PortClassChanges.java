@@ -1,30 +1,30 @@
 /* Filter actors for port class changes.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.moml.filter;
 
 import java.util.HashMap;
@@ -34,22 +34,21 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PortClassChanges
 
 /** When this class is registered with the MoMLParser.setMoMLFilter()
-    method, it will cause MoMLParser to filter so that models from
-    earlier releases will run in the current release.
+ method, it will cause MoMLParser to filter so that models from
+ earlier releases will run in the current release.
 
-    <p>This class will filter for actors that have had port class changes.
+ <p>This class will filter for actors that have had port class changes.
 
-    @author Haiyang Zheng
-    @version $Id$
-    @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (hyzheng)
-    @Pt.AcceptedRating Red (hyzheng)
-*/
+ @author Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Red (hyzheng)
+ @Pt.AcceptedRating Red (hyzheng)
+ */
 public class PortClassChanges implements MoMLFilter {
     /**  If the attributeName is "class" and attributeValue names a
      *   class that has had its port classes changed between releases,
@@ -101,7 +100,8 @@ public class PortClassChanges implements MoMLFilter {
                 _currentlyProcessingActorWithPortClassChanges = true;
 
                 // Find the port mapping of the current actor.
-                _portMap = (HashMap) _actorsWithPortClassChanges.get(attributeValue);
+                _portMap = (HashMap) _actorsWithPortClassChanges
+                        .get(attributeValue);
             } else if (_foundPort && _lastNameSeen.equals(_portName)
                     && _classMap.containsKey(attributeValue)) {
                 // We found the port.
@@ -178,6 +178,7 @@ public class PortClassChanges implements MoMLFilter {
     // Set to true if we are currently processing an actor with port class
     // changes, set to false when we are done.
     private static boolean _currentlyProcessingActorWithPortClassChanges = false;
+
     private static boolean _foundPort = false;
 
     // Last "name" value seen, for use if we see an actor with "class" changes.
@@ -230,15 +231,18 @@ public class PortClassChanges implements MoMLFilter {
         inputOutputTypedIOPortClassChanges.put("input", sdfPortChanges);
         inputOutputTypedIOPortClassChanges.put("output", sdfPortChanges);
 
-        _actorsWithPortClassChanges.put("ptolemy.domains.sdf.lib.vq.ImagePartition",
+        _actorsWithPortClassChanges.put(
+                "ptolemy.domains.sdf.lib.vq.ImagePartition",
                 inputOutputTypedIOPortClassChanges);
 
         // ImageUnpartition
-        _actorsWithPortClassChanges.put("ptolemy.domains.sdf.lib.vq.ImageUnpartition",
+        _actorsWithPortClassChanges.put(
+                "ptolemy.domains.sdf.lib.vq.ImageUnpartition",
                 inputOutputTypedIOPortClassChanges);
 
         // HTVQEncode
-        _actorsWithPortClassChanges.put("ptolemy.domains.sdf.lib.vq.HTVQEncode",
+        _actorsWithPortClassChanges.put(
+                "ptolemy.domains.sdf.lib.vq.HTVQEncode",
                 inputOutputTypedIOPortClassChanges);
 
         // VQDecode

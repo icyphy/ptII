@@ -1,30 +1,30 @@
 /* Add a VisibleParameterEditorFactor named _editorFactor to certain Parameters
 
-Copyright (c) 2002-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2002-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.moml.filter;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -32,19 +32,18 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// AddEditorFactory
 
 /** Add a VisibleParameterEditorFactory named _editorFactory to certain
-    Parameters.
+ Parameters.
 
-    @author Christopher Hylands, Edward A. Lee
-    @version $Id$
-    @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ @author Christopher Hylands, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class AddEditorFactory implements MoMLFilter {
     /**  Identify Parameters that need a VisibleParameterEditorFactory
      *   named _editorFactory added.
@@ -97,14 +96,15 @@ public class AddEditorFactory implements MoMLFilter {
 
                 if (container != null) {
                     _currentActorFullName = container.getFullName() + "."
-                        + _lastNameSeen;
+                            + _lastNameSeen;
                 } else {
                     _currentActorFullName = "." + _lastNameSeen;
                 }
             } else if (_currentlyProcessingActorThatMayNeedAnEditorFactory
                     && (container != null)
                     && !container.getFullName().equals(_currentActorFullName)
-                    && !container.getFullName().startsWith(_currentActorFullName)) {
+                    && !container.getFullName().startsWith(
+                            _currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes, so
                 _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
@@ -125,8 +125,7 @@ public class AddEditorFactory implements MoMLFilter {
         if (!_currentlyProcessingActorThatMayNeedAnEditorFactory) {
             return;
         } else if (_currentAttributeHasLocation && (elementName != null)
-                && elementName.equals("property")
-                && (container != null)
+                && elementName.equals("property") && (container != null)
                 && container.getFullName().equals(_currentActorFullName)) {
             _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
             _currentAttributeHasLocation = false;
@@ -145,8 +144,8 @@ public class AddEditorFactory implements MoMLFilter {
             _parser.setContext(container);
 
             String moml = "<property name=\"_editorFactory\""
-                + "class=\"ptolemy.vergil.toolbox."
-                + "VisibleParameterEditorFactory\">" + "</property>";
+                    + "class=\"ptolemy.vergil.toolbox."
+                    + "VisibleParameterEditorFactory\">" + "</property>";
 
             try {
                 // Do not call parse(moml) here, since that method
@@ -155,8 +154,8 @@ public class AddEditorFactory implements MoMLFilter {
                 _parser.parse(null, moml);
                 MoMLParser.setModified(true);
             } catch (Exception ex) {
-                throw new IllegalActionException(null, ex,
-                        "Failed to parse\n" + moml);
+                throw new IllegalActionException(null, ex, "Failed to parse\n"
+                        + moml);
             }
         }
     }
@@ -166,8 +165,8 @@ public class AddEditorFactory implements MoMLFilter {
      */
     public String toString() {
         return getClass().getName()
-            + ": If a parameter has a _location, then\n"
-            + "add a VisibleParameterEditorFactory named _editorFactory.\n";
+                + ": If a parameter has a _location, then\n"
+                + "add a VisibleParameterEditorFactory named _editorFactory.\n";
     }
 
     ///////////////////////////////////////////////////////////////////

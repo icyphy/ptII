@@ -1,30 +1,30 @@
 /* CalendarQueue, an implementation of a priority queue.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.util;
 
 import java.util.Iterator;
@@ -35,101 +35,100 @@ import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// CalendarQueue
 
 /**
 
-This class implements a fast priority queue. Entries are sorted with
-the help of a comparator provided to the constructor.  A dequeue
-operation will remove the smallest entry according to this sort.
-Entries can be any instance of Object that are acceptable to the
-specified comparator.
+ This class implements a fast priority queue. Entries are sorted with
+ the help of a comparator provided to the constructor.  A dequeue
+ operation will remove the smallest entry according to this sort.
+ Entries can be any instance of Object that are acceptable to the
+ specified comparator.
 
-<p>Entries are enqueued using the put() method, and dequeued using the
-take() method. The get() method returns the smallest entry in the
-queue, but without removing it from the queue.  The toArray() methods
-can be used to examine the contents of the queue.
+ <p>Entries are enqueued using the put() method, and dequeued using the
+ take() method. The get() method returns the smallest entry in the
+ queue, but without removing it from the queue.  The toArray() methods
+ can be used to examine the contents of the queue.
 
-<p>This class operates like a 'bag' or multiset collection.  This simply
-means that an entry can be added into the queue even if it already
-exists in the queue.  If a 'set' behavior is desired, one can subclass
-CalendarQueue and override the put() method.
+ <p>This class operates like a 'bag' or multiset collection.  This simply
+ means that an entry can be added into the queue even if it already
+ exists in the queue.  If a 'set' behavior is desired, one can subclass
+ CalendarQueue and override the put() method.
 
-<p>The queue works as follows.  Entries are conceptually stored in an
-infinite set of virtual bins (or buckets). The instance of
-CQComparator is consulted to determine which virtual bin should be
-used for an entry (by calling its getVirtualBinNumber() method).  Each
-virtual bin has a width, which can be altered by calling the
-setBinWidth() method of the CQComparator.  Within each virtual bin,
-entries are sorted.
+ <p>The queue works as follows.  Entries are conceptually stored in an
+ infinite set of virtual bins (or buckets). The instance of
+ CQComparator is consulted to determine which virtual bin should be
+ used for an entry (by calling its getVirtualBinNumber() method).  Each
+ virtual bin has a width, which can be altered by calling the
+ setBinWidth() method of the CQComparator.  Within each virtual bin,
+ entries are sorted.
 
-<p>Having an infinite number of bins, however, is not practical.  Thus,
-the virtual bins are mapped into physical bins (or buckets) by a
-modulo operation.  If there are <i>n</i> physical bins, then virtual
-bin <i>i</i> maps into physical bin <i>i</i> mod <i>n</i>.
+ <p>Having an infinite number of bins, however, is not practical.  Thus,
+ the virtual bins are mapped into physical bins (or buckets) by a
+ modulo operation.  If there are <i>n</i> physical bins, then virtual
+ bin <i>i</i> maps into physical bin <i>i</i> mod <i>n</i>.
 
-<p>This is analogous to a calendar showing 12 months.  Here, <i>n</i> =
-12.  An event that happens in January of any year is placed in the
-first month (bin) of this calendar.  Its virtual bin number might be
-<i>year</i>*12 + <i>month</i>.  Its physical bin number is just
-<i>month</i>.
+ <p>This is analogous to a calendar showing 12 months.  Here, <i>n</i> =
+ 12.  An event that happens in January of any year is placed in the
+ first month (bin) of this calendar.  Its virtual bin number might be
+ <i>year</i>*12 + <i>month</i>.  Its physical bin number is just
+ <i>month</i>.
 
-<p>The performance of a calendar queue is very sensitive to the number of
-bins, the width of the bins, and the relationship of these quantities
-to the entries that are observed.  Thus, this implementation may
-frequently change the number of bins.  When it does change the number
-of bins, it changes them by a specifiable <i>bin count factor</i>.
-This defaults to 2, but can be specified as a constructor argument.
-Suppose the bin count factor is <i>binCountFactor</i> and the current
-number of buckets is <i>n</i> (by default, this starts at 2, but can
-be specified by a constructor argument, <i>minNumBuckets</i>).  The
-number of bins will be multiplied by <i>binCountFactor</i> if the
-queue size exceeds <i>n * binCountFactor</i>.  The number of bins will
-be divided by <i>binCountFactor</i> if the queue size falls below
-<i>n/binCountFactor</i>.  Thus, the queue attempts to keep the number
-of bins close to the size of the queue.  Each time it changes the
-number of bins, it uses recently dequeued entries to calculate a
-reasonable bin width (actually, it defers to the associated
-CQComparator for this calculation).
+ <p>The performance of a calendar queue is very sensitive to the number of
+ bins, the width of the bins, and the relationship of these quantities
+ to the entries that are observed.  Thus, this implementation may
+ frequently change the number of bins.  When it does change the number
+ of bins, it changes them by a specifiable <i>bin count factor</i>.
+ This defaults to 2, but can be specified as a constructor argument.
+ Suppose the bin count factor is <i>binCountFactor</i> and the current
+ number of buckets is <i>n</i> (by default, this starts at 2, but can
+ be specified by a constructor argument, <i>minNumBuckets</i>).  The
+ number of bins will be multiplied by <i>binCountFactor</i> if the
+ queue size exceeds <i>n * binCountFactor</i>.  The number of bins will
+ be divided by <i>binCountFactor</i> if the queue size falls below
+ <i>n/binCountFactor</i>.  Thus, the queue attempts to keep the number
+ of bins close to the size of the queue.  Each time it changes the
+ number of bins, it uses recently dequeued entries to calculate a
+ reasonable bin width (actually, it defers to the associated
+ CQComparator for this calculation).
 
-<p>
-For efficiency, this implementation constrains <i>minNumBuckets</i>
-and <i>binCountFactor</i> to be powers of two. If something other
-than a power is two is given, the next power of two larger than
-the specified number is used.  This has the effect of ensuring
-that the number of bins is always a power of two, and hence
-the modulo operation used to map virtual bin numbers onto actual
-bin numbers is a simple masking operation.
+ <p>
+ For efficiency, this implementation constrains <i>minNumBuckets</i>
+ and <i>binCountFactor</i> to be powers of two. If something other
+ than a power is two is given, the next power of two larger than
+ the specified number is used.  This has the effect of ensuring
+ that the number of bins is always a power of two, and hence
+ the modulo operation used to map virtual bin numbers onto actual
+ bin numbers is a simple masking operation.
 
-<p>Changing the number of bins is a relatively expensive operation, so it
-may be worthwhile to increase <i>binCountFactor</i> to reduce the
-frequency of change operations. Working counter to this, however, is
-that the queue is most efficient when there is on average one event
-per bin.  Thus, the queue becomes less efficient if change operations
-are less frequent.  Change operations can be entirely disabled by
-calling setAdaptive() with argument <i>false</i>.
+ <p>Changing the number of bins is a relatively expensive operation, so it
+ may be worthwhile to increase <i>binCountFactor</i> to reduce the
+ frequency of change operations. Working counter to this, however, is
+ that the queue is most efficient when there is on average one event
+ per bin.  Thus, the queue becomes less efficient if change operations
+ are less frequent.  Change operations can be entirely disabled by
+ calling setAdaptive() with argument <i>false</i>.
 
-<p>This implementation is not synchronized, so if multiple threads
-depend on it, the caller must be.
+ <p>This implementation is not synchronized, so if multiple threads
+ depend on it, the caller must be.
 
-This implementation is based on:
-<ul>
-<li>Randy Brown, <i>CalendarQueues:A Fast Priority Queue Implementation for
-the Simulation Event Set Problem</i>, Communications of the ACM, October 1988,
-Volume 31, Number 10.
-<li>A. Banerjea and E. W. Knightly, <i>Ptolemy Classic implementation of
-CalendarQueue class.</i>
-</ul>
+ This implementation is based on:
+ <ul>
+ <li>Randy Brown, <i>CalendarQueues:A Fast Priority Queue Implementation for
+ the Simulation Event Set Problem</i>, Communications of the ACM, October 1988,
+ Volume 31, Number 10.
+ <li>A. Banerjea and E. W. Knightly, <i>Ptolemy Classic implementation of
+ CalendarQueue class.</i>
+ </ul>
 
-@author Lukito Muliadi and Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
-@Pt.ProposedRating Green (eal)
-@Pt.AcceptedRating Yellow (liuj)
-@see ptolemy.actor.util.CQComparator
-*/
+ @author Lukito Muliadi and Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Yellow (liuj)
+ @see ptolemy.actor.util.CQComparator
+ */
 public class CalendarQueue implements Debuggable {
     /** Construct an empty queue with a given comparator, which
      *  is used to sort the entries.  The bin count factor and the
@@ -243,7 +242,7 @@ public class CalendarQueue implements Debuggable {
         if (value <= 0) {
             throw new ArithmeticException(
                     "CalendarQueue: Cannot take the log of a non-positive number: "
-                    + value);
+                            + value);
         }
 
         if (value == 1) {
@@ -433,8 +432,7 @@ public class CalendarQueue implements Debuggable {
                 // The bucket is not empty.
                 Object minimumInBucket = _bucket[i].head.contents;
 
-                if (_cqComparator.getVirtualBinNumber(minimumInBucket) == (_minVirtualBucket
-                            + j)) {
+                if (_cqComparator.getVirtualBinNumber(minimumInBucket) == (_minVirtualBucket + j)) {
                     // The entry is in the current year. Return it.
                     result = _takeFromBucket(i);
                     break;
@@ -564,7 +562,8 @@ public class CalendarQueue implements Debuggable {
                     nextInBucket = bucketHead[currentBucket].contents;
                 }
 
-                long nextVirtualBucket = _cqComparator.getVirtualBinNumber(nextInBucket);
+                long nextVirtualBucket = _cqComparator
+                        .getVirtualBinNumber(nextInBucket);
 
                 // Note that getVirtualBinNumber can return Long.MAX_VALUE
                 // which means the we should probably check to see if
@@ -594,7 +593,7 @@ public class CalendarQueue implements Debuggable {
                 if (!foundValue) {
                     throw new InternalErrorException(
                             "Queue is empty, but size() is not zero! It is: "
-                            + _queueSize);
+                                    + _queueSize);
                 }
 
                 virtualBucket = minimumNextVirtualBucket;
@@ -724,7 +723,7 @@ public class CalendarQueue implements Debuggable {
 
                 // If it is already minimum or close, do nothing.
                 int tempLogNewSize = _logNumberOfBuckets
-                    - _logQueueBinCountFactor;
+                        - _logQueueBinCountFactor;
 
                 if (tempLogNewSize > _logMinNumBuckets) {
                     logNewSize = tempLogNewSize;

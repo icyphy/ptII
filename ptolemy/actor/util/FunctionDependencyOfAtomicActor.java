@@ -1,31 +1,31 @@
 /* An instance of FunctionDependencyOfAtomicActor describes the function
-   dependency between the inputs and outputs of an atomic actor.
+ dependency between the inputs and outputs of an atomic actor.
 
-   Copyright (c) 2003-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.util;
 
 import ptolemy.actor.AtomicActor;
@@ -35,41 +35,40 @@ import ptolemy.graph.Edge;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfAtomicActor
 
 /**
-   An instance of FunctionDependencyOfAtomicActor describes the function
-   dependency between the inputs and outputs of an atomic actor.
-   By default, each output port of an atomic actor depends on all input
-   ports of the actor, meaning that the token sent through an output
-   depends on all the tokens received from the input ports.
-   For some atomic actors, such as the TimedDelay actor, an output in
-   a firing does not depend on an input port.
-   (See {@link FunctionDependency} for the definition of dependency.)
-   Such actors should override the pruneDependencies() method of
-   AtomicActor to remove dependencies between these ports.
-   For example, {@link ptolemy.domains.de.lib.TimedDelay}
-   declares that its <i>output</i> port is independent of its <i>input</i>
-   port by defining this method:
-   <pre>
-   public void pruneDependencies() {
-   super.pruneDependencies();
-   removeDependency(input, output);
-   }
-   </pre>
+ An instance of FunctionDependencyOfAtomicActor describes the function
+ dependency between the inputs and outputs of an atomic actor.
+ By default, each output port of an atomic actor depends on all input
+ ports of the actor, meaning that the token sent through an output
+ depends on all the tokens received from the input ports.
+ For some atomic actors, such as the TimedDelay actor, an output in
+ a firing does not depend on an input port.
+ (See {@link FunctionDependency} for the definition of dependency.)
+ Such actors should override the pruneDependencies() method of
+ AtomicActor to remove dependencies between these ports.
+ For example, {@link ptolemy.domains.de.lib.TimedDelay}
+ declares that its <i>output</i> port is independent of its <i>input</i>
+ port by defining this method:
+ <pre>
+ public void pruneDependencies() {
+ super.pruneDependencies();
+ removeDependency(input, output);
+ }
+ </pre>
 
-   @see FunctionDependency
-   @see ptolemy.domains.de.lib.TimedDelay
-   @see ptolemy.actor.AtomicActor#pruneDependencies()
-   @author Haiyang Zheng
-   @version $Id: FunctionDependencyOfAtomicActor.java,v 1.2 2004/02/21
-   07:57:24 hyzheng Exp $
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (hyzheng)
-   @Pt.AcceptedRating Green (eal)
-*/
+ @see FunctionDependency
+ @see ptolemy.domains.de.lib.TimedDelay
+ @see ptolemy.actor.AtomicActor#pruneDependencies()
+ @author Haiyang Zheng
+ @version $Id: FunctionDependencyOfAtomicActor.java,v 1.2 2004/02/21
+ 07:57:24 hyzheng Exp $
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Green (eal)
+ */
 public class FunctionDependencyOfAtomicActor extends FunctionDependency {
     /** Construct a FunctionDependencyOfAtomicActor in the given actor.
      *  @param atomicActor The atomic actor.

@@ -1,31 +1,31 @@
 /* A parameter that is shared globally in a model.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.moml;
 
 import java.util.Iterator;
@@ -39,55 +39,54 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SharedParameter
 
 /**
-   This parameter is shared throughout a model. Changing the expression of
-   any one instance of the parameter will result in all instances that
-   are shared being changed to the same expression.  An instance elsewhere
-   in the model (within the same top level) is shared if it has the
-   same name and its container is of the class specified in the
-   constructor (or of the container class, if no class is specified
-   in the constructor). Note that two parameters with the same
-   expression do not necessarily have the same value, since the
-   expression may reference other parameters that are in scope.
-   <p>
-   One exception is that if this parameter is (deeply) within an
-   instance of EntityLibrary, then the parameter is not shared.
-   Were this not the case, then opening a library containing this
-   parameter would force expansion of all the sublibraries of
-   EntityLibrary, which would defeat the lazy instantiation
-   of EntityLibrary.
-   <p>
-   When this parameter is constructed, the specified container
-   will be used to infer the parameter value from the container.
-   That is, if the container is within a model that has any
-   parameters shared with this one, then the value will be
-   set to the last of those encountered.
-   If the container is subsequently changed, it is up to the
-   code implementing the change to use the inferValueFromContext()
-   method to reset the value to match the new context.
-   Note that this really needs to be done if the container
-   of the container, or its container, or any container
-   above this parameter is changed.  It is recommended to use
-   the four-argument constructor, so you can specify a default
-   value to use if there are no shared parameters.
-   <p>
-   Note that it might be tempting to use a static parameter field
-   to achieve this effect, but this would be problematic for two
-   reasons. First, the parameter would only be able to have one
-   container. Second, the parameter would be shared across all
-   models in the same Java virtual machine, not just within a
-   single model.
+ This parameter is shared throughout a model. Changing the expression of
+ any one instance of the parameter will result in all instances that
+ are shared being changed to the same expression.  An instance elsewhere
+ in the model (within the same top level) is shared if it has the
+ same name and its container is of the class specified in the
+ constructor (or of the container class, if no class is specified
+ in the constructor). Note that two parameters with the same
+ expression do not necessarily have the same value, since the
+ expression may reference other parameters that are in scope.
+ <p>
+ One exception is that if this parameter is (deeply) within an
+ instance of EntityLibrary, then the parameter is not shared.
+ Were this not the case, then opening a library containing this
+ parameter would force expansion of all the sublibraries of
+ EntityLibrary, which would defeat the lazy instantiation
+ of EntityLibrary.
+ <p>
+ When this parameter is constructed, the specified container
+ will be used to infer the parameter value from the container.
+ That is, if the container is within a model that has any
+ parameters shared with this one, then the value will be
+ set to the last of those encountered.
+ If the container is subsequently changed, it is up to the
+ code implementing the change to use the inferValueFromContext()
+ method to reset the value to match the new context.
+ Note that this really needs to be done if the container
+ of the container, or its container, or any container
+ above this parameter is changed.  It is recommended to use
+ the four-argument constructor, so you can specify a default
+ value to use if there are no shared parameters.
+ <p>
+ Note that it might be tempting to use a static parameter field
+ to achieve this effect, but this would be problematic for two
+ reasons. First, the parameter would only be able to have one
+ container. Second, the parameter would be shared across all
+ models in the same Java virtual machine, not just within a
+ single model.
 
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (acataldo)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (acataldo)
+ */
 public class SharedParameter extends Parameter {
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
@@ -188,17 +187,17 @@ public class SharedParameter extends Parameter {
             String value = null;
             while (sharedParameters.hasNext()) {
                 SharedParameter candidate = (SharedParameter) sharedParameters
-                    .next();
+                        .next();
 
                 if (candidate != this) {
                     defaultValue = candidate.getExpression();
                     if (value != null) {
-                    	if (!defaultValue.equals(value)) {
-                    		throw new InternalErrorException(
-                                    "SharedParameter found with a value that is" +
-                                    " inconsistent with other instances of SharedParameter" +
-                                    " in the model: "
-                                    + candidate.getFullName());
+                        if (!defaultValue.equals(value)) {
+                            throw new InternalErrorException(
+                                    "SharedParameter found with a value that is"
+                                            + " inconsistent with other instances of SharedParameter"
+                                            + " in the model: "
+                                            + candidate.getFullName());
                         }
                     }
                 }
@@ -237,17 +236,18 @@ public class SharedParameter extends Parameter {
             // Do not do sharing if this is within an EntityLibrary.
             if (toplevel != null) {
                 Iterator sharedParameters = sharedParameterList(toplevel)
-                    .iterator();
+                        .iterator();
 
                 while (sharedParameters.hasNext()) {
                     SharedParameter sharedParameter = (SharedParameter) sharedParameters
-                        .next();
+                            .next();
 
                     if (sharedParameter != this) {
                         try {
                             sharedParameter._suppressingPropagation = true;
 
-                            if (!sharedParameter.getExpression().equals(expression)) {
+                            if (!sharedParameter.getExpression().equals(
+                                    expression)) {
                                 sharedParameter.setExpression(expression);
                             }
                         } finally {
@@ -287,7 +287,7 @@ public class SharedParameter extends Parameter {
         if (_containerClass.isInstance(container)) {
             // If the attribute is not of the right class, get an exception.
             try {
-            	Attribute candidate = container.getAttribute(getName(),
+                Attribute candidate = container.getAttribute(getName(),
                         SharedParameter.class);
 
                 if (candidate != null) {
@@ -315,7 +315,7 @@ public class SharedParameter extends Parameter {
      *   Also thrown if the change is not acceptable to the container.
      */
     public void validate() throws IllegalActionException {
-    	super.validate();
+        super.validate();
 
         // NOTE: This is called by setContainer(), which is called from
         // within a base class constructor. That call occurs before this
@@ -334,11 +334,11 @@ public class SharedParameter extends Parameter {
             // Do not do sharing if this is within an EntityLibrary.
             if (toplevel != null) {
                 Iterator sharedParameters = sharedParameterList(toplevel)
-                    .iterator();
+                        .iterator();
 
                 while (sharedParameters.hasNext()) {
                     SharedParameter sharedParameter = (SharedParameter) sharedParameters
-                        .next();
+                            .next();
 
                     if (sharedParameter != this) {
                         try {

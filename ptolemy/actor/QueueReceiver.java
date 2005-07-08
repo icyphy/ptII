@@ -1,31 +1,31 @@
 /* A FIFO queue receiver with variable capacity and optional history.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor;
 
 import java.util.Collections;
@@ -37,27 +37,26 @@ import ptolemy.actor.util.FIFOQueue;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// QueueReceiver
 
 /**
-   A first-in, first-out (FIFO) queue receiver with variable capacity and
-   optional history. Tokens are put into the receiver with the put() method,
-   and removed from the receiver with the get() method. The token removed is
-   the oldest one in the receiver. By default, the capacity is unbounded, but
-   it can be set to any nonnegative size. If the history capacity is greater
-   than zero (or infinite, indicated by a capacity of INFINITE_CAPACITY),
-   then tokens removed from the receiver are stored in a history queue rather
-   than simply removed. By default, the history capacity is zero.
+ A first-in, first-out (FIFO) queue receiver with variable capacity and
+ optional history. Tokens are put into the receiver with the put() method,
+ and removed from the receiver with the get() method. The token removed is
+ the oldest one in the receiver. By default, the capacity is unbounded, but
+ it can be set to any nonnegative size. If the history capacity is greater
+ than zero (or infinite, indicated by a capacity of INFINITE_CAPACITY),
+ then tokens removed from the receiver are stored in a history queue rather
+ than simply removed. By default, the history capacity is zero.
 
-   @author Edward A. Lee, Lukito Muliadi, Xiaojun Liu
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (liuj)
-   @see ptolemy.actor.util.FIFOQueue
-*/
+ @author Edward A. Lee, Lukito Muliadi, Xiaojun Liu
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (liuj)
+ @see ptolemy.actor.util.FIFOQueue
+ */
 public class QueueReceiver extends AbstractReceiver {
     /** Construct an empty receiver with no container.
      */
@@ -140,8 +139,8 @@ public class QueueReceiver extends AbstractReceiver {
         try {
             return (Token) _queue.get(offset);
         } catch (NoSuchElementException ex) {
-            throw new NoTokenException(getContainer(),
-                    "Offset " + offset + " out of range with " + _queue.size()
+            throw new NoTokenException(getContainer(), "Offset " + offset
+                    + " out of range with " + _queue.size()
                     + " tokens in the receiver and " + _queue.historySize()
                     + " in history.");
         }

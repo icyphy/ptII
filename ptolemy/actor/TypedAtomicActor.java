@@ -1,30 +1,30 @@
 /* An executable entity whose ports have types.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor;
 
 import java.util.Iterator;
@@ -41,35 +41,34 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypedAtomicActor
 
 /**
-   A TypedAtomicActor is an AtomicActor whose ports and parameters have types.
-   <p>
-   The typeConstraintList() method returns the type constraints among
-   the contained ports and parameters.  This base class provides a default
-   implementation of this method, which should be suitable for most of the
-   derived classes.
-   <p>
-   Derived classes may constrain the container by overriding
-   _checkContainer(). The Ports of TypedAtomicActors are constrained to be
-   TypedIOPorts.  Derived classes may further constrain the ports by
-   overriding the public method newPort() to create a port of the
-   appropriate subclass, and the protected method _addPort() to throw an
-   exception if its argument is a port that is not of the appropriate
-   subclass.
+ A TypedAtomicActor is an AtomicActor whose ports and parameters have types.
+ <p>
+ The typeConstraintList() method returns the type constraints among
+ the contained ports and parameters.  This base class provides a default
+ implementation of this method, which should be suitable for most of the
+ derived classes.
+ <p>
+ Derived classes may constrain the container by overriding
+ _checkContainer(). The Ports of TypedAtomicActors are constrained to be
+ TypedIOPorts.  Derived classes may further constrain the ports by
+ overriding the public method newPort() to create a port of the
+ appropriate subclass, and the protected method _addPort() to throw an
+ exception if its argument is a port that is not of the appropriate
+ subclass.
 
-   @author Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (cxh)
-   @Pt.AcceptedRating Green (cxh)
-   @see ptolemy.actor.AtomicActor
-   @see ptolemy.actor.TypedCompositeActor
-   @see ptolemy.actor.TypedIOPort
-*/
+ @author Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
+ @see ptolemy.actor.AtomicActor
+ @see ptolemy.actor.TypedCompositeActor
+ @see ptolemy.actor.TypedIOPort
+ */
 public class TypedAtomicActor extends AtomicActor implements TypedActor {
     // All the constructors are wrappers of the super class constructors.
 
@@ -208,17 +207,17 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
                             // output also undeclared, not bidirectional port,
                             // check if there is any type constraints stored
                             // in ports.
-                            List inPortConstraints = inPort.typeConstraintList();
+                            List inPortConstraints = inPort
+                                    .typeConstraintList();
                             List outPortConstraints = outPort
-                                .typeConstraintList();
+                                    .typeConstraintList();
 
                             if (inPortConstraints.isEmpty()
                                     && outPortConstraints.isEmpty()) {
                                 // ports not constrained, use default
                                 // constraint
                                 Inequality inequality = new Inequality(inPort
-                                        .getTypeTerm(),
-                                        outPort.getTypeTerm());
+                                        .getTypeTerm(), outPort.getTypeTerm());
                                 result.add(inequality);
                             }
                         }
@@ -266,8 +265,8 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  @exception NameDuplicationException If the port name coincides with
      *   the name of another port already in the actor.
      */
-    protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+    protected void _addPort(Port port) throws IllegalActionException,
+            NameDuplicationException {
         // In the future, this method can be changed to allow IOPort to be
         // added. In that case, the type system just ignores instances of
         // IOPort during type checking. Since there is no intended application

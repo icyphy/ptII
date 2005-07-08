@@ -1,53 +1,52 @@
 /* An event that can be inserted in a CalendarQueue using an instance of Time
-   as a sort key.
+ as a sort key.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.util;
 
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TimedEvent
 
 /**
-   This class aggregates an instance of Time and an Object, and provides a CQComparator
-   as an inner class.
+ This class aggregates an instance of Time and an Object, and provides a CQComparator
+ as an inner class.
 
-   @author Edward A. Lee and Haiyang Zheng
-   @version $Id$
-   @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (liuj)
-   @see CQComparator
-   @see Time
-*/
+ @author Edward A. Lee and Haiyang Zheng
+ @version $Id$
+ @since Ptolemy II 0.4
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (liuj)
+ @see CQComparator
+ @see Time
+ */
 public class TimedEvent {
     /** Construct an event with the specified time stamp and contents.
      *  @param time The time stamp.
@@ -148,16 +147,16 @@ public class TimedEvent {
             // returns the low-order 64 bits of the result.
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
-            long value = (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp))
-                .divide(_binWidth);
+            long value = (((TimedEvent) entry).timeStamp
+                    .subtract(_zeroReference.timeStamp)).divide(_binWidth);
             return value;
 
             // What used to be here:
 
             /*
-              return (long) (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp)
-              .getDoubleValue() / _binWidth);
-            */
+             return (long) (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp)
+             .getDoubleValue() / _binWidth);
+             */
         }
 
         /** Given an array of TimedEvent objects, find the appropriate bin
@@ -197,7 +196,7 @@ public class TimedEvent {
 
                 for (int i = 1; i < entryArray.length; ++i) {
                     diff[i - 1] = ((TimedEvent) entryArray[i]).timeStamp
-                        .subtract(((TimedEvent) entryArray[i - 1]).timeStamp);
+                            .subtract(((TimedEvent) entryArray[i - 1]).timeStamp);
                     average = average.add(diff[i - 1]);
                 }
 

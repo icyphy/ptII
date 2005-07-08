@@ -1,31 +1,31 @@
 /* An aggregation of typed actors.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor;
 
 import java.util.Iterator;
@@ -49,43 +49,42 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
 
 /**
-   A TypedCompositeActor is an aggregation of typed actors.
-   <p>
-   When exporting MoML, instances of this class identify their class name
-   as TypedCompositeActor. If a derived class does not change this, then it
-   too will be identified as a TypedCompositeActor. To change this in a
-   derived class, put the following line in the constructor
-   <pre>
-   getMoMLInfo().className = "<i>full class name</i>";
-   </pre>
-   If you do this, you will probably also want to override _exportMoMLContents()
-   to not generate a description of the contents of the composite, since
-   they will be already defined in the Java class.
-   <p>
-   The ports of a TypedCompositeActor are constrained to be TypedIOPorts,
-   the relations to be TypedIORelations, and the actors to be instances of
-   ComponentEntity that implement the TypedActor interface.  Derived classes
-   may impose further constraints by overriding newPort(), _addPort(),
-   newRelation(), _addRelation(), and _addEntity(). Also, derived classes may
-   constrain the container by overriding _checkContainer().
-   <P>
+ A TypedCompositeActor is an aggregation of typed actors.
+ <p>
+ When exporting MoML, instances of this class identify their class name
+ as TypedCompositeActor. If a derived class does not change this, then it
+ too will be identified as a TypedCompositeActor. To change this in a
+ derived class, put the following line in the constructor
+ <pre>
+ getMoMLInfo().className = "<i>full class name</i>";
+ </pre>
+ If you do this, you will probably also want to override _exportMoMLContents()
+ to not generate a description of the contents of the composite, since
+ they will be already defined in the Java class.
+ <p>
+ The ports of a TypedCompositeActor are constrained to be TypedIOPorts,
+ the relations to be TypedIORelations, and the actors to be instances of
+ ComponentEntity that implement the TypedActor interface.  Derived classes
+ may impose further constraints by overriding newPort(), _addPort(),
+ newRelation(), _addRelation(), and _addEntity(). Also, derived classes may
+ constrain the container by overriding _checkContainer().
+ <P>
 
-   @author Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (yuhong)
-   @Pt.AcceptedRating Green (lmuliadi)
-   @see ptolemy.actor.TypedIOPort
-   @see ptolemy.actor.TypedIORelation
-   @see ptolemy.actor.TypedActor
-   @see ptolemy.kernel.ComponentEntity
-   @see ptolemy.actor.CompositeActor
-*/
+ @author Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (yuhong)
+ @Pt.AcceptedRating Green (lmuliadi)
+ @see ptolemy.actor.TypedIOPort
+ @see ptolemy.actor.TypedIORelation
+ @see ptolemy.actor.TypedActor
+ @see ptolemy.kernel.ComponentEntity
+ @see ptolemy.actor.CompositeActor
+ */
 public class TypedCompositeActor extends CompositeActor implements TypedActor {
     /** Construct a TypedCompositeActor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the
@@ -226,7 +225,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         if (topLevel.getContainer() != null) {
             throw new IllegalArgumentException(
                     "TypedCompositeActor.resolveTypes: The specified actor is "
-                    + "not the top level container.");
+                            + "not the top level container.");
         }
 
         try {
@@ -242,11 +241,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             // NOTE: To view all type constraints, uncomment these.
 
             /*
-              Iterator constraintsIterator = constraintList.iterator();
-              while (constraintsIterator.hasNext()) {
-              System.out.println(constraintsIterator.next().toString());
-              }
-            */
+             Iterator constraintsIterator = constraintList.iterator();
+             while (constraintsIterator.hasNext()) {
+             System.out.println(constraintsIterator.next().toString());
+             }
+             */
             if (constraintList.size() > 0) {
                 InequalitySolver solver = new InequalitySolver(TypeLattice
                         .lattice());
@@ -270,10 +269,10 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     } else {
                         // Check if type variables are resolved to unacceptable
                         //types
-                        InequalityTerm[] lesserVariables = inequality.getLesserTerm()
-                            .getVariables();
-                        InequalityTerm[] greaterVariables = inequality.getGreaterTerm()
-                            .getVariables();
+                        InequalityTerm[] lesserVariables = inequality
+                                .getLesserTerm().getVariables();
+                        InequalityTerm[] greaterVariables = inequality
+                                .getGreaterTerm().getVariables();
                         boolean added = false;
 
                         for (int i = 0; i < lesserVariables.length; i++) {
@@ -303,7 +302,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             if (conflicts.size() > 0) {
                 throw new TypeConflictException(conflicts,
                         "Type conflicts occurred in " + topLevel.getFullName()
-                        + " on the following inequalities:");
+                                + " on the following inequalities:");
             }
         } catch (IllegalActionException ex) {
             // This should not happen. The exception means that
@@ -311,7 +310,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             // transparent actor.
             throw new InternalErrorException(topLevel, ex,
                     "Type resolution failed because of an error "
-                    + "during type inference");
+                            + "during type inference");
         }
     }
 
@@ -359,7 +358,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                         TypedIOPort sourcePort = (TypedIOPort) ports.next();
                         List destinationPorts = sourcePort.sinkPortList();
                         result.addAll(_typeConstraintsFromTo(sourcePort,
-                                              destinationPorts));
+                                destinationPorts));
                     }
                 }
 
@@ -371,7 +370,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     TypedIOPort sourcePort = (TypedIOPort) boundaryPorts.next();
                     List destinationPorts = sourcePort.insideSinkPortList();
                     result.addAll(_typeConstraintsFromTo(sourcePort,
-                                          destinationPorts));
+                            destinationPorts));
                 }
             }
 
@@ -427,7 +426,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         if (!(entity instanceof TypedActor)) {
             throw new IllegalActionException(this, entity,
                     "TypedCompositeActor can only contain entities that "
-                    + "implement the TypedActor interface.");
+                            + "implement the TypedActor interface.");
         }
 
         super._addEntity(entity);
@@ -449,12 +448,12 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the actor.
      */
-    protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+    protected void _addPort(Port port) throws IllegalActionException,
+            NameDuplicationException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
                     "TypedCompositeActor can only contain instances of "
-                    + "TypedIOPort.");
+                            + "TypedIOPort.");
         }
 
         super._addPort(port);
@@ -479,7 +478,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         if (!(relation instanceof TypedIORelation)) {
             throw new IllegalActionException(this, relation,
                     "TypedCompositeActor can only contain instances of "
-                    + "TypedIORelation.");
+                            + "TypedIORelation.");
         }
 
         super._addRelation(relation);
@@ -507,20 +506,20 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
             while (destinationPorts.hasNext()) {
                 TypedIOPort destinationPort = (TypedIOPort) destinationPorts
-                    .next();
+                        .next();
                 isUndeclared = destinationPort.getTypeTerm().isSettable();
 
                 if (!isUndeclared) {
                     // both source/destination ports are declared,
                     // check type
                     Type destDeclared = destinationPort.getType();
-                    int compare = TypeLattice.compare(srcDeclared, destDeclared);
+                    int compare = TypeLattice
+                            .compare(srcDeclared, destDeclared);
 
                     if ((compare == CPO.HIGHER)
                             || (compare == CPO.INCOMPARABLE)) {
                         Inequality inequality = new Inequality(sourcePort
-                                .getTypeTerm(),
-                                destinationPort.getTypeTerm());
+                                .getTypeTerm(), destinationPort.getTypeTerm());
                         result.add(inequality);
                     }
                 }
@@ -597,7 +596,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             TypedActor actor = (TypedActor) entities.next();
 
             if (actor instanceof TypedCompositeActor) {
-                result.addAll(((TypedCompositeActor) actor)._checkDeclaredTypes());
+                result.addAll(((TypedCompositeActor) actor)
+                        ._checkDeclaredTypes());
             }
 
             // Type check from all the ports on the contained actor.

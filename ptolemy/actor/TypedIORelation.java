@@ -1,31 +1,31 @@
 /* Relation linking TypedIOPorts.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.actor;
 
 import ptolemy.kernel.CompositeEntity;
@@ -35,33 +35,32 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypedIORelation
 
 /**
-   This class overrides some of the methods in IORelation to ensure that
-   TypedIOPorts are only connected to TypedIOPorts. I.e., Instances of
-   TypedIORelation can only be linked to instances of TypedIOPort.
-   Derived classes may further constrain this to subclasses of TypedIOPort.
-   Such derived classes should override the protected method _checkPort()
-   to throw an exception.
-   <p>
-   To link a TypedIOPort to a TypedIORelation, use the link() or
-   liberalLink() method in the TypedIOPort class.  To remove a link,
-   use the unlink() method.
-   <p>
-   The container for instances of this class can only be instances of
-   TypedCompositeActor.  Derived classes may wish to further constrain the
-   container to subclasses of TypedComponentEntity.  To do this, they should
-   override the _checkContainer() method.
+ This class overrides some of the methods in IORelation to ensure that
+ TypedIOPorts are only connected to TypedIOPorts. I.e., Instances of
+ TypedIORelation can only be linked to instances of TypedIOPort.
+ Derived classes may further constrain this to subclasses of TypedIOPort.
+ Such derived classes should override the protected method _checkPort()
+ to throw an exception.
+ <p>
+ To link a TypedIOPort to a TypedIORelation, use the link() or
+ liberalLink() method in the TypedIOPort class.  To remove a link,
+ use the unlink() method.
+ <p>
+ The container for instances of this class can only be instances of
+ TypedCompositeActor.  Derived classes may wish to further constrain the
+ container to subclasses of TypedComponentEntity.  To do this, they should
+ override the _checkContainer() method.
 
-   @author Yuhong Xiong
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (yuhong)
-   @Pt.AcceptedRating Green (liuxj)
-*/
+ @author Yuhong Xiong
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (yuhong)
+ @Pt.AcceptedRating Green (liuxj)
+ */
 public class TypedIORelation extends IORelation {
     // all the constructors are wrappers of the super class constructors.
 
@@ -118,7 +117,7 @@ public class TypedIORelation extends IORelation {
         if (!(container instanceof TypedCompositeActor) && (container != null)) {
             throw new IllegalActionException(this, container,
                     "TypedIORelation can only be contained by "
-                    + "TypedCompositeActor.");
+                            + "TypedCompositeActor.");
         }
     }
 
@@ -134,7 +133,7 @@ public class TypedIORelation extends IORelation {
                     "TypedIORelation can only link to a TypedIOPort.");
         }
     }
-    
+
     /** Throw an exception if the specified relation is not an instance
      *  of TypedIORelation.
      *  @param relation The relation to link to.
