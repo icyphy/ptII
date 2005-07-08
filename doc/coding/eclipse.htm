@@ -114,6 +114,8 @@ checked out on a platform that has a different line ending.
 	"makefile" and click on the "Change" button to
 	change the Content to "ASCII Text"
  </ol>
+</menu>
+
 
 <h2><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h2>
 
@@ -335,46 +337,10 @@ off automatic rebuild).
 <h2><a name="UsingCVS">Using CVS</a></h2>
 Resources:
 <ul>
-<li><a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_3" target="_top">The Eclipse CVS FAQ</a> 
-http://dev.eclipse.org/viewcvs/index.cgi/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html?rev=1.28
+<li><a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_3" target="_top">The Eclipse 2.0 CVS FAQ</a> 
+
 <li><a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">GSRC CVS FAQ</a></a>
 </ul>
-<h3><a name="cvs-1.11.7">Eclipse 2.1.2 does not work with cvs-1.11.7</a></h3>
-Note that Eclipse 2.1.2 does not work with cvs-1.11.7, you must
-download and install <code>cvs.jar</code.
-<p><a
-href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#server_1a">Why doesn't Eclipse 2.1.x work with CVS server versions 1.11.7 and beyond?</a> says:
-<blockquote>
-Most of the interesting Eclipse CVS functionality relies on the format
-of the messages and the change in format made in 1.11.7 breaks the
-parsing in 2.1.x.
-See bug <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=45138">45138</a>
-for more information on this issue.
-</blockquote>
-
-That bug says that a fix is to download <code>cvs.jar</code>
-<a href="https://bugs.eclipse.org/bugs/attachment.cgi?id=6491&action=view"><code>https://bugs.eclipse.org/bugs/attachment.cgi?id=6491&action=view</code></a>
-and:
-<blockquote
-This fix will most likely not make it into 2.1.2. I have attached a jar that
-can be used with 2.1.1 and 2.1.2. Place it in the
-eclipse/plugins/org.eclipse.team.cvs.core_2.1.1 directory inside your eclipse
-install. You only need this if you are using CVS server versions 1.11.7 and
-beyond. The fix is backward compatible but has not been extensively tested. Use
-at your own risk.
-</blockquote>
-<b>However</b>, under Internet Explorer, you might not be able to
-download an uncorrupted version of the jar.  Instead go to
-<a href="http://ptolemy.eecs.berkeley.edu/~cxh/eclipse"><code>http://ptolemy.eecs.berkeley.edu/~cxh/eclipse/</code></a> and right click on
-<code>cvs_jar.zip</code> and select <code>Save Target As</code>.
-<menu>
-<li><code>cvs_jar.zip</code> is a zipped version of the jar because
-IE sometimes has problems with save-as for jars
-<li>We unjar'd and rejared the file so as to avoid an error message
-<li>It is unfortunate that the jar is on the eclipse website in
-a <code>https:</code> url, because it means we cannot use lynx
-or wget.
-</menu>
 
 <h3>Debugging CVS</h3>
 <a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_0"
