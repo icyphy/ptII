@@ -47,8 +47,7 @@ include $(CONFIG)
 JDOCFLAGS = 	-author -version -public
 
 # Used to build jar files
-PTPACKAGE = 	ptolemy.kernel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTPACKAGE = 	kernel
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
@@ -57,7 +56,7 @@ PTCLASSALLJARS = \
 		undo/undo.jar \
 		util/util.jar
 
-PTCLASSALLJAR = kernel.jar
+PTCLASSALLJAR = $(PTPACKAGE)/kernel.jar
 
 JSRCS = \
 	ComponentEntity.java \
