@@ -75,18 +75,29 @@ follows:
 </ol>
 <p>
 <li>
-Ptolemy II source files are worked on by many people with different editors.
-Unfortunately, different text editors interpret tab characters differently,
-so it is best to use spaces rather than tabs. 
+
+Ptolemy II source files are worked on by many people with different
+editors.  Unfortunately, different text editors interpret tab
+characters differently, so it is best to use spaces rather than tabs.
+<br>Sadly, the Eclipse developers have chosen to use tabs
+as spaces, so you must adjust the Eclipse Java Formatter
+if you plan on contributing code to the Ptolemy II tree.
+
 <br>Also, it is best if files end with new line characters, so
 that we can run line oriented scripts on them.
-<br>We handle the tabs and trailing new lines together:
+<br>In addition, we currently do not want the Eclipse Formatter
+to format comments.  We hope to change this policy in the future.
+
+<br>We handle these changes together:
  <ol>
   <li> Select Window-&gt;Preferences in the menu.
-  <li> Expand the Java tree, select "Code Style" -&gt; "Formatter" and then 
-       Click on "Show"
-  <li> Under the "Indentation" tab, change the Tab policy to "Spaces only"
+  <li> Expand the Java tree, select "Code Style" -&gt; "Formatter"
+  <li> Under "Select a profile" select "Java Conventions" and then 
+       Click on "Show".  We use Java Conventions over the "Eclipse"
+       setting because the Eclipse style uses tabs
+  <li> Under the "Indentation" tab, verify that the Tab policy to "Spaces only"
   <li> Under the "New Lines" tab, select "at end of file"
+  <li> Under the "Comments" tab, <b>unselect</b> "Enable comment formatting"
   <li> Click OK.
 
   <li> You will be prompted to save the style with a new name, we
@@ -94,7 +105,7 @@ suggest "Ptolemy II", but you can select any name.
  </ol>
 
 <li> By default, Eclipse checks in <CODE>makefile</CODE>s,
-<CODE>*.c</CODE> files and <CODE>*.tcl</CODE> files with
+<CODE>*.c</CODE>, <CODE>*.h</CODE> files and <CODE>*.tcl</CODE> files with
 <CODE>-kb</CODE>.  This causes no end of problems when the tree is
 checked out on a platform that has a different line ending.
 
