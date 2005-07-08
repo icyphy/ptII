@@ -1805,11 +1805,6 @@ public class DEDirector extends Director implements TimedDirector {
                             // safely cast to a double.  This means that
                             // the DE domain has an upper limit on running
                             // time of Double.MAX_VALUE milliseconds.
-                            // NOTE: When synchronized to real time, time
-                            // resolution is millisecond, which is different
-                            // from the assumption that the smallest
-                            // time interval between any two events is the
-                            // minimum double value.
                             double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
 
                             if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
@@ -1826,11 +1821,12 @@ public class DEDirector extends Director implements TimedDirector {
                                 }
 
                                 try {
-                                    // FIXME: Wait() does not release the
-                                    // locks on the workspace, this blocks
+                                    // NOTE: The built-in Java wait() method
+                                	// does not release the
+                                    // locks on the workspace, which would block
                                     // UI interactions and may cause deadlocks.
                                     // SOLUTION: workspace.wait(object, long).
-                                    _eventQueue.wait(timeToWait);
+                                	_workspace.wait(_eventQueue, timeToWait);
                                 } catch (InterruptedException ex) {
                                     // Continue executing.
                                 }
