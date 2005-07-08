@@ -49,6 +49,7 @@ import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -121,7 +122,6 @@ the graph is not equivalent to a disconnected graph. This scheduler
 is somewhat conservative in this respect.
 <p>Disconnected graphs are supported if the SDF Director parameter
 <i>allowDisconnectedGraphs</i> is true.
-
 
 @see ptolemy.actor.sched.Scheduler
 @see ptolemy.domains.sdf.lib.SampleDelay
@@ -256,8 +256,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             List rateVariables) throws IllegalActionException {
         // Check for rate parameters which are dynamic.
         ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
-            .getAnalysis((SDFDirector) getContainer());
-        Entity scheduleChangeContext = (Entity) toplevel();
+            .getAnalysis(getContainer());
 
         for (Iterator entities = model.deepEntityList().iterator();
              entities.hasNext();) {
@@ -453,10 +452,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         int vectorizationFactor = 1;
 
-        if (director instanceof SDFDirector) {
-            Token token = ((SDFDirector) director).vectorizationFactor.getToken();
-            vectorizationFactor = ((IntToken) token).intValue();
-        }
+        Token token = director.vectorizationFactor.getToken();
+        vectorizationFactor = ((IntToken) token).intValue();
 
         if (vectorizationFactor < 1) {
             throw new NotSchedulableException(this,
@@ -812,7 +809,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 		} catch (KernelException e) {
 			throw new InternalErrorException(e);
 		}
-    	
     }
 
     /** Add this scheduler as a value listener to the given variable
@@ -1319,13 +1315,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
                 // Add it to the schedule numberOfFirings times.
                 Firing firing = new Firing();
-                firing.setActor((Actor) currentActor);
+                firing.setActor(currentActor);
                 firing.setIterationCount(numberOfFirings);
                 newSchedule.add(firing);
 
                 // Get all its outputPorts
                 // and simulate the proper production of tokens.
-                for (Iterator outputPorts = ((Actor) currentActor).outputPortList()
+                for (Iterator outputPorts = (currentActor).outputPortList()
                          .iterator();
                      outputPorts.hasNext();) {
                     IOPort outputPort = (IOPort) outputPorts.next();
@@ -1346,51 +1342,50 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     throw new InternalErrorException("Balance Equation "
                             + "solution does not agree with "
                             + "scheduling algorithm!");
+                }
+                if (firingsRemaining == 0) {
+                    // If we've fired this actor all the
+                    // times that it should, then
+                    // we get rid of it entirely.
+                    if (_debugging && VERBOSE) {
+                        _debug("Actor = " + currentActor
+                                + " is done firing.");
+                    }
+
+                    // Remove the actor from the unscheduledActorList
+                    // since we don't need to fire it any more.
+                    while (unscheduledActorList.remove(currentActor)) {
+                        ;
+                    }
+
+                    if (_debugging && VERBOSE) {
+                        _debug("Remaining actors:");
+
+                        for (Iterator readyActors = readyToScheduleActorList
+                                 .iterator();
+                             readyActors.hasNext();) {
+                            Entity entity = (Entity) readyActors.next();
+                            _debug(entity.getFullName());
+                        }
+                    }
                 } else {
-                    if (firingsRemaining == 0) {
-                        // If we've fired this actor all the
-                        // times that it should, then
-                        // we get rid of it entirely.
-                        if (_debugging && VERBOSE) {
-                            _debug("Actor = " + currentActor
-                                    + " is done firing.");
-                        }
+                    // Otherwise the actor still has firings left.
+                    // Count the number of unfulfilled inputs.
+                    int inputCount = _countUnfulfilledInputs(currentActor,
+                            unscheduledActorList, false);
 
-                        // Remove the actor from the unscheduledActorList
-                        // since we don't need to fire it any more.
-                        while (unscheduledActorList.remove(currentActor)) {
-                            ;
-                        }
-
-                        if (_debugging && VERBOSE) {
-                            _debug("Remaining actors:");
-
-                            for (Iterator readyActors = readyToScheduleActorList
-                                     .iterator();
-                                 readyActors.hasNext();) {
-                                Entity entity = (Entity) readyActors.next();
-                                _debug(entity.getFullName());
-                            }
-                        }
-                    } else {
-                        // Otherwise the actor still has firings left.
-                        // Count the number of unfulfilled inputs.
-                        int inputCount = _countUnfulfilledInputs(currentActor,
-                                unscheduledActorList, false);
-
-                        // We've already removed currentActor from
-                        // readyToSchedule actors, and presumably
-                        // fired it until it can be fired no more.
-                        // This check is here for robustness...
-                        // if the actor can still be scheduled
-                        // i.e. all its inputs are satisfied, and it
-                        // appears in the unscheduled actors list
-                        // then put it on the readyToScheduleActorList.
-                        if ((inputCount <= 0)
-                                && unscheduledActorList.contains(
-                                        currentActor)) {
-                            readyToScheduleActorList.addFirst(currentActor);
-                        }
+                    // We've already removed currentActor from
+                    // readyToSchedule actors, and presumably
+                    // fired it until it can be fired no more.
+                    // This check is here for robustness...
+                    // if the actor can still be scheduled
+                    // i.e. all its inputs are satisfied, and it
+                    // appears in the unscheduled actors list
+                    // then put it on the readyToScheduleActorList.
+                    if ((inputCount <= 0)
+                            && unscheduledActorList.contains(
+                                    currentActor)) {
+                        readyToScheduleActorList.addFirst(currentActor);
                     }
                 }
             }

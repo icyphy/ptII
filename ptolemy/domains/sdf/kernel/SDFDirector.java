@@ -28,7 +28,9 @@ package ptolemy.domains.sdf.kernel;
 
 import java.util.Iterator;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
@@ -37,6 +39,9 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -46,6 +51,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 
@@ -113,7 +119,30 @@ import ptolemy.kernel.util.Workspace;
    director.  This might allow the director to execute the model more efficiently,
    by combining multiple firings of each actor.  The default value of the
    vectorizationFactor parameter is an IntToken with value one.
-
+   <p>
+   The SDF director has a <i>period</i> parameter which specifies the
+   amount of model time that elapses per iteration. If the value of
+   <i>period</i> is 0.0 (the default), then it has no effect, and
+   this director never increments time nor calls fireAt() on the
+   enclosing director. If the period is greater than 0.0, then
+   if this director is at the top level, it increments
+   time by this amount in each invocation of postfire().
+   If it is not at the top level, then it calls
+   fireAt(currentTime + period) in postfire().
+   <p>
+   This behavior gives an interesting use of SDF within DE:
+   You can "kick start" an SDF submodel with a single
+   event, and then if the director of that SDF submodel
+   has a period greater than 0.0, then it will continue to fire
+   periodically with the specified period.
+   <p>
+   If <i>period</i> is greater than 0.0 and the parameter
+   <i>synchronizeToRealTime</i> is set to <code>true</code>,
+   then the prefire() method stalls until the real time elapsed
+   since the model started matches the period multiplied by
+   the iteration count.
+   This ensures that the director does not get ahead of real time. However,
+   of course, this does not ensure that the director keeps up with real time.
 
    @see ptolemy.domains.sdf.kernel.SDFScheduler
    @see ptolemy.domains.sdf.kernel.SDFReceiver
@@ -226,6 +255,30 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
+    
+    /** The time period of each iteration.  This parameter has type double
+     *  and default value 0.0, which means that this director does not
+     *  increment model time and does not request firings by calling
+     *  fireAt() on any enclosing director.  If the value is set to
+     *  something greater than 0.0, then if this director is at the
+     *  top level, it will increment model time by the specified
+     *  amount in its postfire() method. If it is not at the top
+     *  level, then it will call fireAt() on the enclosing executive
+     *  director with the argument being the current time plus the
+     *  specified period.
+     */
+    public Parameter period;
+    
+    /** Specify whether the execution should synchronize to the
+     *  real time. This parameter has type boolean and defaults
+     *  to false. If set to true, then this director stalls in the
+     *  prefire() method until the elapsed real real time matches
+     *  the product of the <i>period</i> parameter value and the
+     *  iteration count. If the <i>period</i> parameter has value
+     *  0.0 (the default), then changing this parameter to true
+     *  has no effect.
+     */
+    public Parameter synchronizeToRealTime;
 
     /** A Parameter representing the requested vectorization factor.
      *  The director will attempt to construct a schedule where each
@@ -305,6 +358,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 }
             }
         }
+        _realStartTime = System.currentTimeMillis();
     }
 
     /** Return a new receiver consistent with the SDF domain.
@@ -326,6 +380,44 @@ public class SDFDirector extends StaticSchedulingDirector {
     public boolean prefire() throws IllegalActionException {
         // Set current time based on the enclosing model.
         super.prefire();
+        
+        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        boolean synchronizeValue = ((BooleanToken)synchronizeToRealTime.getToken()).booleanValue();
+        if (periodValue > 0.0 && synchronizeValue) {
+        	synchronized(this) {
+        		while (true) {
+        			long elapsedTime = System.currentTimeMillis() - _realStartTime;
+        			
+        			// NOTE: We assume that the elapsed time can be
+        			// safely cast to a double.  This means that
+        			// the SDF domain has an upper limit on running
+        			// time of Double.MAX_VALUE milliseconds.
+        			double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+        			double currentTime = getModelTime().getDoubleValue();
+        			
+        			if (currentTime <= elapsedTimeInSeconds) {
+        				break;
+        			}
+        			
+        			long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
+        			if (_debugging) {
+        				_debug("Waiting for real time to pass: "
+        						+ timeToWait);
+        			}
+        			
+        			try {
+        				// NOTE: The built-in Java wait() method
+        				// does not release the
+        				// locks on the workspace, which would block
+        				// UI interactions and may cause deadlocks.
+        				// SOLUTION: workspace.wait(object, long).
+        				_workspace.wait(this, timeToWait);
+        			} catch (InterruptedException ex) {
+        				// Continue executing.
+        			}
+        		}
+        	}
+        }
 
         TypedCompositeActor container = ((TypedCompositeActor) getContainer());
         Iterator inputPorts = container.inputPortList().iterator();
@@ -406,12 +498,15 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     /** Return false if the system has finished executing, either by
      *  reaching the iteration limit, or having an actor in the system return
-     *  false in postfire.
-     *  Increment the number of iterations.
+     *  false in postfire.  Increment the number of iterations.
      *  If the "iterations" parameter is greater than zero, then
      *  see if the limit has been reached.  If so, return false.
      *  Otherwise return true if all of the fired actors since the last
      *  call to prefire returned true.
+     *  If the <i>period</i> parameter is greater than 0.0, then
+     *  if this director is at the top level, then increment time
+     *  by the specified period, and otherwise request a refiring
+     *  at the current time plus the period.
      *  @return True if the Director wants to be fired again in the
      *  future.
      *  @exception IllegalActionException If the iterations parameter
@@ -424,6 +519,20 @@ public class SDFDirector extends StaticSchedulingDirector {
         if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
             _iterationCount = 0;
             return false;
+        }
+        
+        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        if (periodValue > 0.0) {
+        	Actor container = (Actor) getContainer();
+        	Director executiveDirector = container.getExecutiveDirector();
+        	Time currentTime = getModelTime();
+        	if (executiveDirector != null) {
+        		// Not at the top level.
+        		executiveDirector.fireAt(container, currentTime.add(periodValue));
+        	} else {
+        		// At the top level.
+        		setModelTime(currentTime.add(periodValue));
+        	}
         }
 
         return super.postfire();
@@ -585,17 +694,6 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     private void _init()
             throws IllegalActionException, NameDuplicationException {
-        allowDisconnectedGraphs = new Parameter(this, "allowDisconnectedGraphs");
-        allowDisconnectedGraphs.setTypeEquals(BaseType.BOOLEAN);
-        allowDisconnectedGraphs.setExpression("false");
-
-        allowRateChanges = new Parameter(this, "allowRateChanges");
-        allowRateChanges.setTypeEquals(BaseType.BOOLEAN);
-        allowRateChanges.setExpression("false");
-        
-		constrainBufferSizes = new Parameter(this, "constrainBufferSizes");
-		constrainBufferSizes.setTypeEquals(BaseType.BOOLEAN);
-		constrainBufferSizes.setExpression("true");
 
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
@@ -605,6 +703,29 @@ public class SDFDirector extends StaticSchedulingDirector {
         vectorizationFactor.setTypeEquals(BaseType.INT);
         vectorizationFactor.setExpression("1");
 
+        allowDisconnectedGraphs = new Parameter(this, "allowDisconnectedGraphs");
+        allowDisconnectedGraphs.setTypeEquals(BaseType.BOOLEAN);
+        allowDisconnectedGraphs.setExpression("false");
+
+        allowRateChanges = new Parameter(this, "allowRateChanges");
+        allowRateChanges.setTypeEquals(BaseType.BOOLEAN);
+        allowRateChanges.setExpression("false");
+        
+        constrainBufferSizes = new Parameter(this, "constrainBufferSizes");
+        constrainBufferSizes.setTypeEquals(BaseType.BOOLEAN);
+        constrainBufferSizes.setExpression("true");
+
+        period = new Parameter(this, "period", new DoubleToken(1.0));
+        period.setTypeEquals(BaseType.DOUBLE);
+        period.setExpression("0.0");
+        
+        synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
+        synchronizeToRealTime.setExpression("false");
+        synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
+
+        timeResolution.setVisibility(Settable.FULL);
+        timeResolution.moveToLast();
+
         SDFScheduler scheduler = new SDFScheduler(this, uniqueName("Scheduler"));
         scheduler.constrainBufferSizes.setExpression("constrainBufferSizes");
         setScheduler(scheduler);
@@ -612,5 +733,10 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** The iteration count. */
     private int _iterationCount = 0;
+    
+    /** The real time at which the model begins executing. */
+    private long _realStartTime = 0L;
 }
