@@ -471,8 +471,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // and is used in the end to set final rates on external ports.
         // This map is initialized to zero.
         // FIXME: Why a TreeMap?
-        // FIXME: Why not get this via the container of the receivers?
-        // FIXME: or better yet, cache it in the receivers?
+        // Why not get this via the container of the receivers?
+        // or better yet, cache it in the receivers?
         Map externalRates = new TreeMap(new DFUtilities.NamedObjComparator());
 
         // Initialize externalRates to zero.
