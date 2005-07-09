@@ -78,8 +78,7 @@ public class SampleDelay extends CCodeGeneratorHelper {
      *  output port of the SampleDelay actor.
      *  @return The generated initialize code for the SampleDelay actor.
      *  @exception IllegalActionException If the base class throws it,
-     *   or if the "bufferSize" attribute of the relation connected to
-     *   the SampleDelay output port is not defined, or if the initial
+     *   or if the initial
      *   outputs of the SampleDelay actor is not defined.
      */
     public String generateInitializeCode() throws IllegalActionException {
