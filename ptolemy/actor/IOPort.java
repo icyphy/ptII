@@ -807,6 +807,29 @@ public class IOPort extends ComponentPort {
         return retArray;
     }
 
+    /** Return the channel number for the specified receiver.
+     *  @param receiver A receiver in this port.
+     *  @return The channel number for the receiver.
+     *  @throws IllegalActionException If the receiver is not in the port.
+     */
+    public int getChannelForReceiver(Receiver receiver) throws IllegalActionException {
+        IOPort port = receiver.getContainer();
+        // Get the channel number for the receiver.
+        Receiver[][] receivers = port.getReceivers();
+        for (int channel = 0; channel < receivers.length; channel++) {
+            if (receivers[channel] != null) {
+                for (int copy = 0; copy < receivers[channel].length; copy++) {
+                    if (receivers[channel][copy] == receiver) {
+                        return channel;
+                    }
+                }
+            }
+        }
+        throw new IllegalActionException(this,
+                "Attempt to get a channel number of receiver that"
+                + " does not belong to this port.");
+    }
+    
     /** Call the {@link #getModelTime} method and return a double
      *  representation of the model time.
      *  @param channelIndex The channel index.
