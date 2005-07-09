@@ -6,21 +6,25 @@
   <configure>
     <?moml
       <group>
-        <entity name="RealTimePlotter"
-                class="ptolemy.actor.lib.gui.RealTimePlotter"/>
-	<entity name="Sleep"
-                class="ptolemy.actor.lib.Sleep">
-         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+        <entity name="DelayStart" class="ptolemy.actor.lib.DelayStart">
+          <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="startTime">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+          </property>
+        </entity>
+        <entity name="RealTimePlotter" class="ptolemy.actor.lib.gui.RealTimePlotter"/>
+	    <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
+          <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
-        </property>
-    </entity>
-	<entity name="VariableSleep"
-                class="ptolemy.actor.lib.VariableSleep"/>
-        <entity name="WallClockTime"
-                class="ptolemy.actor.lib.WallClockTime"/>
+          </property>
+        </entity>
+	    <entity name="VariableSleep" class="ptolemy.actor.lib.VariableSleep"/>
+        <entity name="WallClockTime" class="ptolemy.actor.lib.WallClockTime"/>
       </group>
     ?>
   </configure>
