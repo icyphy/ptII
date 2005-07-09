@@ -237,37 +237,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The period of the model.  This parameter must contain a
-     *  DoubleToken.  Its default value is 1.0 .
-     *  For homogeneous hierarchical DT (i.e. DT inside DT) , the period
-     *  of the inside director cannot be set explicitly by the user.
-     *  Instead, it will have a fixed value: "outsidePeriod / repetitions ",
-     *  where 'outsidePeriod' is the period of the outside director; and
-     *  'repetitions' is the firing count of the composite actor that contains
-     *  the inside director. For heterogeneous hierarchical DT (i.e. DT inside
-     *  DE or CT), the
-     *  period parameter is used to determine how often the fireAt()
-     *  method is called to request firing from the outside director.
-     */
-    public Parameter period;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** React to a change in an attribute. For this director the only
-     *  relevant attribute is the <i>period</i> parameter.
-     *
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        // -attributeChanged-
-        // FIXME: handle period parameter mutations
-        super.attributeChanged(attribute);
-    }
 
     /** Go through the schedule and iterate every actor with calls to
      *  prefire() , fire() , and postfire().  If this director is not
@@ -417,16 +387,8 @@ public class DTDirector extends SDFDirector implements TimedDirector {
             // used as a multiplier to the actual value
         }
 
-        if (periodToken instanceof DoubleToken) {
-            double storedValue = ((DoubleToken) periodToken).doubleValue();
-            periodValue = periodValue * storedValue;
-        } else if (periodToken instanceof IntToken) {
-            double storedValue = ((IntToken) periodToken).intValue();
-            periodValue = periodValue * storedValue;
-        } else {
-            throw new IllegalActionException(
-                    "Illegal DT period parameter value");
-        }
+        double storedValue = ((DoubleToken) periodToken).doubleValue();
+        periodValue = periodValue * storedValue;
 
         if (shouldUpdatePeriod) {
             period.setToken(new DoubleToken(periodValue));
@@ -1176,15 +1138,9 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      *    - set period value
      */
     private void _init() {
-        try {
-            period = new Parameter(this, "period", new DoubleToken(1.0));
-            _reset();
-            iterations.setToken(new IntToken(0));
-            timeResolution.setVisibility(Settable.FULL);
-        } catch (Exception e) {
-            throw new InternalErrorException(
-                    "unable to initialize DT Director:\n" + e.getMessage());
-        }
+        // Change the default period.
+        period.setExpression("1.0");
+        _reset();
     }
 
     private void _reset() {
