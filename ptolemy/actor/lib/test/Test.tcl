@@ -184,7 +184,9 @@ test Test-1.5 {Export} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-10">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -192,9 +194,11 @@ test Test-1.5 {Export} {
         </property>
         <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-10">
         </property>
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
