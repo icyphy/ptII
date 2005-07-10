@@ -223,7 +223,8 @@ public class IORelation extends ComponentRelation {
      *  This method read-synchronizes on the workspace.
      *
      *  @see IOPort#getRemoteReceivers
-     *  @param except The port to exclude.
+     *  @param except The port to exclude, or null to not
+     *   exclude any ports.
      *  @return The receivers associated with this relation.
      */
     public Receiver[][] deepReceivers(IOPort except) {
@@ -334,7 +335,8 @@ public class IORelation extends ComponentRelation {
      *  linked to relations in the same relation group.
      *  This method read-synchronizes on the workspace.
      *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)
-     *  @param except The port not included in the returned Enumeration.
+     *  @param except The port not included in the returned list, or
+     *   null to not exclude any ports.
      *  @return A list of IOPort objects.
      */
     public List linkedDestinationPortList(IOPort except) {
