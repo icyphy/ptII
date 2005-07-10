@@ -35,12 +35,14 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
@@ -1805,24 +1807,33 @@ public class SDFPortInliner implements PortInliner {
         return set;
     }
 
-    // Return the value of the <i>bufferSize</i> variable in the given
-    // relation.
-    private static int _getBufferSize(Relation relation) {
-        int bufferSize;
-
-        try {
-            Variable bufferSizeVariable = (Variable) relation
-                    .getAttribute("bufferSize");
-            bufferSize = ((IntToken) bufferSizeVariable.getToken()).intValue();
-        } catch (Exception ex) {
-            // hack for HS
-            System.out.println("No BufferSize parameter for " + relation
-                    + "...  Assuming 1.");
-
-            // continue;
-            bufferSize = 1;
+    // Return the maximum of all the buffer sizes of receivers
+    // connected to the specified relation.
+    private static int _getBufferSize(TypedIORelation relation) {
+        int bufferSize = 1;
+        Receiver[][] receivers = relation.deepReceivers(null);
+        for (int channel = 0; channel < receivers.length; channel++) {
+            if (receivers[channel] != null) {
+                for (int copy = 0; copy < receivers[channel].length; copy++) {
+                    if (receivers[channel][copy] instanceof SDFReceiver) {
+                        int oneBufferSize = ((SDFReceiver)receivers[channel][copy]).getCapacity();
+                        if (oneBufferSize == SDFReceiver.INFINITE_CAPACITY) {
+                            System.out.println(
+                                    "Warning: Buffer with infinite capacity in channel "
+                                    + channel
+                                    + " copy "
+                                    + copy
+                                    + " of port "
+                                    + receivers[channel][copy].getContainer().getFullName()
+                                    + "...  Assuming 1.");
+                            
+                        } else if (oneBufferSize > bufferSize) {
+                            bufferSize = oneBufferSize;
+                        }
+                    }
+                }
+            }
         }
-
         return bufferSize;
     }
 
