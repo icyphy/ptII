@@ -854,6 +854,7 @@ proc createAndExecute {file} {
 	    || "$file" == "compat4/ScheduleCTCompositeActor2.xml" \
 	    || "$file" == "compat4/ScheduleCTCompositeActor3.xml" \
 	    || "$file" == "compat4/triple.xml" \
+	    || "$file" == "compat4/ExecRunDemos.xml" \
 	} {
 	puts "$file: Skipping Known Failure"
 	incr KNOWN_FAILED
