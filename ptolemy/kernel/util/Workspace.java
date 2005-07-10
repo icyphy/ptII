@@ -610,7 +610,7 @@ public final class Workspace implements Nameable, Serializable {
      *   earlier by the thread are re-acquired.
      *  @exception InternalErrorException If re-acquiring the read accesses
      *   held earlier by the thread fails.
-     *  @see wait(Object)
+     *  @see #wait(Object)
      */
     public void wait(Object obj, long timeout) throws InterruptedException {
         int depth = 0;
