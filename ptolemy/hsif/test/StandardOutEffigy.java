@@ -35,11 +35,11 @@ import java.net.URL;
 
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
-import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.ClassUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// StandardOutEffigy
@@ -133,7 +133,7 @@ public class StandardOutEffigy extends Effigy {
                     // view source on a .html file that is not in
                     // ptsupport.jar, then we may end up here,
                     // so we look for the file as a resource.
-                    URL jarURL = JNLPUtilities.jarURLEntryResource(in
+                    URL jarURL = ClassUtilities.jarURLEntryResource(in
                             .toString());
                     reader = new BufferedReader(new InputStreamReader(jarURL
                             .openStream()));

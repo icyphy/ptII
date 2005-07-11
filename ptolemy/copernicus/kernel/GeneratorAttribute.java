@@ -27,6 +27,7 @@
  */
 package ptolemy.copernicus.kernel;
 
+import ptolemy.actor.gui.JNLPUtilities;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,7 +40,6 @@ import java.util.List;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
@@ -62,6 +62,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -480,7 +481,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
         } catch (IOException ex) {
             try {
                 // We might have a JAR URL because we are inside webstart
-                modelURL = JNLPUtilities.jarURLEntryResource(modelPathOrURL);
+                modelURL = ClassUtilities.jarURLEntryResource(modelPathOrURL);
             } catch (IOException ex2) {
             }
 
@@ -521,7 +522,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
             } catch (FileNotFoundException ex) {
                 try {
                     // Might be under Web Start, try it this way.
-                    URL anotherURL = JNLPUtilities
+                    URL anotherURL = ClassUtilities
                             .jarURLEntryResource(modelPathOrURL);
 
                     if (anotherURL != null) {

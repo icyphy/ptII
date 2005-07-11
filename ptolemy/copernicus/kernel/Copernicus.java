@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -62,6 +61,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -537,7 +537,7 @@ public class Copernicus {
         } catch (IOException ex) {
             try {
                 // We might have a JAR URL because we are inside webstart
-                modelURL = JNLPUtilities.jarURLEntryResource(modelPathOrURL);
+                modelURL = ClassUtilities.jarURLEntryResource(modelPathOrURL);
             } catch (IOException ex2) {
             }
 

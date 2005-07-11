@@ -39,11 +39,11 @@ import java.net.URL;
 
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
-import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.ClassUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// EffigyFactory
@@ -227,7 +227,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
         } catch (FileNotFoundException ex) {
             // Try it as a jar URL
             try {
-                URL jarURL = JNLPUtilities.jarURLEntryResource(inputURL
+                URL jarURL = ClassUtilities.jarURLEntryResource(inputURL
                         .toString());
 
                 if (jarURL == null) {
