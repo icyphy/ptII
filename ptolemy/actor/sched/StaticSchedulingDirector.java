@@ -347,10 +347,14 @@ public class StaticSchedulingDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // The scheduler.
-    private Scheduler _scheduler;
+    ////                       protected variables                 ////
 
-    // The value that the postfire method will return;
-    private boolean _postfireReturns;
+    /** The value that the postfire method will return. */
+    protected boolean _postfireReturns;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** The scheduler. */
+    private Scheduler _scheduler;
 }
