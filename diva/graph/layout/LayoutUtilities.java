@@ -144,7 +144,7 @@ public final class LayoutUtilities {
      */
     public static final void routeVisibleEdges(Object composite,
             LayoutTarget target) {
-        for (Iterator i = GraphUtilities.localEdges(composite, target
+        for (Iterator i = GraphUtilities.totallyContainedEdges(composite, target
                 .getGraphModel()); i.hasNext();) {
             Object edge = i.next();
 

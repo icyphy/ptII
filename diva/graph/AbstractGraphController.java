@@ -475,7 +475,7 @@ public abstract class AbstractGraphController implements GraphController {
                     clearNode(i.next());
                 }
 
-                for (i = GraphUtilities.localEdges(root, _model); i.hasNext();) {
+                for (i = GraphUtilities.totallyContainedEdges(root, _model); i.hasNext();) {
                     clearEdge(i.next());
                 }
             }
