@@ -31,13 +31,14 @@
 package ptolemy.data.expr;
 
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
+import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
+import org.xml.sax.InputSource;
 //////////////////////////////////////////////////////////////////////
 //// XmlParser.java
 
@@ -69,10 +70,7 @@ public class XMLParser {
      *  @return The document for the parse tree.
      */
     public Document parser(String str) throws Exception {
-        InputStream is = (InputStream) new StringBufferInputStream(str);
-
-        //System.out.println("--- the inputStream of the XmlToken is: " + is.toString() + "\n");
-        return parser(is);
+        return _documentBuilder.parse(new InputSource(new StringReader(str)));
     }
 
     /** Generate the document tree for the specified input stream.
