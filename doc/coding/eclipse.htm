@@ -104,6 +104,18 @@ to format comments.  We hope to change this policy in the future.
 suggest "Ptolemy II", but you can select any name. 
  </ol>
 
+<li> Eclipse has very good compiler error/warning.  One of the
+warnings complains if a Serializable class does not have
+serialVersionUID declared.  Since this warning is only useful
+if you are tightly managing serialization, we turn it off:
+ <ol>
+  <li> Select Window-&gt;Preferences in the menu.
+  <li> Expand the Java tree, select "Compiler" -&gt; "Errors/Warning"
+  <li> Under "Potential programming problems", change
+  "Serializable class without serialVersionUID" to "Ignore"
+  <li> Click OK
+ </ol>
+
 <li> By default, Eclipse checks in <CODE>makefile</CODE>s,
 <CODE>*.c</CODE>, <CODE>*.h</CODE> files and <CODE>*.tcl</CODE> files with
 <CODE>-kb</CODE>.  This causes no end of problems when the tree is
