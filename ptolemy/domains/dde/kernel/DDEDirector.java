@@ -263,7 +263,8 @@ public class DDEDirector extends CompositeProcessDirector implements
         try {
             if (_debugging) {
                 _debug("fireAt " + actor + " time " + time);
-                _debug("current time was " + timeKeeper.getCurrentTime());
+                _debug("current time was " +
+                        timeKeeper.getModelTime().getDoubleValue());
             }
 
             timeKeeper.setCurrentTime(time);

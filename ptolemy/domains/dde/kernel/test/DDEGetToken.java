@@ -113,7 +113,8 @@ public class DDEGetToken extends DDEGet {
                         if (thread instanceof DDEThread) {
                             TimeKeeper timeKeeper = ((DDEThread) thread)
                                     .getTimeKeeper();
-                            _threadTimes[cnt] = timeKeeper.getCurrentTime();
+                            _threadTimes[cnt] =
+                                timeKeeper.getModelTime().getDoubleValue();
                         }
                     }
                 }

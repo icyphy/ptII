@@ -124,7 +124,7 @@ public class DDEGetNToken extends DDEGet {
 
             if (thread instanceof DDEThread) {
                 TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
-                _beforeTimes[cnt] = timeKeeper.getCurrentTime();
+                _beforeTimes[cnt] = timeKeeper.getModelTime().getDoubleValue();
 
                 Receiver[][] rcvrs = input.getReceivers();
 
@@ -140,7 +140,8 @@ public class DDEGetNToken extends DDEGet {
                             // System.out.println("#####");
                             _tokens[cnt] = rcvr.get();
 
-                            _afterTimes[cnt] = timeKeeper.getCurrentTime();
+                            _afterTimes[cnt] =
+                                timeKeeper.getModelTime().getDoubleValue();
                             cnt++;
                             j = rcvrs[i].length + 1;
                             finished = true;
