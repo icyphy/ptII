@@ -56,7 +56,7 @@ PTCLASSALLJARS = \
 		undo/undo.jar \
 		util/util.jar
 
-PTCLASSALLJAR = $(PTPACKAGE)/kernel.jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	ComponentEntity.java \
