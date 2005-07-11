@@ -320,7 +320,7 @@ public class Scheduler extends Attribute {
      *  @exception NotSchedulableException If the CompositeActor is not
      *  schedulable. Not thrown in this base class, but may be thrown
      *  by derived classes.
-     *  @see ptolemy.kernel.CompositeEntity#deepGetEntities()
+     *  @see ptolemy.kernel.CompositeEntity#deepEntityList()
      */
     protected Schedule _getSchedule() throws IllegalActionException,
             NotSchedulableException {

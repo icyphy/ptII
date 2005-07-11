@@ -334,7 +334,7 @@ public class IORelation extends ComponentRelation {
      *  could send data. Two ports are connected if they are
      *  linked to relations in the same relation group.
      *  This method read-synchronizes on the workspace.
-     *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)
+     *  @see ptolemy.kernel.Relation#linkedPortList(ptolemy.kernel.Port)
      *  @param except The port not included in the returned list, or
      *   null to not exclude any ports.
      *  @return A list of IOPort objects.

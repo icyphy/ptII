@@ -55,7 +55,7 @@ import ptolemy.util.StringUtilities;
 
  <p>Note that to display a window with an error message, this graphical
  handler must be registered by calling
- {@link ptolemy.gui.MessageHandler#setMessageHandler(MessageHandler)}.
+ {@link ptolemy.util.MessageHandler#setMessageHandler(MessageHandler)}.
  For example:
  <pre>
  GraphicalMessageHandler handler = new GraphicalMessageHandler();
