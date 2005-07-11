@@ -396,7 +396,7 @@ public class FileUtilities {
         URL url = nameToURL(name, base, classLoader);
 
         if (url == null) {
-            throw new IOException("Coul not convert \"" + name
+            throw new IOException("Could not convert \"" + name
                     + "\" with base \"" + base + "\" to a URL.");
         }
 
