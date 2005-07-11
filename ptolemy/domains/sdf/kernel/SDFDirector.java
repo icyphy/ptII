@@ -308,6 +308,23 @@ public class SDFDirector extends StaticSchedulingDirector {
         super.attributeChanged(attribute);
     }
 
+    /** Return the time value of the next iteration.
+     *  @return The time of the next iteration.
+     */
+    public Time getModelNextIterationTime() {
+        try {
+            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+            if (periodValue > 0.0) {
+                return getModelTime().add(periodValue);
+            } else {
+                return _currentTime;
+            }
+        } catch (IllegalActionException exception) {
+            // This should have been caught by now.
+            throw new InternalErrorException(exception);
+        }
+    }
+
     /** Initialize the actors associated with this director and then
      *  set the iteration count to zero.  The order in which the
      *  actors are initialized is arbitrary.  In addition, if actors
@@ -683,6 +700,12 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The iteration count. */
+    protected int _iterationCount = 0;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Initialize the object.   In this case, we give the SDFDirector a
@@ -730,9 +753,6 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The iteration count. */
-    private int _iterationCount = 0;
 
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0L;
