@@ -335,7 +335,6 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     }
 
     /** Return the time value of the next iteration.
-     *
      *  @return The time of the next iteration.
      */
     public Time getModelNextIterationTime() {
@@ -344,7 +343,8 @@ public class DTDirector extends SDFDirector implements TimedDirector {
         try {
             period = getPeriod();
         } catch (IllegalActionException exception) {
-            // FIXME: handle this
+            // This should have been caught earlier.
+            throw new InternalErrorException(exception);
         }
 
         return getModelTime().add(period);
@@ -562,9 +562,18 @@ public class DTDirector extends SDFDirector implements TimedDirector {
             return true;
         }
 
-        return super.postfire();
+        // NOTE: Cannot call super.postfire() or we increment time twice.
+        // Instead, we duplicate key functionality here.
+        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        _iterationCount++;
+
+        if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
+            _iterationCount = 0;
+            return false;
+        }
 
         // When an actor's postfire_ returns false, whole model should stop.
+        return _postfireReturns && !_stopRequested;
     }
 
     /** Check the input ports of the container composite actor (if there
