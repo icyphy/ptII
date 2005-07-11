@@ -38,9 +38,13 @@ import diva.canvas.CanvasUtilities;
  *
  * @version        $Id$
  * @author         Steve Neuendorffer
- * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */
 public class PaintedImage implements PaintedObject, ImageObserver {
+    // Note that this class was deprecated becase we were to use
+    // diva.compat.canvas instead.  However, the Ptolemy sources
+    // do not include diva.compat.canvas, so I'm making this class
+    // undeprecated. -cxh 7/05
+
     // The image that we are drawing.
     private Image _image;
 
