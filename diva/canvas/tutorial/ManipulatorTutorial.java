@@ -51,7 +51,6 @@ import diva.canvas.interactor.SelectionModel;
 import diva.canvas.toolbox.BasicEllipse;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
-import diva.canvas.toolbox.PathFigure;
 import diva.gui.BasicFrame;
 import diva.util.java2d.Polyline2D;
 
@@ -68,7 +67,7 @@ public class ManipulatorTutorial {
 
     private BasicEllipse _circle;
 
-    private PathFigure _line;
+    private BasicFigure _line;
 
     private BasicFigure _shape;
 
@@ -116,7 +115,7 @@ public class ManipulatorTutorial {
         poly.lineTo(240, 200);
         poly.lineTo(280, 220);
         poly.lineTo(240, 240);
-        _line = new PathFigure(poly);
+        _line = new BasicFigure(poly);
         layer.add(_line);
     }
 
