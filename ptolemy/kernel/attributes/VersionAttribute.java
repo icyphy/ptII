@@ -69,7 +69,7 @@ import ptolemy.kernel.util.StringAttribute;
  not implement version-strings.
 
  <p>
- @see ptolemy.kernel.util.TransientSingletonConfigurableAttribute
+ @see ptolemy.kernel.util.SingletonConfigurableAttribute
  @author Christopher Hylands
  @version $Id$
  @since Ptolemy II 2.0

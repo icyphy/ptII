@@ -52,7 +52,7 @@ import ptolemy.vergil.basic.BasicGraphController;
  <p>There is further documentation in the
  <a href="package-summary.html">package summary</a>.
 
- @see ptolemy.actor.gui.PortConfigurer
+ @see ptolemy.actor.gui.PortConfigurerDialog
 
  @author Elaine Cheong, Contributor: Christopher Brooks
  @version $Id$
