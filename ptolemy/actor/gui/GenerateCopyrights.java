@@ -122,7 +122,7 @@ public class GenerateCopyrights {
                 "ptolemy/actor/lib/x10/x10-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.copernicus.kernel.KernelMain",
-                "ptolemy/copernicus/kernel/soot-license.html");
+                "ptolemy/copernicus/kernel/soot-copyright.html");
 
         _addIfPresent(copyrightsMap,
                 "ptolemy.domains.gr.lib.quicktime.MovieViewScreen2D",
