@@ -29,10 +29,10 @@ package diva.canvas;
 import java.awt.geom.Point2D;
 
 /**
- * @deprecated This is complete unneeded. Do not use.
- *
  * This is an abstract decorator for sites.  It can be used to add or change
  * the functionality of an arbitrary site.
+ *
+ * @deprecated This is complete unneeded. Do not use.
  *
  * @version $Id$
  * @author  Steve Neuendorffer
