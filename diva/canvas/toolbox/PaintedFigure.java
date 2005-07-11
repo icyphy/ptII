@@ -51,9 +51,14 @@ import diva.util.java2d.ShapeUtilities;
  * @version        $Id$
  * @author         John Reekie
  * @author      Nick Zamora
- * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */
 public class PaintedFigure extends AbstractFigure {
+
+    // Note that this class was deprecated becase we were to use
+    // diva.compat.canvas instead.  However, the Ptolemy sources
+    // do not include diva.compat.canvas, so I'm making this class
+    // undeprecated. -cxh 7/05
+
     /** The color compositing operator
      */
     private Composite _composite = AlphaComposite.SrcOver; // opaque
