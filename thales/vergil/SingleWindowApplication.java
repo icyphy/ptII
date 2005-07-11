@@ -81,7 +81,7 @@ public class SingleWindowApplication extends VergilApplication {
      * @see ptolemy.actor.gui.MoMLApplication#_createDefaultConfiguration()
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
-        return _readConfiguration(specToURL("thales/configs/singleWindow/singleWindowConfiguration.xml"));
+        return readConfiguration(specToURL("thales/configs/singleWindow/singleWindowConfiguration.xml"));
     }
 
     /* (non-Javadoc)

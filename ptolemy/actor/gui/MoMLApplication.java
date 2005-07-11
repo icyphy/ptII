@@ -617,7 +617,7 @@ public class MoMLApplication implements ExecutionListener {
                         // tools.
                         if (!configurationName.equals("jxta")) {
                             URL specificationURL = specToURL(configurationFileName);
-                            Configuration configuration = _readConfiguration(specificationURL);
+                            Configuration configuration = readConfiguration(specificationURL);
 
                             if ((configuration != null)
                                     && (configuration.getAttribute("_doc") != null)

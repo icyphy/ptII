@@ -335,7 +335,7 @@ public class VergilApplication extends MoMLApplication {
         Configuration configuration = null;
 
         try {
-            configuration = _readConfiguration(_configurationURL);
+            configuration = readConfiguration(_configurationURL);
         } catch (Exception ex) {
             throw new Exception("Failed to read configuration '"
                     + _configurationURL + "'", ex);

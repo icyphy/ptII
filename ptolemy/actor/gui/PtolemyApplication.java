@@ -98,7 +98,7 @@ public class PtolemyApplication extends MoMLApplication {
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
         URL specificationURL = specToURL("ptolemy/configs/runPanelConfiguration.xml");
-        return _readConfiguration(specificationURL);
+        return readConfiguration(specificationURL);
     }
 
     /** Return a default Configuration to use when there are no command-line
