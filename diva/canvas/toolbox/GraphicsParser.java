@@ -50,10 +50,13 @@ import diva.util.java2d.Polyline2D;
  *
  * @version        $Id$
  * @author         John Reekie
- * @deprecated  Will be removed in Diva 0.4. Use diva.compat.canvas if
- *              needed, or diva.canvas.toolbox.VectorFigureBuilder.
  */
 public class GraphicsParser {
+    // Note that this class was deprecated becase we were to use
+    // diva.compat.canvas instead.  However, the Ptolemy sources
+    // do not include diva.compat.canvas, so I'm making this class
+    // undeprecated. -cxh 7/05
+
     /** Create a new painted object. The element is parsed from
      * two strings, the first being a representation of the element
      * type, and the second being an XML-style attribute string.
