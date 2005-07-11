@@ -446,6 +446,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
     /** Return the next iteration time obtained from the executive director.
      *  @return The next iteration time.
+     *  @deprecated As of Ptolemy II 5.1, replaced by
+     *  {@link #getModelNextIterationTime}
      */
     public double getNextIterationTime() {
         return getModelNextIterationTime().getDoubleValue();
