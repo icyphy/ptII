@@ -73,7 +73,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	Generator.xml \
-	soot-license.html
+	soot-copyright.html
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
