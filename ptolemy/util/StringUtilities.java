@@ -50,8 +50,8 @@ import java.util.StringTokenizer;
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 2.1
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (cxh)
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class StringUtilities {
     /** Instances of this class cannot be created.
