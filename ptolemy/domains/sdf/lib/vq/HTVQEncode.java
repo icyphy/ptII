@@ -178,10 +178,10 @@ public class HTVQEncode extends Transformer {
     /** The width, in pixels, of the block to encode. */
     public Parameter blockHeight;
 
-    /** The input rate */
+    /** The input rate. */
     public Parameter input_tokenConsumptionRate;
 
-    /** The output rate */
+    /** The output rate. */
     public Parameter output_tokenProductionRate;
 
     ///////////////////////////////////////////////////////////////////

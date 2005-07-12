@@ -198,6 +198,8 @@ public class VariableRecursiveLattice extends RecursiveLattice implements
      * will simply be the entity implementing this interface.  However, in
      * more complex cases, directors may implement this interface, or entities
      * may modify parameters according to a different change context (i.e. HDF)
+     * @return The change context being made explicit.
+     * @exception Not thrown in this base class.
      */
     public Entity getContext() throws IllegalActionException {
         return this;

@@ -263,6 +263,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  this object.  Note that any configuration that was previously
      *  specified using the source attribute need not be returned here.
      *  This returns a null string if there is no associated plot.
+     *  @return The text string that represent the current configuration.   
      */
     public String getConfigureText() {
         if (plot == null) {

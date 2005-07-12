@@ -156,6 +156,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
     /**
      * Return the change context being made explicit.  In this case,
      * the change context returned is this actor.
+     * @return The change context being made explicit
      */
     public Entity getContext() {
         try {

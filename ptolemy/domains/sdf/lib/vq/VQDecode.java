@@ -123,10 +123,10 @@ public class VQDecode extends Transformer {
     /** The width, in integer pixels, of the block to decode. */
     public Parameter blockHeight;
 
-    /** The input rate */
+    /** The input rate. */
     public Parameter input_tokenConsumptionRate;
 
-    /** The output rate */
+    /** The output rate. */
     public Parameter output_tokenProductionRate;
 
     ///////////////////////////////////////////////////////////////////

@@ -267,6 +267,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /**
      * Return the change context being made explicit.  This class returns
      * this.
+     * @return The change context being made explicit
      */
     public Entity getContext() {
         return this;

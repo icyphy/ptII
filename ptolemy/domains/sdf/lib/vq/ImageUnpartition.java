@@ -88,19 +88,19 @@ public class ImageUnpartition extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                      ports and parameters                 ////
 
-    /** The width of the input matrices */
+    /** The width of the input matrices. */
     public Parameter imageColumns;
 
-    /** The height of the input matrices */
+    /** The height of the input matrices. */
     public Parameter imageRows;
 
-    /** The width of the input partitions */
+    /** The width of the input partitions. */
     public Parameter partitionColumns;
 
-    /** The height of the input partitions */
+    /** The height of the input partitions. */
     public Parameter partitionRows;
 
-    /** The input rate */
+    /** The input rate. */
     public Parameter input_tokenConsumptionRate;
 
     ///////////////////////////////////////////////////////////////////

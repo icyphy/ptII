@@ -102,14 +102,34 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         return new AppletWriter(model);
     }
 
+    /** Return the default options.  The default options for
+     *  this transformer is the string 
+     *  <pre>
+     *  templateDirectory: ptolemy/copernicus/applet/
+     *  </pre>
+     *  @see #TEMPLATE_DIRECTORY_DEFAULT
+     *  @return the default options.
+     */ 
     public String getDefaultOptions() {
         return "templateDirectory:" + TEMPLATE_DIRECTORY_DEFAULT;
     }
 
+    /** Return the declared options.  The declared options for
+     *  this transformer is the string 
+     *  <pre>
+     *  targetPackage modelPath outDir templateDirectory
+     *  </pre>
+     *  @see #TEMPLATE_DIRECTORY_DEFAULT
+     *  @return the declared options.
+     */ 
     public String getDeclaredOptions() {
         return "targetPackage modelPath outDir templateDirectory";
     }
 
+    /** Return the phase name.  The phase name of 
+     *  this transformer is the empty string.
+     *  @return the phase name.
+     */ 
     public String getPhaseName() {
         return "";
     }

@@ -87,26 +87,26 @@ public class ImagePartition extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                      ports and parameters                 ////
 
-    /** The width of the input matrices */
+    /** The width of the input matrices. */
     public Parameter imageColumns;
 
-    /** The height of the input matrices */
+    /** The height of the input matrices. */
     public Parameter imageRows;
 
-    /** The width of the input partitions */
+    /** The width of the input partitions. */
     public Parameter partitionColumns;
 
-    /** The height of the input partitions */
+    /** The height of the input partitions. */
     public Parameter partitionRows;
 
-    /** The output rate */
+    /** The output rate. */
     public Parameter output_tokenProductionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
-     * Initialize this actor
+     * Initialize this actor.
      * @exception IllegalActionException If a parameter does not contain a
      * legal value, or partitionColumns does not equally divide imageColumns,
      * or partitionRows does not equally divide imageRows.

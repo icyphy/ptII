@@ -91,6 +91,12 @@ public class RelationController extends ParameterizedNodeController {
      *  looks like a black diamond.
      */
     public class RelationRenderer implements NodeRenderer {
+
+        /**
+         * Render a visual representation of the given node.
+         * @param node The node to render.
+         * @return The persisten object that is drawn on the screen.
+         */  
         public Figure render(Object n) {
             double h = 12.0;
             double w = 12.0;
