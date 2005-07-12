@@ -74,7 +74,8 @@ public class LineWriter extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        ptolemy.actor.lib.io.LineWriter actor = (ptolemy.actor.lib.io.LineWriter) getComponent();
+        ptolemy.actor.lib.io.LineWriter actor = 
+            (ptolemy.actor.lib.io.LineWriter) getComponent();
         CodeStream tmpStream = new CodeStream(this);
 
         //tmpStream.appendCodeBlock("initBlock");

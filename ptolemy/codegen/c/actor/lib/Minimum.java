@@ -68,7 +68,8 @@ public class Minimum extends CCodeGeneratorHelper {
     }
 
     /** Generate initialization code.
-     *  This method reads the <code>initMin</code>, <code>initChannelNum</code> from Minimum.c,
+     *  This method reads the <code>initMin</code>, 
+     *  <code>initChannelNum</code> from Minimum.c,
      *  replaces macros with their values and returns the results.
      *  @return The processed code block.
      */

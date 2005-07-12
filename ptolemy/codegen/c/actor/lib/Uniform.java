@@ -64,8 +64,8 @@ public class Uniform extends CCodeGeneratorHelper {
         long seedValue;
         CodeStream tmpStream = new CodeStream(this);
 
-        if (Long.parseLong(actor.seed.getExpression()) == 0) {
-            tmpStream.append("$actorSymbol(seed) = time (NULL) + "
+        if (Long.parseLong( actor.seed.getExpression()) == 0) {
+            tmpStream.append("$actorSymbol(seed) = time (NULL) + " 
                     + actor.hashCode());
         } else {
             tmpStream.appendCodeBlock("setSeedBlock");

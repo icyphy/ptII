@@ -32,12 +32,14 @@
  */
 package ptolemy.codegen.c.actor.lib.io;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.FileUtilities;
 
 /**
  * @author Jackie
@@ -76,7 +78,8 @@ public class LineReader extends CCodeGeneratorHelper {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
 
-        ptolemy.actor.lib.io.LineReader actor = (ptolemy.actor.lib.io.LineReader) getComponent();
+        ptolemy.actor.lib.io.LineReader actor = 
+            (ptolemy.actor.lib.io.LineReader) getComponent();
 
         int skipLines = Integer.parseInt(actor.numberOfLinesToSkip
                 .getExpression());
@@ -85,22 +88,26 @@ public class LineReader extends CCodeGeneratorHelper {
         //String fileNameString = actor.fileOrURL.asFile().getCanonicalPath();
 
         String fileNameString = actor.fileOrURL.getExpression();
-        fileNameString = fileNameString.replaceFirst("file:/", "");
-        fileNameString = fileNameString.replaceAll("%20", " ");
-        actor.fileOrURL.setExpression(fileNameString);
-
+        
         if (fileNameString.equals("System.in")) {
             _fileOpen = false;
             tmpStream.append("openForStdin");
         } else {
             _fileOpen = true;
+            try {
+            	fileNameString = FileUtilities.nameToFile(actor.fileOrURL.
+                        getExpression(), null).getCanonicalPath();
+            } catch (IOException e) {
+                throw new IllegalActionException("Cannot open file: "
+                        + fileNameString);
+            }
+            
             tmpStream.appendCodeBlock("openForRead");
 
             for (int i = 0; i < skipLines; i++) {
                 tmpStream.appendCodeBlock("skipLine");
             }
         }
-
         return processCode(tmpStream.toString());
     }
 

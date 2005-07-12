@@ -59,7 +59,8 @@ public class Sequence extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
-        ptolemy.actor.lib.Sequence actor = (ptolemy.actor.lib.Sequence) getComponent();
+        ptolemy.actor.lib.Sequence actor = 
+            (ptolemy.actor.lib.Sequence) getComponent();
 
         CodeStream tmpStream = new CodeStream(this);
 

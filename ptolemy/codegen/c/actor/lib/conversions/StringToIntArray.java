@@ -44,7 +44,8 @@ public class StringToIntArray extends CCodeGeneratorHelper {
      * Constructor method for the StringToIntArray helper
      * @param actor the associated actor
      */
-    public StringToIntArray(ptolemy.actor.lib.conversions.StringToIntArray actor) {
+    public StringToIntArray(
+            ptolemy.actor.lib.conversions.StringToIntArray actor) {
         super(actor);
     }
 }

@@ -55,7 +55,8 @@ public class AudioPlayer extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code
-     * The method reads in <code>codeBlock1</code>, <code>codeBlock2</code>, <code>codeBlock3</code>, <code>codeBlock4</code> from AudioPlayer.c 
+     * The method reads in <code>codeBlock1</code>, <code>codeBlock2</code>, 
+     * <code>codeBlock3</code>, <code>codeBlock4</code> from AudioPlayer.c 
      * and puts into the given stream buffer
      * @param stream the given buffer to append the code to
      */
