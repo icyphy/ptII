@@ -106,8 +106,10 @@
             <input source="ptolemy/actor/lib/test.xml"/>
             <input source="ptolemy/actor/lib/security/security.xml"/>
             <input source="ptolemy/domains/wireless/wireless.xml"/>
-        <!-- x10 actors depend on the x10 library in vendor/misc/x10 -->
-            <input source="ptolemy/actor/lib/x10/x10.xml"/>
+        <!-- x10 actors depend on the x10 library in vendor/misc/x10 
+	     However, the x10 jar file is GPL'd, so we don't ship it.
+	-->
+            <!-- input source="ptolemy/actor/lib/x10/x10.xml"/ -->
             <input source="ptolemy/actor/lib/xslt/xslt.xml"/>
           </group>
         ?>
