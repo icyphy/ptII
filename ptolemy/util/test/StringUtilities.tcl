@@ -330,3 +330,15 @@ test StringUtilities-6.1 {objectToSourceFileName} {
     set messageHandler [java::new ptolemy.util.MessageHandler]
     java::call ptolemy.util.StringUtilities objectToSourceFileName $messageHandler
 } {ptolemy/util/MessageHandler.java}
+
+test StringUtilities-6.1 {objectToSourceFileName} {
+    set messageHandler [java::new ptolemy.util.MessageHandler]
+    java::call ptolemy.util.StringUtilities objectToSourceFileName $messageHandler
+} {ptolemy/util/MessageHandler.java}
+
+test StringUtilities-6.2 {objectToSourceFileName with an inner class} {
+    set innerClassTest [java::new ptolemy.util.test.InnerClassTest]
+    java::call ptolemy.util.StringUtilities objectToSourceFileName \
+	$innerClassTest
+} {ptolemy/util/test/InnerClassTest.java}
+

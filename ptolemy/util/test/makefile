@@ -46,6 +46,9 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	InnerClassTest.java
+
+JCLASS = $(JSRCS:%.java=%.class)
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
