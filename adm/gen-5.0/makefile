@@ -33,11 +33,12 @@
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
 MAJOR_VERSION = 	5.0
-MINOR_VERSION =		beta
+#MINOR_VERSION =		beta
 
-VERSION=	$(MAJOR_VERSION)-$(MINOR_VERSION)
+#VERSION=	$(MAJOR_VERSION)-$(MINOR_VERSION)
+VERSION=	$(MAJOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	5_0_beta
+WINDOWS_VERSION =	5_0
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
