@@ -52,7 +52,7 @@
         </property>
     </property>
     <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/sdf/demo/MultipleRuns/MultipleRuns.xml">
+        <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="../../../../../../ptolemy/domains/sdf/demo/MultipleRuns/MultipleRuns.xml">
         </property>
         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="10000L">
         </property>
@@ -64,7 +64,7 @@
         </property>
     </entity>
     <entity name="VisualModelReference2" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/hoc/demo/MobileFunction/MobileFunction.xml">
+        <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="../MobileFunction/MobileFunction.xml">
         </property>
         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="20000L">
         </property>
