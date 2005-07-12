@@ -39,8 +39,15 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 
 
 /**
+ * Generate C code for an actor that produces an output token on
+ * on each firing with a value that is equal to the absolute value of
+ * the input.
+ * @see ptolemy.actor.lib.AbsoluteValue
  * @author Man-Kit Leung
  * @version $Id$
+ * @since Ptolemy II 5.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  *
  */
 public class AbsoluteValue extends CCodeGeneratorHelper {
