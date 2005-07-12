@@ -117,7 +117,12 @@ public class GradientAdaptiveLattice extends Lattice {
         if (attribute == timeConstant) {
             double timeConstantValue = ((DoubleToken) timeConstant.getToken())
                     .doubleValue();
-            _oneMinusAlpha = ((timeConstantValue - 1.0) / (timeConstantValue + 1.0));
+
+            // FIXME: there is a bug in either the variable naming or the 
+            // two lines below.
+            
+            _oneMinusAlpha = 
+                ((timeConstantValue - 1.0) / (timeConstantValue + 1.0));
             _alpha = 1.0 - _oneMinusAlpha;
         }
 
