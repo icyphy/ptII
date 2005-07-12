@@ -246,8 +246,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Generate preinitialize code if there is any and attach it to the given
      *  string buffer. This method calls the generatePreinitializeCode() method
      *  of the code generator helper associated with the model director
-     *  @param code The string buffer to which the preinitialize code is
-     *   appended to.
+     *  @return The preinitialize code of the containing composite actor.
      *  @exception IllegalActionException If the helper class for the model
      *   director cannot be found.
      */
@@ -263,6 +262,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
      *  @param code The given string buffer.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
      */
     public void generateVariableDeclarations(StringBuffer code)
             throws IllegalActionException {
@@ -344,6 +345,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  generateWrapupCode() method of the code generator helper associated
      *  with the director of this container.
      *  @param code The code stream into which to generate the code.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
      */
     public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
@@ -373,6 +376,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  </pre>
      *  @param args An array of Strings, each element names a MoML file
      *  containing a model.
+     *  @exception Exception If any error occurs.
      */
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
@@ -450,6 +454,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @param container The given container.
      *  @exception IllegalActionException if the given container
      *   is not null and not an instance of CompositeEntity.
+     *  @exception NameDuplicationException if there already exists a
+     *   container with the same name.
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
@@ -468,6 +474,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
      *  @return The code generator helper.
+     *  @exception IllegalActionException if the helper class cannot be found.
      */
     protected ComponentCodeGenerator _getHelper(NamedObj component)
             throws IllegalActionException {
@@ -533,7 +540,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  Return true if the type of the port or parameter is ArrayType.
      *  This method is only called in generateVariableDeclarations() method.
      *  @param object The port or parameter.
-     *  @return True if the type the port or parameter is ArrayType
+     *  @return True if the type the port or parameter is ArrayType.
      */
     private boolean _generateType(NamedObj object, StringBuffer code) {
         String type = "";

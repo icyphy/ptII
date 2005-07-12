@@ -129,7 +129,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  code of the associated component and append the code to the given
      *  string buffer.
      *  @param stream The given string buffer.
-     *  @exception illegalActionException Subclasses may throw it.
+     *  @exception IllegalActionException Subclasses may throw it.
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
@@ -138,7 +138,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** Return an empty string. Subclasses may extend this method to
      *  generate the initialize code of the associated component and
      *  append the code to the given string buffer.
-     *  @param stream The given string buffer.
+     *  @return The initialize code of the containing composite actor.
      *  @exception IllegalActionException Subclass may throw it.
      */
     public String generateInitializeCode() throws IllegalActionException {
@@ -198,15 +198,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     /** Get the buffer size of the given port of this actor.
      *  @param port The given port.
+     *  @param channelNumber The given channel.
      *  @return The buffer size of the given port of this actor.
+     *  @exception IllegalActionException If the getBufferSize()
+     *   method of the actor helper class throws it.
      */
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
         if (port.getContainer() == _component) {
             return ((int[]) _bufferSizes.get(port))[channelNumber];
         } else {
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) port
-                    .getContainer());
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) 
+			    _getHelper((NamedObj) port.getContainer());
             return actorHelper.getBufferSize(port, channelNumber);
         }
     }
@@ -241,7 +244,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /** Return the value of the specified parameter of the associated actor.
-     *  @param parameterName The name of the parameter.
+     *  @param name The name of the parameter.
      *  @return The value as a string.
      *  @exception IllegalActionException If the parameter does not exist or
      *  does not have a value.
@@ -658,6 +661,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     /** Set the buffer size of a given port.
      *  @param port The given port.
+     *  @param channelNumber The given channel.
      *  @param bufferSize The buffer size to be set to that port.
      */
     public void setBufferSize(IOPort port, int channelNumber, int bufferSize) {
@@ -678,7 +682,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     /** Set the offset in a buffer of a given channel to which a token should
      *  be put.
-     *  @param channel The given channel.
+     *  @param port The given port.
+     *  @param channelNumber The given channel.
      *  @param offset The offset to be set to the buffer of that channel.
      */
     public void setOffset(IOPort port, int channelNumber, Object offset) {
@@ -689,6 +694,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
+    /** Get the code generator helper associated with the given component.
+     *  @param component The given component.
+     *  @return The code generator helper.
+     *  @exception IllegalActionException if the helper class cannot be found.
+     */    
     protected ComponentCodeGenerator _getHelper(NamedObj component)
             throws IllegalActionException {
         return _codeGenerator._getHelper(component);

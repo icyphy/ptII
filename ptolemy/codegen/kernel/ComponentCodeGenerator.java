@@ -50,8 +50,8 @@ public interface ComponentCodeGenerator {
 
     /** Generate into the specified code stream the code associated
      *  with initialization of the container composite actor.
-     *  @param code The code stream into which to generate the code.
      *  @exception IllegalActionException If something goes wrong.
+     *  @return The initialize code of the containing composite actor.
      */
     public String generateInitializeCode() throws IllegalActionException;
 

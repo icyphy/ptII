@@ -32,7 +32,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// ActorCodeGenerator
 
-/** FIXME
+/** FIXME: class comments needed.
  *
  *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
  *  @version $Id$
@@ -46,7 +46,7 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
 
     /** Generate into the specified code stream the code associated
      *  with one firing of the container composite actor.
-     *  @param code The code stream into which to generate the code.
+     *  @param stream The code stream into which to generate the code.
      *  @exception IllegalActionException If something goes wrong.
      */
     public void generateFireCode(StringBuffer stream)

@@ -68,6 +68,8 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
 
     /** Generate the body code that lies between variable declaration
      *  and wrapup.
+     *  @exception IllegalActionException If the generateFireCode(StringBuffer)
+     *  method throws the exceptions.
      *  @return The generated body code.
      */
     public String generateBodyCode() throws IllegalActionException {
@@ -107,6 +109,9 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *  calls the generateFireCode() method of the code generator helper
      *  associated with the director of the container.
      *  @param code The code stream into which to generate the code.
+     *  @exception IllegalActionException If a static scheduling director is
+     *   missing or the generateFireCode(StringBuffer) method of the
+     *   director helper throws the exception. 
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
@@ -136,6 +141,8 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *  @param container The given container.
      *  @exception IllegalActionException if the given container
      *   is not null and not an instance of CompositeActor.
+     *  @exception NameDuplicationException If the super class throws the
+     *   exception. 
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
@@ -152,7 +159,9 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
     ////                         protected methods                 ////
 
     /** Get the code generator helper associated with the given component.
-     *  @param component The given component.
+     *  @param actor The given component actor.
+     *  @exception IllegalActionException If the given actor is an 
+     *   implementing class for ActorCodeGenerator.
      *  @return The code generator helper.
      */
     protected ComponentCodeGenerator _getHelper(NamedObj actor)

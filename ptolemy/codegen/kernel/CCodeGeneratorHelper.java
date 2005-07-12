@@ -47,7 +47,9 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (eal)
  */
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
-    /** FIXME
+    /** 
+     * Create a new instance of the C code generator helper.
+     * @param component The actor object for this helper 
      */
     public CCodeGeneratorHelper(NamedObj component) {
         super(component);
