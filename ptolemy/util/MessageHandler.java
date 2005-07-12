@@ -70,9 +70,7 @@ public class MessageHandler {
     /** Defer to the set message handler to
      *  show the specified message and throwable information.
      *  If the throwable is an instance of CancelException, then it
-     *  is not shown.  By default, only the message of the throwable
-     *  is shown.  The stack trace information is only shown if the
-     *  user clicks on the "Display Stack Trace" button.
+     *  is not shown.
      *
      *  @param info The message.
      *  @param throwable The throwable.
@@ -140,7 +138,7 @@ public class MessageHandler {
      *  Derived classes such as ptolemy.gui.GraphicalMessageHandler
      *  might display the message graphically.
      *
-     *  <p>NOTE: If the message handler set by 
+     *  <p>NOTE: If in a derived class the message handler set by 
      *  {@link #setMessageHandler(MessageHandler)} is graphical, then
      *  this method must be called in the Swing event thread!
      *
@@ -157,7 +155,7 @@ public class MessageHandler {
      *  ptolemy.gui.GraphicalMessageHandler might display the message
      *  graphically.
      *
-     *  <p>NOTE: If the message handler set by 
+     *  <p>NOTE: If in a derived class the message handler set by 
      *  {@link #setMessageHandler(MessageHandler)} is graphical, then
      *  this method must be called in the Swing event thread!
      *  @param info The message.
@@ -172,7 +170,7 @@ public class MessageHandler {
     /** Ask the user a yes/no question, and return true if the answer
      *  is yes.
      *   
-     *  <p>NOTE: If the message handler set by 
+     *  <p>NOTE: If in a derived class the message handler set by 
      *  {@link #setMessageHandler(MessageHandler)} is graphical, then
      *  this method must be called in the Swing event thread!
      *
@@ -194,8 +192,8 @@ public class MessageHandler {
     }
 
     /** Show the specified message and throwable information.
-     *  If the throwable is an instance of CancelException, then it
-     *  is not shown.
+     *  If the throwable is an instance of CancelException, then nothing
+     *  is shown.
      *
      *  @param info The message.
      *  @param throwable The throwable.
@@ -218,11 +216,14 @@ public class MessageHandler {
         System.err.println(info);
     }
 
-    /** Show the specified message in a modal dialog.  If the user
-     *  clicks on the "Cancel" button, then throw an exception.
-     *  This gives the user the option of not continuing the
-     *  execution, something that is particularly useful if continuing
-     *  execution will result in repeated warnings.
+    /** Show the specified message.  In this base class, the message
+     *  is printed to standard error.  
+     *  <p>Derived classes might show the specified message in a modal
+     *  dialog.  If the user clicks on the "Cancel" button, then throw
+     *  an exception.  This gives the user the option of not
+     *  continuing the execution, something that is particularly
+     *  useful if continuing execution will result in repeated
+     *  warnings.
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
