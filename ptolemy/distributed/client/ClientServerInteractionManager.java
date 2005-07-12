@@ -86,7 +86,7 @@ public class ClientServerInteractionManager implements DiscoveryListener,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         prublic methods                   ////
+    ////                         public methods                    ////
 
     /** Required by DiscoveryListener interface.
      *  Called when one or more lookup service registrars has been discarded.

@@ -83,7 +83,7 @@ import ptolemy.util.StringUtilities;
  it. (Except some minor modifications in the SDFScheduler).
  <li>It achieves smaller simulation times for models with certain degree
  of parallelism, specially those were:
- cost(computaion) >>>> cost(communication).
+ cost(computation) >>>> cost(communication).
  <li>Allows for bigger models (in terms of memory consumption).
  </ul>
  <p>
