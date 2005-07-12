@@ -349,11 +349,12 @@ do
         fi
 
         # 20) Warn if the class comment has * on each line.
-        results=`egrep '^[ ]\*' $file | egrep -v ':[ ]\*/'`
-        if [ "x$results" != "x" ]; then
-                echo "$file: may have leading * on each line in the class comment"
-                echo "$results"
-        fi
+        # Commented out because Eclipse 3.1 inserts * on each line
+        #results=`egrep '^[ ]\*' $file | egrep -v ':[ ]\*/'`
+        #if [ "x$results" != "x" ]; then
+        #        echo "$file: may have leading * on each line in the class comment"
+        #        echo "$results"
+        #fi
 
         #21) Warn if printStackTrace() or fillInStackTrace() are used
         results=`egrep 'printStackTrace\(\)|fillInStackTrace\(\)' $file`
