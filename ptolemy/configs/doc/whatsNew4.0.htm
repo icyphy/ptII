@@ -170,8 +170,6 @@ Using the serial port</a>.
 SerialPort actor documentation</a>).
 
 <li>X10 power-line network
-(see <a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/X10Interface.html">
-X10Interface actor documentation</a>).
 <br>Note that the X10 jar file is under the GNU General Public License, so
 we do not ship the X10 jar file with the Windows installer.  Thus, the
 X10 actors will not work
@@ -502,38 +500,41 @@ Output a substring of the string provided at the input.
 
 </dl>
 
-<li> <b><a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/package-summary.html">ptolemy.actor.lib.x10</a></b>
-
+<li> ptolemy.actor.lib.x10
+<i>The X10 actors are not part of the Windows installer because
+the X10 jar file is GPL'd.  However the X10 actor sources are
+present in the installer.  We don't link to the javadoc
+because these actors may or may not be present</i>
 <dl>
-<dt><a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/ApplianceController.html">ApplianceController</a>:
+<dt>ApplianceController:
 <dd>(Colin Cochran (contributor: Edward A. Lee))
 An ApplianceController actor sends x10-appliance-module commands to the x10 network.
 
-<dt><a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/CommandListener.html">CommandListener</a>:
+<dt>CommandListener:
 <dd>(Colin Cochran and Edward A. Lee)
 This actor senses specified X10 commands.
 
-<dt><a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/LampController.html">LampController</a>:
+<dt>LampController:
 <dd>(Colin Cochran and Edward A. Lee)
 A LampController actor sends X10-light-module commands to the X10 network.
 
-<dt><a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/LevelListener.html">LevelListener</a>:
+<dt>LevelListener:
 <dd>(Colin Cochran and Edward A. Lee)
 This actor senses specified X10 commands.
 
-<dt><a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/Listener.html">Listener</a>:
+<dt>Listener:
 <dd>(Colin Cochran (contributor: Edward A. Lee))
 Output X10 commands detected on the X10 network.
 
-<dt><a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/Receiver.html">Receiver</a>:
+<dt>Receiver:
 <dd>(Colin Cochran and Edward A. Lee)
 Receive x10 commands propagating through an x10 network.
 
-<dt><a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/Sender.html">Sender</a>:
+<dt>Sender:
 <dd>(Colin Cochran (contributor: Edward A. Lee))
 Send commands to an x10 network.
 
-<dt><a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/X10Interface.html">X10Interface</a>:
+<dt>X10Interface:
 <dd>(Colin Cochran and Edward A. Lee)
 This class creates an x10 inteface device which can send and receive 
 10 commands to and from an x10 network.
