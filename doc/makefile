@@ -305,6 +305,16 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.caltrop.actors \
 			ptolemy.caltrop.ddi \
 			ptolemy.caltrop.util \
+			ptolemy.codegen.c.actor.lib \
+			ptolemy.codegen.c.actor.lib.conversions \
+			ptolemy.codegen.c.actor.lib.gui \
+			ptolemy.codegen.c.actor.lib.io \
+			ptolemy.codegen.c.actor.lib.javasound \
+			ptolemy.codegen.c.domains.giotto.kernel \
+			ptolemy.codegen.c.domains.sdf.kernel \
+			ptolemy.codegen.c.domains.sdf.lib \
+			ptolemy.codegen.gui \
+			ptolemy.codegen.kernel \
 			ptolemy.domains.ci.kernel \
 			ptolemy.domains.ci.lib \
 			ptolemy.domains.dde.kernel \
