@@ -554,7 +554,7 @@ public class StringUtilities {
                 }
             }
 
-            results.append(token.substring(i));
+            results.append(token.substring(mark));
         }
 
         return results.toString();
