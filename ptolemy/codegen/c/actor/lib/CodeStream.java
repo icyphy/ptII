@@ -131,8 +131,10 @@ public class CodeStream {
                                 + _filePath);
             }
             // We need to do some substitution
+            String replaceString = argument.toString();
             codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
-                    "parameter", argument.toString()));
+                    "parameter", replaceString));
+            
         } else if (argument != null) {
             throw new IllegalActionException("Incorrect number of arguments: "
                     + blockName + " in " + _filePath);
