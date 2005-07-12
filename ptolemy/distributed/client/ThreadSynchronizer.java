@@ -78,7 +78,7 @@ public class ThreadSynchronizer {
     }
 
     /** Synchronizes access to the commands by the ClientThreads. They will
-     *  block waiting for commands to be issued. Everytime a command is
+     *  block waiting for commands to be issued. Every time a command is
      *  fetched, it is removed from the commandsMap and all the waiting
      *  threads are notified.
      *

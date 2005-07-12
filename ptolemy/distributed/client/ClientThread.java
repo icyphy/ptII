@@ -56,7 +56,7 @@ public class ClientThread extends Thread {
      *  service.
      *
      *  @param synchr A ThreadSynchronizer.
-     *  @param serv The service correponding to the remote service that the
+     *  @param serv The service corresponding to the remote service that the
      *  Client Thread represents.
      */
     public ClientThread(ThreadSynchronizer synchr, ServiceItem serv) {

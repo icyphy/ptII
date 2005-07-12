@@ -75,7 +75,7 @@ import ptolemy.kernel.util.KernelException;
 public class ClientServerInteractionManager implements DiscoveryListener,
         ServiceDiscoveryListener {
 
-    /** Construct a ClientServerInteractionManager inializing it with a given
+    /** Construct a ClientServerInteractionManager initializing it with a given
      *  VERBOSE option.
      *
      *  @param verbose If true, flag messages will be printed in the standard
