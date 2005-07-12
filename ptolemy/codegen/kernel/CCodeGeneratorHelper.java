@@ -35,8 +35,8 @@ import ptolemy.kernel.util.NamedObj;
 //// CCodeGeneratorHelper
 
 /**
- Base class for C code generator helper. It overrides the 
- generateFireCode(), generateInitializeCode(), generatePreinitializeCode(), 
+ Base class for C code generator helper. It overrides the
+ generateFireCode(), generateInitializeCode(), generatePreinitializeCode(),
  and generateWrapupCode() methods by appending a corresponding code block.
  Subclasses may override these methods if they have to do fancier things.
 
@@ -67,9 +67,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         stream.append(processCode(tmpStream.toString()));
     }
 
-    /** 
+    /**
      * Generate initialization code.
-     * This method reads the <code>setSeedBlock</code> from helperName.c, 
+     * This method reads the <code>setSeedBlock</code> from helperName.c,
      * replaces macros with their values and returns the results.
      * @exception IllegalActionException If the code stream encounters an
      * error in processing the specified code block.
@@ -83,7 +83,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     }
 
     /** Generate preinitialization code.
-     *  This method reads the <code>preinitBlock</code> from helperName.c, 
+     *  This method reads the <code>preinitBlock</code> from helperName.c,
      *  replaces macros with their values and returns the results.
      * @exception IllegalActionException If the code stream encounters an
      * error in processing the specified code block.
@@ -97,8 +97,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     }
 
     /** Generate wrap up code.
-     *  This method reads the <code>wrapupBlock</code> from helperName.c, 
-     *  replaces macros with their values and put the processed code block 
+     *  This method reads the <code>wrapupBlock</code> from helperName.c,
+     *  replaces macros with their values and put the processed code block
      *  into the given stream buffer.
      * @param stream the given buffer to append the code to
      * @exception IllegalActionException If the code stream encounters an
