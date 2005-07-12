@@ -26,18 +26,19 @@
 
 
  */
-/*
- * Created on Feb 21, 2005
- *
- */
+
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 
 /**
+ * A helper class for ptolemy.actor.lib.Const
+ * 
  * @author Man-Kit Leung
  * @version $Id$
- *
+ * @since Ptolemy II 5.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class Const extends CCodeGeneratorHelper {
     /**

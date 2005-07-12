@@ -25,10 +25,7 @@
 
 
  */
-/*
- * Created on Apr 23, 2005
- *
- */
+
 package ptolemy.codegen.c.actor.lib.javasound;
 
 import java.util.HashSet;
@@ -39,9 +36,13 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
+ * A helper class for ptolemy.actor.lib.javasound.AudioReader
+ * 
  * @author Man-Kit Leung
  * @version $Id$
- *
+ * @since Ptolemy II 5.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class AudioReader extends CCodeGeneratorHelper {
 

@@ -26,18 +26,20 @@
 
 
  */
-/*
- * Created on Apr 23, 2005
- *
- */
+
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
+ * A helper class for ptolemy.actor.lib.Maximum
+ * 
  * @author Man-Kit Leung
  * @version $Id$
+ * @since Ptolemy II 5.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class Maximum extends CCodeGeneratorHelper {
     /**

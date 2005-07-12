@@ -26,17 +26,19 @@
 
 
  */
-/*
- * Created on Apr 23, 2005
- *
- */
+
 package ptolemy.codegen.c.actor.lib.conversions;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 
 /**
+ * A helper class for ptolemy.actor.lib.conversions.StringToIntArray
+ * 
  * @author Man-Kit Leung
  * @version $Id$
+ * @since Ptolemy II 5.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class StringToIntArray extends CCodeGeneratorHelper {
 

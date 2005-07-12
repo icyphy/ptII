@@ -38,8 +38,13 @@ import java.util.Set;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 
 /**
+ * A helper class for ptolemy.actor.lib.conversions.CartesianToPolar
+ * 
  * @author Jackie
  * @version $Id$
+ * @since Ptolemy II 5.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class CartesianToPolar extends CCodeGeneratorHelper {
     /**

@@ -23,13 +23,8 @@
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
-
-
  */
-/*
- * Created on 2005¦~4¤ë19¤é
- *
- */
+
 package ptolemy.codegen.c.actor.lib.conversions;
 
 import java.util.HashSet;
@@ -38,8 +33,13 @@ import java.util.Set;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 
 /**
+ * A helper class for ptolemy.actor.lib.conversions.PolarToCartesian
+ * 
  * @author Jackie
  * @version $Id$
+ * @since Ptolemy II 5.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class PolarToCartesian extends CCodeGeneratorHelper {
     /**

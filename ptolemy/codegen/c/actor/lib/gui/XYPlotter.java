@@ -26,10 +26,7 @@
 
 
  */
-/*
- * Created on Apr 5, 2005
- *
- */
+
 package ptolemy.codegen.c.actor.lib.gui;
 
 import java.util.HashSet;
@@ -40,9 +37,13 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
+ * A helper class for ptolemy.actor.lib.gui.XYPlotter
+ * 
  * @author Jackie
- *
  * @version $Id$
+ * @since Ptolemy II 5.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class XYPlotter extends CCodeGeneratorHelper {
     /**

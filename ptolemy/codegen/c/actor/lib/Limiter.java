@@ -26,20 +26,19 @@
 
 
  */
-/*
- * Created on Feb 21, 2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
+
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 
 /**
+ * A helper class for ptolemy.actor.lib.Limiter
+ * 
  * @author Man-Kit Leung
  * @version $Id$
- * 
+ * @since Ptolemy II 5.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 
 public class Limiter extends CCodeGeneratorHelper {

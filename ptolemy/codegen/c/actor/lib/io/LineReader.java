@@ -26,10 +26,7 @@
 
 
  */
-/*
- * Created on Apr 11, 2005
- *
- */
+
 package ptolemy.codegen.c.actor.lib.io;
 
 import java.io.IOException;
@@ -42,8 +39,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
 /**
+ * A helper class for ptolemy.actor.lib.io.LineReader
+ * 
  * @author Jackie
  * @version $Id$
+ * @since Ptolemy II 5.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class LineReader extends CCodeGeneratorHelper {
     /**

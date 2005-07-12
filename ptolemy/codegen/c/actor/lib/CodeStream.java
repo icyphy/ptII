@@ -26,10 +26,7 @@
 
 
  */
-/*
- * Created on Feb 22, 2005
- *
- */
+
 package ptolemy.codegen.c.actor.lib;
 
 import java.io.BufferedReader;
@@ -43,9 +40,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
 /**
+ * A utility class that reads code blocks from the helper .c file
+ * 
  * @author Jackie
  * @version $Id$
- *
+ * @since Ptolemy II 5.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class CodeStream {
 

@@ -26,10 +26,7 @@
 
 
  */
-/*
- * Created on Apr 5, 2005
- *
- */
+
 package ptolemy.codegen.c.actor.lib.io;
 
 import java.util.HashSet;
@@ -41,8 +38,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
 /**
+ * A helper class for ptolemy.actor.lib.io.LineWriter
+ * 
  * @author Jackie
  * @version $Id$
+ * @since Ptolemy II 5.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 public class LineWriter extends CCodeGeneratorHelper {
     /**
