@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Settable;
  * Base class for code generator helper.
  *
  * @author Ye Zhou, Edward A. Lee, Contributors: Gang Zhou, Christopher Brooks
- * @version $Id:
+ * @version $Id$
  *  CodeGeneratorHelper.java,v 1.62 2005/07/12 19:29:15 mankit Exp $
  * @since Ptolemy II 5.0
  * @Pt.ProposedRating Red (eal)

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NamedObj;
 /** Base class for code generators for static scheduling models of computation.
  *
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributor: Christopher Brooks
- *  @version $Id:
+ *  @version $Id$
  *   StaticSchedulingCodeGenerator.java,v 1.25 2005/07/12 19:29:15 mankit Exp $
  *  @since Ptolemy II 5.0
  *  @Pt.ProposedRating Red (eal)
