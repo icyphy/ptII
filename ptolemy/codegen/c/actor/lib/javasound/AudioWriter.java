@@ -37,7 +37,7 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A helper class for ptolemy.actor.lib.javasound.AudioWriter
+ * A helper class for ptolemy.actor.lib.javasound.AudioWriter.
  * 
  * @author Man-Kit Leung
  * @version $Id$
@@ -48,18 +48,18 @@ import ptolemy.kernel.util.IllegalActionException;
 public class AudioWriter extends CCodeGeneratorHelper {
 
     /**
-     * Constructor method for the AudioWriter helper
-     * @param actor the associated actor
+     * Constructor method for the AudioWriter helper.
+     * @param actor the associated actor.
      */
     public AudioWriter(ptolemy.actor.lib.javasound.AudioWriter actor) {
         super(actor);
     }
 
     /**
-     * Generate fire code
+     * Generate fire code.
      * The method reads in <code>writeSoundFile</code> from AudioWriter.c 
-     * and puts into the given stream buffer
-     * @param stream the given buffer to append the code to
+     * and puts into the given stream buffer.
+     * @param stream the given buffer to append the code to.
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {

@@ -37,7 +37,7 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A helper class for ptolemy.actor.lib.gui.XYPlotter
+ * A helper class for ptolemy.actor.lib.gui.XYPlotter.
  * 
  * @author Jackie
  * @version $Id$
@@ -47,18 +47,18 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class XYPlotter extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the XYPlotter helper
-     * @param actor the associated actor
+     * Constructor method for the XYPlotter helper.
+     * @param actor the associated actor.
      */
     public XYPlotter(ptolemy.actor.lib.gui.XYPlotter actor) {
         super(actor);
     }
 
     /**
-     * Generate fire code
+     * Generate fire code.
      * The method reads in <code>writeFile</code> from XYPlotter.c 
-     * and puts into the given stream buffer
-     * @param stream the given buffer to append the code to
+     * and puts into the given stream buffer.
+     * @param stream the given buffer to append the code to.
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
@@ -66,6 +66,21 @@ public class XYPlotter extends CCodeGeneratorHelper {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("writeFile");
         stream.append(processCode(tmpStream.toString()));
+    }
+
+    /**
+     * Generate initialization code.
+     * This method reads the <code>setSeedBlock</code> from helperName.c,
+     * replaces macros with their values and returns the results.
+     * @exception IllegalActionException If the code stream encounters an
+     * error in processing the specified code block.
+     * @return The processed code block.
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        super.generateInitializeCode();
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("initBlock");
+        return processCode(tmpStream.toString());
     }
 
     /** Generate preinitialization code.

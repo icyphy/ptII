@@ -36,7 +36,7 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A helper class for ptolemy.actor.lib.Gaussian
+ * A helper class for ptolemy.actor.lib.Gaussian.
  * 
  * @author Man-Kit Leung
  * @version $Id$
@@ -47,13 +47,26 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Gaussian extends CCodeGeneratorHelper {
 
     /**
-     * Constructor method for the Gaussian helper
+     * Constructor method for the Gaussian helper.
      * @param actor the associated actor
      */
     public Gaussian(ptolemy.actor.lib.Gaussian actor) {
         super(actor);
     }
-
+    /**
+     * Generate fire code.
+     * The method reads in fireBlock and puts into the given stream buffer.
+     * @param stream the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block.
+     */
+    public void generateFireCode(StringBuffer stream)
+            throws IllegalActionException {
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("fireBlock");
+        stream.append(processCode(tmpStream.toString()));
+    }
+    
     /** Generate initialization code.
      *  This method reads the <code>setSeedBlock</code> from Gaussian.c,
      *  replaces macros with their values and returns the results.
@@ -74,6 +87,35 @@ public class Gaussian extends CCodeGeneratorHelper {
         }
         return processCode(tmpStream.toString());
     }
+    /**
+     * Generate preinitialization code.
+     * This method reads the <code>preinitBlock</code> from helperName.c,
+     * replaces macros with their values and returns the results.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block.
+     * @return The processed <code>preinitBlock</code>.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        super.generatePreinitializeCode();
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("preinitBlock");
+        return processCode(tmpStream.toString());
+    }
+
+    /** Generate wrap up code.
+     *  This method reads the <code>wrapupBlock</code> from helperName.c,
+     *  replaces macros with their values and put the processed code block
+     *  into the given stream buffer.
+     * @param stream the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block.
+     */
+    public void generateWrapupCode(StringBuffer stream)
+            throws IllegalActionException {
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("wrapupBlock");
+        stream.append(processCode(tmpStream.toString()));
+    }
 
     /** Get the files needed by the code generated for the
      *  Gaussian actor.
@@ -88,3 +130,4 @@ public class Gaussian extends CCodeGeneratorHelper {
         return files;
     }
 }
+

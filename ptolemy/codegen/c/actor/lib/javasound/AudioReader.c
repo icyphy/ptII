@@ -9,8 +9,8 @@
     int $actorSymbol(i);
 /**/
 
-/*** initBlock ***/
-    if (!($actorSymbol(filePtr) = fopen ($ref(fileOrURL),"r"))) {
+/*** initBlock(<arg>) ***/
+    if (!($actorSymbol(filePtr) = fopen ("<arg>","r"))) {
         fprintf(stderr,"ERROR: cannot open file for AudioReader actor.\n");
         exit(1);
     }

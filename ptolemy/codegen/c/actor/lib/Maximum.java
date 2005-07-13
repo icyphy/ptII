@@ -33,7 +33,7 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A helper class for ptolemy.actor.lib.Maximum
+ * A helper class for ptolemy.actor.lib.Maximum.
  * 
  * @author Man-Kit Leung
  * @version $Id$
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class Maximum extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Maximum helper
+     * Constructor method for the Maximum helper.
      * @param actor the associated actor
      */
     public Maximum(ptolemy.actor.lib.Maximum actor) {
@@ -55,7 +55,7 @@ public class Maximum extends CCodeGeneratorHelper {
      * The method passes the port width as an argument, reads in 
      * <code>fireBlock</code> from Maximum.c and puts into the given 
      * stream buffer.
-     * @param stream the given buffer to append the code to
+     * @param stream the given buffer to append the code to.
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
@@ -87,5 +87,35 @@ public class Maximum extends CCodeGeneratorHelper {
         tmpStream.appendCodeBlock("initChannelNum");
 
         return processCode(tmpStream.toString());
+    }
+
+    /**
+     * Generate preinitialization code.
+     * This method reads the <code>preinitBlock</code> from helperName.c,
+     * replaces macros with their values and returns the results.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block.
+     * @return The processed <code>preinitBlock</code>.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        super.generatePreinitializeCode();
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("preinitBlock");
+        return processCode(tmpStream.toString());
+    }
+
+    /** Generate wrap up code.
+     *  This method reads the <code>wrapupBlock</code> from helperName.c,
+     *  replaces macros with their values and put the processed code block
+     *  into the given stream buffer.
+     * @param stream the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block.
+     */
+    public void generateWrapupCode(StringBuffer stream)
+            throws IllegalActionException {
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("wrapupBlock");
+        stream.append(processCode(tmpStream.toString()));
     }
 }

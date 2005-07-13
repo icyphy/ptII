@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
 /**
- * A helper class for ptolemy.actor.lib.io.LineReader
+ * A helper class for ptolemy.actor.lib.io.LineReader.
  * 
  * @author Jackie
  * @version $Id$
@@ -49,17 +49,17 @@ import ptolemy.util.FileUtilities;
  */
 public class LineReader extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the LineReader helper
-     * @param actor the associated actor
+     * Constructor method for the LineReader helper.
+     * @param actor the associated actor.
      */
     public LineReader(ptolemy.actor.lib.io.LineReader actor) {
         super(actor);
     }
 
     /**
-     * Generate fire code
+     * Generate fire code.
      * The method reads in codeBlock1 and puts into the
-     * given stream buffer
+     * given stream buffer.
      * @param stream the given buffer to append the code to
      */
     public void generateFireCode(StringBuffer stream)
@@ -70,7 +70,7 @@ public class LineReader extends CCodeGeneratorHelper {
     }
 
     /** Generate initialization code.
-     *  This method reads the <code>initBlock</code> from Test.c,
+     *  This method reads the <code>initBlock</code> from LineReader.c,
      *  replaces macros with their values and returns the results.
      *  @return The processed <code>initBlock</code>.
      */
@@ -87,8 +87,6 @@ public class LineReader extends CCodeGeneratorHelper {
                 .getExpression());
 
         // FIXME: How do we fix the file path parameter of the actor?? 
-        //String fileNameString = actor.fileOrURL.asFile().getCanonicalPath();
-
         String fileNameString = actor.fileOrURL.getExpression();
         
         if (fileNameString.equals("System.in")) {
@@ -104,7 +102,7 @@ public class LineReader extends CCodeGeneratorHelper {
                         + fileNameString);
             }
             
-            tmpStream.appendCodeBlock("openForRead");
+            tmpStream.appendCodeBlock("openForRead", fileNameString);
 
             for (int i = 0; i < skipLines; i++) {
                 tmpStream.appendCodeBlock("skipLine");

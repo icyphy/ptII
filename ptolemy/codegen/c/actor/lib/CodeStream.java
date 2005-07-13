@@ -76,21 +76,21 @@ public class CodeStream {
         }
     }
 
-    /** To append the content of the CodeStream to this code stream
+    /** To append the content of the CodeStream to this code stream.
      * @param codeBlock the code block to be appended to this code stream
      */
     public void append(CodeStream codeBlock) {
         _stream.append(codeBlock.toString());
     }
 
-    /** To append the given string to this code stream
+    /** To append the given string to this code stream.
      * @param codeBlock the code block to be appended to this code stream
      */
     public void append(String codeBlock) {
         _stream.append(codeBlock);
     }
 
-    /** To append the content of the StringBuffer to this code stream
+    /** To append the content of the StringBuffer to this code stream.
      * @param codeBlock the code block to be appended to this code stream
      */
     public void append(StringBuffer codeBlock) {
@@ -109,7 +109,10 @@ public class CodeStream {
      * First, it checks if the code file is parsed already.
      * If so, it gets the code block from the well-constructed code
      * block table.  If not, it has to construct the table.
-     * @param blockName the name of the code block
+     * @param blockName the name of the code block.
+     * @param argument the user-specified argument to put into the code block,
+     *  if the code block allows a parameter. The argument can be of string,
+     *  integer, or float type object.
      * @exception IllegalActionException If an error occurs during parsing.
      */
     public void appendCodeBlock(String blockName, Object argument)
@@ -145,7 +148,7 @@ public class CodeStream {
     }
 
     /**
-     * Testing main
+     * Testing main.
      *
      * @param arg command-line arguments
      * @exception IOException If an error occurs when reading user inputs.
@@ -164,7 +167,7 @@ public class CodeStream {
     }
 
     /**
-     * Return the string representation of the code stream
+     * Return the string representation of the code stream.
      */
     public String toString() {
         return _stream.toString();

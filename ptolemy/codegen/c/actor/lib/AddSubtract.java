@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// AddSubtract
 
 /**
- A helper class for ptolemy.actor.lib.AddSubtract
+ A helper class for ptolemy.actor.lib.AddSubtract.
 
  @author Man-Kit (Jackie) Leung, Gang Zhou
  @version $Id$
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class AddSubtract extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the AddSubtract helper
+     * Constructor method for the AddSubtract helper.
      * @param actor the associated actor
      */
     public AddSubtract(ptolemy.actor.lib.AddSubtract actor) {

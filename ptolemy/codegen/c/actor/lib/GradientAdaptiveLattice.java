@@ -34,10 +34,11 @@ import java.util.Set;
 
 import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.data.ArrayToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A helper class for ptolemy.actor.lib.GradientAdaptiveLattice
+ * A helper class for ptolemy.actor.lib.GradientAdaptiveLattice.
  * 
  * @author Man-Kit Leung
  * @version $Id$
@@ -48,8 +49,8 @@ import ptolemy.kernel.util.IllegalActionException;
 public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
 
     /**
-     * Constructor method for the GradientAdaptiveLattice helper
-     * @param actor the associated actor
+     * Constructor method for the GradientAdaptiveLattice helper.
+     * @param actor the associated actor.
      */
     public GradientAdaptiveLattice(
             ptolemy.actor.lib.GradientAdaptiveLattice actor) {
@@ -57,10 +58,10 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code
+     * Generate fire code.
      * The method reads in <code>fireBlock</code> from 
-     * GradientAdaptiveLattice.c and puts into the given stream buffer
-     * @param stream the given buffer to append the code to
+     * GradientAdaptiveLattice.c and puts into the given stream buffer.
+     * @param stream the given buffer to append the code to.
      */
     public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
@@ -98,9 +99,13 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
     public String generatePreinitializeCode() 
         throws IllegalActionException {
         super.generatePreinitializeCode();
+        ptolemy.actor.lib.GradientAdaptiveLattice actor = 
+            (ptolemy.actor.lib.GradientAdaptiveLattice) getComponent();
 
+        
         CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
+        tmpStream.appendCodeBlock("preinitBlock", new Integer(((ArrayToken) 
+                actor.reflectionCoefficients.getToken()).length()));
 
         return processCode(tmpStream.toString());
     }
@@ -109,7 +114,7 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
      *  This method reads the <code>wrapupBlock</code> 
      *  from GradientAdaptiveLattice.c, 
      *  replaces macros with their values and
-     *  put the processed code block into the given stream buffer
+     *  put the processed code block into the given stream buffer.
      */
     public void generateWrapupCode(StringBuffer stream)
         throws IllegalActionException {
