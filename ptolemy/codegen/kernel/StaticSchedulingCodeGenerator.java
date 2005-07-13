@@ -81,9 +81,9 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
     }
 
     /** Generate code.  This is the main entry point.
+     *  @param code The code stream into which to generate the code.
      *  @exception KernelException If a type conflict occurs or the model
      *  is running.
-     *  FIXME: more
      */
     public void generateCode(StringBuffer code) throws KernelException {
         // If necessary, create a manager.

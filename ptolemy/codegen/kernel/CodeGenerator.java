@@ -103,7 +103,7 @@ public class CodeGenerator extends Attribute
                 + "Double click to\ngenerate code.</text></svg>");
 
         // FIXME: We may not want this GUI dependency here...
-        // This attibute could be put in the MoML in the library instead
+        // This attribute could be put in the MoML in the library instead
         // of here in the Java code.
         new CodeGeneratorGUIFactory(this, "_codeGeneratorGUIFactory");
     }
@@ -232,7 +232,7 @@ public class CodeGenerator extends Attribute
     }
 
     /** Return the code associated with initialization of the containing
-     *  composite actor. This method calls the generatreInitializeCode()
+     *  composite actor. This method calls the generateInitializeCode()
      *  method of the code generator helper associated with the model director.
      *  @return The initialize code of the containing composite actor.
      *  @exception IllegalActionException If the helper class for the model

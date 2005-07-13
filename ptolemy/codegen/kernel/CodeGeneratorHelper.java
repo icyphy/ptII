@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Settable;
 public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** Construct the code generator helper associated
      *  with the given component.
-     *  @param component The associated componenet.
+     *  @param component The associated component.
      */
     public CodeGeneratorHelper(NamedObj component) {
         _component = component;
@@ -190,8 +190,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
             }
         } else {
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) port
-                    .getContainer());
+            CodeGeneratorHelper actorHelper =
+                (CodeGeneratorHelper) _getHelper((NamedObj) port
+                        .getContainer());
             bufferSize = actorHelper.getBufferSize(port);
         }
 
