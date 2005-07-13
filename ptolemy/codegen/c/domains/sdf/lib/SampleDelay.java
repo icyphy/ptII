@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Ye Zhou
  @version $Id$
- @since Ptolemy II 5.0
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */

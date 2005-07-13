@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributor: Christopher Brooks
  *  @version $Id$
  *   StaticSchedulingCodeGenerator.java,v 1.25 2005/07/12 19:29:15 mankit Exp $
- *  @since Ptolemy II 5.0
+ *  @since Ptolemy II 5.1
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)
  */

@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Ye Zhou
  @version $Id$
- @since Ptolemy II 5.0
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (zhouye)
  @Pt.AcceptedRating Red (eal)
  */

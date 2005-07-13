@@ -39,7 +39,7 @@ import ptolemy.codegen.kernel.Director;
 
  @author Ye Zhou
  @version $Id: SDFDirector.java
- @since Ptolemy II 5.0
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (zhouye)
  @Pt.AcceptedRating Red (eal)
  */

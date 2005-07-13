@@ -66,7 +66,7 @@ import ptolemy.util.MessageHandler;
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou,
  *   Contributors: Christopher Brooks
  *  @version $Id$ CodeGenerator.java,v 1.51 2005/07/13 14:07:20 cxh Exp $
- *  @since Ptolemy II 5.0
+ *  @since Ptolemy II 5.1
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)
  */

@@ -37,7 +37,7 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 
  @author Gang Zhou
  @version $Id$
- @since Ptolemy II 4.1
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
