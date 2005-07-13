@@ -103,7 +103,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     }
 
     /** Return the default options.  The default options for
-     *  this transformer is the string 
+     *  this transformer is the string: 
      *  <pre>
      *  templateDirectory: ptolemy/copernicus/applet/
      *  </pre>
@@ -119,7 +119,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
      *  <pre>
      *  targetPackage modelPath outDir templateDirectory
      *  </pre>
-     *  @see #TEMPLATE_DIRECTORY_DEFAULT
      *  @return the declared options.
      */ 
     public String getDeclaredOptions() {
