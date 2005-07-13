@@ -41,14 +41,14 @@ import ptolemy.kernel.util.NamedObj;
  Subclasses may override these methods if they have to do fancier things.
 
  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
- @version $Id: 
+ @version $Id:
   CCodeGeneratorHelper.java,v 1.12 2005/07/12 19:29:16 mankit Exp $
  @since Ptolemy II 5.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
-    /** 
+    /**
      * Create a new instance of the C code generator helper.
      * @param component The actor object for this helper.
      */
@@ -85,7 +85,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return processCode(tmpStream.toString());
     }
 
-    /** 
+    /**
      * Generate preinitialization code.
      * This method reads the <code>preinitBlock</code> from helperName.c,
      * replaces macros with their values and returns the results.

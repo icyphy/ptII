@@ -54,14 +54,14 @@ import ptolemy.kernel.util.Settable;
  * Base class for code generator helper.
  *
  * @author Ye Zhou, Edward A. Lee, Contributors: Gang Zhou, Christopher Brooks
- * @version $Id: 
+ * @version $Id:
  *  CodeGeneratorHelper.java,v 1.62 2005/07/12 19:29:15 mankit Exp $
  * @since Ptolemy II 5.0
  * @Pt.ProposedRating Red (eal)
  * @Pt.AcceptedRating Red (eal)
  */
 public class CodeGeneratorHelper implements ActorCodeGenerator {
-    /** Construct the code generator helper associated 
+    /** Construct the code generator helper associated
      *  with the given component.
      *  @param component The associated componenet.
      */
@@ -210,7 +210,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         if (port.getContainer() == _component) {
             return ((int[]) _bufferSizes.get(port))[channelNumber];
         } else {
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) 
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper)
 			    _getHelper((NamedObj) port.getContainer());
             return actorHelper.getBufferSize(port, channelNumber);
         }
@@ -251,7 +251,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @exception IllegalActionException If the parameter does not exist or
      *  does not have a value.
      */
-    public String getParameterValue(String name) 
+    public String getParameterValue(String name)
         throws IllegalActionException {
         Attribute attribute = _component.getAttribute(name);
 
@@ -316,7 +316,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 if (!channelAndOffset[0].equals("")) {
                     // Channel number specified. This must be a multiport.
                     result.append("[" + channelAndOffset[0] + "]");
-                    channelNumber = 
+                    channelNumber =
                         new Integer(channelAndOffset[0]).intValue();
                 }
 
@@ -426,7 +426,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                     channelNumber))).intValue()
                                     + (new Integer(channelAndOffset[1]))
                                             .intValue();
-                            offset %= 
+                            offset %=
                                 getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
                         } else {
@@ -440,15 +440,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                         result.append("[" + temp + "]");
                     } else if (getBufferSize(sinkPort) > 1) {
-                        // Did not specify offset, so the receiver buffer 
+                        // Did not specify offset, so the receiver buffer
                         // size is 1. This is multiple firing.
                         String temp = "";
 
-                        if (getOffset(port, channelNumber) 
+                        if (getOffset(port, channelNumber)
                                 instanceof Integer) {
                             int offset = ((Integer) getOffset(port, 0))
                                     .intValue();
-                            offset %= 
+                            offset %=
                             	getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
                         } else {
@@ -526,7 +526,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             for (int j = 0; j < portReceivers.length; j++) {
                 for (int k = 0; k < portReceivers[j].length; k++) {
-                    if (remoteReceivers[channelNumber][i] == 
+                    if (remoteReceivers[channelNumber][i] ==
                         portReceivers[j][k]) {
                         Channel sinkChannel = new Channel(sinkPort, j);
                         sinkChannels.add(sinkChannel);
@@ -705,7 +705,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param component The given component.
      *  @return The code generator helper.
      *  @exception IllegalActionException If the helper class cannot be found.
-     */    
+     */
     protected ComponentCodeGenerator _getHelper(NamedObj component)
             throws IllegalActionException {
         return _codeGenerator._getHelper(component);

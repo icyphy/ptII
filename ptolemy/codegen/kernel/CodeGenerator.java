@@ -63,14 +63,14 @@ import ptolemy.util.MessageHandler;
 
 /** Base class for code generator.
  *
- *  @author Edward A. Lee, Gang Zhou, Ye Zhou, 
+ *  @author Edward A. Lee, Gang Zhou, Ye Zhou,
  *   Contributors: Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 5.0
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)
  */
-public class CodeGenerator extends Attribute 
+public class CodeGenerator extends Attribute
     implements ComponentCodeGenerator {
     /** Create a new instance of the C code generator.
      *  @param container The container.
@@ -172,7 +172,7 @@ public class CodeGenerator extends Attribute
         // the container first.
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
                 .getDirector();
-        ComponentCodeGenerator directorHelper = 
+        ComponentCodeGenerator directorHelper =
             _getHelper((NamedObj) director);
         ((Director) directorHelper).setCodeGenerator(this);
 
@@ -182,7 +182,7 @@ public class CodeGenerator extends Attribute
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = 
+            CodeGeneratorHelper actorHelper =
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             actorHelper.setCodeGenerator(this);
             includingFiles.addAll(actorHelper.getIncludingFiles());
@@ -244,7 +244,7 @@ public class CodeGenerator extends Attribute
 
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
                 .getDirector();
-        ComponentCodeGenerator directorHelper = 
+        ComponentCodeGenerator directorHelper =
             _getHelper((NamedObj) director);
         code.append(directorHelper.generateInitializeCode());
         return code.toString();
@@ -261,7 +261,7 @@ public class CodeGenerator extends Attribute
         StringBuffer code = new StringBuffer();
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
                 .getDirector();
-        ComponentCodeGenerator directorHelper = 
+        ComponentCodeGenerator directorHelper =
             _getHelper((NamedObj) director);
         code.append(((Director) directorHelper).generatePreinitializeCode());
         return code.toString();
@@ -285,7 +285,7 @@ public class CodeGenerator extends Attribute
             Actor actor = (Actor) actors.next();
 
             // Generate variable declarations for referenced parameters.
-            CodeGeneratorHelper actorHelper = 
+            CodeGeneratorHelper actorHelper =
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             HashSet parameterSet = actorHelper.getReferencedParameter();
 
@@ -363,7 +363,7 @@ public class CodeGenerator extends Attribute
 
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
                 .getDirector();
-        ComponentCodeGenerator directorHelper = 
+        ComponentCodeGenerator directorHelper =
             _getHelper((NamedObj) director);
         directorHelper.generateWrapupCode(code);
     }
@@ -535,7 +535,7 @@ public class CodeGenerator extends Attribute
                             + " implement componentCodeGenerator.");
         }
 
-        ComponentCodeGenerator castHelperObject = 
+        ComponentCodeGenerator castHelperObject =
             (ComponentCodeGenerator) helperObject;
 
         _helperStore.put(component, helperObject);

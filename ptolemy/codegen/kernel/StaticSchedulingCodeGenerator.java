@@ -43,13 +43,13 @@ import ptolemy.kernel.util.NamedObj;
 /** Base class for code generators for static scheduling models of computation.
  *
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributor: Christopher Brooks
- *  @version $Id: 
+ *  @version $Id:
  *   StaticSchedulingCodeGenerator.java,v 1.25 2005/07/12 19:29:15 mankit Exp $
  *  @since Ptolemy II 5.0
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)
  */
-public class StaticSchedulingCodeGenerator extends CodeGenerator 
+public class StaticSchedulingCodeGenerator extends CodeGenerator
     implements ActorCodeGenerator {
     /** Create a new instance of the C code generator.
      *  @param container The container.
@@ -91,7 +91,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
         Manager manager = container.getManager();
 
         if (manager == null) {
-            CompositeActor toplevel = 
+            CompositeActor toplevel =
                 (CompositeActor) ((NamedObj) container).toplevel();
             manager = new Manager(toplevel.workspace(), "Manager");
             toplevel.setManager(manager);
@@ -112,7 +112,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
      *  @param code The code stream into which to generate the code.
      *  @exception IllegalActionException If a static scheduling director is
      *   missing or the generateFireCode(StringBuffer) method of the
-     *   director helper throws the exception. 
+     *   director helper throws the exception.
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
@@ -132,7 +132,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
                     + model.getName() + " is not a StaticSchedulingDirector.");
         }
 
-        ComponentCodeGenerator directorHelper = 
+        ComponentCodeGenerator directorHelper =
             _getHelper((NamedObj) director);
         ((Director) directorHelper).generateFireCode(code);
     }
@@ -144,9 +144,9 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
      *  @exception IllegalActionException If the given container
      *   is not null and not an instance of CompositeActor.
      *  @exception NameDuplicationException If the super class throws the
-     *   exception. 
+     *   exception.
      */
-    public void setContainer(NamedObj container) 
+    public void setContainer(NamedObj container)
         throws IllegalActionException, NameDuplicationException {
         if ((container != null) && !(container instanceof CompositeActor)) {
             throw new IllegalActionException(this, container,
@@ -162,7 +162,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
 
     /** Get the code generator helper associated with the given component.
      *  @param actor The given component actor.
-     *  @exception IllegalActionException If the given actor is an 
+     *  @exception IllegalActionException If the given actor is an
      *   implementing class for ActorCodeGenerator.
      *  @return The code generator helper.
      */

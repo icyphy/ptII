@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NamedObj;
  *  that component.
  *
  *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
- *  @version $Id: 
+ *  @version $Id:
  *   ComponentCodeGenerator.java,v 1.11 2005/07/12 19:29:15 mankit Exp $
  *  @since Ptolemy II 5.0
  *  @Pt.ProposedRating Red (eal)
