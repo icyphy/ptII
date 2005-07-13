@@ -49,8 +49,8 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)
  */
-public class StaticSchedulingCodeGenerator extends CodeGenerator
-    implements ActorCodeGenerator {
+public class StaticSchedulingCodeGenerator extends CodeGenerator implements
+        ActorCodeGenerator {
     /** Create a new instance of the C code generator.
      *  @param container The container.
      *  @param name The name.
@@ -91,8 +91,8 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
         Manager manager = container.getManager();
 
         if (manager == null) {
-            CompositeActor toplevel =
-                (CompositeActor) ((NamedObj) container).toplevel();
+            CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
+                    .toplevel();
             manager = new Manager(toplevel.workspace(), "Manager");
             toplevel.setManager(manager);
         }
@@ -132,8 +132,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
                     + model.getName() + " is not a StaticSchedulingDirector.");
         }
 
-        ComponentCodeGenerator directorHelper =
-            _getHelper((NamedObj) director);
+        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
         ((Director) directorHelper).generateFireCode(code);
     }
 
@@ -146,8 +145,8 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
      *  @exception NameDuplicationException If the super class throws the
      *   exception.
      */
-    public void setContainer(NamedObj container)
-        throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         if ((container != null) && !(container instanceof CompositeActor)) {
             throw new IllegalActionException(this, container,
                     "StaticSchedulingCodeGenerator can only be contained "

@@ -190,9 +190,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
             }
         } else {
-            CodeGeneratorHelper actorHelper =
-                (CodeGeneratorHelper) _getHelper((NamedObj) port
-                        .getContainer());
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) port
+                    .getContainer());
             bufferSize = actorHelper.getBufferSize(port);
         }
 
@@ -211,8 +210,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         if (port.getContainer() == _component) {
             return ((int[]) _bufferSizes.get(port))[channelNumber];
         } else {
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper)
-			    _getHelper((NamedObj) port.getContainer());
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) port
+                    .getContainer());
             return actorHelper.getBufferSize(port, channelNumber);
         }
     }
@@ -252,8 +251,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @exception IllegalActionException If the parameter does not exist or
      *  does not have a value.
      */
-    public String getParameterValue(String name)
-        throws IllegalActionException {
+    public String getParameterValue(String name) throws IllegalActionException {
         Attribute attribute = _component.getAttribute(name);
 
         if (attribute == null) {
@@ -317,8 +315,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 if (!channelAndOffset[0].equals("")) {
                     // Channel number specified. This must be a multiport.
                     result.append("[" + channelAndOffset[0] + "]");
-                    channelNumber =
-                        new Integer(channelAndOffset[0]).intValue();
+                    channelNumber = new Integer(channelAndOffset[0]).intValue();
                 }
 
                 if (!channelAndOffset[1].equals("")
@@ -427,8 +424,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                     channelNumber))).intValue()
                                     + (new Integer(channelAndOffset[1]))
                                             .intValue();
-                            offset %=
-                                getBufferSize(sinkPort, sinkChannelNumber);
+                            offset %= getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
                         } else {
                             int modulo = getBufferSize(sinkPort,
@@ -445,12 +441,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         // size is 1. This is multiple firing.
                         String temp = "";
 
-                        if (getOffset(port, channelNumber)
-                                instanceof Integer) {
+                        if (getOffset(port, channelNumber) instanceof Integer) {
                             int offset = ((Integer) getOffset(port, 0))
                                     .intValue();
-                            offset %=
-                            	getBufferSize(sinkPort, sinkChannelNumber);
+                            offset %= getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
                         } else {
                             int modulo = getBufferSize(sinkPort,
@@ -527,8 +521,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             for (int j = 0; j < portReceivers.length; j++) {
                 for (int k = 0; k < portReceivers[j].length; k++) {
-                    if (remoteReceivers[channelNumber][i] ==
-                        portReceivers[j][k]) {
+                    if (remoteReceivers[channelNumber][i] == portReceivers[j][k]) {
                         Channel sinkChannel = new Channel(sinkPort, j);
                         sinkChannels.add(sinkChannel);
                         break;

@@ -82,8 +82,7 @@ public class Director implements ActorCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject =
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             helperObject.generateFireCode(code);
         }
     }
@@ -104,8 +103,7 @@ public class Director implements ActorCodeGenerator {
         //Iterator actors = actorsList.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject =
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(helperObject.generateInitializeCode());
         }
 
@@ -131,8 +129,7 @@ public class Director implements ActorCodeGenerator {
             // Set the buffer sizes of each channel of the actor before
             // generating initialize code.
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject =
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             //helperObject.createBufferAndOffsetMap();
             code.append(helperObject.generatePreinitializeCode());
 
