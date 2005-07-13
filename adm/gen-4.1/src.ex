@@ -98,7 +98,6 @@ ptolemy/actor/xslt
 ptolemy/apps
 ptolemy/automata
 ptolemy/build.xml
-ptolemy/codegen
 ptolemy/filter/*
 ptolemy/filter
 ptolemy/chic
