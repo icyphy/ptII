@@ -36,7 +36,6 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
  *  @version $Id$
- *   ActorCodeGenerator.java,v 1.10 2005/07/12 19:29:16 mankit Exp $
  *  @since Ptolemy II 5.1
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)

@@ -55,7 +55,6 @@ import ptolemy.kernel.util.Settable;
  *
  * @author Ye Zhou, Edward A. Lee, Contributors: Gang Zhou, Christopher Brooks
  * @version $Id$
- *  CodeGeneratorHelper.java,v 1.62 2005/07/12 19:29:15 mankit Exp $
  * @since Ptolemy II 5.1
  * @Pt.ProposedRating Red (eal)
  * @Pt.AcceptedRating Red (eal)

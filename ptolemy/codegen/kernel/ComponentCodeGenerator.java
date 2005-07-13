@@ -41,7 +41,6 @@ import ptolemy.kernel.util.NamedObj;
  *
  *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
  *  @version $Id$
- *   ComponentCodeGenerator.java,v 1.11 2005/07/12 19:29:15 mankit Exp $
  *  @since Ptolemy II 5.1
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)
