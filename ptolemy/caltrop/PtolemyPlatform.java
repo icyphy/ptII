@@ -53,6 +53,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
@@ -622,11 +623,35 @@ public class PtolemyPlatform implements Platform {
                     throw new FunctionCallException("listToArray", args[0], ex);
                 }
             }
-
+                
             public int arity() {
                 return 1;
             }
         }));
+
+        
+        env.bind("listToMatrix",
+                _theContext.createFunction(new Function() {
+                        // Convert the given list to an array.
+                        public Object apply(Object[] args) {
+                            try {
+                                ObjectToken input = (ObjectToken) args[0];
+                                List inputList = (List) input.getValue();
+                                Token[] tokens = new Token[inputList.size()];
+                                tokens = (Token[]) inputList.toArray(tokens);
+                                int rows = _theContext.intValue(args[1]);
+                                int columns = _theContext.intValue(args[2]);
+                                return MatrixToken.arrayToMatrix(tokens, rows, columns);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("listToArray", args[0],
+                                        ex);
+                            }
+                        }
+
+                        public int arity() {
+                            return 3;
+                        }
+                    }));
 
         //
         // Xilinx SystemBuilder
@@ -984,8 +1009,9 @@ public class PtolemyPlatform implements Platform {
 
         public boolean isFunction(Object a) {
             return (a instanceof FunctionToken)
-                    || (a instanceof ObjectToken && ((ObjectToken) a)
-                            .getValue() instanceof Function);
+                || (a instanceof ObjectToken && ((ObjectToken) a)
+                            .getValue() instanceof Function)
+                || (a instanceof Function);
         }
 
         public Object applyFunction(Object function, Object[] args) {
@@ -995,6 +1021,8 @@ public class PtolemyPlatform implements Platform {
                     Token[] tokenArgs = new Token[args.length];
                     System.arraycopy(args, 0, tokenArgs, 0, args.length);
                     return ((FunctionToken) function).apply(tokenArgs);
+                } else if (function instanceof Function) {
+                    return ((Function) function).apply(args);
                 } else {
                     return ((Function) ((ObjectToken) function).getValue())
                             .apply(args);
@@ -1062,16 +1090,62 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
-        ///////// Misc.
-        public Object getLocation(Object structure, Object[] location) {
-            // FIXME
-            return null;
-        }
+            ///////// Misc.
+            public Object getLocation(Object structure, Object[] location) {
+                if(location.length == 1 && isInteger(location[0])) {
+                    int index = intValue(location[0]);
+                    if(structure instanceof ArrayToken) {
+                        return ((ArrayToken)structure).getElement(index);
+                    } else if(structure instanceof ObjectToken) {
+                        try {
+                            ObjectToken input = (ObjectToken)structure;
+                            if(input.getValue() instanceof List) {
+                                List inputList = (List) input.getValue();
+                                return inputList.get(index);
+                            } else if(input.getValue() instanceof Object[]) {
+                                Object[] inputList = (Object[]) input.getValue();
+                                return inputList[index];
+                            }
+                        } catch (Exception ex) {                         
+                            throw new RuntimeException("Failed to index into structure:" + structure, ex);
+                        }
+                    }
+                } else if(location.length == 2 
+                        && isInteger(location[0])
+                        && isInteger(location[1])) {
+                    int index1 = intValue(location[0]);
+                    int index2 = intValue(location[1]);
+                    if(structure instanceof MatrixToken) {
+                        return ((MatrixToken)structure).getElementAsToken(
+                                index1, index2);
+                    }
+                }
+                throw new RuntimeException("Failed to index into structure:" + structure);
+            }
 
-        public void setLocation(Object structure, Object[] location,
-                Object value) {
-            // FIXME
-        }
+            public void setLocation(Object structure, Object[] location,
+                    Object value) {
+                if(location.length == 1 && isInteger(location[0])) {
+                    int index = intValue(location[0]);
+                    if(structure instanceof ObjectToken) {
+                        try {
+                            ObjectToken input = (ObjectToken)structure;
+                            if(input.getValue() instanceof List) {
+                                List inputList = (List) input.getValue();
+                                inputList.set(index, value);
+                                return;
+                            } else if(input.getValue() instanceof Object[]) {
+                                Object[] inputList = (Object[]) input.getValue();
+                                inputList[index] = value;
+                                return;
+                            }
+                        } catch (Exception ex) {                         
+                            throw new RuntimeException("Failed to assign at index into structure:" + structure, ex);
+                        }
+                    }
+                }
+                throw new RuntimeException("Failed to assign at index " + location[0] + " into structure:" + structure + " of class " + structure.getClass().getName());
+            }
 
         public Class getJavaClassOfObject(Object o) {
             // FIXME very preliminary. what about FunctionToken?
