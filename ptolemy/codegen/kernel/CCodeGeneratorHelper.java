@@ -41,7 +41,8 @@ import ptolemy.kernel.util.NamedObj;
  Subclasses may override these methods if they have to do fancier things.
 
  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
- @version $Id$
+ @version $Id: 
+  CCodeGeneratorHelper.java,v 1.12 2005/07/12 19:29:16 mankit Exp $
  @since Ptolemy II 5.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
@@ -49,18 +50,18 @@ import ptolemy.kernel.util.NamedObj;
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /** 
      * Create a new instance of the C code generator helper.
-     * @param component The actor object for this helper 
+     * @param component The actor object for this helper.
      */
     public CCodeGeneratorHelper(NamedObj component) {
         super(component);
     }
 
     /**
-     * Generate fire code
+     * Generate fire code.
      * The method reads in fireBlock and puts into the given stream buffer.
-     * @param stream the given buffer to append the code to
+     * @param stream the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
-     * error in processing the specified code block.
+     *  error in processing the specified code block.
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
@@ -84,12 +85,13 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return processCode(tmpStream.toString());
     }
 
-    /** Generate preinitialization code.
-     *  This method reads the <code>preinitBlock</code> from helperName.c,
-     *  replaces macros with their values and returns the results.
+    /** 
+     * Generate preinitialization code.
+     * This method reads the <code>preinitBlock</code> from helperName.c,
+     * replaces macros with their values and returns the results.
      * @exception IllegalActionException If the code stream encounters an
-     * error in processing the specified code block.
-     *  @return The processed <code>preinitBlock</code>.
+     *  error in processing the specified code block.
+     * @return The processed <code>preinitBlock</code>.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
@@ -102,9 +104,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      *  This method reads the <code>wrapupBlock</code> from helperName.c,
      *  replaces macros with their values and put the processed code block
      *  into the given stream buffer.
-     * @param stream the given buffer to append the code to
+     * @param stream the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
-     * error in processing the specified code block.
+     *  error in processing the specified code block.
      */
     public void generateWrapupCode(StringBuffer stream)
             throws IllegalActionException {

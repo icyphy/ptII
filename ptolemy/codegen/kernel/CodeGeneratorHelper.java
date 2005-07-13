@@ -54,13 +54,15 @@ import ptolemy.kernel.util.Settable;
  * Base class for code generator helper.
  *
  * @author Ye Zhou, Edward A. Lee, Contributors: Gang Zhou, Christopher Brooks
- * @version $Id$
+ * @version $Id: 
+ *  CodeGeneratorHelper.java,v 1.62 2005/07/12 19:29:15 mankit Exp $
  * @since Ptolemy II 5.0
  * @Pt.ProposedRating Red (eal)
  * @Pt.AcceptedRating Red (eal)
  */
 public class CodeGeneratorHelper implements ActorCodeGenerator {
-    /** Construct the code generator helper associated with the given component.
+    /** Construct the code generator helper associated 
+     *  with the given component.
      *  @param component The associated componenet.
      */
     public CodeGeneratorHelper(NamedObj component) {
@@ -129,7 +131,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  code of the associated component and append the code to the given
      *  string buffer.
      *  @param stream The given string buffer.
-     *  @exception IllegalActionException Subclasses may throw it.
+     *  @exception IllegalActionException If subclasses throw it.
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
@@ -139,7 +141,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  generate the initialize code of the associated component and
      *  append the code to the given string buffer.
      *  @return The initialize code of the containing composite actor.
-     *  @exception IllegalActionException Subclass may throw it.
+     *  @exception IllegalActionException If subclass throws it.
      */
     public String generateInitializeCode() throws IllegalActionException {
         resetOffsets();
@@ -152,7 +154,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  Subclasses may generate code for variable declaration, defining
      *  constants, etc.
      *  @return A string of the preinitialize code for the helper.
-     *  @exception IllegalActionException Subclass may throw it.
+     *  @exception IllegalActionException If subclass throws it.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         createBufferAndOffsetMap();
@@ -163,7 +165,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  the wrapup code of the associated component and append the
      *  code to the given string buffer.
      *  @param stream The given string buffer.
-     *  @exception IllegalActionException Subclasses may throw it.
+     *  @exception IllegalActionException If subclass throws it.
      */
     public void generateWrapupCode(StringBuffer stream)
             throws IllegalActionException {
@@ -249,7 +251,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @exception IllegalActionException If the parameter does not exist or
      *  does not have a value.
      */
-    public String getParameterValue(String name) throws IllegalActionException {
+    public String getParameterValue(String name) 
+        throws IllegalActionException {
         Attribute attribute = _component.getAttribute(name);
 
         if (attribute == null) {
@@ -313,7 +316,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 if (!channelAndOffset[0].equals("")) {
                     // Channel number specified. This must be a multiport.
                     result.append("[" + channelAndOffset[0] + "]");
-                    channelNumber = new Integer(channelAndOffset[0]).intValue();
+                    channelNumber = 
+                        new Integer(channelAndOffset[0]).intValue();
                 }
 
                 if (!channelAndOffset[1].equals("")
@@ -331,10 +335,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         // Note: This assumes the director helper will increase
                         // the buffer size of the channel to the power of two.
                         // Otherwise, use "%" instead.
-                        // FIXME: We haven't check if modulo is 0. But this should
-                        // never happen. For offsets that need to be represented
-                        // by string expression, getBufferSize(port, channelNumber)
-                        // will always return a value at least 2.
+                        // FIXME: We haven't check if modulo is 0. But this
+                        // should never happen. For offsets that need to be
+                        // represented by string expression,
+                        // getBufferSize(port, channelNumber) will always
+                        // return a value at least 2.
                         int modulo = getBufferSize(port, channelNumber) - 1;
                         temp = (String) getOffset(port, channelNumber);
                         temp = "(" + temp
@@ -344,8 +349,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                     result.append("[" + temp + "]");
                 } else if (getBufferSize(port) > 1) {
-                    // Did not specify offset, so the receiver buffer size is 1.
-                    // This is multiple firing.
+                    // Did not specify offset, so the receiver buffer
+                    // size is 1. This is multiple firing.
                     String temp = "";
 
                     if (getOffset(port, channelNumber) instanceof Integer) {
@@ -421,8 +426,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                     channelNumber))).intValue()
                                     + (new Integer(channelAndOffset[1]))
                                             .intValue();
-                            offset = offset
-                                    % getBufferSize(sinkPort, sinkChannelNumber);
+                            offset %= 
+                                getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
                         } else {
                             int modulo = getBufferSize(sinkPort,
@@ -435,15 +440,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                         result.append("[" + temp + "]");
                     } else if (getBufferSize(sinkPort) > 1) {
-                        // Did not specify offset, so the receiver buffer size is 1.
-                        // This is multiple firing.
+                        // Did not specify offset, so the receiver buffer 
+                        // size is 1. This is multiple firing.
                         String temp = "";
 
-                        if (getOffset(port, channelNumber) instanceof Integer) {
+                        if (getOffset(port, channelNumber) 
+                                instanceof Integer) {
                             int offset = ((Integer) getOffset(port, 0))
                                     .intValue();
-                            offset = offset
-                                    % getBufferSize(sinkPort, sinkChannelNumber);
+                            offset %= 
+                            	getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
                         } else {
                             int modulo = getBufferSize(sinkPort,
@@ -520,7 +526,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             for (int j = 0; j < portReceivers.length; j++) {
                 for (int k = 0; k < portReceivers[j].length; k++) {
-                    if (remoteReceivers[channelNumber][i] == portReceivers[j][k]) {
+                    if (remoteReceivers[channelNumber][i] == 
+                        portReceivers[j][k]) {
                         Channel sinkChannel = new Channel(sinkPort, j);
                         sinkChannels.add(sinkChannel);
                         break;
@@ -566,7 +573,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** Process the specified code, replacing macros with their values.
      * @param code The code to process.
      * @return The processed code.
-     * @exception IllegalActionException if illegal macro names are found.
+     * @exception IllegalActionException If illegal macro names are found.
      */
     public String processCode(String code) throws IllegalActionException {
         StringBuffer result = new StringBuffer();
@@ -697,7 +704,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
      *  @return The code generator helper.
-     *  @exception IllegalActionException if the helper class cannot be found.
+     *  @exception IllegalActionException If the helper class cannot be found.
      */    
     protected ComponentCodeGenerator _getHelper(NamedObj component)
             throws IllegalActionException {

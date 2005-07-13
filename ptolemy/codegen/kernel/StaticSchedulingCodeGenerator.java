@@ -43,18 +43,19 @@ import ptolemy.kernel.util.NamedObj;
 /** Base class for code generators for static scheduling models of computation.
  *
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributor: Christopher Brooks
- *  @version $Id$
+ *  @version $Id: 
+ *   StaticSchedulingCodeGenerator.java,v 1.25 2005/07/12 19:29:15 mankit Exp $
  *  @since Ptolemy II 5.0
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)
  */
-public class StaticSchedulingCodeGenerator extends CodeGenerator implements
-        ActorCodeGenerator {
+public class StaticSchedulingCodeGenerator extends CodeGenerator 
+    implements ActorCodeGenerator {
     /** Create a new instance of the C code generator.
      *  @param container The container.
      *  @param name The name.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If super class throws it.
+     *  @exception NameDuplicationException If super class throws it.
      */
     public StaticSchedulingCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -90,8 +91,8 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         Manager manager = container.getManager();
 
         if (manager == null) {
-            CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
-                    .toplevel();
+            CompositeActor toplevel = 
+                (CompositeActor) ((NamedObj) container).toplevel();
             manager = new Manager(toplevel.workspace(), "Manager");
             toplevel.setManager(manager);
         }
@@ -131,7 +132,8 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
                     + model.getName() + " is not a StaticSchedulingDirector.");
         }
 
-        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
+        ComponentCodeGenerator directorHelper = 
+            _getHelper((NamedObj) director);
         ((Director) directorHelper).generateFireCode(code);
     }
 
@@ -139,13 +141,13 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *  This method overrides the base class to ensure that that the
      *  container is an Actor.
      *  @param container The given container.
-     *  @exception IllegalActionException if the given container
+     *  @exception IllegalActionException If the given container
      *   is not null and not an instance of CompositeActor.
      *  @exception NameDuplicationException If the super class throws the
      *   exception. 
      */
-    public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    public void setContainer(NamedObj container) 
+        throws IllegalActionException, NameDuplicationException {
         if ((container != null) && !(container instanceof CompositeActor)) {
             throw new IllegalActionException(this, container,
                     "StaticSchedulingCodeGenerator can only be contained "

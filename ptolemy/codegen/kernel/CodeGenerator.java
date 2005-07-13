@@ -63,18 +63,22 @@ import ptolemy.util.MessageHandler;
 
 /** Base class for code generator.
  *
- *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributors: Christopher Brooks
+ *  @author Edward A. Lee, Gang Zhou, Ye Zhou, 
+ *   Contributors: Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 5.0
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)
  */
-public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
+public class CodeGenerator extends Attribute 
+    implements ComponentCodeGenerator {
     /** Create a new instance of the C code generator.
      *  @param container The container.
      *  @param name The name.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If super class throws the
+     *   exception or error occurs when setting the file path.
+     *  @exception NameDuplicationException If super class throws the
+     *   exception or error occurs when setting the file path.
      */
     public CodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -149,7 +153,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Generate code and write it to the file specified by the
      *  <i>codeDirectory</i> parameter.
-     *  @exception KernelException if the target file cannot be overwritten
+     *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
     public void generateCode() throws KernelException {
@@ -160,7 +164,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  Write the code to the file specified by the codeDirectory parameter.
      *  This is the main entry point.
      *  @param code The given string buffer.
-     *  @exception KernelException if the target file cannot be overwritten
+     *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
     public void generateCode(StringBuffer code) throws KernelException {
@@ -168,7 +172,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // the container first.
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
                 .getDirector();
-        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
+        ComponentCodeGenerator directorHelper = 
+            _getHelper((NamedObj) director);
         ((Director) directorHelper).setCodeGenerator(this);
 
         Set includingFiles = new HashSet();
@@ -177,7 +182,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             actorHelper.setCodeGenerator(this);
             includingFiles.addAll(actorHelper.getIncludingFiles());
         }
@@ -238,7 +244,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
                 .getDirector();
-        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
+        ComponentCodeGenerator directorHelper = 
+            _getHelper((NamedObj) director);
         code.append(directorHelper.generateInitializeCode());
         return code.toString();
     }
@@ -254,7 +261,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         StringBuffer code = new StringBuffer();
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
                 .getDirector();
-        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
+        ComponentCodeGenerator directorHelper = 
+            _getHelper((NamedObj) director);
         code.append(((Director) directorHelper).generatePreinitializeCode());
         return code.toString();
     }
@@ -277,7 +285,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             Actor actor = (Actor) actors.next();
 
             // Generate variable declarations for referenced parameters.
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             HashSet parameterSet = actorHelper.getReferencedParameter();
 
             if (parameterSet != null) {
@@ -354,7 +363,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
                 .getDirector();
-        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
+        ComponentCodeGenerator directorHelper = 
+            _getHelper((NamedObj) director);
         directorHelper.generateWrapupCode(code);
     }
 
@@ -452,9 +462,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Set the container of this object to be the given container.
      *  @param container The given container.
-     *  @exception IllegalActionException if the given container
+     *  @exception IllegalActionException If the given container
      *   is not null and not an instance of CompositeEntity.
-     *  @exception NameDuplicationException if there already exists a
+     *  @exception NameDuplicationException If there already exists a
      *   container with the same name.
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
@@ -474,7 +484,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
      *  @return The code generator helper.
-     *  @exception IllegalActionException if the helper class cannot be found.
+     *  @exception IllegalActionException If the helper class cannot be found.
      */
     protected ComponentCodeGenerator _getHelper(NamedObj component)
             throws IllegalActionException {
@@ -525,7 +535,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                             + " implement componentCodeGenerator.");
         }
 
-        ComponentCodeGenerator castHelperObject = (ComponentCodeGenerator) helperObject;
+        ComponentCodeGenerator castHelperObject = 
+            (ComponentCodeGenerator) helperObject;
 
         _helperStore.put(component, helperObject);
 

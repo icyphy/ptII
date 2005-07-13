@@ -34,12 +34,14 @@ import ptolemy.kernel.util.NamedObj;
 //// ComponentCodeGenerator
 
 /** Interface for components that can generate code.
- *  Classes that implement this interface are helper classes, closely associated
- *  with a specific Ptolemy II component (such as an actor), and able to generate
- *  code in some language to implement the functionality of that component.
+ *  Classes that implement this interface are helper classes, closely
+ *  associated with a specific Ptolemy II component (such as an actor), and
+ *  able to generate code in some language to implement the functionality of
+ *  that component.
  *
  *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
- *  @version $Id$
+ *  @version $Id: 
+ *   ComponentCodeGenerator.java,v 1.11 2005/07/12 19:29:15 mankit Exp $
  *  @since Ptolemy II 5.0
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)

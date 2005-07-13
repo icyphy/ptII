@@ -82,7 +82,8 @@ public class Director implements ActorCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             helperObject.generateFireCode(code);
         }
     }
@@ -103,7 +104,8 @@ public class Director implements ActorCodeGenerator {
         //Iterator actors = actorsList.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(helperObject.generateInitializeCode());
         }
 
@@ -127,7 +129,8 @@ public class Director implements ActorCodeGenerator {
             // Set the buffer sizes of each channel of the actor before
             // generating initialize code.
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             //helperObject.createBufferAndOffsetMap();
             code.append(helperObject.generatePreinitializeCode());
 
@@ -153,7 +156,8 @@ public class Director implements ActorCodeGenerator {
      *  class. For this base class, the wrapup code is just to generate
      *  the wrapup code for each actor.
      *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If error occurs in reading and
+     *   processing the code block from helper class.
      */
     public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
@@ -175,7 +179,7 @@ public class Director implements ActorCodeGenerator {
      *  @param port The given port.
      *  @param channelNumber The given channel number.
      *  @return The buffer size of the given channel.
-     *  @exception IllegalActionException Subclasses may throw it.
+     *  @exception IllegalActionException If Subclasses throw it.
      */
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
