@@ -95,9 +95,9 @@ public class RelationController extends ParameterizedNodeController {
         /**
          * Render a visual representation of the given node.
          * @param node The node to render.
-         * @return The persisten object that is drawn on the screen.
+         * @return The persistent object that is drawn on the screen.
          */  
-        public Figure render(Object n) {
+        public Figure render(Object node) {
             double h = 12.0;
             double w = 12.0;
 
@@ -111,8 +111,8 @@ public class RelationController extends ParameterizedNodeController {
             Figure figure = new BasicFigure(polygon, Color.black);
 
             Relation relation = null;
-            if (n != null) {
-                Vertex vertex = (Vertex) n;
+            if (node != null) {
+                Vertex vertex = (Vertex) node;
                 relation = (Relation) vertex.getContainer();
                 ActorGraphModel model = (ActorGraphModel) getController()
                         .getGraphModel();
