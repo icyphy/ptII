@@ -1,61 +1,60 @@
 /* Base class for displaying exceptions, warnings, and messages.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
-*/
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package ptolemy.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MessageHandler
 
 /**
-   This is a class that is used to report errors.  It provides a
-   set of static methods that are called to report errors.  However, the
-   actual reporting of the errors is deferred to an instance of this class
-   that is set using the setMessageHandler() method.  Normally there
-   is only one instance, set up by the application, so the class is
-   a singleton.  But this is not enforced.
-   <p>
-   This base class simply writes the errors to System.err.
-   When an applet or application starts up, it may wish to set a subclass
-   of this class as the message handler, to allow a nicer way of
-   reporting errors.  For example, a swing application will probably
-   want to report errors in a dialog box, using for example
-   the derived class GraphicalMessageHandler.
-   @see ptolemy.gui.GraphicalMessageHandler
+ This is a class that is used to report errors.  It provides a
+ set of static methods that are called to report errors.  However, the
+ actual reporting of the errors is deferred to an instance of this class
+ that is set using the setMessageHandler() method.  Normally there
+ is only one instance, set up by the application, so the class is
+ a singleton.  But this is not enforced.
+ <p>
+ This base class simply writes the errors to System.err.
+ When an applet or application starts up, it may wish to set a subclass
+ of this class as the message handler, to allow a nicer way of
+ reporting errors.  For example, a Swing application will probably
+ want to report errors in a dialog box, using for example
+ the derived class GraphicalMessageHandler.
+ @see ptolemy.gui.GraphicalMessageHandler
 
-   @author  Edward A. Lee, Steve Neuendorffer
-   @version $Id$
-   @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (janneck)
-*/
+ @author  Edward A. Lee, Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
+ */
 public class MessageHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -71,9 +70,7 @@ public class MessageHandler {
     /** Defer to the set message handler to
      *  show the specified message and throwable information.
      *  If the throwable is an instance of CancelException, then it
-     *  is not shown.  By default, only the message of the throwable
-     *  is shown.  The stack trace information is only shown if the
-     *  user clicks on the "Display Stack Trace" button.
+     *  is not shown.
      *
      *  @param info The message.
      *  @param throwable The throwable.
@@ -136,14 +133,15 @@ public class MessageHandler {
         return throwableType;
     }
 
-    /** Defer to the set message handler to
-     *  show the specified message in a modal dialog.  If the user
-     *  clicks on the "Cancel" button, then throw an exception.
-     *  This gives the user the option of not continuing the
-     *  execution, something that is particularly useful if continuing
-     *  execution will result in repeated warnings.
-     *  NOTE: If the set message handler is graphical, then
-     *  this must be called in the swing event thread!
+    /** Display the warning message.  In this base class, the
+     *  the default handler merely prints the warning to stderr.
+     *  Derived classes such as ptolemy.gui.GraphicalMessageHandler
+     *  might display the message graphically.
+     *
+     *  <p>NOTE: If in a derived class the message handler set by 
+     *  {@link #setMessageHandler(MessageHandler)} is graphical, then
+     *  this method must be called in the Swing event thread!
+     *
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
@@ -151,15 +149,15 @@ public class MessageHandler {
         _handler._warning(info);
     }
 
-    /** Show the specified message and throwable information
-     *  in a modal dialog.  If the user
-     *  clicks on the "Cancel" button, then throw an exception.
-     *  This gives the user the option of not continuing the
-     *  execution, something that is particularly useful if continuing
-     *  execution will result in repeated warnings.
-     *  By default, only the message of the throwable
-     *  is shown.  The stack trace information is only shown if the
-     *  user clicks on the "Display Stack Trace" button.
+    /** Display the warning message and throwable information.  In
+     *  this base class, the the default handler merely prints the
+     *  warning to stderr.  Derived classes such as
+     *  ptolemy.gui.GraphicalMessageHandler might display the message
+     *  graphically.
+     *
+     *  <p>NOTE: If in a derived class the message handler set by 
+     *  {@link #setMessageHandler(MessageHandler)} is graphical, then
+     *  this method must be called in the Swing event thread!
      *  @param info The message.
      *  @param throwable The throwable associated with this warning.
      *  @exception CancelException If the user clicks on the "Cancel" button.
@@ -171,9 +169,11 @@ public class MessageHandler {
 
     /** Ask the user a yes/no question, and return true if the answer
      *  is yes.
-     *  NOTE: If the set error handler is graphical, then this must
-     *  be called from within the swing event thread, or deadlock or
-     *  rendering problems may occur.
+     *   
+     *  <p>NOTE: If in a derived class the message handler set by 
+     *  {@link #setMessageHandler(MessageHandler)} is graphical, then
+     *  this method must be called in the Swing event thread!
+     *
      *  @param question The yes/no question.
      *  @return True if the answer is yes.
      */
@@ -192,10 +192,8 @@ public class MessageHandler {
     }
 
     /** Show the specified message and throwable information.
-     *  If the throwable is an instance of CancelException, then it
-     *  is not shown.  By default, only the message of the exception
-     *  is shown.  The stack trace information is only shown if the
-     *  user clicks on the "Display Stack Trace" button.
+     *  If the throwable is an instance of CancelException, then nothing
+     *  is shown.
      *
      *  @param info The message.
      *  @param throwable The throwable.
@@ -210,18 +208,22 @@ public class MessageHandler {
         throwable.printStackTrace();
     }
 
-    /** Show the specified message.
+    /** Display the warning message.  In this base class, the
+     *  the default handler merely prints the warning to stderr.
      *  @param info The message.
      */
     protected void _message(String info) {
         System.err.println(info);
     }
 
-    /** Show the specified message in a modal dialog.  If the user
-     *  clicks on the "Cancel" button, then throw an exception.
-     *  This gives the user the option of not continuing the
-     *  execution, something that is particularly useful if continuing
-     *  execution will result in repeated warnings.
+    /** Show the specified message.  In this base class, the message
+     *  is printed to standard error.  
+     *  <p>Derived classes might show the specified message in a modal
+     *  dialog.  If the user clicks on the "Cancel" button, then throw
+     *  an exception.  This gives the user the option of not
+     *  continuing the execution, something that is particularly
+     *  useful if continuing execution will result in repeated
+     *  warnings.
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
@@ -229,15 +231,9 @@ public class MessageHandler {
         _error(info);
     }
 
-    /** Show the specified message and throwable information
-     *  in a modal dialog.  If the user
-     *  clicks on the "Cancel" button, then throw an exception.
-     *  This gives the user the option of not continuing the
-     *  execution, something that is particularly useful if continuing
-     *  execution will result in repeated warnings.
-     *  By default, only the message of the throwable
-     *  is shown.  The stack trace information is only shown if the
-     *  user clicks on the "Display Stack Trace" button.
+    /** Display the warning message and throwable information.  In
+     *  this base class, the the default handler merely prints the
+     *  warning to stderr.
      *  @param info The message.
      *  @param throwable The Throwable.
      *  @exception CancelException If the user clicks on the "Cancel" button.
@@ -258,7 +254,7 @@ public class MessageHandler {
         System.out.print(" (yes or no) ");
 
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(
-                                                          System.in));
+                System.in));
 
         try {
             String reply = stdIn.readLine();
