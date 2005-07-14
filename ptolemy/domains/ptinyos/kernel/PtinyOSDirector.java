@@ -62,6 +62,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -367,7 +368,7 @@ public class PtinyOSDirector extends Director {
 
         if (((BooleanToken) simulate.getToken()).booleanValue()) {
             NamedObj toplevel = _toplevelNC();
-            String toplevelName = toplevel.getName();
+            String toplevelName = _sanitizedName(toplevel);
 
             // Add the destinationDirectory to the classpath.
             //String oldClasspath = System.getProperty("java.class.path");
@@ -477,12 +478,7 @@ public class PtinyOSDirector extends Director {
         String filename;
 
         if (container != toplevel) {
-            String toplevelName = toplevel.getName();
-
-            if (toplevelName == "") {
-                toplevelName = _unnamed;
-            }
-
+            String toplevelName = _sanitizedName(toplevel);
             filename = toplevelName + "_" + container.getName(toplevel);
         } else {
             filename = toplevel.getName();
@@ -496,16 +492,17 @@ public class PtinyOSDirector extends Director {
 
         // Open file for the generated nesC code.
         File writeFile = new File(directory, filename + ".nc");
-        _confirmOverwrite(writeFile);
-
-        // Write the generated code to the file.
-        try {
-            FileWriter writer = new FileWriter(writeFile);
-            writer.write(code);
-            writer.close();
-        } catch (IOException e) {
-            throw new IllegalActionException(this, e,
-                    "Failed to open file for writing.");
+        
+        if (_confirmOverwrite(writeFile)) {
+            // Write the generated code to the file.
+            try {
+                FileWriter writer = new FileWriter(writeFile);
+                writer.write(code);
+                writer.close();
+            } catch (IOException e) {
+                throw new IllegalActionException(this, e,
+                        "Failed to open file for writing.");
+            }
         }
 
         // Descend recursively into contained composites.
@@ -602,15 +599,12 @@ public class PtinyOSDirector extends Director {
      *  dbgmode is a long long in C
      *  msg is a char * in C
      *  nodenum is a short in C
+     *
+     *  NOTE: dbgmode is unused.
      */
     public void tosdbg(String dbgmode, String msg, String nodenum) {
         if (_debugging) {
-            /*
-             _debug("Called tosdbg(): ");
-             _debug("     dbgmode: " + dbgmode);
-             _debug("     msg: " + msg);
-             _debug("     nodenum: " + nodenum);
-             */
+            // Remove leading and trailing whitespace.
             String trimmedMsg = msg.trim();
 
             if (nodenum != null) {
@@ -645,13 +639,9 @@ public class PtinyOSDirector extends Director {
     private void _generateLoader() throws IllegalActionException {
         // Use filename relative to toplevel PtinyOSDirector.
         NamedObj toplevel = _toplevelNC();
-        String toplevelName = toplevel.getName();
+        String toplevelName = _sanitizedName(toplevel);
 
-        if (toplevelName == "") {
-            toplevelName = _unnamed;
-        }
-
-        CodeString text = new CodeString();
+        _CodeString text = new _CodeString();
 
         text.addLine("import ptolemy.domains.ptinyos.kernel.PtinyOSLoader;");
         text.addLine("import ptolemy.domains.ptinyos.kernel.PtinyOSDirector;");
@@ -729,16 +719,17 @@ public class PtinyOSDirector extends Director {
 
         // Open file for the generated loaderFile.
         File writeFile = new File(directory, loaderFileName);
-        _confirmOverwrite(writeFile);
 
-        // Write the generated code to the file.
-        try {
-            FileWriter writer = new FileWriter(writeFile);
-            writer.write(text.toString());
-            writer.close();
-        } catch (IOException e) {
-            throw new IllegalActionException(this, e,
-                    "Failed to open file for writing.");
+        if (_confirmOverwrite(writeFile)) {
+            // Write the generated code to the file.
+            try {
+                FileWriter writer = new FileWriter(writeFile);
+                writer.write(text.toString());
+                writer.close();
+            } catch (IOException e) {
+                throw new IllegalActionException(this, e,
+                        "Failed to open file for writing.");
+            }
         }
     }
 
@@ -758,20 +749,15 @@ public class PtinyOSDirector extends Director {
     private String _generateMakefile() throws IllegalActionException {
         // Use filename relative to toplevel PtinyOSDirector.
         NamedObj toplevel = _toplevelNC();
-        String toplevelName = toplevel.getName();
+        String toplevelName = _sanitizedName(toplevel);
 
-        if (toplevelName == "") {
-            toplevelName = _unnamed;
-        }
-
-        CodeString text = new CodeString();
+        _CodeString text = new _CodeString();
         text.addLine("TOSDIR=" + tosDir.stringValue());
 
         // path to contrib
         // FIXME use pathseparator?
         // FIXME make sure no trailing / before /../
-        text
-                .addLine("TOSMAKE_PATH += $(TOSDIR)/../contrib/ptII/ptinyos/tools/make");
+        text.addLine("TOSMAKE_PATH += $(TOSDIR)/../contrib/ptII/ptinyos/tools/make");
 
         text.addLine("COMPONENT=" + toplevelName);
 
@@ -780,7 +766,9 @@ public class PtinyOSDirector extends Director {
         text.addLine("PFLAGS +=" + " -DCOMMAND_PORT=" + commandPort.getToken()
                 + " -DEVENT_PORT=" + eventPort.getToken());
 
-        text.addLine("MY_PTCC_FLAGS +=" + " -D_PTII_NODE_NUM=" + toplevelName);
+        // Turn _ into _1 for JNI compatibility.
+        String nativeMethodName = toplevelName.replaceAll("_", "_1");
+        text.addLine("MY_PTCC_FLAGS +=" + " -D_PTII_NODE_NUM=" + nativeMethodName);
 
         String[] targets = target.stringValue().split("\\s");
 
@@ -788,8 +776,7 @@ public class PtinyOSDirector extends Director {
             if (targets[i].equals("ptII") || targets[i].equals("all")) {
                 // FIXME will this work for "all"?
                 //text.addLine("PFLAGS += -I$(TOSDIR)/../contrib/ptII/ptinyos/tos/platform/ptII/packet");
-                text
-                        .addLine("PFLAGS += -I$(TOSDIR)/../contrib/ptII/ptinyos/beta/TOSSIM-packet");
+                text.addLine("PFLAGS += -I$(TOSDIR)/../contrib/ptII/ptinyos/beta/TOSSIM-packet");
                 text.addLine("include $(PTII)/mk/ptII.mk");
                 break;
             }
@@ -803,18 +790,19 @@ public class PtinyOSDirector extends Director {
 
         // Open file for the generated makefile.
         File writeFile = new File(directory, makefileName);
-        _confirmOverwrite(writeFile);
 
-        // Write the generated code to the file.
-        try {
-            FileWriter writer = new FileWriter(writeFile);
-            writer.write(text.toString());
-            writer.close();
-        } catch (IOException e) {
-            throw new IllegalActionException(this, e,
-                    "Failed to open file for writing.");
+        if (_confirmOverwrite(writeFile)) {
+            // Write the generated code to the file.
+            try {
+                FileWriter writer = new FileWriter(writeFile);
+                writer.write(text.toString());
+                writer.close();
+            } catch (IOException e) {
+                throw new IllegalActionException(this, e,
+                        "Failed to open file for writing.");
+            }
         }
-
+        
         return makefileName;
     }
 
@@ -836,50 +824,61 @@ public class PtinyOSDirector extends Director {
             Process proc = rt.exec(cmd);
 
             // Connect a thread to the error stream of the cmd process.
-            StreamGobbler errorGobbler = new StreamGobbler(proc
+            _StreamReaderThread errorGobbler = new _StreamReaderThread(proc
                     .getErrorStream(), "ERROR");
 
             // Connect a thread to the output stream of the cmd process.
-            StreamGobbler outputGobbler = new StreamGobbler(proc
-                    .getInputStream(), "OUTPUT", null);
+            _StreamReaderThread outputGobbler = new _StreamReaderThread(proc
+                    .getInputStream(), "OUTPUT");
 
             // Start the threads.
             errorGobbler.start();
             outputGobbler.start();
 
-            // FIXME: make returns non-zero value if there was an error
             // Wait for exit and see if there are any errors.
+            // make returns non-zero value if there was an error
             int exitVal = proc.waitFor();
-            System.out.println("ExitValue: " + exitVal);
 
             if (exitVal != 0) {
                 throw new InternalErrorException("make returned nonzero value.");
             }
+            
         } catch (Exception e) {
             throw new InternalErrorException(
                     "Could not compile generated code. " + e);
         }
     }
 
-    /** If the file exists, confirm overwrite if needed.
+    /** Confirm overwrite of file if the confirmOverwrite parameter is
+     *  set to true.  Return true if ok to write file, throw
+     *  IllegalActionException if the user cancels the ovewrite.
+     *  @param file File to be written.
+     *  @return True if ok to write file.
+     *  @exception IllegalActionException If code generation should be halted.
      */
-    private void _confirmOverwrite(File file) throws IllegalActionException {
+    private boolean _confirmOverwrite(File file) throws IllegalActionException {
         boolean confirmOverwriteValue = ((BooleanToken) confirmOverwrite
                 .getToken()).booleanValue();
 
-        if (file.exists() && confirmOverwriteValue) {
-            if (!MessageHandler.yesNoQuestion("OK to overwrite " + file + "?")) {
-                throw new IllegalActionException(this,
-                        "Please select another file name.");
-            } else {
-                if (!file.delete()) {
-                    throw new IllegalActionException(this,
-                            "Could not delete file " + file);
+        if (confirmOverwriteValue && file.exists()) {
+            try {
+                if (MessageHandler.yesNoCancelQuestion("Overwrite " + file + "?")) {
+                    if (!file.delete()) {
+                        throw new IllegalActionException(this,
+                                "Could not delete file " + file);
+                    }
+                } else {
+                    return false;
                 }
+            } catch (CancelException ex) {
+                throw new IllegalActionException(
+                        this, "Cancelled overwrite of " + file);
             }
         }
+        return true;
     }
 
+    // FIXME comment
     /** Generate NC code for the given model. This does not descend
      *  hierarchically into contained composites. It simply generates
      *  code for the top level of the specified model.
@@ -891,9 +890,10 @@ public class PtinyOSDirector extends Director {
         CompositeActor container = (CompositeActor) getContainer();
 
         //NamedObj toplevel = _toplevelNC();
-        CodeString generatedCode = new CodeString();
+        _CodeString generatedCode = new _CodeString();
 
-        String containerName = model.getName();
+        String containerName = _sanitizedName(model);
+        
         generatedCode.addLine("configuration " + containerName + " {");
 
         //if (container != toplevel) {
@@ -942,7 +942,7 @@ public class PtinyOSDirector extends Director {
      */
     private static String _interfaceProvides(CompositeActor model)
             throws IllegalActionException {
-        CodeString codeString = new CodeString();
+        _CodeString codeString = new _CodeString();
 
         Iterator inPorts = model.inputPortList().iterator();
 
@@ -966,7 +966,7 @@ public class PtinyOSDirector extends Director {
      */
     private static String _interfaceUses(CompositeActor model)
             throws IllegalActionException {
-        CodeString codeString = new CodeString();
+        _CodeString codeString = new _CodeString();
 
         Iterator outPorts = model.outputPortList().iterator();
 
@@ -990,7 +990,7 @@ public class PtinyOSDirector extends Director {
      */
     private static String _includeModule(CompositeActor model)
             throws IllegalActionException {
-        CodeString codeString = new CodeString();
+        _CodeString codeString = new _CodeString();
 
         // Examine each actor in the model.
         Iterator actors = model.entityList().iterator();
@@ -1037,7 +1037,7 @@ public class PtinyOSDirector extends Director {
      */
     private static String _includeConnection(CompositeActor model, Actor actor)
             throws IllegalActionException {
-        CodeString codeString = new CodeString();
+        _CodeString codeString = new _CodeString();
 
         String actorName = StringUtilities.sanitizeName(((NamedObj) actor)
                 .getName());
@@ -1101,7 +1101,7 @@ public class PtinyOSDirector extends Director {
      */
     private String _includeConnection(CompositeActor model)
             throws IllegalActionException {
-        CodeString codeString = new CodeString();
+        _CodeString codeString = new _CodeString();
         Actor actor;
 
         // Generate "Driver functions" for common actors.
@@ -1189,6 +1189,17 @@ public class PtinyOSDirector extends Director {
         }
     }
 
+    /** Get the sanitized name, or "Unnamed" if no name.
+     */
+    private String _sanitizedName(NamedObj obj) {
+        String objName = obj.getName();
+        objName = StringUtilities.sanitizeName(objName);
+        if (objName == "") {
+            objName = _unnamed;
+        }
+        return objName;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         native methods                    ////
     // Native methods in TOSSIM code.
@@ -1203,11 +1214,13 @@ public class PtinyOSDirector extends Director {
 
     private static String _unnamed = "Unnamed";
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+    
     // Class for creating a StringBuffer that represents generated code.
-    private static class CodeString {
-        public CodeString() {
+    private static class _CodeString {
+        public _CodeString() {
             text = new StringBuffer();
         }
 
@@ -1228,51 +1241,76 @@ public class PtinyOSDirector extends Director {
         private static String _endLine = "\n";
     }
 
-    // FIXME comment
-    // FIXME rename
-    private static class StreamGobbler extends Thread {
-        InputStream is;
 
-        String type;
+    /** Private class that reads a stream in a thread.
+     */
+    private class _StreamReaderThread extends Thread {
 
-        OutputStream os;
-
-        StreamGobbler(InputStream is, String type) {
-            this(is, type, null);
+        /** Create a _StreamReaderThread.
+         *  @param inputStream The stream to read from.
+         *  @param name The name of this _StreamReaderThread.
+         */
+        _StreamReaderThread(InputStream inputStream, String name) {
+            this(inputStream, name, null);
         }
 
-        StreamGobbler(InputStream is, String type, OutputStream redirect) {
-            this.is = is;
-            this.type = type;
-            this.os = redirect;
+        /** Create a _StreamReaderThread.
+         *  @param inputStream The stream to read from.
+         *  @param name The name of this _StreamReaderThread.
+         *  @param redirect The name of the output stream to redirect the
+            inputStream to.
+         */
+        _StreamReaderThread(InputStream inputStream, String name,
+                OutputStream redirect) {
+            _inputStream = inputStream;
+            _name = name;
+            _outputStream = redirect;
         }
 
+        /** Read lines from the input stream and redirect them to the
+         *  output stream (if it exists), and to the debugging output.
+         */
         public void run() {
             try {
-                PrintWriter pw = null;
+                PrintWriter printWriter = null;
 
-                if (os != null) {
-                    pw = new PrintWriter(os);
+                if (_outputStream != null) {
+                    printWriter = new PrintWriter(_outputStream);
                 }
 
-                InputStreamReader isr = new InputStreamReader(is);
+                InputStreamReader isr = new InputStreamReader(_inputStream);
                 BufferedReader br = new BufferedReader(isr);
                 String line = null;
 
                 while ((line = br.readLine()) != null) {
-                    if (pw != null) {
-                        pw.println(line);
+
+                    // Redirect the input.
+                    if (printWriter != null) {
+                        printWriter.println(line);
                     }
 
-                    System.out.println(type + ">" + line);
+                    // Create the debug output.
+                    if (_debugging) {
+                        _debug(_name + ">" + line);
+                    }
+                    System.out.println(_name + ">" + line);
                 }
 
-                if (pw != null) {
-                    pw.flush();
+                if (printWriter != null) {
+                    printWriter.flush();
                 }
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
+
+        // Stream from which to read.
+        InputStream _inputStream;
+
+        // Name of the input stream.
+        String _name;
+
+        // Stream to which to write the redirected input.
+        OutputStream _outputStream;
     }
 }
