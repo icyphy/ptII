@@ -283,11 +283,22 @@ public class FileUtilities {
                 // to this method as C:\Program%20Files\Ptolemy\...
                 file = new File(StringUtilities.substitute(name, "%20", " "));
 
+                URL possibleJarURL = null;
+                if (!file.canRead()) {
+                    // ModelReference and FilePortParameters sometimes
+                    // have paths that have !/ in them.
+                    possibleJarURL = ClassUtilities.jarURLEntryResource(name);
+                    if (possibleJarURL != null) {
+                        file = new File(possibleJarURL.getFile());
+                    }
+                }
                 if (!file.canRead()) {
                     throw new IOException("Cannot read file '" + name
                             + "' or '"
                             + StringUtilities.substitute(name, "%20", " ")
-                            + "'");
+                            + "'"
+                            + (possibleJarURL == null ? "" :
+                                    " or '" + possibleJarURL.getFile() + ""));
                 }
             }
 

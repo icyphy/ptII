@@ -96,25 +96,28 @@ public class ClassUtilities {
         int jarEntry = jarURLString.indexOf("!/");
 
         if (jarEntry == -1) {
-            return null;
-        } else {
-            try {
-                // !/ means that this could be in a jar file.
-                String entry = jarURLString.substring(jarEntry + 2);
-
-                // We might be in the Swing Event thread, so
-                // Thread.currentThread().getContextClassLoader()
-                // .getResource(entry) probably will not work.
-                Class refClass = Class.forName("ptolemy.util.ClassUtilities");
-                URL entryURL = refClass.getClassLoader().getResource(entry);
-                return entryURL;
-            } catch (Exception ex) {
-                // IOException constructor does not take a cause, so we add it.
-                IOException ioException = new IOException("Cannot find \""
-                        + jarURLString + "\".");
-                ioException.initCause(ex);
-                throw ioException;
+            jarEntry = jarURLString.indexOf("!\\");
+            if (jarEntry == -1) {
+                return null;
             }
+        }
+        
+        try {
+            // !/ means that this could be in a jar file.
+            String entry = jarURLString.substring(jarEntry + 2);
+
+            // We might be in the Swing Event thread, so
+            // Thread.currentThread().getContextClassLoader()
+            // .getResource(entry) probably will not work.
+            Class refClass = Class.forName("ptolemy.util.ClassUtilities");
+            URL entryURL = refClass.getClassLoader().getResource(entry);
+            return entryURL;
+        } catch (Exception ex) {
+            // IOException constructor does not take a cause, so we add it.
+            IOException ioException = new IOException("Cannot find \""
+                    + jarURLString + "\".");
+            ioException.initCause(ex);
+            throw ioException;
         }
     }
 
