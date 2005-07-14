@@ -199,7 +199,7 @@ public abstract class KernelMain {
      *  director and a parameter called "copernicus_iterations" is
      *  present, then the value of that parameter is used as the
      *  number of iterations.  If the director is an SDF director, and
-     *  there is is no "copernicus_iterations" parameter but the
+     *  there is no "copernicus_iterations" parameter but the
      *  "ptolemy.ptII.copernicusIterations" Java property is set, then
      *  the value of that property is used as the number of
      *  iterations.
