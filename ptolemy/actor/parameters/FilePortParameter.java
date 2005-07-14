@@ -41,6 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 
 
@@ -274,7 +275,28 @@ public class FilePortParameter extends PortParameter {
         String name = stringValue();
 
         try {
-            return FileUtilities.nameToFile(name, getBaseDirectory());
+            File file =
+                FileUtilities.nameToFile(name, getBaseDirectory());
+            System.out.println("FilePortParameter: 0 " + file);
+            if (file.toString().indexOf("!/") != -1 
+                    || file.toString().indexOf("!\\") != -1) {
+                // We have a jar url that, try dereferencing it
+                // ModelReference.xml needed this under Webstart.
+                try {
+                    URL possibleJarURL =
+                        ClassUtilities.jarURLEntryResource(name);
+                    System.out.println("FilePortParameter: " + possibleJarURL);
+                    if (possibleJarURL != null) {
+                        file = new File(possibleJarURL.getFile());
+                        System.out.println("FilePortParameter: 2" + file);
+                    }
+                } catch (Throwable throwable) {
+                    System.out.println("FilePortParameter: " + throwable);
+                    //Ignored, our attempt failed
+                }
+            }
+
+            return file;
         } catch (IllegalArgumentException ex) {
             // Java 1.4.2 some times reports:
             //  java.lang.IllegalArgumentException: URI is not absolute
