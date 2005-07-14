@@ -309,7 +309,7 @@ public class MessageHandler {
             if (reply.trim().toLowerCase().equals("yes")) {
                 return true;
             } else if (reply.trim().toLowerCase().equals("cancel")) {
-                _error("Cancelled: " + question);
+                throw new ptolemy.util.CancelException("Cancelled: "+ question);
             }
         } catch (IOException ex) {
         }
