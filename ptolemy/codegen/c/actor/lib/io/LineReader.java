@@ -58,21 +58,22 @@ public class LineReader extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * The method reads in codeBlock1 and puts into the
-     * given stream buffer.
-     * @param stream the given buffer to append the code to
+     * The method reads the <code>readLine</code> block from LineReader.c,
+     * replaces macros with their values and appends to the given code buffer.
+     * @param code the given buffer to append the code to.
      */
-    public void generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("readLine");
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
 
-    /** Generate initialization code.
-     *  This method reads the <code>initBlock</code> from LineReader.c,
-     *  replaces macros with their values and returns the results.
-     *  @return The processed <code>initBlock</code>.
+    /** 
+     * Generate initialization code.
+     * This method reads the <code>initBlock</code> from LineReader.c,
+     * replaces macros with their values and returns the processed code string.
+     * @return The processed <code>initBlock</code>.
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
@@ -111,10 +112,11 @@ public class LineReader extends CCodeGeneratorHelper {
         return processCode(tmpStream.toString());
     }
 
-    /** Generate preinitialization code.
-     *  This method reads the <code>preinitBlock</code> from LineReader.c,
-     *  replaces macros with their values and returns the results.
-     *  @return The processed code block.
+    /** 
+     * Generate preinitialization code.
+     * This method reads the <code>preinitBlock</code> from LineReader.c,
+     * replaces macros with their values and returns the processed code string.
+     * @return The processed code block.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
@@ -123,24 +125,26 @@ public class LineReader extends CCodeGeneratorHelper {
         return processCode(tmpStream.toString());
     }
 
-    /** Generate wrap up code.
-     *  This method reads the <code>wrapUpBlock</code> from LineReader.c,
-     *  replaces macros with their values and returns the results.
-     *  @return The processed <code>wrapUpBlock</code>.
+    /** 
+     * Generate wrap up code.
+     * This method reads the <code>wrapUpBlock</code> from LineReader.c,
+     * replaces macros with their values and appends to the given code buffer.
+     * @param code the given buffer to append the code to.
      */
-    public void generateWrapupCode(StringBuffer stream)
+    public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
         if (_fileOpen) {
             CodeStream tmpStream = new CodeStream(this);
             tmpStream.appendCodeBlock("wrapUpBlock");
-            stream.append(processCode(tmpStream.toString()));
+            code.append(processCode(tmpStream.toString()));
         }
     }
 
-    /** Get the files needed by the code generated for the
-     *  LineReader actor.
-     *  @return A set of strings that are names of the files
-     *   needed by the code generated for the LineReader actor.
+    /** 
+     * Get the files needed by the code generated for the
+     * LineReader actor.
+     * @return A set of strings that are names of the files
+     *  needed by the code generated for the LineReader actor.
      */
     public Set getIncludingFiles() {
         Set files = new HashSet();

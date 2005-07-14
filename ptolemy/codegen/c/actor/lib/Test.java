@@ -57,10 +57,14 @@ public class Test extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate initialization code.
-     *  This method reads the <code>codeBlock1</code> from Test.c,
-     *  replaces macros with their values and returns the results.
-     *  @return The processed <code>initBlock</code>.
+    /**
+     * Generate fire code.
+     * The method reads in <code>fireBlock</code> from Test.c,
+     * replaces macros with their values and appends the processed code 
+     * block to the given code buffer.
+     * @param code the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
@@ -79,27 +83,12 @@ public class Test extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate initialization code.
-     * This method reads the <code>setSeedBlock</code> from helperName.c,
-     * replaces macros with their values and returns the results.
+     * Generate preinitialize code.
+     * This method reads the <code>preinitBlock</code> from Test.c,
+     * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
-     * error in processing the specified code block.
-     * @return The processed code block.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("initBlock");
-        return processCode(tmpStream.toString());
-    }
-
-    /**
-     * Generate preinitialization code.
-     * This method reads the <code>preinitBlock</code> from helperName.c,
-     * replaces macros with their values and returns the results.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
-     * @return The processed <code>preinitBlock</code>.
+     *  error in processing the specified code block(s).
+     * @return The processed code string.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
@@ -108,24 +97,11 @@ public class Test extends CCodeGeneratorHelper {
         return processCode(tmpStream.toString());
     }
 
-    /** Generate wrap up code.
-     *  This method reads the <code>wrapupBlock</code> from helperName.c,
-     *  replaces macros with their values and put the processed code block
-     *  into the given stream buffer.
-     * @param stream the given buffer to append the code to.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
-     */
-    public void generateWrapupCode(StringBuffer stream)
-            throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("wrapupBlock");
-        stream.append(processCode(tmpStream.toString()));
-    }
-    /** Get the files needed by the code generated for the
-     *  Test actor.
-     *  @return A set of strings that are names of the files
-     *   needed by the code generated for the Test actor.
+    /** 
+     * Get the files needed by the code generated for the
+     * Test actor.
+     * @return A set of strings that are names of the files
+     *  needed by the code generated for the Test actor.
      */
     public Set getIncludingFiles() {
         Set files = new HashSet();
@@ -138,5 +114,5 @@ public class Test extends CCodeGeneratorHelper {
     ////                         private variables                 ////
 
     /** Original type polymorphic Test actor. */
-    ptolemy.actor.lib.Test _testActor;
+    private ptolemy.actor.lib.Test _testActor;
 }

@@ -59,22 +59,30 @@ public class AudioReader extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * The method reads in <code>writeSoundFile</code> from AudioReader.c 
-     * and puts into the given stream buffer.
-     * @param stream the given buffer to append the code to.
+     * The method reads in <code>readSoundFile</code> from AudioReader.c 
+     * and puts into the given code buffer.
+     * @param code the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("readSoundFile");
 
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
     
-    /** Generate initialization code.
-     *  This method reads the <code>initBlock</code> from AudioReader.c,
-     *  replaces macros with their values and returns the results.
-     *  @return The processed <code>initBlock</code>.
+    /** 
+     * Generate initialization code.
+     * This method gets the file path from the actor's fileOrURL parameter.
+     * Then, it reads the <code>initBlock</code> from AudioReader.c and
+     * passes the file path string as an argument to code block. It replaces
+     * macros with their values and returns the processed code string.
+     * @exception IllegalActionException If the file path parameter is invalid
+     *  or the code stream encounters an error in processing the specified code
+     *  block(s).
+     * @return The processed code string.
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
@@ -96,11 +104,11 @@ public class AudioReader extends CCodeGeneratorHelper {
 
     /**
      * Generate preinitialization code.
-     * This method reads the <code>preinitBlock</code> from helperName.c,
-     * replaces macros with their values and returns the results.
+     * This method reads the <code>preinitBlock</code> from AudioReader.c,
+     * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
-     * @return The processed <code>preinitBlock</code>.
+     *  error in processing the specified code block(s).
+     * @return The processed code string.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
@@ -109,24 +117,26 @@ public class AudioReader extends CCodeGeneratorHelper {
         return processCode(tmpStream.toString());
     }
 
-    /** Generate wrap up code.
-     *  This method reads the <code>wrapupBlock</code> from helperName.c,
-     *  replaces macros with their values and put the processed code block
-     *  into the given stream buffer.
-     * @param stream the given buffer to append the code to.
+    /** 
+     * Generate wrap up code.
+     * This method reads the <code>wrapupBlock</code> from AudioReader.c,
+     * replaces macros with their values and appends the processed code block
+     * to the given code buffer.
+     * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
+     *  error in processing the specified code block(s).
      */
-    public void generateWrapupCode(StringBuffer stream)
+    public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("wrapupBlock");
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
-    /** Get the files needed by the code generated for the
-     *  AudioReader actor.
-     *  @return A set of strings that are names of the files
-     *   needed by the code generated for the AudioReader actor.
+    /** 
+     * Get the files needed by the code generated for the
+     * AudioReader actor.
+     * @return A set of strings that are names of the files
+     *  needed by the code generated for the AudioReader actor.
      */
     public Set getIncludingFiles() {
         Set files = new HashSet();

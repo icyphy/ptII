@@ -56,9 +56,11 @@ public class AddSubtract extends CCodeGeneratorHelper {
      * The method generate code that loops through each
      * INPUT [multi-ports] and combine (add or substract) them.
      * The result code is put into the given stream buffer
-     * @param stream the given buffer to append the code to
+     * @param code the given buffer to append the code to
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block.
      */
-    public void generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         ptolemy.actor.lib.AddSubtract actor = 
             (ptolemy.actor.lib.AddSubtract) getComponent();
@@ -85,6 +87,6 @@ public class AddSubtract extends CCodeGeneratorHelper {
 
         tmpStream.append(";\n");
 
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
 }

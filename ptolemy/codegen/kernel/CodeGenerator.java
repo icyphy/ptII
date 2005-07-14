@@ -71,13 +71,13 @@ import ptolemy.util.MessageHandler;
  *  @Pt.AcceptedRating Red (eal)
  */
 public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
-    /** Create a new instance of the C code generator.
+    /** Create a new instance of the code generator.
      *  @param container The container.
-     *  @param name The name.
+     *  @param name The name of the code generator.
      *  @exception IllegalActionException If super class throws the
      *   exception or error occurs when setting the file path.
-     *  @exception NameDuplicationException If super class throws the
-     *   exception or error occurs when setting the file path.
+     *  @exception NameDuplicationException If the super class throws the
+     *   exception or an error occurs when setting the file path.
      */
     public CodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -144,6 +144,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Generate the body code that lies between initialize and wrapup.
      *  In this base class, nothing is generated.
+     *  @exc
      *  @return The empty string.
      */
     public String generateBodyCode() throws IllegalActionException {
@@ -246,8 +247,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return code.toString();
     }
 
-    /** Generate preinitialize code if there is any and attach it to the given
-     *  string buffer. This method calls the generatePreinitializeCode() method
+    /** Generate preinitialize code (if there is any).
+     *  This method calls the generatePreinitializeCode() method
      *  of the code generator helper associated with the model director
      *  @return The preinitialize code of the containing composite actor.
      *  @exception IllegalActionException If the helper class for the model
@@ -362,7 +363,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /** Return the associated component, which is always the container.
-     *  @return The component for which this is a helper to generate code.
+     *  @return The component which is a helper to generate code.
      */
     public NamedObj getComponent() {
         return getContainer();
@@ -540,18 +541,19 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Given a port or parameter, append a string in the form
      *  "static <i>type</i> <i>objectName</i>" to the given string buffer.
-     *  Return true if the type of the port or parameter is ArrayType.
-     *  This method is only called in generateVariableDeclarations() method.
-     *  @param object The port or parameter.
+     *  Return true if the type of the port or parameter is ArrayType. This
+     *  method is only called in the generateVariableDeclarations() method.
+     *  @param namedobj The port or parameter.
+     *  @param code The string buffer that contains the generated code.
      *  @return True if the type the port or parameter is ArrayType.
      */
-    private boolean _generateType(NamedObj object, StringBuffer code) {
+    private boolean _generateType(NamedObj namedobj, StringBuffer code) {
         String type = "";
 
-        if (object instanceof Parameter) {
-            type = ((Parameter) object).getType().toString();
-        } else if (object instanceof TypedIOPort) {
-            type = ((TypedIOPort) object).getType().toString();
+        if (namedobj instanceof Parameter) {
+            type = ((Parameter) namedobj).getType().toString();
+        } else if (namedobj instanceof TypedIOPort) {
+            type = ((TypedIOPort) namedobj).getType().toString();
         }
 
         boolean isArrayType = false;
@@ -570,7 +572,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append("static ");
         code.append(type);
         code.append(" ");
-        code.append(object.getFullName().replace('.', '_'));
+        code.append(namedobj.getFullName().replace('.', '_'));
         return isArrayType;
     }
 

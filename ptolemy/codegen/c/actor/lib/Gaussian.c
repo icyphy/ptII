@@ -39,8 +39,3 @@
         $ref(output) = v1 * $actorSymbolmultiplier);
     }
 /**/
-
-/*** initBlock ***//**/
-
-/*** wrapupBlock ***//**/
-

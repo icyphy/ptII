@@ -23,10 +23,3 @@
     $ref(output) = sqrt($ref(input));
 /**/
 
-/***preinitBlock***//**/
-
-/***fireBlock***//**/
-
-/*** initBlock ***//**/
-
-/*** wrapupBlock ***//**/

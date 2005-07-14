@@ -1,6 +1,6 @@
-/***fireBlock***//**/
-
 /*** preinitBlock ***//**/
+
+/***fireBlock***//**/
 
 /*** initBlock ***//**/
 

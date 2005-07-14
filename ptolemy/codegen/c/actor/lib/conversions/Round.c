@@ -13,11 +13,3 @@
 /*** truncateBlock ***/
     $ref(output) = trunc($ref(input));
 /**/
-
-/*** preinitBlock ***//**/
-
-/*** initBlock ***//**/
-
-/*** fireBlock ***//**/
-
-/*** wrapupBlock ***//**/

@@ -57,21 +57,31 @@ public class LineWriter extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * The method reads in codeBlock1 and puts into the
-     * given stream buffer.
-     * @param stream the given buffer to append the code to.
+     * The method reads in <code>writeLine</code> from LineWriter.c,
+     * replaces macros with their values and appends to the given code buffer.
+     * @param code the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
+    public void generateFireCode(StringBuffer code) 
+        throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("writeLine");
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
 
-    /** Generate initialization code.
-     *  This method reads the <code>initBlock</code> from LineWriter.c,
-     *  replaces macros with their values and returns the results.
-     *  @return The processed <code>initBlock</code>.
+    /** 
+     * Generate initialization code.
+     * This method first checks if "System.out" is the file parameter. If so,
+     * it reads from LineWriter.c for the <code>openForStdout</code> block,
+     * which is code for opening standard output stream.  Then, the method
+     * checks the actor's confirmOverwrite and appends parameters, reads the
+     * <code>confirmOverwrite</code>, <code>openForAppend</code>, and
+     * <code>openForWrite</code> blocks accordingly.  Then it replaces macros
+     * with their values and returns the resulting code string.
+     * @return The processed code string.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
@@ -79,8 +89,6 @@ public class LineWriter extends CCodeGeneratorHelper {
         ptolemy.actor.lib.io.LineWriter actor = 
             (ptolemy.actor.lib.io.LineWriter) getComponent();
         CodeStream tmpStream = new CodeStream(this);
-
-        //tmpStream.appendCodeBlock("initBlock");
 
         if (actor.fileName.getExpression().equals("System.out")) {
             _fileOpen = false;
@@ -93,10 +101,10 @@ public class LineWriter extends CCodeGeneratorHelper {
             fileNameString = fileNameString.replaceFirst("file:/", "");
             fileNameString = fileNameString.replaceAll("%20", " ");
 
-            boolean fileExist = FileUtilities.nameToFile(fileNameString, null)
-                    .exists();
-            boolean askForOverwrite = actor.confirmOverwrite.getExpression()
-                    .equals("true");
+            boolean fileExist = 
+                FileUtilities.nameToFile(fileNameString, null).exists();
+            boolean askForOverwrite = 
+                actor.confirmOverwrite.getExpression().equals("true");
 
             if (fileExist && askForOverwrite) {
                 tmpStream.appendCodeBlock("confirmOverwrite");
@@ -114,11 +122,11 @@ public class LineWriter extends CCodeGeneratorHelper {
 
     /**
      * Generate preinitialization code.
-     * This method reads the <code>preinitBlock</code> from helperName.c,
+     * This method reads the <code>preinitBlock</code> from LineWriter.c,
      * replaces macros with their values and returns the results.
+     * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
-     * @return The processed <code>preinitBlock</code>.
+     *  error in processing the specified code block(s).
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
@@ -127,24 +135,25 @@ public class LineWriter extends CCodeGeneratorHelper {
         return processCode(tmpStream.toString());
     }
 
-    /** Generate wrap up code.
-     *  This method reads the <code>wrapupBlock</code> from helperName.c,
-     *  replaces macros with their values and put the processed code block
-     *  into the given stream buffer.
-     * @param stream the given buffer to append the code to.
+    /** 
+     * Generate wrap up code.
+     * This method reads the <code>wrapupBlock</code> from LineWriter.c,
+     * replaces macros with their values and put the processed code block
+     * into the given code buffer.
+     * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
+     *  error in processing the specified code block(s).
      */
-    public void generateWrapupCode(StringBuffer stream)
+    public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("wrapupBlock");
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
-    /** Get the files needed by the code generated for the
-     *  LineWriter actor.
-     *  @return A set of strings that are names of the files
-     *   needed by the code generated for the LineWriter actor.
+    /** 
+     * Get the files needed by the code generated for the LineWriter actor.
+     * @return A set of strings that are names of the files
+     *  needed by the code generated for the LineWriter actor.
      */
     public Set getIncludingFiles() {
         Set files = new HashSet();
@@ -153,7 +162,7 @@ public class LineWriter extends CCodeGeneratorHelper {
     }
 
     /**
-     * indicate whether or not the user requests to open a file
+     * Indicate whether or not the user requests to open a file
      * e.g. false - write to standard (console) output
      *      true - some file name is specified
      */

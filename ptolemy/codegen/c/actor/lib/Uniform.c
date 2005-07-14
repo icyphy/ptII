@@ -21,6 +21,3 @@
     $ref(output) = ($actorSymbol(nextDouble)() * ($val(upperValue) - $val(lowerValue))) + $val(lowerValue);
 /**/
 
-/*** initBlock ***//**/
-
-/*** wrapupBlock ***//**/

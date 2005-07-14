@@ -24,4 +24,3 @@
     system("( ptplot -height 600 -width 600 $actorSymbol(filename); /bin/rm -f $actorSymbol(filename)) &");
 /**/
 
-/*** wrapupBlock ***//**/

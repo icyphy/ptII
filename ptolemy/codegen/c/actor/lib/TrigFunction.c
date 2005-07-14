@@ -8,7 +8,6 @@
 /**/
 
 
-
 /***cosBlock***/
     $ref(output) = cos($ref(input));
 /**/
@@ -28,11 +27,3 @@
     $ref(output) = atan($ref(input));
 /**/
 
-
-/***preinitBlock***//**/
-
-/***fireBlock***//**/
-
-/*** initBlock ***//**/
-
-/*** wrapupBlock ***//**/

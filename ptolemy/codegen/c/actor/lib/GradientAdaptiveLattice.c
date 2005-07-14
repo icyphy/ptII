@@ -1,5 +1,5 @@
-/*** preinitBlock(<arg>) ***/
-    const int $actorSymbol(_order) = <arg>;
+/*** preinitBlock***/
+    const int $actorSymbol(_order) = $size(reflectionCoeffients);
 
     double $actorSymbol(_backward)[$actorSymbol(_order)+1];
     double $actorSymbol(_backwardCache)[$actorSymbol(_order)+1];

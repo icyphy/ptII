@@ -54,7 +54,4 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     public CCodeGeneratorHelper(NamedObj component) {
         super(component);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 }

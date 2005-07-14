@@ -51,25 +51,27 @@ public class Accumulator extends CCodeGeneratorHelper {
     
     /**
      * Generate fire code.
-     * The method reads in fireBlock and puts into the given stream buffer.
-     * @param stream the given buffer to append the code to.
+     * The method reads in <code>fireBlock</code> from Accumulator.c, 
+     * replaces macros with their values and appends the processed code 
+     * block to the given code buffer.
+     * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
+     *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("fireBlock");
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
 
     /**
-     * Generate initialization code.
-     * This method reads the <code>setSeedBlock</code> from helperName.c,
-     * replaces macros with their values and returns the results.
+     * Generate initialize code.
+     * This method reads the <code>initBlock</code> from Accumulator.c, replaces 
+     * macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
-     * error in processing the specified code block.
-     * @return The processed code block.
+     *  error in processing the specified code block(s).
+     * @return The processed code string.
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
@@ -77,36 +79,4 @@ public class Accumulator extends CCodeGeneratorHelper {
         tmpStream.appendCodeBlock("initBlock");
         return processCode(tmpStream.toString());
     }
-
-    /**
-     * Generate preinitialization code.
-     * This method reads the <code>preinitBlock</code> from helperName.c,
-     * replaces macros with their values and returns the results.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
-     * @return The processed <code>preinitBlock</code>.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-        return processCode(tmpStream.toString());
-    }
-
-    /** Generate wrap up code.
-     *  This method reads the <code>wrapupBlock</code> from helperName.c,
-     *  replaces macros with their values and put the processed code block
-     *  into the given stream buffer.
-     * @param stream the given buffer to append the code to.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
-     */
-    public void generateWrapupCode(StringBuffer stream)
-            throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("wrapupBlock");
-        stream.append(processCode(tmpStream.toString()));
-    }
-
-
 }

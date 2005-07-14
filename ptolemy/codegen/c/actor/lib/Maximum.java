@@ -51,11 +51,13 @@ public class Maximum extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code
-     * The method passes the port width as an argument, reads in 
-     * <code>fireBlock</code> from Maximum.c and puts into the given 
-     * stream buffer.
-     * @param stream the given buffer to append the code to.
+     * Generate fire code.
+     * The method reads in <code>fireBlock</code> from Maximum.c,
+     * replaces macros with their values and appends the processed code 
+     * block to the given code buffer.
+     * @param code the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
@@ -65,57 +67,44 @@ public class Maximum extends CCodeGeneratorHelper {
         // FIXME: we need to resolve the token type in the future
         tmpStream.appendCodeBlock("fireBlock", new Integer(actor.input
                 .getWidth()));
-
         stream.append(processCode(tmpStream.toString()));
     }
 
-    /** Generate initialization code.
-     *  This method reads the <code>initMax</code>, 
-     *  <code>initChannelNum</code> from Maximum.c, replaces macros with 
-     *  their values and returns the results.
-     *  @return The processed code block.
+    /**
+     * Generate initialize code.
+     * This method reads the <code>initMax</code> and
+     * <code>initChannelNum</code> from Maximum.c, replaces macros with 
+     * their values and returns the processed code string.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     * @return The processed code string.
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        ptolemy.actor.lib.Maximum actor = (ptolemy.actor.lib.Maximum) getComponent();
+        ptolemy.actor.lib.Minimum actor = 
+            (ptolemy.actor.lib.Minimum) getComponent();
 
         CodeStream tmpStream = new CodeStream(this);
         if (actor.input.getWidth() > 0) {
             tmpStream.appendCodeBlock("initMax");
         }
         tmpStream.appendCodeBlock("initChannelNum");
-
         return processCode(tmpStream.toString());
     }
-
+    
     /**
-     * Generate preinitialization code.
-     * This method reads the <code>preinitBlock</code> from helperName.c,
-     * replaces macros with their values and returns the results.
+     * Generate preinitialize code.
+     * This method reads the <code>preinitBlock</code> from Maximum.c,
+     * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
-     * @return The processed <code>preinitBlock</code>.
+     *  error in processing the specified code block(s).
+     * @return The processed code string.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("preinitBlock");
         return processCode(tmpStream.toString());
-    }
-
-    /** Generate wrap up code.
-     *  This method reads the <code>wrapupBlock</code> from helperName.c,
-     *  replaces macros with their values and put the processed code block
-     *  into the given stream buffer.
-     * @param stream the given buffer to append the code to.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
-     */
-    public void generateWrapupCode(StringBuffer stream)
-            throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("wrapupBlock");
-        stream.append(processCode(tmpStream.toString()));
     }
 }

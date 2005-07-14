@@ -5,7 +5,3 @@
 /***fireBlock***/
     $ref(output) = $ref(input) - $actorSymbol(previousInput);
 /**/
-
-/*** initBlock ***//**/
-
-/*** wrapupBlock ***//**/

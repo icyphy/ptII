@@ -13,7 +13,3 @@ if ($ref(reset)) {
     $ref(output) = $actorSymbol(sum) / $actorSymbol(count);
 }
 /**/
-
-/*** initBlock ***//**/
-
-/*** wrapupBlock ***//**/
