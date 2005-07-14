@@ -107,7 +107,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
      *  <pre>
      *  templateDirectory: ptolemy/copernicus/applet/
      *  </pre>
-     *  @see #TEMPLATE_DIRECTORY_DEFAULT
      *  @return the default options.
      */ 
     public String getDefaultOptions() {
