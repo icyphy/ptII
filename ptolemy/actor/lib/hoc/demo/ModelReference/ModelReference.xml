@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModelReference" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="Director" class="ptolemy.actor.Director">
         <doc>Simple director that executes actors in the order in which they were created.</doc>
@@ -64,7 +64,7 @@
         </property>
     </entity>
     <entity name="VisualModelReference2" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH//MobileFunction/MobileFunction.xml">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$PTII/ptolemy/actor/lib/hoc/demo/MobileFunction/MobileFunction.xml">
         </property>
         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="20000L">
         </property>
