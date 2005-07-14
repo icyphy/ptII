@@ -343,8 +343,7 @@ public class GraphicalMessageHandler extends MessageHandler {
     }
 
     /** Ask the user a yes/no question, and return true if the answer
-     *  is yes.  In this base class, this prints the question on standard
-     *  output and looks for the reply on standard input.
+     *  is yes.
      *  NOTE: This must be called in the swing event thread!
      *  It is an error to call it outside the swing event thread.
      *  @param question The yes/no question.
@@ -370,8 +369,7 @@ public class GraphicalMessageHandler extends MessageHandler {
     }
 
     /** Ask the user a yes/no/cancel question, and return true if the answer
-     *  is yes.  In this base class, this prints the question on standard
-     *  output and looks for the reply on standard input.
+     *  is yes.
      *  NOTE: This must be called in the swing event thread!
      *  It is an error to call it outside the swing event thread.
      *  @param question The yes/no/cancel question.
@@ -379,33 +377,70 @@ public class GraphicalMessageHandler extends MessageHandler {
      *  @exception ptolemy.util.CancelException If the user clicks on
      *  the "Cancel" button.
      */
-    protected boolean _yesNoCancelQuestion(String question)
+    protected boolean _yesNoCancelQuestion(final String question)
             throws ptolemy.util.CancelException {
-        // FIXME: do we need this?
-        /*
-        if (!SwingUtilities.isEventDispatchThread()) {
-            throw new InternalErrorException(
-                    "method called from outside the swing event thread");
-        }
-         */
-        
-        Object[] message = new Object[1];
-        message[0] = StringUtilities.ellipsis(question,
-                StringUtilities.ELLIPSIS_LENGTH_LONG);
+        // In swing, updates to showing graphics must be done in the
+        // event thread.  If we are in the event thread, then proceed.
+        // Otherwise, invoke and wait.
+        if (EventQueue.isDispatchThread()) {
+            Object[] message = new Object[1];
+            message[0] = StringUtilities.ellipsis(question,
+                    StringUtilities.ELLIPSIS_LENGTH_LONG);
 
-        Object[] options = { "Yes", "No", "Cancel" };
+            Object[] options = { "Yes", "No", "Cancel" };
 
-        // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(getContext(), message,
-                "Warning", JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+            // Show the MODAL dialog
+            int selected = JOptionPane.showOptionDialog(getContext(), message,
+                    "Warning", JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
-        if (selected == 0) {
-            return true;
-        } else if (selected == 2) {
-            throw new ptolemy.util.CancelException();
+            if (selected == 0) {
+                return true;
+            } else if (selected == 2) {
+                throw new ptolemy.util.CancelException();
+            } else {
+                return false;
+            }
         } else {
-            return false;
+            // Place to store results from doYesNoCancel thread.
+            // results[0] is the return value ("Yes" or "No").
+            // results[1] is the error value ("Cancel").
+            final Boolean[] results = new Boolean[2];
+            
+            Runnable doYesNoCancel = new Runnable() {
+                    public void run() {
+                        Object[] message = new Object[1];
+                        message[0] = StringUtilities.ellipsis(question,
+                                StringUtilities.ELLIPSIS_LENGTH_LONG);
+
+                        Object[] options = { "Yes", "No", "Cancel" };
+
+                        // Show the MODAL dialog
+                        int selected = JOptionPane.showOptionDialog(getContext(), message,
+                                "Warning", JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+
+                        if (selected == 0) {
+                            results[0] = Boolean.TRUE;
+                        } else if (selected == 2) {
+                            results[1] = Boolean.TRUE;
+                        } else {
+                            results[0] = Boolean.FALSE;
+                        }
+                    }
+                };
+            try {
+                // Note: usually we use invokeLater() (see
+                // Top.deferIfNecessary()).  However, here, we need
+                // the return value.
+            	SwingUtilities.invokeAndWait(doYesNoCancel);
+            } catch (Exception ex) {
+            	// do nothing.   
+            }
+            if (results[1] != null && results[1].booleanValue()) {
+                throw new ptolemy.util.CancelException();
+            }
+            return results[0].booleanValue();
         }
     }
 
