@@ -49,7 +49,7 @@ import java.io.InputStreamReader;
  the derived class GraphicalMessageHandler.
  @see ptolemy.gui.GraphicalMessageHandler
 
- @author  Edward A. Lee, Steve Neuendorffer
+ @author  Edward A. Lee, Steve Neuendorffer, Elaine Cheong
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Green (cxh)
@@ -181,6 +181,24 @@ public class MessageHandler {
         return _handler._yesNoQuestion(question);
     }
 
+    /** Ask the user a yes/no/cancel question, and return true if the
+     *  answer is yes.  If the user clicks on the "Cancel" button,
+     *  then throw an exception.
+     *   
+     *  <p>NOTE: If in a derived class the message handler set by 
+     *  {@link #setMessageHandler(MessageHandler)} is graphical, then
+     *  this method must be called in the Swing event thread!
+     *
+     *  @param question The yes/no/cancel question.
+     *  @return True if the answer is yes.
+     *  @exception ptolemy.util.CancelException If the user clicks on
+     *  the "Cancel" button.
+     */
+    public static boolean yesNoCancelQuestion(String question)
+            throws ptolemy.util.CancelException {
+        return _handler._yesNoCancelQuestion(question);
+    }    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -267,7 +285,38 @@ public class MessageHandler {
 
         return false;
     }
+    
+    /** Ask the user a yes/no/cancel question, and return true if the
+     *  answer is yes.  If the user chooses "cancel", then throw an
+     *  exception.  In this base class, this prints the question on
+     *  the standard output and looks for the reply on the standard
+     *  input.
+     *  @param question The yes/no/cancel question to be asked.
+     *  @return True if the answer is yes.
+     *  @exception ptolemy.util.CancelException If the user chooses
+     *  "cancel".
+     */
+    protected boolean _yesNoCancelQuestion(String question)
+            throws ptolemy.util.CancelException {
+        System.out.print(question);
+        System.out.print(" (yes or no or cancel) ");
 
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(
+                                                          System.in));
+        try {
+            String reply = stdIn.readLine();
+
+            if (reply.trim().toLowerCase().equals("yes")) {
+                return true;
+            } else if (reply.trim().toLowerCase().equals("cancel")) {
+                _error("Cancelled: " + question);
+            }
+        } catch (IOException ex) {
+        }
+        
+        return false;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The message handler.

@@ -36,7 +36,9 @@ import java.lang.ref.WeakReference;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -68,7 +70,7 @@ import ptolemy.util.StringUtilities;
  <p>This class is based on (and contains code from) the diva GUIUtilities
  class.
 
- @author  Edward A. Lee, Steve Neuendorffer, and John Reekie
+ @author  Edward A. Lee, Steve Neuendorffer, John Reekie, and Elaine Cheong
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (eal)
@@ -362,6 +364,46 @@ public class GraphicalMessageHandler extends MessageHandler {
 
         if (selected == 0) {
             return true;
+        } else {
+            return false;
+        }
+    }
+
+    /** Ask the user a yes/no/cancel question, and return true if the answer
+     *  is yes.  In this base class, this prints the question on standard
+     *  output and looks for the reply on standard input.
+     *  NOTE: This must be called in the swing event thread!
+     *  It is an error to call it outside the swing event thread.
+     *  @param question The yes/no/cancel question.
+     *  @return True if the answer is yes.
+     *  @exception ptolemy.util.CancelException If the user clicks on
+     *  the "Cancel" button.
+     */
+    protected boolean _yesNoCancelQuestion(String question)
+            throws ptolemy.util.CancelException {
+        // FIXME: do we need this?
+        /*
+        if (!SwingUtilities.isEventDispatchThread()) {
+            throw new InternalErrorException(
+                    "method called from outside the swing event thread");
+        }
+         */
+        
+        Object[] message = new Object[1];
+        message[0] = StringUtilities.ellipsis(question,
+                StringUtilities.ELLIPSIS_LENGTH_LONG);
+
+        Object[] options = { "Yes", "No", "Cancel" };
+
+        // Show the MODAL dialog
+        int selected = JOptionPane.showOptionDialog(getContext(), message,
+                "Warning", JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+
+        if (selected == 0) {
+            return true;
+        } else if (selected == 2) {
+            throw new ptolemy.util.CancelException();
         } else {
             return false;
         }
