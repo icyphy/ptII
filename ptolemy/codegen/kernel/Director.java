@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NamedObj;
  @author Ye Zhou
  @version $Id$ Director.java,v 1.24 2005/07/13 14:07:26 cxh Exp $
  @since Ptolemy II 5.1
- @Pt.ProsedRating Red (zhouye)
+ @Pt.ProposedRating Red (zhouye)
  @Pt.AcceptedRating Red (zhouye)
 
  */

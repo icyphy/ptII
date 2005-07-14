@@ -44,10 +44,14 @@ import ptolemy.codegen.kernel.Director;
  @Pt.AcceptedRating Red (eal)
  */
 public class GiottoDirector extends Director {
-    /** Construct the code generator helper associated with the given GiottoDirector.
-     *  @param component The associated component.
+
+    /** Construct the code generator helper associated with the given
+     *  GiottoDirector.
+     *  @param director The associated
+     *   ptolemy.domains.giotto.kernel.GiottoDirector.
      */
-    public GiottoDirector(ptolemy.domains.giotto.kernel.GiottoDirector director) {
+    public GiottoDirector(
+            ptolemy.domains.giotto.kernel.GiottoDirector director) {
         super(director);
     }
 }

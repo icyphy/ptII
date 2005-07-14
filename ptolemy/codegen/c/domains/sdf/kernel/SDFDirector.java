@@ -66,9 +66,11 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (eal)
  */
 public class SDFDirector extends Director {
+
     /** Construct the code generator helper associated with the given
      *  SDFDirector.
-     *  @param component The associated component.
+     *  @param sdfDirector The associated 
+     *  ptolemy.domains.sdf.kernel.SDFDirector
      */
     public SDFDirector(ptolemy.domains.sdf.kernel.SDFDirector sdfDirector) {
         super(sdfDirector);
