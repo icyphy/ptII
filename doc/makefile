@@ -108,6 +108,7 @@ EXTRA_SRCS = \
 # Derived files that are preprocessed for use within vergil.
 VERGIL_DOCS = \
 	mainVergil.htm \
+	mainVergilPtiny.htm \
 	ptII$(PTVERSION).releaseVergil.htm \
 	troubleshootingVergil.htm
 
@@ -387,11 +388,9 @@ mainVergil.htm: main.htm
 	    -e 's@body.htm" target="body">@main.htm">@' \
 	    -e 's@^<link .*>@@' \
 		main.htm > $@
-# Used to be:
-#	sed -e 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' \
-#		-e 's@Ptolemy Project web page@<a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web page</a>@' \
-#	        -e 's@^<link .*>@@' \
-#		main.htm > $@
+
+mainVergilPtiny.htm: mainVergil.htm
+	awk -f $(ROOT)/doc/javahtml.awk $<  > $@  
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
@@ -424,6 +423,7 @@ whatsnewVergil.htm: whatsnew.htm
 # Files that are derived from other files, such as ptII$(PTVERSION).release.htm
 DERIVED_FILES = \
 	mainVergil.htm \
+	mainVergilPtiny.htm \
 	ptII$(PTVERSION).releaseVergil.htm \
 	ptII$(PTVERSION).releaseHyVisual.htm \
 	troubleshootingVergil.htm \
