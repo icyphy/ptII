@@ -55,12 +55,12 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
      * Generate fire code.
      * The method generate code that loops through each
      * INPUT [multi-ports] and combine (add or substract) them.
-     * The result code is put into the given stream buffer.
-     * @param stream the given buffer to append the code to.
+     * The result code is put into the given code buffer.
+     * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         ptolemy.actor.lib.MultiplyDivide actor = 
             (ptolemy.actor.lib.MultiplyDivide) getComponent();
@@ -91,6 +91,6 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
             }
         }
         tmpStream.append(";\n");
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
 }

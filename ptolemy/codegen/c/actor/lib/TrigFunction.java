@@ -63,13 +63,13 @@ public class TrigFunction extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         ptolemy.actor.lib.TrigFunction actor = 
             (ptolemy.actor.lib.TrigFunction) getComponent();
 
         String function = actor.function.getExpression();
-        String code = (function.equals("sin"))  ? "sinBlock"
+        String codeBlockName = (function.equals("sin"))  ? "sinBlock"
         		   : ((function.equals("cos"))  ? "cosBlock"
                    : ((function.equals("tan"))  ? "tanBlock"
                    : ((function.equals("asin")) ? "asinBlock" 
@@ -77,8 +77,8 @@ public class TrigFunction extends CCodeGeneratorHelper {
                    : "atanBlock"))));
 
         CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock(code);
-        stream.append(processCode(tmpStream.toString()));
+        tmpStream.appendCodeBlock(codeBlockName);
+        code.append(processCode(tmpStream.toString()));
     }
     
     /** 

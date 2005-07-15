@@ -59,10 +59,12 @@ public class AudioPlayer extends CCodeGeneratorHelper {
      * Generate fire code.
      * The method reads in <code>codeBlock1</code>, <code>codeBlock2</code>, 
      * <code>codeBlock3</code>, <code>codeBlock4</code> from AudioPlayer.c 
-     * and puts into the given stream buffer.
-     * @param stream the given buffer to append the code to.
+     * and puts into the given code buffer.
+     * @param code the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         //actor.channels.getExpression() 
         CodeStream tmpStream = new CodeStream(this);
@@ -71,13 +73,13 @@ public class AudioPlayer extends CCodeGeneratorHelper {
         tmpStream.appendCodeBlock("codeBlock3");
         tmpStream.appendCodeBlock("codeBlock4");
 
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
 
     /**
      * Generate initialization code.
      * This method reads the <code>setSeedBlock</code> from helperName.c,
-     * replaces macros with their values and returns the results.
+     * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      * error in processing the specified code block.
      * @return The processed code block.
@@ -92,7 +94,7 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     /**
      * Generate preinitialization code.
      * This method reads the <code>preinitBlock</code> from helperName.c,
-     * replaces macros with their values and returns the results.
+     * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block.
      * @return The processed <code>preinitBlock</code>.
@@ -104,24 +106,26 @@ public class AudioPlayer extends CCodeGeneratorHelper {
         return processCode(tmpStream.toString());
     }
 
-    /** Generate wrap up code.
-     *  This method reads the <code>wrapupBlock</code> from helperName.c,
-     *  replaces macros with their values and put the processed code block
-     *  into the given stream buffer.
-     * @param stream the given buffer to append the code to.
+    /** 
+     * Generate wrap up code.
+     * This method reads the <code>wrapupBlock</code> from helperName.c,
+     * replaces macros with their values and appends the processed code block
+     * to the given code buffer.
+     * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
+     *  error in processing the specified code block(s).
      */
-    public void generateWrapupCode(StringBuffer stream)
+    public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("wrapupBlock");
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
-    /** Get the files needed by the code generated for the
-     *  AudioPlayer actor.
-     *  @return A set of strings that are names of the files
-     *   needed by the code generated for the AudioPlayer actor.
+    /** 
+     * Get the files needed by the code generated for the
+     * AudioPlayer actor.
+     * @return A set of strings that are names of the files
+     *  needed by the code generated for the AudioPlayer actor.
      */
     public Set getIncludingFiles() {
         Set files = new HashSet();

@@ -55,7 +55,7 @@ public class AddSubtract extends CCodeGeneratorHelper {
      * Generate fire code
      * The method generate code that loops through each
      * INPUT [multi-ports] and combine (add or substract) them.
-     * The result code is put into the given stream buffer
+     * The result code is put into the given code buffer
      * @param code the given buffer to append the code to
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block.

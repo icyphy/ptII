@@ -59,7 +59,7 @@ public class Minimum extends CCodeGeneratorHelper {
     * @exception IllegalActionException If the code stream encounters an
     *  error in processing the specified code block(s).
     */
-   public void generateFireCode(StringBuffer stream)
+   public void generateFireCode(StringBuffer code)
            throws IllegalActionException {
        ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
        CodeStream tmpStream = new CodeStream(this);
@@ -67,7 +67,7 @@ public class Minimum extends CCodeGeneratorHelper {
        // FIXME: we need to resolve the token type in the future
        tmpStream.appendCodeBlock("fireBlock", new Integer(actor.input
                .getWidth()));
-       stream.append(processCode(tmpStream.toString()));
+       code.append(processCode(tmpStream.toString()));
    }
 
    /**

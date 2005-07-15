@@ -60,7 +60,7 @@ public class XYPlotter extends CCodeGeneratorHelper {
      * replaces macros with their values and appends to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
+     *  error in processing the specified code block(s).
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
@@ -72,10 +72,10 @@ public class XYPlotter extends CCodeGeneratorHelper {
 
     /**
      * Generate initialization code.
-     * This method reads the <code>setSeedBlock</code> from XYPlotter.c,
+     * This method reads the <code>initBlock</code> from XYPlotter.c,
      * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
+     *  error in processing the specified code block(s).
      * @return The processed code block.
      */
     public String generateInitializeCode() throws IllegalActionException {
@@ -90,7 +90,7 @@ public class XYPlotter extends CCodeGeneratorHelper {
      * This method reads the <code>preinitBlock</code> from XYPlotter.c,
      * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
+     *  error in processing the specified code block(s).
      * @return The processed code block.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
@@ -102,12 +102,12 @@ public class XYPlotter extends CCodeGeneratorHelper {
 
     /** 
      * Generate wrap up code.
-     * This method reads the <code>closeFile</code> and
-     * <code>graphPlot</code>from XYPlotter.c,
-     * replaces macros with their values and appends to the given code buffer.
+     * This method reads the <code>closeFile</code> and <code>graphPlot</code>
+     * from XYPlotter.c, replaces macros with their values and appends to the
+     * given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
+     *  error in processing the specified code block(s).
      */
     public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {

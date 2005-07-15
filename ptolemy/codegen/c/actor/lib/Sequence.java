@@ -53,14 +53,15 @@ public class Sequence extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * The method reads in <code>fireBlock</code> from Sequence.c,
-     * replaces macros with their values and appends the processed code 
-     * block to the given code buffer.
+     * The method reads in <code>codeBlock1</code>, <code>codeBlock2</code>,
+     * and <code>codeBlock3</code> from Sequence.c, replaces macros with
+     * their values and appends the processed code block to the given code
+     * buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         ptolemy.actor.lib.Sequence actor = 
             (ptolemy.actor.lib.Sequence) getComponent();
@@ -73,7 +74,7 @@ public class Sequence extends CCodeGeneratorHelper {
             tmpStream.appendCodeBlock("codeBlock2");
         }
         tmpStream.appendCodeBlock("codeBlock3");
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
     
     /**

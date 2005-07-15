@@ -55,10 +55,12 @@ public class StringToIntArray extends CCodeGeneratorHelper {
     
     /**
      * Generate fire code.
-     * The method reads in fireBlock and puts into the given code buffer.
+     * The method reads in <code>fireBlock</code> from StringToIntArray.c,
+     * replaces macros with their values and appends the processed code 
+     * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
+     *  error in processing the specified code block(s).
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
@@ -68,11 +70,11 @@ public class StringToIntArray extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate initialization code.
-     * This method reads the <code>setSeedBlock</code> from StringToIntArray.c,
+     * Generate initialize code.
+     * This method reads the <code>initBlock</code> from StringToIntArray.c,
      * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
+     *  error in processing the specified code block(s).
      * @return The processed code string.
      */
     public String generateInitializeCode() throws IllegalActionException {
@@ -83,11 +85,11 @@ public class StringToIntArray extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate preinitialization code.
+     * Generate preinitialize code.
      * This method reads the <code>preinitBlock</code> from StringToIntArray.c,
      * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
+     *  error in processing the specified code block(s).
      * @return The processed code string.
      */
     public String generatePreinitializeCode() throws IllegalActionException {

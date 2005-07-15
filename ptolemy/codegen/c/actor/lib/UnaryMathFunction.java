@@ -63,21 +63,21 @@ public class UnaryMathFunction extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         ptolemy.actor.lib.UnaryMathFunction actor = 
             (ptolemy.actor.lib.UnaryMathFunction) getComponent();
 
         String function = actor.function.getExpression();
-        String code = (function.equals("exp"))      ? "expBlock"
-        		    : ((function.equals("log"))     ? "logBlock"
-                    : ((function.equals("sign"))    ? "signBlock"
-                    : ((function.equals("square"))  ? "squareBlock" 
-                    : "sqrtBlock")));
+        String codeBlockName = (function.equals("exp")) ? "expBlock" : 
+                              ((function.equals("log")) ? "logBlock" :
+                              ((function.equals("sign")) ? "signBlock" : 
+                              ((function.equals("square")) ? "squareBlock" :
+                               "sqrtBlock")));
 
         CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock(code);
-        stream.append(processCode(tmpStream.toString()));
+        tmpStream.appendCodeBlock(codeBlockName);
+        code.append(processCode(tmpStream.toString()));
     }
 
     /** 

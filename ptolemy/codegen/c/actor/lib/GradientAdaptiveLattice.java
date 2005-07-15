@@ -66,14 +66,14 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void  generateFireCode(StringBuffer stream)
+    public void  generateFireCode(StringBuffer code)
         throws IllegalActionException {
         ptolemy.actor.lib.GradientAdaptiveLattice actor = 
             (ptolemy.actor.lib.GradientAdaptiveLattice) getComponent();
         
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("fireBlock");
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
 
     /**
@@ -118,17 +118,17 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
      * The method reads in <code>wrapupBlock</code> from
      * GradientAdaptiveLattice.c, replaces macros with their values and
      * appends the processed code block to the given code buffer.
-     * @param stream the given buffer to append the code to.
+     * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateWrapupCode(StringBuffer stream)
+    public void generateWrapupCode(StringBuffer code)
         throws IllegalActionException {
         ptolemy.actor.lib.GradientAdaptiveLattice actor = 
             (ptolemy.actor.lib.GradientAdaptiveLattice) getComponent();
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("wrapupBlock");
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
 
     /** 

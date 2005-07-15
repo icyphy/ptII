@@ -59,11 +59,11 @@ public class Average extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("fireBlock");
-        stream.append(processCode(tmpStream.toString()));
+        code.append(processCode(tmpStream.toString()));
     }
 
     /**

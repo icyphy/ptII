@@ -60,6 +60,8 @@ public class AudioWriter extends CCodeGeneratorHelper {
      * The method reads in <code>writeSoundFile</code> from AudioWriter.c 
      * and appends to the given code buffer.
      * @param code the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {

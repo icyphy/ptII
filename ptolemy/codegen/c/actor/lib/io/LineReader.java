@@ -61,6 +61,8 @@ public class LineReader extends CCodeGeneratorHelper {
      * The method reads the <code>readLine</code> block from LineReader.c,
      * replaces macros with their values and appends to the given code buffer.
      * @param code the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
@@ -74,6 +76,8 @@ public class LineReader extends CCodeGeneratorHelper {
      * This method reads the <code>initBlock</code> from LineReader.c,
      * replaces macros with their values and returns the processed code string.
      * @return The processed <code>initBlock</code>.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
@@ -117,6 +121,8 @@ public class LineReader extends CCodeGeneratorHelper {
      * This method reads the <code>preinitBlock</code> from LineReader.c,
      * replaces macros with their values and returns the processed code string.
      * @return The processed code block.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
@@ -130,6 +136,8 @@ public class LineReader extends CCodeGeneratorHelper {
      * This method reads the <code>wrapUpBlock</code> from LineReader.c,
      * replaces macros with their values and appends to the given code buffer.
      * @param code the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
     public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
