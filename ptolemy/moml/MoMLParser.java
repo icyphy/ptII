@@ -2286,7 +2286,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     MoMLParser newParser = new MoMLParser(_workspace,
                             _classLoader);
 
+                    boolean modified = newParser.isModified();
                     newParser.setContext(_current);
+                    newParser.setModified(modified);
+
                     _parse(newParser, _base, source);
                 }
 
