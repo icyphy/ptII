@@ -1,6 +1,6 @@
 # Makefile for the Java classes used to test the moml filter package
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
@@ -45,7 +45,8 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS =
+JSRCS = \
+	TestRamp.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
