@@ -4778,7 +4778,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // a new parser.  I'm not sure why the new parser is needed,
         // but the "input" element handler does the same thing.
         // NOTE: Should we keep the parser to re-use?
-        System.out.println("_loadFileInContext: " + fileName);
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
 
         // setContext() calls reset(), which sets the modified
