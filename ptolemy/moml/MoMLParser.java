@@ -1591,6 +1591,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  parser with a pre-existing model, which can then be modified
      *  via incremental parsing.  This calls reset() and sets the top-level
      *  entity to the top-level of the specified object.
+     *  <p>
+     *  Callers should be careful about calling this method and resetting
+     *  the modified flag to false when parsing moml that has been modified
+     *  by the backward compatibility filter.
+     *  It is safer to do something like:
+     *  <pre>
+     *   boolean modified = newParser.isModified();
+     *   newParser.setContext(context);
+     *   newParser.setModified(modified);
+     *  </pre>
      *  @param context The context for parsing.
      */
     public void setContext(NamedObj context) {
@@ -4768,8 +4778,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // a new parser.  I'm not sure why the new parser is needed,
         // but the "input" element handler does the same thing.
         // NOTE: Should we keep the parser to re-use?
+        System.out.println("_loadFileInContext: " + fileName);
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
+
+        // setContext() calls reset(), which sets the modified
+        // flag to false.  Thus, we cache the value of the modified
+        // flag.  
+        // See test 13.2 in
+        // $PTII/ptolemy/moml/filter/test/BackwardCompatibility.tcl
+        // which has a backward compatibility problem and loads a filter.
+        boolean modified = newParser.isModified();
         newParser.setContext(context);
+        newParser.setModified(modified);
 
         // Create a list to keep track of objects created.
         newParser._topObjectsCreated = new LinkedList();
