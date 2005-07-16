@@ -1597,9 +1597,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  by the backward compatibility filter.
      *  It is safer to do something like:
      *  <pre>
-     *   boolean modified = newParser.isModified();
+     *   boolean modified = isModified();
+     *   MoMLParser newParser = new MoMLParser(...);
      *   newParser.setContext(context);
-     *   newParser.setModified(modified);
+     *   setModified(modified);
      *  </pre>
      *  @param context The context for parsing.
      */
@@ -2300,12 +2301,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // NOTE: The base attribute has been deprecated.  Ignore.
                     // Read external file in the current context, but with
                     // a new parser.
+                    boolean modified = isModified();
                     MoMLParser newParser = new MoMLParser(_workspace,
                             _classLoader);
 
-                    boolean modified = newParser.isModified();
                     newParser.setContext(_current);
-                    newParser.setModified(modified);
+                    setModified(modified);
 
                     _parse(newParser, _base, source);
                 }
@@ -4781,6 +4782,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // a new parser.  I'm not sure why the new parser is needed,
         // but the "input" element handler does the same thing.
         // NOTE: Should we keep the parser to re-use?
+        boolean modified = isModified();
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
 
         // setContext() calls reset(), which sets the modified
@@ -4789,9 +4791,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // See test 13.2 in
         // $PTII/ptolemy/moml/filter/test/BackwardCompatibility.tcl
         // which has a backward compatibility problem and loads a filter.
-        boolean modified = newParser.isModified();
         newParser.setContext(context);
-        newParser.setModified(modified);
+        setModified(modified);
 
         // Create a list to keep track of objects created.
         newParser._topObjectsCreated = new LinkedList();
