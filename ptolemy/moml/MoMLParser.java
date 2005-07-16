@@ -4705,7 +4705,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // but the "input" element handler does the same thing.
         // NOTE: Should we keep the parser to re-use?
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
+
+        // setContext() calls reset(), which sets the modified
+        // flag to false.  Thus, we cache the value of the modified
+        // flag.  
+        // See test 13.2 in
+        // $PTII/ptolemy/moml/filter/test/BackwardCompatibility.tcl
+        // which has a backward compatibility problem and loads a filter.
+        boolean modified = newParser.isModified();
         newParser.setContext(context);
+        newParser.setModified(modified);
 
         // Create a list to keep track of objects created.
         newParser._topObjectsCreated = new LinkedList();
