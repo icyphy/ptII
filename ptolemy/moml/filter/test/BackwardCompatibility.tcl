@@ -746,7 +746,47 @@ test BackwardCompatibility-13.2 {ModelReference modelFileOrURL parameter change 
 }}
 
 
+set testMoML "$header
+<entity name=\"testMoML\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"ModelReference\" class=\"ptolemy.actor.lib.hoc.ModelReference\">
+        <property name=\"modelFileOrURL\" class=\"ptolemy.data.expr.FileParameter\" value=\"\$PTII/ptolemy/actor/lib/test/auto/Ramp1.xml\">
+        </property>
+    </entity>
+    <input source=\"TestRampIcon.xml\"/>
+</entity>"
 
+test BackwardCompatibility-13.3 {The input directive also calls setContext() which overwrites the modified flag}  {
+
+    # The problem here is that the input line calls setContext() which
+    # calls reset() which sets the modified flag to false.
+    # Thus, loading a model that has a compatibility change and
+    # an icon results in the model not being marked as modified
+
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
+
+    # Test out the modified flag
+    $parser reset
+    set modified [$parser isModified]
+
+    set toplevel [$parser parse $testMoML]
+    set newMoML [$toplevel exportMoML]
+
+    list $modified [$parser isModified] $newMoML
+} {0 1 {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="testMoML" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    </property>
+    <property name="TestRampIcon" class="ptolemy.kernel.attributes.VersionAttribute">
+    </property>
+    <entity name="ModelReference" class="ptolemy.actor.lib.hoc.ModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$PTII/ptolemy/actor/lib/test/auto/Ramp1.xml">
+        </property>
+    </entity>
+</entity>
+}}
 
 
 # NonStrictTest reads ptolemy.actor.lib.NonStrictTest.fire.compat 
