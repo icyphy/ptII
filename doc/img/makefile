@@ -48,6 +48,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
+	copernicus2.gif \
+	copernicusa.gif \
 	expressions10.gif \
 	expressions11.gif \
 	expressions12.gif \
