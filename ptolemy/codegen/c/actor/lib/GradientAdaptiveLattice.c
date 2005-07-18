@@ -1,14 +1,14 @@
 /*** preinitBlock***/
-    const int $actorSymbol(_order) = $size(reflectionCoeffients);
+    const int $actorSymbol(_order) = $size(reflectionCoefficients);
 
     double $actorSymbol(_backward)[$actorSymbol(_order)+1];
     double $actorSymbol(_backwardCache)[$actorSymbol(_order)+1];
     double $actorSymbol(_forward)[$actorSymbol(_order)+1];
     double $actorSymbol(_forwardCache)[$actorSymbol(_order)+1];
-    double $actorSymbol(_reflectionCoefficients)[$actorSymbol(_order)+1];
+    double $actorSymbol(_reflectionCoefficients)[] = $val(reflectionCoefficients);
     double $actorSymbol(_estimatedErrorPower)[$actorSymbol(_order)+1];
     double $actorSymbol(_estimatedErrorPowerCache)[$actorSymbol(_order)+1];
-    double $actorSymbol(_reflectionCoefficientsCache)[$actorSymbol(_order)+1];
+    double $actorSymbol(_reflectionCoefficientsCache)[$actorSymbol(_order)];
     double $actorSymbol(_outputArray)[$actorSymbol(_order)];
     double $actorSymbol(outputArray)[$actorSymbol(_order)];
     
@@ -25,14 +25,23 @@
 /**/
 
 /*** initBlock ***/
-    for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_order); $actorSymbol(i)++) {
-        $actorSymbol(_reflectionCoefficients)[$actorSymbol(i)] = $ref(reflectionCoefficients)[$actorSymbol(i)];
+    for ($actorSymbol(i) = 0; $actorSymbol(i) <= $actorSymbol(_order); $actorSymbol(i)++) {
+        $actorSymbol(_forward)[$actorSymbol(i)] = 0;
+        $actorSymbol(_backward)[$actorSymbol(i)] = 0;
+        $actorSymbol(_estimatedErrorPowerCache)[$actorSymbol(i)] = 0;
     }
     $actorSymbol(_oneMinusAlpha) = (($val(timeConstant) - 1.0) / ($val(timeConstant) + 1.0));
     $actorSymbol(_alpha) = 1.0 - $actorSymbol(_oneMinusAlpha);
 /**/
 
-/*** fireBlock ***/        
+/*** fireBlock ***/
+    // System.arraycopy(_backward, 0, _backwardCache, 0, _order + 1);
+    // System.arraycopy(_forward, 0, _forwardCache, 0, _order + 1);
+    for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_order) + 1; $actorSymbol(i)++) {
+        $actorSymbol(_backwardCache)[$actorSymbol(i)] = $actorSymbol(_backward)[$actorSymbol(i)];
+        $actorSymbol(_forwardCache)[$actorSymbol(i)] = $actorSymbol(_forward)[$actorSymbol(i)];
+    }
+
     $actorSymbol(_forwardCache)[0] = $ref(input); // _forwardCache(0) = x(n)
 
     // NOTE: The following code is ported from Ptolemy Classic.
@@ -74,7 +83,7 @@
         $actorSymbol(_estimatedErrorPowerCache)[$actorSymbol(i)] = $actorSymbol(newError);
     }
 
-    //arraycopy(outputArray, 0, _outputArray, 0, _order);
+    //arraycopy(_outputArray, 0, outputArray, 0, _order);
     for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_order); $actorSymbol(i)++) {
         $actorSymbol(outputArray)[$actorSymbol(i)] = $actorSymbol(_outputArray)[$actorSymbol(i)];
     }
@@ -84,20 +93,18 @@
 
     // Send the forward residual.
     $ref(output) = $actorSymbol(_forwardCache)[$actorSymbol(_order)];
-/**/
 
-/*** wrapupBlock ***/
     //arraycopy(_estimatedErrorPowerCache, 0, _estimatedErrorPower, 0, _order + 1);
     //arraycopy(_reflectionCoefficientsCache, 0, _reflectionCoefficients, 0, _order);
     //arraycopy(_backwardCache, 0, _backward, 0, _order + 1);
     //arraycopy(_forwardCache, 0, _forward, 0, _order + 1);
     for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_order) + 1; $actorSymbol(i)++) {
-        $actorSymbol(_estimatedErrorPowerCache)[$actorSymbol(i)] = $actorSymbol(_estimatedErrorPower)[$actorSymbol(i)];
-        $actorSymbol(_backwardCache)[$actorSymbol(i)] = $actorSymbol(_backward)[$actorSymbol(i)];
-        $actorSymbol(_forwardCache)[$actorSymbol(i)] = $actorSymbol(_forward)[$actorSymbol(i)];
+        $actorSymbol(_estimatedErrorPower)[$actorSymbol(i)] = $actorSymbol(_estimatedErrorPowerCache)[$actorSymbol(i)];
+        $actorSymbol(_backward)[$actorSymbol(i)] = $actorSymbol(_backwardCache)[$actorSymbol(i)];
+        $actorSymbol(_forward)[$actorSymbol(i)] = $actorSymbol(_forwardCache)[$actorSymbol(i)];
     }
     for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_order); $actorSymbol(i)++) {
-        $actorSymbol(_reflectionCoefficientsCache)[$actorSymbol(i)] = $actorSymbol(_reflectionCoefficients)[$actorSymbol(i)];
+        $actorSymbol(_reflectionCoefficients)[$actorSymbol(i)] = $actorSymbol(_reflectionCoefficientsCache)[$actorSymbol(i)];
     }
 /**/
 
