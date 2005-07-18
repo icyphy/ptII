@@ -122,6 +122,10 @@ OTHER_FILES_TO_BE_JARED = \
 	expressions8.gif \
 	expressions9.gif \
 	expressionsa.gif \
+	navnext.gif \
+	navprev.gif \
+	navtoc.gif \
+	next.gif \
 	Helen256x256.png  \
 	Helen.png  \
 	PtolemyII256x256.png \
