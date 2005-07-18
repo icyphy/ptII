@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 08:45:20">
+<title>3.8 Fixed Point Numbers</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="expressionsa8.htm"><img src="img/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="expressionsa10.htm"><img src="img/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="171756"> </a>3.8   Fixed Point Numbers
+</h2>
+
+
+<a name="184401"> </a>Ptolemy II includes a preliminary fixed point data type. We represent a fixed point value in the expression language using the following format: <br>
+
+<pre>
+<a name="184402"> </a>
+fix(value, totalBits, integerBits)<a name="171768"> </a>
+<a name="171769"> </a>
+</pre>
+
+<a name="175209"> </a>Thus, a fixed point value of 5.375 that uses 8 bit precision of which 4 bits are used to represent the (signed) integer part can be represented as:<br>
+
+<pre>
+<a name="175210"> </a>
+fix(5.375, 8, 4)<a name="171772"> </a>
+<a name="171773"> </a>
+</pre>
+
+<a name="171777"> </a>The value can also be a matrix of doubles. The values are rounded, yielding the nearest value representable with the specified precision. If the value to represent is out of range, then it is saturated, meaning that the maximum or minimum fixed point value is returned, depending on the sign of the specified value. For example,<br>
+
+<pre>
+<a name="171778"> </a>
+fix(5.375, 8, 3)<a name="171779"> </a>
+<a name="171780"> </a>
+</pre>
+
+<a name="171781"> </a>will yield 3.968758, the maximum value possible with the (8/3) precision.<br>
+
+
+<p>
+  <a name="171783"> </a>In addition to the fix() function, the expression language offers a quantize() function. The arguments are the same as those of the fix() function, but the return type is a DoubleToken or DoubleMatrixToken instead of a FixToken or FixMatrixToken. This function can therefore be used to quantize double-precision values without ever explicitly working with the fixed-point representation.
+</p>
+
+
+<p>
+  <a name="171805"> </a>To make the FixToken accessible within the expression language, the following functions are available: 
+</p>
+
+
+<a name="171806"> </a>	 To create a single FixPoint Token using the expression language:<br>
+
+<pre>
+fix(5.34, 10, 4)<a name="171807"> </a>
+</pre>
+
+<a name="175175"> </a>This will create a FixToken. In this case, we try to fit the number 5.34 into a 10 bit representation with 4 bits used in the integer part. This may lead to quantization errors. By default the round quantizer is used. <br>
+
+
+<a name="175176"> </a>	 To create a Matrix with FixPoint values using the expression language:<br>
+
+<pre>
+fix([ -.040609, -.001628, .17853 ], 10, 2) <a name="175177"> </a>
+</pre>
+
+<a name="175181"> </a>This will create a FixMatrixToken with 1 row and 3 columns, in which each element is a FixPoint value with precision(10/2). The resulting FixMatrixToken will try to fit each element of the given double matrix into a 10 bit representation with 2 bits used for the integer part. By default the round quantizer is used.<br>
+
+
+<a name="175178"> </a>	 To create a single DoubleToken, which is the quantized version of the double value given, using the expression language:<br>
+
+<pre>
+quantize(5.34, 10, 4)<a name="171813"> </a>
+</pre>
+
+<a name="171814"> </a>This will create a DoubleToken. The resulting DoubleToken contains the double value obtained by fitting the number 5.34 into a 10 bit representation with 4 bits used in the integer part. This may lead to quantization errors. By default the round quantizer is used. <br>
+
+
+<a name="171815"> </a>	 To create a Matrix with doubles quantized to a particular precision using the expression language:<br>
+
+<pre>
+quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
+</pre>
+
+<a name="171817"> </a>This will create a DoubleMatrixToken with 1 row and 3 columns. The elements of the token are obtained by fitting the given matrix elements into a 10 bit representation with 2 bits used for the integer part. Instead of being a fixed point value, the values are converted back to their double representation and by default the round quantizer is used.<br>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="expressionsa8.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="expressionsa10.htm"><img src="img/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>

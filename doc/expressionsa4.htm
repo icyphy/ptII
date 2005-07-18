@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 08:45:20">
+<title>3.3 Uses of Expressions</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="expressionsa3.htm"><img src="img/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="expressionsa5.htm"><img src="img/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="175570"> </a>3.3   Uses of Expressions
+</h2>
+
+
+<h4>
+  <a name="175574"> </a>3.3.1   Parameters
+</h4>
+
+
+<a name="175578"> </a>The values of most parameters of actors can be given as expressions<a href="#175811"><sup>1</sup></a>. The variables in the expression refer to other parameters that are in scope, which are those contained by the same container or some container above in the hierarchy. They can also reference variables in a <i>scope-extending attribute</i>, which includes variables defining units, as explained below in section <a href="expressionsa10.htm#175821">3.9</a>. Adding parameters to actors is straightforward, as explained in the previous chapter.<br>
+
+
+<h4>
+  <a name="176319"> </a>3.3.2   Port Parameters
+</h4>
+
+
+<a name="176320"> </a>It is possible to define a parameter that is also a port. Such a <i>PortParameter</i> provides a default value, which is specified like the value of any other parameter. When the corresponding port receives data, however, the default value is overridden with the value provided at the port. Thus, this object functions like a parameter and a port. The current value of the PortParameter is accessed like that of any other parameter. Its current value will be either the default or the value most recently received on the port.<br>
+
+
+<p>
+  <a name="176834"> </a>A PortParameter might be contained by an atomic actor or a composite actor. To put one in a composite actor, drag it into a model from the <i>utilities</i> library, as shown in figure <img src="img/expressions17.gif" height="546" width="937" align="left" border="0" hspace="0" vspace="0">
+<a href="expressionsa4.htm#176834">3.2</a>. The resulting icon is actually a combination of two icons, one representing the port, and the other representing the parameter. These can be moved separately, but doing so might create confusion, so we recommend selecting both by clicking and dragging over the pair and moving both together.
+</p>
+
+
+<p>
+  <a name="176895"> </a>To be useful, a PortParameter has to be given a name (the default name, "portParameter," is not very compelling). To change the name, right click on the icon and select "Customize Name," as shown in figure <a href="expressionsa4.htm#176834">3.2</a>. In the figure, the name is set to "noiseLevel." Then set the default value by either double clicking or selecting "Configure." In the figure, the default value is set to 10.0.
+</p>
+
+
+<p>
+  <a name="176899"> </a>An example of a library actor that uses a PortParameter is the Sinewave actor, which is found in the <i>sources</i> library in Vergil. It is shown in figure <img src="img/expressions14.gif" height="529" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="expressionsa4.htm#176899">3.3</a>. If you double click on this actor, you can set the default values for <i>frequency</i> and <i>phase</i>. But both of these values can also be set by the corresponding ports, which are shown with grey fill.
+</p>
+
+
+<h4>
+  <a name="171261"> </a>3.3.3   String Parameters
+</h4>
+
+
+<a name="198315"> </a>Some parameters have values that are always strings of characters. Such parameters support a simple string substitution mechanism where the value of the string can reference other parameters in scope by name using the syntax $<i>name</i>, where <i>name</i> is the name of the parameter in scope. For example, the StringCompare actor in figure <img src="img/expressions32.gif" height="269" width="600" align="left" border="0" hspace="0" vspace="0">
+<a href="expressionsa4.htm#198315">3.4</a> has as the value of <i>firstString</i> "The answer is $PI". This references the built-in constant PI. The value of <i>secondString</i> is "The answer is 3.1415926535898". As shown in the figure, these two strings are deemed to be equal because $PI is replaced with the value of PI.<br>
+
+
+<h4>
+  <a name="198314"> </a>3.3.4   Expression Actor
+</h4>
+
+
+<a name="171267"> </a>The <i>Expression</i> actor is a particularly useful actor found in the <i>math</i> library. By default, it has one output and no inputs, as shown in Figure <img src="img/expressions56.gif" height="441" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="expressionsa4.htm#171267">3.5</a>(a). The first step in using it is to add ports, as shown in (b) and (c), resulting in a new icon as shown in (d). Note: In (c) when you click on Add, you will be prompted for a Name (pick one) and a Class. Leave the Class entry blank and click OK. You then specify an expression using the port names, as shown in (e), resulting in the icon shown in (f).<br>
+
+
+<h4>
+  <a name="183128"> </a>3.3.5   State Machines
+</h4>
+
+
+<a name="176000"> </a>Expressions give the guards for state transitions, as well as the values used in actions that produce outputs and actions that set values of parameters in the refinements of destination states. This mechanism was explained in the previous chapter.<br>
+
+
+  
+<a name="175811"> </a><a href="#175578"><sup>1</sup></a>
+<a name="175811"> </a>The exceptions are parameters that are strictly string parameters, in which case the value of the parameter is the literal string, not the string interpreted as an expression, as for example the <i>function</i> parameter of the <i>TrigFunction</i> actor, which can take on only "sin," "cos," "tan", "asin", "acos", and "atan" as values.<br>
+
+<br>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="expressionsa3.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="expressionsa5.htm"><img src="img/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>

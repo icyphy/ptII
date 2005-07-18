@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 08:45:20">
+<title>3.7 Built-In Functions</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="expressionsa7.htm"><img src="img/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="expressionsa9.htm"><img src="img/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="184246"> </a>3.7   Built-In Functions
+</h2>
+
+
+<p>
+  <a name="190441"> </a>The expression language includes a set of functions, such as sin(), cos(), etc. The functions that are built in include all static methods of the classes shown <img src="img/expressions20.gif" height="256" width="600" align="left" border="0" hspace="0" vspace="0">
+in <a href="expressionsa8.htm#190441">Table 2 on page 111</a>, which together provide a rich set<a href="#190502"><sup>1</sup></a>. The functions currently available are shown in the tables in the appendix, which also show the argument types and return types.
+</p>
+
+
+<p>
+  <a name="181854"> </a>In most cases, a function that operates on scalar arguments can also operate on arrays and matrices. Thus, for example, you can fill a row vector with a sine wave using an expression like
+</p>
+
+<pre>
+<a name="181858"> </a>
+sin([0.0:PI/100:1.0])<a name="181862"> </a>
+<a name="181863"> </a>
+</pre>
+
+<a name="181897"> </a>Or you can construct an array as follows,<br>
+
+<pre>
+<a name="182378"> </a>
+sin({0.0, 0.1, 0.2, 0.3})<a name="182379"> </a>
+<a name="182380"> </a>
+</pre>
+
+<a name="182375"> </a>Functions that operate on type <i>double</i> will also generally operate on <i>int</i> or <i>unsignedByte</i>, because these can be losslessly converted to <i>double</i>, but not generally on <i>long</i> or <i>complex</i>.<br>
+
+
+<p>
+  <a name="194173"> </a>Tables of available functions are shown in the appendix. For example, <a href="expressionsa10.htm#194565">Table 4 on page 118</a> shows trigonometric functions. Note that these operate on <i>double</i> or <i>complex</i>, and hence on <i>int</i> and <i>unsignedByte</i>, which can be losslessly converted to <i>double</i>. The result will always be double. For example,
+</p>
+
+<pre>
+<a name="194161"> </a>
+&gt;&gt; cos(0)<a name="194162"> </a>
+1.0<a name="194163"> </a>
+<a name="194164"> </a>
+</pre>
+
+<a name="194165"> </a>These functions will also operate on matrices and arrays, in addition to the scalar types shown in the table, as illustrated above. The result will be a matrix or array of the same size as the argument, but always containing elements of type <i>double</i><br>
+
+
+<p>
+  <a name="187455"> </a><a href="expressionsa10.htm#194754">Table 5 on page 119</a> shows other arithmetic functions beyond the trigonometric functions. As with the trigonometric functions, those that indicate that they operate on <i>double</i> will also work on <i>int</i> and <i>unsignedByte</i>, and unless they indicate otherwise, they will return whatever they return when the argument is <i>double</i>. Those functions in the table that take scalar arguments will also operate on matrices and arrays. For example, since the table indicates that the max() function can take <i>int, int</i> as arguments, then by implication, it can also take {<i>int</i>}, {<i>int</i>}. For example,
+</p>
+
+<pre>
+<a name="187424"> </a>
+&gt;&gt; max({1, 2}, {2, 1})<a name="187425"> </a>
+{2, 2}<a name="187426"> </a>
+<a name="187427"> </a>
+</pre>
+
+<a name="187428"> </a>Notice that the table also indicates that max() can take {<i>int</i>} as an argument. E.g.<br>
+
+<pre>
+<a name="187429"> </a>
+&gt;&gt; max({1, 2, 3})<a name="187430"> </a>
+3<a name="187431"> </a>
+<a name="187432"> </a>
+</pre>
+
+<a name="192970"> </a>In the former case, the function is applied pointwise to the two arguments. In the latter case, the returned value is the maximum over all the contents of the single argument.<br>
+
+
+<p>
+  <a name="193300"> </a><a href="expressionsa10.htm#195091">Table 6</a> shows functions that only work with matrices, arrays, or records (that is, there is no corresponding scalar operation). Recall that most functions that operate on scalars will also operate on arrays and matrices<a href="expressionsa10.htm#195405">Table 7</a> shows utility functions for evaluating expressions given as strings or representing numbers as strings. Of these, the eval() function is the most flexible (see <a href="expressionsa8.htm#185006">page 112</a>). 
+</p>
+
+
+<a name="189345"> </a>A few of the functions have sufficiently subtle properties that they require further explanation. That explanation is here.<br>
+
+
+<a name="185006"> </a>eval() and traceEvaluation()<br>
+
+
+<p>
+  <a name="185001"> </a>The built-in function eval() will evaluate a string as an expression in the expression language. For example,
+</p>
+
+<pre>
+<a name="185095"> </a>
+eval("[1.0, 2.0; 3.0, 4.0]")<a name="185096"> </a>
+<a name="185097"> </a>
+</pre>
+
+<a name="179783"> </a>will return a matrix of doubles. The following combination can be used to read parameters from a file:<br>
+
+<pre>
+<a name="179784"> </a>
+eval(readFile("filename"))<a name="177806"> </a>
+<a name="177814"> </a>
+</pre>
+
+<a name="177815"> </a>where the <i>filename</i> can be relative to the current working directory (where Ptolemy II was started, as reported by the property user.dir), the user's home directory (as reported by the property user.home), or the classpath, which includes the directory tree in which Ptolemy II is installed.<br>
+
+
+<p>
+  <a name="187981"> </a>Note that if eval() is used in an Expression actor, then it will be impossible for the type system to infer any more specific output type than <i>general</i>. If you need the output type to be more specific, then you will need to cast the result of eval(). For example, to force it to type <i>double</i>:
+</p>
+
+<pre>
+<a name="187982"> </a>
+&gt;&gt; cast(double, eval("pi/2"))<a name="187983"> </a>
+1.5707963267949<a name="187984"> </a>
+<a name="187985"> </a>
+</pre>
+
+<a name="192132"> </a>The traceEvaluation() function evaluates an expression given as a string, much like eval(), but instead of reporting the result, reports exactly how the expression was evaluated. This can be used to debug expressions, particularly when the expression language is extended by users.<br>
+
+
+<a name="192134"> </a>random(), gaussian()<br>
+
+
+<p>
+  <a name="192140"> </a>The functions random() and gaussian() shown in <a href="expressionsa10.htm#194754">Table 5 on page 119</a> return one or more random numbers. With the minimum number of arguments (zero or two, respectively), they return a single number. With one additional argument, they return an array of the specified length. With a second additional argument, they return a matrix with the specified number of rows and columns.
+</p>
+
+
+<p>
+  <a name="187138"> </a>There is a key subtlety when using these functions in Ptolemy II. In particular, they are evaluated only when the expression within which they appear is evaluated. The result of the expression may be used repeatedly without re-evaluating the expression. Thus, for example, if the <i>value</i> parameter of the <i>Const</i> actor is set to "random()", then its output will be a random constant, i.e., it will not change on each firing. The output will change, however, on successive runs of the model. In contrast, if this is used in an Expression actor, then each firing triggers an evaluation of the expression, and consequently will result in a new random number.
+</p>
+
+
+<a name="185051"> </a>property()<br>
+
+
+<p>
+  <a name="176396"> </a>The property() function accesses system properties by name. Some possibly useful system properties are:
+</p>
+
+
+<a name="176401"> </a>	 ptolemy.ptII.dir: The directory in which Ptolemy II is installed.<br>
+
+
+<a name="176410"> </a>	 ptolemy.ptII.dirAsURL: The directory in which Ptolemy II is installed, but represented as a URL.<br>
+
+
+<a name="176423"> </a>	 user.dir: The current working directory, which is usually the directory in which the current executable was started.<br>
+
+
+<a name="186842"> </a>remainder()<br>
+
+
+<a name="186848"> </a>This function computes the remainder operation on two arguments as prescribed by the IEEE 754 standard, which is not the same as the modulo operation computed by the % operator. The result of remainder(x, y) is <img src="img/expressions63.gif" height="18" width="39" border="0" hspace="0" vspace="0">
+, where <img src="img/expressions64.gif" height="18" width="11" border="0" hspace="0" vspace="0">
+ is the integer closest to the exact value of <img src="img/expressions65.gif" height="18" width="22" border="0" hspace="0" vspace="0">
+. If two integers are equally close, then <img src="img/expressions66.gif" height="18" width="11" border="0" hspace="0" vspace="0">
+ is the integer that is even. This yields results that may be surprising, as indicated by the following examples:<br>
+
+<pre>
+<a name="186899"> </a>
+&gt;&gt; remainder(1,2)<a name="186905"> </a>
+1.0<a name="186906"> </a>
+&gt;&gt; remainder(3,2)<a name="186915"> </a>
+-1.0<a name="186916"> </a>
+<a name="186923"> </a>
+</pre>
+
+<a name="186924"> </a>Compare this to<br>
+
+<pre>
+<a name="186917"> </a>
+&gt;&gt; 3%2<a name="186928"> </a>
+1<a name="186903"> </a>
+</pre>
+
+<a name="186898"> </a>which is different in two ways. The result numerically different and is of type <i>int</i>, whereas remainder() always yields a result of type <i>double</i>. The remainder() function is implemented by the java.lang.Math class, which calls it IEEEremainder(). The documentation for that class gives the following special cases:<br>
+
+
+<a name="186856"> </a>	 If either argument is NaN, or the first argument is infinite, or the second argument is positive zero or negative zero, then the result is NaN. <br>
+
+
+<a name="186967"> </a>	 If the first argument is finite and the second argument is infinite, then the result is the same as the first argument.<br>
+
+
+<a name="192146"> </a>DCT() and IDCT()<br>
+
+
+<p>
+  <a name="192147"> </a>The DCT function can take one, two, or three arguments. In all three cases, the first argument is an array of length <img src="img/expressions44.gif" height="18" width="36" border="0" hspace="0" vspace="0">
+ and the DCT returns an 
+</p>
+
+<div align="center">
+<a name="192154"> </a>(4) <img src="img/expressions45.gif" height="61" width="204" border="0" hspace="0" vspace="0">
+<br>
+</div>
+
+<a name="192167"> </a>for <img src="img/expressions54.gif" height="18" width="10" border="0" hspace="0" vspace="0">
+ from 0 to <img src="img/expressions67.gif" height="18" width="36" border="0" hspace="0" vspace="0">
+, where <img src="img/expressions68.gif" height="18" width="13" border="0" hspace="0" vspace="0">
+ is the size of the specified array and <img src="img/expressions69.gif" height="18" width="14" border="0" hspace="0" vspace="0">
+ is the size of the DCT. If only one argument is given, then <img src="img/expressions70.gif" height="18" width="14" border="0" hspace="0" vspace="0">
+ is set to equal the next power of two larger than <img src="img/expressions71.gif" height="18" width="13" border="0" hspace="0" vspace="0">
+. If a second argument is given, then its value is the <i>order</i> of the DCT, and the size of the DCT is <img src="img/expressions72.gif" height="23" width="38" border="0" hspace="0" vspace="0">
+. If a third argument is given, then it specifies the scaling factors <img src="img/expressionsa.gif" height="21" width="14" border="0" hspace="0" vspace="0">
+ according to the following table:
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><a name="192182"> </a><font face="Times New Roman">TABLE 3:  Normalization options for the DCT function</font></i></b></caption>
+  <tr align="center" bgcolor="#CCCCCC">
+    <th><a name="192188"> </a>Name</th>
+    <th><a name="192190"> </a>Third argument</th>
+    <th><a name="192192"> </a>Normalization</th>
+  </tr>
+  <tr>
+    <td><div align="center"><a name="192194"> </a>Normalized</div></td>
+    <td><div align="center"><a name="192196"> </a>0</div></td>
+    <td><a name="192201"> </a><img src="img/expressions3.gif" height="54" width="139" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><div align="center"><a name="192203"> </a>Unnormalized</div></td>
+    <td><div align="center"><a name="192205"> </a>1</div></td>
+    <td><a name="192210"> </a><img src="img/expressions4.gif" height="21" width="45" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><div align="center"><a name="192212"> </a>Orthonormal</div></td>
+    <td><div align="center"><a name="192214"> </a>2</div></td>
+    <td><a name="192219"> </a><img src="img/expressions6.gif" height="78" width="159" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+</table>
+
+
+
+<br>
+
+
+<a name="192220"> </a>The default, if a third argument is not given, is "Normalized."<br>
+
+
+<p>
+  <a name="192226"> </a>The IDCT function is similar, and can also take one, two, or three arguments. The formula in this case is
+</p>
+
+<div align="center">
+<a name="192233"> </a>(5) <img src="img/expressions10.gif" height="61" width="203" border="0" hspace="0" vspace="0">
+.<br>
+</div>
+
+  
+<a name="190502"> </a><a href="#190441"><sup>1</sup></a>
+<a name="190502"> </a>Moreover, the set of available can easily be extended if you are writing Java code by registering another class that includes static methods (see the PtParser class in the ptolemy.data.expr package).<br>
+
+<br>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="expressionsa7.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="expressionsa9.htm"><img src="img/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>
