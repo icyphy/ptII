@@ -1,0 +1,398 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 08:45:20">
+<title>3.4 Composite Data Types</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="expressionsa4.htm"><img src="img/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="expressionsa6.htm"><img src="img/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="175590"> </a>3.4   Composite Data Types
+</h2>
+
+
+<h4>
+  <a name="169763"> </a>3.4.1   Arrays
+</h4>
+
+
+<p>
+  <a name="167020"> </a>Arrays are specified with curly brackets, e.g., "{1, 2, 3}" is an array of <i>int</i>, while "{"x", "y", "z"}" is an array of <i>string</i>. The types are denoted "{int}" and "{string}" respectively. An array is an ordered list of tokens of any type, with the only constraint being that the elements all have the same type. If an array is given with mixed types, the expression evaluator will attempt to losslessly convert the elements to a common type. Thus, for example, 
+</p>
+
+<pre>
+<a name="183808"> </a>
+{1, 2.3}<a name="183812"> </a>
+<a name="183813"> </a>
+</pre>
+
+<a name="183814"> </a>has value<br>
+
+<pre>
+<a name="183827"> </a>
+{1.0, 2.3}<a name="183828"> </a>
+<a name="183829"> </a>
+</pre>
+
+<a name="183821"> </a>Its type is {double}. The elements of the array can be given by expressions, as in the example "{2*pi, 3*pi}." Arrays can be nested; for example, "{{1, 2}, {3, 4, 5}}" is an array of arrays of integers. The elements of an array can be accessed as follows:<br>
+
+<pre>
+<a name="184963"> </a>
+&gt;&gt; {1.0, 2.3}(1)<a name="184967"> </a>
+2.3<a name="196065"> </a>
+<a name="184976"> </a>
+</pre>
+
+<a name="184977"> </a>which yields 2.3. Note that indexing begins at 0. Of course, if <i>name</i> is the name of a variable in scope whose value is an array, then its elements may be accessed similarly, as shown in this example:<br>
+
+<pre>
+<a name="196069"> </a>
+&gt;&gt; x = {1.0, 2.3}<a name="196075"> </a>
+{1.0, 2.3}<a name="196076"> </a>
+&gt;&gt; x(0)<a name="196077"> </a>
+1.0<a name="196078"> </a>
+<a name="196086"> </a>
+</pre>
+
+<p>
+  <a name="198557"> </a>Arithmetic operations on arrays are carried out element-by-element, as shown by the following examples:
+</p>
+
+<pre>
+<a name="186469"> </a>
+&gt;&gt; {1, 2}*{2, 2}<a name="186475"> </a>
+{2, 4}<a name="186528"> </a>
+&gt;&gt; {1, 2}+{2, 2}<a name="186505"> </a>
+{3, 4}<a name="186535"> </a>
+&gt;&gt; {1, 2}-{2, 2}<a name="186510"> </a>
+{-1, 0}<a name="186542"> </a>
+&gt;&gt; {1, 2}^2<a name="186513"> </a>
+{1, 4}<a name="186549"> </a>
+&gt;&gt; {1, 2}%{2, 2}<a name="186586"> </a>
+{1, 0}<a name="186587"> </a>
+<a name="186473"> </a>
+</pre>
+
+<a name="186419"> </a><br>
+
+
+<a name="198558"> </a>An array can be checked for equality with another array as follows:<br>
+
+<pre>
+<a name="186420"> </a>
+&gt;&gt; {1, 2}=={2, 2}<a name="186576"> </a>
+false<a name="186577"> </a>
+&gt;&gt; {1, 2}!={2, 2}<a name="186578"> </a>
+true<a name="186579"> </a>
+<a name="186425"> </a>
+</pre>
+
+<a name="186430"> </a>For other comparisons of arrays, use the compare() function (see <a href="expressionsa10.htm#194754">Table 5 on page 119</a>). As with scalars, testing for equality using the == or != operators tests the values, independent of type. For example,<br>
+
+<pre>
+<a name="188887"> </a>
+&gt;&gt; {1, 2}=={1.0, 2.0}<a name="188893"> </a>
+true<a name="188891"> </a>
+<a name="198579"> </a>
+</pre>
+
+<a name="198567"> </a>You can extract a subarray by invoking the subarray() method as follows:<br>
+
+<pre>
+<a name="198568"> </a>
+&gt;&gt; {1, 2, 3, 4}.subarray(2, 2)<a name="198586"> </a>
+{3, 4}<a name="198569"> </a>
+<a name="198590"> </a>
+</pre>
+
+<a name="198591"> </a>The first argument is the starting index of the subarray, and the second argument is the length.<br>
+
+
+<p>
+  <a name="198598"> </a>You can also extract non-contiguous elements from an array using the extract() method. This method has two forms. The first form takes a boolean array of the same length as the original array which indicates which elements to extract, as in the following example:
+</p>
+
+<pre>
+<a name="198599"> </a>
+&gt;&gt; {"red","green","blue"}.extract({true,false,true})<a name="198605"> </a>
+{"red", "blue"}<a name="198606"> </a>
+<a name="198612"> </a>
+</pre>
+
+<a name="198613"> </a>The second form takes an array of integers giving the indices to extract, as in the following example:<br>
+
+<pre>
+<a name="198607"> </a>
+&gt;&gt; {"red","green","blue"}.extract({2,0,1,1})<a name="198617"> </a>
+{"blue", "red", "green", "green"}<a name="198603"> </a>
+<a name="198618"> </a>
+</pre>
+
+<h4>
+  <a name="169767"> </a>3.4.2   Matrices
+</h4>
+
+
+<p>
+  <a name="169058"> </a>In Ptolemy II, <i>arrays</i> are ordered sets of tokens. Ptolemy II also supports <i>matrices</i>, which are more specialized than arrays. They contain only certain primitive types, currently <i>boolean</i>, <i>complex</i>, <i>double</i>, <i>fixedpoint</i>, <i>int</i>, and <i>long. </i>Currently <i>unsignedByte</i> matrices are not supported. Matrices cannot contain arbitrary tokens, so they cannot, for example, contain matrices. They are intended for data intensive computations.
+</p>
+
+
+<p>
+  <a name="175215"> </a>Matrices are specified with square brackets, using commas to separate row elements and semicolons to separate rows. E.g., "[1, 2, 3; 4, 5, 5+1]" gives a two by three integer matrix (2 rows and 3 columns). Note that an array or matrix element can be given by an expression. A row vector can be given as "[1, 2, 3]" and a column vector as "[1; 2; 3]". Some MATLAB-style array constructors are supported. For example, "[1:2:9]" gives an array of odd numbers from 1 to 9, and is equivalent to "[1, 3, 5, 7, 9]." Similarly, "[1:2:9; 2:2:10]" is equivalent to "[1, 3, 5, 7, 9; 2, 4, 6, 8, 10]." In the syntax "[<i>p</i>:<i>q</i>:<i>r</i>]", <i>p</i> is the first element, <i>q</i> is the step between elements, and <i>r</i> is an upper bound on the last element. That is, the matrix will not contain an element larger than <i>r</i>. If a matrix with mixed types is specified, then the elements will be converted to a common type, if possible. Thus, for example, "[1.0, 1]" is equivalent to "[1.0, 1.0]," but "[1.0, 1L]" is illegal (because there is no common type to which both elements can be converted losslessly).
+</p>
+
+
+<p>
+  <a name="167025"> </a>Reference to elements of matrices have the form "<i>matrix</i>(<i>n</i>, <i>m</i>)" or "<i>name</i>(<i>n</i>, <i>m</i>)" where <i>name</i> is the name of a matrix variable in scope, <i>n</i> is the row index, and <i>m</i> is the column index. Index numbers start with zero, as in Java, not 1, as in MATLAB. For example,
+</p>
+
+<pre>
+<a name="196100"> </a>
+&gt;&gt; [1, 2; 3, 4](0,0)<a name="196106"> </a>
+1<a name="196107"> </a>
+&gt;&gt; a = [1, 2; 3, 4]<a name="196108"> </a>
+[1, 2; 3, 4]<a name="196109"> </a>
+&gt;&gt; a(1,1)<a name="196110"> </a>
+4<a name="196104"> </a>
+<a name="196114"> </a>
+</pre>
+
+<p>
+  <a name="183127"> </a>Matrix multiplication works as expected. For example, as seen in the expression evaluator (see figure <a href="expressionsa2.htm#183566">3.1</a>),
+</p>
+
+<pre>
+<a name="183161"> </a>
+&gt;&gt; [1, 2; 3, 4]*[2, 2; 2, 2]<a name="183167"> </a>
+[6, 6; 14, 14]<a name="183165"> </a>
+<a name="183175"> </a>
+</pre>
+
+<a name="190332"> </a>Of course, if the dimensions of the matrix don't match, then you will get an error message. To do element wise multiplication, use the multipyElements() function (see <a href="expressionsa10.htm#195091">Table 6 on page 121</a>). Matrix addition and subtraction are element wise, as expected, but the division operator is not supported. Element wise division can be accomplished with the divideElements() function, and multiplication by a matrix inverse can be accomplished using the inverse() function (see <a href="expressionsa10.htm#195091">Table 6 on page 121</a>). A matrix can be raised to an <i>int</i> or <i>unsignedByte</i> power, which is equivalent to multiplying it by itself some number of times. For instance,<br>
+
+<pre>
+<a name="183193"> </a>
+&gt;&gt; [3, 0; 0, 3]^3<a name="190349"> </a>
+[27, 0; 0, 27]<a name="183189"> </a>
+<a name="192936"> </a>
+</pre>
+
+<a name="190348"> </a>A matrix can also be multiplied or divided by a scalar, as follows:<br>
+
+<pre>
+<a name="183181"> </a>
+&gt;&gt; [3, 0; 0, 3]*3<a name="183250"> </a>
+[9, 0; 0, 9]<a name="183248"> </a>
+<a name="183258"> </a>
+</pre>
+
+<a name="183259"> </a>A matrix can be added to a scalar. It can also be subtracted from a scalar, or have a scalar subtracted from it. For instance,<br>
+
+<pre>
+<a name="184024"> </a>
+&gt;&gt; 1-[3, 0; 0, 3]<a name="184030"> </a>
+[-2, 1; 1, -2]<a name="184028"> </a>
+<a name="184038"> </a>
+</pre>
+
+<a name="184020"> </a>A matrix can be checked for equality with another matrix as follows:<br>
+
+<pre>
+<a name="183267"> </a>
+&gt;&gt; [3, 0; 0, 3]!=[3, 0; 0, 6]<a name="183273"> </a>
+true<a name="183274"> </a>
+&gt;&gt; [3, 0; 0, 3]==[3, 0; 0, 3]<a name="183275"> </a>
+true<a name="183271"> </a>
+<a name="183279"> </a>
+</pre>
+
+<a name="188905"> </a>For other comparisons of matrices, use the compare() function (see <a href="expressionsa10.htm#194754">Table 5 on page 119</a>). As with scalars, testing for equality using the == or != operators tests the values, independent of type. For example,<br>
+
+<pre>
+<a name="188906"> </a>
+&gt;&gt; [1, 2]==[1.0, 2.0]<a name="188907"> </a>
+true<a name="188908"> </a>
+<a name="190353"> </a>
+</pre>
+
+<a name="190356"> </a>To get type-specific equality tests, use the equals() method, as in the following examples:<br>
+
+<pre>
+<a name="190357"> </a>
+&gt;&gt; [1, 2].equals([1.0, 2.0])<a name="190358"> </a>
+false<a name="190359"> </a>
+&gt;&gt; [1.0, 2.0].equals([1.0, 2.0])<a name="190360"> </a>
+true<a name="190361"> </a>
+&gt;&gt; <a name="190362"> </a>
+</pre>
+
+<h4>
+  <a name="169771"> </a>3.4.3   Records
+</h4>
+
+
+<a name="191373"> </a>A record token is a composite type containing named fields, where each field has a value. The value of each field can have a distinct type. Records are delimited by curly braces, with each field given a name. For example, "{a=1, b="foo"}" is a record with two fields, named "a" and "b", with values 1 (an integer) and "foo" (a string), respectively. The value of a field can be an arbitrary expression, and records can be nested (a field of a record token may be a record token).<br>
+
+
+<p>
+  <a name="191374"> </a>Fields may be accessed using the period operator. For example,
+</p>
+
+<pre>
+<a name="191375"> </a>
+{a=1,b=2}.a<a name="184039"> </a>
+<a name="184040"> </a>
+</pre>
+
+<a name="176782"> </a>yields 1. You can optionally write this as if it were a method call:<br>
+
+<pre>
+<a name="176772"> </a>
+{a=1,b=2}.a()<a name="184041"> </a>
+<a name="184042"> </a>
+</pre>
+
+<a name="191386"> </a>The arithmetic operators +, -, *, /, and % can be applied to records. If the records do not have identical fields, then the operator is applied only to the fields that match, and the result contains only the fields that match. Thus, for example,<br>
+
+<pre>
+<a name="184836"> </a>
+{foodCost=40, hotelCost=100} + {foodCost=20, taxiCost=20}<a name="184861"> </a>
+<a name="184837"> </a>
+</pre>
+
+<a name="184838"> </a>yields the result<br>
+
+<pre>
+<a name="184841"> </a>
+{foodCost=60}<a name="184842"> </a>
+<a name="184843"> </a>
+</pre>
+
+<a name="191471"> </a>You can think of an operation as a set intersection, where the operation specifies how to merge the values of the intersecting fields. You can also form an intersection without applying an operation. In this case, using the intersect() function, you form a record that has only the common fields of two specified records, with the values taken from the first record. For example,<br>
+
+<pre>
+<a name="191481"> </a>
+&gt;&gt; intersect({a=1, c=2}, {a=3, b=4})<a name="191486"> </a>
+{a=1}<a name="191476"> </a>
+<a name="191485"> </a>
+</pre>
+
+<p>
+  <a name="191473"> </a>Records can be joined (think of a set union) without any operation being applied by using the merge() function. This function takes two arguments, both of which are record tokens. If the two record tokens have common fields, then the field value from the first record is used. For example,
+</p>
+
+<pre>
+<a name="184925"> </a>
+merge({a=1, b=2}, {a=3, c=3})<a name="184929"> </a>
+<a name="191458"> </a>
+</pre>
+
+<a name="191459"> </a>yields the result {a=1, b=2, c=3}. <br>
+
+
+<p>
+  <a name="191460"> </a>Records can be compared, as in the following examples:
+</p>
+
+<pre>
+<a name="187014"> </a>
+&gt;&gt; {a=1, b=2}!={a=1, b=2}<a name="187020"> </a>
+false<a name="187021"> </a>
+&gt;&gt; {a=1, b=2}!={a=1, c=2}<a name="187022"> </a>
+true<a name="187018"> </a>
+<a name="187030"> </a>
+</pre>
+
+<a name="187031"> </a>Note that two records are equal only if they have the same field labels and the values match. As with scalars, the values match irrespective of type. For example:<br>
+
+<pre>
+<a name="188860"> </a>
+&gt;&gt; {a=1, b=2}=={a=1.0, b=2.0+0.0i}<a name="188926"> </a>
+true<a name="190426"> </a>
+<a name="190427"> </a>
+</pre>
+
+<a name="191424"> </a>The order of the fields is irrelevant. Hence<br>
+
+<pre>
+<a name="191436"> </a>
+&gt;&gt; {a=1, b=2}=={b=2, a=1}<a name="191440"> </a>
+true<a name="191441"> </a>
+<a name="191442"> </a>
+</pre>
+
+<a name="191443"> </a>Moreover, record fields are reported in alphabetical order, irrespective of the order in which they are defined. For example,<br>
+
+<pre>
+<a name="191447"> </a>
+&gt;&gt; {b=2, a=1}<a name="191451"> </a>
+{a=1, b=2}<a name="191452"> </a>
+<a name="191453"> </a>
+</pre>
+
+<a name="190431"> </a>To get type-specific equality tests, use the equals() method, as in the following examples:<br>
+
+<pre>
+<a name="188862"> </a>
+&gt;&gt; {a=1, b=2}.equals({a=1.0, b=2.0+0.0i})<a name="188930"> </a>
+false<a name="188863"> </a>
+&gt;&gt; {a=1, b=2}.equals({b=2, a=1})<a name="188864"> </a>
+true<a name="188865"> </a>
+&gt;&gt; <a name="188855"> </a>
+</pre>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="expressionsa4.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="expressionsa6.htm"><img src="img/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>

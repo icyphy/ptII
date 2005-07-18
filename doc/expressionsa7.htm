@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 08:45:20">
+<title>3.6 Defining Functions</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="expressionsa6.htm"><img src="img/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="expressionsa8.htm"><img src="img/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="190432"> </a>3.6   Defining Functions
+</h2>
+
+
+<a name="184131"> </a>The expression language supports definition of functions. The syntax is:<br>
+
+<pre>
+<a name="184132"> </a>
+function(arg1:Type, arg2:Type...)<a name="184133"> </a>
+    function body <a name="184134"> </a>
+<a name="184135"> </a>
+</pre>
+
+<a name="184136"> </a>where "function" is the keyword for defining a function. The type of an argument can be left unspecified, in which case the expression language will attempt to infer it. The function body gives an expression that defines the return value of the function. The return type is always inferred based on the argument type and the expression. For example:<br>
+
+<pre>
+<a name="184139"> </a>
+function(x:double) x*5.0<a name="184140"> </a>
+<a name="184141"> </a>
+</pre>
+
+<a name="184142"> </a>defines a function that takes a <i>double</i> argument, multiplies it by 5.0, and returns a double. The return value of the above expression is the function itself. Thus, for example, the expression evaluator yields:<br>
+
+<pre>
+<a name="184202"> </a>
+&gt;&gt; function(x:double) x*5.0<a name="184212"> </a>
+(function(x:double) (x*5.0))<a name="184213"> </a>
+&gt;&gt; <a name="184210"> </a>
+<a name="184217"> </a>
+</pre>
+
+<a name="184198"> </a>To apply the function to an argument, simply do<br>
+
+<pre>
+<a name="184143"> </a>
+&gt;&gt; (function(x:double) x*5.0) (10.0)<a name="184223"> </a>
+50.0<a name="184224"> </a>
+&gt;&gt; <a name="184221"> </a>
+<a name="184228"> </a>
+</pre>
+
+<a name="184245"> </a>Alternatively, in the expression evaluator, you can assign the function to a variable, and then use the variable name to apply the function. For example,<br>
+
+<pre>
+<a name="191865"> </a>
+&gt;&gt; f = function(x:double) x*5.0<a name="191881"> </a>
+(function(x:double) (x*5.0))<a name="191882"> </a>
+&gt;&gt; f(10)<a name="191883"> </a>
+50.0<a name="191884"> </a>
+&gt;&gt; <a name="191872"> </a>
+<a name="191892"> </a>
+</pre>
+
+<p>
+  <a name="191864"> </a>Functions can be passed as arguments to certain "higher-order functions" that have been defined (see table <a href="expressionsa10.htm#195813">Table 9 on page 125</a>). For example, the iterate() function takes three arguments, a function, an integer, and an initial value to which to apply the function. It applies the function first to the initial value, then to the result of the application, then to that result, collecting the results into an array whose length is given by the second argument. For example, to get an array whose values are multiples of 3, try
+</p>
+
+<pre>
+<a name="193771"> </a>
+&gt;&gt; iterate(function(x:int) x+3, 5, 0)<a name="193777"> </a>
+{0, 3, 6, 9, 12}<a name="193772"> </a>
+<a name="193781"> </a>
+</pre>
+
+<a name="193782"> </a>The function given as an argument simply adds three to its argument. The result is the specified initial value (0) followed by the result of applying the function once to that initial value, then twice, then three times, etc.<br>
+
+
+<p>
+  <a name="193793"> </a>Another useful higher-order function is the map() function. This one takes a function and an array as arguments, and simply applies the function to each element of the array to construct a result array. For example,
+</p>
+
+<pre>
+<a name="193795"> </a>
+&gt;&gt; map(function(x:int) x+3, {0, 2, 3})<a name="193801"> </a>
+{3, 5, 6}<a name="193799"> </a>
+<a name="193809"> </a>
+</pre>
+
+<p>
+  <a name="193773"> </a>A typical use of functions in a Ptolemy II model is to define a parameter in a model whose value is a function. Suppose that the parameter named "f" has value "function(x:double) x*5.0". Then within the scope of that parameter, the expression "f(10.0)" will yield result 50.0.
+</p>
+
+
+<p>
+  <a name="184256"> </a>Functions can also be passed along connections in a Ptolemy II model. Consider the model shown in figure <img src="img/expressions41.gif" height="346" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="expressionsa7.htm#184256">3.6</a>. In that example, the Const actor defines a function that simply squares the argument. Its output, therefore, is a token with type <i>function</i>. That token is fed to the "f" input of the Expression actor. The expression uses this function by applying it to the token provided on the "y" input. That token, in turn, is supplied by the Ramp actor, so the result is the curve shown in the plot on the right.
+</p>
+
+
+<p>
+  <a name="184278"> </a>A more elaborate use is shown in figure <img src="img/expressions55.gif" height="483" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="expressionsa7.htm#184278">3.7</a>. In that example, the Const actor produces a function, which is then used by the Expression actor to create new function, which is then used by Expression2 to perform a calculation. The calculation performed here adds the output of the Ramp to the square of the output of the Ramp.
+</p>
+
+
+<p>
+  <a name="193833"> </a>Functions can be recursive, as illustrated by the following (rather arcane) example:
+</p>
+
+<pre>
+<a name="193834"> </a>
+&gt;&gt; fact = function(x:int,f:(function(x,f) int)) (x&lt;1?1:x*f(x-1,f))<a name="193854"> </a>
+(function(x:int, f:function(a0:general, a1:general) int) (x&lt;1)?1:(x*f((x-1), f)))<a name="193855"> </a>
+&gt;&gt; factorial = function(x:int) fact(x,fact)<a name="193856"> </a>
+(function(x:int) (function(x:int, f:function(a0:general, a1:general) int) (x&lt;1)?1:(x*f((x-1), f)))(x, (function(x:int, f:function(a0:gen-eral, a1:general) int) (x&lt;1)?1:(x*f((x-1), f)))))<a name="193857"> </a>
+&gt;&gt; map(factorial, [1:1:5].toArray())<a name="193858"> </a>
+{1, 2, 6, 24, 120}<a name="193859"> </a>
+&gt;&gt; <a name="193838"> </a>
+<a name="193849"> </a>
+</pre>
+
+<a name="193863"> </a>The first expression defines a function named "fact" that takes a function as an argument, and if the argument is greater than or equal to 1, uses that function recursively. The second expression defines a new function "factorial" using "fact." The final command applies the factorial function to an array to compute factorials.<br>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="expressionsa6.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="expressionsa8.htm"><img src="img/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>

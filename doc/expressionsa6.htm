@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 08:45:20">
+<title>3.5 Invoking Methods</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="expressionsa5.htm"><img src="img/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="expressionsa7.htm"><img src="img/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="184832"> </a>3.5   Invoking Methods
+</h2>
+
+
+<p>
+  <a name="184051"> </a>Every element and subexpression in an expression represents an instance of the Token class in Ptolemy II (or more likely, a class derived from Token). The expression language supports invocation of any method of a given token, as long as the arguments of the method are of type Token and the return type is Token (or a class derived from Token, or something that the expression parser can easily convert to a token, such as a string, double, int, etc.). The syntax for this is (<i>token</i>).<i>methodName</i>(<i>args</i>), where <i>methodName</i> is the name of the method and <i>args</i> is a comma-separated set of arguments. Each argument can itself be an expression. Note that the parentheses around the <i>token</i> are not required, but might be useful for clarity. As an example, the ArrayToken and RecordToken classes have a length() method, illustrated by the following examples:
+</p>
+
+<pre>
+<a name="184058"> </a>
+{1, 2, 3}.length()<a name="184060"> </a>
+{a=1, b=2, c=3}.length()<a name="184338"> </a>
+<a name="184061"> </a>
+</pre>
+
+<a name="184062"> </a>each of which returns the integer 3.<br>
+
+
+<p>
+  <a name="184064"> </a>The MatrixToken classes have three particularly useful methods, illustrated in the following examples:
+</p>
+
+<pre>
+<a name="184065"> </a>
+[1, 2; 3, 4; 5, 6].getRowCount()<a name="184067"> </a>
+<a name="184068"> </a>
+</pre>
+
+<a name="184069"> </a>which returns 3, and<br>
+
+<pre>
+<a name="184070"> </a>
+[1, 2; 3, 4; 5, 6].getColumnCount()<a name="184072"> </a>
+<a name="184073"> </a>
+</pre>
+
+<a name="184074"> </a>which returns 2, and<br>
+
+<pre>
+<a name="184075"> </a>
+[1, 2; 3, 4; 5, 6].toArray()<a name="184077"> </a>
+<a name="184078"> </a>
+</pre>
+
+<a name="184079"> </a>which returns {1, 2, 3, 4, 5, 6}. The latter function can be particularly useful for creating arrays using MATLAB-style syntax. For example, to obtain an array with the integers from 1 to 100, you can enter:<br>
+
+<pre>
+<a name="184080"> </a>
+[1:1:100].toArray()<a name="184081"> </a>
+<a name="184082"> </a>
+</pre>
+
+<p>
+  <a name="184048"> </a>
+</p>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="expressionsa5.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="expressionsa7.htm"><img src="img/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>

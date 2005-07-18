@@ -68,6 +68,15 @@ UI_FILES_TO_BE_JARED = \
 	codegen.htm \
 	default.css \
 	expressions.htm \
+	expressionsa2.htm \
+	expressionsa3.htm \
+	expressionsa4.htm \
+	expressionsa5.htm \
+	expressionsa6.htm \
+	expressionsa7.htm \
+	expressionsa8.htm \
+	expressionsa9.htm \
+	expressionsa10.htm \
 	sandbox.htm \
 	webStartHelp.htm \
 	whatsnew.htm \
@@ -432,7 +441,9 @@ DERIVED_FILES = \
 
 update: $(DERIVED_FILES)
 	cvs commit -m "Master files changed" \
-		mainVergil.htm ptII$(PTVERSION).releaseVergil.htm \
+		mainVergil.htm \
+		mainVergilPtiny.htm \
+		ptII$(PTVERSION).releaseVergil.htm \
 		troubleshootingVergil.htm \
 		whatsnew.htm whatsnewVergil.htm 
 	rm -f docConfig.jar
