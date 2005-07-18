@@ -36,9 +36,12 @@ import java.awt.geom.Rectangle2D;
  *
  * @author  Nick Zamora
  * @version $Id$
- * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */
 public interface PaintedGraphic extends PaintedObject {
+
+    // This class was deprecated with "Will be removed in Diva
+    // 0.4. Use diva.compat.canvas if needed."
+
     /** Get the line width.
      */
     public float getLineWidth();
