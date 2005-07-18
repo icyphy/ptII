@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 09:38:43">
+<title>2.7 Classes and Inheritance</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="usingVergila7.htm"><img src="images/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="usingVergila9.htm"><img src="images/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="168634"> </a>2.7   Classes and Inheritance
+</h2>
+
+
+<a name="177350"> </a>One of the major new capabilities introduced with version 4.0 of Ptolemy II is the ability to define <i>actor-oriented classes</i> with instances and subclasses with inheritance. The key idea is that you can specify that a component definition is a <i>class</i>, in which case all instances and subclasses inherit its structure. This improves modularity in designs. We will illustrate this capability with an example.<br>
+
+
+<h4>
+  <a name="177618"> </a>2.7.1   Creating and Using Actor-Oriented Classes
+</h4>
+
+
+<p>
+  <a name="177363"> </a>Consider the model that we developed in <a href="usingVergila5.htm#166138">section 2.4</a>, shown for reference in figure <img src="images/usingVergil5.gif" height="490" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila8.htm#177363">2.34</a>. Suppose that we wish to create multiple instances of the channel, as shown in figure <img src="images/usingVergil7.gif" usemap="#usingVergil7_gif" height="490" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil7_gif">
+
+<area href="usingVergila8.htm#177363" shape=rect coords="5,439,933,481">
+</map>
+<a href="usingVergila8.htm#177363">2.35</a>. In that figure, the sinewave signal passes through five distinct channels (note the use of a relation to broadcast the same signal to each of the five channels). The outputs of the channels are added together and plotted. The result is a significantly cleaner sine wave than the one that results from one channel alone<a href="#177442"><sup>1</sup></a>. However, this is a poor design, for two reasons. First, the number of channels is hardwired into the diagram. We will deal with that problem in the next section. Second, each of the channels is a <i>copy</i> of the composite actor in figure <a href="usingVergila8.htm#177363">2.34</a>. This results in a far less maintainable or scalable model than we would like. Consider, for example, what it would take to change the design of the channel. Each of the five copies would have to be changed individually.
+</p>
+
+
+<p>
+  <a name="177455"> </a>A better solution is to define a channel class. To do this, begin with the design in figure <a href="usingVergila8.htm#177363">2.34</a>, and remove the connections to the channel, as shown in figure <img src="images/usingVergil11.gif" height="1065" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila8.htm#177455">2.36</a>. Then right click and select "Convert to Class". (Note that if you fail to first remove the connections, you will get an error message when you try to convert to class. A class is not permitted to have connections.) The actor icon acquires a blue halo, which serves as a visual indication that it is a class, rather than an ordinary actor (which is an instance). Classes play no role in the execution of the model, and merely serve as definitions of components that must then be instantiated. By convention, we put classes at the top of the model, near the director, since they function as declarations.
+</p>
+
+
+<p>
+  <a name="177548"> </a>Once you have a class, you can create an instance by right clicking and selecting "Create Instance" or typing Control-N. Do this five times to create five instances of the class, as shown in figure <a href="usingVergila8.htm#177455">2.36</a>. Although this looks similar to the design in figure <a href="usingVergila8.htm#177363">2.35</a>, it is, in fact, a much better design. To verify this, try making a change to the class, for example by creating a custom icon for it, as shown in figure <img src="images/usingVergil15.gif" usemap="#usingVergil15_gif" height="457" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil15_gif">
+
+<area href="usingVergila8.htm#177455" shape=rect coords="2,414,929,455">
+</map>
+<a href="usingVergila8.htm#177548">2.37</a>. Note that the changes propagate to each of the instances of the class. A more subtle advantage is that the XML file representation of the model is much smaller, since the design of the class is given only once rather than five times.
+</p>
+
+
+<p>
+  <a name="177622"> </a>If you look inside any of the instances (or the class) in figure <a href="usingVergila8.htm#177548">2.37</a>, you will see the same channel model. In fact, you will see the class definition. Any change you make inside this hierarchical model will be automatically propagated to all the instances. Try changing the value of the noisePower parameter, for example.
+</p>
+
+
+<h4>
+  <a name="177640"> </a>2.7.2   Overriding Parameter Values in Instances
+</h4>
+
+
+<a name="177646"> </a>By default, all instances of Channel in figure <a href="usingVergila8.htm#177548">2.37</a> have the same icon and the same parameter values. However, each instance can be customized by overriding these values. In figure <img src="images/usingVergil19.gif" usemap="#usingVergil19_gif" height="457" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil19_gif">
+
+<area href="usingVergila8.htm#177548" shape=rect coords="2,414,929,455">
+</map>
+<a href="usingVergila8.htm#177646">2.38</a>, for example, we have modified the custom icons so that each has a different color, and the fifth one has an extra graphical element. To do this, just right click on the icon of the instance and select "Edit Custom Icon."<br>
+
+
+<h4>
+  <a name="177683"> </a>2.7.3   Subclassing and Inheritance
+</h4>
+
+
+<a name="177687"> </a>Suppose now that we wish to modify some of the channels to add interference in the form of another sinewave. A good way to do this is to create a subclass of the Channel class, as shown in figure <img src="images/usingVergil23.gif" usemap="#usingVergil23_gif" height="538" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil23_gif">
+
+<area href="usingVergila8.htm#177646" shape=rect coords="2,511,929,552">
+</map>
+<a href="usingVergila8.htm#177687">2.39</a>. A subclass is created by right clicking on the class icon and selecting "Create Subclass." The resulting icon for the subclass appears right on top of the icon for the class, so it needs to be moved over, as shown in the figure.<br>
+
+
+<p>
+  <a name="177864"> </a>Looking inside the subclass reveals that it contains all the elements of the class, but with their icons now surrounded by a dashed pink outline. These elements are <i>inherited</i>. They cannot be removed from the subclass (try to do so, and you will get an error message). You can, however, change their parameter values and add additional elements. Consider the design shown in figure <img src="images/usingVergil27.gif" usemap="#usingVergil27_gif" height="412" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil27_gif">
+
+<area href="usingVergila8.htm#177687" shape=rect coords="4,385,931,426">
+</map>
+<a href="usingVergila8.htm#177864">2.40</a>, which adds an additional pair of parameters named "interferenceAmplitude" and "interferenceFrequency" and an additional pair of actors implementing the interference. A model that replaces the last channel with an instance of the subclass is shown in figure <img src="images/usingVergil31.gif" usemap="#usingVergil31_gif" height="516" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil31_gif">
+
+<area href="usingVergila8.htm#177864" shape=rect coords="4,489,931,531">
+</map>
+<a href="usingVergila8.htm#177864">2.41</a>, along with a plot where you can see the sinusoidal interference.
+</p>
+
+
+<p>
+  <a name="178022"> </a>An instance of a class may be created anywhere in a hierarchical model that is either in the same composite as the class or in a composite contained by that composite. To put an instance into a submodel, simply copy (or cut) an instance from the composite where the class is, and then paste that instance into the composite.
+</p>
+
+
+<h4>
+  <a name="178018"> </a>2.7.4   Sharing Classes Across Models
+</h4>
+
+
+<a name="178030"> </a>A class may be shared across multiple models by saving the class definition in its own file. We will illustrate how to do that with the Channel class. First, look inside the Channel class, and then select Save As from the File menu. The dialog that appears is shown in figure <img src="images/usingVergil42.gif" height="724" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila8.htm#178030">2.42</a>. The checkbox at the right, labeled "Save submodel only" is by default unchecked, and if left unchecked, what will be saved will be the entire model. In our case, we wish to save the Channel submodel only, so we must check the box.<br>
+
+
+<p>
+  <a name="178073"> </a>A key issue is to decide where to save the file. As always with files, there is an issue that models that use a class defined in an external file have to be able to find that file. In general Ptolemy II searches for class definitions relative to the <i>classpath</i>, which is given by an environment variable called CLASSPATH. In principle, you can set this environment variable to include any particular directory that you would like searched. In practice, changing the CLASSPATH variable often causes problems with programs, so we recommend, when possible, simply storing the file in a directory within the Ptolemy II installation directory.<a href="#178079"><sup>2</sup></a>
+</p>
+
+
+<p>
+  <a name="178074"> </a>In figure <a href="usingVergila8.htm#178030">2.42</a>, the Channel class is saved to a file called Channel.xml in the directory $PTII/myActors, where $PTII is the location of the Ptolemy II installation. This class definition can now be used in any model as follows. Open the model, and select "Instantiate Entity" in the Graph menu, as shown in figure <img src="images/usingVergil45.gif" height="611" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila8.htm#178074">2.43</a>. Simply enter the fully qualified class name relative to the $PTII entry in the classpath, which in this case is "myActors.Channel".
+</p>
+
+
+<p>
+  <a name="178152"> </a>Once you have an instance of the Channel class that is defined in its own file, you can add it to the UserLibrary that appears in the library browser to the left in Vergil windows, as shown in figure <img src="images/usingVergil49.gif" height="863" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila8.htm#178152">2.44</a>. To do this, right click on the instance and select "Save Actor in Library." As shown in the figure, this causes another window to open, which is actually the user library. The user library is a Ptolemy II model like any other, stored in an XML file. If you now save that library model, then the class instance will be available in the UserLibrary henceforth in any Vergil window.
+</p>
+
+
+<p>
+  <a name="178205"> </a>One subtle point is that it would not accomplish the same objective if the class definition itself (vs. an instance of the class) were to be saved in the user library. If you were to do that, then the user library would provide a new class definition rather than an instance of the class when you drag from it.
+</p>
+
+
+  
+<a name="177442"> </a><a href="#177363"><sup>1</sup></a>
+<a name="177442"> </a>In communication systems, this technique is known as <i>diversity</i>, where multiple channels with independent noise are used to achieve more reliable communication.<br>
+
+<br>
+
+
+<a name="178079"> </a><a href="#178073"><sup>2</sup></a>
+<a name="178079"> </a>If you don't know where Ptolemy II is installed on your system, you can find out by invoking File, New, Expression Evaluator and typing PTII followed by Enter.<br>
+
+<br>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="usingVergila7.htm"><img src="images/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="usingVergila9.htm"><img src="images/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>

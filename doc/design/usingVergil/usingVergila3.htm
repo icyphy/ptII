@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 09:38:43">
+<title>2.2 Quick Start</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="usingVergila2.htm"><img src="images/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="usingVergila4.htm"><img src="images/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="165833"> </a>2.2   Quick Start
+</h2>
+
+
+<p>
+  <a name="165834"> </a>This section shows how to start Vergil, how to execute and explore pre-built models, and how to construct your own models.
+</p>
+
+
+<h4>
+  <a name="169820"> </a>2.2.1   Starting Vergil
+</h4>
+
+
+<p>
+  <a name="165846"> </a>First start Vergil. From the command line, enter "vergil", or select Ptolemy II and Vergil in the Start menu<a href="#176974"><sup>1</sup></a>, or click on a Web Start link on a web page supporting the web edition. You should see an initial welcome window that looks like the one in figure <img src="images/usingVergil46.gif" height="264" width="599" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#165846">2.2</a>. Feel free to explore the links in this window. The "Quick tour" link takes you to the page shown in figure <img src="images/usingVergil88.gif" height="527" width="600" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#165846">2.3</a>.
+</p>
+
+
+<h4>
+  <a name="175726"> </a>2.2.2   Executing a Pre-Built Model: A Signal Processing Example
+</h4>
+
+
+<p>
+  <a name="175696"> </a>The very first example on the quick tour page is the model shown in figure <a href="usingVergila2.htm#167754">2.1</a>. It creates a sinusoidal signal, multiplies it by a sinusoidal carrier, adds noise, and then estimates the power spectrum. You can execute this model in either of two ways. First, you can select Run Window in the View menu, and then click on Go. The result is shown in figure <img src="images/usingVergila.gif" usemap="#usingVergila_gif" height="436" width="600" align="left" border="0" hspace="0" vspace="0">
+<map name="usingVergila_gif">
+
+<area href="usingVergila2.htm#167754" shape=rect coords="0,416,597,434">
+</map>
+<a href="usingVergila3.htm#175696">2.4</a>. The upper plot shows the spectrum of the time-domain signal shown in the lower plot. Note the four peaks, which indicate the modulated sinusoid. In the run window you can adjust the frequencies of the signal and the carrier as well as the amount of noise. These can also be adjusted in the block diagram in figure <a href="usingVergila2.htm#167754">2.1</a> by double clicking on the bulleted parameters near the upper right of the window.
+</p>
+
+
+<p>
+  <a name="175725"> </a>The second alternative for running the model is to click on the run button in the toolbar, which is indicated by a red triangle pointing to the right. If you use this alternative, then the two signal plots are displayed in their own windows.
+</p>
+
+
+<p>
+  <a name="175730"> </a>You can study the way the model is constructed in figure <a href="usingVergila2.htm#167754">2.1</a>. Note the Expression actor in the middle, whose icon indicates the expression being calculated: "signal*carrier + noise". The identifiers in this expression, signal, carrier, and noise refer to the input ports by name. The names of these ports are shown in the diagram. The Expression actor is a very flexible actor in the Ptolemy II actor library. It can have any number of input ports, with arbitrary names, and uses a rich and expressive expression language to specify the value of the output as a function of the inputs (and parameters of the containing model, if desired).
+</p>
+
+
+<p>
+  <a name="175749"> </a>Three of the actors in figure <a href="usingVergila2.htm#167754">2.1</a> are <i>composite actors</i>, which means that their implementation is itself given as a block diagram. Composite actors are indicated visually by the red outline. You can look inside to reveal the implementation, as shown in figure <img src="images/usingVergil4.gif" height="930" width="937" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#175749">2.5</a>, which shows the implementation of the Signal Source in figure <a href="usingVergila2.htm#167754">2.1</a>. It is evident from the block diagram how a sinusoidal signal is generated.
+</p>
+
+
+<h4>
+  <a name="175805"> </a>2.2.3   Executing a Pre-Built Model: A Continuous-Time Example
+</h4>
+
+
+<a name="175978"> </a>A key principle of the Ptolemy II system is that the model of computation that defines the meaning of a block diagram is not built-in, but is rather specified by the <i>director</i> component that is included in the model. The box labeled "SDF Director" in figures <a href="usingVergila2.htm#167754">2.1</a> and <a href="usingVergila3.htm#175749">2.5</a> specifies that these block diagrams have <i>synchronous dataflow</i> semantics, which is explained further below. The second example in the quick tour of figure <a href="usingVergila3.htm#165846">2.3</a>, by contrast, has continuous-time semantics (the one labeled "Continuous-Time Modeling"). The example is the well-known <i>Lorenz attractor</i>, a non-linear feedback system that exhibits chaotic behavior.<br>
+
+
+<a name="175992"> </a>The Lorenz attractor model, shown in figure <img src="images/usingVergil6.gif" height="629" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#175992">2.6</a>, is a block diagram representation of a set of nonlinear ordinary differential equations. The blocks with integration signs in their icons are integrators. At any given time <i>t</i>, their output is given by<br>
+
+<div align="center">
+<a name="175849"> </a>(1) <img src="images/usingVergil9.gif" height="63" width="144" border="0" hspace="0" vspace="0">
+,<br>
+</div>
+
+<a name="175859"> </a>where <img src="images/usingVergil10.gif" height="21" width="33" border="0" hspace="0" vspace="0">
+ is the initial state of the integrator, <img src="images/usingVergil13.gif" height="21" width="13" border="0" hspace="0" vspace="0">
+ is the start time of the model, and <img src="images/usingVergil14.gif" height="22" width="10" border="0" hspace="0" vspace="0">
+ is the input signal. Note that since the output is the integral of the input, then at any given time, the input is the derivative of the output,<br>
+
+<div align="center">
+<a name="175863"> </a>(2) <img src="images/usingVergil17.gif" height="36" width="86" border="0" hspace="0" vspace="0">
+.<br>
+</div>
+
+<a name="175864"> </a>Thus, the system describes either an integral equation or a differential equation, depending on which of these two forms you use.<br>
+
+
+<p>
+  <a name="175874"> </a>Let the output of the top integrator in figure <a href="usingVergila3.htm#175992">2.6</a> be <img src="images/usingVergil18.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+, the output of the middle integrator be <img src="images/usingVergil21.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+, and the output of the bottom integrator be <img src="images/usingVergil22.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+. Then the equations described by figure <a href="usingVergila3.htm#175992">2.6</a> are
+</p>
+
+<div align="center">
+<a name="175884"> </a>(3) <img src="images/usingVergil25.gif" height="82" width="193" border="0" hspace="0" vspace="0">
+.<br>
+</div>
+
+<a name="175885"> </a>For each equation, the expression on the right is implemented by an Expression actor, whose icon shows the expression. Each expression refers to parameters (such as <i>lambda</i> for <img src="images/usingVergil26.gif" height="18" width="12" border="0" hspace="0" vspace="0">
+ and <i>sigma</i> for <img src="images/usingVergil29.gif" height="18" width="12" border="0" hspace="0" vspace="0">
+) and input ports of the actor (such as <i>x1</i> for <img src="images/usingVergil30.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+ and <i>x2</i> for <img src="images/usingVergil33.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+). The names of the input ports are not shown in the diagram, but if you linger over them with the mouse cursor, the name will pop up in a tooltip. The expression in each Expression actor can be edited by double clicking on the actor, and the parameter values can be edited by double clicking on the parameters, which are shown next to bullets on the right.<br>
+
+
+<p>
+  <a name="175898"> </a>The integrators each also have initial values, which you can examine and change by double clicking on the corresponding integrator icon. These define the initial values of <img src="images/usingVergil34.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+, <img src="images/usingVergil37.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+, and <img src="images/usingVergil38.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+, respectively. For this example, all three are set to 1.0.
+</p>
+
+
+<p>
+  <a name="175908"> </a>The Continuous-Time (CT) Solver, shown at the upper left, manages a simulation of the model. It contains a sophisticated ODE solver, and to use it effectively, you will need to understand some of its parameters. The parameters are accessed by double clicking on the solver box, which results in the dialog shown in figure <img src="images/usingVergil41.gif" usemap="#usingVergil41_gif" height="456" width="937" align="left" border="0" hspace="0" vspace="0">
+<map name="usingVergil41_gif">
+
+<area href="usingVergila3.htm#175992" shape=rect coords="0,421,929,450">
+</map>
+<a href="usingVergila3.htm#175908">2.7</a>. The simplest of these parameters are the <i>startTime</i> and the <i>stopTime</i>, which are self-explanatory. They define the region of the time line over which a simulation will execute.
+</p>
+
+
+<p>
+  <a name="175922"> </a>To execute the model, you can click on the run button in the toolbar (with a red triangle icon), or you can open the Run Window in the View menu. In the former case, the model executes, and the results are plotted in their own window, as shown in figure <img src="images/usingVergil44.gif" height="546" width="937" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#175922">2.8</a>. What is plotted is <img src="images/usingVergil47.gif" height="21" width="33" border="0" hspace="0" vspace="0">
+ vs. <img src="images/usingVergil48.gif" height="21" width="33" border="0" hspace="0" vspace="0">
+ for values of <i>t</i> in between <i>startTime</i> and <i>stopTime</i>.
+</p>
+
+
+<p>
+  <a name="175952"> </a>Like the Lorenz model, a typical continuous-time model contains integrators in feedback loops, or more elaborate blocks that realize linear and non-linear dynamical systems given abstract mathematical representations of them (such as Laplace transforms). In the next section, we will explore how to build a model from scratch.
+</p>
+
+
+<h4>
+  <a name="166445"> </a>2.2.4   Creating a New Model
+</h4>
+
+
+<p>
+  <a name="169824"> </a>Create a new model by selecting File-&gt;New-&gt;Graph Editor in the welcome window. You should see something like the window shown in figure <img src="images/usingVergil2.gif" height="609" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#169824">2.9</a>. Ignoring the menus and toolbar for a moment, on the left is a palette of objects that can be dragged onto the page on the right. To begin with, the page on the right is blank. Open the <i>Actors </i>library in the palette, and go into the <i>Sources</i> library. Find the <i>Const</i> actor under <i>GenericSources</i> and drag an instance over onto the blank page. Then go into the <i>Sinks </i>library (<i>GenericSinks</i> sublibrary) and drag a <i>Display</i> actor onto the page. Each of these actors can be dragged around on the page. However, we would like to connect one to the other. To do this, drag a connection from the output port on the right of the <i>Const </i>actor to the input port of the <i>Display</i> actor. Lastly, open the <i>Directors </i>library and drag an <i>SDFDirector</i> onto the page. The director gives a meaning (semantics) to the graph, but for now we don't have to be concerned about exactly what that is.
+</p>
+
+
+<p>
+  <a name="165895"> </a>Now you should have something that looks like figure <img src="images/usingVergil8.gif" height="608" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#165895">2.10</a>. The <i>Const</i> actor is going to create our string, and the <i>Display</i> actor is going to print it out for us. We need to take care of one small detail to make it look like figure <a href="usingVergila3.htm#165895">2.10</a>: we need to tell the <i>Const</i> actor that we want the string "Hello World". To do this we need to edit one of the parameters of the <i>Const</i>. To do this, either double click on the <i>Const</i> actor icon, or right click<a href="#176997"><sup>2</sup></a> on the <i>Const</i> actor icon and select "Configure". You should see the dialog box in figure <img src="images/usingVergil20.gif" height="374" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#165895">2.11</a>. Enter the string "Hello World" for the value parameter and click the Commit button. Be sure to include the double quotes, so that the expression is interpreted as a string.
+</p>
+
+
+<p>
+  <a name="169832"> </a>You may wish to save your model, using the File menu. File names for Ptolemy II models should end in ".xml" or ".moml" so that Vergil will properly process the file the next time you open that file.
+</p>
+
+
+<h4>
+  <a name="169828"> </a>2.2.5   Running the Model
+</h4>
+
+
+<p>
+  <a name="166518"> </a>To run the example, go to the View menu and select the Run Window. If you click the "Go" button, you will see a large number of strings in the display at the right. To stop the execution, click the "Stop" button. To see only one string, change the <i>iterations</i> parameter of the SDF Director to 1, which can be done in the run window, or in the graph editor in the same way you edited the parameter of the <i>Const</i> actor before. The run window is shown in figure <img src="images/usingVergil28.gif" height="384" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#166518">2.12</a>.
+</p>
+
+
+<h4>
+  <a name="169795"> </a>2.2.6   Making Connections
+</h4>
+
+
+<a name="169838"> </a>The model constructed above contained only two actors and one connection between them. If you move either actor (by clicking and dragging), you will see that the connection is routed automatically. We can now explore how to create and manipulate more complicated connections.<br>
+
+
+<p>
+  <a name="169954"> </a>First create a model in a new graph editor that includes an <i>SDFDirector</i>, a <i>Ramp</i> actor (found in the <i>Sources</i>) library, a <i>Display </i>actor, and a <i>SequencePlotter</i> actor, found in the <i>Sinks</i> library, as shown in figure <img src="images/usingVergil43.gif" height="195" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#169954">2.13</a>. Suppose we wish to route the output of the <i>Ramp</i> to both the <i>Display</i> and the <i>SequencePlotter</i>. If we simply attempt to make the connections, we get the exception shown in figure <img src="images/usingVergil54.gif" usemap="#usingVergil54_gif" height="257" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil54_gif">
+
+<area href="usingVergila3.htm#169954" shape=rect coords="5,206,933,248">
+</map>
+<a href="usingVergila3.htm#169954">2.14</a>. Don't panic! Exceptions are normal and common. The key information in this exception report is the text:
+</p>
+
+<pre>
+<a name="169899"> </a>
+Attempt to link more than one relation to a single port.<a name="169903"> </a>
+<a name="169908"> </a>
+</pre>
+
+<a name="169909"> </a>The last line gives the names of the objects involved, which in this case are:<br>
+
+<pre>
+<a name="169915"> </a>
+in .broadcastRelations.Ramp.output and .broadcastRelations.relation2<a name="177012"> </a>
+<a name="169931"> </a>
+</pre>
+
+<a name="169932"> </a>(This assumes the model has been saved under the name "broadcastRelations.") In Ptolemy II models, all objects have a dotted name. The dots separate elements in the hierarchy. Thus, ".&lt;Unnamed Object&gt;.Ramp.output" is an object named "output" contained by an object named "Ramp", which is contained by an unnamed object (the model itself). The model has no name because we have not assigned one (it acquires a name when we save it).<br>
+
+
+<p>
+  <a name="169979"> </a>Why did this exception occur? Ptolemy II supports two distinct flavors of ports, indicated in the diagrams by a filled triangle or an unfilled triangle. The output port of the <i>Ramp</i> actor is a <i>single port</i>, indicated by a filled triangle, which means that it can only support a single connection. The input port of the <i>Display</i> and <i>SequencePlotter</i> actors are <i>multiports</i>, indicated by unfilled triangles, which means that they can support multiple connections. Each connection is treated as a separate <i>channel</i>, which is a path from an output port to an input port (via relations) that can transport a single stream of tokens. 
+</p>
+
+
+<p>
+  <a name="177201"> </a>So how do we get the output of the <i>Ramp</i> to the other two actors? We need an explicit <i>relation</i> in the diagram. A relation is represented in the diagram by a black diamond, as shown in figure <img src="images/usingVergil51.gif" height="359" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#177201">2.15</a>. It can be created by either control-clicking on the background or by clicking on the button in the toolbar with the black diamond on it.
+</p>
+
+<dl>
+  <dt> <a name="170018"> </a>Making a connection to a relation can be tricky, since if you just click and drag on the relation, the relation gets selected and moved. To make a connection, hold the control button while clicking and dragging on the relation.<a href="#177026"><sup>3</sup></a>
+</dl>
+
+<p>
+  <a name="170023"> </a>In the model shown in figure <a href="usingVergila3.htm#177201">2.15</a>, the relation is used to broadcast the output from a single port to a number of places. The single port still has only one connection to it, a connection to a relation. Relations can also be used to control the routing of wires in the diagram. However, as of the 4.0 release of Ptolemy II, a connection can only have a single relation on it, so the degree to which routing can be controlled is limited.
+</p>
+
+
+<p>
+  <a name="170038"> </a>To explore multiports, try putting some other signal source in the diagram and connecting it to the <i>SequencePlotter</i> or to the <i>Display</i>. If you explore this fully, you will discover that the <i>SequencePlotter</i> can only accept inputs of type <i>double</i>, or some type that can be losslessly converted to <i>double</i>, such as <i>int.</i> These data type issues are explored next.
+</p>
+
+
+  
+<a name="176974"> </a><a href="#165846"><sup>1</sup></a>
+<a name="176974"> </a>Depending on your installation, you could have several versions of Vergil available in the Start menu. This document assumes you select "Vergil - Full." There are separate tutorial documents for "Vergil - HyVisual" (which is specialized for modeling hybrid systems) and "Vergil - VisualSense" (which is specialized for modeling wireless and sensor network systems).<br>
+
+<br>
+
+
+<a name="176997"> </a><a href="#165895"><sup>2</sup></a>
+<a name="176997"> </a>On a Macintosh, which typically has only one mouse button, instead of right clicking, hold the control key and click the one button.<br>
+
+<br>
+
+
+<a name="177026"> </a><a href="#170018"><sup>3</sup></a>
+<a name="177026"> </a>On a Macintosh, hold the command key rather than the control key.<br>
+
+<br>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="usingVergila2.htm"><img src="images/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="usingVergila4.htm"><img src="images/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 09:38:43">
+<title>2.8 Higher-Order Components</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="usingVergila8.htm"><img src="images/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="usingVergila10.htm"><img src="images/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="177904"> </a>2.8   Higher-Order Components
+</h2>
+
+
+<a name="177915"> </a>Ptolemy II includes a number of <i>higher-order components</i>, which are actors that operate on the structure of the model rather than on data. This notion of higher-order components appeared in Ptolemy Classic and is described in [81], but the realization in Ptolemy II is more flexible than that in Ptolemy Classic. These higher-order components help significantly in building large designs where the model structure does not depend on the scale of the problem. In this section, we describe a few of these components, all of which are found in the HigherOrderActors library. The ModalModel actor is described below in section <a href="usingVergila11.htm#176101">2.10</a>, after explaining some of the domains that can make effective use of it.<br>
+
+
+<h4>
+  <a name="177924"> </a>2.8.1   MultiInstance Composite
+</h4>
+
+
+<a name="177935"> </a>Consider the model in figure <a href="usingVergila8.htm#177548">2.37</a>, which has five instances of the Channel class wired in parallel. This model has the unfortunate feature that the number of instances is hardwired into the diagram. It is awkward, therefore, to change this number, and particularly awkward to create a larger number of instances. This problem is solved by the MultiInstanceComposite actor<a href="#177954"><sup>1</sup></a>. A model equivalent to that of figure <a href="usingVergila8.htm#177548">2.37</a> but using the MultiInstanceComposite actor is shown in figure <img src="images/usingVergil35.gif" usemap="#usingVergil35_gif" height="469" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil35_gif">
+
+<area href="usingVergila8.htm#177548" shape=rect coords="4,420,931,462">
+</map>
+<a href="usingVergila9.htm#177935">2.45</a>. The MultiInstanceComposite is a composite actor into which we have inserted a single instance of the Channel (this is inserted by creating an instance of the of Channel, then copying and pasting it into the composite).<br>
+
+
+<p>
+  <a name="178237"> </a>The MultiInstanceComposite actor has two parameters, <i>nInstances</i> and <i>instance</i>, shown in figure <img src="images/usingVergil39.gif" height="248" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila9.htm#178237">2.46</a>. The first of these specifies the number of instances to create. At run time, this actor replicates itself this number of times, connecting the inputs and outputs to the same sources and destinations as the first (prototype) instance. In figure <a href="usingVergila9.htm#177935">2.45</a>, notice that the input of the MultiInstanceComposite is connected to a relation (the black diamond), and the output is connected directly to a multiport input of the AddSubtract actor. As a consequence, the multiple instances will be wired in a manner similar to figure <a href="usingVergila8.htm#177548">2.37</a>, where the same input value is broadcast to all instances, but distinct output values are supplied to the AddSubtract actor.
+</p>
+
+
+<p>
+  <a name="178274"> </a>The model of figure <a href="usingVergila9.htm#177935">2.45</a> is better than that of figure <a href="usingVergila8.htm#177548">2.37</a> because now we can change the number of instances by changing one parameter value. The instances can also be customized on a per-instance basis by expressing their parameter values in terms of the <i>instance</i> parameter of the MultiInstanceComposite. Try, for example, making the <i>noisePower</i> parameter of the InstanceOfChannel actor in figure <a href="usingVergila9.htm#177935">2.45</a> depend on <i>instance</i>. E.g., set it to "instance * 0.1" and then set <i>nInstances</i> to 1. You will see a clean sine wave when you run the model.
+</p>
+
+
+<h4>
+  <a name="178428"> </a>2.8.2   Mobile Code
+</h4>
+
+
+<a name="178559"> </a>A pair of (still experimental) actors in Ptolemy II support mobile code in two forms. The MobileFunction actor accepts a function in the expression language (see the Expression Language chapter) at one input port and applies that function to data that arrives at the other input port. The MobileModel actor accepts a MoML description of a Ptolemy II model at an input port and then executes that model, streaming data from the other input port through it. <br>
+
+
+<p>
+  <a name="178631"> </a>A use of the MobileFunction actor is shown in figure <a href="usingVergila9.htm#178631">2.47</a><img src="images/usingVergil56.gif" height="614" width="937" align="center" border="0" hspace="0" vspace="0">
+. In that model, two functions are provided to the MobileFunction in an alternating fashion, one that computes <img src="images/usingVergil59.gif" height="23" width="16" border="0" hspace="0" vspace="0">
+ and the other that computes <img src="images/usingVergil62.gif" height="23" width="16" border="0" hspace="0" vspace="0">
+. These two functions are provided by two instances of the Const actor, found in Sources, GenericSources. The functions are interleaved by the Commutator actor, from FlowControl, Aggregators.
+</p>
+
+
+<h4>
+  <a name="178554"> </a>2.8.3   Lifecycle Management Actors
+</h4>
+
+
+<a name="178653"> </a>A few actors in the <i>HigherOrderActors</i> library provide in a single firing the entire execution of another Ptolemy II model. The RunCompositeActor actor executes the contained model. The ModelReference actor executes a model that is defined elsewhere in its own file or URL. The VisualModelReference actor opens a Vergil view of a referenced model when it executes a referenced model. These actors generally associate ports (that the user of the actor creates) with parameters of the referenced or contained model. They can be used, for example, to create models that repeatedly run other models with varying parameter values. See the documentation of the actors and the demonstrations in the quick tour for more details.<br>
+
+
+  
+<a name="177954"> </a><a href="#177935"><sup>1</sup></a>
+<a name="177954"> </a>The MultiInstanceComposite actor was contributed to the Ptolemy II code base by Zoltan Kemenczy and Sean Simmons, of Research In Motion Limited.<br>
+
+<br>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="usingVergila8.htm"><img src="images/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="usingVergila10.htm"><img src="images/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>

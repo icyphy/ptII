@@ -48,6 +48,10 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
+        navidx.gif \
+	navnext.gif \
+	navprev.gif \
+	navtoc.gif \
 	usingVergil10.gif \
 	usingVergil11.gif \
 	usingVergil12.gif \
@@ -131,6 +135,9 @@ OTHER_FILES_TO_BE_JARED = \
 	usingVergil84.gif \
 	usingVergil85.gif \
 	usingVergil86.gif \
+	usingVergil87.gif \
+	usingVergil88.gif \
+	usingVergil89.gif \
 	usingVergil8.gif \
 	usingVergil9.gif \
 	usingVergila.gif

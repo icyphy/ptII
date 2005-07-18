@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 09:38:43">
+<title>2.9 Domains</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="usingVergila9.htm"><img src="images/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="usingVergila11.htm"><img src="images/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="178632"> </a>2.9   Domains
+</h2>
+
+
+<a name="170167"> </a>A key innovation in Ptolemy II is that, unlike other design and modeling environments, there are several available <i>models of computation</i> that define the meaning of a diagram. In the above examples, we directed you to drag in an <i>SDF Director</i> without justifying why. A director in Ptolemy II gives meaning (semantics) to a diagram. It specifies what a connection means, and how the diagram should be executed. In Ptolemy II terminology, the director realizes a <i>domain</i>. Thus, when you construct a model with an SDF director, you have constructed a model "in the SDF domain."<br>
+
+
+<p>
+  <a name="170171"> </a>The SDF director is fairly easy to understand. "SDF" stands for "synchronous dataflow." In dataflow models, actors are invoked (fired) when their input data is available. SDF is a particularly simple case of dataflow where the order of invocation of the actors can be determined statically from the model. It does not depend on the data that is processed (the tokens that are passed between actors).
+</p>
+
+
+<p>
+  <a name="170175"> </a>But there are other models of computation available in Ptolemy II. And the system is extensible. You can invent your own. This richness has a downside, however. It can be difficult to determine which one to use without having experience with several. Moreover, you will find that although most actors in the library do <i>something</i> in any domain in which you use them, they do not always do something useful. It is important to understand the domain you are working with and the actors you are using. Here, we give a very brief introduction to some of the domains. We begin first by explaining some of the subtleties in SDF.
+</p>
+
+
+<h4>
+  <a name="168472"> </a>2.9.1   SDF and Multirate Systems
+</h4>
+
+
+<p>
+  <a name="166341"> </a>So far we have been dealing with relatively simple systems. They are simple in the sense that each actor produces and consumes one token from each port at a time. In this case, the SDF director simply ensures that an actor fires after the actors whose output values it depends on. The total number of output values that are created by each actor is determined by the number of iterations, but in this simple case only one token would be produced per iteration.
+</p>
+
+
+<p>
+  <a name="176778"> </a>It turns out that the SDF scheduler is actually much more sophisticated. It is capable of scheduling the execution of actors with arbitrary prespecified data rates. Not all actors produce and consume just a single sample each time they are fired. Some require several input token before they can be fired, and produce several tokens when they are fired.
+</p>
+
+
+<p>
+  <a name="176791"> </a>One such actor is a spectral estimation actor. Figure <img src="images/usingVergil52.gif" height="195" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila10.htm#176791">2.48</a> shows a system that computes the spectrum of the same noisy sine wave that we constructed in figure <a href="usingVergila5.htm#168725">2.25</a>. The <i>Spectrum</i> actor has a single parameter, which gives the <i>order</i> of the FFT used to calculate the spectrum. Figure <img src="images/usingVergil57.gif" usemap="#usingVergil57_gif" height="270" width="600" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil57_gif">
+
+<area href="usingVergila10.htm#176791" shape=rect coords="3,238,597,264">
+</map>
+<a href="usingVergila10.htm#176791">2.49</a> shows the output of the model with <i>order</i> set to 8 and the number of <i>iterations</i> set to 1. <b>Note that there are 256 output samples output from the </b></font><i>Spectrum</i><b> actor</b></font>. This is because the <i>Spectrum</i> actor requires 2^8, or 256 input samples to fire, and produces 2^8, or 256 output samples when it fires. Thus, one iteration of the model produces 256 samples. The <i>Spectrum</i> actor makes this a <i>multirate</i> model, because the firing rates of the actors are not all identical.
+</p>
+
+
+<p>
+  <a name="170218"> </a>It is common in SDF to construct models that require exactly one iteration to produce a useful result. In some multirate models, it can be complicated to determine how many firings of each actor occur per iteration of the model. See the SDF chapter in volume 3 for details.
+</p>
+
+
+<p>
+  <a name="170224"> </a>A second subtlety with SDF models is that if there is a feedback loop, as in figure <img src="images/usingVergil79.gif" height="183" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila10.htm#170224">2.50</a>, then the loop must have at least one instance of the <i>SampleDelay</i> actor in it (found in the <i>FlowControl</i> library, <i>SequenceControl</i> sublibrary). Without this actor, the loop will deadlock. The <i>SampleDelay</i> actor produces initial tokens on its output, before the model begins firing. The initial tokens produced are given by a the <i>initialOutputs</i> parameter, which specifies an array of tokens. These initial tokens enable downstream actors and break the circular dependencies that would result otherwise from a feedback loop.
+</p>
+
+
+<p>
+  <a name="170292"> </a>A final issue to consider with the SDF domain is time. Notice that in all the examples above we have suggested using the <i>SequencePlotter</i> actor, not the <i>TimedPlotter</i> actor, which is in <i>Sinks </i>library, <i>TimedSinks</i> sublibrary. This is because the SDF domain does not include in its semantics a notion of time. Time does not advance as an SDF model executes, so the <i>TimedPlotter</i> actor would produce very uninteresting results, where the horizontal axis value would always be zero. The <i>SequencePlotter</i> actor uses the index in the sequence for the horizontal axis. The first token received is plotted at horizontal position 0, the second at 1, the third at 2, etc. The next domain we consider, DE, includes much stronger notion of time, and it is almost always more appropriate in the DE domain to use the <i>TimedPlotter</i> actor.
+</p>
+
+
+<h4>
+  <a name="178848"> </a>2.9.2   Data-Dependent Rates
+</h4>
+
+
+<p>
+  <a name="178815"> </a>Several domains generalize SDF to support data-dependent rates. The most mature of these is the process networks domain (PN), which associates with each actor its own thread of control. PSDF (parameterized SDF) and HDF (heterochronous dataflow) are more experimental, but are possibly more efficient and formally analyzable than PN. See volume 3 for details about domains.
+</p>
+
+
+<h4>
+  <a name="166726"> </a>2.9.3   Discrete-Event Systems
+</h4>
+
+
+<a name="170574"> </a>In discrete-event (DE) systems, the connections between actors carry signals that consist of <i>events</i> placed on a time line. Each event has both a value and a time stamp, where its time stamp is a double-precision floating-point number. This is different from dataflow, where a signal consists of a sequence of tokens, and there is no time significance in the signal.<br>
+
+
+<p>
+  <a name="170587"> </a>A DE model executes chronologically, processing the oldest events first. Time advances as events are processed. There is potential confusion, however, between <i>model time</i>, the time that evolves in the model, and <i>real time</i>, the time that elapses in the real world while the model executes (also called <i>wall-clock time</i>). Model time may advance more rapidly than real time or more slowly. The DE director has a parameter, <i>synchronizeToRealTime</i>, that, when set to true, attempts to synchronize the two notions of time. It does this by delaying execution of the model, if necessary, allowing real time to catch up with model time.
+</p>
+
+
+<p>
+  <a name="170593"> </a>Consider the DE model shown in figure <img src="images/usingVergil81.gif" height="378" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila10.htm#170593">2.51</a>. This model includes a <i>PoissonClock</i> actor, a <i>CurrentTime</i> actor, and a <i>WallClockTime</i> actor, all found in the <i>Sources</i> library, <i>TimedSources</i> sublibrary. The <i>PoissonClock</i> actor generates a sequence of events with random times, where the time between events is exponentially distributed. Such an event sequence is known as a Poisson process. The value of the events produced by the <i>PoissonClock</i> actor is a constant, but the value of that constant is ignored in this model. Instead, these events trigger the <i>CurrentTime</i> and <i>WallClockTime</i> actors. The <i>CurrentTime</i> actor outputs an event with the same time stamp as the input, but whose value is the current model time (equal to the time stamp of the input). The <i>WallClockTime</i> actor produces an event with the same time stamp as the input, but whose value is the current real time, in seconds since initialization of the model.
+</p>
+
+
+<p>
+  <a name="170654"> </a>The plot in figure <a href="usingVergila10.htm#170593">2.51</a> shows an execution. Note that model time has advanced approximately 10 seconds, but real time has advanced almost not at all. In this model, model time advances much more rapidly than real time. If you build this model, and set the <i>synchronizeToRealTime</i> parameter of the director to true, then you will find that the two plots coincide almost perfectly.
+</p>
+
+
+<p>
+  <a name="170656"> </a>A significant subtlety in using the DE domain is in how simultaneous events are handled. Simultaneous events are simply events with the same time stamp. We have stated that events are processed in chronological order, but if two events have the same time stamp, then there is some ambiguity. Which one should be processed first? If the two events are on the same signal, then the answer is simple: process first the one that was produced first. However, if the two events are on different signals, then the answer is not so clear.
+</p>
+
+
+<p>
+  <a name="170730"> </a>Consider the model shown in figure <img src="images/usingVergil83.gif" height="365" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila10.htm#170730">2.52</a>, which produces a histogram of the interarrival times of events from the <i>PoissonClock</i> actor. In this model, we calculate the difference between the current event time and the previous event time, resulting in the plot that is shown in the figure. The <i>Previous </i>actor is a <i>zero-delay</i> actor, meaning that it produces an output with the same time stamp as the input (except on the first firing, where in this case it produces no output). Thus, when the <i>PoissonClock </i>actor produces an output, there will be two simultaneous events, one at the input to the <i>plus</i> port of the <i>AddSubtract</i> actor, and one at the input of the <i>Previous</i> actor. Should the director fire the <i>AddSubtract </i>actor or the <i>Previous</i> actor? Either seems OK if it is to respect chronological order, but it seems intuitive that the <i>Previous</i> actor should be fired first.
+</p>
+
+
+<p>
+  <a name="170775"> </a>It is helpful to know how the <i>AddSubtract </i>actor works. When it fires, it adds at most one token from each channel of the <i>plus </i>port, and subtracts at most one token from each channel of the <i>minus</i> port. If the <i>AddSubtract </i>actor fires before the <i>Previous</i> actor, then the only available token will be the one on the <i>plus</i> port, and the expected subtraction will not occur. Intuitively, we would expect the director to invoke the <i>Previous</i> actor before the <i>AddSubtract </i>actor so that the subtraction occurs.
+</p>
+
+
+<p>
+  <a name="170953"> </a>How does the director deliver on the intuition that the <i>Previous</i> actor should be fired first? Before executing the model, the DE director constructs a <i>topological sort</i> of the model. A topological sort is simply a list of the actors in data-precedence order. For the model in figure <a href="usingVergila10.htm#170730">2.52</a>, there is only one allowable topological sort:
+</p>
+
+<ul>
+  <li><a name="170958"> </a><i>PoissonClock</i>, <i>CurrentTime</i>, <i>Previous</i>, <i>AddSubtract</i>, <i>HistogramPlotter</i>
+</ul>
+
+<a name="170873"> </a>In this list, <i>AddSubtract</i> is after <i>Previous</i>. So the when they have simultaneous events, the DE director fires <i>Previous</i> first.<br>
+
+
+<p>
+  <a name="170881"> </a>Thus, the DE director, by analyzing the structure of the model, usually delivers the intuitive behavior, where actors that produce data are fired before actors that consume their results, even in the presence of simultaneous events.
+</p>
+
+
+<p>
+  <a name="170882"> </a>There remains one key subtlety. If the model has a directed loop, then a topological sort is not possible. In the DE domain, every feedback loop is required to have at least one actor in it that introduces a time delay, such as the <i>TimedDelay</i> actor, which can be found in the <i>DomainSpecific</i> library under <i>DiscreteEvent</i> (this library is shown on the left in figure <img src="images/usingVergil85.gif" height="777" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila10.htm#170882">2.53</a>). Consider for example the model shown in figure <a href="usingVergila10.htm#170882">2.53</a>. That model has a <i>Clock</i> actor, which is set to produce events every 1.0 time units. Those events trigger the <i>Ramp</i> actor, which produces outputs that start at 0 and increase by 1 on each firing. In this model, the output of the <i>Ramp</i> goes into an <i>AddSubtract</i> actor, which subtracts from the <i>Ramp</i> output its own prior output delayed by one time unit. The result is shown in the plot in the figure.
+</p>
+
+
+<p>
+  <a name="171032"> </a>Occasionally, you will need to put a <i>TimedDelay</i> actor in a feedback loop with a delay of 0.0. This is particularly true if you are building complex models that mix domains, and there is a delay inside a composite actor that the DE director cannot recognize as a delay. The <i>TimedDelay</i> actor with a delay of 0.0 can be thought of as a way to let the director know that there is a time delay in the preceding actor, without specifying the amount of the time delay.
+</p>
+
+
+<h4>
+  <a name="178852"> </a>2.9.4   Wireless and Sensor Network Systems
+</h4>
+
+
+<p>
+  <a name="178853"> </a>The wireless domain builds on the discrete event domain to support modeling of wireless and sensor network systems. In the wireless domain, channel models mediate communication between actors, and the visual syntax does not require wiring between components. See [10] and [11] for details.
+</p>
+
+
+<h4>
+  <a name="170874"> </a>2.9.5   Continuous-Time Systems
+</h4>
+
+
+<a name="171090"> </a>The continuous-time domain (CT) is another relatively mature domain with semantics considerably different from either DE or SDF. In CT, the signals sent along connections between actors are usually continuous-time signals. A CT example is described above in section <a href="usingVergila3.htm#175805">2.2.3</a>.<br>
+
+
+<p>
+  <a name="171230"> </a>The CT domain can also handle discrete events. These events are usually related to a continuous-time signal, for example representing a zero-crossing of the continuous-time signal. The CT director is quite sophisticated in its handling of such mixed signal systems.
+</p>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="usingVergila9.htm"><img src="images/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="usingVergila11.htm"><img src="images/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>
