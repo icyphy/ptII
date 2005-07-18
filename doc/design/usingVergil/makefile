@@ -53,7 +53,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	index.htm
+	index.htm \
 	usingVergila2.htm \
 	usingVergila3.htm \
 	usingVergila4.htm \
