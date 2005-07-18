@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 09:38:43">
+<title>2.10 Hybrid Systems and Modal Models</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="usingVergila10.htm"><img src="images/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="usingVergila12.htm"><img src="images/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="176101"> </a>2.10   Hybrid Systems and Modal Models
+</h2>
+
+
+<p>
+  <a name="176103"> </a>Hybrid systems are models that combine continuous dynamics with discrete mode changes. They are created in Ptolemy II by creating a <i>ModalModel</i>, found in the <i>HigherOrderActors</i> library. We start by examining a pre-built modal model, and conclude by illustrating how to construct one. Modal models can be constructed with other domains besides CT, but this section will concentrate on CT. Feel free to examine other examples of modal models given in the quick tour, figure <a href="usingVergila3.htm#165846">2.3</a>.
+</p>
+
+
+<h4>
+  <a name="176106"> </a>2.10.1   Examining a Pre-Built Model
+</h4>
+
+
+<a name="176111"> </a>Consider the bouncing ball example, which can be found under "Bouncing Ball" in figure <a href="usingVergila3.htm#165846">2.3</a> (in the "Hybrid Systems" entry). The top-level contents of this model is shown in figure <img src="images/usingVergil67.gif" height="591" width="934" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila11.htm#176111">2.54</a>. It contains a <i>Ball Model</i>, a <i>TimedPlotter</i>, and <i>PeriodicSampler</i>, and an <i>Animate Ball</i> composite actor. The <i>Ball Model </i>is an instance of the <i>ModalModel</i> found in the <i>HigherOrderActors</i> library, but renamed. If you execute the model, you should see a plot like that in the figure and a 3-D animation that is constructed using the GR (graphics) domain. The continuous dynamics correspond to the times when the ball is in the air, and the discrete events correspond to the times when the ball hits the surface and bounces.<br>
+
+
+<p>
+  <a name="176143"> </a>If you look inside the <i>Ball Model</i>, you will see something like figure <img src="images/usingVergil53.gif" usemap="#usingVergil53_gif" height="550" width="937" align="left" border="0" hspace="0" vspace="0">
+<map name="usingVergil53_gif">
+
+<area href="usingVergila11.htm#176111" shape=rect coords="4,509,926,544">
+</map>
+<a href="usingVergila11.htm#176143">2.55</a>. Figure <a href="usingVergila11.htm#176143">2.55</a> shows a state-machine editor, which has a slightly different toolbar and a significantly different library at the left. The circles in figure <a href="usingVergila11.htm#176143">2.55</a> are states, and the arcs between circles are <i>transitions </i>between states. A modal model is one that has <i>modes</i>, which represent regimes of operation. Each mode in a modal model is represented by a state in a finite-state machine.
+</p>
+
+
+<p>
+  <a name="176154"> </a>The state machine in figure <a href="usingVergila11.htm#176143">2.55</a> has three states, named <i>init</i>, <i>free</i>, and <i>stop</i>. The <i>init</i> state is the initial state, which is set as shown in figure <img src="images/usingVergil55.gif" height="539" width="937" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila11.htm#176154">2.56</a>. The <i>free</i> state represents the mode of operation where the ball is in free fall, and the <i>stop</i> state represents the mode where the ball has stopped bouncing.
+</p>
+
+
+<p>
+  <a name="176166"> </a>At any time during the execution of the model, the modal model is in one of these three states. When the model begins executing, it is in the <i>init</i> state. During the time a modal model is in a state, the behavior of the modal model is specified by the <i>refinement</i> of the state. The refinement can be examined by looking inside the state. As shown in figure <img src="images/usingVergil58.gif" height="248" width="937" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila11.htm#176166">2.57</a>, the <i>init</i> state has no refinement. 
+</p>
+
+
+<p>
+  <a name="176180"> </a>Consider the transition from <i>init</i> to <i>free</i>. It is labeled as follows:
+</p>
+
+<pre>
+<a name="176181"> </a>
+true<a name="176182"> </a>
+free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="176183"> </a>
+<a name="176184"> </a>
+</pre>
+
+<a name="176186"> </a>The first line is a <i>guard</i>, which is a predicate that determines when the transition is enabled. In this case, the transition is always enabled, since the predicate has value <i>true</i>. Thus, the first thing this model will do is take this transition and change mode to <i>free.</i> The second line specifies a sequence of <i>actions</i>, which in this case set parameters of the destination mode <i>free</i>.<br>
+
+
+<p>
+  <a name="176202"> </a>If you look inside the <i>free</i> state, you will see the refinement shown in figure <img src="images/usingVergil61.gif" height="300" width="937" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila11.htm#176202">2.58</a>. This model represents the laws of gravity, which state that an object of any mass will have an acceleration of roughly <img src="images/usingVergil65.gif" height="18" width="26" border="0" hspace="0" vspace="0">
+ meters/second2. The acceleration is integrated to get the velocity, which is, in turn, integrated to get the vertical position.
+</p>
+
+
+<p>
+  <a name="176211"> </a>In figure <a href="usingVergila11.htm#176202">2.58</a>, a <i>ZeroCrossingDetector</i> actor is used to detect when the vertical position of the ball is zero. This results in production of an event on the (discrete) output <i>bump</i>. Examining figure <a href="usingVergila11.htm#176143">2.55</a>, you can see that this event triggers a state transition back to the same <i>free</i> state, but where the <i>initialVelocity</i> parameter is changed to reverse the sign and attenuate it by the <i>elasticity</i>. This results in the ball bouncing, and losing energy, as shown by the plot in figure <a href="usingVergila11.htm#176111">2.54</a>.
+</p>
+
+
+<p>
+  <a name="176221"> </a>As you can see from figure <a href="usingVergila11.htm#176143">2.55</a>, when the position and velocity of the ball drop below a specified threshold, the state machine transitions to the state <i>stop</i>, which has no refinement. This results in the model producing no further output.
+</p>
+
+
+<h4>
+  <a name="176222"> </a>2.10.2   Numerical Precision and Zeno Conditions
+</h4>
+
+
+<p>
+  <a name="176229"> </a>The bouncing ball model of figures <a href="usingVergila11.htm#176111">2.54</a> and <a href="usingVergila11.htm#176143">2.55</a> illustrates an interesting property of hybrid system modeling. The <i>stop</i> state, it turns out, is essential. Without it, the time between bounces keeps decreasing, as does the magnitude of each bounce. At some point, these numbers get smaller than the representable precision, and large errors start to occur. If you remove the <i>stop</i> state from the FSM, and re-run the model, you get the result shown in figure <img src="images/usingVergil66.gif" height="372" width="937" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila11.htm#176229">2.59</a>. The ball, in effect, falls through the surface on which it is bouncing and then goes into a free-fall in the space below.
+</p>
+
+
+<p>
+  <a name="176241"> </a>The error that occurs here illustrates some fundamental pitfalls with hybrid system modeling. The event detected by the <i>ZeroCrossingDetector</i> actor can be missed by the simulator. This actor works with the solver to attempt to identify the precise point in time when the event occurs. It ensures that the simulation includes a sample time at that time. However, when the numbers get small enough, numerical errors take over, and the event is missed.
+</p>
+
+
+<p>
+  <a name="176242"> </a>A related phenomenon is called the Zeno phenomenon. In the case of the bouncing ball, the time between bounces gets smaller as the simulation progresses. Since the simulator is attempting to capture every bounce event with a time step, we could encounter the problem where the number of time steps becomes infinite over a finite time interval. This makes it impossible for time to advance. In fact, in theory, the bouncing ball example exhibits this Zeno phenomenon. However, numerical precision errors take over, since the simulator cannot possibly keep decreasing the magnitude of the time increments.
+</p>
+
+
+<p>
+  <a name="176243"> </a>The lesson is that some caution needs to be exercised when relying on the results of a simulation of a hybrid system. Use your judgement.
+</p>
+
+
+<h4>
+  <a name="176244"> </a>2.10.3   Constructing Modal Models
+</h4>
+
+
+<p>
+  <a name="176245"> </a>A modal model is a component in a larger continuous-time (or other kind of) model. You can create a modal model by dragging one in from the <i>HigherOrderActors</i> library. By default, it has no ports. To make it useful, you will need to add ports. The mechanism for doing that is identical to adding ports to a composite model, and is explained in section <a href="usingVergila5.htm#170461">2.4.2</a>. Figure <a href="usingVergila11.htm#176111">2.54</a> shows a top-level continuous-time model with a single modal model that has been renamed <i>Ball Model</i>. Three output ports have been added to that modal model, but only the top one is used. It gives the vertical distance of the ball from the surface on which it bounces.
+</p>
+
+
+<p>
+  <a name="176252"> </a>If you create a new modal model by dragging it in from the <i>HigherOrderActors</i> library, create an output port and name it <i>output</i>, and then look inside, you will get an FSM editor like that shown in figure <img src="images/usingVergil68.gif" height="575" width="937" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila11.htm#176252">2.60</a>. Note that the output port is (regrettably) located at the upper left, and is only partially visible. The annotation text suggests that you delete it once you no longer need it. You may want to move the port to a more reasonable location (where it is visible).
+</p>
+
+
+<p>
+  <a name="176269"> </a>The output port that you created is in fact indicated in the state machine as being both an output and input port. The reason for this is that guards in the state machine can refer to output values that are produced on this port by refinements. In addition, the output actions of a transition can assign an output value to this port. Hence, the port is, in fact, both an output and input for the state machine.
+</p>
+
+
+<p>
+  <a name="176273"> </a>To create a finite-state machine like that in figure <a href="usingVergila11.htm#176143">2.55</a>, drag in states (white circles), or click on the state icon in the toolbar. You can rename these states by right clicking on them and selecting "Customize Name". Choose names that are pertinent to your application. In figure <a href="usingVergila11.htm#176143">2.55</a>, there is an <i>init</i> state for initialization, a <i>free</i> state for when the ball is in the air, and a <i>stop</i> state for when the ball is no longer bouncing. You must specify the initial state of the FSM by right clicking on the background of the FSM Editor, selecting "Edit Parameters", and specifying an initial state name, as shown in figure <a href="usingVergila11.htm#176154">2.56</a>. In that figure, the initial state is named <i>init</i>.
+</p>
+
+
+<h5>
+  <a name="176280"> </a><i>Creating Transitions</i>
+</h5>
+
+
+<p>
+  <a name="176282"> </a>To create transitions, you must hold the control button<a href="#178761"><sup>1</sup></a> on the keyboard while clicking and dragging from one state to the next (a transition can also go back to the same state). The handles on the transition can be used to customize its curvature and orientation. Double clicking on the transition (or right clicking and selecting "Configure") allows you to configure the transition. The dialog for the transition from <i>init</i> to <i>free </i>is shown in figure <img src="images/usingVergil71.gif" usemap="#usingVergil71_gif" height="324" width="934" align="left" border="0" hspace="0" vspace="0">
+<map name="usingVergil71_gif">
+
+<area href="usingVergila11.htm#176143" shape=rect coords="5,284,927,320">
+</map>
+<a href="usingVergila11.htm#176282">2.61</a>. In that dialog, we see the following:
+</p>
+
+<ul>
+  <li><a name="176297"> </a>The guard expression is <i>true</i>, so this transition is always enabled. The transition will be taken as soon as the model begins executing. A guard expression can be any boolean-valued expression that depends on the inputs, parameters, or even the outputs of any refinement of the current state (see below). Thus, this transition is used to initialize the model.
+  <li><a name="176299"> </a>The output actions are empty, meaning that when this transition is taken, no output is specified. This parameter can have a list of assignments of values to output ports, separated by semicolons. Those values will be assigned to output ports when the transition is taken.
+  <li><a name="176301"> </a>The set actions field contains the following statements:
+</ul>
+<pre>
+<a name="176302"> </a>
+free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="176303"> </a>
+<a name="176304"> </a>
+</pre>
+<dl>
+  <dt> <a name="177068"> </a>The "free" in these expressions refers to the mode refinement in the <i>free</i> state. Thus, <i>free.initialPosition</i> is a parameter of that mode refinement. Here, its value is assigned to the value of the parameter <i>initialPosition</i>. The parameter <i>free.initialVelocity</i> is set to zero.
+</dl>
+<ul>
+  <li><a name="177070"> </a>The <i>reset</i> parameter is set to <i>true</i>, meaning that the destination mode refinement will be initialized when the transition is taken.
+  <li><a name="176308"> </a>The <i>preemptive</i> parameter is set to <i>false</i>. In this case, it makes no difference, since the <i>init</i> state has no refinement. Normally, if a transition out of a state is enabled and <i>preemptive</i> is <i>true</i>, then the transition will be taken without first executing the refinement. Thus, the refinement will not affect the outputs of the modal model.
+</ul>
+
+<a name="176309"> </a>A state may have several outgoing transitions. However, it is up to the model builder to ensure that at no time does more than one guard on these transitions evaluate to true. In other words, Ptolemy II does not allow nondeterministic state machines, and will throw an exception if it encounters one.<br>
+
+
+<h5>
+  <a name="176310"> </a><i>Creating Refinements</i>
+</h5>
+
+
+<p>
+  <a name="176312"> </a>Both states and transitions can have <i>refinements. </i>To create a refinement, right click<a href="#177192"><sup>2</sup></a> on the state or transition, and select "Add Refinement." You will see a dialog like that in figure <img src="images/usingVergil73.gif" height="295" width="598" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila11.htm#176312">2.62</a>. As shown in the figure, you will be offered the alternatives of a "Default Refinement" or a "State Machine Refinement." The first of these provides a block diagram model as the refinement. The second provides another finite state machine as the refinement. In the former case (the default), a blank refinement model will open, as shown in the figure. As before, the output port will appear in an inconvenient location. You will almost certainly want to move it to a more convenient location. You will have to create a director in the refinement. The modal model will not operate without a director in the refinement.
+</p>
+
+
+<p>
+  <a name="176335"> </a>You can also create refinements for transitions, but these have somewhat different behavior. They will execute exactly once when the transition is taken. For this reason, only certain directors make sense in such refinements. The most commonly useful is the SDF director. Such refinements are typically used to perform arithmetic computations that are too elaborate to be conveniently specified as an action on the transition.
+</p>
+
+
+<p>
+  <a name="176336"> </a>Once you have created a refinement, you can look inside a state or transition. For the bouncing ball example, the refinement of the <i>free</i> state is shown in figure <a href="usingVergila11.htm#176202">2.58</a>. This model exhibits certain key properties of refinements:
+</p>
+
+<ul>
+  <li><a name="176680"> </a>Refinements must contain directors. In this case, the CTEmbeddedDirector is used. When a continuous-time model is used inside a mode, this director must be used instead of the default CTDirector (see the CT domain documentation for details).
+  <li><a name="176681"> </a>The refinement has the same ports as the modal model, and can read input values and specify output values. When the state machine is in the state of which this is the refinement, this model will be executed to read the inputs and produce the outputs.
+</ul>
+
+<h4>
+  <a name="176344"> </a>2.10.4   Execution Semantics
+</h4>
+
+
+<p>
+  <a name="176345"> </a>The behavior of a refinement is simple. When the modal model is executed, the following sequence of events occurs:
+</p>
+
+<ul>
+  <li><a name="176346"> </a>For any transitions out of the current state for which <i>preemptive</i> is <i>true</i>, the guard is evaluated. If exactly one such guard evaluates to <i>true</i>, then that transition is chosen. The <i>output actions</i> of the transition are executed, and the <i>refinements</i> of the transition (if any) are executed, followed by the <i>set actions</i>.
+  <li><a name="176349"> </a>If no preemptive transition evaluated to true, then the refinement of the current state, if there is one, is evaluated at the current time step.
+  <li><a name="176350"> </a>Once the refinement has been evaluated (and it has possibly updated its output values), the guard expressions on all the outgoing transitions of the current state are evaluated. If none is true, the execution is complete. If one is true, then that transition is taken. If more than one is true, then an exception is thrown (the state machine is nondeterministic). What it means for the transition to be "taken" is that its <i>output actions</i> are executed, its <i>refinements</i> (if any) are executed, and its <i>set actions</i> are executed.
+  <li><a name="176352"> </a>If <i>reset</i> is true on a transition that is taken, then the refinement of the destination mode (if there is one) is initialized.
+</ul>
+
+<a name="176353"> </a>There is a subtle distinction between the <i>output actions</i> and the <i>set actions</i>. The intent of these two fields on the transition is that <i>output actions</i> are used to define the values of output ports, while <i>set actions</i> are used to define state variables in the refinements of the destination modes. The reason that these two actions are separated is that while solving a continuous-time system of equations, the solver may speculatively execute models at certain time steps before it is sure what the next time step will be. The <i>output actions</i> make no permanent changes to the state of the system, and hence can be executed during this speculative phase. The <i>set actions</i>, however, make permanent changes to the state variables of the destination refinements, and hence are not executed during the speculative phase.<br>
+
+
+  
+<a name="178761"> </a><a href="#176282"><sup>1</sup></a>
+<a name="178761"> </a>Or the command button on a Macintosh computer.<br>
+
+<br>
+
+
+<a name="177192"> </a><a href="#176312"><sup>2</sup></a>
+<a name="177192"> </a>On a Macintosh, control-click.<br>
+
+<br>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="usingVergila10.htm"><img src="images/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="usingVergila12.htm"><img src="images/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>

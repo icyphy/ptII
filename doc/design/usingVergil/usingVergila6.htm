@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 09:38:43">
+<title>2.5 Annotations and Parameterization</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="usingVergila5.htm"><img src="images/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="usingVergila7.htm"><img src="images/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="168727"> </a>2.5   Annotations and Parameterization
+</h2>
+
+
+<a name="168830"> </a>In this section, we will enhance the model in figure <a href="usingVergila5.htm#168725">2.25</a> in a number of ways.<br>
+
+
+<h4>
+  <a name="177256"> </a>2.5.1   Parameters in Hierarchical Models
+</h4>
+
+
+<p>
+  <a name="177156"> </a>First, notice from figure <a href="usingVergila5.htm#168725">2.26</a> that the noise overwhelms the sinusoid, making it barely visible. A useful channel model would have a parameter that sets the level of the noise. Look inside the channel model, and add a parameter by dragging one in from the <i>Utilities</i> library, <i>Parameters</i> sublibrary, as shown in figure <img src="images/usingVergil80.gif" height="867" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila6.htm#177156">2.27</a>. Right click<a href="#177181"><sup>1</sup></a> on the parameter to change its name to "noisePower". (In order to be able to use this parameter in expressions, the name cannot have any spaces in it.) Also, right click or double click on the parameter to change its default value to 0.1.
+</p>
+
+
+<p>
+  <a name="168902"> </a>Now we can use this parameter. First, let's use it to set the amount of noise. The <i>Gaussian</i> actor has a parameter called <i>standardDeviation</i>. In this case, the power of the noise is equal to the variance of the Gaussian, not the standard deviation. If you recall from basic statistics, the standard deviation is equal to the square root of the variance. Change the <i>standardDeviation </i>parameter of the <i>Gaussian</i> actor so its value is "sqrt(noisePower)", as shown in figure <img src="images/usingVergil50.gif" height="258" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila6.htm#168902">2.28</a>. This is an expression that references the <i>noisePower</i> parameter. We will explain the expression language in the next chapter. But first, let check our improved model. Return to the top-level model, and edit the parameters of the <i>Channel</i> actor (by either double clicking or right clicking and selecting "Configure"). Change the noise power from the default 0.1 to 0.01. Run the model. You should now get a relatively clean sinusoid like that shown in figure <img src="images/usingVergil86.gif" usemap="#usingVergil86_gif" height="271" width="600" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil86_gif">
+
+<area href="usingVergila5.htm#168725" shape=rect coords="3,238,597,265">
+</map>
+<a href="usingVergila6.htm#168902">2.29</a>.
+</p>
+
+
+<p>
+  <a name="168972"> </a>Note that you can also add parameters to a composite actor without dragging from the <i>Utilities </i>library by clicking on the "Add" button in the edit parameters dialog for the <i>Channel</i> composite. This dialog can be obtained by either double clicking on the <i>Channel</i> icon, or by right clicking and selecting "Configure", or by right clicking on the background inside the composite and selecting "Edit Parameters". However, parameters that are added this way will not be visible in the diagram when you look inside the Channel actor. Instead, you would have to right click on the background and select Configure to see the parameter.
+</p>
+
+
+<h4>
+  <a name="177260"> </a>2.5.2   Decorative Elements
+</h4>
+
+
+<p>
+  <a name="168981"> </a>There are several other useful enhancements you could make to this model. Try dragging an <i>Annotation</i> from the <i>Utilities</i> library, <i>Decorative</i> sublibrary, and creating a title on the diagram. A limited number of other decorative elements like geometric shapes can also be added to the diagram from this same library.
+</p>
+
+
+<h4>
+  <a name="177266"> </a>2.5.3   Creating Custom Icons
+</h4>
+
+
+<a name="177270"> </a>A (rather primitive) icon editor is also provided with Vergil. To create a custom icon, right click on the icon and select "Edit Custom Icon," as shown in figure <img src="images/usingVergil89.gif" height="796" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila6.htm#177270">2.30</a>. The box in the middle of the icon editor displays the size of the default icon, for reference. Try creating an icon like the one shown in figure <img src="images/usingVergil3.gif" height="796" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila6.htm#177270">2.31</a>. Hint: The fill color of the rectangle is set to "none" and the fill color of the trapezoid is first selected using the color selector, then modified to have an <i>alpha</i> (transparency) of 0.5. Finally, since the icon itself has the actor name in it, the Customize Name dialog is used to deselect "show name."<br>
+
+
+  
+<a name="177181"> </a><a href="#177156"><sup>1</sup></a>
+<a name="177181"> </a>On a Macintosh, control-click.<br>
+
+<br>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="usingVergila5.htm"><img src="images/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="usingVergila7.htm"><img src="images/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>

@@ -54,6 +54,18 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	index.htm
+	usingVergila2.htm \
+	usingVergila3.htm \
+	usingVergila4.htm \
+	usingVergila5.htm \
+	usingVergila6.htm \
+	usingVergila7.htm \
+	usingVergila8.htm \
+	usingVergila9.htm \
+	usingVergila10.htm \
+	usingVergila11.htm \
+	usingVergila12.htm
+
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 09:38:43">
+<title>2.11 Using the Plotter</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="usingVergila11.htm"><img src="images/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="168491"> </a>2.11   Using the Plotter
+</h2>
+
+
+<a name="166744"> </a>Several of the plots shown above have flaws that can be fixed using the features of the plotter. For instance, the plot shown in figure <a href="usingVergila10.htm#176791">2.49</a> has the default (uninformative) title, the axes are not labeled, and the horizontal axis ranges from 0 to 255<a href="#166823"><sup>1</sup></a>, because in one iteration, the <i>Spectrum</i> actor produces 256 output tokens. These outputs represent frequency bins that range between <img src="images/usingVergil60.gif" height="18" width="19" border="0" hspace="0" vspace="0">
+ and <img src="images/usingVergil63.gif" height="18" width="12" border="0" hspace="0" vspace="0">
+ radians per second.<br>
+
+
+<p>
+  <a name="171948"> </a>The <i>SequencePlotter</i> actor has some pertinent parameters, shown in figure <img src="images/usingVergil64.gif" height="140" width="598" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila12.htm#171948">2.63</a>. The <i>xInit</i> parameter specifies the value to use on the horizontal axis for the first token. The <i>xUnit</i> parameter specifies the value to increment this by for each subsequent token. Setting these to "-PI" and "PI/128" respectively results in the plot shown in figure <img src="images/usingVergil69.gif" height="261" width="598" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila12.htm#171948">2.64</a>.
+</p>
+
+
+<p>
+  <a name="171960"> </a>This plot is better, but still missing useful information. To control more precisely the visual appearance of the plot, click on the second button from the right in the row of buttons at the top right of the plot. This button brings up a format control window. It is shown in figure <img src="images/usingVergil70.gif" height="248" width="594" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila12.htm#171960">2.65</a>, filled in with values that result in the plot shown in figure <img src="images/usingVergil87.gif" height="282" width="599" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila12.htm#171960">2.66</a>. Most of these are self-explanatory, but the following pointers may be useful:
+</p>
+
+<ul>
+  <li><a name="166883"> </a>The grid is turned off to reduce clutter.
+  <li><a name="166887"> </a>Titles and axis labels have been added.
+  <li><a name="166888"> </a>The X range and Y range are determined by the fill button at the upper right of the plot.
+  <li><a name="166889"> </a>Stem plots can be had by clicking on "Stems"
+  <li><a name="166890"> </a>Individual tokens can be shown by clicking on "dots"
+  <li><a name="166891"> </a>Connecting lines can be eliminated by deselecting "connect"
+  <li><a name="166892"> </a>The X axis label has been changed to symbolically indicate multiples of PI/2. This is done by entering the following in the X Ticks field:
+</ul>
+<dl>
+  <dt> <a name="166870"> </a>-PI -3.14159, -PI/2 -1.570795, 0 0.0, PI/2 1.570795, PI 3.14159
+  <dt> <a name="166896"> </a>The syntax in general is:
+  <dt> <a name="166897"> </a>label value, label value, ...
+  <dt> <a name="166898"> </a>where the label is any string (enclosed in quotation marks if it includes spaces), and the value is a number.
+</dl>
+
+  
+<a name="166823"> </a><a href="#166744"><sup>1</sup></a>
+<a name="166823"> </a><b>Hint:</b></font> Notice the "x102" at the bottom right, which indicates that the label "2.5" stands for "250".<br>
+
+<br>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="usingVergila11.htm"><img src="images/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 09:38:43">
+<title>2.4 Hierarchy</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="usingVergila4.htm"><img src="images/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+    <td><a href="usingVergila6.htm"><img src="images/navnext.gif" width="81" height="23"
+    border="0" alt="NEXT"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="166138"> </a>2.4   Hierarchy
+</h2>
+
+
+<p>
+  <a name="170409"> </a>Ptolemy II supports (and encourages) hierarchical models. These are models that contain components that are themselves models. Such components are called <i>composite actors</i>. Consider a small signal processing problem, where we are interested in recovering a signal based only on noisy measurements of it. We will create a composite actor modeling a communication channel that adds noise, and then use that actor in a model.
+</p>
+
+
+<h4>
+  <a name="170413"> </a>2.4.1   Creating a Composite Actor
+</h4>
+
+
+<p>
+  <a name="170457"> </a>First open a new graph editor and drag in a <i>CompositeActor</i> from the <i>Utilities</i> library. This actor is going to add noise to our measurements. First, using the context menu (obtained by right clicking<a href="#177039"><sup>1</sup></a> over the composite actor), select "Customize Name", and give the composite a better name, like "Channel", as shown in figure <img src="images/usingVergil74.gif" height="383" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila5.htm#170457">2.20</a>. Then, using the context menu again, select "Look Inside" on the actor. You should get a blank graph editor, as shown in figure <img src="images/usingVergil78.gif" height="324" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila5.htm#170457">2.21</a>. The original graph editor is still open. To see it, move the new graph editor window by dragging the title bar of the window.
+</p>
+
+
+<h4>
+  <a name="170461"> </a>2.4.2   Adding Ports to a Composite Actor
+</h4>
+
+
+<p>
+  <a name="177092"> </a>First we have to add some ports to the composite actor. There are several ways to do this, but clicking on the port buttons in the toolbar is probably the easiest. You can explore the ports in the toolbar by lingering with the mouse over each button in the toolbar. A tool tip pops up that explains the button. The buttons are summarized in figure <img src="images/usingVergil76.gif" height="217" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila5.htm#177092">2.22</a>. Create an input port and an output port and rename them <i>input</i> and <i>output </i>by right clicking on the ports and selecting "Customize Name". Note that, as shown in figure <img src="images/usingVergil82.gif" height="339" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila5.htm#177092">2.23</a>, you can also right click<a href="#177142"><sup>2</sup></a> on the background of the composite actor and select <i>Configure Ports</i> to change whether a port is an input, an output, or a multiport. The resulting dialog also allows you to set the type of the port, although much of the time you will not need to do this, since the type inference mechanism in Ptolemy II will figure it out from the connections. You can also specify the <i>direction</i> of a port (where it appears on the icon; by default inputs appear on the left, outputs on the right, and ports that are both inputs and outputs appear on the bottom of the icon). You can also control whether the name of the port is shown outside the icon (by default it is not), and even whether the port is shown at all. The "Units" column will be discussed further below.
+</p>
+
+
+<p>
+  <a name="168725"> </a>Then using these ports, create the diagram shown in figure <img src="images/usingVergil84.gif" height="174" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila5.htm#168725">2.24</a><a href="#166915"><sup>3</sup></a>. The <i>Gaussian</i> actor creates values from a Gaussian distributed random variable, and is found in the <i>Random</i> library. Now if you close this editor and return to the previous one, you should be able to easily create the model shown in figure <img src="images/usingVergil36.gif" height="164" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila5.htm#168725">2.25</a>. The <i>Sinewave</i> actor is listed under <i>sources</i>, and the <i>SequencePlotter</i> actor is found in <i>sinks</i>. Notice that the <i>Sinewave</i> actor is also a hierarchical model, as suggested by its red outline (try looking inside). If you execute this model (you will probably want to set the iterations to something reasonable, like 100), you should see something like figure <img src="images/usingVergil40.gif" usemap="#usingVergil40_gif" height="272" width="600" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil40_gif">
+
+<area href="usingVergila5.htm#168725" shape=rect coords="3,239,597,266">
+</map>
+<a href="usingVergila5.htm#168725">2.26</a>.
+</p>
+
+
+<h4>
+  <a name="170343"> </a>2.4.3   Setting the Types of Ports
+</h4>
+
+
+<a name="170465"> </a>In the above example, we never needed to define the types of any ports. The types were inferred from the connections. Indeed, this is usually the case in Ptolemy II, but occasionally, you will need to set the types of the ports. Notice in figure <a href="usingVergila5.htm#177092">2.23</a> that there is a column in the dialog box that configures ports for specifying the type. Thus, to specify that a port has type <i>boolean</i>, you could enter <i>boolean </i>into the dialog box. There are other commonly used types: <i>complex</i>, <i>double</i>, <i>fixedpoint</i>, <i>general</i>, <i>int</i>, <i>long</i>, <i>matrix</i>, <i>object</i>, <i>scalar</i>, <i>string</i>, and <i>unknown</i>. Let's take a more complicated case. How would you specify that the type of a port is a double matrix? Easy:<br>
+
+<pre>
+<a name="170539"> </a>
+[double]<a name="170543"> </a>
+<a name="170544"> </a>
+</pre>
+
+<a name="170545"> </a>This expression actually creates a 1 by 1 matrix containing a double (the value of which is irrelevant). It thus serves as a prototype to specify a double matrix type. Similarly, we can specify an array of complex numbers as<br>
+
+<pre>
+<a name="170549"> </a>
+{complex}<a name="170553"> </a>
+<a name="170554"> </a>
+</pre>
+
+<a name="170555"> </a>In the Ptolemy II expression language, square braces are used for matrices, and curly braces are used for arrays. What about a record containing a string named "name" and an integer named "address"? Easy:<br>
+
+<pre>
+<a name="170561"> </a>
+{name=string, address=int}<a name="170565"> </a>
+<a name="170566"> </a>
+</pre>
+
+  
+<a name="177039"> </a><a href="#170457"><sup>1</sup></a>
+<a name="177039"> </a>On a Macintosh, control-click.<br>
+
+<br>
+
+
+<a name="177142"> </a><a href="#177092"><sup>2</sup></a>
+<a name="177142"> </a>On a Macintosh, control-click.<br>
+
+<br>
+
+
+<a name="166915"> </a><a href="#168725"><sup>3</sup></a>
+<a name="166915"> </a><b>Hint: </b>to create a connection starting on one of the external ports, hold down the control key when dragging, or on a Macintosh, the command key.<br>
+
+<br>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="index.htm"><img src="images/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="usingVergila4.htm"><img src="images/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+    <td><a href="usingVergila6.htm"><img src="images/navnext.gif" width="81" height="23" border="0"
+    alt="NEXT"> </a></td>
+
+
+  </tr>
+</table>
+
+</body>
+</html>
