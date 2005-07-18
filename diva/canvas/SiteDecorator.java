@@ -32,13 +32,15 @@ import java.awt.geom.Point2D;
  * This is an abstract decorator for sites.  It can be used to add or change
  * the functionality of an arbitrary site.
  *
- * @deprecated This is complete unneeded. Do not use.
- *
  * @version $Id$
  * @author  Steve Neuendorffer
  * @Pt.AcceptedRating  Red
  */
 public class SiteDecorator implements Site {
+    // This class was deprecated with the message
+    // "This is complete unneeded. Do not use."  However, it has been
+    // deprecated for a long time and still has users, so I'm undeprecating it.
+
     private Site _site;
 
     /** Create a new decorator on the given site.
