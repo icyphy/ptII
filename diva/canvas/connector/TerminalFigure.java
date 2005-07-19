@@ -51,7 +51,7 @@ import diva.canvas.interactor.Interactor;
 public class TerminalFigure extends AbstractFigure implements Terminal {
     Site _attachSite;
 
-    Site _connectSite;
+    protected Site _connectSite;
 
     Figure _figure;
 
@@ -62,6 +62,15 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
     public TerminalFigure(Figure figure, Site connectSite) {
         _figure = figure;
         _connectSite = connectSite;
+    }
+    
+    /**
+     * Create a new TerminalFigure for the given figure. This
+     * is intended for use by derived classes that will provide
+     * their own connect site or sites.
+     */
+    protected TerminalFigure(Figure figure) {
+        _figure = figure;
     }
 
     /** Test whether this figure contains the point given. The point
