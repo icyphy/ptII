@@ -1648,7 +1648,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     public static void setModified(boolean modified) {
         // NOTE: To see who sets this true, uncomment this:
-        if (modified == true) (new Exception()).printStackTrace();
+        //if (modified == true) (new Exception()).printStackTrace();
         _modified = modified;
     }
 
