@@ -277,21 +277,17 @@ public class FilePortParameter extends PortParameter {
         try {
             File file =
                 FileUtilities.nameToFile(name, getBaseDirectory());
-            System.out.println("FilePortParameter: 0 " + file);
             if (file.toString().indexOf("!/") != -1 
                     || file.toString().indexOf("!\\") != -1) {
-                // We have a jar url that, try dereferencing it
+                // We have a jar url, try dereferencing it
                 // ModelReference.xml needed this under Webstart.
                 try {
                     URL possibleJarURL =
                         ClassUtilities.jarURLEntryResource(name);
-                    System.out.println("FilePortParameter: " + possibleJarURL);
                     if (possibleJarURL != null) {
                         file = new File(possibleJarURL.getFile());
-                        System.out.println("FilePortParameter: 2" + file);
                     }
                 } catch (Throwable throwable) {
-                    System.out.println("FilePortParameter: " + throwable);
                     //Ignored, our attempt failed
                 }
             }
