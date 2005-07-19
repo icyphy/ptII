@@ -1,0 +1,929 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
+<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
+<meta name="LASTUPDATED" content="07/18/05 16:53:20">
+<title>Appendix A. Tables of Functions</title>
+</head>
+
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+
+
+<table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="expressionsa10.htm"><img src="img/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
+
+    
+  </tr>
+</table>
+
+
+
+
+<blockquote>
+<h2>
+  <a name="193871"> </a>Appendix A.  Tables of Functions
+</h2>
+
+
+<a name="194543"> </a>In this appendix, we tabulate the functions available in the expression language. Further explanation of many of these functions is given in section <a href="expressionsa8.htm#184246">section 3.7</a> above.<br>
+
+
+<a name="194547"> </a>A.1   Trigonometric Functions<br>
+
+
+<a name="195083"> </a>
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><a name="194565"> </a><font face="Times New Roman">TABLE 4:  Trigonometric functions.</font></i></b></caption>
+  <tr align="center" bgcolor="#CCCCCC">
+    <th><a name="194573"> </a>function</th>
+    <th><a name="194575"> </a>argument type(s)</th>
+    <th><a name="194577"> </a>return type</th>
+    <th><a name="194579"> </a>description</th>
+  </tr>
+  <tr>
+    <td><a name="194582"> </a>acos</td>
+    <td><a name="194584"> </a><i>double</i> in the range[-1.0, 1.0] or</font><a name="194585"> </a>complex</td>
+    <td><a name="194587"> </a><i>double</i> in the range[0.0, pi] or NaN if out of range or</font><a name="194588"> </a><i>complex</i></td>
+    <td><a name="194590"> </a>arc cosine<a name="194594"> </a><i>complex</i> case: <img src="img/expressions23.gif" height="17" width="173" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194597"> </a>asin</td>
+    <td><a name="194599"> </a><i>double</i> in the range[-1.0, 1.0] or</font><a name="194600"> </a><i>complex</i></td>
+    <td><a name="194602"> </a><i>double</i> in the range[-pi/2, pi/2] or NaN if out of range</font><a name="194603"> </a>or <i>complex</i></td>
+    <td><a name="194605"> </a>arc sine<a name="194609"> </a><i>complex</i> case: <img src="img/expressions25.gif" height="17" width="172" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194612"> </a>atan</td>
+    <td><a name="194614"> </a>double or</font></font><a name="194615"> </a>complex</td>
+    <td><a name="194617"> </a><i>double</i> in the range [-pi/2, pi/2]</font><a name="194618"> </a>or <i>complex</i></td>
+    <td><a name="194620"> </a>arc tangent<a name="194624"> </a><i>complex</i> case: <img src="img/expressions27.gif" height="34" width="121" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194627"> </a>atan2</td>
+    <td><a name="194629"> </a><i>double</i>, <i>double</i></td>
+    <td><a name="194631"> </a><i>double</i> in the range [-pi, pi]</td>
+    <td><a name="194633"> </a>angle of a vector (note: the arguments are (<i>y</i>, <i>x</i>), not (<i>x</i>, <i>y</i>) as one might expect).</td>
+  </tr>
+  <tr>
+    <td><a name="194636"> </a>acosh</td>
+    <td><a name="194638"> </a>double greater than 1 or </font>complex</td>
+    <td><a name="194640"> </a>double or</font></font><a name="194641"> </a><i>complex</i></td>
+    <td><a name="194643"> </a>hyperbolic arc cosine, defined for both <i>double</i> and <i>complex</i> case by: <img src="img/expressions29.gif" height="17" width="166" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194649"> </a>asinh</td>
+    <td><a name="194651"> </a>double or</font></font><a name="194652"> </a><i>complex</i></td>
+    <td><a name="194654"> </a>double or</font></font><a name="194655"> </a><i>complex</i></td>
+    <td><a name="194657"> </a>hyperbolic arc sine<a name="194661"> </a><i>complex</i> case: <img src="img/expressions31.gif" height="20" width="164" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194664"> </a>cos</td>
+    <td><a name="194666"> </a>double or</font></font><a name="194667"> </a><i>complex</i></td>
+    <td><a name="194672"> </a>double in the range <img src="img/expressions33.gif" height="16" width="38" border="0" hspace="0" vspace="0">
+, or</font></font><a name="194673"> </a><i>complex</i></td>
+    <td><a name="194675"> </a>cosine<a name="194679"> </a><i>complex</i> case: <img src="img/expressions34.gif" height="30" width="159" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194682"> </a>cosh</td>
+    <td><a name="194684"> </a>double or</font></font><a name="194685"> </a><i>complex</i></td>
+    <td><a name="194687"> </a>double or</font></font><a name="194688"> </a><i>complex</i></td>
+    <td><a name="194690"> </a>hyperbolic cosine, defined for <i>double</i> or <i>complex</i> by: <img src="img/expressions35.gif" height="30" width="157" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194696"> </a>sin</td>
+    <td><a name="194698"> </a>double or</font></font><a name="194699"> </a><i>complex</i></td>
+    <td><a name="194701"> </a>double or</font></font><a name="194702"> </a><i>complex</i></td>
+    <td><a name="194704"> </a>sine function<a name="194708"> </a><i>complex</i> case: <img src="img/expressions36.gif" height="30" width="156" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194711"> </a>sinh</td>
+    <td><a name="194713"> </a>double or</font></font><a name="194714"> </a><i>complex</i></td>
+    <td><a name="194716"> </a>double or</font></font><a name="194717"> </a><i>complex</i></td>
+    <td><a name="194719"> </a>hyperbolic sine, defined for <i>double</i> or <i>complex</i> by: <img src="img/expressions37.gif" height="30" width="157" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194725"> </a>tan</td>
+    <td><a name="194727"> </a>double or</font></font><a name="194728"> </a><i>complex</i></td>
+    <td><a name="194730"> </a>double or</font></font><a name="194731"> </a><i>complex</i></td>
+    <td><a name="194733"> </a>tangent function, defined for <i>double</i> or <i>complex</i> by: <img src="img/expressions38.gif" height="30" width="86" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194739"> </a>tanh</td>
+    <td><a name="194741"> </a>double or</font></font><a name="194742"> </a><i>complex</i></td>
+    <td><a name="194744"> </a>double or</font></font><a name="194745"> </a><i>complex</i></td>
+    <td><a name="194747"> </a>hyperbolic tangent, defined for <i>double</i> or <i>complex</i> by: <img src="img/expressions39.gif" height="30" width="98" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+</table>
+
+
+
+<br>
+
+
+<a name="195076"> </a>A.2   Basic Mathematical Functions
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><a name="194754"> </a><font face="Times New Roman">TABLE 5:  Basic mathematical functions</font></i></b></caption>
+  <tr align="center" bgcolor="#CCCCCC">
+    <th><a name="194762"> </a>function</th>
+    <th><a name="194764"> </a>argument type(s)</th>
+    <th><a name="194766"> </a>return type</th>
+    <th><a name="194768"> </a>description</th>
+  </tr>
+  <tr>
+    <td><a name="194771"> </a>abs</td>
+    <td><a name="194773"> </a><i>double</i> or <i>int</i> or <i>long</i> or <i>complex</i></td>
+    <td><a name="194775"> </a><i>double</i> or <i>int</i> or <i>long</i></font><a name="194776"> </a>(<i>complex</i> returns double)</td>
+    <td><a name="194778"> </a>absolute value<a name="194782"> </a>complex case: <img src="img/expressions40.gif" height="23" width="150" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194785"> </a>angle</td>
+    <td><a name="194787"> </a>complex</td>
+    <td><a name="194789"> </a><i>double</i> in the range [-pi, pi]</td>
+    <td><a name="194794"> </a>angle or argument of the complex number: <img src="img/expressions43.gif" height="16" width="17" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194797"> </a>ceil</td>
+    <td><a name="194799"> </a>double</td>
+    <td><a name="194801"> </a>double</td>
+    <td><a name="194803"> </a>ceiling function, which returns the smallest (closest to negative infinity) <i>double</i> value that is not less than the argument and is an integer.</td>
+  </tr>
+  <tr>
+    <td><a name="194806"> </a>compare</td>
+    <td><a name="194808"> </a><i>double</i>, <i>double</i></td>
+    <td><a name="194810"> </a>int</td>
+    <td><a name="194812"> </a>compare two numbers, returning -1, 0, or 1 if the first argument is less than, equal to, or greater than the second.</td>
+  </tr>
+  <tr>
+    <td><a name="194815"> </a>conjugate</td>
+    <td><a name="194817"> </a>complex</td>
+    <td><a name="194819"> </a>complex</td>
+    <td><a name="194821"> </a>complex conjugate</td>
+  </tr>
+  <tr>
+    <td><a name="194824"> </a>exp</td>
+    <td><a name="194826"> </a><i>double</i> or</font><a name="194827"> </a>complex</td>
+    <td><a name="194829"> </a><i>double</i> in the range[0.0, infinity] or complex</td>
+    <td><a name="194831"> </a>exponential function (e^argument)<a name="194835"> </a>complex case: <img src="img/expressions46.gif" height="20" width="153" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194838"> </a>floor</td>
+    <td><a name="194840"> </a>double</td>
+    <td><a name="194842"> </a>double</td>
+    <td><a name="194844"> </a>floor function, which is the largest (closest to positive infinity) value not greater than the argument that is an integer.</td>
+  </tr>
+  <tr>
+    <td><a name="194847"> </a>gaussian</td>
+    <td><a name="194849"> </a><i>double</i>, <i>double</i> or</font><a name="194850"> </a><i>double</i>, <i>double</i>, <i>int</i>, or</font><a name="194851"> </a><i>double</i>, <i>double</i>, <i>int</i>, <i>int</i></td>
+    <td><a name="194853"> </a><i>double</i> or</font><a name="194854"> </a>{<i>double</i>} or</font><a name="194855"> </a>[<i>double</i>]</td>
+    <td><a name="194857"> </a>one or more Gaussian random variables with the specified mean and standard deviation (see <a href="expressionsa8.htm#192134">page 112</a>).</td>
+  </tr>
+  <tr>
+    <td><a name="194863"> </a>imag</td>
+    <td><a name="194865"> </a>complex</td>
+    <td><a name="194867"> </a>double</td>
+    <td><a name="194869"> </a>imaginary part</td>
+  </tr>
+  <tr>
+    <td><a name="194872"> </a>isInfinite</td>
+    <td><a name="194874"> </a>double</td>
+    <td><a name="194876"> </a>boolean</td>
+    <td><a name="194878"> </a>return true if the argument is infinite</td>
+  </tr>
+  <tr>
+    <td><a name="194881"> </a>isNaN</td>
+    <td><a name="194883"> </a>double</td>
+    <td><a name="194885"> </a>boolean</td>
+    <td><a name="194887"> </a>return true if the argument is "not a number"</td>
+  </tr>
+  <tr>
+    <td><a name="194890"> </a>log</td>
+    <td><a name="194892"> </a><i>double</i> or</font><a name="194893"> </a>complex</td>
+    <td><a name="194895"> </a><i>double</i> or</font><a name="194896"> </a>complex</td>
+    <td><a name="194898"> </a>natural logarithm<a name="194902"> </a>complex case: <img src="img/expressions52.gif" height="16" width="168" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="194905"> </a>log10</td>
+    <td><a name="194907"> </a>double</td>
+    <td><a name="194909"> </a>double</td>
+    <td><a name="194911"> </a>log base 10</td>
+  </tr>
+  <tr>
+    <td><a name="194914"> </a>log2</td>
+    <td><a name="194916"> </a>double</td>
+    <td><a name="194918"> </a>double</td>
+    <td><a name="194920"> </a>log base 2</td>
+  </tr>
+  <tr>
+    <td><a name="194923"> </a>max</td>
+    <td><a name="194925"> </a><i>double</i>, <i>double</i> or</font><a name="194926"> </a><i>int</i>, <i>int</i> or</font><a name="194927"> </a><i>long</i>, <i>long </i>or</font><a name="194928"> </a><i>unsignedByte, unsignedByte</i> or</font><a name="194929"> </a>{<i>double</i>} or</font><a name="194930"> </a>{<i>int</i>} or</font><a name="194931"> </a>{<i>long</i>} or</font><a name="194932"> </a>{<i>unsignedByte</i>}</td>
+    <td><a name="194934"> </a><i>double</i> or</font><a name="194935"> </a><i>int</i> or</font><a name="194936"> </a>long or</font></font><a name="194937"> </a>unsignedByte</td>
+    <td><a name="194939"> </a>maximum</td>
+  </tr>
+  <tr>
+    <td><a name="194942"> </a>min</td>
+    <td><a name="194944"> </a><i>double</i>, <i>double</i> or</font><a name="194945"> </a><i>int</i>, <i>int</i> or</font><a name="194946"> </a><i>long</i>, <i>long </i>or</font><a name="194947"> </a><i>unsignedByte, unsignedByte</i> or</font><a name="194948"> </a>{<i>double</i>} or</font><a name="194949"> </a>{<i>int</i>} or</font><a name="194950"> </a>{<i>long</i>} or</font><a name="194951"> </a>{<i>unsignedByte</i>}</td>
+    <td><a name="194953"> </a><i>double</i> or</font><a name="194954"> </a><i>int</i> or</font><a name="194955"> </a>long or</font></font><a name="194956"> </a>unsignedByte</td>
+    <td><a name="194958"> </a>minimum</td>
+  </tr>
+  <tr>
+    <td><a name="194961"> </a>neighborhood</td>
+    <td><a name="194963"> </a>type, type, double</td>
+    <td><a name="194965"> </a>boolean</td>
+    <td><a name="194967"> </a>return true if the first argument is in the neighborhood of the second, meaning that the distance is less than or equal to the third argument. The first two arguments can be any type for which such a distance is defined. For composite types, arrays, records, and matrices, then return true if the first two arguments have the same structure, and each corresponding element is in the neighborhood.</td>
+  </tr>
+  <tr>
+    <td><a name="194970"> </a>pow</td>
+    <td><a name="194972"> </a><i>double</i>, <i>double</i> or</font><a name="194973"> </a><i>complex</i>, <i>complex</i></td>
+    <td><a name="194975"> </a>double or</font><a name="194976"> </a>complex</td>
+    <td><a name="194978"> </a>first argument to the power of the second</td>
+  </tr>
+  <tr>
+    <td><a name="194981"> </a>random</td>
+    <td><a name="194983"> </a>no arguments or</font><a name="194984"> </a><i>int</i> or</font><a name="194985"> </a><i>int, int</i></td>
+    <td><a name="194987"> </a>double or</font></font><a name="194988"> </a>{<i>double</i>} or</font><a name="194989"> </a>[<i>double</i>]</td>
+    <td><a name="194991"> </a>one or more random numbers between 0.0 and 1.0 (see <a href="expressionsa8.htm#192134">page 112</a>)</td>
+  </tr>
+  <tr>
+    <td><a name="194997"> </a>real</td>
+    <td><a name="194999"> </a>complex</td>
+    <td><a name="195001"> </a>double</td>
+    <td><a name="195003"> </a>real part</td>
+  </tr>
+  <tr>
+    <td><a name="195006"> </a>remainder</td>
+    <td><a name="195008"> </a><i>double</i>, <i>double</i></td>
+    <td><a name="195010"> </a>double</td>
+    <td><a name="195012"> </a>remainder after division, according to the IEEE 754 floating-point standard (see <a href="expressionsa8.htm#186842">page 113</a>).</td>
+  </tr>
+  <tr>
+    <td><a name="195018"> </a>round</td>
+    <td><a name="195020"> </a>double</td>
+    <td><a name="195022"> </a>long</td>
+    <td><a name="195024"> </a>round to the nearest <i>long</i>, choosing the next greater integer when exactly in between, and throwing an exception if out of range. If the argument is NaN, the result is 0L. If the argument is out of range, the result is either MaxLong or MinLong, depending on the sign.</td>
+  </tr>
+  <tr>
+    <td><a name="195027"> </a>roundToInt</td>
+    <td><a name="195029"> </a>double</td>
+    <td><a name="195031"> </a>int</td>
+    <td><a name="195033"> </a>round to the nearest <i>int</i>, choosing the next greater integer when exactly in between, and throwing an exception if out of range. If the argument is NaN, the result is 0. If the argument is out of range, the result is either MaxInt or MinInt, depending on the sign.</td>
+  </tr>
+  <tr>
+    <td><a name="195036"> </a>sgn</td>
+    <td><a name="195038"> </a>double</td>
+    <td><a name="195040"> </a>int</td>
+    <td><a name="195042"> </a>-1 if the argument is negative, 1 otherwise</td>
+  </tr>
+  <tr>
+    <td><a name="195045"> </a>sqrt</td>
+    <td><a name="195047"> </a><i>double</i> or</font><a name="195048"> </a>complex</td>
+    <td><a name="195050"> </a><i>double</i> or</font><a name="195051"> </a>complex</td>
+    <td><a name="195053"> </a>square root. If the argument is <i>double</i> with value less than zero, then the result is NaN.<a name="195057"> </a>complex case: <img src="img/expressions62.gif" height="34" width="187" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="195060"> </a>toDegrees</td>
+    <td><a name="195062"> </a>double</td>
+    <td><a name="195064"> </a>double</td>
+    <td><a name="195066"> </a>convert radians to degrees</td>
+  </tr>
+  <tr>
+    <td><a name="195069"> </a>toRadians</td>
+    <td><a name="195071"> </a>double</td>
+    <td><a name="195073"> </a>double</td>
+    <td><a name="195075"> </a>convert degrees to radians</td>
+  </tr>
+</table>
+
+
+
+<br>
+
+
+<a name="194197"> </a>A.3   Matrix, Array, and Record Functions.
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><a name="195091"> </a><font face="Times New Roman">TABLE 6:  Functions that take or return matrices, arrays, or records.</font></i></b></caption>
+  <tr align="center" bgcolor="#CCCCCC">
+    <th><a name="195099"> </a>function</th>
+    <th><a name="195101"> </a>argument type(s)</th>
+    <th><a name="195103"> </a>return type</th>
+    <th><a name="195105"> </a>description</th>
+  </tr>
+  <tr>
+    <td><a name="195108"> </a>arrayToMatrix</td>
+    <td><a name="195110"> </a>{<i>type</i>}, int, int</td>
+    <td><a name="195112"> </a>[<i>type</i>]</td>
+    <td><a name="195114"> </a>Create a matrix from the specified array with the specified number of rows and columns</td>
+  </tr>
+  <tr>
+    <td><a name="198433"> </a>concatenate</td>
+    <td><a name="198435"> </a>{<i>type</i>}, {<i>type</i>}</td>
+    <td><a name="198437"> </a>{<i>type</i>}</td>
+    <td><a name="198439"> </a>Concatenate two arrays.</td>
+  </tr>
+  <tr>
+    <td><a name="198450"> </a>concatenate</td>
+    <td><a name="198452"> </a>{{<i>type</i>}}</td>
+    <td><a name="198454"> </a>{<i>type</i>}</td>
+    <td><a name="198456"> </a>Concatenate arrays in an array of arrays.</td>
+  </tr>
+  <tr>
+    <td><a name="195117"> </a>conjugateTranspose</td>
+    <td><a name="195119"> </a>[<i>complex</i>]</td>
+    <td><a name="195121"> </a>[<i>complex</i>]</td>
+    <td><a name="195123"> </a>Return the conjugate transpose of the specified matrix.</td>
+  </tr>
+  <tr>
+    <td><a name="195126"> </a>createSequence</td>
+    <td><a name="195128"> </a><i>type, type, </i>int</td>
+    <td><a name="195130"> </a>{</font>type}</font></td>
+    <td><a name="195132"> </a>Create an array with values starting with the first argument, incremented by the second argument, of length given by the third argument.</td>
+  </tr>
+  <tr>
+    <td><a name="195135"> </a>crop</td>
+    <td><a name="195137"> </a>[<i>int</i>], <i>int</i>, <i>int</i>, <i>int</i>, <i>int</i> or</font><a name="195138"> </a>[<i>double</i>], <i>int</i>, <i>int</i>, <i>int</i>, <i>int</i> or</font><a name="195139"> </a>[<i>complex</i>], <i>int</i>, <i>int</i>, <i>int</i>, <i>int</i> or</font><a name="195140"> </a>[<i>long</i>], <i>int</i>, <i>int</i>, <i>int</i>, <i>int</i> or</td>
+    <td><a name="195142"> </a>[</font>int] or</font></font><a name="195143"> </a>[</font>double] or</font></font><a name="195144"> </a>[</font>complex] or</font></font><a name="195145"> </a>[</font>long] or</font></td>
+    <td><a name="195147"> </a>Given a matrix of any <i>type</i>, return a submatrix starting at the specified row and column with the specified number of rows and columns.</td>
+  </tr>
+  <tr>
+    <td><a name="195150"> </a>determinant</td>
+    <td><a name="195152"> </a>[<i>double</i>] or </font><a name="195153"> </a>[<i>complex</i>]</td>
+    <td><a name="195155"> </a><i>double</i> or</font><a name="195156"> </a>complex</td>
+    <td><a name="195158"> </a>Return the determinant of the specified matrix.</td>
+  </tr>
+  <tr>
+    <td><a name="195161"> </a>diag</td>
+    <td><a name="195163"> </a>{<i>type</i>}</td>
+    <td><a name="195165"> </a>[<i>type</i>]</td>
+    <td><a name="195167"> </a>Return a diagonal matrix with the values along the diagonal given by the specified array.</td>
+  </tr>
+  <tr>
+    <td><a name="195170"> </a>divideElements</td>
+    <td><a name="195172"> </a>[<i>type</i>], [<i>type</i>]</td>
+    <td><a name="195174"> </a>[<i>type</i>]</td>
+    <td><a name="195176"> </a>Return the element-by-element division of two matrices</td>
+  </tr>
+  <tr>
+    <td><a name="198526"> </a>emptyArray</td>
+    <td><a name="198528"> </a>type</td>
+    <td><a name="198530"> </a>{<i>type</i>}</td>
+    <td><a name="198532"> </a>Return an empty array whose element type matches the specified token.</td>
+  </tr>
+  <tr>
+    <td><a name="198474"> </a>find</td>
+    <td><a name="198476"> </a>{<i>type</i>}, <i>type</i></td>
+    <td><a name="198478"> </a>{int}</td>
+    <td><a name="198480"> </a>Return an array of the indices where elements of the specified array match the specified token.</td>
+  </tr>
+  <tr>
+    <td><a name="198491"> </a>find</td>
+    <td><a name="198493"> </a>{boolean}</td>
+    <td><a name="198495"> </a>{int}</td>
+    <td><a name="198497"> </a>Return an array of the indices where elements of the specified array have value true.</td>
+  </tr>
+  <tr>
+    <td><a name="195179"> </a>hilbert</td>
+    <td><a name="195181"> </a>int</td>
+    <td><a name="195183"> </a>[<i>double</i>]</td>
+    <td><a name="195185"> </a>Return a square Hilbert matrix, where <img src="img/expressions30.gif" height="19" width="94" border="0" hspace="0" vspace="0">
+.</font><a name="195186"> </a>A Hilbert matrix is nearly, but not quite singular.</td>
+  </tr>
+  <tr>
+    <td><a name="195189"> </a>identityMatrixComplex</td>
+    <td><a name="195191"> </a>int</td>
+    <td><a name="195193"> </a>[<i>complex</i>]</td>
+    <td><a name="195195"> </a>Return an identity matrix with the specified dimension.</td>
+  </tr>
+  <tr>
+    <td><a name="195198"> </a>identityMatrixDouble</td>
+    <td><a name="195200"> </a>int</td>
+    <td><a name="195202"> </a>[<i>double</i>]</td>
+    <td><a name="195204"> </a>Return an identity matrix with the specified dimension.</td>
+  </tr>
+  <tr>
+    <td><a name="195207"> </a>identityMatrixInt</td>
+    <td><a name="195209"> </a>int</td>
+    <td><a name="195211"> </a>[<i>int</i>]</td>
+    <td><a name="195213"> </a>Return an identity matrix with the specified dimension.</td>
+  </tr>
+  <tr>
+    <td><a name="195216"> </a>identityMatrixLong</td>
+    <td><a name="195218"> </a>int</td>
+    <td><a name="195220"> </a>[<i>long</i>]</td>
+    <td><a name="195222"> </a>Return an identity matrix with the specified dimension.</td>
+  </tr>
+  <tr>
+    <td><a name="195225"> </a>intersect</td>
+    <td><a name="195227"> </a>record, record</td>
+    <td><a name="195229"> </a>record</td>
+    <td><a name="195231"> </a>Return a record that contains only fields that are present in both arguments, where the value of the field is taken from the first record.</td>
+  </tr>
+  <tr>
+    <td><a name="195234"> </a>inverse</td>
+    <td><a name="195236"> </a>[<i>double</i>] or </font><a name="195237"> </a>[<i>complex</i>]</td>
+    <td><a name="195239"> </a>[<i>double</i>] or</font><a name="195240"> </a>[<i>complex</i>]</td>
+    <td><a name="195242"> </a>Return the inverse of the specified matrix, or throw an exception if it is singular.</td>
+  </tr>
+  <tr>
+    <td><a name="195245"> </a>matrixToArray</td>
+    <td><a name="195247"> </a>[<i>type</i>]</td>
+    <td><a name="195249"> </a>{<i>type</i>}</td>
+    <td><a name="195251"> </a>Create an array containing the values in the matrix</td>
+  </tr>
+  <tr>
+    <td><a name="195254"> </a>merge</td>
+    <td><a name="195256"> </a><i>record</i>, <i>record</i></td>
+    <td><a name="195258"> </a>record</td>
+    <td><a name="195260"> </a>Merge two records, giving priority to the first one when they have matching record labels.</td>
+  </tr>
+  <tr>
+    <td><a name="195263"> </a>multiplyElements</td>
+    <td><a name="195265"> </a>[<i>type</i>]<i>, </i>[<i>type</i>]</td>
+    <td><a name="195267"> </a>[<i>type</i>]</td>
+    <td><a name="195269"> </a>Multiply element wise the two specified matrices.</td>
+  </tr>
+  <tr>
+    <td><a name="195272"> </a>orthogonalizeColumns</td>
+    <td><a name="195274"> </a>[<i>double</i>] or </font><a name="195275"> </a>[<i>complex</i>]</td>
+    <td><a name="195277"> </a>[<i>double</i>] or </font><a name="195278"> </a>[<i>complex</i>]</td>
+    <td><a name="195280"> </a>Return a similar matrix with orthogonal columns.</td>
+  </tr>
+  <tr>
+    <td><a name="195283"> </a>orthogonalizeRows</td>
+    <td><a name="195285"> </a>[<i>double</i>] or</font><a name="195286"> </a>[<i>complex</i>]</td>
+    <td><a name="195288"> </a>[<i>double</i>] or</font><a name="195289"> </a>[<i>complex</i>]</td>
+    <td><a name="195291"> </a>Return a similar matrix with orthogonal rows.</td>
+  </tr>
+  <tr>
+    <td><a name="195294"> </a>orthonormalizeColumns</td>
+    <td><a name="195296"> </a>[<i>double</i>] or</font><a name="195297"> </a>[<i>complex</i>]</td>
+    <td><a name="195299"> </a>[<i>double</i>] or</font><a name="195300"> </a>[<i>complex</i>]</td>
+    <td><a name="195302"> </a>Return a similar matrix with orthonormal columns.</td>
+  </tr>
+  <tr>
+    <td><a name="195305"> </a>orthonormalizeRows</td>
+    <td><a name="195307"> </a>[<i>double</i>] or</font><a name="195308"> </a>[<i>complex</i>]</td>
+    <td><a name="195310"> </a>[<i>double</i>] or</font><a name="195311"> </a>[<i>complex</i>]</td>
+    <td><a name="195313"> </a>Return a similar matrix with orthonormal rows.</td>
+  </tr>
+  <tr>
+    <td><a name="195316"> </a>repeat</td>
+    <td><a name="195318"> </a><i>int</i>, <i>type</i></td>
+    <td><a name="195320"> </a>{<i>type</i>}</td>
+    <td><a name="195322"> </a>Create an array by repeating the specified token the specified number of times.</td>
+  </tr>
+  <tr>
+    <td><a name="198274"> </a>sort</td>
+    <td><a name="198276"> </a>{<i>string</i>}or</font><a name="198277"> </a>{<i>realScalar</i>}</td>
+    <td><a name="198279"> </a>{<i>string</i>} or</font><a name="198280"> </a>{<i>realScalar</i>}</td>
+    <td><a name="198282"> </a>Return the specified array, but sorted in ascending order. <i>realScalar</i> is any scalar token except <i>complex</i>.</td>
+  </tr>
+  <tr>
+    <td><a name="198263"> </a>sortAscending</td>
+    <td><a name="198265"> </a>{<i>string</i>}or</font><a name="198266"> </a>{<i>realScalar</i>}</td>
+    <td><a name="198268"> </a>{<i>string</i>} or</font><a name="198269"> </a>{<i>realScalar</i>}</td>
+    <td><a name="198271"> </a>Return the specified array, but sorted in ascending order. <i>realScalar</i> is any scalar token except <i>complex</i>.</td>
+  </tr>
+  <tr>
+    <td><a name="198252"> </a>sortDescending</td>
+    <td><a name="198254"> </a>{<i>string</i>}or</font><a name="198255"> </a>{<i>realScalar</i>}</td>
+    <td><a name="198257"> </a>{<i>string</i>} or</font><a name="198258"> </a>{<i>realScalar</i>}</td>
+    <td><a name="198260"> </a>Return the specified array, but sorted in descending order. <i>realScalar</i> is any scalar token except <i>complex</i>.</td>
+  </tr>
+  <tr>
+    <td><a name="198620"> </a>subarray</td>
+    <td><a name="198622"> </a>{<i>type</i>}, <i>int</i>, <i>int</i></td>
+    <td><a name="198624"> </a>{<i>type</i>}</td>
+    <td><a name="198626"> </a>Extract a subarray starting at the specified index with the specified length.</td>
+  </tr>
+  <tr>
+    <td><a name="195325"> </a>sum</td>
+    <td><a name="195327"> </a>{<i>type</i>} or</font><a name="195328"> </a>[<i>type</i>]</td>
+    <td><a name="195330"> </a>type</td>
+    <td><a name="195332"> </a>Sum the elements of the specified array or matrix. This throws an exception if the elements do not support addition or if the array is empty (an empty matrix will return zero).</td>
+  </tr>
+  <tr>
+    <td><a name="195335"> </a>trace</td>
+    <td><a name="195337"> </a>[<i>type</i>]</td>
+    <td><a name="195339"> </a>type</td>
+    <td><a name="195341"> </a>Return the trace of the specified matrix.</td>
+  </tr>
+  <tr>
+    <td><a name="195344"> </a>transpose</td>
+    <td><a name="195346"> </a>[<i>type</i>]</td>
+    <td><a name="195348"> </a>[<i>type</i>]</td>
+    <td><a name="195350"> </a>Return the transpose of the specified matrix.</td>
+  </tr>
+  <tr>
+    <td><a name="195353"> </a>zeroMatrixComplex</td>
+    <td><a name="195355"> </a>int, </font>int</td>
+    <td><a name="195357"> </a>[<i>complex</i>]</td>
+    <td><a name="195359"> </a>Return a zero matrix with the specified number of rows and columns.</td>
+  </tr>
+  <tr>
+    <td><a name="195362"> </a>zeroMatrixDouble</td>
+    <td><a name="195364"> </a>int, </font>int</td>
+    <td><a name="195366"> </a>[<i>double</i>]</td>
+    <td><a name="195368"> </a>Return a zero matrix with the specified number of rows and columns.</td>
+  </tr>
+  <tr>
+    <td><a name="195371"> </a>zeroMatrixInt</td>
+    <td><a name="195373"> </a>int, </font>int</td>
+    <td><a name="195375"> </a>[<i>int</i>]</td>
+    <td><a name="195377"> </a>Return a zero matrix with the specified number of rows and columns.</td>
+  </tr>
+  <tr>
+    <td><a name="195380"> </a>zeroMatrixLong</td>
+    <td><a name="195382"> </a>int, </font>int</td>
+    <td><a name="195384"> </a>[<i>long</i>]</td>
+    <td><a name="195386"> </a>Return a zero matrix with the specified number of rows and columns.</td>
+  </tr>
+</table>
+
+
+
+<br>
+
+
+<a name="195928"> </a>A.4   Functions for Evaluating Expressions<br>
+
+
+<p>
+  <a name="195927"> </a>
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><a name="195405"> </a><font face="Times New Roman">TABLE 7:  Utility functions for evaluating expressions</font></i></b></caption>
+  <tr align="center" bgcolor="#CCCCCC">
+    <th><a name="195413"> </a>function</th>
+    <th><a name="195415"> </a>argument type(s)</th>
+    <th><a name="195417"> </a>return type</th>
+    <th><a name="195419"> </a>description</th>
+  </tr>
+  <tr>
+    <td><a name="195422"> </a>eval</td>
+    <td><a name="195424"> </a>string</td>
+    <td><a name="195426"> </a>any type</td>
+    <td><a name="195431"> </a>evaluate the specified expression (see <a href="expressionsa8.htm#185006">page 112</a>).</td>
+  </tr>
+  <tr>
+    <td><a name="195434"> </a>parseInt</td>
+    <td><a name="195436"> </a>string or</font></font><a name="195437"> </a>string, </font>int</td>
+    <td><a name="195439"> </a>int</td>
+    <td><a name="195441"> </a>return an <i>int</i> read from a <i>string</i>, using the given radix if a second argument is provided.</td>
+  </tr>
+  <tr>
+    <td><a name="195444"> </a>parseLong</td>
+    <td><a name="195446"> </a>string or</font></font><a name="195447"> </a>string, </font>int</td>
+    <td><a name="195449"> </a>int</td>
+    <td><a name="195451"> </a>return a <i>long</i> read from a <i>string</i>, using the given radix if a second argument is provided.</td>
+  </tr>
+  <tr>
+    <td><a name="195454"> </a>toBinaryString</td>
+    <td><a name="195456"> </a>int or </font>long</td>
+    <td><a name="195458"> </a>string</td>
+    <td><a name="195460"> </a>return a binary representation of the argument</td>
+  </tr>
+  <tr>
+    <td><a name="195463"> </a>toOctalString</td>
+    <td><a name="195465"> </a><i>int</i> or <i>long</i></td>
+    <td><a name="195467"> </a>string</td>
+    <td><a name="195469"> </a>return an octal representation of the argument</td>
+  </tr>
+  <tr>
+    <td><a name="195472"> </a>toString</td>
+    <td><a name="195474"> </a><i>double</i> or</font><a name="195475"> </a><i>int</i> or</font><a name="195476"> </a><i>int</i>, <i>int</i> or</font><a name="195477"> </a><i>long</i> or</font><a name="195478"> </a><i>long</i>, <i>int</i></td>
+    <td><a name="195480"> </a>string</td>
+    <td><a name="195482"> </a>return a string representation of the argument, using the given radix if a second argument is provided.</td>
+  </tr>
+  <tr>
+    <td><a name="195485"> </a>traceEvaluation</td>
+    <td><a name="195487"> </a>string</td>
+    <td><a name="195489"> </a>string</td>
+    <td><a name="195491"> </a>evaluate the specified expression and report details on how it was evaluated (see <a href="expressionsa8.htm#185006">page 112</a>).</td>
+  </tr>
+</table>
+
+
+
+
+</p>
+
+
+<a name="195809"> </a>A.5   Signal Processing Functions
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><a name="195502"> </a><font face="Times New Roman">TABLE 8:  Functions performing signal processing operations</font></i></b></caption>
+  <tr align="center" bgcolor="#CCCCCC">
+    <th><a name="195510"> </a>function</th>
+    <th><a name="195512"> </a>argument type(s)</th>
+    <th><a name="195514"> </a>return type</th>
+    <th><a name="195516"> </a>description</th>
+  </tr>
+  <tr>
+    <td><a name="195519"> </a>convolve</td>
+    <td><a name="195521"> </a>{</font>double}</font>, {</font>double} or</font></font><a name="195522"> </a>{</font>complex}, {</font>complex}</font></td>
+    <td><a name="195524"> </a>{<i>double</i>} or </font><a name="195525"> </a>{<i>complex</i>}</td>
+    <td><a name="195527"> </a>Convolve two arrays and return an array whose length is sum of the lengths of the two arguments minus one. Convolution of two arrays is the same as polynomial multiplication.</td>
+  </tr>
+  <tr>
+    <td><a name="195531"> </a>DCT</td>
+    <td><a name="195533"> </a>{</font>double} or</font></font><a name="195534"> </a>{</font>double}, </font>int or</font></font><a name="195535"> </a>{</font>double}, </font>int, int</td>
+    <td><a name="195537"> </a>{</font>double}</font></td>
+    <td><a name="195539"> </a>Return the discrete cosine transform of the specified array, using the specified (optional) length and normalization strategy (see <a href="expressionsa8.htm#192146">page 113</a>).</td>
+  </tr>
+  <tr>
+    <td><a name="195545"> </a>downsample</td>
+    <td><a name="195547"> </a>{</font>double}, </font>int or</font></font><a name="195548"> </a>{</font>double}, </font>int, int</td>
+    <td><a name="195550"> </a>{</font>double}</font></td>
+    <td><a name="195555"> </a>Return a new array with every <img src="img/expressions47.gif" height="16" width="9" border="0" hspace="0" vspace="0">
+-th element of the argument array, where <img src="img/expressions48.gif" height="16" width="9" border="0" hspace="0" vspace="0">
+ is the second argument. If a third argument is given, then it must be between 0 and <img src="img/expressions49.gif" height="16" width="27" border="0" hspace="0" vspace="0">
+, and it specifies an offset into the array (by giving the index of the first output).</font></td>
+  </tr>
+  <tr>
+    <td><a name="195564"> </a>FFT</td>
+    <td><a name="195566"> </a>{</font>double} or</font></font><a name="195567"> </a>{</font>complex} or</font></font><a name="195568"> </a>{</font>double}, </font>int</font><a name="195569"> </a>{</font>complex}, </font>int</td>
+    <td><a name="195571"> </a>{</font>complex}</font></td>
+    <td><a name="195574"> </a>Return the fast Fourier transform of the specified array. If the second argument is given with value <img src="img/expressions50.gif" height="16" width="9" border="0" hspace="0" vspace="0">
+, then the length of the transform is <img src="img/expressions51.gif" height="20" width="15" border="0" hspace="0" vspace="0">
+. Otherwise, the length is the next power of two greater than or equal to the length of the input array. If the input length does not match this length, then input is padded with zeros.</font></td>
+  </tr>
+  <tr>
+    <td><a name="195583"> </a>generateBartlettWindow</td>
+    <td><a name="195585"> </a>int</td>
+    <td><a name="195587"> </a>{<i>double</i>}</td>
+    <td><a name="195591"> </a>Return a Bartlett (rectangular) window with the specified length. The end points have value 0.0, and if the length is odd, the center point has value 1.0. For length <i>M + </i>1, the formula is: <img src="img/expressions53.gif" height="85" width="179" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="195597"> </a>generateBlackmanWindow</td>
+    <td><a name="195599"> </a>int</td>
+    <td><a name="195601"> </a>{<i>double</i>}</td>
+    <td><a name="195604"> </a>Return a Blackman window with the specified length. For length <i>M + </i>1, the formula is: <img src="img/expressions57.gif" height="16" width="255" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="195610"> </a>generateBlackmanHarrisWindow</td>
+    <td><a name="195612"> </a>int</td>
+    <td><a name="195614"> </a>{<i>double</i>}</td>
+    <td><a name="195616"> </a>Return a Blackman-Harris window with the specified length. For length <i>M + </i>1, the formula is: <img src="img/expressions58.gif" height="26" width="231" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="195622"> </a>generateGaussianCurve</td>
+    <td><a name="195624"> </a>double, double, int</td>
+    <td><a name="195626"> </a>{</font>double}</font></td>
+    <td><a name="195628"> </a>Return a Gaussian curve with the specified standard deviation, extent, and length. The extent is a multiple of the standard deviation. For instance, to get 100 samples of a Gaussian curve with standard deviation 1.0 out to four standard deviations, use generateGaussianCurve(1.0, 4.0, 100).</td>
+  </tr>
+  <tr>
+    <td><a name="195631"> </a>generateHammingWindow</td>
+    <td><a name="195633"> </a>int</td>
+    <td><a name="195635"> </a>{<i>double</i>}</td>
+    <td><a name="195638"> </a>Return a Hamming window with the specified length. For length <i>M + </i>1, the formula is: <img src="img/expressions59.gif" height="16" width="164" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="195644"> </a>generateHanningWindow</td>
+    <td><a name="195646"> </a>int</td>
+    <td><a name="195648"> </a>{<i>double</i>}</td>
+    <td><a name="195651"> </a>Return a Hanning window with the specified length. For length <i>M + </i>1, the formula is: <img src="img/expressions60.gif" height="16" width="152" border="0" hspace="0" vspace="0">
+</font></td>
+  </tr>
+  <tr>
+    <td><a name="195657"> </a>generatePolynomialCurve</td>
+    <td><a name="195659"> </a>{<i>double</i>}, <i>double</i>, <i>double</i>, <i>int</i></td>
+    <td><a name="195661"> </a>{<i>double</i>}</td>
+    <td><a name="195663"> </a>Return samples of a curve specified by a polynomial. The first argument is an array with the polynomial coefficients, beginning with the constant term, the linear term, the squared term, etc. The second argument is the value of the polynomial variable at which to begin, and the third argument is the increment on this variable for each successive sample. The final argument is the length of the returned array.</td>
+  </tr>
+  <tr>
+    <td><a name="195666"> </a>generateRaisedCosinePulse</td>
+    <td><a name="195668"> </a><i>double</i>, <i>double</i>, <i>int</i></td>
+    <td><a name="195670"> </a>{<i>double</i>}</td>
+    <td><a name="195672"> </a>Return an array containing a symmetric raised-cosine pulse. This pulse is widely used in communication systems, and is called a "raised cosine pulse" because the magnitude its Fourier transform has a shape that ranges from rectangular (if the excess bandwidth is zero) to a cosine curved that has been raised to be non-negative (for excess bandwidth of 1.0). The elements of the returned array are samples of the function: <div align="center"><a name="195676"> </a><img src="img/expressions61.gif" height="35" width="163" border="0" hspace="0" vspace="0">
+,</font></div><a name="195677"> </a>where <i>x</i> is the excess bandwidth (the first argument) and <i>T</i> is the number of samples from the center of the pulse to the first zero crossing (the second argument). The samples are taken with a sampling interval of 1.0, and the returned array is symmetric and has a length equal to the third argument. With an excessBandwidth of 0.0, this pulse is a sinc pulse.</td>
+  </tr>
+  <tr>
+    <td><a name="195680"> </a>generateRectangularWindow</td>
+    <td><a name="195682"> </a>int</td>
+    <td><a name="195684"> </a>{<i>double</i>}</td>
+    <td><a name="195686"> </a>Return an array filled with 1.0 of the specified length. This is a rectangular window.</td>
+  </tr>
+  <tr>
+    <td><a name="195690"> </a>IDCT</td>
+    <td><a name="195692"> </a>{</font>double} or</font></font><a name="195693"> </a>{</font>double}, </font>int or</font></font><a name="195694"> </a>{</font>double}, </font>int, int</td>
+    <td><a name="195696"> </a>{</font>double}</font></td>
+    <td><a name="195698"> </a>Return the inverse discrete cosine transform of the specified array, using the specified (optional) length and normalization strategy (see <a href="expressionsa8.htm#192146">page 113</a>).</td>
+  </tr>
+  <tr>
+    <td><a name="195704"> </a>IFFT</td>
+    <td><a name="195706"> </a>{</font>double} or</font></font><a name="195707"> </a>{</font>complex} or</font></font><a name="195708"> </a>{</font>double}, </font>int</font><a name="195709"> </a>{</font>complex}, </font>int</td>
+    <td><a name="195711"> </a>{</font>complex}</font></td>
+    <td><a name="195715"> </a>Return the inverse fast Fourier transform of the specified array. If the second argument is given with value <img src="img/expressions7.gif" height="16" width="9" border="0" hspace="0" vspace="0">
+, then the length of the transform is <img src="img/expressions9.gif" height="20" width="15" border="0" hspace="0" vspace="0">
+. Otherwise, the length is the next power of two greater than or equal to the length of the input array. If the input length does not match this length, then input is padded with zeros.</font></td>
+  </tr>
+  <tr>
+    <td><a name="195724"> </a>nextPowerOfTwo</td>
+    <td><a name="195726"> </a>double</td>
+    <td><a name="195728"> </a>int</td>
+    <td><a name="195730"> </a>Return the next power of two larger than or equal to the argument.</td>
+  </tr>
+  <tr>
+    <td><a name="195733"> </a>poleZeroToFrequency</td>
+    <td><a name="195735"> </a>{</font>complex}, {</font>complex}, </font>complex, </font>int</td>
+    <td><a name="195737"> </a>{</font>complex}</font></td>
+    <td><a name="195739"> </a>Given an array of pole locations, an array of zero locations, a gain term, and a size, return an array of the specified size representing the frequency response specified by these poles, zeros, and gain. This is calculated by walking around the unit circle and forming the product of the distances to the zeros, dividing by the product of the distances to the poles, and multiplying by the gain.</td>
+  </tr>
+  <tr>
+    <td><a name="195742"> </a>sinc</td>
+    <td><a name="195744"> </a>double</td>
+    <td><a name="195746"> </a>double</td>
+    <td><a name="195751"> </a>Return the sinc function, <img src="img/expressions12.gif" height="16" width="44" border="0" hspace="0" vspace="0">
+, where special care is taken to ensure that 1.0 is returned if the argument is 0.0.</font></td>
+  </tr>
+  <tr>
+    <td><a name="195754"> </a>toDecibels</td>
+    <td><a name="195756"> </a><i>double</i></td>
+    <td><a name="195758"> </a>double</td>
+    <td><a name="195766"> </a>Return <img src="img/expressions13.gif" height="19" width="68" border="0" hspace="0" vspace="0">
+, where <img src="img/expressions15.gif" height="16" width="8" border="0" hspace="0" vspace="0">
+ is the argument.</font></td>
+  </tr>
+  <tr>
+    <td><a name="195769"> </a>unwrap</td>
+    <td><a name="195771"> </a>{<i>double</i>}</td>
+    <td><a name="195773"> </a>{<i>double</i>}</td>
+    <td><a name="195775"> </a>Modify the specified array to unwrap the angles. That is, if the difference between successive values is greater than <img src="img/expressions16.gif" height="16" width="10" border="0" hspace="0" vspace="0">
+ in magnitude, then the second value is modified by multiples of <img src="img/expressions18.gif" height="16" width="17" border="0" hspace="0" vspace="0">
+ until the difference is less than or equal to <img src="img/expressions19.gif" height="16" width="10" border="0" hspace="0" vspace="0">
+. In addition, the first element is modified so that its difference from zero is less than or equal to <img src="img/expressions21.gif" height="16" width="10" border="0" hspace="0" vspace="0">
+ in magnitude. </font></td>
+  </tr>
+  <tr>
+    <td><a name="195790"> </a>upsample</td>
+    <td><a name="195792"> </a>{<i>double</i>}, <i>int</i></td>
+    <td><a name="195794"> </a>{<i>double</i>}</td>
+    <td><a name="195799"> </a>Return a new array that is the result of inserting <img src="img/expressions22.gif" height="16" width="27" border="0" hspace="0" vspace="0">
+ zeroes between each successive sample in the input array, where <img src="img/expressions24.gif" height="16" width="9" border="0" hspace="0" vspace="0">
+ is the second argument. The returned array has length <img src="img/expressions26.gif" height="16" width="17" border="0" hspace="0" vspace="0">
+, where <i>L</i> is the length of the argument array. It is required that <img src="img/expressions28.gif" height="16" width="28" border="0" hspace="0" vspace="0">
+.</font></td>
+  </tr>
+</table>
+
+
+
+<br>
+
+
+<p>
+  <a name="195918"> </a>
+</p>
+
+
+<a name="195938"> </a>A.6   I/O Functions and Other Miscellaneous Functions
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <caption><b><i><a name="195813"> </a><font face="Times New Roman">TABLE 9:  Miscellaneous functions.</font></i></b></caption>
+  <tr align="center" bgcolor="#CCCCCC">
+    <th><a name="195821"> </a>function</th>
+    <th><a name="195823"> </a>argument type(s)</th>
+    <th><a name="195825"> </a>return type</th>
+    <th><a name="195827"> </a>description</th>
+  </tr>
+  <tr>
+    <td><a name="198306"> </a>asURL</td>
+    <td><a name="198308"> </a>string</td>
+    <td><a name="198310"> </a>string</td>
+    <td><a name="198312"> </a>Return a URL representation of the argument.</td>
+  </tr>
+  <tr>
+    <td><a name="195830"> </a>cast</td>
+    <td><a name="195832"> </a>type1, </font>type2</td>
+    <td><a name="195834"> </a>type1</td>
+    <td><a name="195836"> </a>Return the second argument converted to the type of the first, or throw an exception if the conversion is invalid.</td>
+  </tr>
+  <tr>
+    <td><a name="195839"> </a>constants</td>
+    <td><a name="195841"> </a>none</td>
+    <td><a name="195843"> </a>record</td>
+    <td><a name="195845"> </a>Return a record identifying all the globally defined constants in the expression language.</td>
+  </tr>
+  <tr>
+    <td><a name="195848"> </a>findFile</td>
+    <td><a name="195850"> </a>string</td>
+    <td><a name="195852"> </a>string</td>
+    <td><a name="195854"> </a>Given a file name relative to the user directory, current directory, or classpath, return the absolute file name of the first match, or return the name unchanged if no match is found.</td>
+  </tr>
+  <tr>
+    <td><a name="198509"> </a>filter</td>
+    <td><a name="198511"> </a>function, {</font>type}</font></td>
+    <td><a name="198513"> </a>{</font>type}</font></td>
+    <td><a name="198515"> </a>Extract a sub-array consisting of all of the elements of an array for which the given predicate function returns true.</td>
+  </tr>
+  <tr>
+    <td><a name="198646"> </a>filter</td>
+    <td><a name="198648"> </a>function, {</font>type}, </font>int</td>
+    <td><a name="198650"> </a>{</font>type}</font></td>
+    <td><a name="198652"> </a>Extract a sub-array with a limited size consisting of all of the elements of an array for which the given predicate function returns true.</td>
+  </tr>
+  <tr>
+    <td><a name="195857"> </a>freeMemory</td>
+    <td><a name="195859"> </a>none</td>
+    <td><a name="195861"> </a>long</td>
+    <td><a name="195863"> </a>Return the approximate number of bytes available for future memory allocation.</td>
+  </tr>
+  <tr>
+    <td><a name="195866"> </a>iterate</td>
+    <td><a name="195868"> </a>function, </font>int, </font>type</td>
+    <td><a name="195870"> </a>{<i>type</i>}</td>
+    <td><a name="195872"> </a>Return an array that results from first applying the specified function to the third argument, then applying it to the result of that application, and repeating to get an array whose length is given by the second argument.</td>
+  </tr>
+  <tr>
+    <td><a name="195875"> </a>map</td>
+    <td><a name="195877"> </a>function, {</font>type}</font></td>
+    <td><a name="195879"> </a>{<i>type</i>}</td>
+    <td><a name="195881"> </a>Return an array that results from applying the specified function to the elements of the specified array.</td>
+  </tr>
+  <tr>
+    <td><a name="195884"> </a>property</td>
+    <td><a name="195886"> </a>string</td>
+    <td><a name="195888"> </a>string</td>
+    <td><a name="195890"> </a>Return a system property with the specified name from the environment, or an empty string if there is none. Some useful properties are java.version, ptolemy.ptII.dir, ptolemy.ptII.dirAsURL, and user.dir.</td>
+  </tr>
+  <tr>
+    <td><a name="195893"> </a>readFile</td>
+    <td><a name="195895"> </a>string</td>
+    <td><a name="195897"> </a>string</td>
+    <td><a name="195899"> </a>Get the string text in the specified file, or throw an exception if the file cannot be found. The file can be absolute, or relative to the current working directory (user.dir), the user's home directory (user.home), or the classpath.</td>
+  </tr>
+  <tr>
+    <td><a name="195902"> </a>readResource</td>
+    <td><a name="195904"> </a>string</td>
+    <td><a name="195906"> </a>string</td>
+    <td><a name="195908"> </a>Get the string text in the specified resource (which is a file found relative to the classpath), or throw an exception if the file cannot be found.</td>
+  </tr>
+  <tr>
+    <td><a name="195911"> </a>totalMemory</td>
+    <td><a name="195913"> </a>none</td>
+    <td><a name="195915"> </a>long</td>
+    <td><a name="195917"> </a>Return the approximate number of bytes used by current objects plus those available for future object allocation.</td>
+  </tr>
+</table>
+
+
+
+<br>
+</blockquote>
+
+
+
+<table align="right" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right"><font size="1">
+    
+
+
+
+
+
+    </td>
+  </tr>
+</table>
+
+<table width="331" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
+    alt="TOC"> </a></td>
+    <td><a href="expressionsa10.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
+    alt="PREV"> </a></td>
+
+  </tr>
+</table>
+
+</body>
+</html>

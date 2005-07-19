@@ -77,6 +77,7 @@ UI_FILES_TO_BE_JARED = \
 	expressionsa8.htm \
 	expressionsa9.htm \
 	expressionsa10.htm \
+	expressionsa11.htm \
 	sandbox.htm \
 	webStartHelp.htm \
 	whatsnew.htm \
