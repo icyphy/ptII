@@ -40,12 +40,12 @@ import java.awt.geom.Point2D;
 public abstract class AbstractSite implements Site {
     /** The normal of the site. This is 0.0 by default.
      */
-    private double _normal = 0.0;
+    protected double _normal = 0.0;
 
     /** True if the site has had its normal set by setNormal.
      *  Default is false.
      */
-    private boolean _hasNormal = false;
+    protected boolean _hasNormal = false;
 
     /** Get the figure to which this site is attached.
      */
@@ -79,8 +79,9 @@ public abstract class AbstractSite implements Site {
      * that method.
      */
     public Point2D getPoint(TransformContext tc) {
-        return CanvasUtilities.transformInto(getPoint(), getTransformContext(),
-                tc);
+        return getTransformContext().getTransform(tc).transform(getPoint(), null);
+        // Formerly used deprecated method. EAL 6/12/05
+        // return CanvasUtilities.transformInto(getPoint(), getTransformContext(), tc);
     }
 
     /** Get the point location of the site, in the enclosing
