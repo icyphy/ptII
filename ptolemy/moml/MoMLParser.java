@@ -1263,7 +1263,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 try {
+                    // Cache the modified flag so that if the file
+                    // we are opening is modified we don't accidentally
+                    // mark container file as modified.  
+                    // Wireless SmartParking.xml had this problem because
+                    // LotSensor.xml has backward compat changes
+                    boolean modified = isModified();
                     _parser.parse(base.toExternalForm(), null, buffered);
+                    setModified(modified);
                 } finally {
                     if (xmlFileWasNull) {
                         _xmlFile = null;
@@ -1641,7 +1648,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     public static void setModified(boolean modified) {
         // NOTE: To see who sets this true, uncomment this:
-        // if (modified == true) (new Exception()).printStackTrace();
+        if (modified == true) (new Exception()).printStackTrace();
         _modified = modified;
     }
 
