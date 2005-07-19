@@ -29,6 +29,7 @@ package ptolemy.vergil.actor;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
@@ -174,6 +175,43 @@ public class ExternalIOPortController extends AttributeController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Given a port, return a reasonable tooltip message for that port.
+     *  @param port The port.
+     *  @return The name, type, and whether it's a multiport.
+     */
+    private String _portTooltip(final Port port) {
+        String tipText = port.getName();
+
+        if (port instanceof IOPort) {
+            IOPort ioport = (IOPort) port;
+
+            if (ioport.isInput()) {
+                tipText += ", Input";
+            }
+
+            if (ioport.isOutput()) {
+                tipText += ", Output";
+            }
+
+            if (ioport.isMultiport()) {
+                tipText += ", Multiport";
+            }
+
+            try {
+                tipText = tipText + ", type:"
+                        + ((Typeable) port).getType();
+            } catch (ClassCastException ex) {
+                // Do nothing.
+            } catch (IllegalActionException ex) {
+                // Do nothing.
+            }
+        }
+        return tipText;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 
@@ -275,13 +313,18 @@ public class ExternalIOPortController extends AttributeController {
                 }
 
                 double normal = CanvasUtilities.getNormal(direction);
-                Site tsite = new PerimeterSite(figure, 0);
-                tsite.setNormal(normal);
-                tsite = new FixedNormalSite(tsite);
 
                 String name = port.getName();
                 Rectangle2D backBounds = figure.getBounds();
-                figure = new CompositeFigure(figure);
+                figure = new CompositeFigure(figure)  {
+                    // Override this because we want to show the type.
+                    // It doesn't work to set it once because the type
+                    // has not been resolved, and anyway, it may
+                    // change. NOTE: This is copied from above.
+                    public String getToolTipText() {
+                        return _portTooltip(port);
+                    }
+                };
 
                 if ((name != null) && !name.equals("")
                         && !(port instanceof ParameterPort)) {
@@ -293,42 +336,62 @@ public class ExternalIOPortController extends AttributeController {
                     label.translateTo(backBounds.getX(), backBounds.getY());
                     ((CompositeFigure) figure).add(label);
                 }
-
-                figure = new TerminalFigure(figure, tsite) {
-                    // Override this because the tooltip may
-                    // change over time.  I.e., the port may
-                    // change from being an input or output, etc.
-                    public String getToolTipText() {
-                        String tipText = port.getName();
-
-                        if (port instanceof IOPort) {
-                            IOPort ioport = (IOPort) port;
-
-                            if (ioport.isInput()) {
-                                tipText += ", Input";
+                if (port instanceof IOPort) {
+                    // Create a diagonal connector for multiports, if necessary.
+                    IOPort ioPort = (IOPort)port;
+                    if (ioPort.isMultiport()) {
+                        int numberOfLinks = ioPort.insideRelationList().size();
+                        if (numberOfLinks > 1) {
+                            // The diagonal is necessary.
+                            // Line depends on the orientation.
+                            double startX, startY, endX, endY;
+                            Rectangle2D bounds = figure.getShape().getBounds2D();
+                            double x = bounds.getX();
+                            double y = bounds.getY();
+                            double width = bounds.getWidth();
+                            double height = bounds.getHeight();
+                            int extent = numberOfLinks - 1;
+                            if (direction == SwingUtilities.EAST) {
+                                startX = x + width;
+                                startY = y + height/2;
+                                endX = startX + extent * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                                endY = startY + extent * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                            } else if (direction == SwingUtilities.WEST) {
+                                startX = x;
+                                startY = y + height/2;
+                                endX = startX - extent * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                                endY = startY - extent * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                            } else if (direction == SwingUtilities.NORTH) {
+                                startX = x + width/2;
+                                startY = y;
+                                endX = startX - extent * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                                endY = startY - extent * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                            } else {
+                                startX = x + width/2;
+                                startY = y + height;
+                                endX = startX + extent * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                                endY = startY + extent * IOPortController.MULTIPORT_CONNECTION_SPACING;
                             }
-
-                            if (ioport.isOutput()) {
-                                tipText += ", Output";
-                            }
-
-                            if (ioport.isMultiport()) {
-                                tipText += ", Multiport";
-                            }
-
-                            try {
-                                tipText = tipText + ", type:"
-                                        + ((Typeable) port).getType();
-                            } catch (ClassCastException ex) {
-                                // Do nothing.
-                            } catch (IllegalActionException ex) {
-                                // Do nothing.
-                            }
+                            Line2D line = new Line2D.Double(startX, startY, endX, endY);
+                            Figure lineFigure = new BasicFigure(line, fill, (float) 2.0);
+                            ((CompositeFigure)figure).add(lineFigure);
                         }
-
-                        return tipText;
                     }
-                };
+                    
+                    figure = new PortTerminal(ioPort, figure, normal, true);
+                } else {
+                    Site tsite = new PerimeterSite(figure, 0);
+                    tsite.setNormal(normal);
+                    tsite = new FixedNormalSite(tsite);
+                    figure = new TerminalFigure(figure, tsite) {
+                        // Override this because the tooltip may
+                        // change over time.  I.e., the port may
+                        // change from being an input or output, etc.
+                        public String getToolTipText() {
+                            return _portTooltip(port);
+                        }
+                    };
+                }
 
                 // Have to do this as well or awt will not render a tooltip.
                 figure.setToolTipText(port.getName());

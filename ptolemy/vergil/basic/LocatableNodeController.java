@@ -247,7 +247,8 @@ public class LocatableNodeController extends BasicNodeController {
                 cf = null;
             }
 
-            if (object instanceof NamedObj
+            if (_decoratable
+                    && object instanceof NamedObj
                     && (((NamedObj) object).getDerivedLevel() < Integer.MAX_VALUE)
                     && (cf != null)) {
                 float[] dash = { 2.0f, 5.0f };
@@ -324,8 +325,20 @@ public class LocatableNodeController extends BasicNodeController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                      protected variables                  ////
+
+    /** A flag indicating that the figures associated with this
+     *  controller can be decorated to indicate that they are derived.
+     *  Some derived classes (like IOPortController) override this
+     *  to suppress such decoration. This is true by default.
+     */
+    protected boolean _decoratable = true;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The drag interactor, which is remembered so we can change the
-    // snap resolution.
+    
+    /** The drag interactor, which is remembered so we can change the
+     *  snap resolution.
+     */
     private LocatableNodeDragInteractor _dragInteractor;
 }

@@ -196,8 +196,9 @@ public class LinkController extends BasicEdgeController {
          *  is set then use it to set the tooltip.
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
-            ManhattanConnector c = new ManhattanConnector(tailSite, headSite);
             Link link = (Link) edge;
+            ManhattanConnector c = new LinkManhattanConnector(
+                    tailSite, headSite, link);
 
             if ((link.getHead() != null) && (link.getTail() != null)) {
                 c.setLineWidth((float) 2.0);
@@ -214,6 +215,7 @@ public class LinkController extends BasicEdgeController {
             if (relation != null) {
                 c.setToolTipText(relation.getName());
 
+                // FIXME: This isn't quite right for relation groups.
                 StringAttribute _colorAttr = (StringAttribute) (relation
                         .getAttribute("_color"));
 

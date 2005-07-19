@@ -46,6 +46,7 @@ import diva.canvas.Figure;
  @Pt.AcceptedRating Red (johnr)
  */
 public class PortSite extends AbstractSite {
+    
     /** Create a new site on the given figure with the given ID
      *  port type, and port number.
      *  @param figure The figure for the entity icon.

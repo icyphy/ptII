@@ -31,6 +31,8 @@ import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingUtilities;
 
@@ -53,9 +55,9 @@ import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.canvas.CanvasUtilities;
+import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.Site;
-import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.PerimeterSite;
 import diva.canvas.connector.TerminalFigure;
 import diva.canvas.interactor.CompositeInteractor;
@@ -103,6 +105,12 @@ public class IOPortController extends AttributeController {
      */
     public IOPortController(GraphController controller, Access access) {
         super(controller, access);
+        
+        // Override this default value to ensure that ports are
+        // not decorated to indicate that they are derived.
+        // Instead, the entire actor will be decorated.
+        _decoratable = false;
+        
         setNodeRenderer(new EntityPortRenderer());
 
         // "Listen to Actor"
@@ -117,6 +125,12 @@ public class IOPortController extends AttributeController {
         interactor.addInteractor(_menuCreator);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The spacing between individual connections to a multiport. */
+    public static double MULTIPORT_CONNECTION_SPACING = 5.0;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -225,19 +239,6 @@ public class IOPortController extends AttributeController {
             int direction;
             double rotation;
 
-            //             if (!(port instanceof IOPort)) {
-            //                 direction = SwingUtilities.SOUTH;
-            //             } else if (((IOPort)port).isInput() &&
-            // ((IOPort)port).isOutput()) {
-            //                 direction = SwingUtilities.SOUTH;
-            //             } else if (((IOPort)port).isInput()) {
-            //                 direction = SwingUtilities.WEST;
-            //             } else if (((IOPort)port).isOutput()) {
-            //                 direction = SwingUtilities.EAST;
-            //             } else {
-            //                 // should never happen
-            //                 direction = SwingUtilities.SOUTH;
-            //             }
             if (cardinal == null) {
                 if (isInputOutput) {
                     direction = SwingUtilities.SOUTH;
@@ -279,7 +280,7 @@ public class IOPortController extends AttributeController {
                 // Override this because we want to show the type.
                 // It doesn't work to set it once because the type
                 // has not been resolved, and anyway, it may
-                // change.
+                // change. NOTE: This is copied below.
                 public String getToolTipText() {
                     String tipText = port.getName();
                     StringAttribute _explAttr = (StringAttribute) (port
@@ -292,6 +293,7 @@ public class IOPortController extends AttributeController {
                             tipText = tipText + ", type:"
                                     + ((Typeable) port).getType();
                         } catch (IllegalActionException ex) {
+                            // System.out.println("Tooltip failed: " + ex);
                         }
                     }
 
@@ -304,14 +306,85 @@ public class IOPortController extends AttributeController {
             figure.setToolTipText(port.getName());
 
             double normal = CanvasUtilities.getNormal(direction);
-            Site tsite = new PerimeterSite(figure, 0);
-            tsite.setNormal(normal);
-            tsite = new FixedNormalSite(tsite);
-            figure = new TerminalFigure(figure, tsite);
+            if (port instanceof IOPort) {
+                // Create a diagonal connector for multiports, if necessary.
+                IOPort ioPort = (IOPort)port;
+                if (ioPort.isMultiport()) {
+                    int numberOfLinks = ioPort.linkedRelationList().size();
+                    if (numberOfLinks > 1) {
+                        // The diagonal is necessary.
+                        CompositeFigure compositeFigure = new CompositeFigure(figure) {
+                            // Override this because we want to show the type.
+                            // It doesn't work to set it once because the type
+                            // has not been resolved, and anyway, it may
+                            // change. NOTE: This is copied from above.
+                            public String getToolTipText() {
+                                String tipText = port.getName();
+                                StringAttribute _explAttr = (StringAttribute) (port
+                                        .getAttribute("_explanation"));
+
+                                if (_explAttr != null) {
+                                    tipText = _explAttr.getExpression();
+                                } else if (port instanceof Typeable) {
+                                    try {
+                                        tipText = tipText + ", type:"
+                                                + ((Typeable) port).getType();
+                                    } catch (IllegalActionException ex) {
+                                        // System.out.println("Tooltip failed: " + ex);
+                                    }
+                                }
+
+                                return tipText;
+                            }
+                        };
+                        
+                        // Line depends on the orientation.
+                        double startX, startY, endX, endY;
+                        Rectangle2D bounds = figure.getShape().getBounds2D();
+                        double x = bounds.getX();
+                        double y = bounds.getY();
+                        double width = bounds.getWidth();
+                        double height = bounds.getHeight();
+                        int extent = numberOfLinks - 1;
+                        if (direction == SwingUtilities.EAST) {
+                            startX = x + width;
+                            startY = y + height/2;
+                            endX = startX + extent * MULTIPORT_CONNECTION_SPACING;
+                            endY = startY + extent * MULTIPORT_CONNECTION_SPACING;
+                        } else if (direction == SwingUtilities.WEST) {
+                            startX = x;
+                            startY = y + height/2;
+                            endX = startX - extent * MULTIPORT_CONNECTION_SPACING;
+                            endY = startY - extent * MULTIPORT_CONNECTION_SPACING;
+                        } else if (direction == SwingUtilities.NORTH) {
+                            startX = x + width/2;
+                            startY = y;
+                            endX = startX - extent * MULTIPORT_CONNECTION_SPACING;
+                            endY = startY - extent * MULTIPORT_CONNECTION_SPACING;
+                        } else {
+                            startX = x + width/2;
+                            startY = y + height;
+                            endX = startX + extent * MULTIPORT_CONNECTION_SPACING;
+                            endY = startY + extent * MULTIPORT_CONNECTION_SPACING;
+                        }
+                        Line2D line = new Line2D.Double(startX, startY, endX, endY);
+                        Figure lineFigure = new BasicFigure(line, fill, (float) 2.0);
+                        compositeFigure.add(lineFigure);
+                        figure = compositeFigure;
+                    }
+                }
+                
+                figure = new PortTerminal(ioPort, figure, normal, false);
+            } else {
+                Site tsite = new PerimeterSite(figure, 0);
+                tsite.setNormal(normal);
+                figure = new TerminalFigure(figure, tsite);
+            }
+
             return figure;
         }
     }
-
+    
     // An action to listen to debug messages of the port.
     private class ListenToPortAction extends FigureAction {
         public ListenToPortAction() {
