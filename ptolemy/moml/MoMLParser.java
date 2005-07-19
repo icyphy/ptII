@@ -3945,6 +3945,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private NamedObj _findOrParse(MoMLParser parser, URL base, String file,
             String className, String source) throws Exception {
         URL previousXmlFile = parser._xmlFile;
+        // Cache the modified flag so that if the file
+        // we are opening is modified we don't accidentally
+        // mark container file as modified.  
+        // Wireless SmartParking.xml had this problem because
+        // LotSensor.xml has backward compat changes
+        boolean modified = isModified();
+
         parser._xmlFile = fileNameToURL(file, base);
 
         try {
@@ -3981,6 +3988,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             return null;
         } finally {
             parser._xmlFile = previousXmlFile;
+            setModified(modified);
         }
     }
 
