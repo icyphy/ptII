@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StickyMasses" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 70.0">
@@ -145,16 +145,6 @@ to see the modal behavior.</text></svg></configure>
                 <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
                 </property>
                 <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                </property>
-            </property>
-        </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                 </property>
             </property>
         </property>
@@ -483,16 +473,6 @@ of the two masses.</text></svg></configure>
                         <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
                         </property>
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                        </property>
-                    </property>
-                </property>
-                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                    <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                        <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                        </property>
-                        <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                        </property>
-                        <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
                 </property>
@@ -835,16 +815,6 @@ stickiness.</text></svg></configure>
                         <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
                         </property>
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                        </property>
-                    </property>
-                </property>
-                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                    <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                        <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                        </property>
-                        <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                        </property>
-                        <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
                 </property>

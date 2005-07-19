@@ -2,13 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Thermostat" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[554, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
     <property name="Continuous Time (CT) Solver" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+        </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -37,19 +39,7 @@
                 </property>
             </property>
         </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
-                </property>
-            </property>
-        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 40.0">
         </property>
@@ -277,6 +267,8 @@ and "cooling" states have the same refinement.</text></svg></configure>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
             </property>
             <property name="Refinement Solver" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+                <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+                </property>
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
@@ -304,18 +296,6 @@ and "cooling" states have the same refinement.</text></svg></configure>
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
                         </property>
                     </property>
-                </property>
-                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                    <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                        <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                        </property>
-                        <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                        </property>
-                        <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
-                        </property>
-                    </property>
-                </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
                 </property>
@@ -358,6 +338,12 @@ event that triggers a transition out of this mode.</text></svg></configure>
             </entity>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="65.0">
+                </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 115.0">
                 </property>

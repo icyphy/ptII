@@ -2,16 +2,14 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="OnOff" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={151, 32, 815, 518}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={151, 32, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -108,17 +106,21 @@ on and off every 5 seconds.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 280.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
     <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
         <property name="delay" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
+        <property name="TimedDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={137, 109, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 200.0">
         </property>
-        <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -132,13 +134,6 @@ on and off every 5 seconds.</text></svg></configure>
         <doc>Create a set of pulses</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 150.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="ApplianceController" class="ptolemy.actor.lib.x10.ApplianceController">
         <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
@@ -170,16 +165,10 @@ on and off every 5 seconds.</text></svg></configure>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={662, 455, 290, 227}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 275.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Listener" class="ptolemy.actor.lib.x10.Listener">
         <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
@@ -189,13 +178,6 @@ on and off every 5 seconds.</text></svg></configure>
         <doc>Serial-port command listener for x10 devices</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 275.0">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="receivedCommand" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="185.0, 150.0">

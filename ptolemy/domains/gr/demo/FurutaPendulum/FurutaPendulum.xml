@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FurutaPendulum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[688, 479]">
     </property>
@@ -207,6 +207,12 @@ time (CT).</text></svg></configure>
         <entity name="x1" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialStates(0,0)">
             </property>
+            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
@@ -221,9 +227,12 @@ time (CT).</text></svg></configure>
         <entity name="x1_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x2">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -243,6 +252,12 @@ time (CT).</text></svg></configure>
         <entity name="x2" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialStates(0,1)">
             </property>
+            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
@@ -257,9 +272,12 @@ time (CT).</text></svg></configure>
         <entity name="x2_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*((alfa*beta+pow(alfa*sin(x1), 2.0))*pow(x4,2.0)*sin(x1)*cos(x1)-pow(gamma*x2,2.0)*sin(x1)*cos(x1)+2.0*alfa*gamma*x2*x4*sin(x1)*pow(cos(x1),2.0)-gamma*cos(x1)*g*u+(alfa*beta+pow(alfa*sin(x1),2.0))*epsilon/alfa*sin(x1))">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -279,6 +297,12 @@ time (CT).</text></svg></configure>
         <entity name="x3" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialStates(0,2)">
             </property>
+            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
@@ -293,9 +317,12 @@ time (CT).</text></svg></configure>
         <entity name="x3_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x4">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -315,6 +342,12 @@ time (CT).</text></svg></configure>
         <entity name="x4" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialStates(0,3)">
             </property>
+            <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
@@ -329,9 +362,12 @@ time (CT).</text></svg></configure>
         <entity name="x4_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*(-gamma*alfa*pow(x4,2.0)*sin(x1)*pow(cos(x2),2.0)-gamma*epsilon*sin(x1)*cos(x1)+gamma*alfa*pow(x2,2.0)*sin(x1)-2*pow(alfa,2.0)*x2*x4*sin(x1)*cos(x1)+alfa*g*u)">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -351,9 +387,12 @@ time (CT).</text></svg></configure>
         <entity name="output_Theta" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x1">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -370,9 +409,12 @@ time (CT).</text></svg></configure>
         <entity name="output_dTheta" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x2">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -389,9 +431,12 @@ time (CT).</text></svg></configure>
         <entity name="output_Phi" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x3">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -408,9 +453,12 @@ time (CT).</text></svg></configure>
         <entity name="output_dPhi" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x4">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>

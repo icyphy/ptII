@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SmallWorld" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {0, -1, 1024, 773}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -1, 1024, 775}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 657]">
     </property>
@@ -307,16 +307,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode8" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 495.0">
         </property>
@@ -327,16 +321,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode9" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 495.0">
         </property>
@@ -347,16 +335,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode10" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 495.0">
         </property>
@@ -367,16 +349,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode11" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 495.0">
         </property>
@@ -387,16 +363,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode12" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 495.0">
         </property>
@@ -407,16 +377,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode13" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 495.0">
         </property>
@@ -427,16 +391,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode14" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 495.0">
         </property>
@@ -447,16 +405,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 195.0">
         </property>
@@ -467,16 +419,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode2" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 195.0">
         </property>
@@ -487,16 +433,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode3" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 195.0">
         </property>
@@ -507,16 +447,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode4" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 195.0">
         </property>
@@ -527,16 +461,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode5" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 195.0">
         </property>
@@ -547,16 +475,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode6" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 195.0">
         </property>
@@ -567,16 +489,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode7" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 195.0">
         </property>
@@ -587,16 +503,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode15" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 245.0">
         </property>
@@ -607,16 +517,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode16" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 245.0">
         </property>
@@ -627,16 +531,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode17" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 245.0">
         </property>
@@ -647,16 +545,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode18" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 245.0">
         </property>
@@ -667,16 +559,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode19" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 245.0">
         </property>
@@ -687,16 +573,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode20" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 245.0">
         </property>
@@ -707,16 +587,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode21" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 245.0">
         </property>
@@ -727,16 +601,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode22" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 295.0">
         </property>
@@ -747,16 +615,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode23" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 295.0">
         </property>
@@ -767,16 +629,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode24" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 295.0">
         </property>
@@ -787,16 +643,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode25" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 295.0">
         </property>
@@ -807,16 +657,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode26" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 295.0">
         </property>
@@ -827,16 +671,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode27" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 295.0">
         </property>
@@ -847,16 +685,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode28" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 295.0">
         </property>
@@ -867,16 +699,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode29" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 345.0">
         </property>
@@ -887,16 +713,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode30" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 345.0">
         </property>
@@ -907,16 +727,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode31" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 345.0">
         </property>
@@ -927,16 +741,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode32" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 345.0">
         </property>
@@ -947,16 +755,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode33" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 345.0">
         </property>
@@ -967,16 +769,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode34" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 345.0">
         </property>
@@ -987,16 +783,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode35" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 345.0">
         </property>
@@ -1007,16 +797,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode36" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 395.0">
         </property>
@@ -1027,16 +811,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode37" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 395.0">
         </property>
@@ -1047,16 +825,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode38" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 395.0">
         </property>
@@ -1067,16 +839,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode39" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 395.0">
         </property>
@@ -1087,16 +853,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode40" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 395.0">
         </property>
@@ -1107,16 +867,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode41" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 395.0">
         </property>
@@ -1127,16 +881,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode42" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 395.0">
         </property>
@@ -1147,16 +895,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode43" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 445.0">
         </property>
@@ -1167,16 +909,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode44" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 445.0">
         </property>
@@ -1187,16 +923,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode45" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 445.0">
         </property>
@@ -1207,16 +937,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode46" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 445.0">
         </property>
@@ -1227,16 +951,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode47" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 445.0">
         </property>
@@ -1247,16 +965,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode48" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 445.0">
         </property>
@@ -1267,16 +979,10 @@ parameter.</text></svg></configure>
     </entity>
     <entity name="RelayNode49" class="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
         <property name="nodePropagationDelay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="range">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="haloColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, probability*visualDensity}">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 445.0">
         </property>
@@ -1288,8 +994,6 @@ parameter.</text></svg></configure>
     <entity name="Initiator" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
             </property>
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1330,6 +1034,12 @@ parameter.</text></svg></configure>
             <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 180.0">
             </property>

@@ -2,13 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="V2V" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[108, 13]">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+        </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="25">
@@ -37,19 +39,7 @@
                 </property>
             </property>
         </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
-                </property>
-            </property>
-        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
         </property>
@@ -764,9 +754,9 @@ of following the LeadingPlatoon.</text></svg></configure>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
                 </property>
                 <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
-                    <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
                     </property>
-                    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
+                    <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
                     </property>
@@ -791,18 +781,6 @@ of following the LeadingPlatoon.</text></svg></configure>
                             <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
                             </property>
                         </property>
-                    </property>
-                    <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                        <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                            <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                            </property>
-                            <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                            </property>
-                            <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
-                            </property>
-                        </property>
-                    </property>
-                    <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 50.0">
                     </property>
@@ -972,9 +950,9 @@ of following the LeadingPlatoon.</text></svg></configure>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[238, 198]">
                 </property>
                 <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
-                    <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
                     </property>
-                    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
+                    <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
                     </property>
@@ -999,18 +977,6 @@ of following the LeadingPlatoon.</text></svg></configure>
                             <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
                             </property>
                         </property>
-                    </property>
-                    <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                        <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                            <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                            </property>
-                            <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                            </property>
-                            <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
-                            </property>
-                        </property>
-                    </property>
-                    <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 50.0">
                     </property>
