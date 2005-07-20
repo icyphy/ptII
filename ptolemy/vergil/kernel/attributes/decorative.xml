@@ -9,6 +9,7 @@
 <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
 </property>
 <input source="ptolemy/configs/annotation.xml"/>
+<input source="showParameters.xml"/>
 <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute"/>
 <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute"/>
 <property name="Line" class="ptolemy.vergil.kernel.attributes.LineAttribute"/>

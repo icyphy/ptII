@@ -32,7 +32,9 @@ import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.SwingConstants;
 
@@ -46,6 +48,7 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
 import diva.canvas.CanvasUtilities;
@@ -76,6 +79,18 @@ import diva.gui.toolbox.FigureIcon;
  contains a parameter called "_hideName" with value true.
  The swing icon created by createIcon() does not include the
  decorations, but rather is only the background figure.
+ <p>
+ The decorated version can also optionally show parameter values
+ below the icon.  If the container of the container of this object
+ has a parameter named "showOverriddenParameters" with value true,
+ then parameters that are overridden will be shown.  If it has
+ a parameter named "showAllParameters" with value true, then
+ all parameters that are visible and settable (see the Settable
+ interface) will be shown, regardless of whether they are overridden.
+ If an attribute contains a parameter named "_hide" with value
+ true, then that parameter is now shown even if requested.
+ This is useful, for example, if the icon itself shows
+ the parameter.
  <p>
  Derived classes may simply populate this attribute with other
  visible attributes (attributes that contain icons), or they can
@@ -301,6 +316,44 @@ public class EditorIcon extends Attribute {
                 }
             }
         }
+        
+        // If specified by the container of the container, then show
+        // all overridden parameter values.
+        NamedObj containerContainer = container.getContainer();
+        if (containerContainer != null) {
+            boolean showOverriddenParameters = _isPropertySet(containerContainer, "showOverriddenParameters");
+            boolean showAllParameters = _isPropertySet(containerContainer, "showAllParameters");
+            if (showOverriddenParameters || showAllParameters) {
+                StringBuffer parameters = new StringBuffer();
+                Iterator settables = container.attributeList(Settable.class).iterator();
+                while (settables.hasNext()) {
+                    Settable settable = (Settable)settables.next();
+                    if (settable.getVisibility() != Settable.FULL) {
+                        continue;
+                    }
+                    if (!showAllParameters && !((NamedObj)settable).isOverridden()) {
+                        continue;
+                    }
+                    if(_isPropertySet((NamedObj)settable, "_hide")) {
+                        continue;
+                    }
+                    parameters.append(settable.getName());
+                    parameters.append(": ");
+                    parameters.append(settable.getExpression());
+                    if (settables.hasNext()) {
+                        parameters.append("\n");
+                    }
+                }
+                LabelFigure label = new LabelFigure(parameters.toString(),
+                        _parameterFont, 1.0, SwingConstants.NORTH_WEST);
+
+                // Shift the label slightly right so it doesn't
+                // collide with ports.
+                label.translateTo(backBounds.getX() + 5,
+                        backBounds.getY() + backBounds.getHeight());
+                figure.add(label);
+            }
+        }
 
         return figure;
     }
@@ -486,5 +539,10 @@ public class EditorIcon extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** Font for name labels. */
     private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
+
+    /** Font for parameter values. */
+    private static Font _parameterFont = new Font("SansSerif", Font.PLAIN, 9);
 }
