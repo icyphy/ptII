@@ -138,10 +138,6 @@ public class MessageHandler {
      *  Derived classes such as ptolemy.gui.GraphicalMessageHandler
      *  might display the message graphically.
      *
-     *  <p>NOTE: If in a derived class the message handler set by 
-     *  {@link #setMessageHandler(MessageHandler)} is graphical, then
-     *  this method must be called in the Swing event thread!
-     *
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
@@ -155,9 +151,6 @@ public class MessageHandler {
      *  ptolemy.gui.GraphicalMessageHandler might display the message
      *  graphically.
      *
-     *  <p>NOTE: If in a derived class the message handler set by 
-     *  {@link #setMessageHandler(MessageHandler)} is graphical, then
-     *  this method must be called in the Swing event thread!
      *  @param info The message.
      *  @param throwable The throwable associated with this warning.
      *  @exception CancelException If the user clicks on the "Cancel" button.
@@ -169,10 +162,6 @@ public class MessageHandler {
 
     /** Ask the user a yes/no question, and return true if the answer
      *  is yes.
-     *   
-     *  <p>NOTE: If in a derived class the message handler set by 
-     *  {@link #setMessageHandler(MessageHandler)} is graphical, then
-     *  this method must be called in the Swing event thread!
      *
      *  @param question The yes/no question.
      *  @return True if the answer is yes.
@@ -185,10 +174,6 @@ public class MessageHandler {
      *  answer is yes.  If the user clicks on the "Cancel" button,
      *  then throw an exception.
      *   
-     *  <p>NOTE: If in a derived class the message handler set by 
-     *  {@link #setMessageHandler(MessageHandler)} is graphical, then
-     *  this method must be called in the Swing event thread!
-     *
      *  @param question The yes/no/cancel question.
      *  @return True if the answer is yes.
      *  @exception ptolemy.util.CancelException If the user clicks on
