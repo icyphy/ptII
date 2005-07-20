@@ -42,6 +42,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParseTreeFreeVariableCollector;
 import ptolemy.data.expr.ParseTreeTypeInference;
@@ -128,6 +129,9 @@ public class Expression extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         expression = new StringAttribute(this, "expression");
         expression.setExpression("");
+        
+        Parameter hide = new Parameter(expression, "_hide");
+        hide.setExpression("true");
 
         _setOutputTypeConstraint();
     }
