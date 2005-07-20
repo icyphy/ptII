@@ -1,7 +1,7 @@
-/*
+/* A code generation helper class for domains.sdf.lib.VariableRecursiveLattice
+
  @Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
-
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the
@@ -14,20 +14,18 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-
  */
-
-package ptolemy.codegen.c.actor.lib.gui;
+package ptolemy.codegen.c.domains.sdf.lib;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,103 +35,107 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A helper class for ptolemy.actor.lib.gui.XYPlotter.
- * 
- * @author Jackie
+ * A code generation helper class for ptolemy.domains.sdf.lib.VariableRecursiveLattice.
+ *
+ * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public class XYPlotter extends CCodeGeneratorHelper {
+public class VariableRecursiveLattice extends CCodeGeneratorHelper {
+
     /**
-     * Constructor method for the XYPlotter helper.
-     * @param actor the associated actor.
+     * Constructor method for the VariableRecursiveLattice helper.
+     * @param actor The associated actor.
      */
-    public XYPlotter(ptolemy.actor.lib.gui.XYPlotter actor) {
+    public VariableRecursiveLattice(ptolemy.domains.sdf.lib.VariableRecursiveLattice actor) {
         super(actor);
     }
 
     /**
      * Generate fire code.
-     * The method reads in <code>writeFile</code> from XYPlotter.c 
-     * replaces macros with their values and appends to the given code buffer.
+     * The method reads in <code>fireBlock</code> from VariableRecursiveLattice.c,
+     * replaces macros with their values and appends the processed code
+     * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        // FIXME: how do we add legend to the file??
+    public void  generateFireCode(StringBuffer code)
+        throws IllegalActionException {
+        ptolemy.domains.sdf.lib.VariableRecursiveLattice actor =
+            (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
         CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("writeFile");
+        tmpStream.appendCodeBlock("fireBlock");
+
         code.append(processCode(tmpStream.toString()));
     }
 
     /**
      * Generate initialize code.
-     * This method reads the <code>initBlock</code> from XYPlotter.c,
+     * This method reads the <code>initBlock</code> from VariableRecursiveLattice.c,
      * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
-     * @return The processed code block.
+     * @return The processed code string.
      */
-    public String generateInitializeCode() throws IllegalActionException {
+    public String generateInitializeCode()
+        throws IllegalActionException {
         super.generateInitializeCode();
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
+
         return processCode(tmpStream.toString());
     }
-
-    /** 
+    
+    /**
      * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from XYPlotter.c,
+     * This method reads the <code>preinitBlock</code> from VariableRecursiveLattice.c,
      * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
-     * @return The processed code block.
+     * @return The processed code string.
      */
-    public String generatePreinitializeCode() throws IllegalActionException {
+    public String generatePreinitializeCode()
+        throws IllegalActionException {
         super.generatePreinitializeCode();
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("preinitBlock");
+
         return processCode(tmpStream.toString());
     }
 
-    /** 
+    /**
      * Generate wrap up code.
-     * This method reads the <code>closeFile</code> and <code>graphPlot</code>
-     * from XYPlotter.c, replaces macros with their values and appends to the
-     * given code buffer.
+     * This method reads the <code>wrapupBlock</code>
+     * from VariableRecursiveLattice.c, 
+     * replaces macros with their values and appends the processed code block
+     * to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
     public void generateWrapupCode(StringBuffer code)
-            throws IllegalActionException {
-
-        ptolemy.actor.lib.gui.XYPlotter actor = 
-            (ptolemy.actor.lib.gui.XYPlotter) getComponent();
-
+        throws IllegalActionException {
+        ptolemy.domains.sdf.lib.VariableRecursiveLattice actor =
+            (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
         CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("closeFile");
-
-        if (actor.fillOnWrapup.getExpression().equals("true")) {
-            tmpStream.appendCodeBlock("graphPlot");
-        }
+        tmpStream.appendCodeBlock("wrapupBlock");
 
         code.append(processCode(tmpStream.toString()));
     }
 
-    /** 
+    /**
      * Get the files needed by the code generated for the
-     * XYPlotter actor.
-     * @return A set of strings that are names of the files
-     *  needed by the code generated for the XYPlotter actor.
+     * VariableRecursiveLattice actor.
+     * @return A set of strings that are names of the header files
+     *  needed by the code generated for the VariableRecursiveLattice actor.
      */
-    public Set getIncludingFiles() {
+    public Set getHeaderFiles() {
         Set files = new HashSet();
-        files.add("\"stdio.h\"");
+        files.add("\"math.h\"");
+
         return files;
     }
 }

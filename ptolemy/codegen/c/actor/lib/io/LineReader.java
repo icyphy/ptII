@@ -72,7 +72,7 @@ public class LineReader extends CCodeGeneratorHelper {
     }
 
     /** 
-     * Generate initialization code.
+     * Generate initialize code.
      * This method reads the <code>initBlock</code> from LineReader.c,
      * replaces macros with their values and returns the processed code string.
      * @return The processed <code>initBlock</code>.
@@ -117,7 +117,7 @@ public class LineReader extends CCodeGeneratorHelper {
     }
 
     /** 
-     * Generate preinitialization code.
+     * Generate preinitialize code.
      * This method reads the <code>preinitBlock</code> from LineReader.c,
      * replaces macros with their values and returns the processed code string.
      * @return The processed code block.
