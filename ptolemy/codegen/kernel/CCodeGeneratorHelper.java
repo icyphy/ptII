@@ -54,4 +54,25 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     public CCodeGeneratorHelper(NamedObj component) {
         super(component);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Given a block name, generate code for that block.
+     *  This method is called by actors helpers that have simple blocks
+     *  that do not take parameters or have widths.
+     *  @param blockName The name of the block.
+     *  @return The code for the given block.
+     *  @exception IllegalActionException If illegal macro names are
+     *  found, or if there is a problem parsing the code block from
+     *  the helper .c file.
+     */
+    protected String _generateBlockCode(String blockName) {
+        // We use this method to reduce code duplication for simple blocks.
+
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock(blockName);
+
+        return processCode(tmpStream.toString());
+    }
 }
