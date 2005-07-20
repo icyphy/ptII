@@ -344,34 +344,72 @@ public class GraphicalMessageHandler extends MessageHandler {
 
     /** Ask the user a yes/no question, and return true if the answer
      *  is yes.
-     *  NOTE: This must be called in the swing event thread!
-     *  It is an error to call it outside the swing event thread.
+     *
      *  @param question The yes/no question.
      *  @return True if the answer is yes.
      */
-    protected boolean _yesNoQuestion(String question) {
-        Object[] message = new Object[1];
-        message[0] = StringUtilities.ellipsis(question,
-                StringUtilities.ELLIPSIS_LENGTH_LONG);
+    protected boolean _yesNoQuestion(final String question) {
+        // In swing, updates to showing graphics must be done in the
+        // event thread.  If we are in the event thread, then proceed.
+        // Otherwise, invoke and wait.
+        if (EventQueue.isDispatchThread()) {
+            Object[] message = new Object[1];
+            message[0] = StringUtilities.ellipsis(question,
+                    StringUtilities.ELLIPSIS_LENGTH_LONG);
 
-        Object[] options = { "Yes", "No" };
+            Object[] options = { "Yes", "No" };
 
-        // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(getContext(), message,
-                "Warning", JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+            // Show the MODAL dialog
+            int selected = JOptionPane.showOptionDialog(getContext(), message,
+                    "Warning", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
-        if (selected == 0) {
-            return true;
+            if (selected == 0) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            return false;
+            // Place to store results from doYesNoCancel thread.
+            // results[0] is the return value ("Yes" or "No").
+            final Boolean[] result = new Boolean[1];
+
+            Runnable doYesNo = new Runnable() {
+                    public void run() {
+                        Object[] message = new Object[1];
+                        message[0] = StringUtilities.ellipsis(question,
+                                StringUtilities.ELLIPSIS_LENGTH_LONG);
+
+                        Object[] options = { "Yes", "No" };
+
+                        // Show the MODAL dialog
+                        int selected = JOptionPane.showOptionDialog(getContext(), message,
+                                "Warning", JOptionPane.YES_NO_OPTION,
+                                JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+
+                        if (selected == 0) {
+                            result[0] = Boolean.TRUE;
+                        } else {
+                            result[0] = Boolean.FALSE;
+                        }
+                    }
+                };
+            try {
+                // Note: usually we use invokeLater() (see
+                // Top.deferIfNecessary()).  However, here, we need
+                // the return value.
+            	SwingUtilities.invokeAndWait(doYesNo);
+            } catch (Exception ex) {
+            	// do nothing.   
+            }
+            return result[0].booleanValue();
         }
+             
     }
 
     /** Ask the user a yes/no/cancel question, and return true if the answer
      *  is yes.
-     *  NOTE: This must be called in the swing event thread!
-     *  It is an error to call it outside the swing event thread.
+     *
      *  @param question The yes/no/cancel question.
      *  @return True if the answer is yes.
      *  @exception ptolemy.util.CancelException If the user clicks on
