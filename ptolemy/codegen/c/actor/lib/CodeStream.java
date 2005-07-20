@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
 /**
- * A utility class that reads code blocks from the helper .c file
+ * A utility class that reads code blocks from the helper .c file.
  * 
  * @author Jackie
  * @version $Id$
