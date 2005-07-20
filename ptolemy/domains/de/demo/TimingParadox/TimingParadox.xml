@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TimingParadox" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -270,7 +270,7 @@ delays.</text></svg></configure>
         </property>
         <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.005">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 225.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -338,7 +338,7 @@ delays.</text></svg></configure>
         </property>
     </entity>
     <entity name="InstanceOfSampler" class="Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 80.0]">
         </property>
     </entity>
     <entity name="InstanceOfSampler2" class="Sampler">
@@ -360,13 +360,13 @@ delays.</text></svg></configure>
         </property>
     </entity>
     <entity name="InstanceOfSampler5" class="Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 335.0]">
         </property>
         <property name="sampleDelay" class="ptolemy.data.expr.Parameter" value="0.3">
         </property>
     </entity>
     <entity name="InstanceOfSampler6" class="Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 400.0]">
         </property>
         <property name="sampleDelay" class="ptolemy.data.expr.Parameter" value="0.4">
         </property>
@@ -382,7 +382,7 @@ delays.</text></svg></configure>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[375.0, 415.0]">
+        <vertex name="vertex1" value="[375.0, 410.0]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">

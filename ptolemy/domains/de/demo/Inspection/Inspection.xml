@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Inspection" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="Discrete Event (DE) Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -34,7 +34,7 @@
     </property>
     <property name="passengerArrivalRate" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 1018, 619}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 1015, 618}, maximized=false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -264,7 +264,7 @@ order.</text></svg></configure>
         </property>
     </entity>
     <entity name="Report Poisson Average" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="400.5, 348.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 345.0]">
         </property>
         <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Poisson busses): &quot;">
         </property>
@@ -372,7 +372,7 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={589, 407, 432, 103}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 348.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 350.0]">
         </property>
     </entity>
     <entity name="SingleEvent0" class="ptolemy.domains.de.lib.SingleEvent">
