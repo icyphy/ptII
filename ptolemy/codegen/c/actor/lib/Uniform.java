@@ -79,7 +79,8 @@ public class Uniform extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        ptolemy.actor.lib.Gaussian actor = (ptolemy.actor.lib.Gaussian) getComponent();
+        ptolemy.actor.lib.Gaussian actor =
+            (ptolemy.actor.lib.Gaussian) getComponent();
 
         long seedValue;
         CodeStream tmpStream = new CodeStream(this);

@@ -61,7 +61,8 @@ public class Maximum extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.actor.lib.Maximum actor = (ptolemy.actor.lib.Maximum) getComponent();
+        ptolemy.actor.lib.Maximum actor =
+            (ptolemy.actor.lib.Maximum) getComponent();
         CodeStream tmpStream = new CodeStream(this);
 
         // FIXME: we need to resolve the token type in the future

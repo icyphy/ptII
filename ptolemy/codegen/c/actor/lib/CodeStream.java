@@ -101,7 +101,8 @@ public class CodeStream {
      * @param blockName the name of the code block
      * @exception IllegalActionException If an error occurs during parsing.
      */
-    public void appendCodeBlock(String blockName) throws IllegalActionException {
+    public void appendCodeBlock(String blockName)
+            throws IllegalActionException {
         appendCodeBlock(blockName, null);
     }
 
@@ -157,8 +158,9 @@ public class CodeStream {
     public static void main(String[] arg) throws IOException,
             IllegalActionException {
         _debug = true;
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("----------Testing--------------------------------");
+        BufferedReader in =
+            new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("----------Testing-------------------------------");
         System.out.print("please input file path: ");
         _testingFilePath = in.readLine();
         System.out
@@ -347,7 +349,8 @@ public class CodeStream {
             _parameterTable.put(name, codeInFile.substring(parameterIndex,
                     parameterEndIndex).trim());
         } else {
-            name = _checkCodeHeader(codeInFile.substring(_parseIndex, endIndex));
+            name =
+                _checkCodeHeader(codeInFile.substring(_parseIndex, endIndex));
         }
         _parseIndex = _HEADEREND.length() + endIndex;
         return name;
