@@ -32,6 +32,7 @@ package ptolemy.codegen.c.actor.lib;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 
@@ -101,9 +102,9 @@ public class CodeStream {
      * @param blockName the name of the code block
      * @exception IllegalActionException If an error occurs during parsing.
      */
-    public void appendCodeBlock(String blockName)
-            throws IllegalActionException {
-        appendCodeBlock(blockName, null);
+    public void appendCodeBlock(String blockName) 
+        throws IllegalActionException {
+        appendCodeBlock(blockName, new ArrayList());
     }
 
     /** To append an specific code block with a single argument.
@@ -116,7 +117,7 @@ public class CodeStream {
      *  integer, or float type object.
      * @exception IllegalActionException If an error occurs during parsing.
      */
-    public void appendCodeBlock(String blockName, Object argument)
+    public void appendCodeBlock(String blockName, ArrayList arguments)
             throws IllegalActionException {
         if (_codeBlockTable == null) {
             _constructCodeTable();
@@ -128,24 +129,22 @@ public class CodeStream {
                     + blockName + " in " + _filePath);
         }
 
-        String parameter = (String) _parameterTable.get(blockName);
-        if (parameter != null) {
-            if (argument == null) {
-                throw new IllegalActionException(
-                        "Incorrect number of arguments: " + blockName + " in "
-                                + _filePath);
-            }
-            // We need to do some substitution
-            String replaceString = argument.toString();
-            codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
-                    "parameter", replaceString));
-
-        } else if (argument != null) {
-            throw new IllegalActionException("Incorrect number of arguments: "
-                    + blockName + " in " + _filePath);
+        ArrayList parameters = (ArrayList) _parameterTable.get(blockName);
+        if ((parameters == null && arguments.size() != 0) || 
+            (parameters != null && parameters.size() != arguments.size())) {
+            throw new IllegalActionException(
+                    "Incorrect number of arguments: " + blockName + " in "
+                            + _filePath);
         }
+        
+        // substitute for each parameters
+        for (int i = 0; i < arguments.size(); i++) {
+            String replaceString = arguments.get(i).toString();
+            codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
+                    parameters.get(i).toString(), replaceString));
+            _stream.append(codeBlock);
 
-        _stream.append(codeBlock);
+        }
     }
 
     /**
@@ -158,9 +157,10 @@ public class CodeStream {
     public static void main(String[] arg) throws IOException,
             IllegalActionException {
         _debug = true;
-        BufferedReader in =
+        BufferedReader in = 
             new BufferedReader(new InputStreamReader(System.in));
         System.out.println("----------Testing-------------------------------");
+
         System.out.print("please input file path: ");
         _testingFilePath = in.readLine();
         System.out
@@ -214,15 +214,15 @@ public class CodeStream {
             StringBuffer codeInFile = new StringBuffer();
 
             // create a string of all code in the file
-            for (String line = reader.readLine(); line != null; line = reader
-                    .readLine()) {
+            for (String line = reader.readLine(); line != null; 
+                line = reader.readLine()) {
                 codeInFile.append(line + "\n");
             }
 
-            // recursively parse the file
+            // repeatedly parse the file
             while (_parseCodeBlock(codeInFile) != null) {
                 ;
-            }
+            }            
         } catch (IOException e) {
             if (reader == null) {
                 throw new IllegalActionException(null, e, "Cannot open file: "
@@ -268,16 +268,20 @@ public class CodeStream {
                     + _filePath);
         }
 
-        StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex,
-                endIndex));
+        StringBuffer body = 
+            new StringBuffer(codeInFile.substring(_parseIndex, endIndex));
 
         // Recursively parsing for nested code blocks
-        for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;) {
-            // FIXME: do we include the nested code block into
+        for (String subBlockKey = _parseCodeBlock(body); 
+            subBlockKey != null;) {
+            // FIXME: do we include the nested code block into 
             // the current block??
             //body.append((StringBuffer) _codeBlockTable.get(subBlockKey));
             // FIXME: take away the nested code block from
             // the current code block
+
+        	// reset the parse index to parse the body from the beginning
+            _parseIndex = 0;        
             subBlockKey = _parseCodeBlock(body);
         }
 
@@ -344,12 +348,28 @@ public class CodeStream {
         if (parameterIndex != -1 && parameterIndex < endIndex) {
             name = _checkCodeHeader(codeInFile.substring(_parseIndex,
                     parameterIndex));
-
             int parameterEndIndex = codeInFile.indexOf(")", _parseIndex);
-            _parameterTable.put(name, codeInFile.substring(parameterIndex,
-                    parameterEndIndex).trim());
+            
+            if (_parameterTable.get(name) == null) {
+                _parameterTable.put(name, new ArrayList());
+            }
+            ArrayList parameterList = (ArrayList) _parameterTable.get(name);
+            
+            // keep parsing for extra parameters
+            for (int commaIndex = codeInFile.indexOf(",", _parseIndex);
+                commaIndex != -1 && commaIndex < parameterEndIndex; 
+                commaIndex = codeInFile.indexOf(",", commaIndex + 1)) {
+            	
+                String newParameter = 
+                    codeInFile.substring(parameterIndex + 1, commaIndex);
+                parameterList.add(newParameter.trim());
+                parameterIndex = commaIndex;
+            }
+            String newParameter = 
+                codeInFile.substring(parameterIndex + 1, parameterEndIndex);
+            parameterList.add(newParameter.trim());
         } else {
-            name =
+            name = 
                 _checkCodeHeader(codeInFile.substring(_parseIndex, endIndex));
         }
         _parseIndex = _HEADEREND.length() + endIndex;
