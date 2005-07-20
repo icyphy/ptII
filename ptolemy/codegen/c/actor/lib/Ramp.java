@@ -49,11 +49,11 @@ public class Ramp extends CCodeGeneratorHelper {
     public Ramp(ptolemy.actor.lib.Ramp actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Ramp.c,
-     * replaces macros with their values and appends the processed code 
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an

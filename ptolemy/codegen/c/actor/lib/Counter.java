@@ -34,9 +34,9 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.Counter.
- * 
+ *
  * @author Man-Kit Leung
- * @version $Id$ 
+ * @version $Id$
  * @since Ptolemy II 5.1
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
@@ -49,11 +49,11 @@ public class Counter extends CCodeGeneratorHelper {
     public Counter(ptolemy.actor.lib.Counter actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Counter.c,
-     * replaces macros with their values and appends the processed code 
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an

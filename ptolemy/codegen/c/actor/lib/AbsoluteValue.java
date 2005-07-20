@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * Generate C code for an actor that produces an output token on
  * on each firing with a value that is equal to the absolute value of
  * the input.
- * 
+ *
  * @see ptolemy.actor.lib.AbsoluteValue
  * @author Man-Kit Leung
  * @version $Id$
@@ -60,11 +60,11 @@ public class AbsoluteValue extends CCodeGeneratorHelper {
     public AbsoluteValue(ptolemy.actor.lib.AbsoluteValue actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
-     * The method reads in <code>fireBlock</code> from AbsoluteValue.c, 
-     * replaces macros with their values and appends the processed code 
+     * The method reads in <code>fireBlock</code> from AbsoluteValue.c,
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an

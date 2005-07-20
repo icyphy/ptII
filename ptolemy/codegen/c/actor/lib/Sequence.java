@@ -63,7 +63,7 @@ public class Sequence extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.actor.lib.Sequence actor = 
+        ptolemy.actor.lib.Sequence actor =
             (ptolemy.actor.lib.Sequence) getComponent();
 
         CodeStream tmpStream = new CodeStream(this);
@@ -76,7 +76,7 @@ public class Sequence extends CCodeGeneratorHelper {
         tmpStream.appendCodeBlock("codeBlock3");
         code.append(processCode(tmpStream.toString()));
     }
-    
+
     /**
      * Generate preinitialize code.
      * This method reads the <code>preinitBlock</code> from Sequence.c,

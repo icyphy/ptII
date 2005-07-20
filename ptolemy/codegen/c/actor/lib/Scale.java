@@ -49,11 +49,11 @@ public class Scale extends CCodeGeneratorHelper {
     public Scale(ptolemy.actor.lib.Scale actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Scale.c,
-     * replaces macros with their values and appends the processed code 
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an

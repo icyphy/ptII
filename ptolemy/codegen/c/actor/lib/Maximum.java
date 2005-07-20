@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.Maximum.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -53,7 +53,7 @@ public class Maximum extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Maximum.c,
-     * replaces macros with their values and appends the processed code 
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
@@ -73,7 +73,7 @@ public class Maximum extends CCodeGeneratorHelper {
     /**
      * Generate initialize code.
      * This method reads the <code>initMax</code> and
-     * <code>initChannelNum</code> from Maximum.c, replaces macros with 
+     * <code>initChannelNum</code> from Maximum.c, replaces macros with
      * their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
@@ -82,7 +82,7 @@ public class Maximum extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        ptolemy.actor.lib.Minimum actor = 
+        ptolemy.actor.lib.Minimum actor =
             (ptolemy.actor.lib.Minimum) getComponent();
 
         CodeStream tmpStream = new CodeStream(this);
@@ -92,7 +92,7 @@ public class Maximum extends CCodeGeneratorHelper {
         tmpStream.appendCodeBlock("initChannelNum");
         return processCode(tmpStream.toString());
     }
-    
+
     /**
      * Generate preinitialize code.
      * This method reads the <code>preinitBlock</code> from Maximum.c,

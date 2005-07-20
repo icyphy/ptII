@@ -33,7 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.StringConst.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -49,7 +49,7 @@ public class StringConst extends CCodeGeneratorHelper {
     public StringConst(ptolemy.actor.lib.StringConst actor) {
         super(actor);
     }
-    
+
     /**
      * Generate initialize code.
      * This method reads the <code>initBlock</code> from StringConst.c,

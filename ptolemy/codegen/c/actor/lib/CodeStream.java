@@ -14,11 +14,11 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
@@ -41,7 +41,7 @@ import ptolemy.util.FileUtilities;
 
 /**
  * A utility class that reads code blocks from the helper .c file.
- * 
+ *
  * @author Jackie
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -52,7 +52,7 @@ public class CodeStream {
 
     /**
      * CodeStream constructor associated with each actor helper.
-     * Therefore, each actor should have its own codestream during 
+     * Therefore, each actor should have its own codestream during
      * code generation.
      * @param helper the actor helper associated with this code stream
      */
@@ -61,9 +61,9 @@ public class CodeStream {
         if (_debug) {
             _filePath = _testingFilePath;
         } else {
-            // FIXME: There should be a more proper way to 
+            // FIXME: There should be a more proper way to
             // access the filepath
-            //_filePath = "$CLASSPATH/" + 
+            //_filePath = "$CLASSPATH/" +
             //      helper.getClass().getPackage().toString()
             //+ ".";
             //_filePath = _filePath.replaceFirst("package ", "");
@@ -138,7 +138,7 @@ public class CodeStream {
             String replaceString = argument.toString();
             codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
                     "parameter", replaceString));
-            
+
         } else if (argument != null) {
             throw new IllegalActionException("Incorrect number of arguments: "
                     + blockName + " in " + _filePath);
@@ -271,10 +271,10 @@ public class CodeStream {
 
         // Recursively parsing for nested code blocks
         for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;) {
-            // FIXME: do we include the nested code block into 
+            // FIXME: do we include the nested code block into
             // the current block??
             //body.append((StringBuffer) _codeBlockTable.get(subBlockKey));
-            // FIXME: take away the nested code block from 
+            // FIXME: take away the nested code block from
             // the current code block
             subBlockKey = _parseCodeBlock(body);
         }
@@ -287,7 +287,7 @@ public class CodeStream {
      * responsible for putting the first single (nested or non-nested)
      * code block along with the block name (key) into the code block table.
      * It calls sub-parsing functions parseHeader() and parseBody().
-     * It returns the name of the code block (key). If null is returned, 
+     * It returns the name of the code block (key). If null is returned,
      * it means there is no more code block to be parsed in the .c file.
      *
      * @param codeInFile all the text within the .c file
@@ -420,7 +420,7 @@ public class CodeStream {
     private String _filePath;
 
     /**
-     * The code block table that stores the code block parameter(s) 
+     * The code block table that stores the code block parameter(s)
      * with code block names (String) as keys.
      */
     private Hashtable _parameterTable = null;

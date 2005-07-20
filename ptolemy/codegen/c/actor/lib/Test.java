@@ -60,7 +60,7 @@ public class Test extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Test.c,
-     * replaces macros with their values and appends the processed code 
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
@@ -97,7 +97,7 @@ public class Test extends CCodeGeneratorHelper {
         return processCode(tmpStream.toString());
     }
 
-    /** 
+    /**
      * Get the files needed by the code generated for the
      * Test actor.
      * @return A set of strings that are names of the files

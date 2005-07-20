@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.TrigFunction.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -65,23 +65,23 @@ public class TrigFunction extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.actor.lib.TrigFunction actor = 
+        ptolemy.actor.lib.TrigFunction actor =
             (ptolemy.actor.lib.TrigFunction) getComponent();
 
         String function = actor.function.getExpression();
         String codeBlockName = (function.equals("sin"))  ? "sinBlock"
         		   : ((function.equals("cos"))  ? "cosBlock"
                    : ((function.equals("tan"))  ? "tanBlock"
-                   : ((function.equals("asin")) ? "asinBlock" 
-                   : ((function.equals("acos")) ? "acosBlock" 
+                   : ((function.equals("asin")) ? "asinBlock"
+                   : ((function.equals("acos")) ? "acosBlock"
                    : "atanBlock"))));
 
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock(codeBlockName);
         code.append(processCode(tmpStream.toString()));
     }
-    
-    /** 
+
+    /**
      * Get the files needed by the code generated for the
      * TrigFunction actor.
      * @return A set of strings that are names of the files

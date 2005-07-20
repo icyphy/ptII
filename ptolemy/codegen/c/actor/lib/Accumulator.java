@@ -33,7 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.Accumulator.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -48,11 +48,11 @@ public class Accumulator extends CCodeGeneratorHelper {
     public Accumulator(ptolemy.actor.lib.Accumulator actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
-     * The method reads in <code>fireBlock</code> from Accumulator.c, 
-     * replaces macros with their values and appends the processed code 
+     * The method reads in <code>fireBlock</code> from Accumulator.c,
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
@@ -67,7 +67,7 @@ public class Accumulator extends CCodeGeneratorHelper {
 
     /**
      * Generate initialize code.
-     * This method reads the <code>initBlock</code> from Accumulator.c, replaces 
+     * This method reads the <code>initBlock</code> from Accumulator.c, replaces
      * macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).

@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.Gaussian.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -53,11 +53,11 @@ public class Gaussian extends CCodeGeneratorHelper {
     public Gaussian(ptolemy.actor.lib.Gaussian actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Gaussian.c,
-     * replaces macros with their values and appends the processed code 
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
@@ -69,7 +69,7 @@ public class Gaussian extends CCodeGeneratorHelper {
         tmpStream.appendCodeBlock("fireBlock");
         code.append(processCode(tmpStream.toString()));
     }
-    
+
     /**
      * Generate initialize code.
      * This method reads the <code>initBlock</code> from Gaussian.c,
@@ -93,7 +93,7 @@ public class Gaussian extends CCodeGeneratorHelper {
         }
         return processCode(tmpStream.toString());
     }
-    
+
     /**
      * Generate preinitialize code.
      * This method reads the <code>preinitBlock</code> from Gaussian.c,
@@ -109,7 +109,7 @@ public class Gaussian extends CCodeGeneratorHelper {
         return processCode(tmpStream.toString());
     }
 
-    /** 
+    /**
      * Get the files needed by the code generated for the
      * Gaussian actor.
      * @return A set of strings that are names of the files

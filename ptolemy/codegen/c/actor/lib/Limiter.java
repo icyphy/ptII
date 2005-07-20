@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.Limiter.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 
 public class Limiter extends CCodeGeneratorHelper {
-    
+
     /**
      * Constructor method for the Limiter helper.
      * @param actor the associated actor
@@ -51,11 +51,11 @@ public class Limiter extends CCodeGeneratorHelper {
     public Limiter(ptolemy.actor.lib.Limiter actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Limiter.c,
-     * replaces macros with their values and appends the processed code 
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an

@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.Average.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -49,7 +49,7 @@ public class Average extends CCodeGeneratorHelper {
     public Average(ptolemy.actor.lib.Average actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Average.c, replaces
@@ -68,7 +68,7 @@ public class Average extends CCodeGeneratorHelper {
 
     /**
      * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from Average.c, replaces 
+     * This method reads the <code>preinitBlock</code> from Average.c, replaces
      * macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).

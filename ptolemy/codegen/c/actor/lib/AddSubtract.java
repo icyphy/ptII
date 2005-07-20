@@ -62,7 +62,7 @@ public class AddSubtract extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.actor.lib.AddSubtract actor = 
+        ptolemy.actor.lib.AddSubtract actor =
             (ptolemy.actor.lib.AddSubtract) getComponent();
         StringBuffer tmpStream = new StringBuffer();
         tmpStream.append("$ref(output) = ");

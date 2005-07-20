@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.Uniform.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -56,7 +56,7 @@ public class Uniform extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Uniform.c,
-     * replaces macros with their values and appends the processed code 
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
@@ -68,7 +68,7 @@ public class Uniform extends CCodeGeneratorHelper {
         tmpStream.appendCodeBlock("fireBlock");
         code.append(processCode(tmpStream.toString()));
     }
-    
+
     /**
      * Generate initialize code.
      * This method reads the <code>setSeedBlock</code> from Uniform.c,
@@ -85,7 +85,7 @@ public class Uniform extends CCodeGeneratorHelper {
         CodeStream tmpStream = new CodeStream(this);
 
         if (Long.parseLong( actor.seed.getExpression()) == 0) {
-            tmpStream.append("$actorSymbol(seed) = time (NULL) + " 
+            tmpStream.append("$actorSymbol(seed) = time (NULL) + "
                     + actor.hashCode());
         } else {
             tmpStream.appendCodeBlock("setSeedBlock");
@@ -108,7 +108,7 @@ public class Uniform extends CCodeGeneratorHelper {
         return processCode(tmpStream.toString());
     }
 
-    /** 
+    /**
      * Get the files needed by the code generated for the
      * Uniform actor.
      * @return A set of strings that are names of the files

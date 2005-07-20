@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.UnaryMathFunction.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -65,13 +65,13 @@ public class UnaryMathFunction extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.actor.lib.UnaryMathFunction actor = 
+        ptolemy.actor.lib.UnaryMathFunction actor =
             (ptolemy.actor.lib.UnaryMathFunction) getComponent();
 
         String function = actor.function.getExpression();
-        String codeBlockName = (function.equals("exp")) ? "expBlock" : 
+        String codeBlockName = (function.equals("exp")) ? "expBlock" :
                               ((function.equals("log")) ? "logBlock" :
-                              ((function.equals("sign")) ? "signBlock" : 
+                              ((function.equals("sign")) ? "signBlock" :
                               ((function.equals("square")) ? "squareBlock" :
                                "sqrtBlock")));
 
@@ -80,7 +80,7 @@ public class UnaryMathFunction extends CCodeGeneratorHelper {
         code.append(processCode(tmpStream.toString()));
     }
 
-    /** 
+    /**
      * Get the files needed by the code generated for the
      * UnaryMathFunction actor.
      * @return A set of strings that are names of the files

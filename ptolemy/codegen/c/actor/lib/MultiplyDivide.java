@@ -62,7 +62,7 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.actor.lib.MultiplyDivide actor = 
+        ptolemy.actor.lib.MultiplyDivide actor =
             (ptolemy.actor.lib.MultiplyDivide) getComponent();
         StringBuffer tmpStream = new StringBuffer();
         tmpStream.append("$ref(output) = ");

@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.GradientAdaptiveLattice.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -67,7 +67,7 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer code)
         throws IllegalActionException {
-        ptolemy.actor.lib.GradientAdaptiveLattice actor = 
+        ptolemy.actor.lib.GradientAdaptiveLattice actor =
             (ptolemy.actor.lib.GradientAdaptiveLattice) getComponent();
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("fireBlock");
@@ -91,27 +91,27 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
         tmpStream.appendCodeBlock("initBlock");
         return processCode(tmpStream.toString());
     }
-    
+
     /**
      * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from 
+     * This method reads the <code>preinitBlock</code> from
      * GradientAdaptiveLattice.c, replaces macros with their values and
      * returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      * @return The processed code string.
      */
-    public String generatePreinitializeCode() 
+    public String generatePreinitializeCode()
         throws IllegalActionException {
         super.generatePreinitializeCode();
-        ptolemy.actor.lib.GradientAdaptiveLattice actor = 
+        ptolemy.actor.lib.GradientAdaptiveLattice actor =
             (ptolemy.actor.lib.GradientAdaptiveLattice) getComponent();
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("preinitBlock");
         return processCode(tmpStream.toString());
     }
 
-    /** 
+    /**
      * Get the files needed by the code generated for the
      * GradientAdaptiveLattice actor.
      * @return A set of strings that are names of the files
