@@ -67,9 +67,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      *  found, or if there is a problem parsing the code block from
      *  the helper .c file.
      */
-    protected String _generateBlockCode(String blockName) {
+    protected String _generateBlockCode(String blockName) 
+            throws IllegalActionException {
         // We use this method to reduce code duplication for simple blocks.
-
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock(blockName);
 
