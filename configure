@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# Guess values for system-dependent variables and create Makefiles. 
+# Guess values for system-dependent variables and create Makefiles.
 # Generated automatically using autoconf version 2.13 
 # Copyright (C) 1992, 93, 94, 95, 96 Free Software Foundation, Inc.
 #
@@ -3787,7 +3787,7 @@ fi
 			fi
 		    fi
                 else 
-		    PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -c -o ${PTJNI_SHAREDLIBRARY_PREFIX}tmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
+		    PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -c -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
 
 		    echo $ac_n "checking for gcc""... $ac_c" 1>&6
 echo "configure:3794: checking for gcc" >&5
