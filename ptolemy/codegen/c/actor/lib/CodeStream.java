@@ -133,7 +133,7 @@ public class CodeStream {
 
     /** 
      * Append the code block specified the given block name. This method
-     * invoke appendCodeBlock(String, ArrayList) with no arguments by
+     * invokes appendCodeBlock(String, ArrayList) with no arguments by
      * passing an empty array list of argments.
      * @see appendCodeBlock(String, ArrayList)
      * @param blockName The given code block name.
