@@ -64,6 +64,23 @@ example illustrates this with a model of a physical system that has simultaneous
 events.
 
 <br>
+<li><i>Stochastic hybrid systems</i>:
+<a href="../ptolemy/domains/ct/demo/Spontaneous/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
+(see also
+<a href="../ptolemy/domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>,
+<a href="../ptolemy/domains/ct/demo/Brownian/Brownian.xml">Brownian</a>
+).
+<br>
+Stochastic hybrid systems add random behavior to continuous-time models mixed
+with discrete events. The 
+<a href="../ptolemy/domains/ct/demo/Spontaneous/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
+models spontaneous mode transitions governed by a Poisson process.
+The <a href="../ptolemy/domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>
+example uses similar spontaneous mode transitions to model random delay in mode transitions.
+The <a href="../ptolemy/domains/ct/demo/Brownian/Brownian.xml">Brownian</a> example
+models a stochastic differential equation describing a random walk process.
+
+<br>
 <li> <i>Heterochronous Dataflow</i>:
 <a href="../ptolemy/domains/hdf/demo/Fibonacci/Fibonacci.xml">Fibonacci</a>
 (see also
@@ -88,8 +105,7 @@ from a counting sequence.
 </h2>
 <ul>
 
-<li><i>Unbounded model time</i>:
-<a href="../ptolemy/domains/de/demo/LongRuns/LongRuns.xml">LongRuns</a>.
+<li><i>Unbounded model time</i>: LongRuns
 <br>
 Version 5.0 introduces a new
 <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/util/Time.html">Time</a> class
@@ -97,7 +113,7 @@ that represents model time in a manner that has a specified resolution
 and unbounded growth potential. Any two time values that are within the specified
 resolution are treated as equal. Moreover, time can increase forever without
 concern for loss of resolution or overflow.
-The <a href="../ptolemy/domains/de/demo/LongRuns/LongRuns.xml">LongRuns</a>
+The LongRuns
 example is a discrete-event model that can be run forever, in principle,
 without (significant) growth of memory requirements and without loss
 of (internal) precision in model time.
@@ -154,19 +170,18 @@ is a parameter
 whose value is constrained to be identical to a suite of other instances of
 SharedParameter in the same model. This parameter is used, for example, to
 handle seeds in random number generators, as illustrated for example in
-<a href="../ptolemy/actor/lib/colt/demo/ColtRandom/ColtRandom.xml">
-ColtRandom</a>.
+ColtRandom.
 
 <br>
 <li><i>Higher Order Components</i>:
-<a href="../ptolemy/demo/ExecDemos.htm">ExecDemos</a>
+ExecDemos
 (see also
 <a href="../ptolemy/actor/lib/hoc/demo/IterateOverArray/IterateOverArray.xml">IterateOverArray</a>).
 <br>
 The higher-order component capabilities of Ptolemy II continue to evolve.
-The <a href="../ptolemy/demo/ExecDemos.htm">ExecDemos</a> model, when executed, starts a new
+The ExecDemos model, when executed, starts a new
 Java virtual machine that then executes the
-<a href="../ptolemy/demo/RunDemos.htm">RunDemos</a> model,
+RunDemos model,
 which runs all demos in a specified directory using full-screen mode.
 This illustrates how to use higher-order actors to control the lifecylcle of other Ptolemy II
 models. This example can be set up to automatically and repeatedly run demos
@@ -222,8 +237,7 @@ those that can be used in more than one domain).
 </ul>
 
 <li><i>Random number generators</i>:
-<a href="../ptolemy/actor/lib/colt/demo/ColtRandom/ColtRandom.xml">
-ColtRandom</a>.
+ColtRandom.
 <br>
 A new library of random number generators, developed jointly with
 David Bauer and Kostas Oikonomou from AT&amp;T Research, is based on the popular
@@ -362,27 +376,30 @@ A new library supporting arithmetic on fractions has been created. See:
 command in the Graph menu.
 
 <li> Other New java files:
-<pre>
-ptolemy/actor/StateReceiver.java
-ptolemy/actor/TypeOpaqueCompositeActor.java
-ptolemy/actor/gui/CompositeActorSimpleApplication.java
-ptolemy/actor/gui/PasswordAttribute.java
-ptolemy/actor/gui/QueryUtilities.java
-ptolemy/actor/lib/UnaryMathFunction.java
-ptolemy/actor/util/DFUtilities.java
-ptolemy/caltrop/actors/AbstractCalInterpreter.java
-ptolemy/domains/fsm/kernel/NonStrictFSMDirector.java
-ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.java
-ptolemy/kernel/util/Moveable.java
-ptolemy/moml/filter/GRColorChanges.java
-ptolemy/vergil/kernel/attributes/AbstractTextAttribute.java
-ptolemy/vergil/kernel/attributes/AttributeExpressionAttribute.java
-ptolemy/vergil/kernel/attributes/AttributeValueAttribute.java
-ptolemy/vergil/kernel/attributes/IDAttribute.java
-ptolemy/vergil/toolbox/MoveAction.java
-</pre>
+  <ul>
+    <li> <a href="codeDoc/ptolemy/actor/StateReceiver.html">ptolemy/StateReceiver.java</a>
+    <li> <a href="codeDoc/ptolemy/actor/TypeOpaqueCompositeActor.html">ptolemy/actor/TypeOpaqueCompositeActor.java</a>
+    <li> <a href="codeDoc/ptolemy/actor/gui/CompositeActorSimpleApplication.html">ptolemy/actor/gui/CompositeActorSimpleApplication.java</a>
+    <li> <a href="codeDoc/ptolemy/actor/gui/PasswordAttribute.html">ptolemy/actor/gui/PasswordAttribute.java</a>
+    <li> <a href="codeDoc/ptolemy/actor/gui/QueryUtilities.html">ptolemy/actor/gui/QueryUtilities.java</a>
+    <li> <a href="codeDoc/ptolemy/actor/lib/StringConst.html">ptolemy/actor/lib/StringConst.java</a>
+    <li> <a href="codeDoc/ptolemy/actor/lib/UnaryMathFunction.html">ptolemy/actor/lib/UnaryMathFunction.java</a>
+    <li> <a href="codeDoc/ptolemy/actor/lib/image/ImageTableau.html">ptolemy/actor/lib/image/ImageTableau.java</a>
+    <li> <a href="codeDoc/ptolemy/actor/util/DFUtilities.html">ptolemy/actor/util/DFUtilities.java</a>
+    <li> <a href="codeDoc/ptolemy/caltrop/actors/AbstractCalInterpreter.html">ptolemy/caltrop/actors/AbstractCalInterpreter.java</a>
+    <li> <a href="codeDoc/ptolemy/domains/ct/kernel/solver/ExplicitRK45Solver.html">ptolemy/domains/ct/kernel/solver/ExplicitRK45Solver.java</a>
+    <li> <a href="codeDoc/ptolemy/domains/fsm/kernel/NonStrictFSMDirector.html">ptolemy/domains/fsm/kernel/NonStrictFSMDirector.java</a>
+    <li> <a href="codeDoc/ptolemy/kernel/util/Moveable.html">ptolemy/kernel/util/Moveable.java</a>
+    <li> <a href="codeDoc/ptolemy/moml/filter/GRColorChanges.html">ptolemy/moml/filter/GRColorChanges.java</a>
+    <li> <a href="codeDoc/ptolemy/vergil/kernel/attributes/AbstractTextAttribute.html">ptolemy/vergil/kernel/attributes/AbstractTextAttribute.java</a>
+    <li> <a href="codeDoc/ptolemy/vergil/kernel/attributes/AttributeExpressionAttribute.html">ptolemy/vergil/kernel/attributes/AttributeExpressionAttribute.java</a>
+    <li> <a href="codeDoc/ptolemy/vergil/kernel/attributes/AttributeValueAttribute.html">ptolemy/vergil/kernel/attributes/AttributeValueAttribute.java</a>
+    <li> <a href="codeDoc/ptolemy/vergil/kernel/attributes/IDAttribute.html">ptolemy/vergil/kernel/attributes/IDAttribute.java</a>
+    <li> <a href="codeDoc/ptolemy/vergil/toolbox/MoveAction.html">ptolemy/vergil/toolbox/MoveAction.java</a>
+  </ul>
 
 </ul>
+
 
 <h2>
 <a name="bugs"> Bug fixes </a>
@@ -438,177 +455,231 @@ recompiling is safer.
 
 <h3>Backward compatible issues that are handled automatically</h3>
 
-<menu>
-<li>ptolemy.moml.filter.AddEditorFactory:
-If a parameter has a _location, then
+<ul>
+<li>ptolemy.moml.filter.AddEditorFactory: If a parameter has a _location, then
 add a VisibleParameterEditorFactory named _editorFactory.
 
-<li>ptolemy.moml.filter.AddIcon:
-Add specialized icons that display the value of one of the parameters.
+<li>ptolemy.moml.filter.AddIcon: Add specialized icons that display the value
+of one of the parameters.
 <br>The affected actors are:
-        <menu>
+	<ul>
 	<li>ptolemy.actor.lib.Const
 	<li>ptolemy.actor.lib.MathFunction
 	<li>ptolemy.actor.lib.TrigFunction
 	<li>ptolemy.actor.lib.Scale
 	<li>ptolemy.actor.lib.Expression
-        </menu>
-<li>ptolemy.moml.filter.ClassChanges:
-change any class names that have been renamed and remove obsolete classes.
-<br>Below are original class names followed by the new class names:
-        <menu>
-	<li>ptolemy.vergil.fsm.modal.ModalController	-&gt; ptolemy.domains.fsm.modal.ModalController
-	<li>ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory	-&gt; ptolemy.vergil.fsm.modal.ModalTableauFactory
-	<li>ptolemy.vergil.fsm.modal.TransitionRefinement	-&gt; ptolemy.domains.fsm.modal.TransitionRefinement
-	<li>ptolemy.vergil.fsm.modal.RefinementPort	-&gt; ptolemy.domains.fsm.modal.RefinementPort
-	<li>ptolemy.vergil.fsm.modal.Refinement	-&gt; ptolemy.domains.fsm.modal.Refinement
-	<li>ptolemy.kernel.util.VersionAttribute	-&gt; ptolemy.kernel.attributes.VersionAttribute
-	<li>ptolemy.vergil.icon.ImageEditorIcon	-&gt; ptolemy.vergil.icon.ImageIcon
-	<li>ptolemy.vergil.fsm.modal.ModalPort	-&gt; ptolemy.domains.fsm.modal.ModalPort
-	<li>ptolemy.vergil.fsm.modal.TransitionRefinementPort	-&gt; ptolemy.domains.fsm.modal.TransitionRefinementPort
-	<li>ptolemy.kernel.attributes.FileAttribute	-&gt; ptolemy.data.expr.FileParameter
-	<li>ptolemy.domains.sdf.kernel.SDFIOPort	-&gt; ptolemy.actor.TypedIOPort
-	<li>ptolemy.moml.Location	-&gt; ptolemy.kernel.util.Location
-	<li>ptolemy.domains.fsm.lib.RelationList	-&gt; ptolemy.domains.fsm.kernel.RelationList
-	<li>ptolemy.actor.lib.comm.SerialComm	-&gt; ptolemy.actor.lib.io.comm.SerialComm
-	<li>ptolemy.actor.hoc.MultiInstanceComposite	-&gt; ptolemy.actor.lib.hoc.MultiInstanceComposite
-	<li>ptolemy.vergil.fsm.modal.ModalModel	-&gt; ptolemy.domains.fsm.modal.ModalModel
-	</menu>
+        </ul>
+
+<li>ptolemy.moml.filter.ClassChanges: change any class names that have been renamed and remove obsolete classes.
+Below are original class names followed by the new class names:
+	<ul>
+	<li>ptolemy.vergil.fsm.modal.ModalController	 -&gt; ptolemy.domains.fsm.modal.ModalController
+	<li>ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory	 -&gt; ptolemy.vergil.fsm.modal.ModalTableauFactory
+	<li>ptolemy.vergil.fsm.modal.TransitionRefinement	 -&gt; ptolemy.domains.fsm.modal.TransitionRefinement
+	<li>ptolemy.vergil.fsm.modal.RefinementPort	 -&gt; ptolemy.domains.fsm.modal.RefinementPort
+	<li>ptolemy.vergil.fsm.modal.Refinement	 -&gt; ptolemy.domains.fsm.modal.Refinement
+	<li>ptolemy.kernel.util.VersionAttribute	 -&gt; ptolemy.kernel.attributes.VersionAttribute
+	<li>ptolemy.vergil.icon.ImageEditorIcon	 -&gt; ptolemy.vergil.icon.ImageIcon
+	<li>ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition	 -&gt; ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition
+	<li>ptolemy.vergil.fsm.modal.ModalPort	 -&gt; ptolemy.domains.fsm.modal.ModalPort
+	<li>ptolemy.kernel.attributes.IDAttribute	 -&gt; ptolemy.vergil.kernel.attributes.IDAttribute
+	<li>ptolemy.vergil.fsm.modal.TransitionRefinementPort	 -&gt; ptolemy.domains.fsm.modal.TransitionRefinementPort
+	<li>ptolemy.kernel.attributes.FileAttribute	 -&gt; ptolemy.data.expr.FileParameter
+	<li>ptolemy.domains.sr.lib.Latch	 -&gt; ptolemy.domains.sr.lib.Current
+	<li>ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+	<li>ptolemy.moml.Location	 -&gt; ptolemy.kernel.util.Location
+	<li>ptolemy.domains.fsm.lib.RelationList	 -&gt; ptolemy.domains.fsm.kernel.RelationList
+	<li>ptolemy.domains.gr.lib.ViewScreen	 -&gt; ptolemy.domains.gr.lib.ViewScreen3D
+	<li>ptolemy.actor.lib.comm.SerialComm	 -&gt; ptolemy.actor.lib.io.comm.SerialComm
+	<li>ptolemy.actor.hoc.MultiInstanceComposite	 -&gt; ptolemy.actor.lib.hoc.MultiInstanceComposite
+	<li>ptolemy.vergil.fsm.modal.ModalModel	 -&gt; ptolemy.domains.fsm.modal.ModalModel
+        <ul>
 Below are the classes to remove:
-        <menu> 
+	<ul>
 	<li>ptolemy.data.expr.NotEditableParameter
-        </menu>
+	<li>ptolemy.domains.de.kernel.DEIOPort
+	<ul>
 
 <li>ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add _hideName if necessary.
 
-<li>ptolemy.moml.filter.MultiportToSinglePort:
-Update any actor multiports that are now single ports.
+<li>ptolemy.moml.filter.MultiportToSinglePort: Update any actor multiports that are now
+single ports.
 <br>Below are the actors that are affected, along with the port name:
-        <menu>
-	<li>input	ptolemy.actor.lib.gui.MatrixViewer
+	<ul>
+	<li>ptolemy.actor.lib.gui.MatrixViewer
 	<li>input	ptolemy.domains.sdf.lib.Autocorrelation
 	<li>output	ptolemy.actor.lib.Const
 	<li>output	ptolemy.actor.lib.NonStrictTest
-        </menu>
+	<li>input
+	</ul>
+
 <li>ptolemy.moml.filter.ParameterNameChanges: Update any Parameter names
 that have been renamed.
 <br>Below are the actors that are affected, along with the Parameter name 
 and the new name:
-        <menu>
+	<ul>
+	<li>ptolemy.domains.de.lib.Server
+		serviceTime	 -&gt; newServiceTime
 	<li>ptolemy.domains.pn.kernel.PNDirector
-	<br>	Initial_queue_capacity	-&gt; initialQueueCapacity
-	</menu>
-
-<li>ptolemy.moml.filter.PortClassChanges: Update any actor port classes that have been changed.
+		Initial_queue_capacity	 -&gt; initialQueueCapacity
+	<li>ptolemy.domains.de.lib.VariableDelay
+		defaultDelay	 -&gt; delay
+	<ul>
+<li>ptolemy.moml.filter.PortClassChanges: Update any actor port classes that have been
+changed.
 <br>Below are the actors that are affected, along
 with the old port class and the new port class:
-        <menu>
+	<ul>
+	<li>ptolemy.domains.sdf.lib.vq.HTVQEncode.input
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+	<li>output
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+	<li>ptolemy.domains.de.lib.Server.newServiceTime
+		<ul>
+	<li>	ptolemy.domains.de.kernel.DEIOPort	 -&gt; ptolemy.actor.parameters.ParameterPort
+		</ul>
+	<li>ptolemy.domains.sdf.lib.vq.VQDecode.input
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+	<li>output
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+	<li>ptolemy.domains.sdf.lib.vq.ImagePartition.input
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+	<li>output
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
 	<li>ptolemy.domains.de.lib.VariableDelay.delay
-	<li>ptolemy.domains.de.kernel.DEIOPort	-&gt; ptolemy.actor.parameters.ParameterPort
-	</menu>
+		<ul>
+		ptolemy.domains.de.kernel.DEIOPort	 -&gt; ptolemy.actor.parameters.ParameterPort
+		</ul>
+	<li>ptolemy.domains.sdf.lib.vq.ImageUnpartition.input
+		<ul>
+	<li>	ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+	<li>output
+		<ul>
+		<li>ptolemy.domains.sdf.kernel.SDFIOPort	 -&gt; ptolemy.actor.TypedIOPort
+		</ul>
+        </ul>
 
-<li>ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been renamed.
+<li>ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been
+renamed.
 <br>Below are the actors that are affected, along
 with the old port name and the new port name:
-        <menu>
+	<ul>
+	<li>ptolemy.domains.de.lib.Server
+		serviceTime	 -&gt; newServiceTime
 	<li>ptolemy.actor.lib.comm.Scrambler
-	        <menu>
-		<li>initial	-&gt; initialState
-	        </menu>
+		initial	 -&gt; initialState
 	<li>ptolemy.actor.lib.conversions.CartesianToComplex
-	        <menu>
-		<li>imag	-&gt; y
-		<li>real	-&gt; x
-	        </menu>
+		imag	 -&gt; y
+		real	 -&gt; x
 	<li>ptolemy.actor.lib.comm.ConvolutionalCoder
-	        <menu>
-		<li>uncodeBlockSize	-&gt; uncodedRate
-		<li>initial	-&gt; initialState
-	        </menu>
+		uncodeBlockSize	 -&gt; uncodedRate
+		initial	 -&gt; initialState
 	<li>ptolemy.actor.lib.comm.ViterbiDecoder
-	        <menu>
-		<li>uncodeBlockSize	-&gt; uncodedRate
-		<li>amplitude	-&gt; constellation
-	        </menu>
+		uncodeBlockSize	 -&gt; uncodedRate
+		amplitude	 -&gt; constellation
 	<li>ptolemy.actor.lib.Sleep
-	        <menu>
-		<li>delay	-&gt; sleepTime
-	        </menu>
+		delay	 -&gt; sleepTime
 	<li>ptolemy.actor.lib.conversions.ComplexToCartesian
-	        <menu>
-		<li>imag	-&gt; y
-		<li>real	-&gt; x
-	        </menu>
-	 </menu>
+		imag	 -&gt; y
+		real	 -&gt; x
+        </ul>
 
 <li>ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names
 that have been renamed.
 <br>Below are the actors that are affected, along with the port name
 and the new classname:
-	<li>ptolemy.domains.sdf.lib.ArrayToSequence
-	<li>ptolemy.domains.sdf.lib.Autocorrelation
-	<li>ptolemy.domains.sdf.lib.BitsToInt
-	<li>ptolemy.domains.sdf.lib.Chop
-	<li>ptolemy.domains.sdf.lib.CountTrues
-	<li>ptolemy.domains.sdf.lib.DoubleToMatrix
-	<li>ptolemy.domains.sdf.lib.DownSample
-	<li>ptolemy.domains.sdf.lib.FFT
-	<li>ptolemy.domains.sdf.lib.FIR
-	<li>ptolemy.domains.sdf.lib.IFFT
-	<li>ptolemy.domains.sdf.lib.IntToBits
-	<li>ptolemy.domains.sdf.lib.LineCoder
-	<li>ptolemy.domains.sdf.lib.MatrixToDouble
-	<li>ptolemy.domains.sdf.lib.MatrixToSequence
-	<li>ptolemy.domains.sdf.lib.Repeat
-	<li>ptolemy.domains.sdf.lib.SampleDelay
-	<li>ptolemy.domains.sdf.lib.SequenceToArray
-	<li>ptolemy.domains.sdf.lib.SequenceToMatrix
-	<li>ptolemy.domains.sdf.lib.UpSample
-	<li>ptolemy.domains.sdf.lib.VariableFIR
-	        <menu>
-		<li>tokenProductionRate	-&gt; null
-		<li>tokenInitProduction	-&gt; null
-		<li>tokenConsumptionRate	-&gt; null
-	        </menu>
+	<ul>
+	<li>ptolemy.domains.ct.lib.ZeroCrossingDetector
+		useEventValue	 -&gt; null
 	<li>ptolemy.actor.lib.MathFunction
-	        <menu>
-		<li>function	-&gt; ptolemy.data.expr.StringParameter
-	        </menu>
-	<li>ptolemy.domains.sdf.lib.vq.ImageUnpartition
-	        <menu>
-		<li>input	-&gt; ptolemy.actor.TypedIOPort
-		<li>output	-&gt; ptolemy.actor.TypedIOPort
-	        </menu>
+		function	 -&gt; ptolemy.data.expr.StringParameter
+	<li>ptolemy.domains.ct.lib.LevelCrossingDetector
+		useEventValue	 -&gt; null
+	<li>ptolemy.domains.ct.kernel.CTEmbeddedDirector
+		breakpointODESolver	 -&gt; null
+	<li>ptolemy.domains.sdf.lib.Autocorrelation
+	<li>ptolemy.domains.sdf.lib.FIR
+	<li>ptolemy.domains.sdf.lib.Chop
+	<li>ptolemy.domains.sdf.lib.BitsToInt
+	<li>ptolemy.domains.sdf.lib.DownSample
+	<li>ptolemy.domains.sdf.lib.DoubleToMatrix
+	<li>ptolemy.domains.sdf.lib.IntToBits
+	<li>ptolemy.domains.sdf.lib.ArrayToSequence
+	<li>ptolemy.domains.sdf.lib.CountTrues
+	<li>ptolemy.domains.sdf.lib.VariableFIR
+	<li>ptolemy.domains.sdf.lib.MatrixToSequence
+	<li>ptolemy.domains.sdf.lib.IFFT
+	<li>ptolemy.domains.sdf.lib.SequenceToArray
+	<li>ptolemy.domains.sdf.lib.FFT
+	<li>ptolemy.domains.sdf.lib.SampleDelay
+	<li>ptolemy.domains.sdf.lib.MatrixToDouble
+	<li>ptolemy.domains.sdf.lib.LineCoder
+	<li>ptolemy.domains.sdf.lib.SequenceToMatrix
+	<li>ptolemy.domains.sdf.lib.Repeat
+	<li>ptolemy.domains.sdf.lib.UpSample
+		tokenProductionRate	 -&gt; null
+		tokenInitProduction	 -&gt; null
+		tokenConsumptionRate	 -&gt; null
+	<li>ptolemy.kernel.util.Attribute
+		_hideName	 -&gt; ptolemy.kernel.util.SingletonAttribute
+	<li>ptolemy.domains.sr.kernel.Director
+		scheduler	 -&gt; ptolemy.data.expr.StringParameter
+	<li>ptolemy.actor.lib.io.DirectoryListing
+		directoryOrURL	 -&gt; ptolemy.actor.parameters.FilePortParameter
 	<li>ptolemy.actor.lib.TrigFunction
-	        <menu>
-		<li>function	-&gt; ptolemy.data.expr.StringParameter
-	        </menu>
+		function	 -&gt; ptolemy.data.expr.StringParameter
+	<li>ptolemy.vergil.actor.lib.VisualModelReference
+		modelFileOrURL	 -&gt; ptolemy.actor.parameters.FilePortParameter
 	<li>ptolemy.actor.lib.Expression
-	        <menu>
-		<li>expression	-&gt; ptolemy.kernel.util.StringAttribute
-	        </menu>
-	<li>ptolemy.domains.sdf.lib.vq.HTVQEncode
-	        <menu>
-		<li>input	-&gt; ptolemy.actor.TypedIOPort
-		<li>output	-&gt; ptolemy.actor.TypedIOPort
-	        </menu>
-	<li>ptolemy.domains.sdf.lib.vq.VQDecode
-	        <menu>
-		<li>input	-&gt; ptolemy.actor.TypedIOPort
-		<li>output	-&gt; ptolemy.actor.TypedIOPort
-	        </menu>
-	<li>ptolemy.domains.sdf.lib.vq.ImagePartition
-	        <menu>
-		<li>input	-&gt; ptolemy.actor.TypedIOPort
-		<li>output	-&gt; ptolemy.actor.TypedIOPort
-	        </menu>
+		expression	 -&gt; ptolemy.kernel.util.StringAttribute
+	<li>ptolemy.domains.ct.kernel.CTMixedSignalDirector
+		breakpointODESolver	 -&gt; null
+	<li>ptolemy.actor.lib.hoc.ModelReference
+		modelFileOrURL	 -&gt; ptolemy.actor.parameters.FilePortParameter
 	<li>ptolemy.matlab.Expression
-	        <menu>
-		<li>expression	-&gt; ptolemy.data.expr.StringParameter
-	        </menu>
+		expression	 -&gt; ptolemy.data.expr.StringParameter
+	<li>ptolemy.domains.fsm.modal.ModalModel
+		_Director	 -&gt; null
+		directorClass	 -&gt; ptolemy.data.expr.StringParameter
+	<li>ptolemy.domains.ct.kernel.CTMultiSolverDirector
+		breakpointODESolver	 -&gt; null
+	</ul>
+<li>ptolemy.moml.filter.GRColorChanges: Update GR actor with the following changes:
+	Parameter name "RGB color" --&gt; "diffuseColor"
 
-	</menu>
+<li>ptolemy.moml.filter.RemoveProperties: Remove the properties listed below:
+        <ul>
+	<li>stopTime
+		<ul>
+	<li>	MaxDouble	 -&gt; null
+	<li>	ptolemy.data.expr.Parameter	 -&gt; null
+	<li>	1.7976931348623157E308	 -&gt; null
+	<li>	1.7976931348623E308	 -&gt; null
+	<li>	1.797693134862316E308	 -&gt; null
+		</ul>
+	<li>directorClass
+		<ul>
+	<li>	ptolemy.data.expr.StringParameter	 -&gt; null
+	<li>	ptolemy.domains.fsm.kernel.HSDirector	 -&gt; null
+	<li>	ptolemy.kernel.util.StringAttribute	 -&gt; null
+		</ul>
+        </ul>	
+
+</ul>
 
 </body>
 </html>

@@ -17,14 +17,6 @@ Version 5.0 has the following limitations:
 <h3>Release Limitations</h3>
 <ul>
 
-<li> Some of the documentation has not yet been updated
-<menu>
-<li> The three volume design doc has not yet been updated
-
-<li> The HyVisual document has not yet been updated
-
-</menu>
-
 <li> The gzipped tar file that contains the Ptolemy II distribution
  <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
 untar this file with a checksum error because the pathnames are longer
@@ -162,7 +154,7 @@ Attempted to find as a moml class, but got:
 	<li> If an icon file is not present, then a Vergil applet might
 	try to download the icon file multiple times.  Ptolemy II
 	uses XML files to store icons.  For example
-<a href="../ptolemy/actor/lib/BooleanSwitchIcon.htm"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitchIcon.htm</CODE></a>
+<a href="../ptolemy/actor/lib/BooleanSwitchIcon.xml"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitchIcon.xml</CODE></a>
 	is an icon for
 <a href="../ptolemy/actor/lib/BooleanSwitch.java"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitch.java</CODE></a>
 	 <br>The problem is that if an actor does not have an icon file,
@@ -220,22 +212,6 @@ lax.nl.java.option.additional=-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,susp
 
 <li> Web Start issues:
 	<ul>
-
-	<li> <a name="webstart1.5.0-beta">The Web Start</a>
-	 installer does not work with Java 1.5.0-beta.
-	The problem is that the certificate is not recognized.
-
-	<p>You can either:
-	<ol>
-	<li>Uninstall 1.5.0-beta and use an earlier JVM.
-	<b>or</b>
-	<li> Try using the Java Web Start Application to select a different
-	JVM.  The Java Web Start Application can be found under
-	Start -&gt; Programs -&gt; Java Web Start
-	or else you can look for it in the jre directory of your JDK.
-	For example:
-	<code>c:\j2sdk1.4.2_04\jre\javaws\javaws.exe</code>
-	</ol>
 
 	<li> The Matlab Wireless demo fails under Web Start.
 	The problem is that the Matlab .m file cannot be found.
@@ -349,6 +325,13 @@ he was able to get farther with the recompilation of the Matlab interface.
 
 <li>Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
 <br>Under Windows, we recommend using gcc-3.2, or Microsoft Visual C.
+
+<li>Under Windows, Matlab models sometimes cause Ptolemy to exit the
+second time the model is run!
+<br>The problem seems to be a segfault within a Windows library.
+The problem only affects systems where Matlab is compiled with 
+Microsoft Visual C.
+
 
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 
@@ -534,28 +517,9 @@ Then edit the file by hand in Illustrator to add the transparency back in.
 	Ptolemy II as source files and compile.
 
 
-<li> The JNI user interface does not permit creation of new JNI actors.
+<li> The JNI user interface was removed between Ptolemy II 4.0
+and Ptolemy II 5.0 because the UI stopped working.
 
-<p>If you follow the instructions in 
-<a href="codeDoc/jni/JNIUtilities.html">JNIUtilities</a>, then
-eventually you will get a NameDuplicationException.
-<p>The resulting model will be missing
-<pre>
-&lt;property name="output" class="jni.Argument" value="false,false,true,double"&gt;
-&lt;/property&gt;
-</pre>
-We are working with the original authors on a solution.
-<br>In the short term, one workaround is to edit the xml file directly
-and add the appropriate property by hand.
-
-<li> JNI will not work with Hierarchical classes, subclasses, and inner
-classes
-
-
-<li> If Ptolemy exits when running the JNI model, then
-try using gcc-3.2.x in the Cygwin installer from
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII5.0/cygwin.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII5.0/cygwin.htm</CODE></a>
-which includes gcc-3.2.x
 </menu>
 
 
