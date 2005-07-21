@@ -807,14 +807,6 @@ Version 5.0 has the following limitations:
 <h3>Release Limitations</h3>
 <ul>
 
-<li> Some of the documentation has not yet been updated
-<menu>
-<li> The three volume design doc has not yet been updated
-
-<li> The HyVisual document has not yet been updated
-
-</menu>
-
 <li> The gzipped tar file that contains the Ptolemy II distribution
  <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
 untar this file with a checksum error because the pathnames are longer
@@ -1123,6 +1115,13 @@ he was able to get farther with the recompilation of the Matlab interface.
 
 <li>Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
 <br>Under Windows, we recommend using gcc-3.2, or Microsoft Visual C.
+
+<li>Under Windows, Matlab models sometimes cause Ptolemy to exit the
+second time the model is run!
+<br>The problem seems to be a segfault within a Windows library.
+The problem only affects systems where Matlab is compiled with 
+Microsoft Visual C.
+
 
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 
