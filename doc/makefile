@@ -94,6 +94,7 @@ EXTRA_SRCS = \
 	docbuttons.htm \
 	docs.htm \
 	doctoc.htm \
+	domainCompatibility.htm \
 	domains.htm \
 	footer.htm \
 	help.htm \

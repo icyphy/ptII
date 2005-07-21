@@ -1,0 +1,225 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Domains</title>
+<link href="default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<center>
+<table border="1">
+  <tr>
+   <th colspan=12>
+    Top Level Domain
+   </th>
+  </tr>
+
+  <tr>
+   <td>&nbsp;</td>
+   <td>&nbsp;</td>
+   <th>CSP</th>
+   <th>CT</th>
+   <th>DE</th>
+   <th>DDF</th>
+   <th>FSM</th>
+   <th>Giotto</th>
+   <th>PN</th>
+   <th>PSDF</th>
+   <th>SDF</th>
+   <th>SR</th>
+  </tr>
+
+  <tr>
+   <th rowspan=11>Inner Domain</tr>
+   <td>CSP</td>
+   <td><!-- CSP --></td>
+   <td><!-- CT -->
+   </td>
+   <td><!-- DE -->
+   </td>
+   <td><!-- DDF --></td>
+   <td><!-- FSM --></td>
+   <td><!-- Giotto --></td>
+   <td><!-- PN --></td>
+   <td><!-- PSDF --></td>
+   <td><!-- SDF -->
+   </td>
+   <td><!-- SR -->
+   </td>
+  </tr>
+
+  <tr>
+   <td>CT</td>
+   <td><!-- CSP --></td>
+   <td><!-- CT --></td>
+   <td>DE/CT
+     <a href="../ptolemy/domains/ct/test/auto/CTInsideDESimplel.xml">+</a>
+   </td>
+   <td><!-- DDF --></td>
+   <td><!-- FSM --></td>
+   <td><!-- Giotto --></td>
+   <td><!-- PN --></td>
+   <td><!-- PSDF --></td>
+   <td><!-- SDF --></td>
+   <td><!-- SR --></td>
+  </tr>
+
+  <tr>
+   <td>DE</td>
+   <td><!-- CSP --></td>
+   <td>CT/DE
+     <a href="../ptolemy/domains/de/test/auto/deInCt.xml">+</a>,
+     <a href="../ptolemy/domains/de/test/auto/deInCt2.xml">+</a>
+   </td>
+   <td><!-- DE --></td>
+   <td><!-- DDF --></td>
+   <td><!-- FSM --></td>
+   <td><!-- Giotto --></td>
+   <td><!-- PN -->
+   </td>
+   <td><!-- PSDF --></td>
+   <td><!-- SDF-->
+   </td>
+   <td><!-- SR -->
+   </td>
+  </tr>
+
+  <tr>
+   <td>DDF</td>
+   <td><!-- CSP --></td>
+   <td><!-- CT --></td>
+   <td><!-- DE --></td>
+   <td><!-- DDF --></td>
+   <td><!-- FSM --></td>
+   <td><!-- Giotto --></td>
+   <td><!-- PN --></td>
+   <td><!-- PSDF --></td>
+   <td><!-- SDF --></td>
+   <td><!-- SR --></td>
+  </tr>
+
+  <tr>
+   <td>FSM</td>
+   <td><!-- CSP --></td>
+   <td><!-- CT --></td>
+   <td><!-- DE --></td>
+   <td><!-- DDF --></td>
+   <td><!-- FSM --></td>
+   <td><!-- Giotto --></td>
+   <td><!-- PN --></td>
+   <td><!-- PSDF --></td>
+   <td>SDF/FSM
+     <a href="../ptolemy/domains/fsm/test/auto/SDF-FSMComposite.xml">+</a>,
+   </td>
+   <td><!-- SR --></td>
+  </tr>
+
+  <tr>
+   <td>Giotto</td>
+   <td><!-- CSP --></td>
+   <td><!-- CT --></td>
+   <td>DE/Giotto
+     <a href="../ptolemy/domains/giotto/test/auto/Composite.xml">+</a>
+   </td>
+   <td><!-- DDF --></td>
+   <td><!-- FSM --></td>
+   <td><!-- Giotto --></td>
+   <td><!-- PN --></td>
+   <td><!-- PSDF --></td>
+   <td><!-- SDF --></td>
+   <td><!-- SR --></td>
+  </tr>
+
+  <tr>
+   <td>PN</td>
+   <td><!-- CSP --></td>
+   <td><!-- CT --></td>
+   <td>DE/PN
+     <a href="../ptolemy/domains/pn/test/PNInsideDE.xml">+</a>
+   </td>
+   <td><!-- DDF --></td>
+   <td><!-- FSM --></td>
+   <td><!-- Giotto --></td>
+   <td>PN/PN
+     <a href="../ptolemy/domains/test/auto/PNPNtest1.xml">+</a>
+   </td>
+   <td><!-- PSDF -->
+   </td>
+   <td><!-- SDF -->
+   </td>
+   <td><!-- SR -->
+   </td>
+  </tr>
+
+  <tr>
+   <td>PSDF</td>
+   <td><!-- CSP --></td>
+   <td><!-- CT --></td>
+   <td><!-- DE --></td>
+   <td><!-- DDF --></td>
+   <td><!-- FSM --></td>
+   <td><!-- Giotto --></td>
+   <td>PN/PSDF
+     <a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml">+</a>
+   </td>
+   <td><!-- PSDF --></td>
+   <td><!-- SDF --></td>
+   <td><!-- SR --></td>
+  </tr>
+
+  <tr>
+   <td>SDF</td>
+   <td>CSP/SDF
+     <a href="../ptolemy/domains/test/auto/CSPSDFtest1.xml">+</a>
+
+   </td>
+   <td><!-- CT --></td>
+   <td>DE/SDF
+     <a href="../ptolemy/domains/sdf/test/auto/sdf_inside_de.xml">+</a>
+   </td>
+   <td><!-- DDF --></td>
+   <td><!-- FSM --></td>
+   <td><!-- Giotto --></td>
+   <td>PN/SDF
+     <a href="../ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSDFtest1.xml">-</a>
+  </td>
+   <td><!-- PSDF --></td>
+   <td><!-- SDF --></td>
+   <td>SR/SDF
+     <a href="../ptolemy/domains/test/auto/SRSDFtest3.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/SRSDFtest1.xml">-</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/SRSDFtest2.xml">-</a>
+   </td>
+  </tr>
+
+  <tr>
+   <td>SR</td>
+   <td>CSP/SR
+     <a href="../ptolemy/domains/test/auto/CSPSRtest1.xml">*</a>,
+     <a href="../ptolemy/domains/test/auto/CSPSRtest2.xml">*</a>
+   </td>
+   <td><!-- CT --></td>
+   <td><!-- DE --></td>
+   <td><!-- DDF --></td>
+   <td><!-- FSM --></td>
+   <td><!-- Giotto --></td>
+   <td>PN/SR
+     <a href="../ptolemy/domains/test/auto/PNSRtest1.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/PNSRtest2.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSRTimedtest.xml">-</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSRtest3.xml">-</a>   </td>
+   <td><!-- PSDF --></td>
+   <td>SDF/SR
+     <a href="../ptolemy/domains/test/auto/SDFSRtest1.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/SDFSRtest3.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/knownFailedTests/SDFSRtest2.xml">-</a>
+   </td>
+   <td><!-- SR --></td>
+  </tr>
+
+</table>
+</center>
+</body>
+</html>
