@@ -766,8 +766,9 @@ DIST_DIR = /vol/ptolemy/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
 	ptolemy/configs/hyvisual/hyvisualPlanet.gif
-#KEYSTORE2=/users/ptII/adm/certs/ptkeystore
-KEYSTORE2=/users/cxh/certs/ptkeystore
+
+#KEYSTORE2=/users/cxh/certs/ptkeystore
+KEYSTORE2=/users/ptII/adm/certs/ptkeystore
 KEYALIAS2=ptolemy
 # make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
 # make DIST_DIR=c:/cxh/hyv DIST_URL=file:///c:/cxh/hyv jnlp_dist KEYSTORE2=ptKeystore KEYALIAS2=claudius
@@ -785,7 +786,7 @@ jnlp_dist_update:
 		ssh messier "cd $(DIST_DIR); tar -xpf -"
 	scp doc/webStartHelp.htm messier:$(DIST_DIR)
 
-#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
+#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII5.0/jnlp-5.0 jnlp_sign
 
 jnlp_dist_update_remote:
 	scp doc/webStartHelp.htm messier:$(DIST_DIR)
