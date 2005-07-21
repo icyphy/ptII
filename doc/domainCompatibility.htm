@@ -1,14 +1,20 @@
 <!-- $Id$ -->
 <html>
 <head>
+<STYLE TYPE="text/css">
+<!--
+A {text-decoration:none}
+-->
+</STYLE>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <title>Ptolemy II Domains</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 Below is a table that lists heterogenous models by top level and bottom level.
+<p>Click on the + or - to see examples that work and don't work.
 <p>Note that not all combinations make semantic sense.
-
+<p>
 <center>
 <table border="1">
   <tr>
@@ -23,7 +29,6 @@ Below is a table that lists heterogenous models by top level and bottom level.
    <th>CSP</th>
    <th>CT</th>
    <th>DE</th>
-   <th>DDF</th>
    <th>FSM</th>
    <th>Giotto</th>
    <th>PN</th>
@@ -40,7 +45,6 @@ Below is a table that lists heterogenous models by top level and bottom level.
    </td>
    <td><!-- DE -->
    </td>
-   <td><!-- DDF --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
    <td><!-- PN --></td>
@@ -65,7 +69,6 @@ Below is a table that lists heterogenous models by top level and bottom level.
      <a href="../ptolemy/domains/ct/demo/SigmaDelta/SigmaDelta.xml">+</a>,
      <a href="../ptolemy/domains/ct/test/auto/CTInsideDESimplel.xml">+</a>
    </td>
-   <td><!-- DDF --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
    <td><!-- PN --></td>
@@ -84,7 +87,6 @@ Below is a table that lists heterogenous models by top level and bottom level.
    <td>DE/DE
      <a href="../ptolemy/domains/de/demo/HierarchicalModel/HierarchicalModel.xml">+</a>
 </td>
-   <td><!-- DDF --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
    <td><!-- PN -->
@@ -97,20 +99,6 @@ Below is a table that lists heterogenous models by top level and bottom level.
   </tr>
 
   <tr>
-   <td>DDF</td>
-   <td><!-- CSP --></td>
-   <td><!-- CT --></td>
-   <td><!-- DE --></td>
-   <td><!-- DDF --></td>
-   <td><!-- FSM --></td>
-   <td><!-- Giotto --></td>
-   <td><!-- PN --></td>
-   <td><!-- PSDF --></td>
-   <td><!-- SDF --></td>
-   <td><!-- SR --></td>
-  </tr>
-
-  <tr>
    <td>FSM</td>
    <td><!-- CSP --></td>
    <td>CT/FSM
@@ -119,13 +107,12 @@ Below is a table that lists heterogenous models by top level and bottom level.
    <td>DE/FSM
      <a href="../ptolemy/domains/de/demo/ModalModel/ModalModel.xml">+</a>
    </td>
-   <td><!-- DDF --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
    <td><!-- PN --></td>
    <td><!-- PSDF --></td>
    <td>SDF/FSM
-     <a href="../ptolemy/domains/fsm/test/auto/SDF-FSMComposite.xml">+</a>,
+     <a href="../ptolemy/domains/fsm/test/auto/SDF-FSMComposite.xml">+</a>
    </td>
    <td><!-- SR --></td>
   </tr>
@@ -137,7 +124,6 @@ Below is a table that lists heterogenous models by top level and bottom level.
    <td>DE/Giotto
      <a href="../ptolemy/domains/giotto/test/auto/Composite.xml">+</a>
    </td>
-   <td><!-- DDF --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
    <td><!-- PN --></td>
@@ -153,7 +139,6 @@ Below is a table that lists heterogenous models by top level and bottom level.
    <td>DE/PN
      <a href="../ptolemy/domains/pn/test/PNInsideDE.xml">+</a>
    </td>
-   <td><!-- DDF --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
    <td>PN/PN
@@ -172,7 +157,6 @@ Below is a table that lists heterogenous models by top level and bottom level.
    <td><!-- CSP --></td>
    <td><!-- CT --></td>
    <td><!-- DE --></td>
-   <td><!-- DDF --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
    <td>PN/PSDF
@@ -195,7 +179,6 @@ Below is a table that lists heterogenous models by top level and bottom level.
    <td>DE/SDF
      <a href="../ptolemy/domains/sdf/test/auto/sdf_inside_de.xml">+</a>
    </td>
-   <td><!-- DDF --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
    <td>PN/SDF
@@ -216,12 +199,11 @@ Below is a table that lists heterogenous models by top level and bottom level.
   <tr>
    <td>SR</td>
    <td>CSP/SR
-     <a href="../ptolemy/domains/test/auto/CSPSRtest1.xml">*</a>,
-     <a href="../ptolemy/domains/test/auto/CSPSRtest2.xml">*</a>
+     <a href="../ptolemy/domains/test/auto/CSPSRtest1.xml">+</a>,
+     <a href="../ptolemy/domains/test/auto/CSPSRtest2.xml">+</a>
    </td>
    <td><!-- CT --></td>
    <td><!-- DE --></td>
-   <td><!-- DDF --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
    <td>PN/SR
