@@ -1,5 +1,5 @@
 #! /bin/sh
-# -[Mon Feb 28 08:52:07 2005 by cxh]-
+# -[Thu Jul 21 08:01:41 2005 by cxh]-
 # Indent Java code using emacs
 # Usage: jindent [-n] [-d]
 #    -n Print what would happen, but don't checkout or modify files
@@ -22,7 +22,8 @@ if [ "$1" = "-n" ]; then
     shift
 fi
 
-emacs=c:/Program\ Files/emacs-21.3/bin/emacs
+#emacs=c:/Program\ Files/emacs-21.3/bin/emacs
+emacs=emacs
 if [ "$PTII" = "" ]; then
     echo "$0: \$METRO is not set, exiting"
     exit 4
