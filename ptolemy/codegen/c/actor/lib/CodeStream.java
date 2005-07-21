@@ -41,84 +41,126 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
 /**
- * A utility class that reads code blocks from the helper .c file.
- *
- * @author Jackie
+ * Read and process code blocks from the helper .c file. Helper .c files
+ * contain c code blocks for the associated java helper actor. A proper
+ * code block should have the following grammar: 
+ * <pre>
+ *     _BLOCKSTART CodeBlockName [(Parameter1, Parameter2), ...] _HEADEREND
+ *         CodeBlockBody
+ *     _BLOCKEND
+ * </pre>
+ * Parameterized code blocks can contain parameters which the user can
+ * specify. Parameter substitution syntax is straight-forward string pattern
+ * substitution, so the user is responsible for declaring unique parameter
+ * names. For example, a code block is declared to be the following:
+ * <pre>
+ *     &#47;*** initBlock (arg) ***&#47;
+ *         if ($ref(input) != arg) {
+ *             $ref(output) = arg;
+ *         }
+ *     &#47;**&#47;
+ * </pre>
+ * If the user invoke the appendCodeBlock() method with a single argument,
+ * which is the integer 3,
+ * <pre>
+ *     ArrayList args = new ArrayList();
+ *     args.add(Integer.toString(3));
+ *     appendCodeBlock("initBlock", args);
+ * </pre>
+ * then after parameter substitution, the code block would become:
+ * <pre>
+ *     if ($ref(input) != 3) {
+ *         $ref(output) = 3;
+ *     }
+ * </pre>
+ * Parameter substitution takes place before macro substitution processed
+ * by the codegen kernel. CodeStream do not support method overriding, so
+ * each code block name within the same .c helper file have to be unique.
+ * 
+ * @author Man-Kit
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Yellow (mankit)
+ * @Pt.AcceptedRating Yellow (mankit)
  */
 public class CodeStream {
-
+    
     /**
-     * CodeStream constructor associated with each actor helper.
-     * Therefore, each actor should have its own codestream during
-     * code generation.
-     * @param helper the actor helper associated with this code stream
+     * Construct a new code stream associated with the given java actor
+     * helper. Each actor should have its own codestream during code
+     * generation.
+     * @param helper The actor helper associated with this code stream.
      */
     public CodeStream(CCodeGeneratorHelper helper) {
         _actorHelper = helper;
-        if (_debug) {
-            _filePath = _testingFilePath;
-        } else {
-            // FIXME: There should be a more proper way to
-            // access the filepath
-            //_filePath = "$CLASSPATH/" +
-            //      helper.getClass().getPackage().toString()
-            //+ ".";
-            //_filePath = _filePath.replaceFirst("package ", "");
-            //_filePath = _filePath.replace('.', '/');
-
-            // FIXME: need to test the following 2 lines
-            String classNamePath = helper.getClass().getName()
-                    .replace('.', '/');
-            _filePath = "$CLASSPATH/" + classNamePath + ".c";
-        }
+        String classNamePath = helper.getClass().getName()
+                .replace('.', '/');
+        _filePath = "$CLASSPATH/" + classNamePath + ".c";
     }
 
-    /** To append the content of the CodeStream to this code stream.
-     * @param codeBlock the code block to be appended to this code stream
+    /**
+     * Construct a new code stream, given a specified file path of the
+     * helper .c file.
+     * @param path The given file path.
+     */
+    public CodeStream(String path) {
+        _filePath = path;
+    }
+    
+    /** 
+     * Append the contents of the given CodeStream to this code stream.
+     * @param codeBlock The given code stream.
      */
     public void append(CodeStream codeBlock) {
         _stream.append(codeBlock.toString());
     }
 
-    /** To append the given string to this code stream.
-     * @param codeBlock the code block to be appended to this code stream
+    /** 
+     * Append the contents of the given String to this code stream.
+     * @param codeBlock The given string.
      */
     public void append(String codeBlock) {
         _stream.append(codeBlock);
     }
 
-    /** To append the content of the StringBuffer to this code stream.
-     * @param codeBlock the code block to be appended to this code stream
+    /** 
+     * Append the contents of the given StringBuffer to this code stream.
+     * @param codeBlock The given string buffer.
      */
     public void append(StringBuffer codeBlock) {
         _stream.append(codeBlock);
     }
 
-    /** To append an specific code block.
-     * @param blockName the name of the code block
-     * @exception IllegalActionException If an error occurs during parsing.
+    /** 
+     * Append the code block specified the given block name. This method
+     * invoke appendCodeBlock(String, ArrayList) with no arguments by
+     * passing an empty array list of argments.
+     * @see appendCodeBlock(String, ArrayList)
+     * @param blockName The given code block name.
+     * @exception IllegalActionException If appendCodeBlock(String, ArrayList)
+     *  throws the exception.
      */
     public void appendCodeBlock(String blockName) 
         throws IllegalActionException {
         appendCodeBlock(blockName, new ArrayList());
     }
 
-    /** To append an specific code block with a single argument.
-     * First, it checks if the code file is parsed already.
-     * If so, it gets the code block from the well-constructed code
-     * block table.  If not, it has to construct the table.
-     * @param blockName the name of the code block.
-     * @param argument the user-specified argument to put into the code block,
-     *  if the code block allows a parameter. The argument can be of string,
-     *  integer, or float type object.
-     * @exception IllegalActionException If an error occurs during parsing.
+    /** 
+     * Append the specific code block with an array of arguments and
+     * substitute each argument with the parameters of the code block in
+     * the order listed in the given arguments array list.
+     * @param blockName The name of the code block.
+     * @param arguments The user-specified arguments for the code block,
+     *  if the code block has parameters.
+     * @exception IllegalActionException If _constructCodeTable() throws
+     *  the exception, or if the code block cannot be found, or if the
+     *  numbers of arguments and parameters do not match.
      */
     public void appendCodeBlock(String blockName, ArrayList arguments)
             throws IllegalActionException {
+        // First, it checks if the code file is parsed already.
+        // If so, it gets the code block from the well-constructed code
+        // block table.  If not, it has to construct the table.
         if (_codeBlockTable == null) {
             _constructCodeTable();
         }
@@ -126,15 +168,31 @@ public class CodeStream {
 
         if (codeBlock == null) {
             throw new IllegalActionException("Cannot find code block: "
-                    + blockName + " in " + _filePath);
+                    + blockName + " in " + _filePath + ".");
         }
 
         ArrayList parameters = (ArrayList) _parameterTable.get(blockName);
-        if ((parameters == null && arguments.size() != 0) || 
-            (parameters != null && parameters.size() != arguments.size())) {
-            throw new IllegalActionException(
-                    "Incorrect number of arguments: " + blockName + " in "
-                            + _filePath);
+        if (parameters == null) {
+            if (arguments.size() != 0) {
+            	throw new IllegalActionException(blockName + " in " +
+                    _filePath + "does not take any arguments.");
+            }
+        }
+        else {
+            // Check if there are more parameters than arguments.
+            if (parameters.size() - arguments.size() < 0) {
+                throw new IllegalActionException(blockName + " in " + 
+                    _filePath + " only takes " + parameters.size() + 
+                    " arguments.");
+            }
+            // Check if there are more arguments than parameters.
+            else if (parameters.size() - arguments.size() > 0) {
+            	for (int i = arguments.size(); i < parameters.size(); i++) {
+                    throw new IllegalActionException(blockName + " in "
+                            + _filePath + "expects parameter (" + 
+                            parameters.get(i) + ").");
+                }
+            }
         }
         
         // substitute for each parameters
@@ -146,46 +204,84 @@ public class CodeStream {
 
         }
     }
-
+    
     /**
-     * Testing main.
-     *
-     * @param arg command-line arguments
-     * @exception IOException If an error occurs when reading user inputs.
+     * Return a StringBuffer that contains all the code block names and
+     * bodies from the associated helper .c file.
      * @exception IllegalActionException If an error occurs during parsing.
      */
-    public static void main(String[] arg) throws IOException,
+    public StringBuffer description() throws IllegalActionException {
+        StringBuffer buffer = new StringBuffer();
+
+        if (_codeBlockTable == null) {
+            _constructCodeTable();
+        }
+
+        for (Iterator keys = _codeBlockTable.keySet().iterator(); keys
+                .hasNext();) {
+            String key = (String) keys.next();
+            buffer.append(key);
+            ArrayList parameters = (ArrayList)_parameterTable.get(key);
+            if (parameters != null && parameters.size() > 0) {
+                for (int i = 0; i < parameters.size(); i++) {
+                    if (i == 0) {
+                        buffer.append("(" + parameters.get(i));
+                    }
+                    else {
+                    	buffer.append(", " + parameters.get(i));
+                    }
+                }
+                buffer.append(")");
+            }
+            buffer.append(":\n");
+            buffer.append((StringBuffer) _codeBlockTable.get(key));
+            buffer.append("\n-------------------------------\n\n");
+        }
+        return buffer;
+    }
+
+    /**
+     * Simple stand alone test method. This method prompts the user for
+     * the path of the helper .c file, parse and print all code blocks in
+     * the helper .c file.
+     * @param args Command-line arguments.
+     * @exception IOException If an error occurs when reading user inputs.
+     * @exception IllegalActionException If an error occurs during parsing
+     *  the helper .c file.
+     */
+    public static void main(String[] args) throws IOException,
             IllegalActionException {
-        _debug = true;
         BufferedReader in = 
             new BufferedReader(new InputStreamReader(System.in));
         System.out.println("----------Testing-------------------------------");
 
         System.out.print("please input file path: ");
-        _testingFilePath = in.readLine();
-        System.out
-                .println("\n----------Result--------------------------------");
-        System.out.println(CodeStream._testing());
+        String filePath = in.readLine();
+
+        System.out.println("\n----------Result------------------------------");
+        System.out.println(new CodeStream(filePath).description());
     }
 
     /**
      * Return the string representation of the code stream.
+     * @return The string representation of this code stream.
      */
     public String toString() {
         return _stream.toString();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /**
-     * Type-checks the format of a given code block name.
-     * Assume the code block name is short (that is the reason why String
-     * is used instead of StringBuffer).
-     * This method returns a well-formed code block name,
-     * otherwise, it throws an exception.
-     *
-     * @param name the header string
-     * @return the well-formed header string after lexical checking
+     * Type check the given name and return a well-formed code block name.
+     * This method assumes the code block name is short (that is why String
+     * is used instead of StringBuffer). This method returns a well-formed
+     * code block name, otherwise, it throws an exception.
+     * @param name The given code block name.
+     * @return The well-formed code block name after lexical checking.
      */
-    private static String _checkCodeHeader(String name) {
+    private static String _checkCodeBlockName(String name) {
         // FIXME: extra lexical checking
         // e.g. Do we allow nested code block within code block name??
         // e.g. ...spaces??
@@ -194,11 +290,10 @@ public class CodeStream {
     }
 
     /**
-     * This method reads the .c file associate with the particular actor
-     * identified by the _filePath and constructs the code block table
-     * and parameter table.
-     *
-     * @exception IllegalActionException If an error occurs during parsing.
+     * Read the helper .c file identified by the _filePath and construct the
+     * code block table and parameter table.
+     * @exception IllegalActionException If an error occurs when parsing the
+     *  helper .c file.
      */
     private void _constructCodeTable() throws IllegalActionException {
 
@@ -213,6 +308,7 @@ public class CodeStream {
 
             StringBuffer codeInFile = new StringBuffer();
 
+            // FIXME: is there a better way to read the entire file?
             // create a string of all code in the file
             for (String line = reader.readLine(); line != null; 
                 line = reader.readLine()) {
@@ -223,24 +319,36 @@ public class CodeStream {
             while (_parseCodeBlock(codeInFile) != null) {
                 ;
             }            
-        } catch (IOException e) {
+        } catch (IOException ex) {
             if (reader == null) {
-                throw new IllegalActionException(null, e, "Cannot open file: "
-                        + _filePath);
+                throw new IllegalActionException(null, ex, 
+                        "Cannot open file: " + _filePath);
             } else {
-                throw new IllegalActionException(null, e,
+                throw new IllegalActionException(null, ex,
                         "Error reading file: " + _filePath);
+            }
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();                
+                }
+            } catch (IOException ex) {
+                throw new IllegalActionException(null, ex,
+                        "Error closing file: " + _filePath);                
             }
         }
     }
 
     /**
-     * A Sub-parsing method which returns the code block body.
-     * It recursively parses within the code body for nested code blocks.
-     *
-     * @param codeInFile all the text within the .c file
-     * @return the code body within the current code block
-     * @exception IllegalActionException If an error occurs during parsing.
+     * Parse from the _parseIndex and return the next code block
+     * body from the given StringBuffer. This method recursively
+     * parses within the code body for nested code blocks.
+     * @param codeInFile Code from the helper .c file.
+     * @return The code body within the current code block.
+     * @exception IllegalActionException If code block's close block
+     *  pattern, _BLOCKEND, is missing.
+     * @see _parseIndex
+     * @see _BLOCKEND
      */
     private StringBuffer _parseBody(StringBuffer codeInFile)
             throws IllegalActionException {
@@ -289,16 +397,17 @@ public class CodeStream {
         return body;
     }
 
-    /** This method parse code from the given StringBuffer. It is
-     * responsible for putting the first single (nested or non-nested)
-     * code block along with the block name (key) into the code block table.
-     * It calls sub-parsing functions parseHeader() and parseBody().
-     * It returns the name of the code block (key). If null is returned,
-     * it means there is no more code block to be parsed in the .c file.
-     *
-     * @param codeInFile all the text within the .c file
-     * @return the name of the code block as key to _CodeBlockTable
+    /** 
+     * Parse from the _parseIndex for the next single code block and return
+     * the code block name. This method puts the code block body (value)
+     * and the code block name (key) into the code block table. It calls
+     * the parseHeader(StringBuffer) and parseBody(StringBuffer) functions.
+     * @param codeInFile Code from the helper .c file.
+     * @return The name of the code block, or null if there is no more code
+     *  blocks to be parsed.
      * @exception IllegalActionException If an error occurs during parsing.
+     * @see parseHeader(StringBuffer)
+     * @see parseBody(StringBuffer)
      */
     private String _parseCodeBlock(StringBuffer codeInFile)
             throws IllegalActionException {
@@ -319,12 +428,16 @@ public class CodeStream {
     }
 
     /**
-     * A sub-parsing method which return a well-formed string
-     * representing the code block name.
-     *
-     * @param codeInFile all the text within the .c file
-     * @return the name of the code block as key to _CodeBlockTable
-     * @exception IllegalActionException If an error occurs during parsing.
+     * Parse from the _parseIndex for the next code block header and
+     * return the next code block name. This method parses for any parameter
+     * declarations and put the list of parameter(s) into the _parameterTable.
+     * @param codeInFile Code from the helper .c file.
+     * @return The name of the code block, or null if there is no more
+     *  code blocks to be parsed.
+     * @exception IllegalActionException If the code block's close header
+     *  pattern, _HEADEREND, is missing.
+     * @see _HEADEREND
+     * @see _parameterTable
      */
     private String _parseHeader(StringBuffer codeInFile)
             throws IllegalActionException {
@@ -340,13 +453,13 @@ public class CodeStream {
 
         int endIndex = codeInFile.indexOf(_HEADEREND, _parseIndex);
         if (endIndex == -1) {
-            throw new IllegalActionException("Missing code block close header"
-                    + " in " + _filePath);
+            throw new IllegalActionException(
+                    "Missing code block close header" + " in " + _filePath);
         }
 
         int parameterIndex = codeInFile.indexOf("(", _parseIndex);
         if (parameterIndex != -1 && parameterIndex < endIndex) {
-            name = _checkCodeHeader(codeInFile.substring(_parseIndex,
+            name = _checkCodeBlockName(codeInFile.substring(_parseIndex,
                     parameterIndex));
             int parameterEndIndex = codeInFile.indexOf(")", _parseIndex);
             
@@ -369,41 +482,15 @@ public class CodeStream {
                 codeInFile.substring(parameterIndex + 1, parameterEndIndex);
             parameterList.add(newParameter.trim());
         } else {
-            name = 
-                _checkCodeHeader(codeInFile.substring(_parseIndex, endIndex));
+            name = _checkCodeBlockName(
+                    codeInFile.substring(_parseIndex, endIndex));
         }
         _parseIndex = _HEADEREND.length() + endIndex;
         return name;
     }
 
-    /**
-     * Private test method which returns a StringBuffer that contains all
-     * the code block names and bodies, given the name of an actor class.
-     *
-     * @exception IllegalActionException If an error occurs during parsing.
-     */
-    private static StringBuffer _testing() throws IllegalActionException {
-        StringBuffer buffer = new StringBuffer();
-        CodeStream stream = new CodeStream(null);
-
-        if (stream._codeBlockTable == null) {
-            stream._constructCodeTable();
-        }
-
-        for (Iterator keys = stream._codeBlockTable.keySet().iterator(); keys
-                .hasNext();) {
-            String key = (String) keys.next();
-            buffer.append(key + ": \n");
-            buffer.append((StringBuffer) stream._codeBlockTable.get(key));
-            buffer.append("\n-------------------------------\n\n");
-        }
-
-        return buffer;
-    }
-
-    ///////////////////////////////////////////////////////////////////////
-    // private variables declarations
-    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
 
     /**
      * String pattern which represents the end of a code block.
@@ -427,24 +514,19 @@ public class CodeStream {
     private CCodeGeneratorHelper _actorHelper;
 
     /**
-     * The code block table that stores the code blocks with
-     * code block names (String) as keys.
+     * The code block table that stores the code block body (StringBuffer)
+     * with the code block name (String) as key.
      */
     private Hashtable _codeBlockTable = null;
 
     /**
-     * Debugging flag, which is turned on during debug mode
-     */
-    private static boolean _debug = false;
-
-    /**
-     * File path to the .c files associated with this CodeStream's helper
+     * File path to the .c files associated with this CodeStream's helper.
      */
     private String _filePath;
 
     /**
-     * The code block table that stores the code block parameter(s)
-     * with code block names (String) as keys.
+     * The code block table that stores the code block parameters
+     * (ArrayList) with the code block names (String) as key.
      */
     private Hashtable _parameterTable = null;
 
@@ -458,10 +540,4 @@ public class CodeStream {
      * The content of this CodeStream.
      */
     private StringBuffer _stream = new StringBuffer();
-
-    /**
-     * The file path used during testing.
-     */
-    private static String _testingFilePath;
-
 }
