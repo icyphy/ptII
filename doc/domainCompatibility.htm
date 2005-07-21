@@ -6,6 +6,8 @@
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+Below is a table that lists heterogenous models by top level and bottom level.
+<p>Note that not all combinations make semantic sense.
 
 <center>
 <table border="1">
@@ -52,8 +54,15 @@
   <tr>
    <td>CT</td>
    <td><!-- CSP --></td>
-   <td><!-- CT --></td>
+   <td>CT/CT
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor2.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor3.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor4.xml">+</a>,
+     <a href="../ptolemy/domains/ct/test/auto/CTCompositeActor5.xml">+</a>
+   </td>
    <td>DE/CT
+     <a href="../ptolemy/domains/ct/demo/SigmaDelta/SigmaDelta.xml">+</a>,
      <a href="../ptolemy/domains/ct/test/auto/CTInsideDESimplel.xml">+</a>
    </td>
    <td><!-- DDF --></td>
@@ -72,7 +81,9 @@
      <a href="../ptolemy/domains/de/test/auto/deInCt.xml">+</a>,
      <a href="../ptolemy/domains/de/test/auto/deInCt2.xml">+</a>
    </td>
-   <td><!-- DE --></td>
+   <td>DE/DE
+     <a href="../ptolemy/domains/de/demo/HierarchicalModel/HierarchicalModel.xml">+</a>
+</td>
    <td><!-- DDF --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
@@ -102,8 +113,12 @@
   <tr>
    <td>FSM</td>
    <td><!-- CSP --></td>
-   <td><!-- CT --></td>
-   <td><!-- DE --></td>
+   <td>CT/FSM
+     <a href="../ptolemy/domains/ct/demo/Switch/Switch.xml">+</a>
+   </td>
+   <td>DE/FSM
+     <a href="../ptolemy/domains/de/demo/ModalModel/ModalModel.xml">+</a>
+   </td>
    <td><!-- DDF --></td>
    <td><!-- FSM --></td>
    <td><!-- Giotto --></td>
@@ -164,7 +179,9 @@
      <a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml">+</a>
    </td>
    <td><!-- PSDF --></td>
-   <td><!-- SDF --></td>
+   <td>SDF/PN
+     <a href="../ptolemy/domains/psdf/kernel/test/auto/SDFDirector1.xml">+</a>
+   </td>
    <td><!-- SR --></td>
   </tr>
 
@@ -186,7 +203,9 @@
      <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSDFtest1.xml">-</a>
   </td>
    <td><!-- PSDF --></td>
-   <td><!-- SDF --></td>
+   <td>SDF/SDF
+     <a href="../ptolemy/domains/sdf/demo/Spectrum/Spectrum.xml">+</a>
+   </td>
    <td>SR/SDF
      <a href="../ptolemy/domains/test/auto/SRSDFtest3.xml">+</a>,
      <a href="../ptolemy/domains/test/auto/knownFailedTests/SRSDFtest1.xml">-</a>,
@@ -216,7 +235,9 @@
      <a href="../ptolemy/domains/test/auto/SDFSRtest3.xml">+</a>,
      <a href="../ptolemy/domains/test/auto/knownFailedTests/SDFSRtest2.xml">-</a>
    </td>
-   <td><!-- SR --></td>
+   <td>SR/SR
+     <a href="../ptolemy/domains/sr/demo/GuardedCount/GuardedCount.xml">+</a>
+   </td>
   </tr>
 
 </table>
