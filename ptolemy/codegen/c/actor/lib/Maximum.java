@@ -29,6 +29,8 @@
 
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -66,8 +68,10 @@ public class Maximum extends CCodeGeneratorHelper {
         CodeStream tmpStream = new CodeStream(this);
 
         // FIXME: we need to resolve the token type in the future
-        tmpStream.appendCodeBlock("fireBlock", new Integer(actor.input
-                .getWidth()));
+        ArrayList args = new ArrayList();
+        args.add(actor.input.getType().toString());
+        args.add(Integer.toString(actor.input.getWidth()));
+        tmpStream.appendCodeBlock("fireBlock", args);
         code.append(processCode(tmpStream.toString()));
     }
 
