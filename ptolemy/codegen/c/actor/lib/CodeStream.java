@@ -135,7 +135,7 @@ public class CodeStream {
      * Append the code block specified the given block name. This method
      * invokes appendCodeBlock(String, ArrayList) with no arguments by
      * passing an empty array list of argments.
-     * @see appendCodeBlock(String, ArrayList)
+     * @see #appendCodeBlock(String, ArrayList)
      * @param blockName The given code block name.
      * @exception IllegalActionException If appendCodeBlock(String, ArrayList)
      *  throws the exception.
