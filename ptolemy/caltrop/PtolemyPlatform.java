@@ -30,6 +30,8 @@
 package ptolemy.caltrop;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -112,12 +114,31 @@ public class PtolemyPlatform implements Platform {
                     System.out.println(args[0]);
                     return args[0];
                 } catch (Exception ex) {
-                    throw new FunctionCallException("$not", args[0], ex);
+                    throw new FunctionCallException("SOP", args[0], ex);
                 }
             }
 
             public int arity() {
                 return 1;
+            }
+        }));
+
+        env.bind("logValue", _theContext.createFunction(new Function() {
+            public Object apply(Object[] args) {
+                try {
+                    PrintStream output =
+                        new PrintStream(new FileOutputStream(
+                                                _theContext.stringValue(args[0]), true));
+                    output.println(args[1].toString());
+                    output.close();
+                    return args[1];
+                } catch (Exception ex) {
+                    throw new FunctionCallException("logValue", args[0], ex);
+                }
+            }
+
+            public int arity() {
+                return 2;
             }
         }));
 
