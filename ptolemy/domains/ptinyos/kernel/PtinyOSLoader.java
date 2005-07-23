@@ -68,6 +68,8 @@ public interface PtinyOSLoader {
             throws IllegalActionException;
 
     // Called from Java.
+    public void wrapup();
+    
     public void processEvent(long currentTime);
 
     public void receivePacket(long currentTime, String packet);

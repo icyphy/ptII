@@ -451,6 +451,8 @@ public class PtinyOSDirector extends Director {
                             + "instance of CompositeActor.");
         }
 
+        _version = workspace().getVersion();
+
         // Open directory, creating it if necessary.
         File directory = destinationDirectory.asFile();
 
@@ -475,19 +477,11 @@ public class PtinyOSDirector extends Director {
         // FIXME working here
         //   if (_isTopLevelNC()) {
         NamedObj toplevel = _toplevelNC(); //container.toplevel();
-        String filename;
 
+        String filename = _sanitizedName(toplevel);
         if (container != toplevel) {
-            String toplevelName = _sanitizedName(toplevel);
-            filename = toplevelName + "_" + container.getName(toplevel);
-        } else {
-            filename = toplevel.getName();
-        }
-
-        filename = StringUtilities.sanitizeName(filename);
-
-        if (filename == "") {
-            filename = _unnamed;
+            filename = filename + "_" + container.getName(toplevel);
+            filename = StringUtilities.sanitizeName(filename);
         }
 
         // Open file for the generated nesC code.
@@ -626,8 +620,7 @@ public class PtinyOSDirector extends Director {
         }
 
         if (((BooleanToken) simulate.getToken()).booleanValue()) {
-            // FIXME celaine
-            //_loader.handleSignal(19);  // SIGSTOP: man 7 signal
+            _loader.wrapup();  // SIGSTOP: man 7 signal
         }
     }
 
@@ -664,6 +657,10 @@ public class PtinyOSDirector extends Director {
         text.addLine("        return main" + toplevelName + "(argsToMain);");
         text.addLine("    }");
 
+        text.addLine("    public void wrapup() {");
+        text.addLine("        wrapup" + toplevelName + "();");
+        text.addLine("    }");
+        
         text.addLine("    public void processEvent(long currentTime) {");
         text.addLine("        processEvent" + toplevelName + "(currentTime);");
         text.addLine("    }");
@@ -708,6 +705,8 @@ public class PtinyOSDirector extends Director {
 
         text.addLine("    private native int main" + toplevelName
                 + "(String argsToMain[]);");
+        text.addLine("    private native void wrapup" + toplevelName
+                + "();");
         text.addLine("    private native void processEvent" + toplevelName
                 + "(long currentTime);");
         text.addLine("    private native void receivePacket" + toplevelName
@@ -1189,7 +1188,8 @@ public class PtinyOSDirector extends Director {
         }
     }
 
-    /** Get the sanitized name, or "Unnamed" if no name.
+    /** Get the sanitized name with workspace version number appended,
+     *  or "Unnamed" if no name.
      */
     private String _sanitizedName(NamedObj obj) {
         String objName = obj.getName();
@@ -1197,6 +1197,9 @@ public class PtinyOSDirector extends Director {
         if (objName == "") {
             objName = _unnamed;
         }
+
+        objName = objName + _version;
+
         return objName;
     }
 
@@ -1206,13 +1209,18 @@ public class PtinyOSDirector extends Director {
     //private native int main(String argsToMain[]);
     //private native int mainMicaActor(String argsToMain[]);
     //private native void processEvent();
-    //private native int cleanup();
-    //private native void handleSignal(int sig);
+    //private native void wrapup();
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // Java loader for JNI code.
     private PtinyOSLoader _loader;
 
+    // String to rename unnamed objects or files.
     private static String _unnamed = "Unnamed";
+
+    // Workspace version number at preinitialize.
+    private long _version;
 
 
     ///////////////////////////////////////////////////////////////////
