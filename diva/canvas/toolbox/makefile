@@ -67,6 +67,7 @@ JSRCS = \
 	VectorFigure.java
 
 EXTRA_SRCS =	$(JSRCS) \
+	errorImage.gif \
 	package.html
 
 # Sources that may or may not be present, but if they are present, we don't
