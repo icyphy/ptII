@@ -14,4 +14,4 @@ etherealSting  lejos          saveasjava     waba
 jmf            midp           security       webstart
 
 To checkout ptIIapps, use:
-cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs co ptIIapps
+cvs -d :ext:source.eecs.berkeley.edu:/home/cvs co ptIIapps
