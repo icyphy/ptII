@@ -42,15 +42,21 @@ import ptolemy.kernel.util.NamedObj;
 
 /** Base class for code generators for static scheduling models of computation.
  *
+ *  FIXME: need documentation on the following: 
+ *  1. Define static-scheduling, 
+ *  2. what should the subclasses do. 
+ *  3. Define body code, wrapup, initialze section.
+ * 
+ * 
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributor: Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 5.1
- *  @Pt.ProposedRating Red (eal)
- *  @Pt.AcceptedRating Red (eal)
+ *  @Pt.ProposedRating Yellow (eal)
+ *  @Pt.AcceptedRating Yellow (eal)
  */
 public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         ActorCodeGenerator {
-    /** Create a new instance of the C code generator.
+    /** Create a new instance of the code generator.
      *  @param container The container.
      *  @param name The name.
      *  @exception IllegalActionException If super class throws it.
@@ -62,15 +68,13 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     parameters                            ////
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Generate the body code that lies between variable declaration
      *  and wrapup.
-     *  @exception IllegalActionException If the generateFireCode(StringBuffer)
-     *  method throws the exceptions.
      *  @return The generated body code.
+     *  @exception IllegalActionException If the 
+     *  {@link #generateFireCode(StringBuffer)} method throws the exceptions.
      */
     public String generateBodyCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -80,7 +84,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
     }
 
     /** Generate code.  This is the main entry point.
-     *  @param code The code stream into which to generate the code.
+     *  @param code The code buffer into which to generate the code.
      *  @exception KernelException If a type conflict occurs or the model
      *  is running.
      */
@@ -104,7 +108,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         }
     }
 
-    /** Generate into the specified code stream the code associated
+    /** Generate into the specified code buffer the code associated
      *  with the execution of the container composite actor. This method
      *  calls the generateFireCode() method of the code generator helper
      *  associated with the director of the container.
@@ -131,13 +135,14 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
                     + model.getName() + " is not a StaticSchedulingDirector.");
         }
 
-        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
+        ComponentCodeGenerator directorHelper = 
+            _getHelper((NamedObj) director);
         ((Director) directorHelper).generateFireCode(code);
     }
 
     /** Set the container of this object to be the given container.
      *  This method overrides the base class to ensure that that the
-     *  container is an Actor.
+     *  container is an CompositeActor.
      *  @param container The given container.
      *  @exception IllegalActionException If the given container
      *   is not null and not an instance of CompositeActor.
@@ -151,7 +156,6 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
                     "StaticSchedulingCodeGenerator can only be contained "
                             + " by CompositeActor");
         }
-
         super.setContainer(container);
     }
 
@@ -160,8 +164,8 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
 
     /** Get the code generator helper associated with the given component.
      *  @param actor The given component actor.
-     *  @exception IllegalActionException If the given actor is an
-     *   implementing class for ActorCodeGenerator.
+     *  @exception IllegalActionException If the helper of the given actor
+     *  is an instance of ActorCodeGenerator.
      *  @return The code generator helper.
      */
     protected ComponentCodeGenerator _getHelper(NamedObj actor)

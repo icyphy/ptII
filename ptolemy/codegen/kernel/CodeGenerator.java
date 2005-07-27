@@ -67,8 +67,8 @@ import ptolemy.util.MessageHandler;
  *   Contributors: Christopher Brooks
  *  @version $Id$ CodeGenerator.java,v 1.51 2005/07/13 14:07:20 cxh Exp $
  *  @since Ptolemy II 5.1
- *  @Pt.ProposedRating Red (eal)
- *  @Pt.AcceptedRating Red (eal)
+ *  @Pt.ProposedRating Yellow (eal)
+ *  @Pt.AcceptedRating Yellow (eal)
  */
 public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Create a new instance of the code generator.
@@ -181,7 +181,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             actorHelper.setCodeGenerator(this);
             includingFiles.addAll(actorHelper.getIncludingFiles());
         }
@@ -284,7 +285,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             Actor actor = (Actor) actors.next();
 
             // Generate variable declarations for referenced parameters.
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             HashSet parameterSet = actorHelper.getReferencedParameter();
 
             if (parameterSet != null) {
@@ -361,7 +363,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
                 .getDirector();
-        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
+        ComponentCodeGenerator directorHelper = 
+            _getHelper((NamedObj) director);
         directorHelper.generateWrapupCode(code);
     }
 
@@ -532,7 +535,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                             + " implement componentCodeGenerator.");
         }
 
-        ComponentCodeGenerator castHelperObject = (ComponentCodeGenerator) helperObject;
+        ComponentCodeGenerator castHelperObject = 
+            (ComponentCodeGenerator) helperObject;
 
         _helperStore.put(component, helperObject);
 

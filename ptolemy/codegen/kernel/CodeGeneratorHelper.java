@@ -51,13 +51,14 @@ import ptolemy.kernel.util.Settable;
 //// CodeGeneratorHelper
 
 /**
+ * FIXME: detailed class comment needed.
  * Base class for code generator helper.
  *
  * @author Ye Zhou, Edward A. Lee, Contributors: Gang Zhou, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Red (eal)
- * @Pt.AcceptedRating Red (eal)
+ * @Pt.ProposedRating Yellow (eal)
+ * @Pt.AcceptedRating Yellow (eal)
  */
 public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** Construct the code generator helper associated
@@ -68,40 +69,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         _component = component;
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                      public inner classes                   ////
-
-    /** A class that defines a channel object. A channel object is
-     *  specified by its port and its channel index in that port.
-     */
-    public class Channel {
-        /** Construct the channel with the given port and channel number.
-         * @param portObject The given port.
-         * @param channel The channel number of this object in the given port.
-         */
-        public Channel(IOPort portObject, int channel) {
-            port = portObject;
-            channelNumber = channel;
-        }
-
-        /** The port that contains this channel.
-         */
-        public IOPort port;
-
-        /** The channel number of this channel.
-         */
-        public int channelNumber;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create the channel map, which is associated with this helper object.
-     *  A key of the map is an IOPort of the actor. The corresponding value
-     *  is an array of Channel objects. The i-th channel object corresponds
-     *  to the i-th channel of that IOPort. This method is used to maintain
-     *  a hashmap of channels of the actor. The channel objects in the map
-     *  is used to keep track of the offsets in their buffer.
+    /** Create the buffer and offset map, which is associated with this
+     *  helper object. A key of the map is an IOPort of the actor. The
+     *  corresponding value is an array of Channel objects. The i-th channel
+     *  object corresponds to the i-th channel of that IOPort. This method
+     *  is used to maintain a internal HashMap of channels of the actor. The
+     *  channel objects in the map are used to keep track of the offsets in
+     *  their buffer.
      */
     public void createBufferAndOffsetMap() {
         Set ioPortsSet = new HashSet();
@@ -126,56 +103,61 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
     }
 
-    /** Do nothing. Subclasses may extend this method to generate the fire
-     *  code of the associated component and append the code to the given
-     *  string buffer.
-     *  @param stream The given string buffer.
-     *  @exception IllegalActionException If subclasses throw it.
+    /** 
+     * Generate the fire code. In this base class, do nothing. Subclasses
+     * may extend this method to generate the fire code of the associated
+     * component and append the code to the given string buffer.
+     * @param stream The given string buffer.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
     }
 
-    /** Return an empty string. Subclasses may extend this method to
-     *  generate the initialize code of the associated component and
-     *  append the code to the given string buffer.
-     *  @return The initialize code of the containing composite actor.
-     *  @exception IllegalActionException If subclass throws it.
+    /** 
+     * Generate the initialize code. In this base class, return an empty
+     * string. Subclasses may extend this method to generate the initialize
+     * code of the associated component and append the code to the given
+     * string buffer.
+     * @return The initialize code of the containing composite actor.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeCode() throws IllegalActionException {
         resetOffsets();
         return "";
     }
 
-    /** Create the buffer size and offset map for each channels of the
-     *  actor associated with this helper class. This method generally
-     *  does not generate any execution code and returns an empty string.
-     *  Subclasses may generate code for variable declaration, defining
-     *  constants, etc.
-     *  @return A string of the preinitialize code for the helper.
-     *  @exception IllegalActionException If subclass throws it.
+    /** 
+     * Generate the preinitialize code. In this base class, return an empty
+     * string. This method generally does not generate any execution code
+     * and returns an empty string. Subclasses may generate code for variable
+     * declaration, defining constants, etc.
+     * @return A string of the preinitialize code for the helper.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         createBufferAndOffsetMap();
         return "";
     }
 
-    /** Do nothing. Subclasses may extend this method to generate
-     *  the wrapup code of the associated component and append the
-     *  code to the given string buffer.
-     *  @param stream The given string buffer.
-     *  @exception IllegalActionException If subclass throws it.
+    /** 
+     * Generate the wrapup code. In this base class, do nothing. Subclasses
+     * may extend this method to generate the wrapup code of the associated
+     * component and append the code to the given string buffer.
+     * @param stream The given string buffer.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public void generateWrapupCode(StringBuffer stream)
             throws IllegalActionException {
     }
 
-    /** Return the buffer size of a given port, which is the maximum of
-     *  the bufferSizes of all channels of the given port.
-     *  @param port The given port.
-     *  @return The buffer size of the given port.
-     *  @exception IllegalActionException If the getBufferSize(IOPort, int)
-     *   method throws it.
+    /** 
+     * Return the buffer size of a given port, which is the maximum of
+     * the bufferSizes of all channels of the given port.
+     * @param port The given port.
+     * @return The buffer size of the given port.
+     * @exception IllegalActionException If the 
+     * {@link #getBufferSize(IOPort, int)} method throws it.
      */
     public int getBufferSize(IOPort port) throws IllegalActionException {
         int bufferSize = 1;
@@ -200,7 +182,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** Get the buffer size of the given port of this actor.
      *  @param port The given port.
      *  @param channelNumber The given channel.
-     *  @return The buffer size of the given port of this actor.
+     *  @return The buffer size of the given port and channel.
      *  @exception IllegalActionException If the getBufferSize()
      *   method of the actor helper class throws it.
      */
@@ -224,7 +206,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     /** Get the files needed by the code generated from this helper class.
      *  This base class returns an empty set.
-     *  @return A set of strings that are libraries needed by the code
+     *  @return A set of strings that are header files needed by the code
      *  generated from this helper class.
      */
     public Set getIncludingFiles() {
@@ -234,7 +216,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     /** Get the offset in the buffer of a given channel to which a token
      *  should be put. The channel is given by its containing port and
-     *  the channel number in that port. The default value is 0.
+     *  the channel number in that port.
      *  @param port The given port.
      *  @param channelNumber The given channel number.
      *  @return The offset in the buffer of a given channel to which a token
@@ -277,6 +259,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  the form "fullName_parameterName". For a port, the returned string
      *  is in the form "fullName_portName[channelNumber][offset]", if
      *  any channel number or offset is given.
+     * 
+     * FIXME: need documentation on the input string format.
+     * 
      *  @param name The name of the parameter or port
      *  @return The reference to that parameter or port (a variable name,
      *   for example).
@@ -488,17 +473,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 + name);
     }
 
-    /** Return a list that contains the parameters referenced in the code.
-     *  @return The list.
+    /** 
+     * Return the parameters referenced in the code. The return parameters
+     * are in a HashSet wher each element is of type Attribute. 
+     *  @return The the parameters referenced in the code.
      */
     public HashSet getReferencedParameter() {
         return _referencedParameters;
     }
 
     /** Return a list of channel objects that are the sink input ports given
-     *  an output port and a given channel. Note the returned channels are
-     *  newly created objects and therefore not associated with the helper
-     *  class.
+     *  an output port and channel. Note the returned channels are newly
+     *  created objects and therefore not associated with the helper class.
      *  @param outputPort The given output port.
      *  @param channelNumber The given channel number.
      *  @return The list of channel objects that are the sink channels
@@ -662,7 +648,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** Set the buffer size of a given port.
      *  @param port The given port.
      *  @param channelNumber The given channel.
-     *  @param bufferSize The buffer size to be set to that port.
+     *  @param bufferSize The buffer size to be set to that port and channel.
      */
     public void setBufferSize(IOPort port, int channelNumber, int bufferSize) {
         int[] bufferSizes = (int[]) _bufferSizes.get(port);
@@ -690,6 +676,31 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         Object[] offsets = (Object[]) _offsets.get(port);
         offsets[channelNumber] = offset;
         _offsets.put(port, offsets);
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    ////                      public inner classes                   ////
+
+    /** A class that defines a channel object. A channel object is
+     *  specified by its port and its channel index in that port.
+     */
+    public class Channel {
+        /** Construct the channel with the given port and channel number.
+         * @param portObject The given port.
+         * @param channel The channel number of this object in the given port.
+         */
+        public Channel(IOPort portObject, int channel) {
+            port = portObject;
+            channelNumber = channel;
+        }
+
+        /** The port that contains this channel.
+         */
+        public IOPort port;
+
+        /** The channel number of this channel.
+         */
+        public int channelNumber;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -43,8 +43,8 @@ import ptolemy.kernel.util.NamedObj;
  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (eal)
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Yellow (eal)
  */
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /**
