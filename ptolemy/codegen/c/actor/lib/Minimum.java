@@ -64,14 +64,14 @@ public class Minimum extends CCodeGeneratorHelper {
    public void generateFireCode(StringBuffer code)
            throws IllegalActionException {
        ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
-       CodeStream tmpStream = new CodeStream(this);
+       CodeStream _codeStream = new CodeStream(this);
 
        // FIXME: we need to resolve the token type in the future
        ArrayList args = new ArrayList();
        args.add(actor.input.getType().toString());
        args.add(Integer.toString(actor.input.getWidth()));
-       tmpStream.appendCodeBlock("fireBlock", args);
-       code.append(processCode(tmpStream.toString()));
+       _codeStream.appendCodeBlock("fireBlock", args);
+       code.append(processCode(_codeStream.toString()));
    }
 
    /**
@@ -88,12 +88,12 @@ public class Minimum extends CCodeGeneratorHelper {
        ptolemy.actor.lib.Minimum actor =
            (ptolemy.actor.lib.Minimum) getComponent();
 
-       CodeStream tmpStream = new CodeStream(this);
+       CodeStream _codeStream = new CodeStream(this);
        if (actor.input.getWidth() > 0) {
-           tmpStream.appendCodeBlock("initMin");
+           _codeStream.appendCodeBlock("initMin");
        }
-       tmpStream.appendCodeBlock("initChannelNum");
-       return processCode(tmpStream.toString());
+       _codeStream.appendCodeBlock("initChannelNum");
+       return processCode(_codeStream.toString());
    }
 
    /**
@@ -106,8 +106,8 @@ public class Minimum extends CCodeGeneratorHelper {
     */
    public String generatePreinitializeCode() throws IllegalActionException {
        super.generatePreinitializeCode();
-       CodeStream tmpStream = new CodeStream(this);
-       tmpStream.appendCodeBlock("preinitBlock");
-       return processCode(tmpStream.toString());
+       CodeStream _codeStream = new CodeStream(this);
+       _codeStream.appendCodeBlock("preinitBlock");
+       return processCode(_codeStream.toString());
    }
 }

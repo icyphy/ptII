@@ -64,33 +64,33 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
             throws IllegalActionException {
         ptolemy.actor.lib.MultiplyDivide actor =
             (ptolemy.actor.lib.MultiplyDivide) getComponent();
-        StringBuffer tmpStream = new StringBuffer();
-        tmpStream.append("$ref(output) = ");
+        StringBuffer _codeStream = new StringBuffer();
+        _codeStream.append("$ref(output) = ");
 
         for (int i = 0; i < actor.multiply.getWidth(); i++) {
-            tmpStream.append("$ref(multiply#" + i + ")");
+            _codeStream.append("$ref(multiply#" + i + ")");
 
             if (i < (actor.multiply.getWidth() - 1)) {
-                tmpStream.append(" * ");
+                _codeStream.append(" * ");
             } else if (actor.divide.getWidth() > 0) {
-                tmpStream.append(" / ");
+                _codeStream.append(" / ");
             }
         }
 
         // assume numerator of 1, if no input is connected to
         // the multiply ports
         if (actor.multiply.getWidth() == 0) {
-            tmpStream.append(" 1.0 / ");
+            _codeStream.append(" 1.0 / ");
         }
 
         for (int i = 0; i < actor.divide.getWidth(); i++) {
-            tmpStream.append("$ref(divide#" + i + ")");
+            _codeStream.append("$ref(divide#" + i + ")");
 
             if (i < (actor.divide.getWidth() - 1)) {
-                tmpStream.append(" / ");
+                _codeStream.append(" / ");
             }
         }
-        tmpStream.append(";\n");
-        code.append(processCode(tmpStream.toString()));
+        _codeStream.append(";\n");
+        code.append(processCode(_codeStream.toString()));
     }
 }

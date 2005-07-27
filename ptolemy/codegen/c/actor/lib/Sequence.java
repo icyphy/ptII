@@ -66,15 +66,15 @@ public class Sequence extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Sequence actor =
             (ptolemy.actor.lib.Sequence) getComponent();
 
-        CodeStream tmpStream = new CodeStream(this);
+        CodeStream _codeStream = new CodeStream(this);
 
         if (actor.enable.getWidth() == 0) {
-            tmpStream.appendCodeBlock("codeBlock1");
+            _codeStream.appendCodeBlock("codeBlock1");
         } else {
-            tmpStream.appendCodeBlock("codeBlock2");
+            _codeStream.appendCodeBlock("codeBlock2");
         }
-        tmpStream.appendCodeBlock("codeBlock3");
-        code.append(processCode(tmpStream.toString()));
+        _codeStream.appendCodeBlock("codeBlock3");
+        code.append(processCode(_codeStream.toString()));
     }
 
     /**
@@ -87,8 +87,8 @@ public class Sequence extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-        return processCode(tmpStream.toString());
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("preinitBlock");
+        return processCode(_codeStream.toString());
     }
 }

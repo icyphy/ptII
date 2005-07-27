@@ -65,14 +65,14 @@ public class Gaussian extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("fireBlock");
-        code.append(processCode(tmpStream.toString()));
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("fireBlock");
+        code.append(processCode(_codeStream.toString()));
     }
 
     /**
      * Generate initialize code.
-     * This method reads the <code>initBlock</code> from Gaussian.c,
+     * This method reads the <code>setSeedBlock</code> from Gaussian.c,
      * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
@@ -84,15 +84,15 @@ public class Gaussian extends CCodeGeneratorHelper {
             (ptolemy.actor.lib.Gaussian) getComponent();
 
         long seedValue;
-        CodeStream tmpStream = new CodeStream(this);
+        CodeStream _codeStream = new CodeStream(this);
 
         if (Long.parseLong(actor.seed.getExpression()) == 0) {
-            tmpStream.append("$actorSymbol(seed) = time (NULL) + "
-                    + actor.hashCode());
+            _codeStream.append("$actorSymbol(seed) = time (NULL) + "
+                    + actor.hashCode() + ";");
         } else {
-            tmpStream.appendCodeBlock("setSeedBlock");
+            _codeStream.appendCodeBlock("setSeedBlock");
         }
-        return processCode(tmpStream.toString());
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -105,9 +105,9 @@ public class Gaussian extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-        return processCode(tmpStream.toString());
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("preinitBlock");
+        return processCode(_codeStream.toString());
     }
 
     /**

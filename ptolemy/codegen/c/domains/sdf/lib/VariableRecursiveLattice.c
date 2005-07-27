@@ -3,10 +3,10 @@
     int $actorSymbol(M);
     double $actorSymbol(k);
     int $actorSymbol(_valueLength) = $size(reflectionCoefficients);
-    double* $actorSymbol(_backward) = (double*) malloc($actorSymbol(_valueLength) + 1 * sizeof(double));
-    double* $actorSymbol(_backwardCache) = (double*) malloc($actorSymbol(_valueLength) + 1 * sizeof(double));
-    double* $actorSymbol(_forward) = (double*) malloc($actorSymbol(_valueLength) + 1 * sizeof(double));
-    double* $actorSymbol(_forwardCache) = (double*) malloc($actorSymbol(_valueLength) + 1 * sizeof(double));
+    double* $actorSymbol(_backward) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
+    double* $actorSymbol(_backwardCache) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
+    double* $actorSymbol(_forward) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
+    double* $actorSymbol(_forwardCache) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
     double* $actorSymbol(_reflectionCoefs) = (double*) malloc($actorSymbol(_valueLength) * sizeof(double));
     int $actorSymbol(_blockSizeValue) = $val(blockSize);
     double* $actorSymbol(coefficientsToken);
@@ -42,8 +42,8 @@
    
    //--------------- reallocate -------------------------
     //if ((_backward == null) || (valueLength != (_backward.length - 1))) {
-    if ($actorSymbol(_valueLength) - 1 != $size(reflectionCoefficients)) {
-        $actorSymbol(_valueLength) = $size(reflectionCoefficients;
+    if ($actorSymbol(_valueLength) != $size(reflectionCoefficients)) {
+        $actorSymbol(_valueLength) = $size(reflectionCoefficients);
         
         // Need to allocate or reallocate the arrays.
         free($actorSymbol(_backward));
@@ -52,14 +52,14 @@
         free($actorSymbol(_forwardCache));
         free($actorSymbol(_reflectionCoefs));
         
-        $actorSymbol(_backward) = (double*) malloc($actorSymbol(_valueLength) + 1 * sizeof(double));
-        $actorSymbol(_backwardCache) = (double*) malloc($actorSymbol(_valueLength) + 1 * sizeof(double));
-        $actorSymbol(_forward) = (double*) malloc($actorSymbol(_valueLength) + 1 * sizeof(double));
-        $actorSymbol(_forwardCache) = (double*) malloc($actorSymbol(_valueLength) + 1 * sizeof(double));
+        $actorSymbol(_backward) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
+        $actorSymbol(_backwardCache) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
+        $actorSymbol(_forward) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
+        $actorSymbol(_forwardCache) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
         $actorSymbol(_reflectionCoefs) = (double*) malloc($actorSymbol(_valueLength) * sizeof(double));
     }
 
-    for (int $actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_valueLength); $actorSymbol(i)++) {
+    for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_valueLength); $actorSymbol(i)++) {
         $actorSymbol(_reflectionCoefs)[$actorSymbol(i)] = $ref(reflectionCoefficients)[$actorSymbol(i)];
     }
     //----------------------------------------------------   

@@ -75,9 +75,9 @@ public class UnaryMathFunction extends CCodeGeneratorHelper {
                               ((function.equals("square")) ? "squareBlock" :
                                "sqrtBlock")));
 
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock(codeBlockName);
-        code.append(processCode(tmpStream.toString()));
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock(codeBlockName);
+        code.append(processCode(_codeStream.toString()));
     }
 
     /**

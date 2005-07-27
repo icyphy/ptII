@@ -70,16 +70,16 @@ public class Round extends CCodeGeneratorHelper {
         ptolemy.actor.lib.conversions.Round actor = 
             (ptolemy.actor.lib.conversions.Round) getComponent();
 
-        CodeStream tmpStream = new CodeStream(this);
+        _codeStream.clear();
         String function = actor.function.getExpression();
         String codeBlockName = (function.equals("ceil")) ? "ceilBlock" :
                               ((function.equals("floor")) ? "floorBlock" :
                               ((function.equals("round")) ? "roundBlock" :
                                "truncateBlock"));
 
-        tmpStream.appendCodeBlock(codeBlockName);
+        _codeStream.appendCodeBlock(codeBlockName);
 
-        code.append(processCode(tmpStream.toString()));
+        code.append(processCode(_codeStream.toString()));
     }
 
     /** 

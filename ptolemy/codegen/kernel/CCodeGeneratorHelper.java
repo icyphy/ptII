@@ -70,9 +70,13 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     protected String _generateBlockCode(String blockName) 
             throws IllegalActionException {
         // We use this method to reduce code duplication for simple blocks.
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock(blockName);
-
-        return processCode(tmpStream.toString());
+        _codeStream.clear();
+        _codeStream.appendCodeBlock(blockName);
+        return processCode(_codeStream.toString());
     }
+    
+    /**
+     * The code stream associated with this helper.
+     */
+    protected CodeStream _codeStream = new CodeStream(this);
 }

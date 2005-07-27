@@ -28,6 +28,7 @@
     for ($actorSymbol(i) = 0; $actorSymbol(i) <= $actorSymbol(_order); $actorSymbol(i)++) {
         $actorSymbol(_forward)[$actorSymbol(i)] = 0;
         $actorSymbol(_backward)[$actorSymbol(i)] = 0;
+        $actorSymbol(_estimatedErrorPower)[$actorSymbol(i)] = 0;
         $actorSymbol(_estimatedErrorPowerCache)[$actorSymbol(i)] = 0;
     }
     $actorSymbol(_oneMinusAlpha) = (($val(timeConstant) - 1.0) / ($val(timeConstant) + 1.0));

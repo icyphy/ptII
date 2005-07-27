@@ -66,10 +66,10 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
         throws IllegalActionException {
         ptolemy.domains.sdf.lib.VariableRecursiveLattice actor =
             (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("fireBlock");
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("fireBlock");
 
-        code.append(processCode(tmpStream.toString()));
+        code.append(processCode(_codeStream.toString()));
     }
 
     /**
@@ -83,10 +83,10 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
     public String generateInitializeCode()
         throws IllegalActionException {
         super.generateInitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("initBlock");
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("initBlock");
 
-        return processCode(tmpStream.toString());
+        return processCode(_codeStream.toString());
     }
     
     /**
@@ -100,10 +100,10 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
     public String generatePreinitializeCode()
         throws IllegalActionException {
         super.generatePreinitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("preinitBlock");
 
-        return processCode(tmpStream.toString());
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -120,10 +120,10 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
         throws IllegalActionException {
         ptolemy.domains.sdf.lib.VariableRecursiveLattice actor =
             (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("wrapupBlock");
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("wrapupBlock");
 
-        code.append(processCode(tmpStream.toString()));
+        code.append(processCode(_codeStream.toString()));
     }
 
     /**

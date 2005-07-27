@@ -64,9 +64,7 @@ public class StringToIntArray extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("fireBlock");
-        code.append(processCode(tmpStream.toString()));
+        code.append(_generateBlockCode("fireBlock"));
     }
 
     /**
@@ -79,9 +77,7 @@ public class StringToIntArray extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("initBlock");
-        return processCode(tmpStream.toString());
+        return _generateBlockCode("initBlock");
     }
 
     /**
@@ -93,9 +89,6 @@ public class StringToIntArray extends CCodeGeneratorHelper {
      * @return The processed code string.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-        return processCode(tmpStream.toString());
+        return _generateBlockCode("preinitBlock");
     }
 }

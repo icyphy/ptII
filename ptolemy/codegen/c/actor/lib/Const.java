@@ -60,8 +60,8 @@ public class Const extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("initBlock");
-        return processCode(tmpStream.toString());
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("initBlock");
+        return processCode(_codeStream.toString());
     }
 }

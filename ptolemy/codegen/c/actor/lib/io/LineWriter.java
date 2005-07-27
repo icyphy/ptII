@@ -65,9 +65,7 @@ public class LineWriter extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code) 
         throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("writeLine");
-        code.append(processCode(tmpStream.toString()));
+        code.append(_generateBlockCode("writeLine"));
     }
 
     /** 
@@ -88,11 +86,11 @@ public class LineWriter extends CCodeGeneratorHelper {
 
         ptolemy.actor.lib.io.LineWriter actor = 
             (ptolemy.actor.lib.io.LineWriter) getComponent();
-        CodeStream tmpStream = new CodeStream(this);
+        _codeStream.clear();
 
         if (actor.fileName.getExpression().equals("System.out")) {
             _fileOpen = false;
-            tmpStream.appendCodeBlock("openForStdout");
+            _codeStream.appendCodeBlock("openForStdout");
         } else {
             _fileOpen = true;
 
@@ -107,17 +105,17 @@ public class LineWriter extends CCodeGeneratorHelper {
                 actor.confirmOverwrite.getExpression().equals("true");
 
             if (fileExist && askForOverwrite) {
-                tmpStream.appendCodeBlock("confirmOverwrite");
+                _codeStream.appendCodeBlock("confirmOverwrite");
             }
 
             if (actor.append.getExpression().equals("true")) {
-                tmpStream.appendCodeBlock("openForAppend");
+                _codeStream.appendCodeBlock("openForAppend");
             } else {
-                tmpStream.appendCodeBlock("openForWrite");
+                _codeStream.appendCodeBlock("openForWrite");
             }
         }
 
-        return processCode(tmpStream.toString());
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -130,9 +128,7 @@ public class LineWriter extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-        return processCode(tmpStream.toString());
+        return _generateBlockCode("preinitBlock");
     }
 
     /** 
@@ -146,9 +142,7 @@ public class LineWriter extends CCodeGeneratorHelper {
      */
     public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("wrapupBlock");
-        code.append(processCode(tmpStream.toString()));
+        code.append(_generateBlockCode("wrapUpBlock"));
     }
     /** 
      * Get the files needed by the code generated for the LineWriter actor.

@@ -65,10 +65,10 @@ public class AudioWriter extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("writeSoundFile");
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("writeSoundFile");
 
-        code.append(processCode(tmpStream.toString()));
+        code.append(processCode(_codeStream.toString()));
     }
 
     /** Get the files needed by the code generated for the

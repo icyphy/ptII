@@ -74,7 +74,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Create a new instance of the code generator.
      *  @param container The container.
      *  @param name The name of the code generator.
-     *  @exception IllegalActionException If super class throws the
+     *  @exception IllegalActionException If the super class throws the
      *   exception or error occurs when setting the file path.
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
@@ -197,7 +197,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
         generateVariableDeclarations(code);
-        code.append("main() {\n");
+        code.append("main(int argc, char *argv[]) {\n");
         code.append(preinitializeCode);
         code.append(initializeCode);
         code.append(bodyCode);
@@ -229,12 +229,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
 
-    /** Return the code associated with initialization of the containing
-     *  composite actor. This method calls the generateInitializeCode()
-     *  method of the code generator helper associated with the model director.
-     *  @return The initialize code of the containing composite actor.
-     *  @exception IllegalActionException If the helper class for the model
-     *   director cannot be found.
+    /** 
+     * Return the code associated with initialization of the containing
+     * composite actor. This method calls the generateInitializeCode()
+     * method of the code generator helper associated with the model director.
+     * @return The initialize code of the containing composite actor.
+     * @exception IllegalActionException If the helper class for the model
+     *  director cannot be found or if an error occurs when the director
+     *  helper generates initialize code.
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -252,7 +254,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  of the code generator helper associated with the model director
      *  @return The preinitialize code of the containing composite actor.
      *  @exception IllegalActionException If the helper class for the model
-     *   director cannot be found.
+     *   director cannot be found, or if an error occurs when the director
+     *   helper generates preinitialize code.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -363,7 +366,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /** Return the associated component, which is always the container.
-     *  @return The component which is a helper to generate code.
+     *  @return The helper to generate code.
      */
     public NamedObj getComponent() {
         return getContainer();

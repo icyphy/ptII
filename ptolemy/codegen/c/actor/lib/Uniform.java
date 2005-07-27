@@ -64,9 +64,9 @@ public class Uniform extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("fireBlock");
-        code.append(processCode(tmpStream.toString()));
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("fireBlock");
+        code.append(processCode(_codeStream.toString()));
     }
 
     /**
@@ -79,19 +79,19 @@ public class Uniform extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        ptolemy.actor.lib.Gaussian actor =
-            (ptolemy.actor.lib.Gaussian) getComponent();
+        ptolemy.actor.lib.Uniform actor =
+            (ptolemy.actor.lib.Uniform) getComponent();
 
         long seedValue;
-        CodeStream tmpStream = new CodeStream(this);
+        CodeStream _codeStream = new CodeStream(this);
 
         if (Long.parseLong( actor.seed.getExpression()) == 0) {
-            tmpStream.append("$actorSymbol(seed) = time (NULL) + "
+            _codeStream.append("$actorSymbol(seed) = time (NULL) + "
                     + actor.hashCode());
         } else {
-            tmpStream.appendCodeBlock("setSeedBlock");
+            _codeStream.appendCodeBlock("setSeedBlock");
         }
-        return processCode(tmpStream.toString());
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -104,9 +104,9 @@ public class Uniform extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-        return processCode(tmpStream.toString());
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("preinitBlock");
+        return processCode(_codeStream.toString());
     }
 
     /**

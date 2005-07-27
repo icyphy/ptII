@@ -65,9 +65,9 @@ public class XYPlotter extends CCodeGeneratorHelper {
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         // FIXME: how do we add legend to the file??
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("writeFile");
-        code.append(processCode(tmpStream.toString()));
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("writeFile");
+        code.append(processCode(_codeStream.toString()));
     }
 
     /**
@@ -80,9 +80,9 @@ public class XYPlotter extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("initBlock");
-        return processCode(tmpStream.toString());
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("initBlock");
+        return processCode(_codeStream.toString());
     }
 
     /** 
@@ -95,9 +95,7 @@ public class XYPlotter extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-        return processCode(tmpStream.toString());
+        return _generateBlockCode("preinitBlock");
     }
 
     /** 
@@ -115,14 +113,13 @@ public class XYPlotter extends CCodeGeneratorHelper {
         ptolemy.actor.lib.gui.XYPlotter actor = 
             (ptolemy.actor.lib.gui.XYPlotter) getComponent();
 
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("closeFile");
+        _codeStream.clear();
+        _codeStream.appendCodeBlock("closeFile");
 
         if (actor.fillOnWrapup.getExpression().equals("true")) {
-            tmpStream.appendCodeBlock("graphPlot");
+            _codeStream.appendCodeBlock("graphPlot");
         }
-
-        code.append(processCode(tmpStream.toString()));
+        code.append(processCode(_codeStream.toString()));
     }
 
     /** 

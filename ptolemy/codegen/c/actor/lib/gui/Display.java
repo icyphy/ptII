@@ -28,12 +28,13 @@
 package ptolemy.codegen.c.actor.lib.gui;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.data.ArrayToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -57,9 +58,10 @@ public class Display extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * The method reads in <code>printArray</code>, <code>printString</code>,
-     * or <code>printDouble</code> from Display.c, replaces macros with their
-     * values and appends the processed code block to the given code buffer.
+     * The method reads in <code>printInt</code>, <code>printArray</code>,
+     * <code>printString</code>, or <code>printDouble</code> from Display.c,
+     * replaces macros with their values and appends the processed code
+     * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
@@ -68,21 +70,27 @@ public class Display extends CCodeGeneratorHelper {
         throws IllegalActionException {
         ptolemy.actor.lib.gui.Display actor =
             (ptolemy.actor.lib.gui.Display) getComponent();
-        CodeStream tmpStream = new CodeStream(this);
+        _codeStream.clear();
         ArrayList args = new ArrayList();
+        List connectedPorts = actor.input.connectedPortList();
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.add(Integer.toString(i));
-            if (actor.input.get(i).getType().equals(null)) {
-                tmpStream.appendCodeBlock("printArray", args);
+            TypedIOPort port = (TypedIOPort) connectedPorts.get(i);
+            
+            if (port.getType().toString().equals("int")) {
+                _codeStream.appendCodeBlock("printInt", args);
             }
-            else if (actor.input.get(i).getType().equals(null)) {
-                tmpStream.appendCodeBlock("printString", args);
+            if (port.getType().toString().equals("double")) {
+                _codeStream.appendCodeBlock("printDouble", args);
+            }
+            else if (port.getType().toString().equals("string")) {
+                _codeStream.appendCodeBlock("printString", args);
             }
             else {
-                tmpStream.appendCodeBlock("printDouble", args);
+                _codeStream.appendCodeBlock("printArray", args);
             }
         }
-        code.append(processCode(tmpStream.toString()));
+        code.append(processCode(_codeStream.toString()));
     }
 
     /**
@@ -96,11 +104,7 @@ public class Display extends CCodeGeneratorHelper {
     public String generatePreinitializeCode()
         throws IllegalActionException {
         super.generatePreinitializeCode();
-
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-
-        return processCode(tmpStream.toString());
+        return _generateBlockCode("preinitBlock");
     }
 
     /**
@@ -109,10 +113,9 @@ public class Display extends CCodeGeneratorHelper {
      * @return A set of strings that are names of the header files
      *  needed by the code generated for the Display actor.
      */
-    public Set getHeaderFiles() {
+    public Set getIncludingFiles() {
         Set files = new HashSet();
         files.add("\"stdio.h\"");
-
         return files;
     }
 }

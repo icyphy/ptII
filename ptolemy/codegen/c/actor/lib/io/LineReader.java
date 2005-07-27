@@ -30,6 +30,7 @@
 package ptolemy.codegen.c.actor.lib.io;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,9 +67,7 @@ public class LineReader extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("readLine");
-        code.append(processCode(tmpStream.toString()));
+        code.append(_generateBlockCode("readLine"));   
     }
 
     /** 
@@ -82,8 +81,8 @@ public class LineReader extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("initBlock");
+        _codeStream.clear();
+        _codeStream.appendCodeBlock("initBlock");
 
         ptolemy.actor.lib.io.LineReader actor = 
             (ptolemy.actor.lib.io.LineReader) getComponent();
@@ -96,7 +95,7 @@ public class LineReader extends CCodeGeneratorHelper {
         
         if (fileNameString.equals("System.in")) {
             _fileOpen = false;
-            tmpStream.append("openForStdin");
+            _codeStream.append("openForStdin");
         } else {
             _fileOpen = true;
             try {
@@ -106,14 +105,15 @@ public class LineReader extends CCodeGeneratorHelper {
                 throw new IllegalActionException("Cannot open file: "
                         + fileNameString);
             }
-            
-            tmpStream.appendCodeBlock("openForRead", fileNameString);
+            ArrayList args = new ArrayList();
+            args.add(fileNameString);
+            _codeStream.appendCodeBlock("openForRead", args);
 
             for (int i = 0; i < skipLines; i++) {
-                tmpStream.appendCodeBlock("skipLine");
+                _codeStream.appendCodeBlock("skipLine");
             }
         }
-        return processCode(tmpStream.toString());
+        return processCode(_codeStream.toString());
     }
 
     /** 
@@ -126,9 +126,7 @@ public class LineReader extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-        return processCode(tmpStream.toString());
+        return processCode(_generateBlockCode("preinitBlock"));
     }
 
     /** 
@@ -142,9 +140,7 @@ public class LineReader extends CCodeGeneratorHelper {
     public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
         if (_fileOpen) {
-            CodeStream tmpStream = new CodeStream(this);
-            tmpStream.appendCodeBlock("wrapUpBlock");
-            code.append(processCode(tmpStream.toString()));
+            code.append(_generateBlockCode("wrapUpBlock"));
         }
     }
 

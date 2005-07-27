@@ -67,13 +67,13 @@ public class ElementsToArray extends CCodeGeneratorHelper {
         throws IllegalActionException {
         ptolemy.actor.lib.ElementsToArray actor =
             (ptolemy.actor.lib.ElementsToArray) getComponent();
-        CodeStream tmpStream = new CodeStream(this);
+        CodeStream _codeStream = new CodeStream(this);
         ArrayList args = new ArrayList();
         args.add(actor.input.getType().toString());
         args.add(Integer.toString(actor.input.getWidth()));
         
-        tmpStream.appendCodeBlock("fireBlock", args);
-        code.append(processCode(tmpStream.toString()));
+        _codeStream.appendCodeBlock("fireBlock", args);
+        code.append(processCode(_codeStream.toString()));
     }
 
     /**
@@ -89,9 +89,9 @@ public class ElementsToArray extends CCodeGeneratorHelper {
         ptolemy.actor.lib.ElementsToArray actor =
             (ptolemy.actor.lib.ElementsToArray) getComponent();
         super.generatePreinitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-        return processCode(tmpStream.toString());
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock("preinitBlock");
+        return processCode(_codeStream.toString());
     }
 
     /**

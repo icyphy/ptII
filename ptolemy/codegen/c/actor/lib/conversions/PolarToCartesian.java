@@ -63,9 +63,7 @@ public class PolarToCartesian extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("fireBlock");
-        code.append(processCode(tmpStream.toString()));
+        code.append(_generateBlockCode("fireBlock"));
     }
 
     /** 

@@ -66,11 +66,7 @@ public class StringToUnsignedByteArray extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer code)
         throws IllegalActionException {
-        ptolemy.actor.lib.conversions.StringToUnsignedByteArray actor =
-            (ptolemy.actor.lib.conversions.StringToUnsignedByteArray) getComponent();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("fireBlock");
-        code.append(processCode(tmpStream.toString()));
+        code.append(_generateBlockCode("fireBlock"));
     }
     
     /** 
@@ -84,9 +80,7 @@ public class StringToUnsignedByteArray extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-        return processCode(tmpStream.toString());
+        return _generateBlockCode("preinitBlock");
     }
     
     /** 

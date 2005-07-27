@@ -76,9 +76,9 @@ public class TrigFunction extends CCodeGeneratorHelper {
                    : ((function.equals("acos")) ? "acosBlock"
                    : "atanBlock"))));
 
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock(codeBlockName);
-        code.append(processCode(tmpStream.toString()));
+        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.appendCodeBlock(codeBlockName);
+        code.append(processCode(_codeStream.toString()));
     }
 
     /**

@@ -3,17 +3,18 @@
 /**/
 
 /*** setSeedBlock ***/
-    $actorSymbol(seed) = $val(seed);
+    //this.seed = (seed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
+    $actorSymbol(seed) = ((long long) $val(seed) ^ 0x5DEECE66DLL)  & ((1LL << 48) - 1);
 /**/
 
 /*** methodBlock ***/
     int $actorSymbol(next)(int $actorSymbol(bits)) {
-        $actorSymbol(seed) = ($actorSymbol(seed) * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1);
-        return (int)($actorSymbol(seed) >>> (48 - $actorSymbol(bits)));
+        $actorSymbol(seed) = (((long long) $actorSymbol(seed) * 0x5DEECE66DLL) + 0xBLL) & ((1LL << 48) - 1);
+        return (int)((signed long long) $actorSymbol(seed) >> (48 - $actorSymbol(bits)));
     }
      
     double $actorSymbol(nextDouble)() {
-        return (((long)$actorSymbol(next)(26) << 27) + $actorSymbol(next)(27)) / (double)(1L << 53);
+        return (((long long)$actorSymbol(next)(26) << 27) + $actorSymbol(next)(27)) / (double)(1LL << 53);
     }
 /**/
 

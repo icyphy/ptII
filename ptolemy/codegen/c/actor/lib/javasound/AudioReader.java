@@ -29,6 +29,7 @@
 package ptolemy.codegen.c.actor.lib.javasound;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -67,10 +68,7 @@ public class AudioReader extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("readSoundFile");
-
-        code.append(processCode(tmpStream.toString()));
+        code.append(_generateBlockCode("fireBlock"));
     }
     
     /** 
@@ -86,20 +84,23 @@ public class AudioReader extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
+        _codeStream.clear();
         ptolemy.actor.lib.javasound.AudioReader actor = 
             (ptolemy.actor.lib.javasound.AudioReader) getComponent();
         String fileNameString;
 
         try {
-            fileNameString = FileUtilities.nameToFile(actor.fileOrURL.
-                    getExpression(), null).getCanonicalPath();
+            fileNameString = FileUtilities.nameToFile(
+                    actor.fileOrURL.getExpression(), null).getCanonicalPath();
+            fileNameString = fileNameString.replace('\\', '/');
         } catch (IOException e) {
             throw new IllegalActionException("Cannot open file: "
                     + actor.fileOrURL.getExpression());
         }
-        tmpStream.appendCodeBlock("initBlock", fileNameString);
-        return processCode(tmpStream.toString());
+        ArrayList args = new ArrayList();
+        args.add(fileNameString);
+        _codeStream.appendCodeBlock("initBlock", args);
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -112,9 +113,7 @@ public class AudioReader extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("preinitBlock");
-        return processCode(tmpStream.toString());
+        return _generateBlockCode("preinitBlock");
     }
 
     /** 
@@ -128,9 +127,7 @@ public class AudioReader extends CCodeGeneratorHelper {
      */
     public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("wrapupBlock");
-        code.append(processCode(tmpStream.toString()));
+        code.append(_generateBlockCode("wrapupBlock"));
     }
     /** 
      * Get the files needed by the code generated for the
@@ -142,6 +139,8 @@ public class AudioReader extends CCodeGeneratorHelper {
         Set files = new HashSet();
         files.add("\"math.h\"");
         files.add("\"stdio.h\"");
+        files.add("\"SDL.h\"");
+        files.add("\"SDL_audio.h\"");
         return files;
     }
 }

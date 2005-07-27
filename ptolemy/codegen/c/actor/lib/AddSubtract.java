@@ -64,29 +64,29 @@ public class AddSubtract extends CCodeGeneratorHelper {
             throws IllegalActionException {
         ptolemy.actor.lib.AddSubtract actor =
             (ptolemy.actor.lib.AddSubtract) getComponent();
-        StringBuffer tmpStream = new StringBuffer();
-        tmpStream.append("$ref(output) = ");
+        StringBuffer _codeStream = new StringBuffer();
+        _codeStream.append("$ref(output) = ");
 
         for (int i = 0; i < actor.plus.getWidth(); i++) {
-            tmpStream.append("$ref(plus#" + i + ")");
+            _codeStream.append("$ref(plus#" + i + ")");
 
             if (i < (actor.plus.getWidth() - 1)) {
-                tmpStream.append(" + ");
+                _codeStream.append(" + ");
             } else if (actor.minus.getWidth() > 0) {
-                tmpStream.append(" - ");
+                _codeStream.append(" - ");
             }
         }
 
         for (int i = 0; i < actor.minus.getWidth(); i++) {
-            tmpStream.append("$ref(minus#" + i + ")");
+            _codeStream.append("$ref(minus#" + i + ")");
 
             if (i < (actor.minus.getWidth() - 1)) {
-                tmpStream.append(" - ");
+                _codeStream.append(" - ");
             }
         }
 
-        tmpStream.append(";\n");
+        _codeStream.append(";\n");
 
-        code.append(processCode(tmpStream.toString()));
+        code.append(processCode(_codeStream.toString()));
     }
 }

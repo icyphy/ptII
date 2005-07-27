@@ -200,9 +200,15 @@ public class CodeStream {
             String replaceString = arguments.get(i).toString();
             codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
                     parameters.get(i).toString(), replaceString));
-            _stream.append(codeBlock);
-
         }
+        _stream.append(codeBlock);
+    }
+    
+    /**
+     * Clear the contents of this code stream.
+     */
+    public void clear() {
+    	_stream = new StringBuffer();
     }
     
     /**
