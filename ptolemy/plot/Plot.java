@@ -203,7 +203,7 @@ import javax.swing.JComponent;
  the <code>_gridInit()</code> method in the PlotBox class.
  </ul>
 
- @author Edward A. Lee, Christopher Hylands
+ @author Edward A. Lee, Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (cxh)

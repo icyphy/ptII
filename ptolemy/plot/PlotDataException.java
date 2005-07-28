@@ -34,7 +34,7 @@ package ptolemy.plot;
  Exception thrown by plot classes if there are format
  problems with the data to be plotted.
 
- @author Christopher Hylands
+ @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (cxh)

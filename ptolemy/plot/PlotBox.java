@@ -229,7 +229,7 @@ import javax.swing.SwingUtilities;
  This class uses features of JDK 1.2, and hence if used in an applet,
  it can only be viewed by a browser that supports JDK 1.2, or a plugin.
 
- @author Edward A. Lee, Christopher Hylands, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger
+ @author Edward A. Lee, Christopher Brooks, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger
 
  @version $Id$
  @since Ptolemy II 0.2
@@ -2517,7 +2517,7 @@ public class PlotBox extends JPanel implements Printable {
     protected void _help() {
         String message = "Ptolemy plot package\n"
                 + "By: Edward A. Lee\n"
-                + "and Christopher Hylands\n"
+                + "and Christopher Brooks\n"
                 + "Version "
                 + PTPLOT_RELEASE
                 + ", Build: $Id$\n\n"

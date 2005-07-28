@@ -56,7 +56,7 @@ import javax.swing.JButton;
  within a thread separate from the applet thread, so the zooming
  mechanism and buttons remain live.
 
- @author Edward A. Lee, Christopher Hylands, Contributor: Jeff Lane
+ @author Edward A. Lee, Christopher Brooks, Contributor: Jeff Lane
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (cxh)

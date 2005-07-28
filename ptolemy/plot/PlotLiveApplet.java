@@ -1,6 +1,6 @@
 /* A live signal plotter applet
 
- @Author: Edward A. Lee and Christopher Hylands
+ @Author: Edward A. Lee and Christopher Brooks
 
  @Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
@@ -36,7 +36,7 @@ package ptolemy.plot;
  An Applet for the PlotLive class.  Derived classes should redefine
  newPlot() to return a concrete instance of PlotLive.
 
- @author Edward A. Lee, Christopher Hylands
+ @author Edward A. Lee, Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (cxh)
@@ -51,7 +51,7 @@ public class PlotLiveApplet extends PlotApplet {
                 + PlotBox.PTPLOT_RELEASE
                 + " : Demo of PlotLive.\n"
                 + "By: Edward A. Lee\n"
-                + "    Christopher Hylands\n"
+                + "    Christopher Brooks\n"
                 + "($Id$)";
     }
 

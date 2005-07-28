@@ -101,7 +101,7 @@ import javax.swing.SwingUtilities;
 
  @see Plot
  @see PlotBox
- @author Christopher Hylands and Edward A. Lee
+ @author Christopher Brooks and Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (cxh)
@@ -224,7 +224,7 @@ public class PlotApplication extends PlotFrame {
                         this,
                         "PlotApplication class\n"
                                 + "By: Edward A. Lee "
-                                + "and Christopher Hylands\n"
+                                + "and Christopher Brooks\n"
                                 + "Version "
                                 + PlotBox.PTPLOT_RELEASE
                                 + ", Build: $Id$\n\n"
