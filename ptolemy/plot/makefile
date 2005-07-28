@@ -180,6 +180,7 @@ install: all jars
 # ptolemy.gui has lots of classes, we need only a few of them.
 PTOLEMYGUIFILES = \
 	ptolemy/gui/Query.class \
+	'ptolemy/gui/Query$$1.class' \
 	ptolemy/gui/QueryListener.class \
 	'ptolemy/gui/Query$$QueryScrollPane.class' \
 	'ptolemy/gui/Query$$QueryFileChooser.class' \
