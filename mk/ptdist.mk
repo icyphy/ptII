@@ -126,7 +126,7 @@ $(PTTMPDIST): pttmpdist
 pttmpdist: $(PTTMPDIR) $(PTDIST_EX)
 	-mkdir -p $(PTTMPDIR)/$(PTDIST)
 	(cd $(ROOT); \
-	 	$(GNUTAR) -cf - -X $(ME)/$(PTDIST_EX) \
+	 	$(GNUTAR) -cf - --exclude="adm" --exclude="CVS" -X $(ME)/$(PTDIST_EX) \
 			$(ME) $(TOPFILES)) | \
 	(cd $(PTTMPDIR)/$(PTDIST); $(GNUTAR) -xf -)
 	# Remove .classpath, bin/comm.policy, lib/ptII.properties from configure
