@@ -60,9 +60,67 @@ $PTII/util/testsuite/chkjava *.java</EM>
 <P CLASS="FirstBody">
 <A NAME="pgfId-176733"></A>A Java file has the structure shown in figure <A HREF="codingStyle.htm#31451" CLASS="XRef">See Anatomy of a Java file.</A>. The key points to note about this organization are:</P>
 <DIV>
+
+
+<DIV>
 <MAP NAME="codingStyle-1">
 </MAP>
-<IMG SRC="codingStyle-1.gif" USEMAP="#codingStyle-1">
+<pre>
+/* One line description of the class.
+
+copyright notice
+
+@ProposedRating color (email of proposer)
+@AcceptedRating color (email of accepter)
+*/
+
+package name;
+
+imports, in alphabetical order;
+
+//////////////////////////////////////////////////////////////////////////
+//// ClassName
+/**
+Class documentation.
+
+@author Author Name
+@version $Id$
+@since Ptolemy <i>N.M</i>
+*/
+public class ClassName ... {
+
+    constructors
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+    
+    public variables, in alphabetical order
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    public methods, in alphabetical order
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    protected methods, in alphabetical order
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected variables, in alphabetical order
+   ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private methods, in alphabetical order
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private variables, in alphabetical order
+}
+</pre>
 </DIV>
 <UL>
 <LI CLASS="Bulleted">
@@ -77,11 +135,6 @@ $PTII/util/testsuite/chkjava *.java</EM>
 <A NAME="pgfId-176030"></A>Copyright</H4>
 <P CLASS="FirstBody">
 <A NAME="pgfId-176041"></A>The copyright used in Ptolemy II is shown in figure <A HREF="codingStyle.htm#66094" CLASS="XRef">See Copyright notice used in Ptolemy II.</A>. This style of copyright is often referred to the community as a &quot;BSD&quot; copyright because it was used for the &quot;Berkeley standard distribution&quot; of Unix. It is much more liberal that the commonly used &quot;GPL&quot; or &quot;Gnu Public License,&quot; which encumbers the software and derivative works with the requirement that they carry the source code and the same copyright agreement. The BSD copyright requires that the software and derivative work carry the identity of the copyright owner, as embodied in the lines:</P>
-<DIV>
-<MAP NAME="codingStyle-2">
-</MAP>
-<IMG SRC="codingStyle-2.gif" USEMAP="#codingStyle-2">
-</DIV>
 <P CLASS="Code">
 <A NAME="pgfId-176858"></A>&nbsp;</P>
 <P CLASS="Code">
