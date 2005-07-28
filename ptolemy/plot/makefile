@@ -320,6 +320,7 @@ include $(ROOT)/mk/ptdist.mk
 ptplot.jnlp: ptplot.jnlp.in
 	sed 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' $< > $@
 
+FIND=/usr/bin/find
 PTTMPME= $(PTTMPDIR)/$(PTDIST)/$(ME)
 # Fix the temporary directory used when building a distribution
 fixtmpdist:
@@ -504,7 +505,7 @@ fixtmpdist:
 
 	# Get rid of CVS directories in com and gui
 	-(cd $(PTTMPDIR)/$(PTDIST); \
-		find . \( -name CVS -o -name "META-INF" -o -name ".#*" -o -name "#*" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*~" -o -name "adm" -o -name "autom4te.cache" -o -name "*Build_output" -o -name ".buildinstaller*" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
+		$(FIND) . \( -name CVS -o -name "META-INF" -o -name ".#*" -o -name "#*" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*~" -o -name "adm" -o -name "autom4te.cache" -o -name "*Build_output" -o -name ".buildinstaller*" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
 	#
 	# Setting up top level doc directory
 	#
@@ -575,15 +576,15 @@ isj:
 		$(PTTMPDIR)/installshield/src/$(PTDIST)/ptplot.ico \
 		$(PTTMPDIR)/installshield/runtime/$(PTDIST)
 	@echo "Copy .jar files to runtime dir"
-	(cd $(PTTMPDIR)/installshield/src/$(PTDIST); tar -cf - `find . -name "*.jar" -print`) | ( cd $(PTTMPDIR)/installshield/runtime/$(PTDIST); tar -xf -)
+	(cd $(PTTMPDIR)/installshield/src/$(PTDIST); tar -cf - `$(FIND) . -name "*.jar" -print`) | ( cd $(PTTMPDIR)/installshield/runtime/$(PTDIST); tar -xf -)
 	mv $(PTTMPDIR)/installshield/src/$(PTDIST)/ptolemy/plot/plotml/*.dtd \
 		$(PTTMPDIR)/installshield/runtime/$(PTDIST)/ptolemy/plot/plotml
 	@echo "Remove the .jar and .class files from the src dir"
 	(cd $(PTTMPDIR)/installshield/src/$(PTDIST); \
-		find . \( -name "*.class" -o -name "*.jar" \) -exec rm {} \;)
+		$(FIND) . \( -name "*.class" -o -name "*.jar" \) -exec rm {} \;)
 	@echo "Cleanup META-INF dirs etc"
 	(cd $(PTTMPDIR)/installshield/; \
-		find . \( -name "META-INF" -o -name "autom4te.cache" -o -name "#*" -o -name CVS \) -print -exec rm -rf {} \;
+		$(FIND) . \( -name "META-INF" -o -name "autom4te.cache" -o -name "#*" -o -name CVS \) -print -exec rm -rf {} \;
 
 
 # Update the ftp site
