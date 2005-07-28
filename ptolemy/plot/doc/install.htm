@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Installing Ptplot</h1>
-Ptplot 5.5-beta requires Java 1.3 or later.
+Ptplot 5.6-devel requires Java 1.3 or later.
 Java 1.4.2 is preferred, we use Java 1.4.2_08.  Java 1.4 has
 a bug concerning viewing local applets that have spaces in the path
 name, for details, see
@@ -19,7 +19,7 @@ the <a href="troubleshooting.htm#spaces">Troubleshooting Guide</a>.
 (JDK) or an equivalent Java development environment is required.  The
 JDK includes a Java compiler.
 
-<p>To run Ptplot 5.5-beta applets, you must install the version 1.3
+<p>To run Ptplot 5.6-devel applets, you must install the version 1.3
 or later of the
 <a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plug-in</a>.
 In theory, it should be possible to run Ptplot using the Java 1.2 plug-in,
@@ -51,14 +51,14 @@ recompile.  However, if you are using the standalone scripts such as
 <CODE>ptplot</CODE>, then you may want to go through the installation
 procedure so that the standalone scripts are properly localized.
 
- <p>This tar file (ptplot5.5-beta.tar.gz), will unpack into called
-ptplot5.5-beta, and the configure-make-make install process will not
-install any files outside of this ptplot5.5-beta directory.  So if you
+ <p>This tar file (ptplot5.6-devel.tar.gz), will unpack into called
+ptplot5.6-devel, and the configure-make-make install process will not
+install any files outside of this ptplot5.6-devel directory.  So if you
 unpack the tar file into /usr/local, after installing you will have
-/usr/local/ptplot5.5-beta, and you may want to tell users to add
-/usr/local/ptplot5.5-beta/bin to their PATH.  The scripts in the bin
+/usr/local/ptplot5.6-devel, and you may want to tell users to add
+/usr/local/ptplot5.6-devel/bin to their PATH.  The scripts in the bin
 directory will run the plotter as a standalone application, or they
-can add /usr/local/ptplot5.5-beta to their Java CLASSPATH.
+can add /usr/local/ptplot5.6-devel to their Java CLASSPATH.
 
  <p> If you are using Windows and you want to rebuild Ptplot or
 localize the standalone scripts, then you will need to install the
@@ -89,12 +89,12 @@ the <a href="troubleshooting.htm#spaces">Troubleshooting Guide</a>.
 <li> Set the <CODE>PTII</CODE> environment variable to point
 to the top of the Ptplot tree.  Under C-shell, one would do:
 <pre>
-setenv PTII ~/src/ptolemy/ptplot5.5-beta
+setenv PTII ~/src/ptolemy/ptplot5.6-devel
 </pre>
 
 Under Cygwin with bash:
 <pre>
-PTII=c:\\ptolemy\\ptplot5.5-beta
+PTII=c:\\ptolemy\\ptplot5.6-devel
 export PTII
 </pre>
 
@@ -148,7 +148,7 @@ directory that does not have space in the pathname.  For details, see
 the <a href="troubleshooting.htm#spaces">Troubleshooting Guide</a>.
 
  <p>Note that when you run the installer under Windows, Ptplot is
-added to your Start menu under Ptolemy -&gt; Ptplot 5.5-beta.
+added to your Start menu under Ptolemy -&gt; Ptplot 5.6-devel.
 
 
 <h2>Notes about building and installing</h2>
@@ -201,12 +201,12 @@ downloaded the tar or zip files.
 <li> Set the <CODE>PTII</CODE> variable to the top-level
 directory of the Ptplot tree.
 <pre>
-C:\ptolemy\ptplot5.5-beta&gt; PTII=c:\\ptolemy\\ptplot5.5-beta
+C:\ptolemy\ptplot5.6-devel&gt; PTII=c:\\ptolemy\\ptplot5.6-devel
 </pre>
 <CODE>PTII</CODE> is used by the standalone <CODE>ptplot.bat</CODE>
 script and other scripts
 <br>(The double backslash is necessary because otherwise bash will interpret 
-<code>c:\ptolemy\ptplot5.5-beta</code> as <code>c:ptolemyptolemy5.5-beta</code>)
+<code>c:\ptolemy\ptplot5.6-devel</code> as <code>c:ptolemyptolemy5.6-devel</code>)
 
 <li> Be sure that <code>java</code> is in your path by running
 <code>java -version</code>
@@ -224,26 +224,26 @@ Cygwin.
 ptolemy\plot.
 
 <pre>
-C:\ptolemy\ptplot5.5-beta&gt; cd ptolemy\plot
+C:\ptolemy\ptplot5.6-devel&gt; cd ptolemy\plot
 </pre>
 
 
 <li> set your CLASSPATH to ..\..
 <pre>
-C:\ptolemy\ptplot5.5-beta\ptolemy\plot&gt;set CLASSPATH=..\..
-C:\ptolemy\ptplot5.5-beta\ptolemy\plot&gt;echo %CLASSPATH%
+C:\ptolemy\ptplot5.6-devel\ptolemy\plot&gt;set CLASSPATH=..\..
+C:\ptolemy\ptplot5.6-devel\ptolemy\plot&gt;echo %CLASSPATH%
 ..\..
 </pre>
 
 <li> Remove the old Java files and compile them
 <pre>
-C:\ptolemy\ptplot5.5-beta\ptolemy\plot&gt;del  *.class
-C:\ptolemy\ptplot5.5-beta\ptolemy\plot&gt;javac *.java
+C:\ptolemy\ptplot5.6-devel\ptolemy\plot&gt;del  *.class
+C:\ptolemy\ptplot5.6-devel\ptolemy\plot&gt;javac *.java
 </pre>
 
 <li> Run <CODE>ptplot.bat</CODE>, which reads <CODE>%PTII%</CODE>
 <pre>
-C:\ptolemy\ptplot5.5-beta\ptolemy\plot&gt;ptplot.bat
+C:\ptolemy\ptplot5.6-devel\ptolemy\plot&gt;ptplot.bat
 </pre>
 
 </ol>
