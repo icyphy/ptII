@@ -496,11 +496,13 @@ fixtmpdist:
 	# Remove most of the .java files
 	cp "$(PTII)/ptolemy/util/StringUtilities.java" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
+	cp "$(PTII)/ptolemy/util/ClassUtilities.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	cp "$(PTII)/ptolemy/util/FileUtilities.java" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	cp "$(PTII)/ptolemy/util/package.html" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	egrep -v "CancelException|ClassUtilities|MessageHandler|XSLTUtilities" \
+	egrep -v "CancelException|MessageHandler|XSLTUtilities" \
 		"$(PTII)/ptolemy/util/makefile" > \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util/makefile
 
