@@ -8,37 +8,49 @@
 <body>
 <h1>Programming Style for Ptolemy II</h1>
 This document is also <a href="style.pdf" target="_top">Available in PDF format</a>
+<H3 CLASS="FM1Heading">
+<A NAME="pgfId-164027"></A>Coding Style</H3>
+<P CLASS="Author">
+<A NAME="pgfId-180543"></A>Authors:		Christopher Brooks</P>
+<P CLASS="Author">
+<A NAME="pgfId-180544"></A>		Edward A. Lee</P>
+<DIV>
 <H3 CLASS="FM2Heading">
-<A NAME="pgfId-175727"></A>Motivation</H3>
+<A NAME="pgfId-180545"></A>Motivation</H3>
 <P CLASS="FirstBody">
 <A NAME="pgfId-175734"></A>Collaborative software projects benefit when participants read code created by other participants. The objective of a coding style is to reduce the fatigue induced by unimportant formatting differences and differences in naming conventions. Although individual programmers will undoubtedly have preferences and habits that differ from the recommendations here, the benefits that flow from following these recommendations far outweigh the inconveniences. Published papers in journals are subject to similar stylistic and layout constraints, so such constraints are not new to the academic community.</P>
 <P CLASS="FirstBody">
 <A NAME="pgfId-167359"></A>Software written by the Ptolemy Project participants follows this style guide. Although many of these conventions are arbitrary, the resulting consistency makes reading the code much easier, once you get used to the conventions. We recommend that if you extend Ptolemy II in any way, that you follow these conventions. To be included in future versions of Ptolemy II, the code must follow the conventions.</P>
 <P CLASS="Body">
-<A NAME="pgfId-170752"></A>A template that follows these rules can be found in
-<code>$PTII/doc/coding/templates/JavaTemplate.java</code>
-, where <code>$PTII</code>
+<A NAME="pgfId-180659"></A>In general, we follow the Sun Java Style guide (http://java.sun.com/docs/codeconv/). We encourage new developers to use Eclipse (http://www.eclipse.org) as their development platform. Eclipse includes a Java Formatter, and we have found that the Java Conventions style is very close to our requirements.</P>
+<P CLASS="Body">
+<A NAME="pgfId-170752"></A>A template that follows these rules can be found in <EM CLASS="Code">
+$PTII/doc/coding/templates/JavaTemplate.java</EM>
+, where <EM CLASS="Code">
+$PTII</EM>
  is the location of your Ptolemy II installation. In addition, several useful tools are provided in the directories under $PTII/util/ to help enforce the standards. </P>
 <UL>
 <LI CLASS="Bulleted">
 <A NAME="pgfId-177265"></A>lisp/ptjavastyle.el is a lisp module for GNU Emacs that has appropriate indenting rules. This file works well with Emacs under both Unix and Windows.</LI>
 <LI CLASS="Bulleted">
-<A NAME="pgfId-177266"></A>testsuite/jindent is a shell script that uses Emacs and the above module to properly indent many files at once. This script works best under Unix, but can work under Windows with Cygwin. To see how this script would all the Java files in a directory, run:
-<pre>
-$PTII/util/testsuite/jindent -q *.java
-</pre>
+<A NAME="pgfId-177266"></A>testsuite/jindent is a shell script that uses Emacs and the above module to properly indent many files at once. This script works best under Unix, but can work under Windows with Cygwin. To see how this script would all the Java files in a directory, run:<BR>
+<EM CLASS="Code">
+$PTII/util/testsuite/jindent -q *.java<BR>
+</EM>
 To indent the files and check the changes in to CVS, remove the -q option.</LI>
 <LI CLASS="Bulleted">
-<A NAME="pgfId-177319"></A>testsuite/ptspell is a shell script that checks Java code and prints out an alphabetical list of unrecognized spellings. It properly handles namesWithEmbeddedCapitalization and has a list of author names. This script works best under Unix. Under Windows, it would require the installation of the <code>spell</code>
- command. To run this script, type
-<code>
-$PTII/util/testsuite/ptspell *.java
-</code>
+<A NAME="pgfId-177319"></A>testsuite/ptspell is a shell script that checks Java code and prints out an alphabetical list of unrecognized spellings. It properly handles namesWithEmbeddedCapitalization and has a list of author names. This script works best under Unix. Under Windows, it would require the installation of the i<EM CLASS="Code">
+spell</EM>
+ command as <EM CLASS="Code">
+/usr/local/bin/ispell</EM>
+. To run this script, type<BR>
+<EM CLASS="Code">
+$PTII/util/testsuite/ptspell *.java</EM>
+</LI>
 <LI CLASS="Bulleted">
-<A NAME="pgfId-177274"></A>testsuite/chkjava is a shell script for checking various other potentially bad things in Java code, such as debugging code, and FIXME's. This script works under both Unix and Windows. To run this script, type:
-<pre>
-$PTII/util/testsuite/chkjava *.java
-</pre>
+<A NAME="pgfId-177274"></A>testsuite/chkjava is a shell script for checking various other potentially bad things in Java code, such as debugging code, and FIXME's. This script works under both Unix and Windows. To run this script, type:<BR>
+<EM CLASS="Code">
+$PTII/util/testsuite/chkjava *.java</EM>
 </LI>
 </UL>
 </DIV>
@@ -46,68 +58,12 @@ $PTII/util/testsuite/chkjava *.java
 <H3 CLASS="FM2Heading">
 <A NAME="pgfId-176671"></A>Anatomy of a File</H3>
 <P CLASS="FirstBody">
-<A NAME="pgfId-176733"></A>A Java file has the structure shown in figure <A HREF="#31451" CLASS="XRef">See Anatomy of a Java file.</A>.
+<A NAME="pgfId-176733"></A>A Java file has the structure shown in figure <A HREF="codingStyle.htm#31451" CLASS="XRef">See Anatomy of a Java file.</A>. The key points to note about this organization are:</P>
 <DIV>
 <MAP NAME="codingStyle-1">
 </MAP>
-<pre>
-/* One line description of the class.
-
-copyright notice
-
-@ProposedRating color (email of proposer)
-@AcceptedRating color (email of accepter)
-*/
-
-package name;
-
-imports, in alphabetical order;
-
-//////////////////////////////////////////////////////////////////////////
-//// ClassName
-/**
-Class documentation.
-
-@author Author Name
-@version $Id$
-@since Ptolemy <i>N.M</i>
-*/
-public class ClassName ... {
-
-    constructors
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-    
-    public variables, in alphabetical order
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    public methods, in alphabetical order
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    protected methods, in alphabetical order
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    protected variables, in alphabetical order
-   ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    private methods, in alphabetical order
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private variables, in alphabetical order
-}
-</pre>
+<IMG SRC="codingStyle-1.gif" USEMAP="#codingStyle-1">
 </DIV>
- The key points to note about this organization are:</P>
 <UL>
 <LI CLASS="Bulleted">
 <A NAME="pgfId-176659"></A>The file is divided into sections with highly visible delimiters. The sections contain constructors, public variables (including ports and parameters for actor definitions), public methods, protected variables, protected members, private methods, and private variables, in that order. Note in particular that although it is customary in the Java community to list private variables at the beginning of a class definition, we put them at the end. They are not part of the public interface, and thus should not be the first thing you see.</LI>
@@ -120,42 +76,20 @@ public class ClassName ... {
 <H4 CLASS="FM3Heading">
 <A NAME="pgfId-176030"></A>Copyright</H4>
 <P CLASS="FirstBody">
-<A NAME="pgfId-176041"></A>The copyright used in Ptolemy II is shown in figure <A HREF="#66094" CLASS="XRef">See Copyright notice used in Ptolemy II.</A>.
-
+<A NAME="pgfId-176041"></A>The copyright used in Ptolemy II is shown in figure <A HREF="codingStyle.htm#66094" CLASS="XRef">See Copyright notice used in Ptolemy II.</A>. This style of copyright is often referred to the community as a &quot;BSD&quot; copyright because it was used for the &quot;Berkeley standard distribution&quot; of Unix. It is much more liberal that the commonly used &quot;GPL&quot; or &quot;Gnu Public License,&quot; which encumbers the software and derivative works with the requirement that they carry the source code and the same copyright agreement. The BSD copyright requires that the software and derivative work carry the identity of the copyright owner, as embodied in the lines:</P>
 <DIV>
 <MAP NAME="codingStyle-2">
 </MAP>
-<pre>
-Copyright (c) 1995-2005 The Regents of the University of California.
-All rights reserved.
-
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
-
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-</pre>
+<IMG SRC="codingStyle-2.gif" USEMAP="#codingStyle-2">
 </DIV>
-
-<P CLASS="LBody">
- This style of copyright is often referred to the community as a &quot;BSD&quot; copyright because it was used for the &quot;Berkeley standard distribution&quot; of Unix. It is much more liberal that the commonly used &quot;GPL&quot; or &quot;Gnu Public License,&quot; which encumbers the software and derivative works with the requirement that they carry the source code and the same copyright agreement. The BSD copyright requires that the software and derivative work carry the identity of the copyright owner, as embodied in the lines:</P>
-<pre>
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-176858"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176864"></A>Copyright (c) 1999-2005 The Regents of the University of California.</P>
+<P CLASS="Code">
+<A NAME="pgfId-176865"></A>All rights reserved.</P>
+<P CLASS="Code">
+<A NAME="pgfId-176862"></A>&nbsp;</P>
 <P CLASS="LBody">
 <A NAME="pgfId-176875"></A>The copyright also requires that copies and derivative works include the disclaimer of liability in BOLD. It specifically does not require that copies of the software or derivative works carry the middle paragraph, so such copies and derivative works need not grant similarly liberal rights to users of the software.</P>
 <P CLASS="Body">
@@ -163,50 +97,47 @@ All rights reserved.
 <P CLASS="Body">
 <A NAME="pgfId-176887"></A>Software with a BSD license can also be more easily included in defense or national-security related applications, where free redistribution of source code and licenses may be inconsistent with the mission of the software.</P>
 <P CLASS="Body">
-<A NAME="pgfId-177327"></A>Ptolemy II can include other software with copyrights that are different from the BSD copyright. We do not, however, include GPL software, because provisions of the GPL license require that software with which GLP'd code is integrated also be encumbered by the GPL license. Nor do we include software with proprietary copyrights that do not permit redistribution of the software.</P>
+<A NAME="pgfId-177327"></A>Ptolemy II can include other software with copyrights that are different from the BSD copyright. In general, we do not include software with the GNU General Public License (GPL) license, because provisions of the GPL license require that software with which GLP'd code is integrated also be encumbered by the GPL license. We make an exception for GPL'd code that is aggregated with Ptolemy II but not directly combined with Ptolemy II. For example cvs2cl.pl is a GPL'd Perl script that access the CVS database and generates a ChangeLog file. This script is not directly called by Ptolemy II, and we include it as a &quot;mere aggregation&quot; and thus Ptolemy II does not fall under the GPL. Note that we do not include GPL'd Java files that are compiled and then called from Ptolemy II because this would combine Ptolemy II with the GPL'd code and thus encumber Ptolemy II with the GPL.</P>
+<P CLASS="Body">
+<A NAME="pgfId-180673"></A>Another GNU license is the GNU Library General Public License now known as the GNU Lesser General Public License (LGPL). We try to avoid packages that have this license, but we on occasion we have included them with Ptolemy II. The LGPL license is less strict than the GPL - the LGPL permits linking with other packages without encumbering the other package.</P>
+<P CLASS="Body">
+<A NAME="pgfId-180678"></A>In general, it is best if you avoid GNU code. If you are considering using code with the GPL or LGPL, we encourage you to carefully read the license and to also consult the GNU GPL FAQ at http://www.gnu.org/licenses/gpl-faq.html.</P>
+<P CLASS="Body">
+<A NAME="pgfId-180672"></A>We also avoid including software with proprietary copyrights that do not permit redistribution of the software.</P>
 <P CLASS="Body">
 <A NAME="pgfId-177500"></A>The date of the copyright for newly created files should be the current year:</P>
-<pre>
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-177503"></A>Copyright (c) 2005 The Regents of the University of California.</P>
+<P CLASS="Code">
+<A NAME="pgfId-177504"></A>All rights reserved.</P>
+<P CLASS="Body">
 <A NAME="pgfId-177501"></A>&nbsp;</P>
 <P CLASS="Body">
 <A NAME="pgfId-177342"></A>If a file is a copy of a previously copyrighted file, then the start date of the new file should be the same as that of the original file:</P>
-<pre>
-Copyright (c) 1999-2005 The Regents of the University of California.
-All rights reserved.
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-177525"></A>Copyright (c) 1999-2005 The Regents of the University of California.</P>
+<P CLASS="Code">
+<A NAME="pgfId-177526"></A>All rights reserved.</P>
 <P CLASS="Body">
 <A NAME="pgfId-177520"></A>&nbsp;</P>
 <P CLASS="Body">
 <A NAME="pgfId-177519"></A>Ideally, files should have at most one copyright from one institution. Files with multiple copyrights are often in legal limbo if the copyrights conflict. If necessary, two institutions can share the same copyright:</P>
-<pre>
-Copyright (c) 2003-2005 The Ptolemy Institute and The Regents of the</P>
-University of California.
-All rights reserved.
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-177541"></A>Copyright (c) 2005 The Ptolemy Institute and The Regents of the</P>
+<P CLASS="Code">
+<A NAME="pgfId-177547"></A>University of California.</P>
+<P CLASS="Code">
+<A NAME="pgfId-177542"></A>All rights reserved.</P>
+<P CLASS="Code">
+<A NAME="pgfId-177551"></A>&nbsp;</P>
 <P CLASS="Body">
-<A NAME="pgfId-177534"></A>Ptolemy II includes a copyright management system that will display the copyrights of packages that are included in Ptolemy II at runtime. The copyright management system is under development and likely to change. Currently, URLs such as <code>about:</code> and <code>about:copyright</code>
- are handled specially. If, within Ptolemy, the user clicks on a link with a target URL of <code>about:copyright</code>
+<A NAME="pgfId-177534"></A>Ptolemy II includes a copyright management system that will display the copyrights of packages that are included in Ptolemy II at runtime. The copyright management system is under development and likely to change. Currently, URLs such as <EM CLASS="Code">
+about:</EM>
+ and <EM CLASS="Code">
+about:copyright</EM>
+ are handled specially. If, within Ptolemy, the user clicks on a link with a target URL of <EM CLASS="Code">
+about:copyright</EM>
 , then we eventually invoke code within $PTII/ptolemy/actor/gui/GenerateCopyrights.java. This class searches the runtime environment for particular packages and generates a web page with the links to the appropriate copyrights if certain packages are found.</P>
-</DIV>
-<DIV>
-<H4 CLASS="FM3Heading">
-<A NAME="pgfId-177343"></A>Code rating</H4>
-<P CLASS="FirstBody">
-<A NAME="pgfId-176309"></A>Following the copyright section is a pair of annotations labeled <code>@ProposedRating</code> and <code>@AcceptedRating</code>
-. These are followed by color (one of red, green, green, or blue) and the email address of the person responsible for the proposed or accepted rating level.</P>
-<P CLASS="Body">
-<A NAME="pgfId-177426"></A>The intent of the code rating is to clearly identify to readers of the file the level of maturity of the contents. The Ptolemy Project encourages experimentation, and experimentation often involves creating immature code, or even &quot;throw-away&quot; code. Such code is red. We use a lightweight software engineering process documented in &quot;Software Practice in the Ptolemy Project,&quot;<A HREF="#pgfId-177429" CLASS="footnote">1</A> to raise the code to higher ratings. That paper documents the ratings a:</P>
-<P CLASS="Body">
-<A NAME="pgfId-177365"></A>&#183; Red code is untrusted code. This means that we have no confidence in the design or implementation (if there is one) of this code or design, and that anyone that uses it can expect it to change substantially and without notice. All code starts at red.</P>
-<P CLASS="Body">
-<A NAME="pgfId-177369"></A>&#183; Yellow code is code with a trusted design. We have a reasonable degree of confidence in the design, and do not expect it to change in any substantial way. However, we do expect the API to shift around a little during development.</P>
-<P CLASS="Body">
-<A NAME="pgfId-177373"></A>&#183; Green code is code with a trusted implementation. We have confidence that the implementation is sound, based on test suites and practical application of the code. If possible, we try not to release important code unless it is green.</P>
-<P CLASS="Body">
-<A NAME="pgfId-177377"></A>&#183; Blue marks polished and complete code, and also represents a firm commitment to backwards-compatibility. Blue code is completely reviewed, tested, documented, and stressed in actual usage.</P>
 </DIV>
 <DIV>
 <H4 CLASS="FM3Heading">
@@ -214,21 +145,35 @@ All rights reserved.
 <P CLASS="FirstBody">
 <A NAME="pgfId-176913"></A>The imports section identifies the classes outside the current package on which this class depends. The package structure of Ptolemy II is carefully constructed so that core packages do not depend on more elaborate packages. This limited dependencies makes it possible to create derivative works that leverage the core but drastically modify or replace the more advanced capabilities.</P>
 <P CLASS="Body">
-<A NAME="pgfId-176914"></A>By convention, we list imports by full class name, as follows:</P>
-<pre>
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.NameDuplicationException;
-</pre>
+<A NAME="pgfId-176914"></A>&nbsp;</P>
+<P CLASS="Body">
+<A NAME="pgfId-180503"></A>By convention, we list imports by full class name, as follows:</P>
+<P CLASS="Code">
+<A NAME="pgfId-176915"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176921"></A>import ptolemy.kernel.CompositeEntity;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176922"></A>import ptolemy.kernel.Entity;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176923"></A>import ptolemy.kernel.Port;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176924"></A>import ptolemy.kernel.util.IllegalActionException;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176925"></A>import ptolemy.kernel.util.Locatable;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176926"></A>import ptolemy.kernel.util.NameDuplicationException;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176919"></A>&nbsp;</P>
 <P CLASS="LBody">
 <A NAME="pgfId-176934"></A>in particular, we do not use the wildcards supported by Java, as in:</P>
-<pre>
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-176938"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176944"></A>import ptolemy.kernel.*;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176947"></A>import ptolemy.kernel.util.*;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176942"></A>&nbsp;</P>
 <P CLASS="LBody">
 <A NAME="pgfId-176960"></A>The reason that we discourage wildcards is that the full class names in import statements makes it easier find classes that are referenced in the code. If you use an IDE such as Eclipse, it is trivially easy to generate the import list in this form, so there is no reason to not do it.</P>
 <P CLASS="Body">
@@ -246,18 +191,23 @@ import ptolemy.kernel.util.*;
 <H4 CLASS="FM3Heading">
 <A NAME="pgfId-176419"></A>Javadoc and HTML</H4>
 <P CLASS="FirstBody">
-<A NAME="pgfId-176422"></A><A NAME="marker-176420"></A>Javadoc is a program distributed with Java that generates <A NAME="marker-176421"></A>HTML documentation files from Java source code files<A HREF="#pgfId-180511" CLASS="footnote">2</A>. Javadoc comments begin with &quot;<code>/**</code>&quot; and end with
-<code>&quot;*/</code>&quot;.
-The comment immediately preceding a method, member, or class documents that method, member, or class. Ptolemy II classes include Javadoc documentation for all classes and all public and protected members and methods. Members and methods should appear in alphabetical order within their protection category (public, protected etc.) so that it is easy to find them in the Javadoc output.</P>
+<A NAME="pgfId-176422"></A><A NAME="marker-176420"></A>Javadoc is a program distributed with Java that generates <A NAME="marker-176421"></A>HTML documentation files from Java source code files<A HREF="#pgfId-180511" CLASS="footnote">1</A>. Javadoc comments begin with &quot;<EM CLASS="Code">
+/**</EM>
+&quot; and end with &quot;<EM CLASS="Code">
+*/</EM>
+&quot;. The comment immediately preceding a method, member, or class documents that method, member, or class. Ptolemy II classes include Javadoc documentation for all classes and all public and protected members and methods. Members and methods should appear in alphabetical order within their protection category (public, protected etc.) so that it is easy to find them in the Javadoc output.</P>
 <P CLASS="Body">
 <A NAME="pgfId-177009"></A>When writing Javadoc comments, pay special attention to the first sentence of each Javadoc comment. This first sentence is used as a summary in the Javadocs. It is extremely helpful if the first sentence is a cogent and complete summary.</P>
 <P CLASS="Body">
 <A NAME="pgfId-177011"></A>Javadoc comments can include embedded HTML formatting. For example, by convention, in actor documentation, we set in italics the names of the ports and parameters using the syntax</P>
-<pre>
-/** In this actor, inputs are read from the &lt;i&gt;input&lt;/i&gt; port ... */</pre>
-
+<P CLASS="Code">
+<A NAME="pgfId-176423"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176424"></A>/** In this actor, inputs are read from the &lt;i&gt;input&lt;/i&gt; port ... */</P>
+<P CLASS="Code">
+<A NAME="pgfId-177029"></A>&nbsp;</P>
 <P CLASS="Body">
-<A NAME="pgfId-177018"></A>The Javadoc program gives extensive diagnostics when run on a source file. Our policy is to format the comments until there are no Javadoc warnings. Private members and methods need not be documented by Javadoc comments.</P>
+<A NAME="pgfId-177018"></A>The Javadoc program gives extensive diagnostics when run on a source file. Our policy is to format the comments until there are no Javadoc warnings. Private members and methods need not be documented by Javadoc comments. The doccheck tool from http://java.sun.com/j2se/javadoc/doccheck/index.html gives even more extensive diagnostics in HTML format. We encourage developers to run doccheck and fix all warnings.</P>
 </DIV>
 <DIV>
 <H4 CLASS="FM3Heading">
@@ -274,28 +224,76 @@ The comment immediately preceding a method, member, or class documents that meth
 <LI CLASS="Bulleted">
 <A NAME="pgfId-177438"></A>@author<BR>
 The @author tag should list the authors and contributors of a class, for example:<BR>
-<code>
-@author Claudius Ptolemaus, Contributor: Tycho Brahe</code>
+<EM CLASS="Code">
+@author Claudius Ptolemaus, Contributor: Tycho Brahe</EM>
 </LI>
 <LI CLASS="Bulleted">
 <A NAME="pgfId-177449"></A>@version<BR>
 The @version tag includes text that CVS automatically substitutes in the version. The @version tag starts out with:<BR>
-<code>
-@version &#36;Id&#36;<BR>
-</code>
-When the file is committed using CVS, the <code>&#36;Id&#36;</code> gets substituted, so the tag might look like:<BR>
-<code>
-@version $Id$
-</code>
+<EM CLASS="Code">
+@version $Id$<BR>
+</EM>
+When the file is committed using CVS, the $Id$ gets substituted, so the tag might look like:<BR>
+<EM CLASS="Code">
+@version $Id$</EM>
+</LI>
 <LI CLASS="Bulleted">
 <A NAME="pgfId-177440"></A>@since<BR>
 The @since tag refers the release that the class first appeared in. Usually, this is one decimal place after the current release. For example if the current release is 3.0.2, then the @since tag would read:<BR>
-<code>
+<EM CLASS="Code">
 @since Ptolemy II 3.1<BR>
-</code>
-Adding an @since tag to a new class is optional, we usually update these tags programmatically when we do a release. However, authors should be aware of their meaning. Note that the @since tag can also be used when a method is added to an existing class, which will help users notice new features in older code.<BR>
+</EM>
+Adding an @since tag to a new class is optional, we usually update these tags by running a script when we do a release. However, authors should be aware of their meaning. Note that the @since tag can also be used when a method is added to an existing class, which will help users notice new features in older code.</LI>
+<LI CLASS="Bulleted">
+<A NAME="pgfId-180599"></A><EM CLASS="Code">
+@Pt.ProposedRating</EM>
 </LI>
+<LI CLASS="Bulleted">
+<A NAME="pgfId-180642"></A><EM CLASS="Code">
+@Pt.AcceptedRating<BR>
+</EM>
+Code rating tags, discussed below.</LI>
 </UL>
+</DIV>
+<DIV>
+<H4 CLASS="FM3Heading">
+<A NAME="pgfId-180643"></A>Code rating</H4>
+<P CLASS="FirstBody">
+<A NAME="pgfId-180605"></A>The javadoc tags <EM CLASS="Code">
+@Pt.ProposedRating</EM>
+ and <EM CLASS="Code">
+@Pt.AcceptedRating</EM>
+ contain code rating information. Each tag includes the color (one of <EM CLASS="Code">
+red</EM>
+, <EM CLASS="Code">
+yellow</EM>
+, <EM CLASS="Code">
+green</EM>
+, or <EM CLASS="Code">
+blue</EM>
+) and the cvs login of the person responsible for the proposed or accepted rating level, for example:</P>
+<P CLASS="Body">
+<A NAME="pgfId-180626"></A><EM CLASS="Code">
+@Pt.ProposedRating blue ptolemy</EM>
+</P>
+<P CLASS="Body">
+<A NAME="pgfId-180627"></A><EM CLASS="Code">
+@Pt.AcceptedRating green ptolemy</EM>
+</P>
+<P CLASS="Body">
+<A NAME="pgfId-180606"></A>The intent of the code rating is to clearly identify to readers of the file the level of maturity of the contents. The Ptolemy Project encourages experimentation, and experimentation often involves creating immature code, or even &quot;throw-away&quot; code. Such code is red. We use a lightweight software engineering process documented in &quot;Software Practice in the Ptolemy Project,&quot;<A HREF="#pgfId-180609" CLASS="footnote">2</A> to raise the code to higher ratings. That paper documents the ratings a:</P>
+<P CLASS="Body">
+<A NAME="pgfId-180610"></A>&#183; Red code is untrusted code. This means that we have no confidence in the design or implementation (if there is one) of this code or design, and that anyone that uses it can expect it to change substantially and without notice. All code starts at red.</P>
+<P CLASS="Body">
+<A NAME="pgfId-180611"></A>&#183; Yellow code is code with a trusted design. We have a reasonable degree of confidence in the design, and do not expect it to change in any substantial way. However, we do expect the API to shift around a little during development.</P>
+<P CLASS="Body">
+<A NAME="pgfId-180612"></A>&#183; Green code is code with a trusted implementation. We have confidence that the implementation is sound, based on test suites and practical application of the code. If possible, we try not to release important code unless it is green.</P>
+<P CLASS="Body">
+<A NAME="pgfId-180613"></A>&#183; Blue marks polished and complete code, and also represents a firm commitment to backwards-compatibility. Blue code is completely reviewed, tested, documented, and stressed in actual usage.</P>
+<P CLASS="Body">
+<A NAME="pgfId-180616"></A>We use a <A NAME="marker-180614"></A>javadoc <A NAME="marker-180615"></A>doclet at <EM CLASS="Code">
+$PTII/doc/doclets/RatingTaglet.java</EM>
+ to add the ratings to the javadoc output.</P>
 </DIV>
 <DIV>
 <H4 CLASS="FM3Heading">
@@ -308,89 +306,137 @@ Adding an @since tag to a new class is optional, we usually update these tags pr
 <A NAME="pgfId-177047"></A>Method documentation</H4>
 <P CLASS="FirstBody">
 <A NAME="pgfId-177055"></A>Method documentation needs to state what the method does and how it should be used. For example:</P>
-<pre>
-/** Mark the object invalid, indicating that when a method
- *  is next called to get information from the object, that
- *  information needs to be reconstructed from the database.
- */
-public void invalidate() {
-    _valid = false;
-}
-</pre>
-
+<P CLASS="Code">
+<A NAME="pgfId-177063"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-177091"></A>/** Mark the object invalid, indicating that when a method</P>
+<P CLASS="Code">
+<A NAME="pgfId-177079"></A> *  is next called to get information from the object, that</P>
+<P CLASS="Code">
+<A NAME="pgfId-177081"></A> *  information needs to be reconstructed from the database.</P>
+<P CLASS="Code">
+<A NAME="pgfId-177082"></A> */</P>
+<P CLASS="Code">
+<A NAME="pgfId-177083"></A>public void invalidate() {</P>
+<P CLASS="Code">
+<A NAME="pgfId-177116"></A>    _valid = false;</P>
+<P CLASS="Code">
+<A NAME="pgfId-177115"></A>}</P>
+<P CLASS="Code">
+<A NAME="pgfId-177087"></A>&nbsp;</P>
+<P CLASS="LBody">
 <A NAME="pgfId-177066"></A>By contrast, here is a poor method comment:</P>
-<pre>
-/** Set the variable _valid to false.
- */
-public void invalidate() {
-    _valid = false;
-}
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-177092"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-177098"></A>/** Set the variable _valid to false.</P>
+<P CLASS="Code">
+<A NAME="pgfId-177101"></A> */</P>
+<P CLASS="Code">
+<A NAME="pgfId-177120"></A>public void invalidate() {</P>
+<P CLASS="Code">
+<A NAME="pgfId-177121"></A>    _valid = false;</P>
+<P CLASS="Code">
+<A NAME="pgfId-177122"></A>}</P>
+<P CLASS="Code">
+<A NAME="pgfId-177102"></A>&nbsp;</P>
+<P CLASS="LBody">
 <A NAME="pgfId-177109"></A>While this certainly describes what the method does from the perspective of the coder, it says nothing useful from the perspective of the user of the class, who cannot see the (presumably private) variable _valid nor how that variable is used. On closer examination, this comment describes how the method is accomplishing what it does, but it does not describe what it accomplishes.</P>
 <P CLASS="Body">
 <A NAME="pgfId-177151"></A>Here is an even worse method comment:</P>
-<pre>
-/** Invalidate this object.
- */
-public void invalidate() {
-    _valid = false;
-}
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-177133"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-177134"></A>/** Invalidate this object.</P>
+<P CLASS="Code">
+<A NAME="pgfId-177135"></A> */</P>
+<P CLASS="Code">
+<A NAME="pgfId-177136"></A>public void invalidate() {</P>
+<P CLASS="Code">
+<A NAME="pgfId-177137"></A>    _valid = false;</P>
+<P CLASS="Code">
+<A NAME="pgfId-177138"></A>}</P>
+<P CLASS="Code">
+<A NAME="pgfId-177152"></A>&nbsp;</P>
 <P CLASS="LBody">
 <A NAME="pgfId-177153"></A>This says absolutely nothing.</P>
 <P CLASS="Body">
 <A NAME="pgfId-177169"></A>Note the use of the imperative case in all of the above comments. It is common in the Java community to use the following style for documenting methods:</P>
-<pre>
-/** Sets the expression of this variable.
- *  @param expression The expression for this variable.
- */
-public void setExpression(String expression) {
-	...
-}
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-177170"></A><BR>
+/** Sets the expression of this variable. <BR>
+ *  @param expression The expression for this variable.<BR>
+ */<BR>
+public void setExpression(String expression) {<BR>
+	...<BR>
+}<BR>
+</P>
 <P CLASS="LBody">
 <A NAME="pgfId-177171"></A>We use instead the imperative case, as in</P>
-<pre>
-/** Set the expression of this variable.
- *  @param expression The expression for this variable.
- */
-public void setExpression(String expression) {
-	...
-}
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-177172"></A><BR>
+/** Set the expression of this variable.<BR>
+ *  @param expression The expression for this variable.<BR>
+ */<BR>
+public void setExpression(String expression) {<BR>
+	...<BR>
+}<BR>
+</P>
 <P CLASS="LBody">
 <A NAME="pgfId-177173"></A>The reason we do this is that our sentence is a well-formed, grammatical English sentence, while the usual convention is not (it is missing the subject). Moreover, calling a method is a command &quot;do this,&quot; so it seems reasonable that the documentation say &quot;Do this.&quot; The use of imperative case has a large impact on how interfaces are documented, especially when using the listener design pattern. For instance, the java.awt.event.ItemListener interface has the method:</P>
-<pre>
-/** Invoked when an item has been selected or deselected.
- *  The code written for this method performs the operations
- *  that need to occur when an item is selected (or deselected).
- */
-void itemStateChanged(ItemEvent e);
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-177174"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-177175"></A>/** Invoked when an item has been selected or deselected.</P>
+<P CLASS="Code">
+<A NAME="pgfId-177176"></A> *  The code written for this method performs the operations</P>
+<P CLASS="Code">
+<A NAME="pgfId-177177"></A> *  that need to occur when an item is selected (or deselected).</P>
+<P CLASS="Code">
+<A NAME="pgfId-177178"></A> */</P>
+<P CLASS="Code">
+<A NAME="pgfId-177179"></A>void itemStateChanged(ItemEvent e);</P>
+<P CLASS="Code">
+<A NAME="pgfId-177180"></A>&nbsp;</P>
 <P CLASS="LBody">
 <A NAME="pgfId-177181"></A>A naive attempt to rewrite this in imperative tense might result in:</P>
-<pre>
-/** Notify this object that an item has been selected or deselected.
- */
-void itemStateChanged(ItemEvent e);	
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-177182"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-177183"></A>/** Notify this object that an item has been selected or deselected.</P>
+<P CLASS="Code">
+<A NAME="pgfId-177184"></A> */</P>
+<P CLASS="Code">
+<A NAME="pgfId-177185"></A>void itemStateChanged(ItemEvent e);	</P>
+<P CLASS="Code">
+<A NAME="pgfId-177186"></A>&nbsp;</P>
 <P CLASS="LBody">
 <A NAME="pgfId-177187"></A>However, this sentence does not capture what the method does. The method may be called in order to notify the listener, but the method does not &quot;notify this object&quot;. The correct way to concisely document this method in imperative case (and with meaningful names) is:</P>
-<pre>
-/** React to the selection or deselection of an item.
- */
-void itemStateChanged(ItemEvent event);	
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-177188"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-177189"></A>/** React to the selection or deselection of an item.</P>
+<P CLASS="Code">
+<A NAME="pgfId-177190"></A> */</P>
+<P CLASS="Code">
+<A NAME="pgfId-177191"></A>void itemStateChanged(ItemEvent event);	</P>
+<P CLASS="Code">
+<A NAME="pgfId-177192"></A>&nbsp;</P>
 <P CLASS="LBody">
 <A NAME="pgfId-177193"></A>The above is defining an interface (no implementation is given). To define the implementation, it is also necessary to describe what the method does:</P>
-<pre>
-/** React to the selection or deselection of an item by doing...
- */
-void itemStateChanged(ItemEvent event) { ... implementation ... }
-</pre>
-
+<P CLASS="Code">
+<A NAME="pgfId-177194"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-177195"></A>/** React to the selection or deselection of an item by doing...</P>
+<P CLASS="Code">
+<A NAME="pgfId-177196"></A> */</P>
+<P CLASS="Code">
+<A NAME="pgfId-177197"></A>void itemStateChanged(ItemEvent event) { ... implementation ... }</P>
+<P CLASS="Code">
+<A NAME="pgfId-177206"></A>&nbsp;</P>
 <P CLASS="Body">
-<A NAME="pgfId-177223"></A>Comments for base class methods that are intended to be overridden should include information about what the method generally does, plus information that a programmer may need to override it. If the derived class uses the base class method (by calling <code>super.methodName()</code>
+<A NAME="pgfId-177223"></A>Comments for base class methods that are intended to be overridden should include information about what the method generally does, plus information that a programmer may need to override it. If the derived class uses the base class method (by calling <EM CLASS="Code">
+super.methodName()</EM>
 ), but then appends to its behavior, then the documentation in the derived class should describe both what the base class does and what the derived class does.</P>
 </DIV>
 <DIV>
@@ -398,29 +444,38 @@ void itemStateChanged(ItemEvent event) { ... implementation ... }
 <A NAME="pgfId-177225"></A>Referring to methods in comments</H4>
 <P CLASS="Body">
 <A NAME="pgfId-177226"></A>By convention, method names are set in the default font, but followed by empty parentheses, as in</P>
-<pre>
-/** The fire() method is called when ... */
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-176427"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176428"></A>/** The fire() method is called when ... */</P>
+<P CLASS="Code">
+<A NAME="pgfId-176429"></A>&nbsp;</P>
 <P CLASS="LBody">
 <A NAME="pgfId-176430"></A>The parentheses are empty even if the method takes arguments. The arguments are not shown. If the method is <A NAME="marker-176431"></A>overloaded (has several versions with different argument sets), then the text of the documentation needs to distinguish which version is being used.</P>
 <P CLASS="Body">
-<A NAME="pgfId-177582"></A>Other methods in the same class may be linked to with the {@link ...} Javadoc tag. For example, to link to a method Foo that takes a String:</P>
-<pre>
-* Unlike the {@link #Foo(String)} method, this method ...</P>
-</pre>
-<P CLASS="Body">
+<A NAME="pgfId-177582"></A>Other methods in the same class may be linked to with the {@link ...} Javadoc tag. For example, to link to a foo() method that takes a String:</P>
+<P CLASS="Code">
+<A NAME="pgfId-177584"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-180490"></A>* Unlike the {@link #foo(String)} method, this method ...</P>
+<P CLASS="Code">
+<A NAME="pgfId-180491"></A>&nbsp;</P>
+<P CLASS="LBody">
 <A NAME="pgfId-177590"></A>Methods and members in the same package should have an octothorpe (# sign) prepended. Methods and members in other classes should use the fully qualified class name: </P>
-<pre>
-{@link ptolemy.util.StringUtilities.substitute(String, String, String)}
-</pre>
-<P CLASS="Body">
+<P CLASS="Code">
+<A NAME="pgfId-177597"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-180495"></A>{@link ptolemy.util.StringUtilities.substitute(String, String, String)}</P>
+<P CLASS="Code">
+<A NAME="pgfId-180496"></A>&nbsp;</P>
+<P CLASS="LBody">
 <A NAME="pgfId-177601"></A>Links to methods should include the types of the arguments.</P>
 <P CLASS="Body">
-<A NAME="pgfId-177605"></A>To run Javadoc on the classes in the current directory, run <code>make docs</code>
+<A NAME="pgfId-177605"></A>To run Javadoc on the classes in the current directory, run <EM CLASS="Code">
+make docs</EM>
 , which will create the HTML javadoc output in the doc/codeDoc subdirectory. To run Javadoc for all the common packages, run</P>
-<pre>
-cd $PTII/doc; make docs
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-177609"></A>cd $PTII/doc; make docs</P>
 <P CLASS="Body">
 <A NAME="pgfId-177616"></A>The output will appear in $PTII/doc/codeDoc. Actor documentation can be viewed from within Vergil, right clicking on an actor and selecting View Documentation.</P>
 </DIV>
@@ -433,15 +488,20 @@ cd $PTII/doc; make docs
 <A NAME="pgfId-176595"></A>The annotation for the arguments (the <A NAME="marker-176459"></A>@param statement) need not be a complete sentence, since it is usually presented in tabular format. However, we do capitalize it and end it with a period.</P>
 <P CLASS="Body">
 <A NAME="pgfId-176461"></A>Exceptions that are thrown by a method need to be identified in the Javadoc comment. An <A NAME="marker-176462"></A>@exception tag should read like this: </P>
-<pre>
-* @exception MyException If such and such occurs.
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-176463"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176464"></A>* @exception MyException If such and such occurs.</P>
+<P CLASS="Code">
+<A NAME="pgfId-176465"></A>&nbsp;</P>
 <P CLASS="LBody">
 <A NAME="pgfId-176466"></A>Notice that the body always starts with &quot;If&quot;, not &quot;Thrown if&quot;, or anything else. Just look at the Javadoc output to see why. In the case of an interface or base class that does not throw the exception, use the following: </P>
-<pre>
-* @exception MyException Not thrown in this base class. Derived
-* classes may throw it if such and such happens.
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-176467"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176468"></A>* @exception MyException Not thrown in this base class. Derived<BR>
+*  classes may throw it if such and such happens.<BR>
+</P>
 <P CLASS="LBody">
 <A NAME="pgfId-176469"></A>The exception still has to be declared so that derived classes can throw it, so it needs to be documented as well.</P>
 </DIV>
@@ -450,14 +510,16 @@ cd $PTII/doc; make docs
 <A NAME="pgfId-176528"></A>FIXME annotations</H4>
 <P CLASS="Body">
 <A NAME="pgfId-176520"></A>We use the keyword &quot;FIXME&quot; in comments to mark places in the code with known problems. For example:</P>
-<pre>
-// FIXME: The following cast may not always be safe.
-Foo foo = (Foo)bar;
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-176521"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-176522"></A>// FIXME: The following cast may not always be safe.</P>
+<P CLASS="Code">
+<A NAME="pgfId-176523"></A>Foo foo = (Foo)bar;</P>
 <P CLASS="Body">
 <A NAME="pgfId-177730"></A>&nbsp;</P>
 <P CLASS="Body">
-<A NAME="pgfId-177736"></A>To set up Eclipse to highlight FIXMEs, see the instructions in <a href="eclipse.htm">$PTII/doc/coding/eclipse.htm</a>.</P>
+<A NAME="pgfId-177736"></A>To set up Eclipse to highlight FIXMEs, see the instructions in $PTII/doc/coding/eclipse.htm.</P>
 </DIV>
 </DIV>
 <DIV>
@@ -480,47 +542,49 @@ Foo foo = (Foo)bar;
 <A NAME="pgfId-176384"></A><A NAME="marker-167870"></A>Indentation and brackets</H4>
 <P CLASS="Body">
 <A NAME="pgfId-167618"></A>Nested statements should be indented by 4 characters, as in: </P>
-<pre>
-if (container != null) {
-    Manager manager = container.getManager();
-    if (manager != null) {
-        manager.requestChange(change);
-    }
-}
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-167770"></A><BR>
+if (container != null) {<BR>
+    Manager manager = container.getManager();<BR>
+    if (manager != null) {<BR>
+        manager.requestChange(change);<BR>
+    }<BR>
+}<BR>
+</P>
 <P CLASS="LBody">
-<A NAME="pgfId-180523"></A>Closing brackets should be on a line by
-themselves, aligned with the beginning of the line that contains the
-open bracket. Please avoid using the Tab character in source
-files. The reason for this is that code becomes unreadable when the
-Tab character is interpreted differently by different programs. Your
-text editor should be configured to react to the Tab key by inserting
-spaces rather than the tab character. To set up Emacs to follow the
-Ptolemy II indentation style, see $PTII/util/lisp/ptemacs.el. To set
-up Eclipse to follow the Ptolemy II indentation style, see the
-instructions in $PTII/doc/coding/eclipse.htm.</P>
-
+<A NAME="pgfId-180523"></A>Closing brackets should be on a line by themselves, aligned with the beginning of the line that contains the open bracket. Please avoid using the Tab character in source files. The reason for this is that code becomes unreadable when the Tab character is interpreted differently by different programs. Your text editor should be configured to react to the Tab key by inserting spaces rather than the tab character. To set up Emacs to follow the Ptolemy II indentation style, see $PTII/util/lisp/ptemacs.el. To set up Eclipse to follow the Ptolemy II indentation style, see the instructions in $PTII/doc/coding/eclipse.htm.</P>
 <P CLASS="Body">
-<A NAME="pgfId-180524"></A>Long lines should be broken up into many small lines. The easiest places to break long lines are usually just before operators, with the operator appearing on the next line. Long strings can be broken up using the + operator in Java, with the + starting the next line. Continuation lines are indented by 8 characters, as in the throws clause of the constructor in figure <A HREF="style.htm#31451" CLASS="XRef">See Anatomy of a Java file.</A>.</P>
+<A NAME="pgfId-180524"></A>Long lines should be broken up into many small lines. The easiest places to break long lines are usually just before operators, with the operator appearing on the next line. Long strings can be broken up using the + operator in Java, with the + starting the next line. Continuation lines are indented by 8 characters, as in the throws clause of the constructor in figure <A HREF="codingStyle.htm#31451" CLASS="XRef">See Anatomy of a Java file.</A>.</P>
 </DIV>
 <DIV>
 <H4 CLASS="FM3Heading">
 <A NAME="pgfId-167404"></A>Spaces</H4>
 <P CLASS="Body">
 <A NAME="pgfId-167408"></A>Use a <A NAME="marker-167869"></A>space after each comma: </P>
-<pre>
-          Right: foo(a, b);
-          Wrong: foo(a,b);
-</pre>
 <P CLASS="Body">
-<A NAME="pgfId-167411"></A>Use spaces around operators such as plus, minus, multiply, divide or equals signs, and after semicolons: </P>
-<pre>
-          Right: a = b + 1;
-          Wrong: a=b+1;
-
-          Right: for(i = 0; i &lt; 10; i += 2)
-          Wrong: for(i=0 ;i&lt;10;i+=2)
-</pre>
+<A NAME="pgfId-180504"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-167409"></A>          Right: foo(a, b); </P>
+<P CLASS="Code">
+<A NAME="pgfId-167410"></A>          Wrong: foo(a,b); </P>
+<P CLASS="Code">
+<A NAME="pgfId-180505"></A>&nbsp;</P>
+<P CLASS="LBody">
+<A NAME="pgfId-167411"></A>Use spaces around operators such as plus, minus, multiply, divide or equals signs, after semicolons and after keywords like if, else, for, do, while, try, catch and throws:</P>
+<P CLASS="Code">
+<A NAME="pgfId-167412"></A>          Right: a = b + 1; </P>
+<P CLASS="Code">
+<A NAME="pgfId-180744"></A>          Wrong: a=b+1; </P>
+<P CLASS="Code">
+<A NAME="pgfId-180745"></A>          Right: for(i = 0; i &lt; 10; i += 2) </P>
+<P CLASS="Code">
+<A NAME="pgfId-180746"></A>          Wrong: for (i=0 ;i&lt;10;i+=2)</P>
+<P CLASS="Code">
+<A NAME="pgfId-180751"></A>          Right: if ( a == b) {</P>
+<P CLASS="Code">
+<A NAME="pgfId-180752"></A>          Wrong: if(a==b)</P>
+<P CLASS="Code">
+<A NAME="pgfId-180747"></A>&nbsp;</P>
 </DIV>
 <DIV>
 <H4 CLASS="FM3Heading">
@@ -533,54 +597,62 @@ instructions in $PTII/doc/coding/eclipse.htm.</P>
 <A NAME="pgfId-167986"></A>The convention we follow is that a run-time exception is acceptable only if the cause of the exception can be tested for prior to calling the method. This is called a <A NAME="marker-167987"></A>testable <A NAME="marker-167988"></A>precondition. For example, if a particular method will fail if the argument is negative, and this fact is documented, then the method can throw a run-time exception if the argument is negative. On the other hand, consider a method that takes a string argument and evaluates it as an expression. The expression may be malformed, in which case an exception will be thrown. Can this be a run-time exception? No, because to determine whether the expression is malformed, you really need to invoke the evaluator. Making this a compile-time exception forces the caller to explicitly deal with the exception, or to declare that it too throws the same exception. In general, we prefer to use compile-time exceptions wherever possible.</P>
 <P CLASS="Body">
 <A NAME="pgfId-167449"></A>When throwing an exception, the detail message should be a complete sentence that includes a string that fully describes what caused the exception. For example</P>
-<pre>
-throw new IllegalActionException(this,
-        &quot;Cannot append an object of type: &quot;
-        + obj.getClass().getName() + &quot; because &quot;
-        + &quot;it does not implement Cloneable.&quot;);
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-167452"></A><BR>
+throw IllegalActionException(this,<BR>
+        &quot;Cannot append an object of type: &quot;<BR>
+                + obj.getClass().getName() + &quot; because &quot;</P>
+<P CLASS="Code">
+<A NAME="pgfId-170566"></A>                + &quot;it does not implement Cloneable.&quot;);<BR>
+</P>
 <P CLASS="LBody">
 <A NAME="pgfId-168925"></A>Note that the exception not only gives a way to identify the objects that caused the exception, but also why the exception occurred. There is no need to include in the message an identification of the &quot;this&quot; object passed as the first argument to the exception constructor. That object will be identified when the exception is reported to the user.</P>
 <P CLASS="Body">
 <A NAME="pgfId-177623"></A>If an exception is caught, be sure to use exception chaining to include the original exception. For example:</P>
-<pre>
-String fileName = foo();
-try {
-    // Try to open the file
-} catch (IOException ex) {
-    throw new IllegalActionException(this, ex,
-            "Failed to open '" + fileName + "'");
-}
-</pre>
+<P CLASS="Code">
+<A NAME="pgfId-177624"></A>&nbsp;</P>
+<P CLASS="Code">
+<A NAME="pgfId-180508"></A>String fileName = foo();</P>
+<P CLASS="Code">
+<A NAME="pgfId-177638"></A>try {</P>
+<P CLASS="Code">
+<A NAME="pgfId-177639"></A>    // Try to open the file</P>
+<P CLASS="Code">
+<A NAME="pgfId-177625"></A>} catch (IOException ex) {</P>
+<P CLASS="Code">
+<A NAME="pgfId-177640"></A>    throw new IllegalActionException(this, ex,</P>
+<P CLASS="Code">
+<A NAME="pgfId-177641"></A>            &quot;Failed to open '&quot; + fileName + &quot;'&quot;);<BR>
+}</P>
 </DIV>
 </DIV>
-</DIV>
-
-<H3 CLASS="FM2Heading">
-Directory naming conventions</H3>
 <DIV>
+<H3 CLASS="FM2Heading">
+<A NAME="pgfId-180365"></A>Directory naming conventions</H3>
+<P CLASS="FirstBody">
+<A NAME="pgfId-180376"></A>Individual demonstrations should be in directories under a <EM CLASS="Code">
+demo/</EM>
+ directory. The name of the directory, and the name of the model should match and both begin with capital letters. The demos should be capitalized so that it is possible to generate code for demonstrations. For example, the Butterfly demonstration is in <EM CLASS="Code">
+sdf/demo/Butterfly/Butterfly.xml</EM>
+.</P>
 <P CLASS="Body">
-Individual demonstrations should be in directories under a demo/ directory. The name of the directory, and the name of the model should match and both begin with capital letters. The demos should be capitalized so that it is possible to generate code for demonstrations. For example, the Butterfly demonstration is in sdf/demo/Butterfly/Butterfly.xml.
-</p>
-<P CLASS="Body">
-All other directories begin with lower case letters and most consist solely of lower case letters.
-<p>
+<A NAME="pgfId-180392"></A>All other directories begin with lower case letters and most consist solely of lower case letters.</P>
+</DIV>
+</DIV>
 <HR>
 <DIV CLASS="footnotes">
 <DIV CLASS="footnote">
 <P CLASS="Footnote">
 <SPAN CLASS="footnoteNumber">
 1.</SPAN>
-<A NAME="pgfId-177429"></A>J. Reekie, S. Neuendorffer, C. Hylands and E. A. Lee ``Software Practice in the Ptolemy Project,'' Technical Report Series, GSRC-TR-1999-01, Gigascale Semiconductor Research Center, University of California, Berkeley, CA 94720, April 1999, <BR>
-<a href="sftwareprac/index.htm">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/sftwareprac/index.htm</a></P>
+<A NAME="pgfId-180511"></A>See http://java.sun.com/j2se/javadoc/writingdoccomments/ for guidelines from Sun Microsystems on writing Javadoc comments.</P>
 </DIV>
 <DIV CLASS="footnote">
 <P CLASS="Footnote">
 <SPAN CLASS="footnoteNumber">
 2.</SPAN>
-<A NAME="pgfId-180511"></A>See 
-<a href="http://java.sun.com/j2se/javadoc/writingdoccomments/#in_browser" target="_top">http://java.sun.com/j2se/javadoc/writingdoccomments/</a>
-for guidelines from Sun Microsystems on writing Javadoc comments.</P>
+<A NAME="pgfId-180609"></A>J. Reekie, S. Neuendorffer, C. Hylands and E. A. Lee &quot;Software Practice in the Ptolemy Project,&quot; Technical Report Series, GSRC-TR-1999-01, Gigascale Semiconductor Research Center, University of California, Berkeley, CA 94720, April 1999, <BR>
+http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/sftwareprac/index.htm</P>
 </DIV>
 <DIV CLASS="footnote">
 <P CLASS="Footnote">
