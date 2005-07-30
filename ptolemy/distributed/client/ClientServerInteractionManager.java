@@ -64,7 +64,7 @@ import ptolemy.kernel.util.KernelException;
  a lookup service it queries for the given service and filters the dead
  services.
 
- @author Daniel Lázaro Cuadrado (kapokasa@kom.aau.dk)
+ @author Daniel L&#225;zaro Cuadrado (kapokasa@kom.aau.dk)
  @version $Id$
  @since Ptolemy II 5.1
  @Pt.ProposedRating Red (kapokasa)
