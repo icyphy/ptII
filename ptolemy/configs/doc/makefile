@@ -96,11 +96,11 @@ install: all jars
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
 completeDemosPtiny.htm: completeDemos.htm
-	awk -f $(ROOT)/doc/javahtml.awk $< | sed 's/demos.htm/demosPtiny.htm/' > $@  
+	awk -f $(ROOT)/doc/javahtml.awk completeDemos.htm | sed 's/demos.htm/demosPtiny.htm/' > $@  
 demosPtiny.htm: demos.htm
-	awk -f $(ROOT)/doc/javahtml.awk $< | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
+	awk -f $(ROOT)/doc/javahtml.awk demosPtiny.htm | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
 docsPtiny.htm: docs.htm
-	awk -f $(ROOT)/doc/javahtml.awk $< | sed 's/intro.htm/introPtiny.htm/' > $@  
+	awk -f $(ROOT)/doc/javahtml.awk docsPtiny.htm | sed 's/intro.htm/introPtiny.htm/' > $@  
 
 update: $(DERIVED_FILES)
 	cvs commit -m "Master files changed" $(DERIVED_FILES)
