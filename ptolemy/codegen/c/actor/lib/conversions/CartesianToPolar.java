@@ -26,10 +26,6 @@
 
 
  */
-/*
- * Created on 2005¦~4¤ë19¤é
- *
- */
 package ptolemy.codegen.c.actor.lib.conversions;
 
 import java.util.HashSet;
