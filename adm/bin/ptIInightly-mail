@@ -18,6 +18,10 @@ if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
     ADMDIR=/home/bldmastr/ptII/adm
 fi
 
+if [ "`hostname`" = "source.EECS.Berkeley.EDU" ]; then
+    ADMDIR=/home/bldmastr/ptII/adm
+fi
+
 # If you change the version number, then edit 
 # ptII/adm/bin/ptIInightly
 # ptII/adm/gen-xxx/makefile
