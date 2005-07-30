@@ -411,7 +411,7 @@ $(KEYSTORE):
 vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
-			$< > $@
+			vergilDSP.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(DSP_MAIN_JAR) ]; then \
 		echo "$(SIGNED_DIR)$(DSP_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
@@ -448,7 +448,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
-			$< > $@
+			vergilHyVisual.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR) ]; then \
 		echo "$(SIGNED_DIR)$(HYBRID_SYSTEMS_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
@@ -483,7 +483,7 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
-			$< > $@
+			vergilPtiny.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(PTINY_MAIN_JAR) ]; then \
 		echo "$(SIGNED_DIR)$(PTINY_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
@@ -518,7 +518,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
-			$< > $@
+			vergilPtinySandbox.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR) ]; then \
 		echo "$(SIGNED_DIR)$(PTINY_SANDBOX_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
@@ -555,7 +555,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
-			$< > $@
+			vergilVisualSense.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR) ]; then \
 		echo "$(SIGNED_DIR)$(VISUAL_SENSE_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
@@ -590,7 +590,7 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
-			$< > $@
+			vergil.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(FULL_MAIN_JAR) ]; then \
 		echo "$(SIGNED_DIR)$(FULL_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
