@@ -153,7 +153,6 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Throw an exception because hierarchy is not yet supported.
      *  @param controllingBranch The branch.
-     *  @return Not returned in this method.
      */
     public void put(Token token, Branch controllingBranch) {
         throw new InvalidStateException(getContainer(),
