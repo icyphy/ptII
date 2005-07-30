@@ -202,7 +202,7 @@ JAVADOC = 	$(PTJAVA_DIR)/bin/javadoc
 JDOCBREAKITERATOR = @JDOCBREAKITERATOR@
 
 # Increase the amount of memory that javadoc uses.
-JDOCMEMORY =	-J-Xmx132m
+JDOCMEMORY =	-J-Xmx168m
 
 # Allow @Pt.AcceptedRating and @Pt.ProposedRating tags.
 JDOCTAG = 	-tag Pt.AcceptedRating -tag Pt.ProposedRating
