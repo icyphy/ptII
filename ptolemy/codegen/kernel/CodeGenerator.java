@@ -146,6 +146,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  In this base class, nothing is generated.
      *  @exception Not Thrown in this base class.
      *  @return The empty string.
+     *  @exception IllegalActionException Not thrown in this base class.  
      */
     public String generateBodyCode() throws IllegalActionException {
         return "";
