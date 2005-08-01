@@ -196,39 +196,39 @@ public class Director implements ActorCodeGenerator {
 
     /** Return the director associated with this class.
      *  @return The director associated with this class.
-//      */
-//     public NamedObj getComponent() {
-//         return _director;
-//     }
+     */
+    public NamedObj getComponent() {
+        return _director;
+    }
 
-//     /** Set the code generator associated with this helper class.
-//      *  @param codeGenerator The code generator associated with this
-//      *   helper class.
-//      */
-//     public void setCodeGenerator(CodeGenerator codeGenerator) {
-//         _codeGenerator = codeGenerator;
-//     }
+    /** Set the code generator associated with this helper class.
+     *  @param codeGenerator The code generator associated with this
+     *   helper class.
+     */
+    public void setCodeGenerator(CodeGenerator codeGenerator) {
+        _codeGenerator = codeGenerator;
+    }
 
-//     /////////////////////////////////////////////////////////////////////
-//     ////                   protected methods                         ////
+    /////////////////////////////////////////////////////////////////////
+    ////                   protected methods                         ////
 
-//     /** Get the helper class associated with the given component.
-//      *  @param component The given component.
-//      *  @return the helper class associated with the given component.
-//      *  @exception IllegalActionException If the code generator throws
-//      *   it when getting the helper associated with the given component.
-//      */
-//     protected ComponentCodeGenerator _getHelper(NamedObj component)
-//             throws IllegalActionException {
-//         return _codeGenerator._getHelper(component);
-//     }
+    /** Get the helper class associated with the given component.
+     *  @param component The given component.
+     *  @return the helper class associated with the given component.
+     *  @exception IllegalActionException If the code generator throws
+     *   it when getting the helper associated with the given component.
+     */
+    protected ComponentCodeGenerator _getHelper(NamedObj component)
+            throws IllegalActionException {
+        return _codeGenerator._getHelper(component);
+    }
 
-//     ////////////////////////////////////////////////////////////////////
-//     ////                     protected variables                    ////
+    ////////////////////////////////////////////////////////////////////
+    ////                     protected variables                    ////
 
-//     /** The code generator containing this director helper.
-//      */
-//     protected CodeGenerator _codeGenerator;
+    /** The code generator containing this director helper.
+     */
+    protected CodeGenerator _codeGenerator;
 
     ////////////////////////////////////////////////////////////////////
     ////                     private variables                      ////
