@@ -272,7 +272,7 @@ JINI_LIB =	$(JINI_DIR)/jar
 # we may run into problems compiling under Solaris8 with JavaScope
 # because we end up with a classpath with an empty element ::
 # Include jini-ext.jar for javadoc.
-JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar$(CLASSPATHSEPARATOR)/jini-ext.jar
+JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-ext.jar
 
 # Jar files for Java Media Framework (JMF) used by ptolemy/actor/lib/makefile
 JMF_JARS =	@JMF_JARS@
