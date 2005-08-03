@@ -331,7 +331,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (_namespace.equals(_AUTO_NAMESPACE)
                 && (_current != null)
                 && (name.equals("name") || name.equals("port")
-                        || name.equals("relation") || name.equals("vertex") || name
+                        || name.startsWith("relation") || name.equals("vertex") || name
                         .equals("pathTo"))) {
             // See whether the name is in the translation table.
             // Note that the name might be compound, e.g. "Const.output",
