@@ -138,6 +138,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // By default, the origin should be the upper left.
         newFigure.setCentered(_centered);
         newFigure.setLineWidth(_lineWidth);
+        newFigure.setDashArray(_dashArray);
         newFigure.setStrokePaint(_lineColor);
         newFigure.setFillPaint(_fillColor);
 
@@ -181,6 +182,38 @@ public class ShapeIcon extends DynamicEditorIcon {
                 while (figures.hasNext()) {
                     Object figure = figures.next();
                     ((BasicFigure) figure).setCentered(_centered);
+                }
+            }
+        };
+
+        SwingUtilities.invokeLater(doSet);
+    }
+
+    /** Specify the dash array to use for rendering lines.
+     *  This is deferred and executed in the Swing thread.
+     *  @param dashArray The dash array.
+     */
+    public void setDashArray(float[] dashArray) {
+        // Avoid calling swing if things haven't actually changed.
+        if (_dashArray != null && _dashArray.equals(dashArray)) {
+            return;
+        }
+
+        _dashArray = dashArray;
+
+        // Update the shapes of all the figures that this icon has
+        // created (which may be in multiple views). This has to be
+        // done in the Swing thread.  Assuming that createBackgroundFigure()
+        // is also called in the Swing thread, there is no possibility of
+        // conflict here where that method is trying to add to the _figures
+        // list while this method is traversing it.
+        Runnable doSet = new Runnable() {
+            public void run() {
+                Iterator figures = _liveFigureIterator();
+
+                while (figures.hasNext()) {
+                    Object figure = figures.next();
+                    ((BasicFigure) figure).setDashArray(_dashArray);
                 }
             }
         };
@@ -315,6 +348,9 @@ public class ShapeIcon extends DynamicEditorIcon {
     ////                         private variables                 ////
     // Indicator of whether the figure should be centered on its origin.
     private boolean _centered = false;
+    
+    // Dash array, if specified.
+    private float[] _dashArray;
 
     // Default shape specified in the constructor.
     private Shape _defaultShape;
