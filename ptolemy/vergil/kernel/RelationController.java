@@ -34,7 +34,12 @@ import java.awt.geom.Line2D;
 import javax.swing.SwingConstants;
 
 import ptolemy.actor.IORelation;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
@@ -98,35 +103,53 @@ public class RelationController extends ParameterizedNodeController {
          * @return The persistent object that is drawn on the screen.
          */  
         public Figure render(Object node) {
-            double h = 12.0;
-            double w = 12.0;
-
-            Polygon2D.Double polygon = new Polygon2D.Double();
-            polygon.moveTo(w / 2, 0);
-            polygon.lineTo(0, h / 2);
-            polygon.lineTo(-w / 2, 0);
-            polygon.lineTo(0, -h / 2);
-            polygon.closePath();
-
-            Figure figure = new BasicFigure(polygon, Color.black);
-
+            // Default values.
+            double height = 12.0;
+            double width = 12.0;
+            
             Relation relation = null;
             if (node != null) {
                 Vertex vertex = (Vertex) node;
                 relation = (Relation) vertex.getContainer();
+                
+                // FIXME: Replace with a preferences manager?
+                Variable size = ModelScope.getScopedVariable(null, relation, "_relationSize");
+                if (size != null) {
+                    try {
+                        Token hideValue = size.getToken();
+                        if (hideValue instanceof DoubleToken) {
+                            height = ((DoubleToken)hideValue).doubleValue();
+                            width = height;
+                        }
+                    } catch (IllegalActionException ex) {
+                        System.out.println("Warning: Invalid _relationSize preference: " + ex);
+                    }
+                }
+            }
+
+            Polygon2D.Double polygon = new Polygon2D.Double();
+            polygon.moveTo(width / 2, 0);
+            polygon.lineTo(0, height / 2);
+            polygon.lineTo(-width / 2, 0);
+            polygon.lineTo(0, -height / 2);
+            polygon.closePath();
+
+            Figure figure = new BasicFigure(polygon, Color.black);
+
+            if (node != null) {
                 ActorGraphModel model = (ActorGraphModel) getController()
                         .getGraphModel();
                 figure
                         .setToolTipText(relation.getName(model
                                 .getPtolemyModel()));
 
-                StringAttribute _colorAttr = (StringAttribute) (relation
+                StringAttribute colorAttr = (StringAttribute) (relation
                         .getAttribute("_color"));
 
-                if (_colorAttr != null) {
-                    String _color = _colorAttr.getExpression();
+                if (colorAttr != null) {
+                    String color = colorAttr.getExpression();
                     ((BasicFigure) figure).setFillPaint(SVGUtilities
-                            .getColor(_color));
+                            .getColor(color));
                 }
             }
 
@@ -134,15 +157,18 @@ public class RelationController extends ParameterizedNodeController {
 
             if (relation instanceof IORelation) {
                 if (((IORelation) relation).getWidth() > 1) {
-                    Line2D.Double line = new Line2D.Double(-w / 2, h / 2,
-                            w / 2, -h / 2);
+                    // Restore width and height to the default to get a reasonable slash.
+                    width = 12.0;
+                    height = 12.0;
+                    Line2D.Double line = new Line2D.Double(-width / 2, height / 2,
+                            width / 2, -height / 2);
                     Figure lineFigure = new BasicFigure(line, Color.black);
                     result.add(lineFigure);
 
                     LabelFigure label = new LabelFigure(""
                             + ((IORelation) relation).getWidth(),
                             _relationLabelFont, 0, SwingConstants.SOUTH_WEST);
-                    label.translateTo(w / 2 + 1.0, -h / 2 - 1.0);
+                    label.translateTo(width / 2 + 1.0, -height / 2 - 1.0);
                     result.add(label);
                 }
             }

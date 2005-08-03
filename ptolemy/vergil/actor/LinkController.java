@@ -28,8 +28,13 @@
 package ptolemy.vergil.actor;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
@@ -197,23 +202,23 @@ public class LinkController extends BasicEdgeController {
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             Link link = (Link) edge;
-            ManhattanConnector c = new LinkManhattanConnector(
+            ManhattanConnector connector = new LinkManhattanConnector(
                     tailSite, headSite, link);
 
             if ((link.getHead() != null) && (link.getTail() != null)) {
-                c.setLineWidth((float) 2.0);
+                connector.setLineWidth((float) 2.0);
             }
 
-            c.setUserObject(edge);
+            connector.setUserObject(edge);
 
             // The default bend radius of 50 is too large...
             // parallel curves look bad.
-            c.setBendRadius(20);
+            connector.setBendRadius(20);
 
             Relation relation = link.getRelation();
 
             if (relation != null) {
-                c.setToolTipText(relation.getName());
+                connector.setToolTipText(relation.getName());
 
                 // FIXME: This isn't quite right for relation groups.
                 StringAttribute _colorAttr = (StringAttribute) (relation
@@ -221,18 +226,32 @@ public class LinkController extends BasicEdgeController {
 
                 if (_colorAttr != null) {
                     String _color = _colorAttr.getExpression();
-                    c.setStrokePaint(SVGUtilities.getColor(_color));
+                    connector.setStrokePaint(SVGUtilities.getColor(_color));
                 }
 
                 StringAttribute _explAttr = (StringAttribute) (relation
                         .getAttribute("_explanation"));
 
                 if (_explAttr != null) {
-                    c.setToolTipText(_explAttr.getExpression());
+                    connector.setToolTipText(_explAttr.getExpression());
+                }
+                
+                // FIXME: Replace with a preferences manager?
+                Variable radius = ModelScope.getScopedVariable(null, relation, "_linkBendRadius");
+                if (radius != null) {
+                    try {
+                        Token radiusValue = radius.getToken();
+                        if (radiusValue instanceof DoubleToken) {
+                            double overrideRadius = ((DoubleToken)radiusValue).doubleValue();
+                            connector.setBendRadius(overrideRadius);
+                        }
+                    } catch (IllegalActionException ex) {
+                        System.out.println("Warning: Invalid _relationSize preference: " + ex);
+                    }
                 }
             }
 
-            return c;
+            return connector;
         }
     }
 
