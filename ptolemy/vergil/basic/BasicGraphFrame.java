@@ -1093,7 +1093,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             moml.append("<group name=\"auto\">\n");
 
             // Pasted items no longer line up on top of each other.
-            moml.append(offsetPastedMomlLocation((String) transferable
+            moml.append(_offsetPastedMomlLocation((String) transferable
                     .getTransferData(DataFlavor.stringFlavor), 10, 10));
 
             moml.append("</group>\n");
@@ -1816,6 +1816,91 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
+    /** Offset the moml object by xOffset and yOffset.  This makes it
+     *  so pasted items do not appear directly on top of the copied
+     *  source in vergil.
+     *  @param moml the moml to change
+     *  @param xOffset the number of x pixels to move the pasted object
+     *  @param yOffset the number of y pixels to move the pasted object
+     *  @return moml with the location modified by xOffset and yOffset
+     */
+    private String _offsetPastedMomlLocation(String moml, int xOffset,
+            int yOffset) {
+        // Go through the moml and look for the _location property
+        // when it is found, acquire the value in [x,y] form
+        // add xOffset onto x and yOffset onto y and replace the value
+        int index = 0;
+
+        while (true) {
+            index = moml.indexOf("<property name=\"_location\"", index + 1);
+
+            if (index == -1) {
+                // Look for all _locations, and break when there are no more.
+                break;
+            }
+
+            moml = _offsetValue(moml, xOffset, yOffset, index);
+        }
+        
+        // Repeat the process for vertex entries, which give the
+        // locations of relations.
+        index = 0;
+
+        while (true) {
+            index = moml.indexOf("<vertex name=\"", index + 1);
+
+            if (index == -1) {
+                // Look for all vertices, and break when there are no more.
+                break;
+            }
+            // Skip to the close quotation mark.
+            index = moml.indexOf("\"", index + 1);
+            if (index == -1) {
+                // Syntax error, but don't catch it here.
+                break;
+            }
+
+            moml = _offsetValue(moml, xOffset, yOffset, index);
+        }
+
+        return moml;
+    }
+
+    /** Offset the location given by the first occurrence of
+     *  "value=" in the specified MoML string after the specified
+     *  index.
+     *  @param moml The MoML string.
+     *  @param xOffset The offset in the X direction.
+     *  @param yOffset The offset in the Y direction.
+     *  @param index The place in the string to start lookin.
+     *  @return The modified MoML string.
+     */
+    private String _offsetValue(String moml, int xOffset, int yOffset, int index) {
+        int valStartIndex = moml.indexOf("value=\"", index);
+        int valEndIndex = moml.indexOf("\"", valStartIndex + 8);
+        String position = moml
+                .substring(valStartIndex + 8, valEndIndex - 1);
+
+        // Get the int representation of the numbers
+        float xpos = new Float(position.substring(0, position.indexOf(","))
+                .trim()).floatValue();
+        float ypos = new Float(position.substring(
+                position.indexOf(",") + 1, position.length()).trim())
+                .floatValue();
+        xpos += xOffset;
+        ypos += yOffset;
+
+        // Now put the values back in the string
+        String newValueString = "value=\"{" + xpos + ", " + ypos + "}\"";
+        String firstPart = moml.substring(0, valStartIndex);
+        String lastPart = moml.substring(valEndIndex + 1, moml.length());
+
+        // Cut out the old value and put in the new one
+        firstPart += newValueString;
+        moml = firstPart + lastPart;
+        return moml;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -2438,59 +2523,5 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         public void actionPerformed(ActionEvent e) {
             zoom(1.0 / 1.25);
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /**
-     * Offset the moml object by xOffset and yOffset.  This makes it
-     * so pasted items do not appear directly on top of the copied
-     * source in vergil.
-     * @param moml the moml to change
-     * @param xOffset the number of x pixels to move the pasted object
-     * @param yOffset the number of y pixels to move the pasted object
-     * @return moml with the location modified by xOffset and yOffset
-     */
-    private String offsetPastedMomlLocation(String moml, int xOffset,
-            int yOffset) {
-        // Go through the moml and look for the _location property
-        // when it is found, acquire the value in [x,y] form
-        // add xOffset onto x and yOffset onto y and replace the value
-        int index = 0;
-
-        while (true) {
-            index = moml.indexOf("<property name=\"_location\"", index + 1);
-
-            if (index == -1) {
-                //look for all _locations, and break when there are no more
-                break;
-            }
-
-            int valStartIndex = moml.indexOf("value=\"", index);
-            int valEndIndex = moml.indexOf("\"", valStartIndex + 8);
-            String position = moml
-                    .substring(valStartIndex + 8, valEndIndex - 1);
-
-            // Get the int representation of the numbers
-            float xpos = new Float(position.substring(0, position.indexOf(","))
-                    .trim()).floatValue();
-            float ypos = new Float(position.substring(
-                    position.indexOf(",") + 1, position.length()).trim())
-                    .floatValue();
-            xpos += xOffset;
-            ypos += yOffset;
-
-            // Now put the values back in the string
-            String newValueString = "value=\"{" + xpos + ", " + ypos + "}\"";
-            String firstPart = moml.substring(0, valStartIndex);
-            String lastPart = moml.substring(valEndIndex + 1, moml.length());
-
-            // Cut out the old value and put in the new one
-            firstPart += newValueString;
-            moml = firstPart + lastPart;
-        }
-
-        return moml;
     }
 }
