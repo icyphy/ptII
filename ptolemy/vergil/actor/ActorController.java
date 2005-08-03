@@ -454,6 +454,12 @@ public abstract class ActorController extends AttributeController {
             Iterator ports = portList.iterator();
             int number = 0;
             int count = portList.size();
+            
+            Figure background = figure.getBackgroundFigure();
+            if (background == null) {
+                // This could occur if the icon has a _hide parameter.
+                background = figure;
+            }
 
             while (ports.hasNext()) {
                 Port port = (Port) ports.next();
@@ -466,8 +472,8 @@ public abstract class ActorController extends AttributeController {
                 }
 
                 Rectangle2D portBounds = portFigure.getShape().getBounds2D();
-                PortSite site = new PortSite(figure.getBackgroundFigure(),
-                        port, number, count);
+                PortSite site = new PortSite(
+                        background, port, number, count);
                 number++;
 
                 // NOTE: previous expression for port location was:
