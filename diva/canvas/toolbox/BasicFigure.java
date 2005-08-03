@@ -60,11 +60,19 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  By default, this class is centered, like the superclass.
      */
     private boolean _centered = true;
+    
+    /** The dash array if setDashArray is called.
+     */
+    private float[] _dashArray = null;
 
     /** The color compositing operator.
      */
     private Composite _composite = AlphaComposite.SrcOver; // opaque
 
+    /** The width of the line.
+     */
+    private float _lineWidth = 1.0f;
+    
     /** The shape of this figure.
      */
     private Shape _shape;
@@ -293,6 +301,8 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      */
     public void setDashArray(float[] dashArray) {
         repaint();
+        
+        _dashArray = dashArray;
 
         if (_stroke instanceof BasicStroke) {
             _stroke = new BasicStroke(((BasicStroke) _stroke).getLineWidth(),
@@ -300,7 +310,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
                     ((BasicStroke) _stroke).getLineJoin(),
                     ((BasicStroke) _stroke).getMiterLimit(), dashArray, 0.0f);
         } else {
-            _stroke = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE,
+            _stroke = new BasicStroke(_lineWidth, BasicStroke.CAP_SQUARE,
                     BasicStroke.JOIN_MITER, 10.0f, dashArray, 0.0f);
         }
 
@@ -322,6 +332,8 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      */
     public void setLineWidth(float lineWidth) {
         repaint();
+        
+        _lineWidth = lineWidth;
 
         if (_stroke instanceof BasicStroke) {
             _stroke = new BasicStroke(lineWidth, ((BasicStroke) _stroke)
@@ -330,7 +342,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
                     ((BasicStroke) _stroke).getDashArray(), 0.0f);
         } else {
             new BasicStroke(lineWidth, BasicStroke.CAP_SQUARE,
-                    BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
+                    BasicStroke.JOIN_MITER, 10.0f, _dashArray, 0.0f);
         }
 
         repaint();
