@@ -2,18 +2,18 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Merge" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[547, 610]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[12, 268]">
     </property>
     <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector">
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="scheduleCacheSize" class="ptolemy.data.expr.Parameter" value="100">
         </property>
@@ -283,20 +283,28 @@
         </entity>
         <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 50.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
             <port name="input1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 195.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 175.0]">
                 </property>
             </port>
             <port name="input2" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -306,12 +314,12 @@
             </port>
             <port name="input3" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 290.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 265.0]">
                 </property>
             </port>
             <port name="output1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 150.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 165.0]">
                 </property>
             </port>
             <port name="output2" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -320,19 +328,19 @@
                 </property>
             </port>
             <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="242.0, 263.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 265.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </entity>
             <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 160.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 175.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </entity>
             <entity name="Discard" class="ptolemy.actor.lib.Discard">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="383.0, 353.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 220.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
@@ -340,11 +348,11 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="131.0, 174.0">
+                <vertex name="vertex1" value="{130.0, 175.0}">
                 </vertex>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="106.0, 293.0">
+                <vertex name="vertex1" value="[105.0, 265.0]">
                 </vertex>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -357,12 +365,12 @@
             <link port="input3" relation="relation3"/>
             <link port="output1" relation="relation5"/>
             <link port="output2" relation="relation6"/>
-            <link port="Maximum.input" relation="relation3"/>
             <link port="Maximum.input" relation="relation2"/>
+            <link port="Maximum.input" relation="relation3"/>
             <link port="Maximum.maximumValue" relation="relation6"/>
             <link port="Maximum.channelNumber" relation="relation4"/>
-            <link port="Minimum.input" relation="relation2"/>
             <link port="Minimum.input" relation="relation3"/>
+            <link port="Minimum.input" relation="relation2"/>
             <link port="Minimum.minimumValue" relation="relation5"/>
             <link port="Minimum.channelNumber" relation="relation"/>
             <link port="Discard.input" relation="relation"/>
@@ -370,11 +378,11 @@
         </entity>
         <entity name="state2" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 55.0]">
                 </property>
@@ -384,6 +392,10 @@
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 128, 815, 518}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <port name="input1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -397,39 +409,39 @@
             </port>
             <port name="input3" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[83.0, 351.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 320.0]">
                 </property>
             </port>
             <port name="output1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 160.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 185.0]">
                 </property>
             </port>
             <port name="output2" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[363.0, 291.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 295.0]">
                 </property>
             </port>
             <entity name="Discard" class="ptolemy.actor.lib.Discard">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 220.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 245.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </entity>
             <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[252.0, 303.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 305.0}">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </entity>
             <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="243.0, 171.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 195.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="[170.0, 352.0]">
+                <vertex name="vertex1" value="[170.0, 320.0]">
                 </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -466,6 +478,14 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 55.0]">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
             <port name="input1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 275.0]">
@@ -483,22 +503,22 @@
             </port>
             <port name="output1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 130.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 150.0]">
                 </property>
             </port>
             <port name="output2" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 265.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 255.0]">
                 </property>
             </port>
             <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 275.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 265.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </entity>
             <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 140.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 160.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
@@ -507,12 +527,12 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 360.0]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="[140.0, 200.0]">
-                </vertex>
-            </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="[160.0, 275.0]">
+                </vertex>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[140.0, 155.0]">
                 </vertex>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -526,8 +546,8 @@
             <link port="input3" relation="relation5"/>
             <link port="output1" relation="relation3"/>
             <link port="output2" relation="relation4"/>
-            <link port="Maximum.input" relation="relation2"/>
             <link port="Maximum.input" relation="relation"/>
+            <link port="Maximum.input" relation="relation2"/>
             <link port="Maximum.maximumValue" relation="relation4"/>
             <link port="Minimum.input" relation="relation"/>
             <link port="Minimum.input" relation="relation2"/>
