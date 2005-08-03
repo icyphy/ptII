@@ -437,11 +437,35 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  @return The variables on which this variable can depend.
      */
     public NamedList getScope() {
+        return getScope(this);
+    }
+
+    /** Return a NamedList of the variables that the value of the specified
+     *  variable can depend on.  These include other variables contained
+     *  by the same container or any container that deeply contains
+     *  the specified variable, as well as any variables in a
+     *  ScopeExtendingAttribute  contained by any of these containers.
+     *  If there are variables with the same name in these various
+     *  places, then they are shadowed as follows. A variable contained
+     *  by the container of this variable has priority, followed
+     *  by variables in a ScopeExtendingAttribute, followed by
+     *  by a variable contained by the container of the container, etc.
+     *  <p>
+     *  Note that this method is an extremely inefficient way to refer
+     *  to the scope of a variable because it constructs a list containing
+     *  every variable in the scope.  It is best to avoid calling it
+     *  and instead just use the get() method of the VariableScope
+     *  inner class.
+     *  <p>
+     *  This method is read-synchronized on the workspace.
+     *  @return The variables on which this variable can depend.
+     */
+    public static NamedList getScope(NamedObj object) {
         try {
-            workspace().getReadAccess();
+            object.workspace().getReadAccess();
 
             NamedList scope = new NamedList();
-            NamedObj container = (NamedObj) getContainer();
+            NamedObj container = (NamedObj) object.getContainer();
 
             while (container != null) {
                 Iterator level1 = container.attributeList().iterator();
@@ -452,8 +476,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     // excluding this
                     var = (Attribute) level1.next();
 
-                    if ((var instanceof Variable) && (var != this)) {
-                        if (!_isLegalInScope((Variable) var)) {
+                    if ((var instanceof Variable) && (var != object)) {
+                        if (var.workspace() != object.workspace()) {
                             continue;
                         }
 
@@ -481,8 +505,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                         // excluding this
                         var = (Attribute) level2.next();
 
-                        if ((var instanceof Variable) && (var != this)) {
-                            if (!_isLegalInScope((Variable) var)) {
+                        if ((var instanceof Variable) && (var != object)) {
+                            if (var.workspace() != object.workspace()) {
                                 continue;
                             }
 
@@ -505,7 +529,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
             return scope;
         } finally {
-            workspace().doneReading();
+            object.workspace().doneReading();
         }
     }
 
