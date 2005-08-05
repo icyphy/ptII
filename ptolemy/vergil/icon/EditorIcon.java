@@ -32,13 +32,12 @@ import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.swing.SwingConstants;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
@@ -50,6 +49,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.VergilPreferences;
 import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
@@ -81,11 +81,11 @@ import diva.gui.toolbox.FigureIcon;
  decorations, but rather is only the background figure.
  <p>
  The decorated version can also optionally show parameter values
- below the icon.  If the container of the container of this object
- has a parameter named "showOverriddenParameters" with value true,
- then parameters that are overridden will be shown.  If it has
- a parameter named "showAllParameters" with value true, then
- all parameters that are visible and settable (see the Settable
+ below the icon.  If the preference named "_showParameters"
+ has value "All", then all parameters are shown. If it has
+ value "Overridden parameters only", then it will show
+ only overridden parameters. In either case, only
+ parameters that are visible and settable (see the Settable
  interface) will be shown, regardless of whether they are overridden.
  If an attribute contains a parameter named "_hide" with value
  true, then that parameter is now shown even if requested.
@@ -317,12 +317,13 @@ public class EditorIcon extends Attribute {
             }
         }
         
-        // If specified by the container of the container, then show
+        // If specified by a preference, then show
         // all overridden parameter values.
-        NamedObj containerContainer = container.getContainer();
-        if (containerContainer != null) {
-            boolean showOverriddenParameters = _isPropertySet(containerContainer, "showOverriddenParameters");
-            boolean showAllParameters = _isPropertySet(containerContainer, "showAllParameters");
+        Token show = VergilPreferences.preferenceValue(container, "_showParameters");
+        if (show instanceof StringToken) {
+            String value = ((StringToken)show).stringValue();
+            boolean showOverriddenParameters = value.equals("Overridden parameters only");
+            boolean showAllParameters = value.equals("All");
             if (showOverriddenParameters || showAllParameters) {
                 StringBuffer parameters = new StringBuffer();
                 Iterator settables = container.attributeList(Settable.class).iterator();
