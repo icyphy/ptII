@@ -38,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
+import ptolemy.vergil.VergilPreferences;
 import ptolemy.vergil.basic.PopupMouseFilter;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.toolbox.ConfigureAction;
@@ -236,18 +237,11 @@ public class LinkController extends BasicEdgeController {
                     connector.setToolTipText(_explAttr.getExpression());
                 }
                 
-                // FIXME: Replace with a preferences manager?
-                Variable radius = ModelScope.getScopedVariable(null, relation, "_linkBendRadius");
-                if (radius != null) {
-                    try {
-                        Token radiusValue = radius.getToken();
-                        if (radiusValue instanceof DoubleToken) {
-                            double overrideRadius = ((DoubleToken)radiusValue).doubleValue();
-                            connector.setBendRadius(overrideRadius);
-                        }
-                    } catch (IllegalActionException ex) {
-                        System.out.println("Warning: Invalid _relationSize preference: " + ex);
-                    }
+                // NOTE: The preferences mechanism may set this.
+                Token radiusValue = VergilPreferences.preferenceValue(relation, "_linkBendRadius");
+                if (radiusValue instanceof DoubleToken) {
+                    double overrideRadius = ((DoubleToken)radiusValue).doubleValue();
+                    connector.setBendRadius(overrideRadius);
                 }
             }
 
