@@ -87,10 +87,17 @@ import diva.gui.toolbox.FigureIcon;
  only overridden parameters. In either case, only
  parameters that are visible and settable (see the Settable
  interface) will be shown, regardless of whether they are overridden.
- If an attribute contains a parameter named "_hide" with value
+ <p>
+ When the preference "_showParameters" has value
+ "Overridden parameters only", then some parameter values
+ may be suppressed even if they are overridden. In particular,
+ if an attribute contains a parameter named "_hide" with value
  true, then that parameter is now shown even if requested.
+ If the container of the attribute contains a parameter named
+ "_hideAllParameters" with value true, then none of its
+ parameters are shown.
  This is useful, for example, if the icon itself shows
- the parameter.
+ the parameter, as with decorative visual elements.
  <p>
  Derived classes may simply populate this attribute with other
  visible attributes (attributes that contain icons), or they can
@@ -317,14 +324,14 @@ public class EditorIcon extends Attribute {
             }
         }
         
-        // If specified by a preference, then show
-        // all overridden parameter values.
+        // If specified by a preference, then show parameters.
         Token show = VergilPreferences.preferenceValue(container, "_showParameters");
         if (show instanceof StringToken) {
             String value = ((StringToken)show).stringValue();
             boolean showOverriddenParameters = value.equals("Overridden parameters only");
             boolean showAllParameters = value.equals("All");
-            if (showOverriddenParameters || showAllParameters) {
+            if ((showOverriddenParameters && !_isPropertySet(container, "_hideAllParameters"))
+                    || showAllParameters) {
                 StringBuffer parameters = new StringBuffer();
                 Iterator settables = container.attributeList(Settable.class).iterator();
                 while (settables.hasNext()) {
@@ -335,10 +342,15 @@ public class EditorIcon extends Attribute {
                     if (!showAllParameters && !((NamedObj)settable).isOverridden()) {
                         continue;
                     }
-                    if(_isPropertySet((NamedObj)settable, "_hide")) {
+                    if(!showAllParameters && _isPropertySet((NamedObj)settable, "_hide")) {
                         continue;
                     }
-                    parameters.append(settable.getName());
+                    String name = settable.getName();
+                    String displayName = settable.getDisplayName();
+                    parameters.append(displayName);
+                    if (showAllParameters && !name.equals(displayName)) {
+                        parameters.append(" (" + name + ")");
+                    }
                     parameters.append(": ");
                     parameters.append(settable.getExpression());
                     if (settables.hasNext()) {
@@ -347,7 +359,7 @@ public class EditorIcon extends Attribute {
                 }
                 LabelFigure label = new LabelFigure(parameters.toString(),
                         _parameterFont, 1.0, SwingConstants.NORTH_WEST);
-
+                
                 // Shift the label slightly right so it doesn't
                 // collide with ports.
                 label.translateTo(backBounds.getX() + 5,
@@ -355,7 +367,6 @@ public class EditorIcon extends Attribute {
                 figure.add(label);
             }
         }
-
         return figure;
     }
 
