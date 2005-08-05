@@ -68,16 +68,19 @@ public class VergilPreferences extends ScopeExtendingAttribute {
         Parameter _relationSize = new Parameter(this, "_relationSize");
         _relationSize.setTypeEquals(BaseType.DOUBLE);
         _relationSize.setExpression("12.0");
+        _relationSize.setDisplayName("Relation size");
 
         Parameter _linkBendRadius = new Parameter(this, "_linkBendRadius");
         _linkBendRadius.setTypeEquals(BaseType.DOUBLE);
         _linkBendRadius.setExpression("20.0");
+        _linkBendRadius.setDisplayName("Link bend radius");
 
         StringParameter _showParameters = new StringParameter(this, "_showParameters");
         _showParameters.addChoice("None");
         _showParameters.addChoice("Overridden parameters only");
         _showParameters.addChoice("All");
         _showParameters.setExpression("None");
+        _showParameters.setDisplayName("Show parameters");
 
         // The icon.
         EditorIcon _icon = new EditorIcon(this, "_icon");
