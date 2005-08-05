@@ -82,6 +82,7 @@ import ptolemy.util.StringUtilities;
  */
 public class EditParametersDialog extends ComponentDialog implements
         ChangeListener {
+    
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.
      *  The dialog is placed relative to the owner.
@@ -90,7 +91,19 @@ public class EditParametersDialog extends ComponentDialog implements
      *  @param target The object whose parameters are being edited.
      */
     public EditParametersDialog(Frame owner, NamedObj target) {
-        super(owner, "Edit parameters for " + target.getName(), new Configurer(
+        this(owner, target, "Edit parameters for " + target.getName());
+    }
+    
+    /** Construct a dialog with the specified owner and target.
+     *  A "Commit" and a "Cancel" button are added to the dialog.
+     *  The dialog is placed relative to the owner.
+     *  @param owner The object that, per the user, appears to be
+     *   generating the dialog.
+     *  @param target The object whose parameters are being edited.
+     *  @param label The label for the dialog box.
+     */
+    public EditParametersDialog(Frame owner, NamedObj target, String label) {
+        super(owner, label, new Configurer(
                 target), _moreButtons);
 
         // Once we get to here, the dialog has already been dismissed.
@@ -155,10 +168,8 @@ public class EditParametersDialog extends ComponentDialog implements
             }
         } else if (buttonPressed().equals("Restore Defaults")) {
             ((Configurer) contents).restoreToDefaults();
-
-            // There is no (visible) change request to listen to,
-            // so we have to
-            _reOpen();
+            // Open a new dialog (a modal dialog).
+            new EditParametersDialog(_owner, _target);
         } else if (buttonPressed().equals("Preferences")) {
             // Create a dialog for setting parameter styles.
             try {
@@ -170,10 +181,15 @@ public class EditParametersDialog extends ComponentDialog implements
                     // Restore original parameter values.
                     panel.restore();
                 }
-
-                // There is no (visible) change request to listen to,
-                // so we have to
-                _reOpen();
+                new EditParametersDialog(_owner, _target);
+                // NOTE: Instead of te above line, this used
+                // to do the following. This isn't quite right because it violates
+                // the modal dialog premise, since this method will
+                // return and then a new dialog will open.
+                // In particular, the preferences manager relies on the
+                // modal behavior of the dialog. I'm sure other places do to.
+                // EAL 7/05.
+                // _reOpen();
             } catch (IllegalActionException ex) {
                 MessageHandler.error("Edit Parameter Styles failed", ex);
             }
