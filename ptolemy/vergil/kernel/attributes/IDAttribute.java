@@ -31,6 +31,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
@@ -183,6 +184,12 @@ public class IDAttribute extends SingletonAttribute {
 
         BoxedValuesIcon icon = new BoxedValuesIcon(this, "_icon");
         icon.setPersistent(false);
+        
+        // No need to display any parameters when the "_showParameters"
+        // preference asks for such display because presumably all the
+        // parameters are reflected in the visual display already.
+        Parameter hideAllParameters = new Parameter(this, "_hideAllParameters");
+        hideAllParameters.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////

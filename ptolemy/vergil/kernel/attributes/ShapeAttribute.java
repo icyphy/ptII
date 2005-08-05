@@ -109,6 +109,12 @@ public abstract class ShapeAttribute extends Attribute {
         
         dashArray = new Parameter(this, "dashArray");
         dashArray.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        
+        // No need to display any parameters when the "_showParameters"
+        // preference asks for such display because presumably all the
+        // parameters are reflected in the visual display already.
+        Parameter hideAllParameters = new Parameter(this, "_hideAllParameters");
+        hideAllParameters.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////

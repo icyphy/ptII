@@ -103,6 +103,12 @@ public class ImageAttribute extends Attribute {
         // NOTE: This doesn't actually work with the scale parameter.
         // It gets overridden by the scale parameter.
         // new ResizableAttributeControllerFactory(this, "_controllerFactory");
+        
+        // No need to display any parameters when the "_showParameters"
+        // preference asks for such display because presumably all the
+        // parameters are reflected in the visual display already.
+        Parameter hideAllParameters = new Parameter(this, "_hideAllParameters");
+        hideAllParameters.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////
