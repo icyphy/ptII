@@ -42,6 +42,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
+import ptolemy.vergil.VergilPreferences;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.ParameterizedNodeController;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -112,18 +113,11 @@ public class RelationController extends ParameterizedNodeController {
                 Vertex vertex = (Vertex) node;
                 relation = (Relation) vertex.getContainer();
                 
-                // FIXME: Replace with a preferences manager?
-                Variable size = ModelScope.getScopedVariable(null, relation, "_relationSize");
-                if (size != null) {
-                    try {
-                        Token hideValue = size.getToken();
-                        if (hideValue instanceof DoubleToken) {
-                            height = ((DoubleToken)hideValue).doubleValue();
-                            width = height;
-                        }
-                    } catch (IllegalActionException ex) {
-                        System.out.println("Warning: Invalid _relationSize preference: " + ex);
-                    }
+                // NOTE: The preferences mechanism may set this.
+                Token relationSize = VergilPreferences.preferenceValue(relation, "_relationSize");
+                if (relationSize instanceof DoubleToken) {
+                    height = ((DoubleToken)relationSize).doubleValue();
+                    width = height;
                 }
             }
 
