@@ -418,6 +418,9 @@ public class VergilApplication extends MoMLApplication {
                 }
             }
         }
+        
+        // Read the user preferences, if any.
+        VergilPreferences.setDefaultPreferences(configuration);
 
         return configuration;
     }

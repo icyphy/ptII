@@ -73,7 +73,8 @@ JSRCS = \
 	MoMLViewerApplet.java  \
 	TypeAnimatorApplet.java \
 	VergilApplication.java \
-	VergilErrorHandler.java
+	VergilErrorHandler.java \
+	VergilPreferences.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	TODO.txt \
