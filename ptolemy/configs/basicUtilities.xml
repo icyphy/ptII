@@ -6,6 +6,7 @@
 <!-- Note that this library is included in modal models as part  -->
 <!-- of its custom library.  -->
 <group>
+<property name="LocalPreferences" class="ptolemy.vergil.VergilPreferences"/>
 <input source="ptolemy/vergil/kernel/attributes/decorative.xml"/>
 <input source="ptolemy/configs/utilityParameters.xml"/>
 </group>
