@@ -31,6 +31,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.RunTableau;
@@ -65,6 +66,7 @@ import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.VergilPreferences;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.MoveAction;
 import ptolemy.vergil.tree.EntityTreeModel;
@@ -125,6 +127,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -405,6 +408,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         _moveToBackAction = new MoveToBackAction();
         _moveToFrontAction = new MoveToFrontAction();
+        
+        _editPreferencesAction = new EditPreferencesAction();
+        
+        // Add a weak reference to this to keep track of all
+        // the graph frames that have been created.
+        _openGraphFrames.add(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -950,6 +959,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // this frame, and the rest of the model to be properly garbage
         // collected
         _libraryModel.setRoot(null);
+        _openGraphFrames.remove(this);
         super.dispose();
     }
 
@@ -1388,6 +1398,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         GUIUtilities.addMenuItem(_editMenu, _moveToBackAction);
         GUIUtilities.addHotKey(_jgraph, _moveToFrontAction);
         GUIUtilities.addMenuItem(_editMenu, _moveToFrontAction);
+        
+        _editMenu.addSeparator();
+        GUIUtilities.addMenuItem(_editMenu, _editPreferencesAction);
 
         // Hot key for configure (edit parameters).
         GUIUtilities.addHotKey(_jgraph, BasicGraphController._configureAction);
@@ -1724,6 +1737,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The edit menu. */
     protected JMenu _editMenu;
+    
+    /** The action to edit preferences. */
+    protected EditPreferencesAction _editPreferencesAction;
 
     /** The panner. */
     protected JCanvasPanner _graphPanner;
@@ -1904,6 +1920,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** List of references to graph frames that are open. */
+    private static LinkedList _openGraphFrames = new LinkedList();
+
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();
 
@@ -1964,6 +1983,71 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         /** Copy and delete the current selection. */
         public void actionPerformed(ActionEvent e) {
             cut();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// EditPreferencesAction
+
+    /** Action to move the current selection to the back (which corresponds
+     *  to first in the ordered list).
+     */
+    private class EditPreferencesAction extends AbstractAction {
+        public EditPreferencesAction() {
+            super("Edit Preferences");
+            putValue("tooltip", "Change the Vergil preferences");
+            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_E));
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            Configuration configuration = getConfiguration();
+            VergilPreferences preferences = null;
+            try {
+                preferences = (VergilPreferences)configuration.getAttribute(
+                        VergilPreferences.PREFERENCES_WITHIN_CONFIGURATION,
+                        VergilPreferences.class);
+            } catch (IllegalActionException ex) {
+                MessageHandler.error(
+                        "Preferences attribute found, but not of the right class.", ex);
+            }
+            if (preferences == null) {
+                MessageHandler.message("No preferences given in the configuration.");
+            } else {
+                // Open a modal dialog to edit the parameters.
+                new EditParametersDialog(BasicGraphFrame.this, preferences, "Edit Vergil Preferences");
+                
+                // Make the current global variables conform with the new values.
+                try {
+                    preferences.setAsDefault();
+                } catch (IllegalActionException ex) {
+                    MessageHandler.error("Invalid expression.", ex);
+                    actionPerformed(e);
+                }
+
+                // If any parameter has changed, all open vergil
+                // windows need to be notified.
+                Iterator frames = _openGraphFrames.iterator();
+                while (frames.hasNext()) {
+                    BasicGraphFrame frame = (BasicGraphFrame)frames.next();
+                    GraphModel graphModel = frame._getGraphController().getGraphModel();
+                    graphModel.dispatchGraphEvent(new GraphEvent(this,
+                            GraphEvent.STRUCTURE_CHANGED, graphModel.getRoot()));
+                    if (frame._graphPanner != null) {
+                        frame._graphPanner.repaint();
+                    }
+                }
+                
+                // Make the changes persistent.
+                try {
+                    preferences.save();                        
+                } catch (IOException ex) {
+                    try {
+                        MessageHandler.warning("Failed to save preferences.", ex);
+                    } catch (CancelException e1) {
+                        // Ignore cancel.
+                    }
+                }
+            }
         }
     }
 
