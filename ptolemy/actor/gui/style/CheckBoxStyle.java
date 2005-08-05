@@ -143,7 +143,8 @@ public class CheckBoxStyle extends ParameterEditorStyle {
                             + "used for boolean-valued parameters");
         }
 
-        query.addCheckBox(name, name, ((BooleanToken) current).booleanValue());
+        query.addCheckBox(name, param.getDisplayName(),
+                ((BooleanToken) current).booleanValue());
         query.attachParameter(param, name);
     }
 

@@ -110,7 +110,7 @@ public class NotEditableLineStyle extends ParameterEditorStyle {
         String name = container.getName();
         String defaultValue = "";
         defaultValue = container.getExpression();
-        query.addDisplay(name, name, defaultValue);
+        query.addDisplay(name, container.getDisplayName(), defaultValue);
         query.attachParameter(container, name);
     }
 }

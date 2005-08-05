@@ -167,7 +167,7 @@ public class FileChooserStyle extends ParameterEditorStyle {
             return;
         }
 
-        query.addFileChooser(name, name, defaultValue, modelURI, directory,
+        query.addFileChooser(name, container.getDisplayName(), defaultValue, modelURI, directory,
                 allowFiles, allowDirectories, PtolemyQuery
                         .preferredBackgroundColor(container), PtolemyQuery
                         .preferredForegroundColor(container));
