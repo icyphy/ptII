@@ -120,6 +120,27 @@ public abstract class AbstractSettableAttribute extends Attribute implements
         return _default;
     }
 
+    /** Return a name to present to the user. If setDisplayName(String)
+     *  has been called, then return the name specified there, and
+     *  otherwise return the name returned by getName().
+     *  @return A name to present to the user.
+     *  @see #setDisplayName(String)
+     */
+    public String getDisplayName() {
+        if (_displayName != null) {
+            return _displayName;
+        }
+        return getName();
+    }
+
+    /** Set a name to present to the user. 
+     *  @param name A name to present to the user.
+     *  @see #getDisplayName()
+     */
+    public void setDisplayName(String name) {
+        _displayName = name;
+    }
+
     /** Set the value of this attribute to the specified expression.
      *  This base class implementation merely records the first
      *  value to serve as the default value if needed.
@@ -141,4 +162,7 @@ public abstract class AbstractSettableAttribute extends Attribute implements
 
     /** The default value.  */
     private String _default = null;
+    
+    /** The display name, if set. */
+    private String _displayName;
 }

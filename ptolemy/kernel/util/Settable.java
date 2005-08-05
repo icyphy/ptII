@@ -101,6 +101,11 @@ public interface Settable extends Nameable {
      *   if there is none.
      */
     public String getDefaultExpression();
+    
+    /** Return a name to present to the user.
+     *  @return A name to present to the user.
+     */
+    public String getDisplayName();
 
     /** Get the value of the attribute that has been set by setExpression(),
      *  or null if there is none.

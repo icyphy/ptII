@@ -196,6 +196,14 @@ public class Location extends SingletonAttribute implements Locatable {
 
         return _default;
     }
+    
+    /** Return a name to present to the user, which
+     *  is the same as the name returned by getName().
+     *  @return A name to present to the user.
+     */
+    public String getDisplayName() {
+        return getName();
+    }
 
     /** Get the value that has been set by setExpression() or by
      *  setLocation(), whichever was most recently called, or return
