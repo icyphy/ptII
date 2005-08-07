@@ -28,11 +28,10 @@ package diva.graph.modular;
 import java.util.Iterator;
 
 /**
- * A graph is an object that contains nodes and
- * edges.  Edges are accessed through the nodes that
- * they connect.
+ * Models of composite object.
  *
  * @author Michael Shilman
+ * @contriutor Edward A. Lee
  * @version $Id$
  * @Pt.AcceptedRating Red
  */
@@ -41,6 +40,20 @@ public interface CompositeModel {
      * Return an iterator over the nodes that this graph contains.
      */
     public Iterator nodes(Object composite);
+    
+    /**
+     * Return an iterator over the nodes that should
+     * be rendered prior to the edges. This iterator
+     * does not necessarily support removal operations.
+     */
+    public Iterator nodesBeforeEdges(Object composite);
+
+    /**
+     * Provide an iterator over the nodes that should
+     * be rendered after to the edges. This iterator
+     * does not necessarily support removal operations.
+     */
+    public Iterator nodesAfterEdges(Object composite);
 
     /**
      * Return a count of the nodes this graph contains.

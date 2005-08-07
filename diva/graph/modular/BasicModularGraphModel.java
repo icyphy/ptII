@@ -27,6 +27,7 @@ package diva.graph.modular;
 
 import java.util.Iterator;
 
+import diva.util.NullIterator;
 import diva.util.PropertyContainer;
 import diva.util.SemanticObjectContainer;
 
@@ -243,6 +244,28 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
         public Iterator nodes(Object composite) {
             CompositeNode compositePeer = (CompositeNode) composite;
             return compositePeer.nodes();
+        }
+        
+        /**
+         * Provide an iterator over the nodes that should
+         * be rendered prior to the edges. This iterator
+         * does not necessarily support removal operations.
+         * In this base class, this returns the same iterator
+         * as the nodes(Object) method.
+         */
+        public Iterator nodesBeforeEdges(Object composite) {
+            return nodes(composite);
+        }
+
+        /**
+         * Provide an iterator over the nodes that should
+         * be rendered after to the edges. This iterator
+         * does not necessarily support removal operations.
+         * In this base class, this returns an iterator over
+         * nothing.
+         */
+        public Iterator nodesAfterEdges(Object composite) {
+            return (new NullIterator());
         }
     }
 }

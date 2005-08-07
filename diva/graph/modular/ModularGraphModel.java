@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import diva.graph.AbstractGraphModel;
+import diva.util.NullIterator;
 
 /**
  * A modular implementation of the graph model, whereby users with
@@ -176,7 +177,29 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
     public Iterator nodes(Object composite) {
         return getCompositeModel(composite).nodes(composite);
     }
+    
+    /**
+     * Provide an iterator over the nodes that should
+     * be rendered prior to the edges. This iterator
+     * does not necessarily support removal operations.
+     * In this base class, this returns the same iterator
+     * as the nodes(Object) method.
+     */
+    public Iterator nodesBeforeEdges(Object composite) {
+        return getCompositeModel(composite).nodesBeforeEdges(composite);
+    }
 
+    /**
+     * Provide an iterator over the nodes that should
+     * be rendered after to the edges. This iterator
+     * does not necessarily support removal operations.
+     * In this base class, this returns an iterator over
+     * nothing.
+     */
+    public Iterator nodesAfterEdges(Object composite) {
+        return getCompositeModel(composite).nodesAfterEdges(composite);
+    }
+    
     /**
      * Return an iterator over the <i>in</i> edges of this
      * node. This iterator does not support removal operations.

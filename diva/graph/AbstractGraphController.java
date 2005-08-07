@@ -366,34 +366,39 @@ public abstract class AbstractGraphController implements GraphController {
         // which no longer exist!)
         _selectionModel.clearSelection();
 
-        // draw the nodes.
-        nodes = _model.nodes(_model.getRoot());
-
+        // Draw the nodes to be rendered before the edges.
+        nodes = _model.nodesBeforeEdges(_model.getRoot());
         while (nodes.hasNext()) {
             Object node = nodes.next();
             drawNode(node);
         }
 
-        nodes = (GraphUtilities.nodeSet(_model.getRoot(), _model)).iterator();
-
-        while (nodes.hasNext()) {
-            Object node = nodes.next();
-
-            if (selectedNodes.contains(node)) {
-                _selectionModel.addSelection(getFigure(node));
-            }
-        }
-
-        // draw the edges that are connected to any of the above nodes.
+        // Draw the edges that are connected to any of the above nodes.
         edges = GraphUtilities
                 .partiallyContainedEdges(_model.getRoot(), _model);
-
         while (edges.hasNext()) {
             Object edge = edges.next();
             drawEdge(edge);
 
             if (selectedEdges.contains(edge)) {
                 _selectionModel.addSelection(getFigure(edge));
+            }
+        }
+
+        // Draw the nodes to be rendered after the edges.
+        nodes = _model.nodesAfterEdges(_model.getRoot());
+        while (nodes.hasNext()) {
+            Object node = nodes.next();
+            drawNode(node);
+        }
+
+        // Restore the selected nodes.
+        nodes = (GraphUtilities.nodeSet(_model.getRoot(), _model)).iterator();
+        while (nodes.hasNext()) {
+            Object node = nodes.next();
+
+            if (selectedNodes.contains(node)) {
+                _selectionModel.addSelection(getFigure(node));
             }
         }
     }
