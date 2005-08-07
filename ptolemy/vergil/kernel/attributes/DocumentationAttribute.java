@@ -87,7 +87,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */
-public class DocumentationAttribute extends Attribute {
+public class DocumentationAttribute extends VisibleAttribute {
     /** Construct an icon with the attached this attached.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -106,10 +106,6 @@ public class DocumentationAttribute extends Attribute {
                 + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
                 + "Double click to see\ndocumentation.</text></svg>");
         new DocumentationAttributeFactory(this, "_editorFactory");
-
-        SingletonParameter hide = new SingletonParameter(this, "_hideName");
-        hide.setToken(BooleanToken.TRUE);
-        hide.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////

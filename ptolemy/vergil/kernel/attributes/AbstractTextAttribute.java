@@ -35,14 +35,12 @@ import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.TextIcon;
 
@@ -58,7 +56,7 @@ import ptolemy.vergil.icon.TextIcon;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class AbstractTextAttribute extends Attribute {
+public class AbstractTextAttribute extends VisibleAttribute {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -75,11 +73,6 @@ public class AbstractTextAttribute extends Attribute {
     public AbstractTextAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        // Hide the name.
-        SingletonParameter hide = new SingletonParameter(this, "_hideName");
-        hide.setToken(BooleanToken.TRUE);
-        hide.setVisibility(Settable.EXPERT);
 
         _icon = new TextIcon(this, "_icon");
         _icon.setPersistent(false);
@@ -119,12 +112,6 @@ public class AbstractTextAttribute extends Attribute {
         italic = new Parameter(this, "italic");
         italic.setExpression("false");
         italic.setTypeEquals(BaseType.BOOLEAN);
-        
-        // No need to display any parameters when the "_showParameters"
-        // preference asks for such display because presumably all the
-        // parameters are reflected in the visual display already.
-        Parameter hideAllParameters = new Parameter(this, "_hideAllParameters");
-        hideAllParameters.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////

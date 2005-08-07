@@ -64,7 +64,7 @@ import ptolemy.vergil.icon.ShapeIcon;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public abstract class ShapeAttribute extends Attribute {
+public abstract class ShapeAttribute extends VisibleAttribute {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -81,11 +81,6 @@ public abstract class ShapeAttribute extends Attribute {
     public ShapeAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        // Hide the name.
-        SingletonParameter hide = new SingletonParameter(this, "_hideName");
-        hide.setToken(BooleanToken.TRUE);
-        hide.setVisibility(Settable.EXPERT);
 
         _icon = new ShapeIcon(this, "_icon", _getDefaultShape());
         _icon.setPersistent(false);
@@ -109,12 +104,6 @@ public abstract class ShapeAttribute extends Attribute {
         
         dashArray = new Parameter(this, "dashArray");
         dashArray.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        
-        // No need to display any parameters when the "_showParameters"
-        // preference asks for such display because presumably all the
-        // parameters are reflected in the visual display already.
-        Parameter hideAllParameters = new Parameter(this, "_hideAllParameters");
-        hideAllParameters.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////

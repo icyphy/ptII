@@ -59,7 +59,7 @@ import ptolemy.vergil.icon.ImageIcon;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class ImageAttribute extends Attribute {
+public class ImageAttribute extends VisibleAttribute {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -76,11 +76,6 @@ public class ImageAttribute extends Attribute {
     public ImageAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        // Hide the name.
-        SingletonParameter hide = new SingletonParameter(this, "_hideName");
-        hide.setToken(BooleanToken.TRUE);
-        hide.setVisibility(Settable.EXPERT);
 
         _icon = new ImageIcon(this, "_icon");
         _icon.setPersistent(false);
@@ -103,12 +98,6 @@ public class ImageAttribute extends Attribute {
         // NOTE: This doesn't actually work with the scale parameter.
         // It gets overridden by the scale parameter.
         // new ResizableAttributeControllerFactory(this, "_controllerFactory");
-        
-        // No need to display any parameters when the "_showParameters"
-        // preference asks for such display because presumably all the
-        // parameters are reflected in the visual display already.
-        Parameter hideAllParameters = new Parameter(this, "_hideAllParameters");
-        hideAllParameters.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////
