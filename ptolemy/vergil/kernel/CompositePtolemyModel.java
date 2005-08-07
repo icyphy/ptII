@@ -89,7 +89,7 @@ public class CompositePtolemyModel implements CompositeModel {
 
         if ((_nodeList == null) || (composite != _composite)
                 || (version != _version)) {
-            _nodeList = _nodeList((NamedObj) composite);
+            _nodeList = _nodeList((NamedObj) composite, true, true);
             _composite = composite;
             _version = version;
         }
@@ -113,12 +113,60 @@ public class CompositePtolemyModel implements CompositeModel {
 
         if ((_nodeList == null) || (composite != _composite)
                 || (version != _version)) {
-            _nodeList = _nodeList((NamedObj) composite);
+            _nodeList = _nodeList((NamedObj) composite, true, true);
             _composite = composite;
             _version = version;
         }
 
         return _nodeList.iterator();
+    }
+    
+    /** Return an iterator over the nodes that should
+     *  be rendered prior to the edges. This iterator
+     *  does not necessarily support removal operations.
+     *  @param composite The composite.
+     *  @return An iterator over the nodes to be rendered
+     *   prior to the edges.
+     */
+    public Iterator nodesBeforeEdges(Object composite) {
+        if (!(composite instanceof NamedObj)) {
+            return (new LinkedList()).iterator();
+        }
+
+        long version = ((NamedObj) composite).workspace().getVersion();
+
+        if ((_nodeListBefore == null) || (composite != _compositeBefore)
+                || (version != _versionBefore)) {
+            _nodeListBefore = _nodeList((NamedObj) composite, true, false);
+            _compositeBefore = composite;
+            _versionBefore = version;
+        }
+
+        return _nodeListBefore.iterator();
+    }
+
+    /** Return an iterator over the nodes that should
+     *  be rendered after to the edges. This iterator
+     *  does not necessarily support removal operations.
+     *  @param composite The composite.
+     *  @return An iterator over the nodes to be rendered
+     *   after to the edges.
+     */
+    public Iterator nodesAfterEdges(Object composite) {
+        if (!(composite instanceof NamedObj)) {
+            return (new LinkedList()).iterator();
+        }
+
+        long version = ((NamedObj) composite).workspace().getVersion();
+
+        if ((_nodeListAfter == null) || (composite != _compositeAfter)
+                || (version != _versionAfter)) {
+            _nodeListAfter = _nodeList((NamedObj) composite, false, true);
+            _compositeAfter = composite;
+            _versionAfter = version;
+        }
+
+        return _nodeListAfter.iterator();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -156,142 +204,171 @@ public class CompositePtolemyModel implements CompositeModel {
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** Return a list of all the nodes in the graph corresponding to
-     *  the specified Ptolemy II model.  The model can be any NamedObj,
-     *  and the returned list will include any entities, ports,
-     *  vertexes, and attributes that it contains, in that order.
-     *  There is one exception. If any attribute contains a parameter
-     *  named "_renderFirst", then it is returned first, prior to
-     *  entities, ports, etc.
+     *  the specified Ptolemy II model.  If the <i>before</i> and
+     *  <i>after</i> arguments are both true, then all nodes are
+     *  returned. If only <i>before</i> is true, then all nodes
+     *  except attriutes that contain an attribute named "_renderLast"
+     *  are returned.  If only <i>after</i> is true, then only
+     *  attributes that contain an attribute named "_renderLast" are
+     *  returned. The model can be any NamedObj,
+     *  and the returned list will include attributes that contain
+     *  an attribute named "_renderFirst", followed by entities, ports,
+     *  vertexes, followed by attributes that contain neither "_renderFirst" nor
+     *  "_renderLast", in that order.
      *  Note that this method creates a new list, and should therefore
      *  only be called if the object has changed.
      *  @param composite The composite entity.
+     *  @param before True to include nodes to be rendered before edges.
+     *  @param after True to include nodes to be rendered after edges.
      *  @return A list of the nodes in the graph.
      */
-    protected List _nodeList(NamedObj composite) {
+    private List _nodeList(NamedObj composite, boolean before, boolean after) {
         List nodes = new LinkedList();
 
-        // Add a node for visible attributes that contains
-        // an attribute named "_renderFirst".  An attribute
-        // is a visible attribute if it contains an instance
-        // of Locatable.
-        Iterator attributes = composite.attributeList().iterator();
-        while (attributes.hasNext()) {
-            Attribute attribute = (Attribute) attributes.next();
-            List locations = attribute.attributeList(Locatable.class);
-            if (locations.size() > 0
+        if (before) {
+            // Add a node for visible attributes that contains
+            // an attribute named "_renderFirst".  An attribute
+            // is a visible attribute if it contains an instance
+            // of Locatable.
+            Iterator attributes = composite.attributeList().iterator();
+            while (attributes.hasNext()) {
+                Attribute attribute = (Attribute) attributes.next();
+                List locations = attribute.attributeList(Locatable.class);
+                if (locations.size() > 0
                         && attribute.getAttribute("_renderFirst") != null) {
-                nodes.add(locations.get(0));
+                    nodes.add(locations.get(0));
+                }
             }
-        }
-
-        if (composite instanceof CompositeEntity) {
-            // Add a graph node for every class definition.
-            // The node is actually the location contained by the entity.
-            // If the entity does not contain a location, then create one.
-            Iterator classes = ((CompositeEntity) composite)
-                    .classDefinitionList().iterator();
-
-            while (classes.hasNext()) {
-                ComponentEntity entity = (ComponentEntity) classes.next();
-                nodes.add(_getLocation(entity));
+            
+            if (composite instanceof CompositeEntity) {
+                // Add a graph node for every class definition.
+                // The node is actually the location contained by the entity.
+                // If the entity does not contain a location, then create one.
+                Iterator classes = ((CompositeEntity) composite)
+                .classDefinitionList().iterator();
+                
+                while (classes.hasNext()) {
+                    ComponentEntity entity = (ComponentEntity) classes.next();
+                    nodes.add(_getLocation(entity));
+                }
+                
+                // Add a graph node for every entity.
+                // The node is actually the location contained by the entity.
+                // If the entity does not contain a location, then create one.
+                Iterator entities = ((CompositeEntity) composite).entityList()
+                .iterator();
+                
+                while (entities.hasNext()) {
+                    ComponentEntity entity = (ComponentEntity) entities.next();
+                    nodes.add(_getLocation(entity));
+                }
             }
-
-            // Add a graph node for every entity.
-            // The node is actually the location contained by the entity.
-            // If the entity does not contain a location, then create one.
-            Iterator entities = ((CompositeEntity) composite).entityList()
-                    .iterator();
-
-            while (entities.hasNext()) {
-                ComponentEntity entity = (ComponentEntity) entities.next();
-                nodes.add(_getLocation(entity));
+            
+            if (composite instanceof Entity) {
+                // Add a graph node for every external port.
+                // The node is actually the location contained by the port.
+                // If the port does not contain a location, then create one.
+                Iterator ports = ((Entity) composite).portList().iterator();
+                
+                while (ports.hasNext()) {
+                    ComponentPort port = (ComponentPort) ports.next();
+                    nodes.add(_getLocation(port));
+                }
             }
-        }
-
-        if (composite instanceof Entity) {
-            // Add a graph node for every external port.
-            // The node is actually the location contained by the port.
-            // If the port does not contain a location, then create one.
-            Iterator ports = ((Entity) composite).portList().iterator();
-
-            while (ports.hasNext()) {
-                ComponentPort port = (ComponentPort) ports.next();
-                nodes.add(_getLocation(port));
-            }
-        }
-
-        if (composite instanceof CompositeEntity) {
-            // Add a node for every relation that has a vertex and
-            // doesn't connect exactly two ports.
-            // NOTE: This particular part of the graph model is irrelevant
-            // for FSMs, but it is harmless to include it, so there is no
-            // real need to subclass this to remove it.
-            Iterator relations = ((CompositeEntity) composite).relationList()
-                    .iterator();
-
-            while (relations.hasNext()) {
-                ComponentRelation relation = (ComponentRelation) relations
-                        .next();
-                List vertexList = relation.attributeList(Vertex.class);
-
-                if (vertexList.size() != 0) {
-                    // Add in all the vertexes.
-                    Iterator vertexes = vertexList.iterator();
-
-                    while (vertexes.hasNext()) {
-                        Vertex v = (Vertex) vertexes.next();
-                        nodes.add(v);
-                    }
-                } else {
-                    // See if we need to create a vertex.
-                    // Count the linked ports.
-                    int count = relation.linkedPortList().size();
-
-                    if (count != 2) {
-                        // A vertex is needed, so create one.
-                        try {
-                            String name = relation.uniqueName("vertex");
-                            Vertex vertex = new Vertex(relation, name);
-                            nodes.add(vertex);
-
-                            // Have to manually handle propagation, since
-                            // the MoML parser is not involved.
-                            // FIXME: Could get name collision here!
-                            // (Unlikely though since auto naming will take
-                            // into account subclasses).
-                            vertex.propagateExistence();
-                        } catch (Throwable throwable) {
-                            throw new InternalErrorException(null, throwable,
-                                    "Failed to create a vertex!");
+            
+            if (composite instanceof CompositeEntity) {
+                // Add a node for every relation that has a vertex and
+                // doesn't connect exactly two ports.
+                // NOTE: This particular part of the graph model is irrelevant
+                // for FSMs, but it is harmless to include it, so there is no
+                // real need to subclass this to remove it.
+                Iterator relations = ((CompositeEntity) composite).relationList()
+                .iterator();
+                
+                while (relations.hasNext()) {
+                    ComponentRelation relation = (ComponentRelation) relations
+                    .next();
+                    List vertexList = relation.attributeList(Vertex.class);
+                    
+                    if (vertexList.size() != 0) {
+                        // Add in all the vertexes.
+                        Iterator vertexes = vertexList.iterator();
+                        
+                        while (vertexes.hasNext()) {
+                            Vertex v = (Vertex) vertexes.next();
+                            nodes.add(v);
+                        }
+                    } else {
+                        // See if we need to create a vertex.
+                        // Count the linked ports.
+                        int count = relation.linkedPortList().size();
+                        
+                        if (count != 2) {
+                            // A vertex is needed, so create one.
+                            try {
+                                String name = relation.uniqueName("vertex");
+                                Vertex vertex = new Vertex(relation, name);
+                                nodes.add(vertex);
+                                
+                                // Have to manually handle propagation, since
+                                // the MoML parser is not involved.
+                                // FIXME: Could get name collision here!
+                                // (Unlikely though since auto naming will take
+                                // into account subclasses).
+                                vertex.propagateExistence();
+                            } catch (Throwable throwable) {
+                                throw new InternalErrorException(null, throwable,
+                                "Failed to create a vertex!");
+                            }
                         }
                     }
                 }
             }
-        }
-
-        // Add a node for every director or visible attribute.
-        // The node is again the location.
-        // For directors, if there is no location, then create one.
-        // For visible attributes, add them only if they already
-        // create a location.
-        attributes = composite.attributeList().iterator();
-
-        while (attributes.hasNext()) {
-            Attribute attribute = (Attribute) attributes.next();
-            if (attribute.getAttribute("_renderFirst") != null) {
-                // Already rendered.
-                continue;
+            
+            // Add a node for every director or visible attribute.
+            // The node is again the location.
+            // For directors, if there is no location, then create one.
+            // For visible attributes, add them only if they already
+            // create a location.
+            attributes = composite.attributeList().iterator();
+            
+            while (attributes.hasNext()) {
+                Attribute attribute = (Attribute) attributes.next();
+                if (attribute.getAttribute("_renderFirst") != null
+                        || attribute.getAttribute("_renderLast") != null) {
+                    // Already rendered, or to be rendered later.
+                    continue;
+                }
+                if (attribute instanceof Director) {
+                    nodes.add(_getLocation(attribute));
+                } else {
+                    // The object is not a director, so only give a location
+                    // if one exists already.
+                    List locations = attribute.attributeList(Locatable.class);
+                    
+                    if (locations.size() > 0) {
+                        nodes.add(locations.get(0));
+                    }
+                }
             }
-            if (attribute instanceof Director) {
-                nodes.add(_getLocation(attribute));
-            } else {
-                // The object is not a director, so only give a location
-                // if one exists already.
+        }
+        
+        if (after) {
+            // Add a node for visible attributes that contains
+            // an attribute named "_renderLast".  An attribute
+            // is a visible attribute if it contains an instance
+            // of Locatable.
+            Iterator attributes = composite.attributeList().iterator();
+            while (attributes.hasNext()) {
+                Attribute attribute = (Attribute) attributes.next();
                 List locations = attribute.attributeList(Locatable.class);
-
-                if (locations.size() > 0) {
+                if (locations.size() > 0
+                        && attribute.getAttribute("_renderLast") != null) {
                     nodes.add(locations.get(0));
                 }
             }
@@ -303,12 +380,31 @@ public class CompositePtolemyModel implements CompositeModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     // The most recent object whose model was accessed.
     private Object _composite;
 
-    // The workspace version for that object.
+    // The most recent object whose model was accessed for a before list.
+    private Object _compositeBefore;
+    
+    // The most recent object whose model was accessed for an after list.
+    private Object _compositeAfter;
+
+    // The cached complete list;
+    private List _nodeList;
+
+    // The cached list of nodes to be rendered before.
+    private List _nodeListBefore;
+
+    // The cached list of nodes to be rendered after.
+    private List _nodeListAfter;
+
+    // The workspace version for the cached list of nodes.
     private long _version;
 
-    // The cached list;
-    private List _nodeList;
+    // The workspace version for the cached list of before nodes.
+    private long _versionBefore;
+
+    // The workspace version for the cached list of after nodes.
+    private long _versionAfter;
 }
