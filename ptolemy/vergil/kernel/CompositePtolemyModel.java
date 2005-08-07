@@ -161,6 +161,9 @@ public class CompositePtolemyModel implements CompositeModel {
      *  the specified Ptolemy II model.  The model can be any NamedObj,
      *  and the returned list will include any entities, ports,
      *  vertexes, and attributes that it contains, in that order.
+     *  There is one exception. If any attribute contains a parameter
+     *  named "_renderFirst", then it is returned first, prior to
+     *  entities, ports, etc.
      *  Note that this method creates a new list, and should therefore
      *  only be called if the object has changed.
      *  @param composite The composite entity.
@@ -168,6 +171,20 @@ public class CompositePtolemyModel implements CompositeModel {
      */
     protected List _nodeList(NamedObj composite) {
         List nodes = new LinkedList();
+
+        // Add a node for visible attributes that contains
+        // an attribute named "_renderFirst".  An attribute
+        // is a visible attribute if it contains an instance
+        // of Locatable.
+        Iterator attributes = composite.attributeList().iterator();
+        while (attributes.hasNext()) {
+            Attribute attribute = (Attribute) attributes.next();
+            List locations = attribute.attributeList(Locatable.class);
+            if (locations.size() > 0
+                        && attribute.getAttribute("_renderFirst") != null) {
+                nodes.add(locations.get(0));
+            }
+        }
 
         if (composite instanceof CompositeEntity) {
             // Add a graph node for every class definition.
@@ -259,11 +276,14 @@ public class CompositePtolemyModel implements CompositeModel {
         // For directors, if there is no location, then create one.
         // For visible attributes, add them only if they already
         // create a location.
-        Iterator attributes = composite.attributeList().iterator();
+        attributes = composite.attributeList().iterator();
 
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute) attributes.next();
-
+            if (attribute.getAttribute("_renderFirst") != null) {
+                // Already rendered.
+                continue;
+            }
             if (attribute instanceof Director) {
                 nodes.add(_getLocation(attribute));
             } else {
