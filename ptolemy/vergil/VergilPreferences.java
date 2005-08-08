@@ -217,6 +217,11 @@ public class VergilPreferences extends ScopeExtendingAttribute {
                 System.out.println("Failed to read user preferences file: " + ex);
             }
         }
+        if (preferences == null) {
+            System.out.println("Warning: No preferences found in the configuration at" +
+                    "location \"actor library.Utilities.LocalPreferences\"");
+            return;
+        }
         try {
             preferences.setAsDefault();
         } catch (IllegalActionException ex) {
