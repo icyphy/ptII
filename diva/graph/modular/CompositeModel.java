@@ -30,8 +30,7 @@ import java.util.Iterator;
 /**
  * Models of composite object.
  *
- * @author Michael Shilman
- * @contriutor Edward A. Lee
+ * @author Michael Shilman (contributor Edward A. Lee)
  * @version $Id$
  * @Pt.AcceptedRating Red
  */
