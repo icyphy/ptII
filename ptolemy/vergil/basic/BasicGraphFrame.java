@@ -1235,17 +1235,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {
         try {
-            CompositeEntity library = (CompositeEntity) configuration
+            CompositeEntity libraryInstance = (CompositeEntity) configuration
                     .getEntity("actor library." + VERGIL_USER_LIBRARY_NAME);
 
-            if (library == null) {
+            if (libraryInstance == null) {
                 MessageHandler.error("Save In Library failed: "
                         + "Could not find user library with name \""
                         + VERGIL_USER_LIBRARY_NAME + "\".");
                 return;
             }
 
-            configuration.openModel(library);
+            // Note that the library in the configuration is an
+            // instance of another model.  We have to go get the
+            // original model to make sure that the change propagates
+            // back to the file from which the library is loaded from.
+            Tableau libraryTableau = configuration.openModel(libraryInstance);
+            PtolemyEffigy libraryEffigy =
+                (PtolemyEffigy)libraryTableau.getContainer();
+            CompositeEntity library =
+                (CompositeEntity)libraryEffigy.getModel();
 
             StringWriter buffer = new StringWriter();
 
