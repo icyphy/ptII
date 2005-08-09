@@ -246,5 +246,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // Shallow CG of actor/lib/test/auto/URLDirectoryReader3.xml fails
         // unless we remove CheckBoxStyle
         _graphicalClasses.put("ptolemy.actor.gui.style.CheckBoxStyle", null);
+
+        _graphicalClasses.put("ptolemy.vergil.VergilPreferences",
+                "ptolemy.data.expr.ScopeExtendingAttribute");
     }
 }
