@@ -177,6 +177,11 @@ public class VergilPreferences extends ScopeExtendingAttribute {
             // Can't do anything further.
             return;
         }
+        if (preferences == null) {
+            // No preferences found in the configuration at
+            // location "actor library.Utilities.LocalPreferences"
+            return;
+        }
         // Now override with the user file, if present.
         String libraryName = null;
         try {
@@ -216,11 +221,6 @@ public class VergilPreferences extends ScopeExtendingAttribute {
             } catch (Exception ex) {
                 System.out.println("Failed to read user preferences file: " + ex);
             }
-        }
-        if (preferences == null) {
-            System.out.println("Warning: No preferences found in the configuration at" +
-                    "location \"actor library.Utilities.LocalPreferences\"");
-            return;
         }
         try {
             preferences.setAsDefault();
