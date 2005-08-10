@@ -53,21 +53,9 @@ test CodeGenerator-1.1 {Instantiate a CodeGenerator, call a few methods} {
 } {{ptolemy.codegen.kernel.CodeGenerator {.top.myCodeGenerator}} {/* This is a comment */
 }}
 
-#####
-test CodeGenerator-2.1 {Call generateCode(StringBuffer)} {
-    set results [java::new StringBuffer]
-    $codeGenerator generateCode $results
-    list [$results toString]
-} {{/* Variable Declarations .top */
-main() {
-/* The preinitialization of the director. */
-int iteration = 0;
-/* Initialize .top */
-/* The initialization of the director. */
-/* Wrapup .top */
-/* The wrapup of the director. */
-}
-}}
+# generateCode(StringBuffer) is tested in
+# $PTII/ptolemy/codegen/c/domains/sdf/kernel/test/SDFDirector.tcl
+# because the test relies on SDFDirector being built. 
 
 #####
 test CodeGenerator-3.1 {getComponent()} {
