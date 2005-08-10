@@ -141,6 +141,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /** 
+     * Generate code shared by the helper actors. In this base class, do
+     * nothing. Subclasses may extend this method to generate the shared
+     * code of the associated component and append the code to the given
+     * string buffer.
+     * @param stream The given string buffer.
+     * @exception IllegalActionException Not thrown in this base class.
+     */ 
+    public void generateSharedCode(StringBuffer stream)
+            throws IllegalActionException {
+    }
+
+    /** 
      * Generate the wrapup code. In this base class, do nothing. Subclasses
      * may extend this method to generate the wrapup code of the associated
      * component and append the code to the given string buffer.
