@@ -37,6 +37,28 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-test SDFDirector-1.1 {Place holder} {
-    # FIXME: add tests	
-} {}
+if {[info procs sdfModel] == "" } then {
+    source [file join $PTII util testsuite models.tcl]
+}
+
+#####
+test SDFDirector-1.1 {Call generateCode(StringBuffer)} {
+    set model [sdfModel]
+    set codeGenerator \
+	    [java::new ptolemy.codegen.kernel.CodeGenerator \
+	    $model "myCodeGenerator"]
+
+    set results [java::new StringBuffer]
+    $codeGenerator generateCode $results
+    list [$results toString]
+} {{/* Variable Declarations .top */
+main(int argc, char *argv[]) {
+/* The preinitialization of the director. */
+int iteration = 0;
+/* Initialize .top */
+/* The initialization of the director. */
+/* Wrapup .top */
+/* The wrapup of the director. */
+}
+}}
+
