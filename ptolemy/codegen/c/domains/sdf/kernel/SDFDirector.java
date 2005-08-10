@@ -91,8 +91,8 @@ public class SDFDirector extends Director {
         Attribute iterations = getComponent().getAttribute("iterations");
 
         if (iterations != null) {
-            int iterationCount = ((IntToken) ((Variable) iterations).getToken())
-                    .intValue();
+            int iterationCount = 
+                ((IntToken) ((Variable) iterations).getToken()).intValue();
 
             if (iterationCount <= 0) {
                 code.append("while (true) {\n");
@@ -117,7 +117,8 @@ public class SDFDirector extends Director {
                 // FIXME: Before looking for a helper class, we should check to
                 // see whether the actor contains a code generator attribute.
                 // If it does, we should use that as the helper.
-                CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+                CodeGeneratorHelper helperObject = 
+                    (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
                 for (int i = 0; i < firing.getIterationCount(); i++) {
                     helperObject.generateFireCode(code);
@@ -134,7 +135,8 @@ public class SDFDirector extends Director {
 
                         for (int j = 0; j < port.getWidth(); j++) {
                             // Update the offset for each channel.
-                            if (helperObject.getOffset(port, j) instanceof Integer) {
+                            if (helperObject.getOffset(port, j) 
+                                    instanceof Integer) {
                                 int offset = ((Integer) helperObject.getOffset(
                                         port, j)).intValue();
                                 offset = (offset + DFUtilities.getRate(port))
@@ -176,7 +178,8 @@ public class SDFDirector extends Director {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             Variable firings = (Variable) ((NamedObj) actor)
                     .getAttribute("firingsPerIteration");
             int firingsPerIteration = ((IntToken) firings.getToken())
@@ -193,7 +196,8 @@ public class SDFDirector extends Director {
                         * firingsPerIteration;
 
                 for (int channel = 0; channel < port.getWidth(); channel++) {
-                    int portOffset = totalTokens % getBufferSize(port, channel);
+                    int portOffset = 
+                        totalTokens % getBufferSize(port, channel);
 
                     if (portOffset != 0) {
                         // Increase the buffer size of that channel to the
@@ -213,7 +217,8 @@ public class SDFDirector extends Director {
 
                         channelOffset.append("_offset");
 
-                        String channelOffsetVariable = channelOffset.toString();
+                        String channelOffsetVariable = 
+                            channelOffset.toString();
 
                         // At this point, all offsets are 0 or the number of
                         // initial tokens of SampleDelay.
@@ -221,7 +226,8 @@ public class SDFDirector extends Director {
                                 + " = " + actorHelper.getOffset(port, channel)
                                 + ";\n");
 
-                        // Now replace these concrete offsets with the variables.
+                        // Now replace these concrete offsets 
+                        // with the variables.
                         actorHelper.setOffset(port, channel,
                                 channelOffsetVariable);
                     }
@@ -241,8 +247,8 @@ public class SDFDirector extends Director {
         code.append(super.generatePreinitializeCode());
         Attribute iterations = getComponent().getAttribute("iterations");
         if (iterations != null) {
-            int iterationCount = ((IntToken) ((Variable) iterations).getToken())
-                    .intValue();
+            int iterationCount = 
+                ((IntToken) ((Variable) iterations).getToken()).intValue();
             if (iterationCount > 0) {
                 // Since there is only one director, we can declare this
                 // "iteration" variable. Alternatively, we can use $actorSymbol
@@ -280,7 +286,8 @@ public class SDFDirector extends Director {
         }
         try {
             int size = 0;
-            for (int copy = 0; copy < receivers[channelNumber].length; copy++) {
+            for (int copy = 0; 
+                copy < receivers[channelNumber].length; copy++) {
                 int copySize = ((SDFReceiver) receivers[channelNumber][copy])
                         .getCapacity();
                 if (copySize > size) {
