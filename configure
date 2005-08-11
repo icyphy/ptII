@@ -4161,11 +4161,14 @@ SOOT_DIR='${PTII}/lib'
 # and under /bin/sh $(FOO) does not work, but ${FOO} does
 JAVA_SYSTEM_JAR='${PTJAVA_HOME}/lib/rt.jar'
 
+# Java 1.5 has javax.crypto.Cipher in jce.jar
+JAVAX_CRYPTO_JAR='${PTJAVA_HOME}/lib/jce.jar'
+
 # We don't bother overriding this below so that something close
 # to the right default is in ptII.mk and the user can just change
 # SOOT_DIR or JAVA_SYSTEM_JAR	
 # Use {} here instead of () because bin/ptinvoke uses SOOT_CLASSES
-SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}'
+SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}'
 
 # We only need to look for soot if $PTII/ptolemy/copernicus exists
 if test ! -d "$PTII/ptolemy/copernicus"; then
@@ -4174,7 +4177,7 @@ if test ! -d "$PTII/ptolemy/copernicus"; then
     SOOT_DIR='${PTII}/lib'
 else
     echo $ac_n "checking for soot directory""... $ac_c" 1>&6
-echo "configure:4178: checking for soot directory" >&5
+echo "configure:4181: checking for soot directory" >&5
     # Check whether --with-soot or --without-soot was given.
 if test "${with_soot+set}" = set; then
   withval="$with_soot"
@@ -4187,11 +4190,11 @@ fi
     if test -d "$SOOT_DIR"; then
 	echo "$ac_t""$SOOT_DIR" 1>&6
         echo $ac_n "checking for \$SOOT_DIR/sootclasses.jar""... $ac_c" 1>&6
-echo "configure:4191: checking for \$SOOT_DIR/sootclasses.jar" >&5
+echo "configure:4194: checking for \$SOOT_DIR/sootclasses.jar" >&5
 	if test -f "$SOOT_DIR/sootclasses.jar"; then
 	    echo "$ac_t""$SOOT_DIR/sootclasses.jar" 1>&6
 	    echo $ac_n "checking for \$SOOT_DIR/jasminclasses.jar""... $ac_c" 1>&6
-echo "configure:4195: checking for \$SOOT_DIR/jasminclasses.jar" >&5
+echo "configure:4198: checking for \$SOOT_DIR/jasminclasses.jar" >&5
   	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
                 echo "$ac_t""$SOOT_DIR/jasminclasses.jar" 1>&6
             fi
@@ -4217,7 +4220,7 @@ echo "configure:4195: checking for \$SOOT_DIR/jasminclasses.jar" >&5
     fi
 
     echo $ac_n "checking for rt.jar by compiling config/SystemJar.java""... $ac_c" 1>&6
-echo "configure:4221: checking for rt.jar by compiling config/SystemJar.java" >&5
+echo "configure:4224: checking for rt.jar by compiling config/SystemJar.java" >&5
     # Check whether --with-javasystemjar or --without-javasystemjar was given.
 if test "${with_javasystemjar+set}" = set; then
   withval="$with_javasystemjar"
@@ -4232,7 +4235,7 @@ fi
     if "$JAVAC" SystemJar.java ; then
 	echo "$ac_t""ok" 1>&6
 	echo $ac_n "checking the location or rt.jar""... $ac_c" 1>&6
-echo "configure:4236: checking the location or rt.jar" >&5
+echo "configure:4239: checking the location or rt.jar" >&5
 	if env CLASSPATH="$PTII/config" "$JAVA" SystemJar > /dev/null; then
 	    # Run it again and get the results
 	    JAVA_SYSTEM_JAR=`CLASSPATH="$PTII/config" "$JAVA" SystemJar`
@@ -4277,7 +4280,7 @@ if test ! -d "$PTII/ptolemy/apps/tini"; then
     TINI_CLASSES='${TINI_DIR}/bin/tini.jar'
 else
     echo $ac_n "checking for tini directory""... $ac_c" 1>&6
-echo "configure:4281: checking for tini directory" >&5
+echo "configure:4284: checking for tini directory" >&5
     # Check whether --with-tini or --without-tini was given.
 if test "${with_tini+set}" = set; then
   withval="$with_tini"
@@ -4290,7 +4293,7 @@ fi
     if test -d "$TINI_DIR"; then
     	echo "$ac_t""$TINI_DIR" 1>&6
       	echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
-echo "configure:4294: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo "configure:4297: checking for \$TINI_DIR/bin/tini.jar" >&5
 	if test -f "$TINI_DIR/bin/tini.jar"; then
 	   echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
 	   TINI_CLASSES='${TINI_DIR}/bin/tini.jar'
@@ -4362,7 +4365,7 @@ if test ! -d "$PTII/ptolemy/domains/giotto"; then
     GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
 else
     echo $ac_n "checking for giotto directory""... $ac_c" 1>&6
-echo "configure:4366: checking for giotto directory" >&5
+echo "configure:4369: checking for giotto directory" >&5
     # Check whether --with-giotto or --without-giotto was given.
 if test "${with_giotto+set}" = set; then
   withval="$with_giotto"
@@ -4376,7 +4379,7 @@ fi
     if test -d "$GIOTTO_DIR"; then
     	echo "$ac_t""$GIOTTO_DIR" 1>&6
       	echo $ac_n "checking for \$GIOTTO_DIR/gdk.jar""... $ac_c" 1>&6
-echo "configure:4380: checking for \$GIOTTO_DIR/gdk.jar" >&5
+echo "configure:4383: checking for \$GIOTTO_DIR/gdk.jar" >&5
 	if test -f "$GIOTTO_DIR/gdk.jar"; then
 	   echo "$ac_t""$GIOTTO_DIR/gdk.jar" 1>&6
 	   GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
@@ -4421,7 +4424,7 @@ if test ! -d "$VR_USER_DIR" -o -z "$PTJAVA3D_DIR"; then
     or Java 3D was not found, so we need not find Java 3D Volume Rendering." 1>&6
 else
     echo $ac_n "checking for Java 3D Volume Rendering""... $ac_c" 1>&6
-echo "configure:4425: checking for Java 3D Volume Rendering" >&5
+echo "configure:4428: checking for Java 3D Volume Rendering" >&5
     # Check whether --with-ptvr-jar or --without-ptvr-jar was given.
 if test "${with_ptvr_jar+set}" = set; then
   withval="$with_ptvr_jar"
@@ -4434,7 +4437,7 @@ fi
     if test -f "$PTVR_JAR"; then 
         echo "$ac_t""ok" 1>&6
         echo $ac_n "checking for ImageJ jar file""... $ac_c" 1>&6
-echo "configure:4438: checking for ImageJ jar file" >&5
+echo "configure:4441: checking for ImageJ jar file" >&5
         # Check whether --with-imagej-jar or --without-imagej-jar was given.
 if test "${with_imagej_jar+set}" = set; then
   withval="$with_imagej_jar"
@@ -4498,7 +4501,7 @@ if test ! -d "$PTII/ptolemy/apps/kvm"; then
     WABA_CLASSES='$(WABA_DIR)/classes'
 else
     echo $ac_n "checking for waba directory""... $ac_c" 1>&6
-echo "configure:4502: checking for waba directory" >&5
+echo "configure:4505: checking for waba directory" >&5
     # Check whether --with-waba or --without-waba was given.
 if test "${with_waba+set}" = set; then
   withval="$with_waba"
@@ -4511,7 +4514,7 @@ fi
     if test -d "$WABA_DIR"; then
 	echo "$ac_t""$WABA_DIR" 1>&6
         echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:4515: checking for \$WABA_DIR/classes" >&5
+echo "configure:4518: checking for \$WABA_DIR/classes" >&5
 	if test -d "$WABA_DIR/classes"; then
 	    WABA_CLASSES='$(WABA_DIR)/classes'
 	    echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -4521,13 +4524,13 @@ echo "configure:4515: checking for \$WABA_DIR/classes" >&5
     else
 	echo "$ac_t""Not found in $WABA_DIR" 1>&6
 	echo $ac_n "checking for waba directory in /waba""... $ac_c" 1>&6
-echo "configure:4525: checking for waba directory in /waba" >&5
+echo "configure:4528: checking for waba directory in /waba" >&5
 	# Likely place for waba under windows
 	WABA_DIR=/waba/wabasdk
         if test -d "$WABA_DIR"; then
 	    echo "$ac_t""$WABA_DIR" 1>&6
             echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:4531: checking for \$WABA_DIR/classes" >&5
+echo "configure:4534: checking for \$WABA_DIR/classes" >&5
 	    if test -d "$WABA_DIR/classes"; then
 	        WABA_CLASSES='$(WABA_DIR)/classes'
 	        echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -4578,7 +4581,7 @@ if test ! -d "$X10_USER_DIR"; then
     so we need not find the X10 SDK. X10 is the power line comm interface." 1>&6
 else
     echo $ac_n "checking for X10 directory""... $ac_c" 1>&6
-echo "configure:4582: checking for X10 directory" >&5
+echo "configure:4585: checking for X10 directory" >&5
     # Check whether --with-x10 or --without-x10 was given.
 if test "${with_x10+set}" = set; then
   withval="$with_x10"
@@ -4591,7 +4594,7 @@ fi
     if test -d "$X10_DIR"; then
       	echo "$ac_t""$X10_DIR" 1>&6
       	echo $ac_n "checking for \$X10_DIR/tjx10p-12/lib/x10.jar""... $ac_c" 1>&6
-echo "configure:4595: checking for \$X10_DIR/tjx10p-12/lib/x10.jar" >&5
+echo "configure:4598: checking for \$X10_DIR/tjx10p-12/lib/x10.jar" >&5
 	if test -f "$X10_DIR/tjx10p-12/lib/x10.jar"; then
 	   X10_CLASSES=${X10_DIR}/tjx10p-12/lib/x10.jar
 	   echo "$ac_t""$X10_CLASSES" 1>&6
@@ -4601,7 +4604,7 @@ echo "configure:4595: checking for \$X10_DIR/tjx10p-12/lib/x10.jar" >&5
 	else
            echo "$ac_t""no" 1>&6
 	   echo $ac_n "checking for \$X10_DIR/tjx10p-11/lib/x10.jar""... $ac_c" 1>&6
-echo "configure:4605: checking for \$X10_DIR/tjx10p-11/lib/x10.jar" >&5
+echo "configure:4608: checking for \$X10_DIR/tjx10p-11/lib/x10.jar" >&5
 	   if test -f "$X10_DIR/tjx10p-11/lib/x10.jar"; then
 	       X10_CLASSES=${X10_DIR}/tjx10p-11/lib/x10.jar
 	       echo "$ac_t""$X10_CLASSES" 1>&6
@@ -4709,6 +4712,12 @@ fi
 
 
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
+
+
+# Location of jce.jar, usually $(PTJAVA_HOME)/lib/jce.jar
+# Java 1.5 has javax.crypto.Cipher in jce.jar
+# However, we have to be careful of backslashes and /cygwin
+# Soot uses this variable to find java.lang.Object
 
 
 # If we are running under JDK1.4, then set JDOCBREAKITERATOR = -breakiterator
@@ -5238,6 +5247,7 @@ s%@JAR_INDEX@%$JAR_INDEX%g
 s%@JAVA_SYSTEM_JAR@%$JAVA_SYSTEM_JAR%g
 s%@JAVACC@%$JAVACC%g
 s%@JAVACC_DIR@%$JAVACC_DIR%g
+s%@JAVAX_CRYPTO_JAR@%$JAVAX_CRYPTO_JAR%g
 s%@JDOCBREAKITERATOR@%$JDOCBREAKITERATOR%g
 s%@JDOCTAGLET@%$JDOCTAGLET%g
 s%@JHDL_JAR@%$JHDL_JAR%g
