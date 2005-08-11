@@ -13,13 +13,15 @@
 #fi
 mailto=$1
 
+# The directory that contains build scripts
 ADMDIR=/users/ptII/adm
-if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
-    ADMDIR=/home/bldmastr/ptII/adm
-fi
 
-if [ "`hostname`" = "source.EECS.Berkeley.EDU" ]; then
+# The log of the build
+ptbuildlog=/users/ptII/adm/test/ptIInightly.txt
+
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" ]; then
     ADMDIR=/home/bldmastr/ptII/adm
+    ptbuildlog=/home/bldmastr/ptII/adm/logs/ptIInightly.txt
 fi
 
 # If you change the version number, then edit 
@@ -38,11 +40,6 @@ echo "`date`" > $mailmsg
 echo "The Ptolemy II nightly build is run from a bldmaster cronjob" >> $mailmsg
 echo "See http://embedded.eecs.berkeley.edu/buildmaster" >> $mailmsg
 
-# The log of the build
-ptbuildlog=/users/ptII/adm/test/ptIInightly.txt
-if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
-    ptbuildlog=/home/bldmastr/ptII/adm/logs/ptIInightly.txt
-fi
 #(cd /users/ptII/logs; rm -f javalastnight; ln -s java`date  '+%m%d'` javalastnight)
 
 # Remove logs older than 45 days
@@ -68,7 +65,7 @@ echo "------------------------------------------------" >> $mailmsg
 echo "Errors during the build and test process in ptII:" >> $mailmsg
 echo "" >> $mailmsg
 echo "To see the complete build and test log, see:" >> $mailmsg
-if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" ]; then
     echo "http://chess.eecs.berkeley.edu/ptolemy/src/ptII/adm/logs/ptIInightly.txt" >> $mailmsg
     echo " or, if you have a full account on gigascale, do" >> $mailmsg
     echo "scp gigasource:/home/bldmastr/ptII/adm/logs/ptIInightly.txt /tmp" >> $mailmsg
@@ -171,7 +168,7 @@ egrep 'Total Tests' $ptbuildlog |
     egrep '^Failed: 0' >> $mailmsg
 
 
-if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" ]; then
     echo "" >> $mailmsg
     echo "------------------------------------------------" >> $mailmsg
     echo "Code Coverage Summary" >> $mailmsg
