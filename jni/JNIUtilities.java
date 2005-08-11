@@ -326,7 +326,9 @@ public class JNIUtilities {
                 + nativeLibrary + ".Jni" + actor.getName());
 
         // Create the shared library.
-        execCommands.add("make -C jni/" + nativeLibrary + " -f " + "Jni"
+        // The -C argument is a GNU make option which will not
+        // work with /usr/ccs/bin/make under Solaris
+        execCommands.add("gmake -C jni/" + nativeLibrary + " -f " + "Jni"
                 + interNativeLibrary + ".mk");
 
         StreamExec javaExec = new StreamExec();
