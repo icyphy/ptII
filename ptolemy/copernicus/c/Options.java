@@ -113,7 +113,9 @@ public class Options {
         _optionTable.put("vta", "true");
         _optionTable.put("ptII", "../../../..");
         _optionTable.put("compulsoryMethods", "");
-        _optionTable.put("cFlags", "-g -static -Wall -pedantic -I .");
+        // Don't use -static under Solaris 10, there is no libc.a
+        // If you do, you will get ld: fatal: library -lc: not found
+        _optionTable.put("cFlags", "-g -Wall -pedantic -I .");
         _optionTable.put("reportEntities", "false");
     }
 
