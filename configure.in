@@ -2531,11 +2531,14 @@ SOOT_DIR='${PTII}/lib'
 # and under /bin/sh $(FOO) does not work, but ${FOO} does
 JAVA_SYSTEM_JAR='${PTJAVA_HOME}/lib/rt.jar'
 
+# Java 1.5 has javax.crypto.Cipher in jce.jar
+JAVAX_CRYPTO_JAR='${PTJAVA_HOME}/lib/jce.jar'
+
 # We don't bother overriding this below so that something close
 # to the right default is in ptII.mk and the user can just change
 # SOOT_DIR or JAVA_SYSTEM_JAR	
 # Use {} here instead of () because bin/ptinvoke uses SOOT_CLASSES
-SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}'
+SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}'
 
 # We only need to look for soot if $PTII/ptolemy/copernicus exists
 if test ! -d "$PTII/ptolemy/copernicus"; then
@@ -3032,6 +3035,12 @@ AC_SUBST(JAVACC)
 
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 AC_SUBST(JAVACC_DIR)
+
+# Location of jce.jar, usually $(PTJAVA_HOME)/lib/jce.jar
+# Java 1.5 has javax.crypto.Cipher in jce.jar
+# However, we have to be careful of backslashes and /cygwin
+# Soot uses this variable to find java.lang.Object
+AC_SUBST(JAVAX_CRYPTO_JAR)
 
 # If we are running under JDK1.4, then set JDOCBREAKITERATOR = -breakiterator
 AC_SUBST(JDOCBREAKITERATOR)

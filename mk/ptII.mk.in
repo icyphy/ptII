@@ -70,6 +70,12 @@ PTJAVA_HOME =	@PTJAVA_HOME@
 # Soot uses this variable to find java.lang.Object
 JAVA_SYSTEM_JAR = @JAVA_SYSTEM_JAR@
 
+# Location of jce.jar, usually $(PTJAVA_HOME)/lib/jce.jar
+# Java 1.5 has javax.crypto.Cipher in jce.jar
+# However, we have to be careful of backslashes and /cygwin
+# Soot uses this variable to find java.lang.Object
+JAVAX_CRYPTO_JAR = @JAVAX_CRYPTO_JAR@
+
 # JDK Version from the java.version property
 JVERSION =	@JVERSION@
 
