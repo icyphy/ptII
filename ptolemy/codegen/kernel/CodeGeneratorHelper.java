@@ -51,8 +51,12 @@ import ptolemy.kernel.util.Settable;
 //// CodeGeneratorHelper
 
 /**
- * FIXME: detailed class comment needed.
  * Base class for code generator helper.
+ *
+ * <p>Subclasses should override generateFireCode(),
+ * generateInitializeCode(), generatePreinitializeCode(), and
+ * generateWrapupCode() methods by appending a corresponding code
+ * block.
  *
  * @author Ye Zhou, Edward A. Lee, Contributors: Gang Zhou, Christopher Brooks
  * @version $Id$
@@ -138,18 +142,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String generatePreinitializeCode() throws IllegalActionException {
         createBufferAndOffsetMap();
         return "";
-    }
-
-    /** 
-     * Generate code shared by the helper actors. In this base class, do
-     * nothing. Subclasses may extend this method to generate the shared
-     * code of the associated component and append the code to the given
-     * string buffer.
-     * @param stream The given string buffer.
-     * @exception IllegalActionException Not thrown in this base class.
-     */ 
-    public void generateSharedCode(StringBuffer stream)
-            throws IllegalActionException {
     }
 
     /** 
