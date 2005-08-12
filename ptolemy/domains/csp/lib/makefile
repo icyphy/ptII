@@ -54,10 +54,12 @@ JSRCS = \
 	CSPSieve.java \
 	CSPSink.java \
 	CSPSource.java \
-	CSPMultiSink.java
+	CSPMultiSink.java \
+	ResourcePool.java
 
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	ResourcePoolIcon.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
