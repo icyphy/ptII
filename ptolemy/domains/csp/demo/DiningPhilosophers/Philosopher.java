@@ -49,10 +49,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  A philosopher sits at a table with 4 other philosophers. Between
- each two philosophers there is a fork. A Philosopher eats when he has
- both forks next to him. A Philosopher thinks for a while, then tries
- to eat. When he succeeds in obtaining both forks he eats for a while,
- then puts both forks back on the table and continues thinking.
+ each two philosophers there is a chopstick. A Philosopher eats when he has
+ both chopsticks next to him. A Philosopher thinks for a while, then tries
+ to eat. When he succeeds in obtaining both chopsticks he eats for a while,
+ then puts both chopsticks back on the table and continues thinking.
  <p>
  Due to the rendezvous nature of communication in the CSP domain, a
  philosopher stalls if it tries to get a chopstick but cannot. When
@@ -182,7 +182,7 @@ public class Philosopher extends CSPActor {
                 Thread.sleep((long) interval * 1000);
                 delay(interval);
 
-                // Obtain the forks
+                // Obtain the chopsticks
                 if (_random.nextDouble() > 0.5) {
                     leftIn.get(0);
                     gotLeft = true;
@@ -209,7 +209,7 @@ public class Philosopher extends CSPActor {
                 Thread.sleep((long) interval * 1000);
                 delay(interval);
 
-                // Release the forks.
+                // Release the chopsticks.
                 leftOut.send(0, t);
                 gotLeft = false;
                 rightOut.send(0, t);
