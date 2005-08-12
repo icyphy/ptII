@@ -28,8 +28,14 @@
  */
 package ptolemy.domains.csp.kernel;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
@@ -97,7 +103,8 @@ import ptolemy.kernel.util.Nameable;
  @Pt.ProposedRating Green (nsmyth)
  @Pt.AcceptedRating Green (kienhuis)
  */
-public abstract class ConditionalBranch {
+public abstract class ConditionalBranch implements Debuggable {
+    
     /** Create a guarded communication statement. This class contains
      *  all of the information necessary to carry out a guarded
      *  communication statement, with the exception of the type of
@@ -114,18 +121,7 @@ public abstract class ConditionalBranch {
      */
     public ConditionalBranch(boolean guard, IOPort port, int branchID)
             throws IllegalActionException {
-        Nameable tmp = port.getContainer();
-
-        if (!(tmp instanceof ConditionalBranchActor)) {
-            throw new IllegalActionException(port,
-                    "A conditional branch can only be created"
-                            + "with a port contained by ConditionalBranchActor");
-        }
-
-        _branchID = branchID;
-        _guard = guard;
-        _controller = ((ConditionalBranchActor) tmp)
-                .getConditionalBranchController();
+        this(guard, port, branchID, null);
     }
 
     /** Create a guarded communication statement. This class contains
@@ -133,7 +129,6 @@ public abstract class ConditionalBranch {
      *  communication statement, with the exception of the type of
      *  communication. The receiver is set in the subclass as it
      *  is subject to communication specific tests.
-     *
      *  This constructor allows actors which do not implement the
      *  ConditionalBranchActor interface access to CSP functionality
      *  by passing their own ConditionalBranchController.
@@ -143,19 +138,49 @@ public abstract class ConditionalBranch {
      *   try an communicate through.
      *  @param branchID The identification number assigned to this branch
      *   upon creation by the CSPActor.
-     *  @param cbc The ConditionalBranchController associated with this branch.
+     *  @param controller The controller associated with this branch, or
+     *   null to use the one provided by the container of the port.
      *  @exception IllegalActionException If the actor that contains
-     *   the port is not of type CSPActor.
+     *   the port is not of type CSPActor, or if no controller is
+     *   provided, and the actor is not an instance of ConditionalBranchActor.
      */
-    public ConditionalBranch(boolean guard, IOPort port, int branchID,
-            ConditionalBranchController cbc) throws IllegalActionException {
+    public ConditionalBranch(
+            boolean guard, IOPort port, int branchID, ConditionalBranchController controller)
+            throws IllegalActionException {
         _branchID = branchID;
         _guard = guard;
-        _controller = cbc;
+        _controller = controller;
+        if (_controller == null) {
+            Nameable portContainer = port.getContainer();
+            if (!(portContainer instanceof ConditionalBranchActor)) {
+                throw new IllegalActionException(port,
+                        "A conditional branch can only be created"
+                                + "with a port contained by ConditionalBranchActor.");
+            }
+            _controller = ((ConditionalBranchActor) portContainer)
+                    .getConditionalBranchController();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add a debug listener.
+     *  If the listener is already in the list, do not add it again.
+     *  @param listener The listener to which to send debug messages.
+     *  @see #removeDebugListener(DebugListener)
+     */
+    public void addDebugListener(DebugListener listener) {
+        if (_debugListeners == null) {
+            _debugListeners = new LinkedList();
+        }
+        if (_debugListeners.contains(listener)) {
+            return;
+        } else {
+            _debugListeners.add(listener);
+        }
+        _debugging = true;
+    }
 
     /** Returns the guard for this guarded communication statement.
      *  If it is true the branch is said to be enabled.
@@ -189,6 +214,20 @@ public abstract class ConditionalBranch {
         return _receiver;
     }
 
+    /** Return an array with all the receivers that
+     *  this branch is trying to rendezvous with.
+     *  In this base class, this is an array with one element,
+     *  the receiver returned by getReceiver(). However, in the
+     *  ConditionalSend derived class, the array may contain more
+     *  than one receiver.
+     *  @return An array of receivers that this branch is trying to rendezvous with.
+     */
+    public Receiver[] getReceivers() {
+        Receiver[] result = new Receiver[1];
+        result[0] = _receiver;
+        return result;
+    }
+
     /** Return the token contained by this branch. For a ConditionalSend
      *  it is set upon creation, and set to null after the rendezvous.
      *  For a ConditionalReceive it is set after the rendezvous has
@@ -210,6 +249,23 @@ public abstract class ConditionalBranch {
         return _alive;
     }
 
+    /** Unregister a debug listener.  If the specified listener has not
+     *  been previously registered, then do nothing.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which debug messages are sent.
+     *  @see #addDebugListener(DebugListener)
+     */
+    public void removeDebugListener(DebugListener listener) {
+        if (_debugListeners == null) {
+            return;
+        }
+        _debugListeners.remove(listener);
+
+        if (_debugListeners.size() == 0) {
+            _debugging = false;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                      package friendly methods                  ////
 
@@ -222,11 +278,11 @@ public abstract class ConditionalBranch {
 
     /** Set the CSPReceiver this branch is trying to rendezvous with.
      *  This method should only be called from derived classes.
-     *  @param rec The CSPReceiver this branch is trying to rendezvous
-     *  with.
+     *  @param receiver The CSPReceiver this branch is trying to rendezvous
+     *   with, or null to indicate that there are no more receivers.
      */
-    void setReceiver(CSPReceiver rec) {
-        _receiver = rec;
+    void setReceiver(CSPReceiver receiver) {
+        _receiver = receiver;
     }
 
     /** Set the token contained by this branch. For a ConditionalSend
@@ -240,18 +296,33 @@ public abstract class ConditionalBranch {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Send a debug message to all debug listeners that have registered.
+     *  By convention, messages should not include a newline at the end.
+     *  The newline will be added by the listener, if appropriate.
+     *  @param message The message.
+     */
+    protected final void _debug(String message) {
+        if (_debugging) {
+            Iterator listeners = _debugListeners.iterator();
+            while (listeners.hasNext()) {
+                ((DebugListener) listeners.next()).message(message);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** Flag that is true if there are debug listeners. */
+    protected boolean _debugging = false;
 
     /** The guard for this guarded communication statement. */
     protected boolean _guard;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The identification number of this branch
-     * (according to its controller).
-     */
-    private int _branchID;
 
     /** Has another branch successfully rendezvoused? If so, then _alive
      *  is set to false. Otherwise, this branch still can potentially
@@ -260,14 +331,20 @@ public abstract class ConditionalBranch {
      */
     private boolean _alive = true;
 
+    /** The identification number of this branch
+     * (according to its controller).
+     */
+    private int _branchID;
+
     /** The controller of this thread is trying to perform a conditional
      *  rendezvous for.
      */
     private ConditionalBranchController _controller;
 
-    /** The receiver this thread is trying to rendezvous with.
-     *  It is immutable.
-     */
+    /** The list of DebugListeners registered with this object. */
+    private LinkedList _debugListeners = null;
+
+    /** The receiver this thread is trying to rendezvous with. */
     private CSPReceiver _receiver;
 
     /** The Token transferred in a rendezvous. */

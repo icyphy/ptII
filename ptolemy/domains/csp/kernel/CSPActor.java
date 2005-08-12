@@ -238,6 +238,9 @@ public class CSPActor extends TypedAtomicActor implements
         super.initialize();
         _delayed = false;
         _cancelDelay = false;
+        if (_debugging) {
+            _conditionalBranchController.addDebugListener(this);
+        }
     }
 
     /** Return false. If an actor wishes to continue for more than

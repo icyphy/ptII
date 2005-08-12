@@ -385,18 +385,18 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  get is reached.
      *  It is assumed that at most one process is trying to receive
      *  from and send to the channel associated with this receiver.
-     *  to receive from it and at most one channel send to it.
-     *
-     *  @param t The token being transferred in the rendezvous.
+     *  @param token The token being transferred in the rendezvous.
+     *  @param branch The branch, or null if this is not part of a
+     *   conditional branch.
      *  @exception TerminateProcessException If execution termination
      *   has been requested, or if the execution is abruptly terminated
      *   from the outside (via an InterruptedException).
      */
-    public synchronized void put(Token t, Branch branch) {
+    public synchronized void put(Token token, Branch branch) {
         boolean blocked = false;
 
         try {
-            _token = t; // perform transfer
+            _token = token; // perform transfer
 
             if (_isGetWaiting()) {
                 _setGetWaiting(false); //needs to be done here

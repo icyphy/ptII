@@ -112,6 +112,23 @@ import ptolemy.kernel.util.Nameable;
  @see ptolemy.domains.csp.kernel.ConditionalBranch
  */
 public class ConditionalReceive extends ConditionalBranch implements Runnable {
+
+    /** Create a conditional receive.
+     *  @param port The IOPort containing the channel (and thus receiver)
+     *   that this branch will try to rendezvous with.
+     *  @param channel The channel in the IOPort that this branch is
+     *   trying to rendezvous with.
+     *  @param branch The identification number assigned to this branch
+     *   upon creation by the CSPActor.
+     *  @exception IllegalActionException If the channel has more
+     *   than one receiver or if the receiver is not of type CSPReceiver.
+     */
+    public ConditionalReceive(
+            IOPort port, int channel, int branch)
+            throws IllegalActionException {
+        this(true, port, channel, branch);
+    }
+
     /** Create a guarded communication with a get() communication.
      *  @param guard The guard for the guarded communication statement
      *   represented by this object.
@@ -165,13 +182,22 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  takes place in the CSP domain.
      */
     public void run() {
-        try {
-            CSPReceiver receiver = getReceiver();
-            ConditionalBranchController controller = getController();
+        CSPReceiver receiver = getReceiver();
+        ConditionalBranchController controller = getController();
 
+        try {
             synchronized (receiver) {
+                String identifier = "";
+                if (_debugging) {
+                    identifier = "get() on " + _port.getFullName() + " on channel " + _channel;
+                    _debug(identifier + ": Trying conditional receive.");
+                }
+
                 if (receiver._isConditionalReceiveWaiting()
                         || receiver._isGetWaiting()) {
+                    if (_debugging) {
+                        _debug(identifier + ": A receive or get is already waiting!");
+                    }
                     // Should never happen that a get or a ConditionalReceive
                     // is already at the receiver.
                     throw new InvalidStateException(((Nameable) controller
@@ -184,27 +210,46 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                 // MAIN LOOP
                 while (true) {
                     if (!isAlive()) {
+                        if (_debugging) {
+                            _debug(identifier + ": No longer alive");
+                        }
                         controller._branchFailed(getID());
                         return;
                     } else if (receiver._isPutWaiting()) {
+                        if (_debugging) {
+                            _debug(identifier + ": Put is waiting.");
+                        }
                         _arriveAfterPut(receiver, controller);
                         return;
                     } else if (receiver._isConditionalSendWaiting()) {
+                        if (_debugging) {
+                            _debug(identifier + ": Conditional send is waiting!");
+                        }
                         if (!_arriveAfterConditionalSend(receiver, controller)) {
+                            if (_debugging) {
+                                _debug(identifier + ": Waiting conditional send is the chosen one.");
+                            }
                             return;
+                        } else {
+                            if (_debugging) {
+                                _debug(identifier + ": Waiting conditional send is not the chosen one.");
+                            }                            
                         }
                     } else {
+                        if (_debugging) {
+                            _debug(identifier + ": First to arrive.");
+                        }
                         _arriveFirst(receiver, controller);
                         return;
                     }
                 }
             }
         } catch (InterruptedException ex) {
-            getController()._branchFailed(getID());
+            controller._branchFailed(getID());
         } catch (TerminateProcessException ex) {
-            getController()._branchFailed(getID());
+            controller._branchFailed(getID());
         } finally {
-            getReceiver()._setConditionalReceive(false, null, -1);
+            receiver._setConditionalReceive(false, null, -1);
         }
     }
 
@@ -244,9 +289,9 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             }
         }
 
-        getController()._branchBlocked(this.getReceiver());
-        getReceiver()._checkFlagsAndWait();
-        getController()._branchUnblocked(this.getReceiver());
+        controller._branchBlocked(receiver);
+        receiver._checkFlagsAndWait();
+        controller._branchUnblocked(receiver);
         return true;
     }
 
@@ -268,9 +313,9 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                 return;
             }
 
-            getController()._branchBlocked(this.getReceiver());
-            getReceiver()._checkFlagsAndWait();
-            getController()._branchUnblocked(this.getReceiver());
+            controller._branchBlocked(receiver);
+            receiver._checkFlagsAndWait();
+            controller._branchUnblocked(receiver);
 
             if (!isAlive()) {
                 controller._branchFailed(getID());
@@ -290,9 +335,9 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
     protected void _arriveFirst(CSPReceiver receiver,
             ConditionalBranchController controller) throws InterruptedException {
         receiver._setConditionalReceive(true, controller, getID());
-        getController()._branchBlocked(this.getReceiver());
-        getReceiver()._checkFlagsAndWait();
-        getController()._branchUnblocked(this.getReceiver());
+        controller._branchBlocked(receiver);
+        receiver._checkFlagsAndWait();
+        controller._branchUnblocked(receiver);
 
         while (true) {
             if (!isAlive()) {
@@ -319,13 +364,15 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             }
 
             //can't rendezvous this time, but still alive
-            getController()._branchBlocked(this.getReceiver());
-            getReceiver()._checkFlagsAndWait();
-            getController()._branchUnblocked(this.getReceiver());
+            controller._branchBlocked(receiver);
+            receiver._checkFlagsAndWait();
+            controller._branchUnblocked(receiver);
         }
     }
 
     private void _init(IOPort port, int channel) throws IllegalActionException {
+        _port = port;
+        _channel = channel;
         Receiver[][] receivers;
 
         try {
@@ -365,4 +412,14 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             port.workspace().doneReading();
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The channel on which we are sending. */
+    private int _channel;
+    
+    /** The port from which we are sending. */
+    private IOPort _port;
+
 }

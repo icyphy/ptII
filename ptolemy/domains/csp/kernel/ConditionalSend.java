@@ -102,15 +102,35 @@ import ptolemy.kernel.util.Nameable;
  a receiver, it is the responsibility of the branch arriving
  second to check that the rendezvous can proceed(see case 2).
  <p>
- @author  Neil Smyth
+ @author  Neil Smyth and Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Green (nsmyth)
+ @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Green (kienhuis)
  <p>
  @see ptolemy.domains.csp.kernel.ConditionalBranch
  */
 public class ConditionalSend extends ConditionalBranch implements Runnable {
+    
+    // FIXME: Need to review for major changes to support forked connections.
+    
+    /** Create a conditional send.
+     *  @param port The IOPort containing the channel (and thus receiver)
+     *   that this branch will try to rendezvous with.
+     *  @param channel The channel in the IOPort that this branch is
+     *   trying to rendezvous with.
+     *  @param branchID The identification number assigned to this branch
+     *   upon creation by the CSPActor.  
+     *  @param token The token this branch is trying to send.
+     *  @exception IllegalActionException If the channel has more
+     *   than one receiver or if the receiver is not of type CSPReceiver.
+     */
+    public ConditionalSend(
+            IOPort port, int channel, int branchID, Token token)
+            throws IllegalActionException {
+        this(true, port, channel, branchID, token, null);
+    }
+    
     /** Create a guarded communication with a send communication.
      *  @param guard The guard for the guarded communication statement
      *   represented by this object.
@@ -126,48 +146,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      */
     public ConditionalSend(boolean guard, IOPort port, int channel,
             int branchID, Token token) throws IllegalActionException {
-        super(guard, port, branchID);
-
-        Receiver[][] receivers;
-
-        try {
-            port.workspace().getReadAccess();
-
-            if (!port.isOutput()) {
-                throw new IllegalActionException(port, "ConditionalSend: "
-                        + "tokens only sent from an output port.");
-            }
-
-            if ((channel >= port.getWidth()) || (channel < 0)) {
-                throw new IllegalActionException(port, "ConditionalSend: "
-                        + "channel index out of range.");
-            }
-
-            receivers = port.getRemoteReceivers();
-
-            if ((receivers == null) || (receivers[channel] == null)) {
-                throw new IllegalActionException(port, "ConditionalSend: "
-                        + "Trying to rendezvous with null receiver");
-            }
-
-            if (receivers[channel].length != 1) {
-                throw new IllegalActionException(port, "ConditionalSend: "
-                        + "channel " + channel + " does not have exactly"
-                        + " one receiver");
-            }
-
-            if (!(receivers[channel][0] instanceof CSPReceiver)) {
-                throw new IllegalActionException(port, "ConditionalSend: "
-                        + "channel " + channel + " does not have a receiver "
-                        + "of type CSPReceiver.");
-            }
-
-            setReceiver((CSPReceiver) receivers[channel][0]);
-        } finally {
-            port.workspace().doneReading();
-        }
-
-        setToken(token);
+        this(guard, port, channel, branchID, token, null);
     }
 
     /** Create a guarded communication with a send communication. This
@@ -182,16 +161,16 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  @param branchID The identification number assigned to this branch
      *   upon creation by the CSPActor.
      *  @param token The token this branch is trying to send.
-     *  @param cbc The ConditionalBranchController that this branch uses.
+     *  @param controller The controller that this branch uses.
      *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalSend(boolean guard, IOPort port, int channel,
-            int branchID, Token token, ConditionalBranchController cbc)
+            int branchID, Token token, ConditionalBranchController controller)
             throws IllegalActionException {
-        super(guard, port, branchID, cbc);
-
-        Receiver[][] receivers;
+        super(guard, port, branchID, controller);
+        _port = port;
+        _channel = channel;
 
         try {
             port.workspace().getReadAccess();
@@ -206,26 +185,21 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         + "channel index out of range.");
             }
 
-            receivers = port.getRemoteReceivers();
+            Receiver[][] receivers = port.getRemoteReceivers();
 
             if ((receivers == null) || (receivers[channel] == null)) {
                 throw new IllegalActionException(port, "ConditionalSend: "
                         + "Trying to rendezvous with null receiver");
             }
-
-            if (receivers[channel].length != 1) {
-                throw new IllegalActionException(port, "ConditionalSend: "
-                        + "channel " + channel + " does not have exactly"
-                        + " one receiver");
-            }
-
             if (!(receivers[channel][0] instanceof CSPReceiver)) {
                 throw new IllegalActionException(port, "ConditionalSend: "
                         + "channel " + channel + " does not have a receiver "
                         + "of type CSPReceiver.");
             }
 
-            setReceiver((CSPReceiver) receivers[channel][0]);
+            _receivers = receivers[channel];
+            _copyIndex = 0;
+            setReceiver((CSPReceiver)_receivers[_copyIndex]);
         } finally {
             port.workspace().doneReading();
         }
@@ -235,6 +209,37 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return the next receiver for this branch to rendezvous with.
+     *  The first time this is called, it will return the first receiver
+     *  that the send should rendezvous with. The next time, it returns
+     *  the next one. When there are no more receivers, return null.
+     *  There is more than one receiver to rendezvous with when an
+     *  output port is linked via a relation or relation group to more
+     *  than one input port.
+     *  @return The next receiver for this branch to rendezvous with,
+     *   or null if there are no more.
+     */
+    public CSPReceiver getReceiver() {
+        CSPReceiver result = super.getReceiver();
+        if (_copyIndex < _receivers.length - 1) {
+            _copyIndex += 1;
+            setReceiver((CSPReceiver)_receivers[_copyIndex]);
+        } else {
+            setReceiver(null);
+        }
+        return result;
+    }
+    
+    /** Return an array with all the receivers that
+     *  this branch is trying to rendezvous with.
+     *  This includes all the receivers that are destinations
+     *  of the port and channel specified in the constructor.
+     *  @return An array of receivers that this branch is trying to rendezvous with.
+     */
+    public Receiver[] getReceivers() {
+        return _receivers;
+    }
 
     /** The run method has roughly three parts: (1) when there is already
      *  a get waiting, (2) when there is a ConditionalReceive waiting, and
@@ -246,169 +251,212 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  takes place in the CSP domain.
      */
     public void run() {
+        // Get the first receiver in the set of receivers that
+        // are being broadcast to.
+        CSPReceiver receiver = getReceiver();
+        ConditionalBranchController controller = getController();
+        String identifier = "";
+        if (_debugging) {
+            identifier = "send() on " + _port.getFullName() + " on channel " + _channel;
+            _debug(identifier + ": Trying conditional send.");
+        }
+        // Flag that we use to keep track of whether any one of the puts
+        // to forked receivers has succeeded.
+        boolean putSucceeded = false;
         try {
-            CSPReceiver receiver = getReceiver();
-            ConditionalBranchController controller = getController();
-
-            synchronized (receiver) {
-                if (receiver._isConditionalSendWaiting()
-                        || receiver._isPutWaiting()) {
-                    // Should never happen that a put or a ConditionalSend
-                    // is already at the receiver.
-                    throw new InvalidStateException(((Nameable) controller
-                            .getParent()).getName()
-                            + ": ConditionalSend branch trying to rendezvous "
-                            + "with a receiver that already has a put or a "
-                            + "ConditionalSend waiting.");
-                }
-
-                // MAIN LOOP
-                while (true) {
-                    if (!isAlive()) {
-                        controller._branchFailed(getID());
-                        return;
-                    } else if (receiver._isGetWaiting()) {
-                        _arriveAfterGet(receiver, controller);
-                        return;
-                    } else if (receiver._isConditionalReceiveWaiting()) {
-                        if (!_arriveAfterCondRec(receiver, controller)) {
+            // FIXME: These should be parallel threads for each receiver,
+            // with waiting for each one to complete.
+            while (receiver != null) {
+                synchronized (receiver) {
+                    if (receiver._isConditionalSendWaiting() || receiver._isPutWaiting()) {
+                        // Should never happen that a put or a ConditionalSend
+                        // is already at the receiver. This would mean there
+                        // was more than one output connected to input port.
+                        throw new InvalidStateException(((Nameable) controller
+                                .getParent()).getName()
+                                + ": ConditionalSend branch trying to rendezvous "
+                                + "with a receiver that already has a put or a "
+                                + "ConditionalSend waiting.");
+                    }
+                    
+                    // Loop until either the rendezvous succeeds or the branch
+                    // is no longer alive (presumably because some other branch succeeded).
+                    while (true) {
+                        if (!isAlive()) {
+                            if (_debugging) {
+                                _debug("send(): No longer alive.");
+                            }
+                            receiver._setConditionalSend(false, null, -1);
+                            controller._branchFailed(getID());
+                            receiver.notifyAll();
+                            // Do not attempt the remaining receivers.
                             return;
                         }
-                    } else {
-                        _arriveFirst(receiver, controller);
-                        return;
-                    }
+                        if (receiver._isGetWaiting()) {
+                            if (_debugging) {
+                                _debug("send(): get() is waiting.");
+                            }
+                            // The get will not disappear, so we can do a local loop.
+                            while(true) {
+                                if (controller._isBranchFirst(getID())) {
+                                    // I am the branch that succeeds
+                                    if (_debugging) {
+                                        _debug("send(): Putting token.");
+                                    }
+                                    receiver._setConditionalSend(false, null, -1);
+                                    receiver.put(getToken());
+                                    putSucceeded = true;
+                                    break;
+                                }
+                                // Wait for the next event.
+                                controller._branchBlocked(receiver);
+                                receiver._checkFlagsAndWait();
+                                controller._branchUnblocked(receiver);
+                                
+                                // If I am no longer alive, then quit.
+                                if (!isAlive()) {
+                                    if (_debugging) {
+                                        _debug("send(): No longer alive.");
+                                    }
+                                    controller._branchFailed(getID());
+                                    receiver._setConditionalSend(false, null, -1);
+                                    // Do not attempt the remaining receivers.
+                                    return;
+                                }
+                            }
+                            // Go on to the next receiver.
+                            break;
+                        } else if (receiver._isConditionalReceiveWaiting()) {
+                            if (_debugging) {
+                                _debug("send(): conditional receive is waiting.");
+                            }
+                            if (controller._isBranchFirst(getID())) {
+                                // Send side ok, need to check that receive side also ok
+                                ConditionalBranchController side2 = receiver._getOtherController();
+                                if ((side2 != null) && side2._isBranchFirst(receiver.getOtherID())) {
+                                    if (_debugging) {
+                                        _debug("send(): Putting token.");
+                                    }
+                                    receiver.put(getToken());
+                                    receiver._setConditionalReceive(false, null, -1);
+                                    putSucceeded = true;
+                                    // Go on to the next receiver.
+                                    break;
+                                } else {
+                                    // Receive side not first, so release "first", but only
+                                    // if we haven't already succeeded in completing a rendezvous.
+                                    // If we have, then we are committed to being first, and
+                                    // have to stick to it.
+                                    // FIXME: Departure from original algorithm.
+                                    if (!putSucceeded) {
+                                        controller._releaseFirst(getID());
+                                        receiver.notifyAll();
+                                    }
+                                    // Wait for something to happen.
+                                    controller._branchBlocked(receiver);
+                                    receiver._checkFlagsAndWait();
+                                    controller._branchUnblocked(receiver);
+                                }
+                            }
+                        } else {
+                            // Arriving first.
+                            if (_debugging) {
+                                _debug("send(): First to arrive.");
+                            }
+                            receiver._setConditionalSend(true, controller, getID());                            
+
+                            // Wait for something to happen.
+                            controller._branchBlocked(receiver);
+                            receiver._checkFlagsAndWait();
+                            controller._branchUnblocked(receiver);
+
+                            while(true) {
+                                if (!isAlive()) {
+                                    if (_debugging) {
+                                        _debug("send(): No longer alive.");
+                                    }
+                                    receiver._setConditionalSend(false, null, -1);
+                                    controller._branchFailed(getID());
+                                    receiver.notifyAll();
+                                    // Do not attempt the remaining receivers.
+                                    return;
+                                } else if (controller._isBranchFirst(getID())) {
+                                    if (receiver._isGetWaiting()) {
+                                        if (_debugging) {
+                                            _debug("send(): get() is waiting. Put token.");
+                                        }
+                                        // I am the branch that succeeds
+                                        // Note that need to reset conditionalSend
+                                        // flag BEFORE doing put.
+                                        receiver._setConditionalSend(false, null, -1);
+                                        receiver.put(getToken());
+                                        putSucceeded = true;
+                                        // Done with this receiver.
+                                        break;
+                                    } else {
+                                        // FIXME: Modification
+                                        if (!putSucceeded) {
+                                            controller._releaseFirst(getID());
+                                            receiver.notifyAll();
+                                        }
+                                    }
+                                }
+
+                                //cannot rendezvous this time, still alive
+                                controller._branchBlocked(receiver);
+                                receiver._checkFlagsAndWait();
+                                controller._branchUnblocked(receiver);
+                            }
+                            // Go on to the next receiver.
+                            break;
+                        }
+                    } // while(true)
+                } // synchronized(receiver)
+                receiver._setConditionalSend(false, null, -1);
+                // If the branch failed on the current receiver, it should
+                // not try the remaining ones, and in particular should not
+                // notify again that the branch failed.
+                if (!isAlive()) {
+                    break;
                 }
+                // Get the next receiver with which to rendezvous, if there is one.
+                receiver = getReceiver();
+            }
+            if (putSucceeded) {
+                // This should be called at most once, after all puts in
+                // a forked set have suceeded.
+                controller._branchSucceeded(getID());
+            } else {
+                controller._branchFailed(getID());                
             }
         } catch (InterruptedException ex) {
-            getController()._branchFailed(getID());
+            // Fall out.
         } catch (TerminateProcessException ex) {
-            getController()._branchFailed(getID());
+            // Fall out.
         } finally {
             // Make sure that the current token doesn't get used
             // in the next rendezvous.
             setToken(null);
-            getReceiver()._setConditionalSend(false, null, -1);
+            // If we exited with an exception, we may not have set the
+            // state of the receiver properly.
+            if (receiver != null) {
+                receiver._setConditionalSend(false, null, -1);
+            }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         private variables                 ////
+    
+    /** The channel on which we are sending. */
+    private int _channel;
+    
+    /** The index of the receiver currently being sent to. */
+    private int _copyIndex = 0;
 
-    /**
-     * @param controller The conditional branch controller that controls
-     *  this conditional receive.
-     * @param receiver The CSPReceiver through which a rendezvous attempt is
-     *  taking place.
-     */
-    protected boolean _arriveAfterCondRec(CSPReceiver receiver,
-            ConditionalBranchController controller) throws InterruptedException {
-        // CASE 2: a conditionalReceive is already waiting.
-        // As this conditionalSend arrived second, it has
-        // to check if both branches are "first" and if
-        // so perform transfer & reset state of the receiver.
-        // A ConditionalReceive may disappear,
-        // so if fail to rendezvous, go back to top
-        // of main loop.
-        if (controller._isBranchFirst(getID())) {
-            // send side ok, need to check that receive
-            // side also ok
-            ConditionalBranchController side2 = receiver._getOtherController();
-
-            if ((side2 != null) && side2._isBranchFirst(receiver.getOtherID())) {
-                receiver.put(getToken());
-                receiver._setConditionalReceive(false, null, -1);
-                controller._branchSucceeded(getID());
-                return false;
-            } else {
-                // receive side not first, so release "first"
-                controller._releaseFirst(getID());
-                receiver.notifyAll();
-            }
-        }
-
-        getController()._branchBlocked(this.getReceiver());
-        getReceiver()._checkFlagsAndWait();
-        getController()._branchUnblocked(this.getReceiver());
-        return true;
-    }
-
-    /**
-     * @param controller The conditional branch controller that controls
-     *  this conditional receive.
-     * @param receiver The CSPReceiver through which a rendezvous attempt is
-     *  taking place.
-     */
-    protected void _arriveAfterGet(CSPReceiver receiver,
-            ConditionalBranchController controller) throws InterruptedException {
-        // CASE 1: a get is already waiting
-        // A get cannot disappear, so once enter this
-        // part of the loop stay here until branch
-        // successfully rendezvous or dies.
-        while (true) {
-            if (controller._isBranchFirst(getID())) {
-                // I am the branch that succeeds
-                receiver.put(getToken());
-                controller._branchSucceeded(getID());
-                return;
-            } else {
-                getController()._branchBlocked(this.getReceiver());
-                getReceiver()._checkFlagsAndWait();
-                getController()._branchUnblocked(this.getReceiver());
-            }
-
-            if (!isAlive()) {
-                controller._branchFailed(getID());
-                return;
-            }
-        }
-    }
-
-    /**
-     * @param controller The conditional branch controller that controls
-     *  this conditional receive.
-     * @param receiver The CSPReceiver through which a rendezvous attempt is
-     *  taking place.
-     */
-    protected void _arriveFirst(CSPReceiver receiver,
-            ConditionalBranchController controller) throws InterruptedException {
-        // CASE 3: ConditionalSend got here before a get or a
-        // ConditionalReceive. Once enter this part of main
-        // loop, do not leave.
-        receiver._setConditionalSend(true, controller, getID());
-        getController()._branchBlocked(this.getReceiver());
-        getReceiver()._checkFlagsAndWait();
-        getController()._branchUnblocked(this.getReceiver());
-
-        while (true) {
-            if (!isAlive()) {
-                // reset state of receiver controlling
-                // conditional rendezvous
-                receiver._setConditionalSend(false, null, -1);
-                controller._branchFailed(getID());
-
-                // wakes up a get if it is waiting
-                receiver.notifyAll();
-                return;
-            } else if (controller._isBranchFirst(getID())) {
-                if (receiver._isGetWaiting()) {
-                    // I am the branch that succeeds
-                    // Note that need to reset conditionalSend
-                    // flag BEFORE doing put.
-                    receiver._setConditionalSend(false, null, -1);
-                    receiver.put(getToken());
-                    controller._branchSucceeded(getID());
-                    return;
-                } else {
-                    controller._releaseFirst(getID());
-                    receiver.notifyAll();
-                }
-            }
-
-            //cannot rendezvous this time, still alive
-            getController()._branchBlocked(this.getReceiver());
-            getReceiver()._checkFlagsAndWait();
-            getController()._branchUnblocked(this.getReceiver());
-        }
-    }
+    /** The array of receivers being sent to. */
+    private Receiver[] _receivers;
+    
+    /** The port from which we are sending. */
+    private IOPort _port;
 }
