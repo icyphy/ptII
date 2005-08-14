@@ -41,7 +41,6 @@ import ptolemy.actor.Receiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
@@ -152,6 +151,11 @@ public class ProcessDirector extends Director {
 
         synchronized (this) {
             while (!_areActorsDeadlocked() && !_areAllActorsStopped()) {
+                // Added to get thread to stop reliably on pushing stop button.
+                // EAL 8/05
+                if (_stopRequested) {
+                    return;
+                }
                 if (_debugging) {
                     _debug("Waiting for actors to stop.");
                 }
@@ -368,6 +372,19 @@ public class ProcessDirector extends Director {
                 }
             }
         }
+        
+        // Added to get stop button to work consistently the first time.
+        // EAL 8/05
+        _requestFinishOnReceivers();
+        // Create a notification thread so that this returns immediately.
+        Thread notifyThread = new Thread() {
+            public void run() {
+                synchronized(ProcessDirector.this) {
+                    ProcessDirector.this.notifyAll();
+                }                
+            }
+        };
+        notifyThread.start();
     }
 
     /** Request that execution stop at the conclusion of the current
@@ -455,52 +472,28 @@ public class ProcessDirector extends Director {
             _debug("Called wrapup().");
         }
 
-        Nameable container = getContainer();
+        CompositeActor container = (CompositeActor)getContainer();
 
-        if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor) container).deepEntityList()
-                    .iterator();
-            Iterator actorPorts;
-            ProcessReceiver nextReceiver;
+        _requestFinishOnReceivers();
 
-            while (actors.hasNext()) {
-                Actor actor = (Actor) actors.next();
-                actorPorts = actor.inputPortList().iterator();
+        // Now wake up threads that depend on the manager.
+        Manager manager = container.getManager();
 
-                while (actorPorts.hasNext()) {
-                    IOPort port = (IOPort) actorPorts.next();
+        // NOTE: Used to do the notification in a new thread.
+        // For some reason, however, this isn't sufficient.
+        // Have to click the stop button twice.
+        // (new NotifyThread(manager)).start();
+        synchronized (manager) {
+            manager.notifyAll();
+        }
 
-                    // Setting finished flag in the receivers.
-                    Receiver[][] receivers = port.getReceivers();
-
-                    for (int i = 0; i < receivers.length; i++) {
-                        for (int j = 0; j < receivers[i].length; j++) {
-                            nextReceiver = (ProcessReceiver) receivers[i][j];
-                            nextReceiver.requestFinish();
-                        }
-                    }
-                }
-            }
-
-            // Now wake up threads that depend on the manager.
-            Manager manager = ((Actor) getContainer()).getManager();
-
-            // NOTE: Used to do the notification in a new thread.
-            // For some reason, however, this isn't sufficient.
-            // Have to click the stop button twice.
-            // (new NotifyThread(manager)).start();
-            synchronized (manager) {
-                manager.notifyAll();
-            }
-
-            // Wait until all process threads stop.
-            synchronized (this) {
-                while (_activeActorCount > 0) {
-                    try {
-                        workspace().wait(this);
-                    } catch (InterruptedException ex) {
-                        // ignore, wait until all process threads stop
-                    }
+        // Wait until all process threads stop.
+        synchronized (this) {
+            while (_activeActorCount > 0) {
+                try {
+                    workspace().wait(this);
+                } catch (InterruptedException ex) {
+                    // ignore, wait until all process threads stop
                 }
             }
         }
@@ -690,6 +683,34 @@ public class ProcessDirector extends Director {
         }
 
         notifyAll();
+    }
+
+    /** Call requestFinish() on all receviers.
+     */
+    private void _requestFinishOnReceivers() {
+        CompositeActor container = (CompositeActor)getContainer();
+        Iterator actors = container.deepEntityList().iterator();
+        Iterator actorPorts;
+        ProcessReceiver nextReceiver;
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            actorPorts = actor.inputPortList().iterator();
+
+            while (actorPorts.hasNext()) {
+                IOPort port = (IOPort) actorPorts.next();
+
+                // Setting finished flag in the receivers.
+                Receiver[][] receivers = port.getReceivers();
+
+                for (int i = 0; i < receivers.length; i++) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        nextReceiver = (ProcessReceiver) receivers[i][j];
+                        nextReceiver.requestFinish();
+                    }
+                }
+            }
+        }
     }
 
     /** Return false indicating that deadlock has not been resolved
