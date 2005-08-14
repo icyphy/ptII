@@ -186,6 +186,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         ConditionalBranchController controller = getController();
 
         try {
+            // FIXME: Synchronize on the first receiver in the group.
             synchronized (receiver) {
                 String identifier = "";
                 if (_debugging) {

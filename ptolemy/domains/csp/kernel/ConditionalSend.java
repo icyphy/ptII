@@ -264,8 +264,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         // to forked receivers has succeeded.
         boolean putSucceeded = false;
         try {
-            // FIXME: These should be parallel threads for each receiver,
-            // with waiting for each one to complete.
+            // FIXME: This needs to implement a mult-way rendezvous with all receivers.
             while (receiver != null) {
                 synchronized (receiver) {
                     if (receiver._isConditionalSendWaiting() || receiver._isPutWaiting()) {
@@ -284,7 +283,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     while (true) {
                         if (!isAlive()) {
                             if (_debugging) {
-                                _debug("send(): No longer alive.");
+                                _debug("send() on channel " + _channel + ": No longer alive.");
                             }
                             receiver._setConditionalSend(false, null, -1);
                             controller._branchFailed(getID());
@@ -294,14 +293,15 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         }
                         if (receiver._isGetWaiting()) {
                             if (_debugging) {
-                                _debug("send(): get() is waiting.");
+                                _debug("send() on channel " + _channel + ": get() is waiting at "
+                                        + receiver.getContainer().getFullName());
                             }
                             // The get will not disappear, so we can do a local loop.
                             while(true) {
                                 if (controller._isBranchFirst(getID())) {
                                     // I am the branch that succeeds
                                     if (_debugging) {
-                                        _debug("send(): Putting token.");
+                                        _debug("send() on channel " + _channel + ": Putting token.");
                                     }
                                     receiver._setConditionalSend(false, null, -1);
                                     receiver.put(getToken());
@@ -316,7 +316,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 // If I am no longer alive, then quit.
                                 if (!isAlive()) {
                                     if (_debugging) {
-                                        _debug("send(): No longer alive.");
+                                        _debug("send() on channel " + _channel + ": No longer alive.");
                                     }
                                     controller._branchFailed(getID());
                                     receiver._setConditionalSend(false, null, -1);
@@ -328,14 +328,16 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             break;
                         } else if (receiver._isConditionalReceiveWaiting()) {
                             if (_debugging) {
-                                _debug("send(): conditional receive is waiting.");
+                                _debug("send() on channel " + _channel
+                                        + ": conditional receive is waiting at "
+                                        + receiver.getContainer().getFullName());
                             }
                             if (controller._isBranchFirst(getID())) {
                                 // Send side ok, need to check that receive side also ok
                                 ConditionalBranchController side2 = receiver._getOtherController();
                                 if ((side2 != null) && side2._isBranchFirst(receiver.getOtherID())) {
                                     if (_debugging) {
-                                        _debug("send(): Putting token.");
+                                        _debug("send() on channel " + _channel + ": Putting token.");
                                     }
                                     receiver.put(getToken());
                                     receiver._setConditionalReceive(false, null, -1);
@@ -347,7 +349,6 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                     // if we haven't already succeeded in completing a rendezvous.
                                     // If we have, then we are committed to being first, and
                                     // have to stick to it.
-                                    // FIXME: Departure from original algorithm.
                                     if (!putSucceeded) {
                                         controller._releaseFirst(getID());
                                         receiver.notifyAll();
@@ -361,7 +362,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         } else {
                             // Arriving first.
                             if (_debugging) {
-                                _debug("send(): First to arrive.");
+                                _debug("send() on channel " + _channel + ": No request yet at "
+                                        + receiver.getContainer().getFullName());
                             }
                             receiver._setConditionalSend(true, controller, getID());                            
 
@@ -373,7 +375,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             while(true) {
                                 if (!isAlive()) {
                                     if (_debugging) {
-                                        _debug("send(): No longer alive.");
+                                        _debug("send() on channel " + _channel + ": No longer alive.");
                                     }
                                     receiver._setConditionalSend(false, null, -1);
                                     controller._branchFailed(getID());
@@ -383,7 +385,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 } else if (controller._isBranchFirst(getID())) {
                                     if (receiver._isGetWaiting()) {
                                         if (_debugging) {
-                                            _debug("send(): get() is waiting. Put token.");
+                                            _debug("send() on channel " + _channel + ": get() is waiting. Put token.");
                                         }
                                         // I am the branch that succeeds
                                         // Note that need to reset conditionalSend
@@ -394,7 +396,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                         // Done with this receiver.
                                         break;
                                     } else {
-                                        // FIXME: Modification
+                                        // If we have already succeeded with another
+                                        // receiver, then we are committed to this branch.
+                                        // Do not yield the first position.
                                         if (!putSucceeded) {
                                             controller._releaseFirst(getID());
                                             receiver.notifyAll();

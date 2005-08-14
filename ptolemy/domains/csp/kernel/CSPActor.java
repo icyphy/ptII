@@ -158,8 +158,10 @@ public class CSPActor extends TypedAtomicActor implements
      *  @param branches The set of conditional branches involved.
      *  @return The ID of the successful branch, or -1 if none of the
      *   branches were enabled.
+     *  @exception IllegalActionException If the rendezvous fails
+     *   (e.g. because of incompatible types).
      */
-    public int chooseBranch(ConditionalBranch[] branches) {
+    public int chooseBranch(ConditionalBranch[] branches) throws IllegalActionException {
         return _conditionalBranchController.chooseBranch(branches);
     }
 

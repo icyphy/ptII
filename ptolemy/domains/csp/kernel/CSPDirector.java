@@ -304,6 +304,35 @@ public class CSPDirector extends CompositeProcessDirector implements
         return false;
     }
 
+    /** Decrease by one the count of active processes under the control of
+     *  this director.
+     *  This method should be called only when an active thread that was
+     *  registered using _increaseActiveCount() is terminated.
+     *  This count is used to detect deadlocks for termination and other
+     *  reasons.
+     */
+    protected synchronized void _decreaseActiveCount() {
+        // This trivial override is here only to make
+        // the method accessible within the package.
+        // This is needed to support forked sends.
+        super._decreaseActiveCount();
+    }
+    
+    /** Increase the count of active actors in the composite actor
+     *  corresponding to this director by 1. This method should be
+     *  called when a new thread corresponding to an actor is started
+     *  in the model under the control of this director. This method
+     *  is required for detection of deadlocks.
+     *  The corresponding method _decreaseActiveCount should be called
+     *  when the thread is terminated.
+     */
+    protected synchronized void _increaseActiveCount() {
+        // This trivial override is here only to make
+        // the method accessible within the package.
+        // This is needed to support forked sends.
+        super._increaseActiveCount();
+    }
+
     /** Respond to a deadlock. This is where nearly all the control for the
      *  model at this level in the hierarchy is located.
      *  <p>
@@ -358,7 +387,7 @@ public class CSPDirector extends CompositeProcessDirector implements
             // } else if ( _actorsBlocked == _getActiveActorsCount() ) {
         } else if (_getBlockedActorsCount() == _getActiveActorsCount()) {
             // Real deadlock.
-            System.out.println("REAL DEADLOCK. Number of active actors: "
+            System.out.println("REAL DEADLOCK. Number of blocked actors and forked put threads: "
                     + _getActiveActorsCount());
             return false;
         }

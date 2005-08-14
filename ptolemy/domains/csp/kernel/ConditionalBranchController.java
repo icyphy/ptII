@@ -40,6 +40,7 @@ import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.Debuggable;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;
@@ -133,8 +134,10 @@ public class ConditionalBranchController implements Debuggable {
      *  @param branches The set of conditional branches involved.
      *  @return The ID of the successful branch, or -1 if none of the
      *   branches is enabled.
+     *  @exception IllegalActionException If the rendezvous fails
+     *   (e.g. because of incompatible types).
      */
-    public int chooseBranch(ConditionalBranch[] branches) {
+    public int chooseBranch(ConditionalBranch[] branches) throws IllegalActionException {
         try {
             synchronized (_internalLock) {
                 // reset the state that controls the conditional branches
@@ -177,7 +180,10 @@ public class ConditionalBranchController implements Debuggable {
                         for (int i = 0; i < receivers.length; i++) {
                             // FIXME: This isn't right... The rendezvous is
                             // being performed in channel order, but it should
-                            // be allowed to occur in any order.
+                            // be a multi-way rendezvous.  Use director method
+                            // sendToAll().
+                            // FIXME: After changing this, check whether
+                            // IllegalActionException is still thrown.
                             receivers[i].put(token);
                         }
                         return onlyBranch.getID();
@@ -337,14 +343,12 @@ public class ConditionalBranchController implements Debuggable {
 
         synchronized (_internalLock) {
             _branchesActive--;
-            // FIXME: This isn't right...
-            // Causes a race condition where a brach may report success
+            // Removed the following (EAL 8/05).
+            // Causes a race condition where a branch may report success
             // after this occurs, which will trigger an exception.
             // _branchTrying = -1;
 
             if (_branchesActive == 0) {
-                //System.out.println(getName() + ": Last branch finished, " +
-                //      "waking up chooseBranch");
                 _internalLock.notifyAll();
             }
         }
