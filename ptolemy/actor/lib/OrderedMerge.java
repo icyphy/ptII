@@ -152,6 +152,10 @@ public class OrderedMerge extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         if (_nextPort.hasToken(0)) {
             ScalarToken readToken = (ScalarToken) _nextPort.get(0);
+            
+            if (_debugging) {
+                _debug("Read input token from " + _nextPort.getName() + " with value " + readToken);
+            }
 
             if (_recordedToken == null) {
                 // First firing.  Just record the token.
@@ -162,6 +166,10 @@ public class OrderedMerge extends TypedAtomicActor {
                 if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
                     // Produce the smaller output.
                     output.send(0, readToken);
+                    
+                    if (_debugging) {
+                        _debug("Sent output token with value " + readToken);
+                    }
 
                     // Token was just read from _nextPort.
                     if (_nextPort == inputA) {
@@ -173,6 +181,10 @@ public class OrderedMerge extends TypedAtomicActor {
                     // Produce the smaller output.
                     output.send(0, _recordedToken);
 
+                    if (_debugging) {
+                        _debug("Sent output token with value " + _recordedToken);
+                    }
+                    
                     if (_readFromA) {
                         selectedA.send(0, BooleanToken.TRUE);
                     } else {
@@ -210,6 +222,9 @@ public class OrderedMerge extends TypedAtomicActor {
         _recordedToken = _tentativeRecordedToken;
         _readFromA = _tentativeReadFromA;
         _nextPort = _tentativeNextPort;
+        if (_debugging) {
+            _debug("Next port to read input from is " + _nextPort.getName());
+        }
         return super.postfire();
     }
 
