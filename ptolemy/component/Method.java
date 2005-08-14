@@ -28,6 +28,7 @@
 package ptolemy.component;
 
 import ptolemy.component.data.TupleToken;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Method
@@ -44,6 +45,8 @@ import ptolemy.component.data.TupleToken;
 public interface Method {
     /** Call the method associated with this port with the specified
      *  arguments.
+     *  @exception IllegalActionException If the call fails (e.g.
+     *   the data types are incompatible).
      */
-    public TupleToken call(TupleToken arguments);
+    public TupleToken call(TupleToken arguments) throws IllegalActionException;
 }

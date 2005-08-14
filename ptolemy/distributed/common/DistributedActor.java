@@ -30,6 +30,8 @@ import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
 //// DistributedActor
 
@@ -135,9 +137,11 @@ public interface DistributedActor {
      *  @param data contains a token and a list of IDs.
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
+     *  @exception IllegalActionException If the transaction fails (e.g.
+     *   the data type is incompatible).
      */
 
-    public void put(HashMap data) throws java.rmi.RemoteException;
+    public void put(HashMap data) throws java.rmi.RemoteException, IllegalActionException;
 
     /** Set the "virtual connections" concerning the wrapped actor.
      *  The connections HashMap contains a list of ports, and for each

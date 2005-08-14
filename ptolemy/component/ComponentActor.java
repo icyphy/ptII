@@ -470,7 +470,11 @@ public class ComponentActor extends TypedCompositeActor implements Component {
             return TupleToken.VOID;
         }
 
-        public synchronized TupleToken call(TupleToken token) {
+        /**
+         *  @exception IllegalActionException If the transaction fails (e.g.
+         *   the data type is incompatible).
+         */
+        public synchronized TupleToken call(TupleToken token) throws IllegalActionException {
             if (isInput()) {
                 int l = token.length();
 

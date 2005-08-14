@@ -36,6 +36,7 @@ import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.distributed.common.DistributedActor;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -92,8 +93,10 @@ public class DistributedReceiver extends AbstractReceiver {
      *  specified in the servicesReceiversListMap.
      *  //TODO:This could be done in parallel. Is it worth the effort?
      *  @param token The token to be forwarded.
+     *  @exception IllegalActionException If the put fails
+     *   (e.g. because of incompatible types).
      */
-    public void put(Token token) {
+    public void put(Token token) throws IllegalActionException {
         if (VERBOSE) {
             System.out.println("Forwarding token: " + token.toString());
         }

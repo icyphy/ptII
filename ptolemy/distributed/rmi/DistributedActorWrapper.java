@@ -249,9 +249,11 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @param data contains a token and a list of IDs.
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
+     *  @exception IllegalActionException If the transaction fails (e.g.
+     *   the data type is incompatible).
      */
 
-    public void put(HashMap data) throws RemoteException {
+    public void put(HashMap data) throws RemoteException, IllegalActionException {
 
         Token token = (Token) data.keySet().iterator().next();
         LinkedList idsList = (LinkedList) data.get(token);
