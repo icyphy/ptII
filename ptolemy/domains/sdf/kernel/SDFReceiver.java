@@ -298,31 +298,6 @@ public class SDFReceiver extends AbstractReceiver {
         }
     }
 
-    /** Put a specified number of token from an array into the receiver.
-     *  If the receiver has insufficient room, throw an
-     *  exception, and add none of the tokens to the receiver. An
-     *  exception is thrown if <i>count</i> is greater than
-     *  the length of the token array.
-     *
-     *  @param token The token array that contains tokens to be put
-     *  into the receiver.
-     *  @param count The number of tokens from <i>token</i> to
-     *  put in the receiver.  This should be less than the length
-     *  of <i>token</i>.
-     *  @exception NoRoomException If the receiver is full.
-     *  @exception IndexOutOfBoundException If the array does not contain
-     *  at least count elements.
-     */
-    public void putArray(Token[] token, int count) {
-        // Note: There has been a suggestion that this method also be
-        // able to take an offset.  When we figure out how to use this,
-        // we should implement it.
-        if (!_queue.putArray(token, count)) {
-            throw new NoRoomException(getContainer(),
-                    "Queue is at capacity. Cannot put a token.");
-        }
-    }
-
     /** Set receiver capacity. Use INFINITE_CAPACITY to indicate unbounded
      *  capacity (which is the default). If the number of tokens currently
      *  in the receiver exceeds the desired capacity, throw an exception.
