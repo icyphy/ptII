@@ -47,6 +47,7 @@ import java.util.List;
 
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -242,8 +243,10 @@ public class IOPort extends ComponentPort {
                 continue;
             }
 
-            for (int j = 0; j < farReceivers[i].length; j++) {
-                farReceivers[i][j].put(token);
+            if (farReceivers[i].length > 0) {
+                // Delegate to the receiver to handle putting to all
+                // receivers, since domain-specific techniques might be relevant.
+                farReceivers[i][0].putToAll(token, farReceivers[i]);
             }
         }
     }
@@ -301,7 +304,6 @@ public class IOPort extends ComponentPort {
             if (farReceivers[i] == null) {
                 continue;
             }
-
             for (int j = 0; j < farReceivers[i].length; j++) {
                 farReceivers[i][j].putArray(tokenArray, vectorLength);
             }
@@ -377,6 +379,17 @@ public class IOPort extends ComponentPort {
         newObject._insideReceivers = null;
         newObject._insideReceiversVersion = -1;
         return newObject;
+    }
+
+    /** Convert the specified token into a token acceptable to
+     *  this port. In this base class, this method simply returns
+     *  the same token passed to it, performing no conversion.
+     *  @param token The token to convert.
+     *  @exception IllegalActionException If the conversion is
+     *   invalid (not thrown in this base class).
+     */
+    public Token convert(Token token) throws IllegalActionException {
+        return token;
     }
 
     /** Create new receivers for this port, replacing any that may
@@ -2208,6 +2221,11 @@ public class IOPort extends ComponentPort {
      */
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
+
+        if (token == null) {
+            throw new IllegalActionException(this, "Cannot send a null token.");
+        }
+
         Receiver[][] farReceivers;
 
         if (_debugging) {
@@ -2215,27 +2233,25 @@ public class IOPort extends ComponentPort {
         }
 
         try {
-            try {
-                _workspace.getReadAccess();
-
-                // Note that the getRemoteReceivers() method doesn't throw
-                // any non-runtime exception.
-                farReceivers = getRemoteReceivers();
-
-                if ((farReceivers == null)
-                        || (farReceivers[channelIndex] == null)) {
-                    return;
-                }
-            } finally {
-                _workspace.doneReading();
+            _workspace.getReadAccess();
+            
+            // Note that the getRemoteReceivers() method doesn't throw
+            // any non-runtime exception.
+            farReceivers = getRemoteReceivers();
+            
+            if ((farReceivers == null)
+                    || (farReceivers.length <= channelIndex)
+                    || (farReceivers[channelIndex] == null)) {
+                return;
             }
-
-            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                farReceivers[channelIndex][j].put(token);
-            }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the channel index is out of range.
-            // This is allowed, just do nothing.
+        } finally {
+            _workspace.doneReading();
+        }
+        
+        if (farReceivers[channelIndex].length > 0) {
+            // Delegate to the receiver to handle putting to all
+            // receivers, since domain-specific techniques might be relevant.
+            farReceivers[channelIndex][0].putToAll(token, farReceivers[channelIndex]);
         }
     }
 
@@ -2278,28 +2294,23 @@ public class IOPort extends ComponentPort {
         }
 
         try {
-            try {
-                _workspace.getReadAccess();
-
-                // Note that the getRemoteReceivers() method doesn't throw
-                // any non-runtime exception.
-                farReceivers = getRemoteReceivers();
-
-                if ((farReceivers == null)
-                        || (farReceivers[channelIndex] == null)) {
-                    return;
-                }
-            } finally {
-                _workspace.doneReading();
+            _workspace.getReadAccess();
+            
+            // Note that the getRemoteReceivers() method doesn't throw
+            // any non-runtime exception.
+            farReceivers = getRemoteReceivers();
+            
+            if ((farReceivers == null)
+                    || (farReceivers.length <= channelIndex)
+                    || (farReceivers[channelIndex] == null)) {
+                return;
             }
-
-            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                farReceivers[channelIndex][j]
-                        .putArray(tokenArray, vectorLength);
-            }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the channel index is out of range.
-            // This is allowed, just do nothing.
+        } finally {
+            _workspace.doneReading();
+        }
+        
+        for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+            farReceivers[channelIndex][j].putArray(tokenArray, vectorLength);
         }
     }
 
@@ -2324,30 +2335,26 @@ public class IOPort extends ComponentPort {
         }
 
         try {
-            try {
-                _workspace.getReadAccess();
-
-                // Note that the getRemoteReceivers() method doesn't throw
-                // any non-runtime exception.
-                farReceivers = getRemoteReceivers();
-
-                if ((farReceivers == null)
-                        || (farReceivers[channelIndex] == null)) {
-                    return;
-                }
-            } finally {
-                _workspace.doneReading();
+            _workspace.getReadAccess();
+            
+            // Note that the getRemoteReceivers() method doesn't throw
+            // any non-runtime exception.
+            farReceivers = getRemoteReceivers();
+            
+            if ((farReceivers == null)
+                    || (farReceivers.length <= channelIndex)
+                    || (farReceivers[channelIndex] == null)) {
+                return;
             }
-
-            // NOTE: Conceivably, clear() in some domains may block,
-            // so we make sure to release read access above before calling
-            // clear().
-            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                farReceivers[channelIndex][j].clear();
-            }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the channel index is out of range.
-            // This is allowed, just do nothing.
+        } finally {
+            _workspace.doneReading();
+        }
+        
+        // NOTE: Conceivably, clear() in some domains may block,
+        // so we make sure to release read access above before calling
+        // clear().
+        for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+            farReceivers[channelIndex][j].clear();
         }
     }
 
@@ -2370,24 +2377,20 @@ public class IOPort extends ComponentPort {
         }
 
         try {
-            try {
-                _workspace.getReadAccess();
-                farReceivers = deepGetReceivers();
-
-                if ((farReceivers == null)
-                        || (farReceivers[channelIndex] == null)) {
-                    return;
-                }
-            } finally {
-                _workspace.doneReading();
+            _workspace.getReadAccess();
+            farReceivers = deepGetReceivers();
+            
+            if ((farReceivers == null)
+                    || (farReceivers.length <= channelIndex)
+                    || (farReceivers[channelIndex] == null)) {
+                return;
             }
-
-            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                farReceivers[channelIndex][j].clear();
-            }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the channel index is out of range.
-            // This is allowed, just do nothing.
+        } finally {
+            _workspace.doneReading();
+        }
+        
+        for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+            farReceivers[channelIndex][j].clear();
         }
     }
 
@@ -2428,27 +2431,25 @@ public class IOPort extends ComponentPort {
         }
 
         try {
-            try {
-                _workspace.getReadAccess();
-
-                // Note that the getRemoteReceivers() method doesn't throw
-                // any non-runtime exception.
-                farReceivers = deepGetReceivers();
-
-                if ((farReceivers == null)
-                        || (farReceivers[channelIndex] == null)) {
-                    return;
-                }
-            } finally {
-                _workspace.doneReading();
+            _workspace.getReadAccess();
+            
+            // Note that the getRemoteReceivers() method doesn't throw
+            // any non-runtime exception.
+            farReceivers = deepGetReceivers();
+            
+            if ((farReceivers == null)
+                    || (farReceivers.length <= channelIndex)
+                    || (farReceivers[channelIndex] == null)) {
+                return;
             }
-
-            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                farReceivers[channelIndex][j].put(token);
-            }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the channel index is out of range.
-            // This is allowed, just do nothing.
+        } finally {
+            _workspace.doneReading();
+        }
+        
+        if (farReceivers[channelIndex].length > 0) {
+            // Delegate to the receiver to handle putting to all
+            // receivers, since domain-specific techniques might be relevant.
+            farReceivers[channelIndex][0].putToAll(token, farReceivers[channelIndex]);
         }
     }
 

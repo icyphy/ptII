@@ -218,8 +218,10 @@ public abstract class AbstractReceiver implements Receiver {
     /** Put the specified token into this receiver.
      *  @param token The token to put into the receiver.
      *  @exception NoRoomException If there is no room in the receiver.
+     *  @exception IllegalActionException If the put fails
+     *   (e.g. because of incompatible types).
      */
-    public abstract void put(Token token) throws NoRoomException;
+    public abstract void put(Token token) throws NoRoomException, IllegalActionException;
 
     /** Put a portion of the specified token array into this receiver.
      *  The first <i>numberOfTokens</i> elements of the token array are put
@@ -244,11 +246,68 @@ public abstract class AbstractReceiver implements Receiver {
      *  @param numberOfTokens The number of elements of the token
      *   array to put into this receiver.
      *  @exception NoRoomException If the token array cannot be put.
+     *  @exception IllegalActionException If the token is not acceptable
+     *   to one of the ports (e.g., wrong type).
      */
     public void putArray(Token[] tokenArray, int numberOfTokens)
-            throws NoRoomException {
-        for (int i = 0; i < numberOfTokens; i++) {
-            put(tokenArray[i]);
+            throws NoRoomException, IllegalActionException {
+        IOPort container = getContainer();
+        // If there is no container, then perform no conversion.
+        if (container == null) {
+            for (int i = 0; i < numberOfTokens; i++) {
+                put(tokenArray[i]);
+            }            
+        } else {
+            for (int i = 0; i < numberOfTokens; i++) {
+                put(container.convert(tokenArray[i]));
+            }
+        }
+    }
+    
+    /** Put a sequence of tokens to all receivers in the specified array.
+     *  Implementers will assume that all such receivers
+     *  are of the same class.
+     *  @param tokens The sequence of token to put.
+     *  @param numberOfTokens The number of tokens to put (the array might
+     *   be longer).
+     *  @param receivers The receivers.
+     *  @exception NoRoomException If there is no room for the token.
+     *  @exception IllegalActionException If the token is not acceptable
+     *   to one of the ports (e.g., wrong type), or if the tokens array
+     *   does not have at least the specified number of tokens.
+     */
+    public void putArrayToAll(
+            Token[] tokens, int numberOfTokens, Receiver[] receivers)
+            throws NoRoomException, IllegalActionException {
+        IOPort container = getContainer();
+        if (numberOfTokens > tokens.length) {
+            throw new IllegalActionException(container,
+                    "Not enough tokens supplied.");
+        }
+        for (int j = 0; j < receivers.length; j++) {
+            receivers[j].putArray(tokens, numberOfTokens);
+        }
+    }
+
+    /** Put to all receivers in the specified array.
+     *  Implementers will assume that all such receivers
+     *  are of the same class.
+     *  @param token The token to put.
+     *  @param receivers The receivers.
+     *  @exception NoRoomException If there is no room for the token.
+     *  @exception IllegalActionException If the token is not acceptable
+     *   to one of the ports (e.g., wrong type).
+     */
+    public void putToAll(Token token, Receiver[] receivers)
+            throws NoRoomException, IllegalActionException {
+        for (int j = 0; j < receivers.length; j++) {
+            IOPort container = receivers[j].getContainer();
+            // If there is no container, then perform no conversion.
+            if (container == null) {
+                receivers[j].put(token);
+            } else {
+                receivers[j].put(container.convert(token));
+            }
         }
     }
 
