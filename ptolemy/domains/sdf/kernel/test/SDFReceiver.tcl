@@ -324,12 +324,12 @@ test SDFReceiver-5.2 {Check setCapacity} {
     list [$receiver getCapacity] $result1 $result2 $result3 $result4 $result5 $result6 $size
 } {1 1 1 0 0 0 0 1}
 
-test SDFReceiver-5.2 {Check noRoomException} {
+test SDFReceiver-5.2.1 {Check noRoomException} {
     # Uses previous setup
     catch {$receiver {put ptolemy.data.Token} $token} result1
     catch {$receiver {putArray ptolemy.data.Token[] int} $tokenArray 2} result2
     list $result1 $result2
-} {{ptolemy.actor.NoRoomException: Queue is at capacity of 1. Cannot put a token.} {ptolemy.actor.NoRoomException: Queue is at capacity. Cannot put a token.}}
+} {{ptolemy.actor.NoRoomException: Queue is at capacity of 1. Cannot put a token.} {ptolemy.actor.NoRoomException: Queue is at capacity of 1. Cannot put a token.}}
 
 test SDFReceiver-5.3 {Check setCapacity errors} {
     set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
