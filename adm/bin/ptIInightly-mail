@@ -88,7 +88,7 @@ $AWK ' $0 ~ /Entering directory/ { indir=$0 }
 			    print $0
 			}
 		      }
-      $0 ~ /\*\*\*/ { 	if ( $0 !~ /runTreeShakeWithoutCodegen/ && $0 !~ /treeShakeAndRunSnapshots/ && $0 !~ /runTreeShakeCodegen/ && $0 !~ /compileDemo/) {
+      $0 ~ /\*\*\*/ { 	if ( $0 !~ /runTreeShakeWithoutCodegen/ && $0 !~ /treeShakeAndRunSnapshots/ && $0 !~ /runTreeShakeCodegen/ && $0 !~ /compileDemo/ && $0 !~ /ignored/) {
 			    print indir
 			    print $0
 			}
