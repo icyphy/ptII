@@ -279,8 +279,8 @@ public abstract class AbstractReceiver implements Receiver {
     public void putArrayToAll(
             Token[] tokens, int numberOfTokens, Receiver[] receivers)
             throws NoRoomException, IllegalActionException {
-        IOPort container = getContainer();
         if (numberOfTokens > tokens.length) {
+            IOPort container = getContainer();
             throw new IllegalActionException(container,
                     "Not enough tokens supplied.");
         }
