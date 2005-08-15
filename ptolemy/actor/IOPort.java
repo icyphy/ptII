@@ -47,7 +47,6 @@ import java.util.List;
 
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
