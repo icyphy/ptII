@@ -766,7 +766,9 @@ bldmastrcoverage:
 		remote1distnonjsall \
 		remote1ChangeLog \
 		remote1doccheck \
-		remote1jnlp
+		remote1jnlp \
+		remote4 \
+		remote5
 
 # Remove the remote dist
 remote1nuke:
