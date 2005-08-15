@@ -27,14 +27,25 @@
  */
 package ptolemy.domains.gr.lib.vr;
 
+
+import java.awt.image.ColorModel;
+import java.awt.Point;
+import java.awt.image.ComponentSampleModel;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
+import java.awt.Transparency;
+import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.File;
+
 import java.net.URL;
 
 import javax.imageio.stream.FileImageInputStream;
@@ -46,11 +57,17 @@ import javax.media.j3d.TexCoordGeneration;
 import javax.media.j3d.Texture;
 import javax.media.j3d.Texture2D;
 import javax.media.j3d.TextureAttributes;
+import com.sun.j3d.utils.image.TextureLoader;
 import javax.media.j3d.View;
+import java.util.Hashtable;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ImageToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.IntToken;
+
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -63,35 +80,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture2D
 
-/** An abstract base class for GR Actors that have material and color
- properties.
 
- The <i>texture</i> parameter can be used to specify an image file.
- The specified image will be mapped onto the shape.
- <p>
- The parameter <i>transparency</i> determines the transparency of the
- object. It ranges from 0.0 (the default) to 1.0, meaning opaque to
- fully transparent (which makes the object invisible).
- <p>
- The <i>wireFrame</i> parameter can be used to view only the lines
- that outline the polygons of the object and not the surface.
- The <i>flat</i> parameter can be set to make rendered polygons
- flat rather than rounded at the corners.
- <p>
- The <i>allowRuntimeChanges</i> parameter, if true, specifies
- that changes to parameter values during the execution of the model
- take effect immediately. By default, this parameter is false,
- which means that changes to parameter values take effect only
- on the next run of the model. A value of false yields better
- performance, but less interactivity.  Changing this to true will
- only have an effect on the next run of the model.
+/** 
+    An actor that performs volume rendering using 2D textures.
+    The <i>xResolution</i> and <i>yResolution</i> parameters are used to specifiy
+    the resoltion of the image.
+    <p>
+    
+    @author Tiffany Crawford
+    @version
+    @since
+    @Pt.ProposedRating Red
+    @Pt.AcceptedRating Red
+*/
 
- @author Tiffany Crawford
- @version
- @since
- @Pt.ProposedRating Red
- @Pt.AcceptedRating Red
- */
+
 public class GRTexture2D extends GRGeometry {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -108,7 +111,8 @@ public class GRTexture2D extends GRGeometry {
         //voxelFile = new FilePortParameter(this, "voxelFile");
         //voxelFile.setExpression("$CLASSPATH/doc/img/brainMRI.jpg");
 
-        //FIXME Should this be one paramter, ie. 256x256
+
+        //FIXME Should this be one parameter, ie. 256x256
         xResolution = new Parameter(this, "xResolution");
         xResolution.setExpression("256");
         xResolution.setTypeEquals(BaseType.INT);
@@ -116,30 +120,43 @@ public class GRTexture2D extends GRGeometry {
         yResolution = new Parameter(this, "yResolution");
         yResolution.setExpression("256");
         yResolution.setTypeEquals(BaseType.INT);
+        
+/*        inputURL = new TypedIOPort(this, "inputURL");
+        inputURL.setInput(true);
+        inputURL.setTypeEquals(BaseType.OBJECT);*/
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    /** This parameter provides a third dimension to the images.  The
-     * value is a scaled version of the actual known slice depth.
-     */
-
-    /* The parameter that chooses along which axis the volume will be built.
-     * The options are xAxis, yAxis, or zAxis.
-     */
+    
+    /* Second Input */
+//    public TypedIOPort inputURL;
+    
+    /** x Resolution */
     public Parameter xResolution;
 
+    /** y Resolution */
     public Parameter yResolution;
+
+
+    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Initialize variables to parameter values.
+     * @exception IllegalActionException If the current director
+     *  is not a GRDirector.
+     */
 
     /** The input port that reads a in a URL to the file holding the
      *  volume to be rendered.
      */
     // public FilePortParameter voxelFile;
+
     public void initialize() throws IllegalActionException {
         super.initialize();
-        /** Initialize some variables */
-        // _parameterPort = voxelFile.getPort();_parameterPort = voxelFile.getPort();
         _sSize = (int) ((IntToken) xResolution.getToken()).intValue();
         _tSize = (int) ((IntToken) yResolution.getToken()).intValue();
         _counter = 0;
@@ -180,9 +197,11 @@ public class GRTexture2D extends GRGeometry {
      }
      } */
 
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     /** Create the geometry for the Node that will hold the texture.
+     * @exception IllegalActionException 
      */
     protected void _createGeometry() throws IllegalActionException {
         _plane = new QuadArray(4, GeometryArray.COORDINATES
@@ -205,10 +224,10 @@ public class GRTexture2D extends GRGeometry {
 
             }
 
-            /** Set coordinates for the plane.  These coordinates assume
-             * that the the image's origin is at the lower left and rotates
-             * it 90 degrees about the x-axis.
-             */
+            //Set coordinates for the plane.  These coordinates assume
+            //that the the image's origin is at the lower left and rotates
+            // it 90 degrees about the x-axis.
+            
             // lower left
             _quadCoords[0] = -0.5;
             _quadCoords[1] = curY;
@@ -239,10 +258,10 @@ public class GRTexture2D extends GRGeometry {
         } else if (_axis == 2) {
 
             double curZ = _counter * _planeSpacing - .5;
-            /** Set coordinates for the plane.  These coordinates assume
-             * that the the image's origin is at the lower left and the planes
-             * are aligned accordingly
-             */
+            //Set coordinates for the plane.  These coordinates assume
+            //that the the image's origin is at the lower left and the planes
+            //are aligned accordingly
+            
             // lower left
             _quadCoords[0] = -0.5;
             _quadCoords[1] = -0.5;
@@ -268,6 +287,17 @@ public class GRTexture2D extends GRGeometry {
             _quadCoords[9] = -0.5;
             _quadCoords[10] = 0.5;
             _quadCoords[11] = curZ;
+
+            _texCoords[6]= 0;
+            _texCoords[7]= 1;
+        }else if (_axis == 0){
+            double curX = _counter * _planeSpacing -.5;
+            
+            //Set coordinates for the plane.  These coordinates assume
+            //that the the image's origin is at the lower left and the planes
+            //are aligned accordingly
+            
+
             _texCoords[6] = 0;
             _texCoords[7] = 1;
         } else if (_axis == 0) {
@@ -276,6 +306,7 @@ public class GRTexture2D extends GRGeometry {
              * that the the image's origin is at the lower left and the planes
              * are aligned accordingly
              */
+
             // lower left
             _quadCoords[0] = curX;
             _quadCoords[1] = -0.5;
@@ -316,6 +347,13 @@ public class GRTexture2D extends GRGeometry {
         _geometry = _plane;
     }
 
+
+    /**Read and load the image to be texture mapped. 
+     * Set the appearance of this 3D object.
+     *  @exception IllegalActionException 
+     */
+
+
     protected void _createModel() throws IllegalActionException {
         _readImage();
         _counter++;
@@ -328,114 +366,125 @@ public class GRTexture2D extends GRGeometry {
      * @throws IllegalActionException
      */
     protected void _loadTexture() throws IllegalActionException {
-
+    	//Debug statement
         if (_debugging) {
             _debug("About to loadTexture");
         }
 
-        TextureAttributes attributes = null;
-
-        /*int arrayLength = _sSize*_tSize;
-         double fraction = 1/255;
-
-         if (_debugging) {
-         _debug("arrayLength = " + arrayLength);
-         _debug("fraction = " + fraction);
-         }
-         double[] pixelArray = new double[arrayLength];
-         double[] alphaArray = new double[arrayLength]; */
-
-        /*  try {
-         _bufferedImage = (BufferedImage)ImageIO.read (new File(_fileRoot));
-         } catch (IOException e) {
-         System.err.println(e);
-         _bufferedImage = null;
-         }*/
-        /* _alphaRaster = _bufferedImage.getAlphaRaster();
-         if (_debugging){
-         _debug("_bufferedImage = " + _bufferedImage);
-         _debug("Number of bands in _alphaRaster = " + _alphaRaster.getNumBands());
-         }
-
-         _dataRaster = (WritableRaster)_bufferedImage.getData();
-         _dataRaster.getPixels(0,0,_sSize,_tSize,pixelArray );
-
-         if (_debugging){
-         _debug("Number of bands in _dataRaster = " + _dataRaster.getNumBands());
-         }
-
-         for (int i=0; i < arrayLength; i ++){
-         alphaArray[i] = 1 - pixelArray[i]*fraction;
-         }
-
-         _dataRaster.setSamples(0,0,_sSize,_tSize,4, alphaArray); */
-
-        //if (_fileURL != null) {
-        /*     MyTextureLoader loader;
-         //String format = "LUMINANCE_ALPHA";
-         loader = new MyTextureLoader(_bufferedImage,_viewScreen.getCanvas());*/
-        if (_debugging) {
-            _debug("Loaded texture");
+        //Check for valid url, if no get file name as a String
+        if (_url == null) {
+            throw new IllegalActionException("sourceURL was null");
+            }
+            _fileRoot = _url.getFile(); 
+            
+        //Read in image as a BufferedImage
+        try {
+            _bufferedImage = (BufferedImage)ImageIO.read (new File(_fileRoot));
+            } catch (IOException e) {
+            System.err.println(e);
+            _bufferedImage = null;
         }
-        MyTextureLoader loader;
+        
+        //Create WritableRaster
+        //FIXME Are the parameters for ComponentSampleModel correct?
+        ComponentSampleModel componentSampleModel = 
+            new ComponentSampleModel(0, _sSize, _tSize, 0, _sSize, new int[]{0,0,0,0});
+        Raster raster = _bufferedImage.getData();
+        DataBuffer dataBuffer = raster.getDataBuffer();
+        WritableRaster writableRaster = Raster.createWritableRaster(componentSampleModel, 
+                dataBuffer, new Point()); 
+        
+        System.out.println("Data buffer type = " + dataBuffer.getDataType());
+        
+        
+        //Create ColorModel
+        //FIXME Are the parameters for ComponentColorModel correct?
+        ComponentColorModel componentColorModel = new ComponentColorModel 
+         (ColorSpace.getInstance(ColorSpace.CS_sRGB) ,
+                    new int[] {8,8,8,8} , // bits
+                    true, // alpha
+                    false , // alpha pre-multiplied
+                    Transparency.TRANSLUCENT ,
+                    DataBuffer.TYPE_BYTE );
+        Hashtable hashtable = new Hashtable();
+        //_bufferedImage = new BufferedImage( componentColorModel, writableRaster,
+           //     false, hashtable); 
+      
+    
+        //      Get alpha raster and manipulate values
+   /*     int arrayLength = _sSize*_tSize;
+        double fraction = 1/255;
+        double[] pixelArray = new double[arrayLength*4];
+        double[] alphaArray = new double[arrayLength]; */
+        
+       
+        //Create alpha array and set as function of pixel values
+      /*  writableRaster.getPixels(writableRaster.getMinX(),writableRaster.getMinY(),
+                _sSize,_tSize, pixelArray ); 
+        for (int i=1; i == arrayLength; i ++){
+        	//alphaArray[i] = 1 - pixelArray[i*4 -2]*fraction;
+            alphaArray[i]= 0.5;
+        }
+        writableRaster.setSamples(0,0,_sSize,_tSize,3, alphaArray);*/
+        
+        //Create bufferedImage and Load
+        _bufferedImage = new BufferedImage(componentColorModel, writableRaster,
+                false, hashtable);
+        TextureLoader loader = new TextureLoader(_bufferedImage,_viewScreen.getCanvas());
+       
+
+        /* Set loaded texture*/
+        Texture loadedTexture = loader.getTexture();
+        TextureAttributes attributes = null; 
+        if (loadedTexture != null) {
+            attributes = new TextureAttributes();
+            attributes.setTextureMode(TextureAttributes.MODULATE);
+            _appearance.setTextureAttributes(attributes);
+            _appearance.setTexture(loadedTexture);
+        }
+        
+        /*  MyTextureLoader loader;
         //     if (_token.getClass().toString() == "class ptolemy.data.AWTImageToken"){
         loader = new MyTextureLoader(_image, _viewScreen.getCanvas());
         //   }else {
         //  loader = new MyTextureLoader(_fileRoot, _viewScreen.getCanvas());
-        // }
-
-        /* Get the Loaded Texture */
-        Texture loadedTexture = loader.getTexture();
-        if (_debugging) {
-            _debug("got texture");
-            _debug("Texture format is = " + loadedTexture.getFormat());
-        }
-
-        if (loadedTexture != null) {
-            attributes = new TextureAttributes();
-            attributes.setTextureMode(TextureAttributes.MODULATE);
-
-            _appearance.setTextureAttributes(attributes);
-
-            _appearance.setTexture(loadedTexture);
-        }
-        //}
+        // }*/
 
     }
 
+
+
+    /**Read the image file.
+     * @exception IllegalActionException 
+     */
+
     /**Read in file. */
     protected void _readImage() throws IllegalActionException {
-        /*
-         _url = texture.asURL();
-         /**Read in image containing data to be mapped
-         if (_url == null) {
-         throw new IllegalActionException("sourceURL was null");
-         }
-         _fileRoot = _url.getFile();
-         if (_imagePlus == null) {
-         _imagePlus = new ImagePlus(_fileRoot);
-         } */
-
+       
         _token = input.get(0);
-
-        if (_token.getClass().toString() == "class ptolemy.data.AWTImageToken") {
-            System.out.println("If returned true");
-            ImageToken imageToken;
-            imageToken = (ImageToken) _token;
+        ObjectToken objectToken = (ObjectToken) _token;
+        _url = (URL) objectToken.getValue();
+        _fileRoot = _url.getFile();
+        
+        /**Use if input is an ImageToken */
+        /*   _token = input.get(0);
+            ImageToken imageToken = (ImageToken) _token;
             _image = imageToken.asAWTImage();
             System.out.println("token = " + _token.getType());
-            System.out.println("token = " + _token.getClass().toString());
+            System.out.println("token = " + _token.getClass().toString());*/
+        
+        /*
+        _url = texture.asURL();
+        /**Read in image containing data to be mapped
+        if (_url == null) {
+        throw new IllegalActionException("sourceURL was null");
         }
-        ImageToken imageToken;
-        imageToken = (ImageToken) _token;
-        _image = imageToken.asAWTImage();
-        System.out.println("token = " + _token.getType());
-        System.out.println("token = " + _token.getClass().toString());
-        /* }/*else{
-         StringToken stringToken;
-         stringToken = (StringToken) _token;
-         _fileRoot = stringToken.stringValue();
-         }*/
+        _fileRoot = _url.getFile();
+        if (_imagePlus == null) {
+        _imagePlus = new ImagePlus(_fileRoot);
+        } */
+
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -444,6 +493,7 @@ public class GRTexture2D extends GRGeometry {
     /** ?????? */
     protected View _view;
 
+    /** Image to be texture mapped */
     protected Image _image;
 
     ///////////////////////////////////////////////////////////////////
@@ -470,7 +520,7 @@ public class GRTexture2D extends GRGeometry {
     /** The ColorSpace that defines the color space of the image */
     private ColorSpace _colorSpace;
 
-    private Shape3D _texturedImage;
+
 
     //private ImagePlus _imagePlus;
 
@@ -483,6 +533,8 @@ public class GRTexture2D extends GRGeometry {
     private Texture2D _texture;
 
     private Token _token;
+    
+    private Token _tokenURL;
 
     private TexCoordGeneration _texCoordGeneration;
 

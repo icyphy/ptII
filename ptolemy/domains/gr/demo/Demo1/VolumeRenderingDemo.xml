@@ -1,0 +1,133 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="VolumeRenderingDemo" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={144, 172, 763, 503}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[548, 394]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1051949920852">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{262.9200520833332, 190.3740885416669}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Hierarchical Model in Vergil, Ptolemy II's graphical interface.  &#10;The composite actor is a GR model embedded within the top &#10;level SDF model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 40.0]">
+        </property>
+    </property>
+    <entity name="DICOMReader" class="ptolemy.domains.gr.lib.vr.DICOMReader">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="C:\ptII\ptolemy\domains\gr\demo\Data Visualization Demos\brainfilesii.txt">
+        </property>
+        <property name="numberOfLinesToSkip" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Read one line at a time from a text file and output as a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 225.0]">
+        </property>
+        <property name="GR Director" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GR model that receives its inputs from the &#10;SDF model it is embedded within.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 35.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 232, 815, 509}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 205.0}">
+            </property>
+        </port>
+        <entity name="GRTexture2D" class="ptolemy.domains.gr.lib.vr.GRTexture2D">
+            <property name="allowRuntimeChanges" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="axis" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="planeSpacing" class="ptolemy.data.expr.Parameter" value=".0125">
+            </property>
+            <property name="transparency" class="ptolemy.actor.parameters.DoubleRangeParameter" value="0.87">
+            </property>
+            <property name="wireFrame" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="sSize" class="ptolemy.actor.parameters.IntRangeParameter" value="136">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 225.0]">
+            </property>
+        </entity>
+        <entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen3D">
+            <property name="scalable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="translatable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="showAxes" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 220.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="GRTexture2D.input" relation="relation2"/>
+        <link port="GRTexture2D.sceneGraphOut" relation="relation"/>
+        <link port="ViewScreen3D.sceneGraphIn" relation="relation"/>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={380, 232, 264, 304}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 150.0]">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[110.0, 190.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="DICOMReader.fileOrURL" relation="relation5"/>
+    <link port="DICOMReader.outputImage" relation="relation3"/>
+    <link port="DICOMReader.outputURL" relation="relation2"/>
+    <link port="LineReader.output" relation="relation5"/>
+    <link port="CompositeActor.port" relation="relation2"/>
+    <link port="ImageDisplay.input" relation="relation3"/>
+</entity>
