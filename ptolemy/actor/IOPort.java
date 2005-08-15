@@ -303,8 +303,11 @@ public class IOPort extends ComponentPort {
             if (farReceivers[i] == null) {
                 continue;
             }
-            for (int j = 0; j < farReceivers[i].length; j++) {
-                farReceivers[i][j].putArray(tokenArray, vectorLength);
+            if (farReceivers[i].length > 0) {
+                // Delegate to the receiver to handle putting to all
+                // receivers, since domain-specific techniques might be relevant.
+                farReceivers[i][0].putArrayToAll(
+                        tokenArray, vectorLength, farReceivers[i]);
             }
         }
     }
@@ -2308,8 +2311,11 @@ public class IOPort extends ComponentPort {
             _workspace.doneReading();
         }
         
-        for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-            farReceivers[channelIndex][j].putArray(tokenArray, vectorLength);
+        if (farReceivers[channelIndex].length > 0) {
+            // Delegate to the receiver to handle putting to all
+            // receivers, since domain-specific techniques might be relevant.
+            farReceivers[channelIndex][0].putArrayToAll(
+                    tokenArray, vectorLength, farReceivers[channelIndex]);
         }
     }
 
