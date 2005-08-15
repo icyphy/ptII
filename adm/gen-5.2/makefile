@@ -1424,10 +1424,11 @@ remotealldone:
 # except for the deep codegen
 
 # Host to run on
-REMOTE4HOST = cooley
+REMOTE4HOST = source
 
 # Remote location of Ptolemy II tree for testing
-REMOTE4HOME = /vol/$(REMOTE4HOST)/$(REMOTE4HOST)2/ptII
+#REMOTE4HOME = /vol/$(REMOTE4HOST)/$(REMOTE4HOST)2/ptII
+REMOTE4HOME = $(REMOTE1HOME)
 REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
 
 # Log file to save the results in
@@ -1448,13 +1449,20 @@ remote4: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	-ssh $(REMOTE4HOST) "cd $(GENDIR); cp $(REMOTE4LOG) $(REMOTE4LOG).old"
-	ssh $(REMOTE4HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+#	-ssh $(REMOTE4HOST) "cd $(GENDIR); cp $(REMOTE4LOG) $(REMOTE4LOG).old"
+#	ssh $(REMOTE4HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+#		remote4nuke remote4ptiidist remote4configure \
+#		remote4distclean remote4build \
+#		remote4javatest \
+#		remote4done \
+#		 >& $(REMOTE4LOG)" &
+	cd $(GENDIR); cp $(REMOTE4LOG) $(REMOTE4LOG).old
+	cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
 		remote4javatest \
 		remote4done \
-		 >& $(REMOTE4LOG)" &
+		 >& $(REMOTE4LOG)
 
 
 # Remove the remote dist
@@ -1531,10 +1539,11 @@ remote4javatest:
 # except for the shallow codegen
 
 # Host to run on
-REMOTE5HOST = maury
+REMOTE5HOST = source
 
 # Directory to build in
-REMOTE5HOME = /vol/$(REMOTE5HOST)/$(REMOTE5HOST)1/ptIIsrc
+#REMOTE5HOME = /vol/$(REMOTE5HOST)/$(REMOTE5HOST)1/ptIIsrc
+REMOTE5HOME = $(REMOTE1HOME)
 
 REMOTE5PTIIDIST = $(REMOTE5HOME)/ptII$(VERSION)
 
@@ -1548,13 +1557,20 @@ remote5: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	-ssh $(REMOTE5HOST) "cd $(GENDIR); cp $(REMOTE5LOG) $(REMOTE5LOG).old"
-	ssh $(REMOTE5HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+#	-ssh $(REMOTE5HOST) "cd $(GENDIR); cp $(REMOTE5LOG) $(REMOTE5LOG).old"
+#	ssh $(REMOTE5HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+#		remote5nuke remote5ptiidist remote5configure \
+#		remote5build \
+#		remote5shallowtest \
+#		remote5done \
+#		 >& $(REMOTE5LOG)" &
+	cd $(GENDIR); cp $(REMOTE5LOG) $(REMOTE5LOG).old
+	cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote5nuke remote5ptiidist remote5configure \
 		remote5build \
 		remote5shallowtest \
 		remote5done \
-		 >& $(REMOTE5LOG)" &
+		 >& $(REMOTE5LOG)
 
 
 # Remove the remote dist
