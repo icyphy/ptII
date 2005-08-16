@@ -341,6 +341,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/security/test/foo.keystore \
 		ptolemy/actor/lib/test/Const.txt \
 		ptolemy/actor/lib/test/ReadFile1Output.txt \
+		ptolemy/actor/lib/x10/demo/MotionDrivenDemos/shutdown.bat \
 		ptolemy/backtrack \
 		ptolemy/codegen \
 		ptolemy/media/test/tmp2_7.au \
