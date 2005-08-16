@@ -1,6 +1,6 @@
 # ptII crontab  Last Updated: $Id$
 # This file should be found as /users/ptII/adm/crontab.ptII
-# To update, as ptII on maury (or whatever host is the ptII host), run:
+# To update, as ptII on bennett (or whatever host is the ptII host), run:
 #	 crontab < /users/ptII/adm/crontab.ptII
 #
 #
@@ -9,4 +9,4 @@
 58  * * * * csh -c "cd /users/ptII/ptweb/secweb; cvs update"  > /users/ptII/logs/secwebupdate 2>&1
 38  * * * * csh -c "cd /users/ptII/ptweb/chessweb; cvs update"  > /users/ptII/logs/chesswebupdate 2>&1
 15 0  * * * csh -c "/users/ptII/adm/bin/ptIInightly.cron ptbuild"
-50 23 * * * csh -c "/usr/local/apache/accesswatch/aw-doit >& /tmp/accesswatch.out"
+#50 23 * * * csh -c "/usr/local/apache/accesswatch/aw-doit >& /tmp/accesswatch.out"
