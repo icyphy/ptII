@@ -336,6 +336,8 @@ PTII_SRC_TO_BE_REMOVED = \
 		doc/img/banner.psd \
 		doc/img/ptIIbanner2.psd \
 		doc/img/PtolemyIISplash.psd \
+		doc/design/hyvisual.jar \
+		doc/design/visualsense.jar \
 		lib/cachedir \
 		lib/ptII.properties \
 		mk/ptII.mk \
@@ -345,11 +347,29 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/security/test/foo.keystore \
 		ptolemy/actor/lib/test/Const.txt \
 		ptolemy/actor/lib/test/ReadFile1Output.txt \
+		ptolemy/actor/lib/x10/ApplianceController.class \
+		ptolemy/actor/lib/x10/CommandListener.class \
+		ptolemy/actor/lib/x10/LampController.class \
+		ptolemy/actor/lib/x10/LevelListener.class \
+		ptolemy/actor/lib/x10/Listener.class \
+		ptolemy/actor/lib/x10/Receiver$$1.class \
+		ptolemy/actor/lib/x10/Receiver.class \
+		ptolemy/actor/lib/x10/Receiver$$CommandListener.class \
+		ptolemy/actor/lib/x10/Sender.class \
+		ptolemy/actor/lib/x10/X10Interface.class \
+		ptolemy/actor/lib/x10/demo/MotionDrivenDemos/shutdown.bat \
 		ptolemy/backtrack \
 		ptolemy/codegen \
+		ptolemy/matlab/ptmatlab.exp \
+		ptolemy/matlab/ptmatlab.lib \
+		ptolemy/matlab/ptmatlab.obj \
 		ptolemy/media/test/tmp2_7.au \
+		ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties \
+		ptolemy/moml/jxta/JXTAClassLoader.class \
+		ptolemy/moml/jxta/JXTALibrary.class \
 		ptolemy/util/test/FileUtilities-1.1.tmp \
 		ptolemy/vergil/toolbox/test/alljsimpletests.tcl
+
 
 # Files to be removed from HyVisual source distributions
 HYVISUAL_SRC_TO_BE_REMOVED = \
