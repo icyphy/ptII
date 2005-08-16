@@ -55,7 +55,6 @@ EXTRA_SRCS = \
 	MotionDrivenDemosRandom.xml \
 	MotionDrivenDemosTest.xml \
 	chesskiosk.bat \
-	shutdown.bat \
 	startdemo.sh \
 	$(OTHER_FILES_TO_BE_JARED)
 
