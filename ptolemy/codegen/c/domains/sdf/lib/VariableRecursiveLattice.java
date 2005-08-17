@@ -35,7 +35,8 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A code generation helper class for ptolemy.domains.sdf.lib.VariableRecursiveLattice.
+ * A code generation helper class for
+ * ptolemy.domains.sdf.lib.VariableRecursiveLattice.
  *
  * @author Man-Kit Leung
  * @version $Id$
@@ -49,15 +50,16 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
      * Constructor method for the VariableRecursiveLattice helper.
      * @param actor The associated actor.
      */
-    public VariableRecursiveLattice(ptolemy.domains.sdf.lib.VariableRecursiveLattice actor) {
+    public VariableRecursiveLattice(
+            ptolemy.domains.sdf.lib.VariableRecursiveLattice actor) {
         super(actor);
     }
 
     /**
      * Generate fire code.
-     * The method reads in <code>fireBlock</code> from VariableRecursiveLattice.c,
-     * replaces macros with their values and appends the processed code
-     * block to the given code buffer.
+     * The method reads in <code>fireBlock</code> from
+     * VariableRecursiveLattice.c, replaces macros with their values
+     * and appends the processed code block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
@@ -74,8 +76,9 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
 
     /**
      * Generate initialize code.
-     * This method reads the <code>initBlock</code> from VariableRecursiveLattice.c,
-     * replaces macros with their values and returns the processed code string.
+     * This method reads the <code>initBlock</code> from
+     * VariableRecursiveLattice.c, replaces macros with their values
+     * and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      * @return The processed code string.
@@ -91,8 +94,9 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
 
     /**
      * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from VariableRecursiveLattice.c,
-     * replaces macros with their values and returns the processed code string.
+     * This method reads the <code>preinitBlock</code> from
+     * VariableRecursiveLattice.c, replaces macros with their values
+     * and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      * @return The processed code string.
