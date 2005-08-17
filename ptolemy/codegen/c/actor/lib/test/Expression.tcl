@@ -53,5 +53,5 @@ test Expression-1.1 {Simple tests of ParseTreeCodeGenerator} {
 
 test Expression-1.2 {A more complex example} {
     parseTreeTest {((3+4)+(1|2)+232)}
-} {1+3}
+} {3+4+1|2+232}
 
