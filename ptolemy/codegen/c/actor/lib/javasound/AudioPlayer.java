@@ -71,10 +71,10 @@ public class AudioPlayer extends CCodeGeneratorHelper {
 
         _codeStream.clear();
         if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
-        	_codeStream.appendCodeBlock("fireBlock_8");
+                _codeStream.appendCodeBlock("fireBlock_8");
         }
         else {
-        	_codeStream.appendCodeBlock("fireBlock_16");
+                _codeStream.appendCodeBlock("fireBlock_16");
         }
         code.append(processCode(_codeStream.toString()));
     }
