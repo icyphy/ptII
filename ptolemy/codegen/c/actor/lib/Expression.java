@@ -74,8 +74,9 @@ public class Expression extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer code)
         throws IllegalActionException {
-        code.append(_parseTreeCodeGenerator.generateFireCode());
-   }
+        code.append(processCode("    $ref(output) = (" + 
+                _parseTreeCodeGenerator.generateFireCode()) + ");\n");
+    }
 
     /**
      * Generate initialize code.
@@ -179,102 +180,4 @@ public class Expression extends CCodeGeneratorHelper {
     }
     
     protected ParseTreeCodeGenerator _parseTreeCodeGenerator;
-    
-    
-    private class VariableScope extends ModelScope {
-        /** Look up and return the attribute with the specified name in the
-         *  scope. Return null if such an attribute does not exist.
-         *  @return The attribute with the specified name in the scope.
-         */
-        public Token get(String name) throws IllegalActionException {
-            if (name.equals("time")) {
-                return new DoubleToken(getDirector().getModelTime()
-                        .getDoubleValue());
-            } else if (name.equals("iteration")) {
-                return new IntToken(_iterationCount);
-            }
-
-            Token token = (Token) _tokenMap.get(name);
-
-            if (token != null) {
-                return token;
-            }
-
-            Variable result = getScopedVariable(null, Expression.this, name);
-
-            if (result != null) {
-                return result.getToken();
-            }
-
-            return null;
-        }
-
-        /** Look up and return the type of the attribute with the
-         *  specified name in the scope. Return null if such an
-         *  attribute does not exist.
-         *  @return The attribute with the specified name in the scope.
-         */
-        public Type getType(String name) throws IllegalActionException {
-            if (name.equals("time")) {
-                return BaseType.DOUBLE;
-            } else if (name.equals("iteration")) {
-                return BaseType.INT;
-            }
-
-            // Check the port names.
-            TypedIOPort port = (TypedIOPort) getPort(name);
-
-            if (port != null) {
-                return port.getType();
-            }
-
-            Variable result = getScopedVariable(null, Expression.this, name);
-
-            if (result != null) {
-                return (Type) result.getTypeTerm().getValue();
-            }
-
-            return null;
-        }
-
-        /** Look up and return the type term for the specified name
-         *  in the scope. Return null if the name is not defined in this
-         *  scope, or is a constant type.
-         *  @return The InequalityTerm associated with the given name in
-         *  the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
-            if (name.equals("time")) {
-                return new TypeConstant(BaseType.DOUBLE);
-            } else if (name.equals("iteration")) {
-                return new TypeConstant(BaseType.INT);
-            }
-
-            // Check the port names.
-            TypedIOPort port = (TypedIOPort) getPort(name);
-
-            if (port != null) {
-                return port.getTypeTerm();
-            }
-
-            Variable result = getScopedVariable(null, Expression.this, name);
-
-            if (result != null) {
-                return result.getTypeTerm();
-            }
-
-            return null;
-        }
-
-        /** Return the list of identifiers within the scope.
-         *  @return The list of identifiers within the scope.
-         */
-        public Set identifierSet() {
-            return getAllScopedVariableNames(null, Expression.this);
-        }
-    }
-
 }
