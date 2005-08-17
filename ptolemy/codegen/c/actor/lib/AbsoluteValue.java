@@ -72,19 +72,6 @@ public class AbsoluteValue extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("fireBlock");
-        code.append(processCode(_codeStream.toString()));
-    }
-
-    /** Get the files needed by the code generated for the
-     *  AbsoluteValue actor.
-     *  @return A set of strings that are names of the files
-     *   needed by the code generated for the AbsoluteValue actor.
-     */
-    public Set getIncludingFiles() {
-        Set files = new HashSet();
-        files.add("\"math.h\"");
-        return files;
+        code.append(_generateBlockCode("fireBlock"));
     }
 }

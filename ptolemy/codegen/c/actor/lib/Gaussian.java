@@ -65,9 +65,7 @@ public class Gaussian extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("fireBlock");
-        code.append(processCode(_codeStream.toString()));
+        code.append(_generateBlockCode("fireBlock"));
     }
 
     /**
@@ -83,10 +81,18 @@ public class Gaussian extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Gaussian actor =
             (ptolemy.actor.lib.Gaussian) getComponent();
 
-        long seedValue;
-        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.clear();
 
-        if (Long.parseLong(actor.seed.getExpression()) == 0) {
+        long seedValue;
+        String seedString = actor.seed.getExpression();
+        if (Character.isDigit(seedString.charAt(seedString.length() - 1))) {
+        	seedValue = Long.parseLong(seedString);
+        } else {
+            seedValue = Long.parseLong(seedString.substring(0,
+                        seedString.length() - 1));
+        }
+        
+        if (seedValue == 0) {
             _codeStream.append("$actorSymbol(seed) = time (NULL) + "
                     + actor.hashCode() + ";");
         } else {
@@ -105,9 +111,22 @@ public class Gaussian extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("preinitBlock");
-        return processCode(_codeStream.toString());
+        return processCode(_generateBlockCode("preinitBlock"));
+    }
+
+    /**
+     * Generate shared code.
+     * The method reads in <code>sharedBlock</code> from Gaussian.c,
+     * replaces macros with their values and appends the processed code
+     * block to the given code buffer.
+     * @param code the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateSharedCode() throws IllegalActionException {
+        // We don't need to process the code block here because the
+        // sharedCode should not contain any macros.
+        return _generateBlockCode("sharedBlock", false);
     }
 
     /**
@@ -120,7 +139,6 @@ public class Gaussian extends CCodeGeneratorHelper {
         Set files = new HashSet();
         files.add("\"time.h\"");
         files.add("\"math.h\"");
-
         return files;
     }
 }

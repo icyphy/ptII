@@ -60,9 +60,7 @@ public class Accumulator extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("fireBlock");
-        code.append(processCode(_codeStream.toString()));
+        code.append(_generateBlockCode("fireBlock"));
     }
 
     /**
@@ -75,8 +73,6 @@ public class Accumulator extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("initBlock");
-        return processCode(_codeStream.toString());
+        return _generateBlockCode("initBlock");
     }
 }

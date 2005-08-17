@@ -61,9 +61,7 @@ public class Average extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("fireBlock");
-        code.append(processCode(_codeStream.toString()));
+        code.append(_generateBlockCode("fireBlock"));
     }
 
     /**
@@ -76,8 +74,6 @@ public class Average extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("preinitBlock");
-        return processCode(_codeStream.toString());
+        return _generateBlockCode("preinitBlock");
     }
 }

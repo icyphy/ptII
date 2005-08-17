@@ -67,11 +67,7 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer code)
         throws IllegalActionException {
-        ptolemy.actor.lib.GradientAdaptiveLattice actor =
-            (ptolemy.actor.lib.GradientAdaptiveLattice) getComponent();
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("fireBlock");
-        code.append(processCode(_codeStream.toString()));
+        code.append(_generateBlockCode("fireBlock"));
     }
 
     /**
@@ -87,7 +83,7 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
         throws IllegalActionException {
         super.generateInitializeCode();
 
-        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.clear();
         _codeStream.appendCodeBlock("initBlock");
         return processCode(_codeStream.toString());
     }
@@ -106,7 +102,7 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
         super.generatePreinitializeCode();
         ptolemy.actor.lib.GradientAdaptiveLattice actor =
             (ptolemy.actor.lib.GradientAdaptiveLattice) getComponent();
-        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.clear();
         _codeStream.appendCodeBlock("preinitBlock");
         return processCode(_codeStream.toString());
     }

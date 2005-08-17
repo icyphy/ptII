@@ -41,6 +41,7 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
@@ -198,9 +199,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String preinitializeCode = generatePreinitializeCode();
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
+        String sharedCode = generateSharedCode();
         generateVariableDeclarations(code);
-        code.append("main(int argc, char *argv[]) {\n");
+        code.append(sharedCode);
         code.append(preinitializeCode);
+        code.append("main(int argc, char *argv[]) {\n");
         code.append(initializeCode);
         code.append(bodyCode);
         generateWrapupCode(code);
@@ -230,7 +233,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     + codeDirectory.asFile() + "\"");
         }
     }
-
+    
     /** 
      * Return the code associated with initialization of the containing
      * composite actor. This method calls the generateInitializeCode()
@@ -265,6 +268,48 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 .getDirector();
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
         code.append(((Director) directorHelper).generatePreinitializeCode());
+        return code.toString();
+    }
+
+    /**
+     * Generate code shared by helper actors, including globally defined
+     * data struct types and static methods or variables shared by multiple
+     * instances of the same helper actor type.   
+     * @return The shared code of the containing composite actor.
+     * @throws IllegalActionException If an error ocurrs when generating
+     *  the globally shared code, or if the helper class for the model
+     *  director cannot be found, or if an error occurs when the helper
+     *  actor generates the shared code. 
+     */
+    public String generateSharedCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(comment("Generate shared code for " + 
+                getContainer().getFullName()));
+        
+        CodeStream tmpStream = new CodeStream("$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
+        tmpStream.appendCodeBlock("globalBlock");
+        code.append(tmpStream.toString());    
+        Iterator actors = ((CompositeActor) getContainer())
+                            .deepEntityList().iterator();
+
+        HashSet sharedCodeBlocks = new HashSet();
+                
+        while (actors.hasNext()) {
+        	Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper actorHelper = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            sharedCodeBlocks.add(actorHelper.generateSharedCode());
+        }
+        
+        Iterator blocks = sharedCodeBlocks.iterator();
+        while (blocks.hasNext()) {
+            String block = (String) blocks.next();
+            code.append(block);
+        }
+        
+        code.append(comment("Finished generate shared code for " + 
+                getContainer().getFullName()));
+
         return code.toString();
     }
 

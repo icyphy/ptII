@@ -3,7 +3,7 @@
 /**/
 
 /***initBlock***/
-    if(!($actorSymbol(filePtr) = fopen("$actorSymbol(filename)","w"))) {
+    if(!($actorSymbol(filePtr) = fopen("XYPlotter_tmpfile","w"))) {
         fprintf(stderr,"ERROR: cannot open output file for Plotter actor.\n");
         exit(1);
     }
@@ -21,6 +21,6 @@
     // You might need to specify c:/.../ptII/bin/pxgraph below
     // in the final version for Ptolemy II, we use ptplot, not pxgraph
     //system("( pxgraph -t 'Butterfly' -bb -tk =600x600+0+0 -0 xy $actorSymbol(filename); /bin/rm -f $actorSymbol(filename)) &");
-    system("( ptplot -height 600 -width 600 $actorSymbol(filename); /bin/rm -f $actorSymbol(filename)) &");
+    system(" ptplot XYPlotter_tmpfile &"); // /bin/rm -f $actorSymbol(filename) &");
 /**/
 

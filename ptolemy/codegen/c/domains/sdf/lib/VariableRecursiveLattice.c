@@ -2,17 +2,25 @@
     int $actorSymbol(i);
     int $actorSymbol(M);
     double $actorSymbol(k);
-    int $actorSymbol(_valueLength) = $size(reflectionCoefficients);
-    double* $actorSymbol(_backward) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
-    double* $actorSymbol(_backwardCache) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
-    double* $actorSymbol(_forward) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
-    double* $actorSymbol(_forwardCache) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
-    double* $actorSymbol(_reflectionCoefs) = (double*) malloc($actorSymbol(_valueLength) * sizeof(double));
-    int $actorSymbol(_blockSizeValue) = $val(blockSize);
+    int $actorSymbol(_valueLength);
+    double* $actorSymbol(_backward);
+    double* $actorSymbol(_backwardCache);
+    double* $actorSymbol(_forward);
+    double* $actorSymbol(_forwardCache);
+    double* $actorSymbol(_reflectionCoefs);
+    int $actorSymbol(_blockSizeValue);
     double* $actorSymbol(coefficientsToken);
 /**/
 
 /*** initBlock ***/
+    $actorSymbol(_valueLength) = $size(reflectionCoefficients);
+    $actorSymbol(_backward) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
+    $actorSymbol(_backwardCache) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
+    $actorSymbol(_forward) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
+    $actorSymbol(_forwardCache) = (double*) malloc(($actorSymbol(_valueLength) + 1) * sizeof(double));
+    $actorSymbol(_reflectionCoefs) = (double*) malloc($actorSymbol(_valueLength) * sizeof(double));
+    $actorSymbol(_blockSizeValue) = $val(blockSize);
+
     if ($actorSymbol(_blockSizeValue) < 1) {
         fprintf(stderr, "Invalid blockSize: %d,", $actorSymbol(_blockSizeValue));
         exit(1);

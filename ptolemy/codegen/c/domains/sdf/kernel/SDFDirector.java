@@ -90,7 +90,11 @@ public class SDFDirector extends Director {
             throws IllegalActionException {
         Attribute iterations = getComponent().getAttribute("iterations");
 
-        if (iterations != null) {
+        if (iterations == null) {
+            throw new IllegalActionException(getComponent(),
+                    "The SDF Director does not have an attribute name: " +
+                    "\"iterations\"");
+        } else {
             int iterationCount = 
                 ((IntToken) ((Variable) iterations).getToken()).intValue();
 
@@ -145,29 +149,22 @@ public class SDFDirector extends Director {
                                         offset));
                             } else {
                                 // FIXME: didn't write "% portBufferSize" here.
-                                String temp = (String) helperObject.getOffset(
-                                        port, j)
-                                        + " += "
-                                        + DFUtilities.getRate(port)
-                                        + ";\n";
-                                code.append(temp);
+                                code.append((String) 
+                                        helperObject.getOffset(port, j) + " += "
+                                        + DFUtilities.getRate(port) + ";\n");
                             }
                         }
                     }
                 }
             }
-
             code.append("}\n");
-        } else {
-            throw new IllegalActionException(getComponent(),
-                    "The SDF Director does not have an attribute"
-                            + "iterations");
         }
     }
 
     /** Generate the initialize code for the associated SDF director.
      *  @return The generated initialize code.
      *  @exception IllegalActionException If the base class throws it.
+     * FIXME: should tell exactly why it throws it.
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer initializeCode = new StringBuffer();
@@ -207,6 +204,8 @@ public class SDFDirector extends Director {
                         actorHelper.setBufferSize(port, channel, bufferSize);
 
                         // Declare the channel offset variables.
+                        //FIXME: should factor out this code, 
+                        // see CodeGenerateorHelper.getReference()
                         StringBuffer channelOffset = new StringBuffer();
                         channelOffset.append(port.getFullName().replace('.',
                                 '_'));
@@ -241,6 +240,7 @@ public class SDFDirector extends Director {
     /** Generate the preinitialize code for the associated SDF director.
      *  @return The generated preinitialize code.
      *  @exception IllegalActionException If the base class throws it.
+     * FIXME: find out if anything throws it.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -301,39 +301,13 @@ public class SDFDirector extends Director {
         }
     }
 
-    /** Get the set of relations connected to the given channel (i.e., given
-     *  a port and a channel number). The set should contains at most one
-     *  relation.
-     *  @param port The given port.
-     *  @param channelNumber The given channel number.
-     *  @return The set of relations that connect to the given channel.
-     */
-    public List getConnectedRelations(IOPort port, int channelNumber) {
-        List connectedRelations = new LinkedList();
-        Iterator relations = port.linkedRelationList().iterator();
-        int channel = 0;
-
-        while (relations.hasNext()) {
-            IORelation relation = (IORelation) relations.next();
-            int width = relation.getWidth();
-
-            for (int i = 0; i < width; i++, channel++) {
-                if (channel == channelNumber) {
-                    connectedRelations.add(relation);
-                }
-            }
-        }
-
-        return connectedRelations;
-    }
-
     //////////////////////////////////////////////////////////////////////////
     ////                          private methods                         ////
 
     /** Return the minimum number of power of two that is greater than or
      *  equal to the given integer.
      *  @param value The given integer.
-     *  @return the minumber number of power of two that is greater than or
+     *  @return the minimum number of power of two that is greater than or
      *   equal to the given integer.
      *  @exception IllegalActionException If the given integer is not positive.
      */
@@ -346,7 +320,7 @@ public class SDFDirector extends Director {
         int powerOfTwo = 1;
 
         while (value > powerOfTwo) {
-            powerOfTwo = powerOfTwo << 1;
+            powerOfTwo <<=  1;
         }
 
         return powerOfTwo;

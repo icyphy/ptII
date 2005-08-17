@@ -111,10 +111,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * Generate the fire code. In this base class, do nothing. Subclasses
      * may extend this method to generate the fire code of the associated
      * component and append the code to the given string buffer.
-     * @param stream The given string buffer.
+     * @param code The given string buffer.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public void generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
     }
 
@@ -145,13 +145,25 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /** 
+     * Generate the shared code. In this base class, return an empty
+     * string. This method generally does not generate any execution code
+     * and returns an empty string. Subclasses may generate code for variable
+     * declaration, defining constants, etc.
+     * @return A string of the preinitialize code for the helper.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateSharedCode() throws IllegalActionException {
+        return "";
+    }
+
+    /** 
      * Generate the wrapup code. In this base class, do nothing. Subclasses
      * may extend this method to generate the wrapup code of the associated
      * component and append the code to the given string buffer.
-     * @param stream The given string buffer.
+     * @param code The given string buffer.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public void generateWrapupCode(StringBuffer stream)
+    public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
     }
 

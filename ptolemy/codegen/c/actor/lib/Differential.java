@@ -61,9 +61,7 @@ public class Differential extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("fireBlock");
-        code.append(processCode(_codeStream.toString()));
+        code.append(_generateBlockCode("fireBlock"));
     }
 
     /**

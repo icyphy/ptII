@@ -214,6 +214,7 @@ public class CodeStream {
     /**
      * Return a StringBuffer that contains all the code block names and
      * bodies from the associated helper .c file.
+     * @return The content from parsing the helper .c file.
      * @exception IllegalActionException If an error occurs during parsing.
      */
     public StringBuffer description() throws IllegalActionException {

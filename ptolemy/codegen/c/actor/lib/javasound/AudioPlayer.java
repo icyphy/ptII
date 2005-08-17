@@ -68,16 +68,20 @@ public class AudioPlayer extends CCodeGeneratorHelper {
             throws IllegalActionException {
         ptolemy.actor.lib.javasound.AudioPlayer actor = 
             (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
+
         _codeStream.clear();
-        ArrayList args = new ArrayList();
-        args.add(actor.bitsPerSample.getExpression());
-        _codeStream.appendCodeBlock("fireBlock", args);
+        if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
+        	_codeStream.appendCodeBlock("fireBlock_8");
+        }
+        else {
+        	_codeStream.appendCodeBlock("fireBlock_16");
+        }
         code.append(processCode(_codeStream.toString()));
     }
 
     /**
      * Generate initialization code.
-     * This method reads the <code>setSeedBlock</code> from helperName.c,
+     * This method reads the <code>setSeedBlock</code> from AudioPlayer.c,
      * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      * error in processing the specified code block.
@@ -90,7 +94,7 @@ public class AudioPlayer extends CCodeGeneratorHelper {
 
     /**
      * Generate preinitialization code.
-     * This method reads the <code>preinitBlock</code> from helperName.c,
+     * This method reads the <code>preinitBlock</code> from AudioPlayer.c,
      * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block.
@@ -102,9 +106,6 @@ public class AudioPlayer extends CCodeGeneratorHelper {
             (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
         
         _codeStream.clear();
-        ArrayList args = new ArrayList();
-        args.add(actor.bitsPerSample.getExpression());
-        _codeStream.appendCodeBlock("preinitBlock", args);
         if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
             _codeStream.appendCodeBlock("preinitBlock_8");
         }
@@ -114,9 +115,22 @@ public class AudioPlayer extends CCodeGeneratorHelper {
         return processCode(_codeStream.toString());        
     }
 
+    /**
+     * Generate shared code.
+     * The method reads in <code>sharedBlock</code> from AudioPlayer.c,
+     * replaces macros with their values and appends the processed code
+     * block to the given code buffer.
+     * @param code the given buffer to append the code to.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateSharedCode() throws IllegalActionException {
+        return _generateBlockCode("sharedBlock");
+    }
+
     /** 
      * Generate wrap up code.
-     * This method reads the <code>wrapupBlock</code> from helperName.c,
+     * This method reads the <code>wrapupBlock</code> from AudioPlayer.c,
      * replaces macros with their values and appends the processed code block
      * to the given code buffer.
      * @param code the given buffer to append the code to.
@@ -127,6 +141,7 @@ public class AudioPlayer extends CCodeGeneratorHelper {
             throws IllegalActionException {
         code.append(_generateBlockCode("wrapupBlock")); 
     }
+
     /** 
      * Get the files needed by the code generated for the
      * AudioPlayer actor.
@@ -140,7 +155,6 @@ public class AudioPlayer extends CCodeGeneratorHelper {
         files.add("\"SDL.h\"");
         files.add("\"SDL_audio.h\"");
         files.add("\"SDL_thread.h\"");
-
         return files;
     }
 }

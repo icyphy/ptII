@@ -28,7 +28,7 @@
     }
     atexit(SDL_Quit);
     if ( SDL_LoadWAV("<arg>", &$actorSymbol(wave).spec, &$actorSymbol(wave).sound, &$actorSymbol(wave).soundlen) == NULL ) {
-        fprintf(stderr, "Couldn't load %s: %s\n", argv[1], SDL_GetError());
+        fprintf(stderr, "Couldn't load <arg>: %s\n", SDL_GetError());
         exit(1);
     }
     if ($actorSymbol(wave).spec.format == AUDIO_U8 || $actorSymbol(wave).spec.format == AUDIO_S8) {
@@ -41,9 +41,9 @@
 
 /*** fireBlock ***/
     if ($actorSymbol(wave).soundpos >= $actorSymbol(wave).soundlen) {
-       break;   // exit fire loop
-    }
-    if ($actorSymbol(bitsPerSample) = 8) {
+       $ref(output) = 0;
+    } 
+    else if ($actorSymbol(bitsPerSample) == 8) {
         $ref(output) = $actorSymbol(wave).sound[$actorSymbol(wave).soundpos];
         $ref(output) -= 128;  // 2^7
         $ref(output) /= (double) 128;  // 2^7 - 1
@@ -54,7 +54,7 @@
         $ref(output) -= 32768;  // 2^15
         $ref(output) /= (double) 32768; // 2^15 - 1
         $actorSymbol(wave).soundpos += 2;
-    }    
+    }
 /**/
 
 /*** wrapupBlock ***/

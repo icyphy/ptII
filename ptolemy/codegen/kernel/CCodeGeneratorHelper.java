@@ -74,6 +74,29 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         _codeStream.appendCodeBlock(blockName);
         return processCode(_codeStream.toString());
     }
+
+    /** Given a block name, generate code for that block.
+     *  This method is called by actors helpers that have simple blocks
+     *  that do not take parameters or have widths. This method gives user
+     *  the freedom to indicate if the code block needs marco-processing.
+     *  @param blockName The name of the block.
+     *  @param process Flag to indicate if this block need marco processing.
+     *  @return The code for the given block.
+     *  @exception IllegalActionException If illegal macro names are
+     *  found, or if there is a problem parsing the code block from
+     *  the helper .c file.
+     */
+    protected String _generateBlockCode(String blockName, boolean process)
+            throws IllegalActionException {
+        // We use this method to reduce code duplication for simple blocks.
+        _codeStream.clear();
+        _codeStream.appendCodeBlock(blockName);
+        if (process) {
+        	return processCode(_codeStream.toString());
+        } else {
+            return _codeStream.toString();            
+        }
+    }
     
     /**
      * The code stream associated with this helper.
