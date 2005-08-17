@@ -172,3 +172,22 @@ test FixPointQuantization-3.1 {quantize-modulo} {
 -3 0.499 -3
 -4 0.000 -4
 -7 0.000 1 }}
+
+test FixPointQuantization-4.1 {getMaximumUnscaledValue} {
+
+    # With a fix format of 0 integer and 8 fractional bits, the
+    # maximum value
+    # is 0.01111111 (.49609375) rather than 0.11111111 (.99609375).
+
+    # 8 bits, 0 integer bits
+    #set precision [java::new ptolemy.math.Precision 8 0]
+    #set	q8 [java::new ptolemy.math.FixPointQuantization \
+    #    $precision \
+    #	[java::field ptolemy.math.Overflow SATURATE] \
+    #	[java::field ptolemy.math.Rounding TRUNCATE]]
+
+    set q8 [java::new ptolemy.math.FixPointQuantization "0.8" ]
+    set fixedPoint [java::new ptolemy.math.FixPoint [expr {7.0/8}] $q8]
+
+    list [$fixedPoint toString] [$fixedPoint toBitString]
+} {0.875 0.11100000}
