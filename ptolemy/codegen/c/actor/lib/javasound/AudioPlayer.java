@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.javasound.AudioPlayer.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -58,7 +58,7 @@ public class AudioPlayer extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * The method reads in <code>fireBlock</code> from AudioPlayer.c 
+     * The method reads in <code>fireBlock</code> from AudioPlayer.c
      * and puts into the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
@@ -66,7 +66,7 @@ public class AudioPlayer extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.actor.lib.javasound.AudioPlayer actor = 
+        ptolemy.actor.lib.javasound.AudioPlayer actor =
             (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
 
         _codeStream.clear();
@@ -102,17 +102,17 @@ public class AudioPlayer extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        ptolemy.actor.lib.javasound.AudioPlayer actor = 
+        ptolemy.actor.lib.javasound.AudioPlayer actor =
             (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
-        
+
         _codeStream.clear();
         if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
             _codeStream.appendCodeBlock("preinitBlock_8");
         }
-        else {  // assume bitsPerSample == 16 
-            _codeStream.appendCodeBlock("preinitBlock_16");            
+        else {  // assume bitsPerSample == 16
+            _codeStream.appendCodeBlock("preinitBlock_16");
         }
-        return processCode(_codeStream.toString());        
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -128,7 +128,7 @@ public class AudioPlayer extends CCodeGeneratorHelper {
         return _generateBlockCode("sharedBlock");
     }
 
-    /** 
+    /**
      * Generate wrap up code.
      * This method reads the <code>wrapupBlock</code> from AudioPlayer.c,
      * replaces macros with their values and appends the processed code block
@@ -139,10 +139,10 @@ public class AudioPlayer extends CCodeGeneratorHelper {
      */
     public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
-        code.append(_generateBlockCode("wrapupBlock")); 
+        code.append(_generateBlockCode("wrapupBlock"));
     }
 
-    /** 
+    /**
      * Get the files needed by the code generated for the
      * AudioPlayer actor.
      * @return A set of strings that are names of the files

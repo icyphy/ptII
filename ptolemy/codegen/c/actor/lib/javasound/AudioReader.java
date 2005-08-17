@@ -40,7 +40,7 @@ import ptolemy.util.FileUtilities;
 
 /**
  * A helper class for ptolemy.actor.lib.javasound.AudioReader.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -56,11 +56,11 @@ public class AudioReader extends CCodeGeneratorHelper {
     public AudioReader(ptolemy.actor.lib.javasound.AudioReader actor) {
         super(actor);
     }
-    
+
 
     /**
      * Generate fire code.
-     * The method reads in <code>readSoundFile</code> from AudioReader.c 
+     * The method reads in <code>readSoundFile</code> from AudioReader.c
      * and puts into the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
@@ -70,8 +70,8 @@ public class AudioReader extends CCodeGeneratorHelper {
             throws IllegalActionException {
         code.append(_generateBlockCode("fireBlock"));
     }
-    
-    /** 
+
+    /**
      * Generate initialization code.
      * This method gets the file path from the actor's fileOrURL parameter.
      * Then, it reads the <code>initBlock</code> from AudioReader.c and
@@ -85,7 +85,7 @@ public class AudioReader extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
         _codeStream.clear();
-        ptolemy.actor.lib.javasound.AudioReader actor = 
+        ptolemy.actor.lib.javasound.AudioReader actor =
             (ptolemy.actor.lib.javasound.AudioReader) getComponent();
         String fileNameString;
 
@@ -116,7 +116,7 @@ public class AudioReader extends CCodeGeneratorHelper {
         return _generateBlockCode("preinitBlock");
     }
 
-    /** 
+    /**
      * Generate wrap up code.
      * This method reads the <code>wrapupBlock</code> from AudioReader.c,
      * replaces macros with their values and appends the processed code block
@@ -129,7 +129,7 @@ public class AudioReader extends CCodeGeneratorHelper {
             throws IllegalActionException {
         code.append(_generateBlockCode("wrapupBlock"));
     }
-    /** 
+    /**
      * Get the files needed by the code generated for the
      * AudioReader actor.
      * @return A set of strings that are names of the files

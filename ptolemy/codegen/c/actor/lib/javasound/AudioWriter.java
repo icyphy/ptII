@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.javasound.AudioWriter.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -57,7 +57,7 @@ public class AudioWriter extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * The method reads in <code>writeSoundFile</code> from AudioWriter.c 
+     * The method reads in <code>writeSoundFile</code> from AudioWriter.c
      * and appends to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
