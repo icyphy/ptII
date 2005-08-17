@@ -44,14 +44,14 @@ proc parseTreeTest {expression} {
 	[java::new ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator]
     # We have to eval the parse tree first, though we ignore the value
     set token [$parseTreeCodeGenerator evaluateParseTree $parseTree]
-    return [$parseTreeCodeGenerator generateFireCode]
+    return [list [$token toString] [$parseTreeCodeGenerator generateFireCode]]
 }
 
 test Expression-1.1 {Simple tests of ParseTreeCodeGenerator} {
     parseTreeTest {1+3}
-} {1+3}
+} {4 1+3}
 
 test Expression-1.2 {A more complex example} {
     parseTreeTest {((3+4)+(1|2)+232)}
-} {3+4+1|2+232}
+} {242 3+4+1|2+232}
 
