@@ -612,8 +612,8 @@ public class ProcessDirector extends Director {
      */
     protected synchronized void _decreaseActiveCount() {
         if (_debugging) {
-            _debug("Thread for actor "
-                    + ((ProcessThread) Thread.currentThread()).getActor()
+            _debug("Thread "
+                    + Thread.currentThread().getName()
                     + " is deactivating.");
         }
 
