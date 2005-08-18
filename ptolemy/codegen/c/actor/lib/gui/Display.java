@@ -113,7 +113,7 @@ public class Display extends CCodeGeneratorHelper {
      * @return A set of strings that are names of the header files
      *  needed by the code generated for the Display actor.
      */
-    public Set getIncludingFiles() {
+    public Set getHeaderFiles() {
         Set files = new HashSet();
         files.add("\"stdio.h\"");
         return files;

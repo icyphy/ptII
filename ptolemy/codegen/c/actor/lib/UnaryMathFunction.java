@@ -86,7 +86,7 @@ public class UnaryMathFunction extends CCodeGeneratorHelper {
      * @return A set of strings that are names of the files
      *  needed by the code generated for the UnaryMathFunction actor.
      */
-    public Set getIncludingFiles() {
+    public Set getHeaderFiles() {
         Set files = new HashSet();
         files.add("\"math.h\"");
         return files;

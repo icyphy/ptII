@@ -112,7 +112,7 @@ public class Uniform extends CCodeGeneratorHelper {
     * @return A set of strings that are names of the files
     *  needed by the code generated for the Uniform actor.
     */
-   public Set getIncludingFiles() {
+   public Set getHeaderFiles() {
        Set files = new HashSet();
        files.add("\"time.h\"");
        files.add("\"math.h\"");

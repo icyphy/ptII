@@ -151,7 +151,7 @@ public class AudioReader extends CCodeGeneratorHelper {
     * @return A set of Strings that are names of the files
     *  needed by the code generated for the AudioReader actor.
     */
-   public Set getIncludingFiles() {
+   public Set getHeaderFiles() {
        Set files = new HashSet();
        files.add("<math.h>");
        files.add("<stdio.h>");

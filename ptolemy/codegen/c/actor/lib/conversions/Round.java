@@ -88,7 +88,7 @@ public class Round extends CCodeGeneratorHelper {
      * @return A set of strings that are names of the files
      *  needed by the code generated for the Round actor.
      */
-    public Set getIncludingFiles() {
+    public Set getHeaderFiles() {
         Set files = new HashSet();
         files.add("\"stdlib.h\"");
         files.add("\"limits.h\"");

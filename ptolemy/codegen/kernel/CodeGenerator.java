@@ -186,7 +186,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             CodeGeneratorHelper actorHelper = 
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             actorHelper.setCodeGenerator(this);
-            includingFiles.addAll(actorHelper.getIncludingFiles());
+            includingFiles.addAll(actorHelper.getHeaderFiles());
         }
 
         Iterator files = includingFiles.iterator();

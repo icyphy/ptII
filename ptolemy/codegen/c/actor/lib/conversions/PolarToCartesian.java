@@ -72,7 +72,7 @@ public class PolarToCartesian extends CCodeGeneratorHelper {
      * @return A set of strings that are names of the files
      *  needed by the code generated for the PolarToCartesian actor.
      */
-    public Set getIncludingFiles() {
+    public Set getHeaderFiles() {
         Set files = new HashSet();
         files.add("\"math.h\"");
         return files;

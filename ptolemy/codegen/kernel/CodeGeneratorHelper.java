@@ -225,7 +225,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @return A set of strings that are header files needed by the code
      *  generated from this helper class.
      */
-    public Set getIncludingFiles() {
+    public Set getHeaderFiles() {
         Set files = new HashSet();
         return files;
     }

@@ -149,7 +149,7 @@ public class LineWriter extends CCodeGeneratorHelper {
      * @return A set of strings that are names of the files
      *  needed by the code generated for the LineWriter actor.
      */
-    public Set getIncludingFiles() {
+    public Set getHeaderFiles() {
         Set files = new HashSet();
         files.add("\"stdio.h\"");
         return files;
