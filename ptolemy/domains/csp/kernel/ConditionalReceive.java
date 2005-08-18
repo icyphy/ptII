@@ -279,7 +279,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             // side also ok
             ConditionalBranchController side2 = receiver._getOtherController();
 
-            if ((side2 != null) && side2._isBranchFirst(receiver.getOtherID())) {
+            if ((side2 != null) && side2._isBranchFirst(receiver._getOtherID())) {
                 setToken(receiver.get());
                 receiver._setConditionalSend(false, null, -1);
                 controller._branchSucceeded(getID());

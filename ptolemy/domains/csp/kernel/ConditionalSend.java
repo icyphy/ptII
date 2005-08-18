@@ -335,7 +335,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             if (controller._isBranchFirst(getID())) {
                                 // Send side ok, need to check that receive side also ok
                                 ConditionalBranchController side2 = receiver._getOtherController();
-                                if ((side2 != null) && side2._isBranchFirst(receiver.getOtherID())) {
+                                if ((side2 != null) && side2._isBranchFirst(receiver._getOtherID())) {
                                     if (_debugging) {
                                         _debug("send() on channel " + _channel + ": Putting token.");
                                     }

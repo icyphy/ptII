@@ -28,14 +28,19 @@
  */
 package ptolemy.domains.csp.kernel;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.process.CompositeProcessDirector;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -43,6 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.MessageHandler;
 
 // Java imports.
 //////////////////////////////////////////////////////////////////////////
@@ -206,8 +212,19 @@ public class CSPDirector extends CompositeProcessDirector implements
             return _notDone && !_stopRequested;
         }
     }
+    
+    /** Override the base class to create receiver groups for forked
+     *  connections.
+     *  @exception IllegalActionException If the preinitialize() method of
+     *   one of the associated actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        _createReceiverGroups();
+    }
 
-    /** (non-Javadoc)
+    /** Return an array of suggested directors to be used with ModalModel.
+     *  This is the FSMDirector followed by the NonStrictFSMDirector.
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
@@ -333,6 +350,77 @@ public class CSPDirector extends CompositeProcessDirector implements
         super._increaseActiveCount();
     }
 
+    /** Return a string describing the status of each receiver.
+     *  @return A string describing the status of each receiver.
+     */
+    private String _receiverStatus() {
+        StringBuffer result = new StringBuffer();
+        CompositeActor container = (CompositeActor)getContainer();
+        
+        // Start with the input ports of the composite, which
+        // may have forked connections on the inside.
+        Iterator inputPorts = container.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort)(inputPorts.next());
+            result.append("Send inside from " + inputPort.getFullName() + "\n");
+            Receiver[][] destinations = inputPort.deepGetReceivers();
+            for (int channel = 0; channel < destinations.length; channel++) {
+                if (destinations[channel] != null) {
+                    result.append("   on channel " + channel + ":\n");
+                    for (int copy = 0; copy < destinations[channel].length; copy++) {
+                        result.append("-- to " + _receiverStatus(destinations[channel][copy]) + "\n");
+                    }
+                }
+            }
+        }
+        
+        // Next do the output ports of all contained actors.
+        Iterator actors = container.deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            Iterator outputPorts = actor.outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                IOPort outputPort = (IOPort)(outputPorts.next());
+                result.append("Send from " + outputPort.getFullName() + "\n");
+                Receiver[][] destinations = outputPort.getRemoteReceivers();
+                for (int channel = 0; channel < destinations.length; channel++) {
+                    if (destinations[channel] != null) {
+                        result.append("   on channel " + channel + ":\n");
+                        for (int copy = 0; copy < destinations[channel].length; copy++) {
+                            result.append("-- to " + _receiverStatus(destinations[channel][copy]) + "\n");
+                        }
+                    }
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    /** Return a string describing the status of the specified receiver.
+     *  @param receiver The receiver to describe.
+     *  @return A string describing the status of the specified receiver.
+     */
+    protected static String _receiverStatus(Receiver receiver) {
+        StringBuffer result = new StringBuffer();
+        result.append(receiver.getContainer().getFullName());
+        if (receiver instanceof CSPReceiver) {
+            CSPReceiver castReceiver = (CSPReceiver)receiver;
+            if (castReceiver._isGetWaiting()) {
+                result.append(" get() waiting");
+            }
+            if (castReceiver._isPutWaiting()) {
+                result.append(" put() waiting");
+            }
+            if (castReceiver._isConditionalReceiveWaiting()) {
+                result.append(" conditional receive waiting");
+            }
+            if (castReceiver._isConditionalSendWaiting()) {
+                result.append(" conditional send waiting");
+            }
+        }
+        return result.toString();
+    }
+
     /** Respond to a deadlock. This is where nearly all the control for the
      *  model at this level in the hierarchy is located.
      *  <p>
@@ -383,12 +471,19 @@ public class CSPDirector extends CompositeProcessDirector implements
                     done = true;
                 }
             }
-
-            // } else if ( _actorsBlocked == _getActiveActorsCount() ) {
         } else if (_getBlockedActorsCount() == _getActiveActorsCount()) {
-            // Real deadlock.
-            System.out.println("REAL DEADLOCK. Number of blocked actors and forked put threads: "
-                    + _getActiveActorsCount());
+            // Report deadlock.
+            Parameter suppress = (Parameter)getContainer().getAttribute(
+                    "SuppressDeadlockReporting", Parameter.class);
+            if (suppress == null
+                    || !(suppress.getToken() instanceof BooleanToken)
+                    || !((BooleanToken)suppress.getToken()).booleanValue()) {
+                String message = "Model ended with a deadlock (this may be normal for this model).\n"
+                        + "A parameter with name SuppressDeadlockReporting and value true will suppress this message.\n"
+                        + "Status of receivers:\n"
+                        + _receiverStatus();
+                MessageHandler.message(message);
+            }
             return false;
         }
 
@@ -398,8 +493,63 @@ public class CSPDirector extends CompositeProcessDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /** Create receiver groups for any forked connections.
+     */
+    private void _createReceiverGroups() {
+        CompositeActor container = (CompositeActor)getContainer();
+        
+        // Start with the input ports of the composite, which
+        // may have forked connections on the inside.
+        Iterator inputPorts = container.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort)(inputPorts.next());
+            Receiver[][] destinations = inputPort.deepGetReceivers();
+            for (int channel = 0; channel < destinations.length; channel++) {
+                if (destinations[channel] != null) {
+                    if (destinations[channel].length > 1) {
+                        CSPReceiver._groupReceivers(destinations[channel]);
+                    } else if (destinations[channel].length == 1) {
+                        ((CSPReceiver)destinations[channel][0])._groupCancel();
+                    }
+                }
+            }
+        }
+        
+        // Next do the output ports of all contained actors.
+        Iterator actors = container.deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            Iterator outputPorts = actor.outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                IOPort outputPort = (IOPort)(outputPorts.next());
+                Receiver[][] destinations = outputPort.getRemoteReceivers();
+                for (int channel = 0; channel < destinations.length; channel++) {
+                    if (destinations[channel] != null) {
+                        if (destinations[channel].length > 1) {
+                            CSPReceiver._groupReceivers(destinations[channel]);
+                        } else if (destinations[channel].length == 1) {
+                            ((CSPReceiver)destinations[channel][0])._groupCancel();
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-    /*  Used to keep track of when and for how long processes are delayed.
+    /** Get the earliest time which an actor has been delayed to. This
+     *  should always be the top link on the list.
+     */
+    private Time _getNextTime() {
+        if (_delayedActorList.size() > 0) {
+            return ((DelayListLink) _delayedActorList.get(0))._resumeTime;
+        } else {
+            throw new InvalidStateException("CSPDirector.getNextTime(): "
+                    + " called in error.");
+        }
+    }
+    
+    /** Used to keep track of when and for how long processes are delayed.
      *  @param actor The delayed actor.
      *  @param actorTime The time at which to resume the actor.
      */
@@ -423,18 +573,6 @@ public class CSPDirector extends CompositeProcessDirector implements
 
         if (!done) {
             _delayedActorList.add(newLink);
-        }
-    }
-
-    /* Get the earliest time which an actor has been delayed to. This
-     * should always be the top link on the list.
-     */
-    private Time _getNextTime() {
-        if (_delayedActorList.size() > 0) {
-            return ((DelayListLink) _delayedActorList.get(0))._resumeTime;
-        } else {
-            throw new InvalidStateException("CSPDirector.getNextTime(): "
-                    + " called in error.");
         }
     }
 
