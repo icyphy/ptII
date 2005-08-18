@@ -126,7 +126,9 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     *  error in processing the specified code block(s).
     */
    public String generateSharedCode() throws IllegalActionException {
-       return _generateBlockCode("sharedBlock");
+        // We don't need to process the code block here because the
+        // sharedCode do not contain any macros.
+       return _generateBlockCode("sharedBlock", false);
    }
 
    /** 
@@ -151,8 +153,8 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     */
    public Set getIncludingFiles() {
        Set files = new HashSet();
-       files.add("\"stdio.h\"");
-       files.add("\"math.h\"");
+       files.add("<stdio.h>");
+       files.add("<math.h>");
        files.add("\"SDL.h\"");
        files.add("\"SDL_audio.h\"");
        files.add("\"SDL_thread.h\"");

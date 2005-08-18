@@ -1,27 +1,13 @@
-/*** preinitBlock ***/
-    double $actorSymbol(seed);
-    int $actorSymbol(haveNextNextGaussian) = 0;
-    double $actorSymbol(nextNextGaussian);
-    double $actorSymbol(v1), $actorSymbol(v2), $actorSymbol(s);
-    double $actorSymbol(multiplier);
-
-    // FIXME: need to support a method for actors to put their private functions
-    //int $actorSymbol(next)(int $actorSymbol(bits)) {
-    //    $actorSymbol(seed) = (((long long) $actorSymbol(seed) * 0x5DEECE66DLL) + 0xBLL) & ((1LL << 48) - 1);
-    //    return (int)((signed long long) $actorSymbol(seed) >> (48 - $actorSymbol(bits)));
-    //}
-     
-    //double $actorSymbol(nextDouble)() {
-    //    return (((long long)$actorSymbol(next)(26) << 27) + $actorSymbol(next)(27)) / (double)(1LL << 53);
-    //}
-/**/
-
-/*** setSeedBlock ***/
-    //this.seed = (seed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
-    $actorSymbol(seed) = ((long long) $val(seed) ^ 0x5DEECE66DLL)  & ((1LL << 48) - 1);
-/**/
+// The algorithm of generating the random number with Gaussian distribution
+// is based on source code from Java.util.Random. Given the same seed, it
+// generates the same list of random numbers as the java.util.Random object.
 
 /*** sharedBlock ***/
+    // Shared block contains code that is shared by multiple instances
+    // of the helper from the same type, so it should not contain any
+    // $actorSymbol(), $val(), $ref(), or any actor specific marcos.
+    // Any method or type declarations should be prefixed with the actor
+    // type name followed by an underscore (e.g. ActorName_method)./**/
     int Gaussian_next(int bits, double* seed) {
         *seed = (((long long) *seed * 0x5DEECE66DLL) + 0xBLL) & ((1LL << 48) - 1);
         return (int)((signed long long) *seed >> (48 - bits));
@@ -30,6 +16,22 @@
     double Gaussian_nextDouble(double* seed) {
         return (((long long)Gaussian_next(26, seed) << 27) + Gaussian_next(27, seed)) / (double)(1LL << 53);
     }
+/**/
+
+/*** preinitBlock ***/
+    double $actorSymbol(seed);
+    int $actorSymbol(haveNextNextGaussian) = 0;  // false
+    double $actorSymbol(nextNextGaussian);
+
+    // intermediate values
+    double $actorSymbol(v1), $actorSymbol(v2), $actorSymbol(s);   
+    double $actorSymbol(multiplier);
+/**/
+
+/*** setSeedBlock ***/
+    /* see documentation from http://java.sun.com/j2se/1.4.2/docs/api/java/util/Random.html#setSeed(long) */
+    //this.seed = (seed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
+    $actorSymbol(seed) = ((long long) $val(seed) ^ 0x5DEECE66DLL)  & ((1LL << 48) - 1);
 /**/
 
 /*** fireBlock ***/

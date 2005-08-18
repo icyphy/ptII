@@ -41,8 +41,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Yellow (mankit)
+ * @Pt.AcceptedRating Yellow (mankit)
  */
 public class Gaussian extends CCodeGeneratorHelper {
 
@@ -56,9 +56,9 @@ public class Gaussian extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * The method reads in <code>fireBlock</code> from Gaussian.c,
-     * replaces macros with their values and appends the processed code
-     * block to the given code buffer.
+     * Read the <code>fireBlock</code> from Gaussian.c, replace macros
+     * with their values and append the processed code block to the given
+     * code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
@@ -70,11 +70,14 @@ public class Gaussian extends CCodeGeneratorHelper {
 
     /**
      * Generate initialize code.
-     * This method reads the <code>setSeedBlock</code> from Gaussian.c,
-     * replaces macros with their values and returns the processed code string.
+     * Parse the seed parameter of the actor. If the seed equals zero, then 
+     * append code that sets the seed variable to the sum of the current time
+     * and the actor hashCode (This is what the original ptolemy actor does).
+     * Otherwise, read the <code>setSeedBlock</code> from Gaussian.c,
+     * replace macros with their values and return the processed code string.
+     * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
-     * @return The processed code string.
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
@@ -103,11 +106,11 @@ public class Gaussian extends CCodeGeneratorHelper {
 
     /**
      * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from Gaussian.c,
-     * replaces macros with their values and returns the processed code string.
+     * Read the <code>preinitBlock</code> from Gaussian.c,
+     * replace macros with their values and return the processed code string.
+     * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
-     * @return The processed code string.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
@@ -116,8 +119,8 @@ public class Gaussian extends CCodeGeneratorHelper {
 
     /**
      * Generate shared code.
-     * The method reads in <code>sharedBlock</code> from Gaussian.c,
-     * replaces macros with their values and appends the processed code
+     * Reads the <code>sharedBlock</code> from Gaussian.c,
+     * replace macros with their values and append the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
@@ -125,20 +128,20 @@ public class Gaussian extends CCodeGeneratorHelper {
      */
     public String generateSharedCode() throws IllegalActionException {
         // We don't need to process the code block here because the
-        // sharedCode should not contain any macros.
+        // sharedCode do not contain any macros.
         return _generateBlockCode("sharedBlock", false);
     }
 
     /**
      * Get the files needed by the code generated for the
      * Gaussian actor.
-     * @return A set of strings that are names of the files
+     * @return A set of Strings that are names of the files
      *  needed by the code generated for the Gaussian actor.
      */
     public Set getIncludingFiles() {
         Set files = new HashSet();
-        files.add("\"time.h\"");
-        files.add("\"math.h\"");
+        files.add("<time.h>");
+        files.add("<math.h>");
         return files;
     }
 }

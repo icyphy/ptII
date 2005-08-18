@@ -21,8 +21,6 @@
 
     // FIXME: what should we set the audio buffer size in samples equals to??
     #define AudioPlayer_SAMPLE_BUFFER_SIZE 16384
-
-    atexit(SDL_Quit);
     
     double AudioPlayer_clip (double num) {
         return num > 1.0 ? 1.0 : num < -1.0 ? -1.0 : num;
@@ -195,6 +193,12 @@
 
 
 /*** initBlock ***/
+    /* Load the SDL library */
+    if ( SDL_Init(SDL_INIT_AUDIO | SDL_INIT_EVENTTHREAD) < 0 ) {
+        fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError());
+        exit(1);
+    }
+
     if (($actorSymbol(sem) = SDL_CreateSemaphore(AudioPlayer_BUFFER_SIZE)) == NULL) {
         fprintf(stderr, "Error creating semaphor: %s\n",SDL_GetError());
         exit(1);
@@ -227,11 +231,11 @@
     // FIXME: we should not put the same sample into different channels
     for ( $actorSymbol(j)=0; $actorSymbol(j)<$val(channels); ++$actorSymbol(j) ) {
         // Convert sample (Analog to Digital)
-        // Input range [-1.0, 1.0] --> output range [-255, 255]
+        // Input range [-1.0, 1.0] --> output range [0, 255]
         
         //Use the following line if RINT() is not defined
-        //$actorSymbol(convertedSample) = floor((AudioPlayer_clip($ref(input)) * 128) + 127); //128 = 2^7
-        $actorSymbol(convertedSample) = rint((AudioPlayer_clip($ref(input)) * 128) + 127); //128 = 2^7
+        //$actorSymbol(convertedSample) = floor((AudioPlayer_clip($ref(input)) * 127) + 128); //128 = 2^7
+        $actorSymbol(convertedSample) = rint((AudioPlayer_clip($ref(input)) * 127) + 128); //128 = 2^7
         $actorSymbol(putSample) ($actorSymbol(convertedSample), $actorSymbol(j));
     }
 /**/
@@ -242,17 +246,17 @@
     // FIXME: we should not put the same sample into different channels
     for ( $actorSymbol(j)=0; $actorSymbol(j)<$val(channels); ++$actorSymbol(j) ) {
         // Convert sample (Analog to Digital)
-        // Input range [-1.0, 1.0] --> output range [-65535, 65535]
+        // Input range [-1.0, 1.0] --> output range [0, 65535]
 
         //Use the following line if RINT() is not defined
-        //$actorSymbol(convertedSample) = floor((AudioPlayer_clip($ref(input)) * 32768) + 32767); //32768 = 2^15
-        $actorSymbol(convertedSample) = rint((AudioPlayer_clip($ref(input)) * 32768) + 32767); //32768 = 2^15
+        //$actorSymbol(convertedSample) = floor((AudioPlayer_clip($ref(input)) * 32767) + 32768); //32768 = 2^15
+        $actorSymbol(convertedSample) = rint((AudioPlayer_clip($ref(input)) * 32767) + 32768); //32768 = 2^15
         $actorSymbol(putSample) ($actorSymbol(convertedSample), $actorSymbol(j));
     }
 /**/
 
 /*** wrapupBlock ***/
-    SDL_PauseAudio(1);
+    SDL_PauseAudio(1);      /* Stop the callback */
     SDL_CloseAudio();
 
     if ($actorSymbol(sem) != NULL) {
@@ -260,8 +264,8 @@
         $actorSymbol(sem) = NULL;
     }
     for ( $actorSymbol(j)=0; $actorSymbol(j)<$val(channels); ++$actorSymbol(j) ) {
-        SDL_FreeWAV($actorSymbol(sounds)[$actorSymbol(j)].data);
         free($actorSymbol(sounds)[$actorSymbol(j)].data);
     }
+    SDL_Quit();
 /**/
 
