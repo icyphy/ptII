@@ -60,7 +60,7 @@ public class AudioReader extends CCodeGeneratorHelper {
 
    /**
     * Generate fire code.
-    * Read in <code>fireBlock</code> from AudioReader.c and append
+    * Read the <code>fireBlock</code> from AudioReader.c and append
     * into the given code buffer.
     * @param code the given buffer to append the code to.
     * @exception IllegalActionException If the code stream encounters an

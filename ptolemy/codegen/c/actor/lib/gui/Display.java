@@ -80,7 +80,7 @@ public class Display extends CCodeGeneratorHelper {
             if (port.getType().toString().equals("int")) {
                 _codeStream.appendCodeBlock("printInt", args);
             }
-            if (port.getType().toString().equals("double")) {
+            else if (port.getType().toString().equals("double")) {
                 _codeStream.appendCodeBlock("printDouble", args);
             }
             else if (port.getType().toString().equals("string")) {
