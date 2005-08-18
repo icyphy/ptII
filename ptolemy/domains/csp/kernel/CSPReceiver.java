@@ -141,12 +141,18 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         Object lock = _getLock();
         synchronized(lock) {
             Token result = null;
-            boolean blocked = false;
-            
             try {
                 if (_putWaiting) {
                     // This will unblock the put() thread.
                     _putWaiting = false;
+                    // Notify the director that the put() is no longer blocked.
+                    // NOTE: This should be done here rather than
+                    // in the put() method because since the put()
+                    // method is running in another thread, it could
+                    // take arbitrarily long for it to resume and
+                    // notify the director. This could result in
+                    // spurious deadlock detection.
+                    _putUnblocked();
 
                     result = _token;
                     // The put() will set the following to true.
@@ -174,36 +180,15 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     while (_conditionalSendWaiting) {
                         _checkFlagsAndWait();
                     }
-
-                    // This is needed for the case when a conditionalSend
-                    // reaches the receiver before a get. When the
-                    // conditionalSend continues, it resets the
-                    // _isConditionalSendWaiting flag and does a put()
-                    // which sets the getWaiting flag to false and the
-                    // rendezvous proceeds normally.
-                    while (_isConditionalSendWaiting()) {
-                        _checkFlagsAndWait();
-                    }
-                    
                     _checkFlags();
-                    _markBlocked(branch, false);
-                    
-                    blocked = true;
+                    // FIXME: Why isn't this above the while() above?
+                    _getBlocked(branch);
                     
                     while (_getWaiting) {
                         _checkFlagsAndWait();
                     }
                     
                     _checkFlags();
-                    
-                    // FIXME: This is a race condition that could
-                    // lead to a deadlock false alarm. This should
-                    // be done as soon as _getWaiting is set to
-                    // false, which is done in put() by the other
-                    // thread.  Why not just do markUnblocked() there?
-                    _markUnblocked(false);
-                    
-                    blocked = false;
                     result = _token;
                     _rendezvousComplete = true;
                     lock.notifyAll();
@@ -218,10 +203,11 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 throw new TerminateProcessException(
                 "CSPReceiver.get() interrupted.");
             } finally {
-                if (blocked) {
+                if (_getWaiting) {
+                    // If the _getWaiting flag is still true, then this
                     // process was blocked, woken up and terminated.
-                    // register process as being unblocked
-                    _markUnblocked(false);
+                    // Notify the director that this is unblocked.
+                    _getUnblocked();
                 }
             }
             
@@ -426,10 +412,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     public void put(Token token, Branch branch) {
         Object lock = _getLock();
         synchronized(lock) {
-            // Local flag keeping track of whether this thread is
-            // marked as blocked.
-            boolean blocked = false;
-
             try {
                 // Perform the transfer.
                 _token = token;
@@ -439,6 +421,15 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     // Reset the get waiting flag in this thread
                     // rather than the other one.
                     _getWaiting = false;
+                    // Notify the director that the get() is no longer blocked.
+                    // NOTE: This should be done here rather than
+                    // in the get() method because since the get()
+                    // method is running in another thread, it could
+                    // take arbitrarily long for it to resume and
+                    // notify the director. This could result in
+                    // spurious deadlock detection.
+                    _getUnblocked();
+
                     // When the get() completes, it will reset this to true.
                     _rendezvousComplete = false;
 
@@ -468,24 +459,14 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     }
 
                     _checkFlags();
-                    _markBlocked(branch, true);
-
-                    blocked = true;
+                    // FIXME: Why isn't this before the while above?
+                    _putBlocked(branch);
 
                     // Wait for the corresponding get() to occur.
                     while (_putWaiting) {
                         _checkFlagsAndWait();
                     }
-
                     _checkFlags();
-
-                    // FIXME: This is a race condition that could
-                    // lead to a deadlock false alarm. This should
-                    // be done as soon as setGetWaiting(false) is
-                    // called.
-                    _markUnblocked(true);
-
-                    blocked = false;
                     _rendezvousComplete = true;
                     lock.notifyAll();
                     
@@ -500,10 +481,11 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 throw new TerminateProcessException(
                         "CSPReceiver.put() interrupted.");
             } finally {
-                if (blocked) {
+                if (_putWaiting) {
+                    // If the put is still marked as waiting, then
                     // process was blocked, awakened and terminated.
-                    // register process as being unblocked
-                    _markUnblocked(true);
+                    // Notify the director that this actor is not blocked.
+                    _putUnblocked();
                 }
             }            
         }
@@ -578,7 +560,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 String name = "Send to " + receiver.getContainer().getFullName();
                 Thread putThread = new Thread(name) {
                     public void run() {
-                        // FIXME:
                         // System.out.println("**** starting thread on: " + CSPDirector._receiverStatus(receiver));
                         IOPort port = receiver.getContainer();
                         try {
@@ -589,7 +570,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                             // Ignore this one, as this is the normal
                             // to stop this thread.
                         }
-                        // FIXME:
                         // System.out.println("**** exiting thread on: " + CSPDirector._receiverStatus(receiver));
                     }
                 };
@@ -598,7 +578,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             }
         }
         IOPort port = getContainer();
-        // FIXME:
         // System.out.println("**** performing put() on: " + CSPDirector._receiverStatus(this));
         
         receivers[0].put(port.convert(token));
@@ -615,14 +594,12 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             while (threadsIterator.hasNext()) {
                 Thread thread = (Thread) threadsIterator.next();
                 try {
-                    // FIXME: Should this have a timeout?
                     thread.join();
                 } catch (InterruptedException ex) {
                     // Ignore and continue to the next thread.
                 }
             }
         }
-        // FIXME:
         // System.out.println("**** put() returned on: " + CSPDirector._receiverStatus(this));
         if (_exception != null) {
             throw _exception;
@@ -946,20 +923,48 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         }
     }
     
-    /** If this receiver is involved in a branch, then mark the receiver
-     *  blocked; otherwise, if this receiver is in a receiver group
-     *  and this method is being called from put() and the actor is not already marked
-     *  blocked, then mark the actor blocked; otherwise, mark the
-     *  actor blocked.
+    /** If this receiver is involved in a branch, then mark the receiver blocked;
+     *  otherwise, mark the actor blocked.
      *  @param branch The branch.
-     *  @param inPut True if called from put().
      */
-    private void _markBlocked(Branch branch, boolean inPut) {
+    private void _getBlocked(Branch branch) {
         synchronized(_getLock()) {
             if (branch != null) {
                 branch.registerReceiverBlocked(this);
             } else {
-                if (_group != null && inPut) {
+                _getDirector()._actorBlocked(this);
+            }
+            _otherBranch = branch;
+        }
+    }
+
+    /** If this receiver is involved in a branch, then mark the receiver unblocked;
+     *  otherwise, mark the actor unblocked.
+     */
+    private void _getUnblocked() {
+        Object lock = _getLock();
+        synchronized(lock) {
+            if (_otherBranch != null) {
+                _otherBranch.registerReceiverUnBlocked(this);
+            } else {
+                _getDirector()._actorUnBlocked(this);
+            }
+            lock.notifyAll();
+        }
+    }
+
+    /** If this receiver is involved in a branch, then mark the receiver blocked;
+     *  otherwise, if this receiver is in a receiver group
+     *  and the actor is not already marked  blocked, then mark the actor blocked;
+     *  otherwise, mark the actor blocked.
+     *  @param branch The branch.
+     */
+    private void _putBlocked(Branch branch) {
+        synchronized(_getLock()) {
+            if (branch != null) {
+                branch.registerReceiverBlocked(this);
+            } else {
+                if (_group != null) {
                     if (((CSPReceiver)_group[0])._groupBlocked == 0) {
                         _getDirector()._actorBlocked(this);                        
                     }
@@ -972,20 +977,18 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         }
     }
 
-    /** If this receiver is involved in a branch, then mark the receiver
-     *  unblocked; otherwise if this receiver is in a receiver group,
-     *  and this is called from put(),
-     *  and the actor is not already marked blocked, then marked the
-     *  actor blocked; otherwise, mark the actor unblocked.
-     *  @param inPut True if called from put().
+    /** If this receiver is involved in a branch, then mark the receiver unblocked;
+     *  otherwise if this receiver is in a receiver group, and the actor is not
+     *  already marked blocked, then marked the actor blocked;
+     *  otherwise, mark the actor unblocked.
      */
-    private void _markUnblocked(boolean inPut) {
+    private void _putUnblocked() {
         Object lock = _getLock();
         synchronized(lock) {
             if (_otherBranch != null) {
                 _otherBranch.registerReceiverUnBlocked(this);
             } else {
-                if (_group != null && inPut) {
+                if (_group != null) {
                     ((CSPReceiver)_group[0])._groupBlocked--;
                     if (((CSPReceiver)_group[0])._groupBlocked == 0) {
                         _getDirector()._actorUnBlocked(this);                        
