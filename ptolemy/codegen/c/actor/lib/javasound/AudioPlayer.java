@@ -66,6 +66,7 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     */
    public void generateFireCode(StringBuffer code)
            throws IllegalActionException {
+   	   super.generateFireCode(code);
        ptolemy.actor.lib.javasound.AudioPlayer actor = 
            (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
 
@@ -128,6 +129,7 @@ public class AudioPlayer extends CCodeGeneratorHelper {
    public String generateSharedCode() throws IllegalActionException {
         // We don't need to process the code block here because the
         // sharedCode do not contain any macros.
+       super.generateSharedCode();
        return _generateBlockCode("sharedBlock", false);
    }
 
@@ -142,6 +144,7 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     */
    public void generateWrapupCode(StringBuffer code)
            throws IllegalActionException {
+   	   super.generateWrapupCode(code);
        code.append(_generateBlockCode("wrapupBlock")); 
    }
 
@@ -152,6 +155,7 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     *  needed by the code generated for the AudioPlayer actor.
     */
    public Set getHeaderFiles() {
+   	   super.getHeaderFiles();
        Set files = new HashSet();
        files.add("<stdio.h>");
        files.add("<math.h>");

@@ -68,6 +68,7 @@ public class AudioReader extends CCodeGeneratorHelper {
     */
    public void generateFireCode(StringBuffer code)
            throws IllegalActionException {
+   	   super.generateFireCode(code);
        code.append(_generateBlockCode("fireBlock"));
    }
    
@@ -127,6 +128,7 @@ public class AudioReader extends CCodeGeneratorHelper {
     *  error in processing the specified code block(s).
     */
    public String generateSharedCode() throws IllegalActionException {
+   	   super.generateSharedCode();
        // We don't need to process the code block here because the
        // sharedCode do not contain any macros.
        return _generateBlockCode("sharedBlock", false);
@@ -143,6 +145,7 @@ public class AudioReader extends CCodeGeneratorHelper {
     */
    public void generateWrapupCode(StringBuffer code)
            throws IllegalActionException {
+   	   super.generateWrapupCode(code);
        code.append(_generateBlockCode("wrapupBlock"));
    }
    /** 
@@ -152,6 +155,7 @@ public class AudioReader extends CCodeGeneratorHelper {
     *  needed by the code generated for the AudioReader actor.
     */
    public Set getHeaderFiles() {
+       super.getHeaderFiles();
        Set files = new HashSet();
        files.add("<math.h>");
        files.add("<stdio.h>");

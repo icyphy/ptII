@@ -65,6 +65,7 @@ public class Gaussian extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
+        super.generateFireCode(code);
         code.append(_generateBlockCode("fireBlock"));
     }
 
@@ -129,6 +130,7 @@ public class Gaussian extends CCodeGeneratorHelper {
     public String generateSharedCode() throws IllegalActionException {
         // We don't need to process the code block here because the
         // sharedCode do not contain any macros.
+        super.generateSharedCode();
         return _generateBlockCode("sharedBlock", false);
     }
 
@@ -139,6 +141,7 @@ public class Gaussian extends CCodeGeneratorHelper {
      *  needed by the code generated for the Gaussian actor.
      */
     public Set getHeaderFiles() {
+        super.getHeaderFiles();
         Set files = new HashSet();
         files.add("<time.h>");
         files.add("<math.h>");

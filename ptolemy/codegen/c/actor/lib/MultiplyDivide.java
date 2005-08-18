@@ -39,8 +39,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit (Jackie) Leung, Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (eal)
+ @Pt.ProposedRating Yellow (mankit)
+ @Pt.AcceptedRating Yellow (mankit)
  */
 public class MultiplyDivide extends CCodeGeneratorHelper {
     /**
@@ -62,6 +62,7 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
+        super.generateFireCode(code);
         ptolemy.actor.lib.MultiplyDivide actor =
             (ptolemy.actor.lib.MultiplyDivide) getComponent();
         StringBuffer buffer = new StringBuffer();
