@@ -1,0 +1,43 @@
+#!/bin/sh
+# Script to copy files that need to be checked into cvs
+# files in collections and some of the gifs etc are not in sccs
+
+srcdir=/users/cxh/tmp/ptII
+dstdir=/users/cxh/tmp/ptII.tst/ptII
+
+if [ ! -f $dstdir/collections/UpdatableSetImpl.java ]; then
+	echo "Updating collections directory"
+	cd $srcdir/collections
+	collectionfiles=`ls *.java | grep -v UpdatableSeqImpl.java | grep -v LLCell.java | grep -v UpdatableImpl.java | grep -v Cell.java | grep -v LinkedList.java`
+
+	cp $collectionfiles $dstdir/collections
+	cd $dstdir/collections
+	cvs add $collectionfiles
+fi
+
+binaryfiles="\
+	./doc/img/Postscript.gif \
+	./doc/img/PDF.gif \
+	./doc/img/HTML.gif \
+	./doc/img/ptIIexample.gif \
+	./doc/img/ptIIplanet.gif \
+	./ptolemy/plot/demo/data/fourier.gif \
+        ./ptolemy/plot/demo/data/bin.plt \
+        ./ptolemy/plot/demo/data/butterfly.plt \
+        ./ptolemy/plot/demo/data/integrator1.plt \
+        ./ptolemy/plot/demo/data/integrator2.plt \
+	"
+
+for binaryfile in $binaryfiles
+do
+	if [ ! -f $dstdir/$binaryfile ]; then
+		echo "Copying $binaryfile"
+		cd $dstdir/`dirname $binaryfile`
+		rm -f `basename $binaryfile`
+		cvs delete `basename $binaryfile`
+		cp $srcdir/$binaryfile $dstdir/$binaryfile
+		cvs add -kb `basename $binaryfile`
+	fi
+done
+
+ 

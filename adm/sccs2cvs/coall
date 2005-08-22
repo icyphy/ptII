@@ -1,0 +1,11 @@
+#! /bin/sh
+# Check out all the files from RCS in a tree
+dirs=`find . -xdev -type d | egrep -v "SCCS|adm|RCS|CVS|codeDoc"`
+homedir=`pwd`
+for dir in $dirs
+do
+	echo $dir
+	cd $dir
+	co RCS/*
+	cd $homedir
+done

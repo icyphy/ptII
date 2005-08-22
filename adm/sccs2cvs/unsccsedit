@@ -1,0 +1,18 @@
+#!/bin/sh
+# Hack to unedit sccs files for testing conversion to CVS
+
+homedir=`pwd`
+files=`find . -name "p.*"`
+for file in $files
+do
+    cd $homedir
+    cd `dirname $file`
+    basefile=`basename $file`
+    echo $basefile
+    awk '{print $1, $2, "cxh", $4, $5}' $basefile > /tmp/unedit
+    diff $basefile /tmp/unedit 
+    cp /tmp/unedit $basefile 
+    cd ..
+    sccs unedit `sccs tell`
+    sccs tell
+done
