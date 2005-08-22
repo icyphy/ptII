@@ -444,6 +444,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @param receivers The receivers whose data transfer is blocked.
      */
     protected synchronized void _actorBlocked(LinkedList receivers) {
+        // FIXME: The following does not appear to ever occur, and
+        // seems very strange anyway... ???  EAL 8/05.
         if (receivers == _blockedReceivers) {
             return;
         }
