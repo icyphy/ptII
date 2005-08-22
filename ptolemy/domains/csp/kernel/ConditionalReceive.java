@@ -69,7 +69,7 @@ import ptolemy.kernel.util.Nameable;
  roughly three parts to the algorithm, each of which is relevant
  to the different rendezvous scenarios.
  <br>
- <I>Case 1:</I> Realized by _arriveAfterPut(). There is a put already waiting
+ <I>Case 1:</I> There is a put already waiting
  at the rendezvous point. In this case
  the branch attempts to register itself, with the controller, as the first
  branch ready to rendezvous. If it succeeds, it performs the rendezvous,
@@ -79,7 +79,7 @@ import ptolemy.kernel.util.Nameable;
  that a put cannot "go away" so it remains in an inner-loop trying to
  rendezvous or failing.
  <br>
- <I>Case 2:</I> Realized by _arriveAfterConditionalSend(). There is a conditional send
+ <I>Case 2:</I> There is a conditional send
  waiting. In this case it tries to register both branches with their
  controllers as the first to try. If it
  succeeds it performs the transfer, notifies the controller and returns. It
@@ -91,7 +91,7 @@ import ptolemy.kernel.util.Nameable;
  the first branch to try, it again starts trying to rendezvous from the
  beginning.
  <br>
- <I>Case 3:</I> Realized by _arriveFirst(). If there is neither a put or a
+ <I>Case 3:</I> If there is neither a put or a
  conditional send waiting, it sets a
  flag in the receiver that a conditional receive is trying to rendezvous. It
  then waits until a put is executed on the receiver, or until another branch
@@ -182,20 +182,21 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  takes place in the CSP domain.
      */
     public void run() {
-        CSPReceiver receiver = getReceiver();
+        CSPReceiver receiver = (CSPReceiver)getReceivers()[0];
         ConditionalBranchController controller = getController();
 
         try {
-            // FIXME: Synchronize on the first receiver in the group.
-            synchronized (receiver) {
+            // Note that the lock has to be in the first receiver
+            // in a group, if this receiver is part of a group.
+            CSPReceiver masterReceiver = (CSPReceiver)receiver._getLock();
+            synchronized (masterReceiver) {
                 String identifier = "";
                 if (_debugging) {
-                    identifier = "get() on " + _port.getFullName() + " on channel " + _channel;
+                    identifier = "ConditionalReceive: get() on " + _port.getFullName() + " on channel " + _channel;
                     _debug(identifier + ": Trying conditional receive.");
                 }
 
-                if (receiver._isConditionalReceiveWaiting()
-                        || receiver._isGetWaiting()) {
+                if (receiver._isConditionalReceiveWaiting() || receiver._isGetWaiting()) {
                     if (_debugging) {
                         _debug(identifier + ": A receive or get is already waiting!");
                     }
@@ -208,169 +209,86 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             + " has a get or a ConditionalReceive waiting.");
                 }
 
-                // MAIN LOOP
+                // Loop until either the rendezvous succeeds or the branch fails.
                 while (true) {
                     if (!isAlive()) {
                         if (_debugging) {
                             _debug(identifier + ": No longer alive");
                         }
+                        receiver._setConditionalReceive(false, null, -1);
                         controller._branchFailed(getID());
+                        masterReceiver.notifyAll();
                         return;
                     } else if (receiver._isPutWaiting()) {
                         if (_debugging) {
                             _debug(identifier + ": Put is waiting.");
                         }
-                        _arriveAfterPut(receiver, controller);
-                        return;
+                        if (controller._isBranchFirst(getID())) {
+                            // I am the branch that succeeds, so convert the conditional receive
+                            // to a get.
+                            // Have to reset this flag _before_ the get().
+                            receiver._setConditionalReceive(false, null, -1);
+                            _setToken(receiver.get());
+                            controller._branchSucceeded(getID());
+                            
+                            // Rendezvous complete.
+                            break; // exit while(true).
+                        }
                     } else if (receiver._isConditionalSendWaiting()) {
                         if (_debugging) {
                             _debug(identifier + ": Conditional send is waiting!");
                         }
-                        if (!_arriveAfterConditionalSend(receiver, controller)) {
-                            if (_debugging) {
-                                _debug(identifier + ": Waiting conditional send is the chosen one.");
+                        if (controller._isBranchFirst(getID())) {
+                            // receive side ok, need to check that send
+                            // side also ok
+                            ConditionalBranchController side2 = receiver._getOtherController();
+
+                            if ((side2 != null) && side2._isBranchFirst(receiver._getOtherID())) {
+                                // Convert the conditional receive to a get().
+                                receiver._setConditionalReceive(false, null, -1);
+                                _setToken(receiver.get());
+                                // Reset the conditional send flag on the other side.
+                                receiver._setConditionalSend(false, null, -1);
+                                controller._branchSucceeded(getID());
+                                return;
+                            } else {
+                                controller._releaseFirst(getID());
+                                masterReceiver.notifyAll();
                             }
-                            return;
-                        } else {
-                            if (_debugging) {
-                                _debug(identifier + ": Waiting conditional send is not the chosen one.");
-                            }                            
                         }
-                    } else {
-                        if (_debugging) {
-                            _debug(identifier + ": First to arrive.");
-                        }
-                        _arriveFirst(receiver, controller);
-                        return;
                     }
-                }
+                    // If we get here, then the receiver has neither a put()
+                    // nor a conditional send waiting, or the conditional
+                    // send is not first, so we mark the receiver
+                    // as having a conditional receive waiting and then wait.
+                    receiver._setConditionalReceive(true, controller, getID());
+                    
+                    // FIXME: Is this necessary?
+                    masterReceiver.notifyAll();
+
+                    // Wait for something to happen.
+                    if (_debugging) {
+                        _debug("ConditionalReceive: Waiting for new information.");
+                    }
+                    controller._branchBlocked(receiver);
+                    masterReceiver._checkFlagsAndWait();
+                    controller._branchUnblocked(receiver);
+                } // while(true)
             }
         } catch (InterruptedException ex) {
+            receiver._setConditionalReceive(false, null, -1);
             controller._branchFailed(getID());
         } catch (TerminateProcessException ex) {
-            controller._branchFailed(getID());
-        } finally {
             receiver._setConditionalReceive(false, null, -1);
+            controller._branchFailed(getID());
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         private methods                   ////
 
-    /** Encounter a conditionalSend that is already waiting on this
-     *  conditionalReceive. Since this conditionalReceive arrived second,
-     *  check if both branches are "first" and if so perform the data
-     *  transfer and reset the state of the receiver. Since a
-     *  conditionalSend can "disappear," then this method can return to
-     *  the top of the main loop in the run method that calls this method.
-     *  Return true if this method should go to the top of the calling
-     *  loop; return false otherwise.
-     * @return true if this method should continue at the beginning of
-     *  the loop that calls this method; otherwise return false.
-     * @param controller The conditional branch controller that control this
-     *  conditional receive.
-     * @param receiver The CSPReceiver through which a rendezvous attempt is
-     *  taking place.
+    /** Initialize the branch.
      */
-    protected boolean _arriveAfterConditionalSend(CSPReceiver receiver,
-            ConditionalBranchController controller) throws InterruptedException {
-        if (controller._isBranchFirst(getID())) {
-            // receive side ok, need to check that send
-            // side also ok
-            ConditionalBranchController side2 = receiver._getOtherController();
-
-            if ((side2 != null) && side2._isBranchFirst(receiver._getOtherID())) {
-                setToken(receiver.get());
-                receiver._setConditionalSend(false, null, -1);
-                controller._branchSucceeded(getID());
-                return false;
-            } else {
-                controller._releaseFirst(getID());
-                receiver.notifyAll();
-            }
-        }
-
-        controller._branchBlocked(receiver);
-        receiver._checkFlagsAndWait();
-        controller._branchUnblocked(receiver);
-        return true;
-    }
-
-    /** Encounter a non-conditional put that is already waiting on this
-     *  conditionalReceive. Since a non-conditional put can not disappear,
-     *  wait (via a while loop) until it successfully rendezvouses or dies.
-     * @param controller The conditional branch that control this conditional
-     *  receive.
-     * @param receiver The CSPReceiver through which a rendezvous attempt is
-     *  taking place.
-     */
-    protected void _arriveAfterPut(CSPReceiver receiver,
-            ConditionalBranchController controller) throws InterruptedException {
-        while (true) {
-            if (controller._isBranchFirst(getID())) {
-                // I am the branch that succeeds
-                setToken(receiver.get());
-                controller._branchSucceeded(getID());
-                return;
-            }
-
-            controller._branchBlocked(receiver);
-            receiver._checkFlagsAndWait();
-            controller._branchUnblocked(receiver);
-
-            if (!isAlive()) {
-                controller._branchFailed(getID());
-                return;
-            }
-        }
-    }
-
-    /** Begin a rendezvous attempt prior to any other conditionalSends
-     *  or (non-conditional) put attempts. Wait until a put or
-     *  conditionalSend attempt is made by another branch.
-     * @param controller The conditional branch controller that control this
-     *  conditional receive.
-     * @param receiver The CSPReceiver through which a rendezvous attempt is
-     *  taking place.
-     */
-    protected void _arriveFirst(CSPReceiver receiver,
-            ConditionalBranchController controller) throws InterruptedException {
-        receiver._setConditionalReceive(true, controller, getID());
-        controller._branchBlocked(receiver);
-        receiver._checkFlagsAndWait();
-        controller._branchUnblocked(receiver);
-
-        while (true) {
-            if (!isAlive()) {
-                // reset state of receiver
-                receiver._setConditionalReceive(false, null, -1);
-                controller._branchFailed(getID());
-
-                // wakes up a put if it is waiting
-                receiver.notifyAll();
-                return;
-            } else if (controller._isBranchFirst(getID())) {
-                if (receiver._isPutWaiting()) {
-                    // I am the branch that succeeds
-                    // Note that need to reset ConditionalSend
-                    // flag BEFORE doing put.
-                    receiver._setConditionalReceive(false, null, -1);
-                    setToken(receiver.get());
-                    controller._branchSucceeded(getID());
-                    return;
-                } else {
-                    controller._releaseFirst(getID());
-                    receiver.notifyAll();
-                }
-            }
-
-            //can't rendezvous this time, but still alive
-            controller._branchBlocked(receiver);
-            receiver._checkFlagsAndWait();
-            controller._branchUnblocked(receiver);
-        }
-    }
-
     private void _init(IOPort port, int channel) throws IllegalActionException {
         _port = port;
         _channel = channel;
@@ -408,7 +326,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         + " of type CSPReceiver.");
             }
 
-            setReceiver((CSPReceiver) receivers[channel][0]);
+            _setReceivers(receivers[channel]);
         } finally {
             port.workspace().doneReading();
         }

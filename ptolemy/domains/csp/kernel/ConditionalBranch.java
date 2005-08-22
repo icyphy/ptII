@@ -207,13 +207,6 @@ public abstract class ConditionalBranch implements Debuggable {
         return _controller;
     }
 
-    /** Return the CSPReceiver this branch is trying to rendezvous with.
-     *  @return The CSPReceiver this branch is trying to rendezvous with.
-     */
-    public CSPReceiver getReceiver() {
-        return _receiver;
-    }
-
     /** Return an array with all the receivers that
      *  this branch is trying to rendezvous with.
      *  In this base class, this is an array with one element,
@@ -223,9 +216,7 @@ public abstract class ConditionalBranch implements Debuggable {
      *  @return An array of receivers that this branch is trying to rendezvous with.
      */
     public Receiver[] getReceivers() {
-        Receiver[] result = new Receiver[1];
-        result[0] = _receiver;
-        return result;
+        return _receivers;
     }
 
     /** Return the token contained by this branch. For a ConditionalSend
@@ -267,22 +258,26 @@ public abstract class ConditionalBranch implements Debuggable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      package friendly methods                  ////
-
+    ////                      package friendly methods             ////
+    
     /** Set a flag indicating this branch should fail.
      *  @param value Boolean indicating whether this branch is still alive.
      */
-    void setAlive(boolean value) {
+    protected void _setAlive(boolean value) {
         _alive = value;
     }
 
-    /** Set the CSPReceiver this branch is trying to rendezvous with.
+    /** Set the receivers that this branch is trying to rendezvous with.
      *  This method should only be called from derived classes.
-     *  @param receiver The CSPReceiver this branch is trying to rendezvous
-     *   with, or null to indicate that there are no more receivers.
+     *  For a conditional receiver, the argument should be an array
+     *  with only one receiver. For a conditional send, the argument
+     *  may have more than one receiver, in which case a multi-way
+     *  rendezvous is being specified.
+     *  @param receiver The instances of CSPReceiver that
+     *   this branch is trying to rendezvous with.
      */
-    void setReceiver(CSPReceiver receiver) {
-        _receiver = receiver;
+    protected void _setReceivers(Receiver[] receivers) {
+        _receivers = receivers;
     }
 
     /** Set the token contained by this branch. For a ConditionalSend
@@ -291,7 +286,7 @@ public abstract class ConditionalBranch implements Debuggable {
      *  occurred, and is null before that.
      *  @param token The token to be contained by this branch.
      */
-    void setToken(Token token) {
+    protected void _setToken(Token token) {
         _token = token;
     }
 
@@ -344,8 +339,8 @@ public abstract class ConditionalBranch implements Debuggable {
     /** The list of DebugListeners registered with this object. */
     private LinkedList _debugListeners = null;
 
-    /** The receiver this thread is trying to rendezvous with. */
-    private CSPReceiver _receiver;
+    /** The receivers that this thread is trying to rendezvous with. */
+    private Receiver[] _receivers;
 
     /** The Token transferred in a rendezvous. */
     private Token _token;

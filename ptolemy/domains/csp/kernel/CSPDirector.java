@@ -265,8 +265,10 @@ public class CSPDirector extends CompositeProcessDirector implements
 
     /** Increase the count of blocked processes and check if the actors
      *  are deadlocked or stopped.
+     *  @param The receiver causing the actor to be blocked.
      */
     protected synchronized void _actorBlocked(CSPReceiver receiver) {
+        // NOTE: This is here to expose the method to the package.
         super._actorBlocked(receiver);
     }
 
@@ -305,8 +307,10 @@ public class CSPDirector extends CompositeProcessDirector implements
     }
 
     /** An actor has unblocked, decrease the count of blocked actors.
+     *  @param receiver The receiver that has become unblocked.
      */
     protected synchronized void _actorUnBlocked(CSPReceiver receiver) {
+        // This is here to expose the method to the package.
         super._actorUnBlocked(receiver);
     }
 
@@ -320,6 +324,18 @@ public class CSPDirector extends CompositeProcessDirector implements
 
         return false;
     }
+    
+    /** Return true if the count of active processes equals the number
+     *  of stopped threads.  Otherwise return false.
+     *
+     *  @return true if there are no active processes in the container.
+     */
+    /* FIXME: Should the following be overridden as follows to account for actors delayed?
+     * otherwise, pause might not work.
+    protected synchronized boolean _areAllActorsStopped() {
+        return (_getActiveActorCount() == (_getStoppedActorCount() + _getBlockedActorCount() + _actorsDelayed));
+    }
+    */
 
     /** Decrease by one the count of active processes under the control of
      *  this director.

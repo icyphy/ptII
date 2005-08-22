@@ -140,6 +140,11 @@ public class ConditionalBranchController implements Debuggable {
     public int chooseBranch(ConditionalBranch[] branches) throws IllegalActionException {
         try {
             synchronized (_internalLock) {
+                if (_debugging) {
+                    _debug("** Choosing branches.");
+                }
+                _branches = branches;
+                
                 // reset the state that controls the conditional branches
                 _resetConditionalState();
 
@@ -155,6 +160,9 @@ public class ConditionalBranchController implements Debuggable {
                         Nameable actor = (Nameable) branches[i].getController()
                                 .getParent();
                         String name = actor.getName() + branches[i].getID();
+                        if (_debugging) {
+                            _debug("** Creating branch: " + name);
+                        }
                         Thread thread = new Thread((Runnable) branches[i], name);
                         _threadList.add(0, thread);
                         onlyBranch = branches[i];
@@ -171,27 +179,33 @@ public class ConditionalBranchController implements Debuggable {
                 if (threadListSize == 0) {
                     // The guards preceding all the conditional
                     // communications were false, so no branches to create.
+                    if (_debugging) {
+                        _debug("** No branches enabled.");
+                    }
                     return _successfulBranch; // will be -1
                 } else if (threadListSize == 1) {
                     // Only one guard was true, so perform simple rendezvous.
                     if (onlyBranch instanceof ConditionalSend) {
                         Token token = onlyBranch.getToken();
                         Receiver[] receivers = onlyBranch.getReceivers();
-                        for (int i = 0; i < receivers.length; i++) {
-                            // FIXME: This isn't right... The rendezvous is
-                            // being performed in channel order, but it should
-                            // be a multi-way rendezvous.  Use director method
-                            // sendToAll().
-                            // FIXME: After changing this, check whether
-                            // IllegalActionException is still thrown.
-                            receivers[i].put(token);
+                        if (receivers != null && receivers.length >= 1) {
+                            receivers[0].putToAll(token, receivers);
                         }
-                        return onlyBranch.getID();
+                        int result = onlyBranch.getID();
+                        if (_debugging) {
+                            _debug("** Succeessful branch is the only branch (ConditionalSend): " + result);
+                        }
+                        return result;
                     } else {
                         // branch is a ConditionalReceive
-                        Token token = onlyBranch.getReceiver().get();
-                        onlyBranch.setToken(token);
-                        return onlyBranch.getID();
+                        Receiver[] receivers = onlyBranch.getReceivers();
+                        Token token = receivers[0].get();
+                        onlyBranch._setToken(token);
+                        int result = onlyBranch.getID();
+                        if (_debugging) {
+                            _debug("** Succeessful branch is the only branch (ConditionalReceive): " + result);
+                        }
+                        return result;
                     }
                 } else {
                     // Have a proper conditional communication.
@@ -200,12 +214,15 @@ public class ConditionalBranchController implements Debuggable {
 
                     while (threads.hasNext()) {
                         Thread thread = (Thread) threads.next();
-                        thread.start();
                         _branchesActive++;
+                        thread.start();
                     }
 
                     _branchesStarted = _branchesActive;
 
+                    if (_debugging) {
+                        _debug("** Waiting for branch to succeed.");
+                    }
                     // wait for a branch to succeed
                     while ((_successfulBranch == -1) && (_branchesActive > 0)) {
                         _internalLock.wait();
@@ -230,7 +247,10 @@ public class ConditionalBranchController implements Debuggable {
                         for (int j = 0; j < branchReceivers.length; j++) {
                             receivers.add(0, branchReceivers[j]);
                         }
-                        branches[i].setAlive(false);
+                        branches[i]._setAlive(false);
+                        if (_debugging) {
+                            _debug("** Killing branch: " + branches[i].getID());
+                        }
                     }
                 }
 
@@ -239,30 +259,41 @@ public class ConditionalBranchController implements Debuggable {
 
                 // When there are no more active branches, branchFailed()
                 // should issue a notifyAll() on the internal lock.
+                if (_debugging) {
+                    _debug("** Waiting for branches to die.");
+                }
                 while (_branchesActive != 0) {
                     _internalLock.wait();
                 }
             }
+            if (_successfulBranch == -1) {
+                // Conditional construct was ended prematurely
+                if (_blocked) {
+                    _getDirector()._actorUnBlocked(null);
+                }
+
+                throw new TerminateProcessException(((Nameable) getParent())
+                        .getName()
+                        + ": exiting conditional"
+                        + " branching due to TerminateProcessException.");
+            }
+
+            _threadList = null;
+            
+            // Is it necessary to copy this? Note the finally clause below.
+            int result = _successfulBranch;
+            if (_debugging) {
+                _debug("** Succeessful branch: " + result);
+            }
+            return result;
         } catch (InterruptedException ex) {
             throw new TerminateProcessException(((Nameable) getParent())
                     .getName()
                     + ".chooseBranch interrupted.");
+        } finally {
+            _branches = null;
+            _successfulBranch = -1;
         }
-
-        if (_successfulBranch == -1) {
-            // Conditional construct was ended prematurely
-            if (_blocked) {
-                _getDirector()._actorUnBlocked(new CSPReceiver());
-            }
-
-            throw new TerminateProcessException(((Nameable) getParent())
-                    .getName()
-                    + ": exiting conditional"
-                    + " branching due to TerminateProcessException.");
-        }
-
-        _threadList = null;
-        return _successfulBranch;
     }
 
     /** Return the Actor that creates the branch and owns this
@@ -328,14 +359,17 @@ public class ConditionalBranchController implements Debuggable {
         }
     }
 
-    /** Registers the calling branch as failed. It reduces the count
+    /** Register the calling branch as failed. This reduces the count
      *  of active branches, and if all the active branches have
      *  finished, it notifies chooseBranch() to continue.
-     *  It is called by a conditional branch just before it dies.
+     *  This is called by a conditional branch just before it dies.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
      */
     protected void _branchFailed(int branchNumber) {
+        if (_debugging) {
+            _debug("** Branch failed: " + branchNumber);
+        }
         if (_successfulBranch == branchNumber) {
             // the execution of the model must have finished.
             _successfulBranch = -1;
@@ -372,11 +406,15 @@ public class ConditionalBranchController implements Debuggable {
                         + "equal to the id of the branch registered as trying,"
                         + _branchTrying);
             }
+            if (_debugging) {
+                _debug("** Branch succeeded: " + branchID);
+            }
             _successfulBranch = _branchTrying;
             // NOTE: The following is probably not correct!
             // If we release this flag, then another branch can
             // call _isBranchFirst(), which will return true!
             // The result is that more than one branch can succeed!
+            // FIXME: This flag has to be reset somewhere! where?
             // EAL 8/05
             // Release the flag indicating this branch is trying.
             // _branchTrying = -1;
@@ -443,6 +481,9 @@ public class ConditionalBranchController implements Debuggable {
             if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
                 // store branchNumber
                 _branchTrying = branchNumber;
+                // Are these needed?
+                // _internalLock.notifyAll();
+                // _notifyReceivers();
                 return true;
             }
 
@@ -464,10 +505,12 @@ public class ConditionalBranchController implements Debuggable {
         synchronized (_internalLock) {
             if (branchNumber == _branchTrying) {
                 _branchTrying = -1;
+                // Are these needed?
+                // _internalLock.notifyAll();
+                // _notifyReceivers();
                 return;
             }
         }
-
         throw new InvalidStateException(((Nameable) getParent()).getName()
                 + ": Error: branch releasing first without possessing it! :"
                 + _branchTrying + " & " + branchNumber);
@@ -493,6 +536,26 @@ public class ConditionalBranchController implements Debuggable {
                     + "director => terminate.");
         }
     }
+    
+    /** Notify all receivers for the branches currently being chosen
+     *  from by chooseBranch(). This method defers this notification to
+     *  a separate thread.
+     */
+    private void _notifyReceivers() {
+        if (_branches != null) {
+            LinkedList receivers = new LinkedList();
+            for (int i = 0; i < _branches.length; i++) {
+                if (_branches[i].getGuard()) {
+                    Receiver[] branchReceivers = _branches[i].getReceivers();
+                    for (int j = 0; j < branchReceivers.length; j++) {
+                        receivers.add(0, branchReceivers[j]);
+                    }
+                }
+            }
+            // Now wake up all the receivers.
+            (new NotifyThread(receivers)).start();            
+        }
+    }
 
     /* Resets the internal state controlling the execution of a conditional
      * branching construct (CIF or CDO). It is only called by chooseBranch()
@@ -513,27 +576,34 @@ public class ConditionalBranchController implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Flag indicating whether this actor is currently registered
-    // as blocked while in the midst of a CDO or CIF.
+    
+    /** Flag with value true when all branches that have been started
+     *  are blocked.
+     */
     boolean _blocked = false;
 
-    // A list of receivers associated with blocked branches.
+    /** A list of receivers associated with blocked branches. */
     private LinkedList _blockedBranchReceivers = new LinkedList();
+    
+    /** The set of branches currently being chosen from in
+     *  chooseBranch().
+     */
+    private ConditionalBranch[] _branches;
 
-    // Contains the number of conditional branches that are still
-    // active.
+    /** The number of conditional branches that are still active,
+     *  meaning that they are capable of succeeding.
+     */
     private int _branchesActive = 0;
 
-    // Contains the number of conditional branches that are blocked
-    // trying to rendezvous.
+    /** The number of conditional branches that are blocked. */
     private int _branchesBlocked = 0;
 
-    // Contains the number of branches that were actually started for
-    // the most recent conditional rendezvous.
+    /** The number of branches that were started. */
     private int _branchesStarted = 0;
 
-    // Contains the ID of the branch currently trying to rendezvous. It
-    // is -1 if no branch is currently trying.
+    /** The ID of the branch currently trying to rendezvous. It
+     *  is -1 if no branch is currently trying.
+     */
     private int _branchTrying = -1;
     
     /** Flag that is true if there are debug listeners. */
@@ -542,20 +612,22 @@ public class ConditionalBranchController implements Debuggable {
     /** The list of DebugListeners registered with this object. */
     private LinkedList _debugListeners = null;
 
-    // This lock is only used internally by the actor. It is used to
-    // avoid having to synchronize on the actor itself. The chooseBranch()
-    // method waits on it so it knows when a branch has succeeded and when
-    // the last branch it created has died.
+    /** The lock used internally by this controller. It is used to
+     *  avoid having to synchronize on the actor itself. The chooseBranch()
+     *  method waits on it so it knows when a branch has succeeded and when
+     *  the last branch it created has died.
+     */
     private Object _internalLock = new Object();
 
-    // Point to the actor who owns this controller object.
+    /** The actor who owns this controller. */
     private Actor _parentActor;
 
-    // Contains the ID of the branch that successfully rendezvoused.
+    /** The ID of the branch that has successfully completed a rendezvous. */
     private int _successfulBranch = -1;
 
-    // Threads created by this actor to perform a conditional rendezvous.
-    // Need to keep a list of them in case the execution of the model is
-    // terminated abruptly.
+    /** List of threads created by this actor to perform a conditional rendezvous.
+     *  Need to keep a list of them in case the execution of the model is
+     *  terminated abruptly.
+     */
     private LinkedList _threadList = null;
 }

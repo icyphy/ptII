@@ -155,7 +155,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     _putUnblocked();
 
                     result = _token;
-                    // The put() will set the following to true.
+                    // When the corresponding put() completes, it will reset this to true.
                     _rendezvousComplete = false;
                     // This will wake up the put() thread.
                     lock.notifyAll();
@@ -167,41 +167,72 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                         _checkFlagsAndWait();
                     }
                 } else {
+                    // System.out.println("++++++++ get got here first");
+
                     // get() got there first, so have to wait for a put;
                     _getWaiting = true;
+                    // Notify the director that we are blocked.
+                    // NOTE: Should not mark this blocked if
+                    // there is a pending conditional send.
+                    // If we do, then between now and when the
+                    // conditional send gets converted into
+                    // a put(), this branch is marked as blocked.
+                    // This can cause a spurious deadlock detection.
+                    if (!_isConditionalSendWaiting()) {
+                        // System.out.println("++++++++ no conditional send waiting. Mark blocked.");
+                        _getBlocked(branch);
+                    }
+                    // Wake other receivers, possibly causing a conditional
+                    // send to call put(), which will result in resetting
+                    // _getWaiting and notifying the director that we are
+                    // no longer blocked.
                     lock.notifyAll();
-                    
-                    // If there is a conditional send waiting on
-                    // this receiver, then the above notify will wake
-                    // it up and when it continues, it will
-                    // reset the _isConditionalSendWaiting flag and
-                    // do a get() which sets the _getWaiting flag to
-                    // false and the rendezvous proceeds normally.
+                    // Give the above notify a chance to work.
+                    // System.out.println("++++++++ waiting to clear _conditionalSendWaiting.");
+
                     while (_conditionalSendWaiting) {
                         _checkFlagsAndWait();
                     }
                     _checkFlags();
-                    // FIXME: Why isn't this above the while() above?
-                    _getBlocked(branch);
-                    
+
+                    // System.out.println("++++++++ cleared");
+
+                    // If _getWaiting is still true, then there was no
+                    // conditional send pending, so we just have to wait
+                    // for a put() or a conditional send. Do that now.
+
+                    // System.out.println("++++++++ waiting to clear _getWaiting.");
+
                     while (_getWaiting) {
                         _checkFlagsAndWait();
                     }
-                    
                     _checkFlags();
+
+                    // System.out.println("++++++++ cleared");
+
+                    // By the time we get here, the put() is complete,
+                    // and _token has the value sent.
                     result = _token;
+                    
                     _rendezvousComplete = true;
+
+                    // Notify any receivers that might be waiting for
+                    // a multi-way rendevous to complete.
                     lock.notifyAll();
                     
+                    // System.out.println("++++++++ waiting for rendezvous to complete on " + this);
+
                     // In case this is a multi-way rendezvous,
                     // need to wait for all of them to complete.
                     while (!_isRendezvousComplete()) {
+                        // System.out.println("+++++++++ _rendezvousComplete: " + _rendezvousComplete);
                         _checkFlagsAndWait();
                     }
+                    // System.out.println("++++++++ complete");
                 }
             } catch (InterruptedException ex) {
                 throw new TerminateProcessException(
-                "CSPReceiver.get() interrupted.");
+                        "CSPReceiver.get() interrupted.");
             } finally {
                 if (_getWaiting) {
                     // If the _getWaiting flag is still true, then this
@@ -210,7 +241,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     _getUnblocked();
                 }
             }
-            
             return result;
         }
     }
@@ -417,6 +447,9 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 _token = token;
 
                 if (_getWaiting) {
+                    
+                    // System.out.println("-------- get waiting");
+                    
                     // A get() is waiting on this receiver.
                     // Reset the get waiting flag in this thread
                     // rather than the other one.
@@ -430,44 +463,54 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     // spurious deadlock detection.
                     _getUnblocked();
 
-                    // When the get() completes, it will reset this to true.
-                    _rendezvousComplete = false;
-
                     // Wake up the waiting get(s).
                     lock.notifyAll();
 
                     // Wait for the get() to complete, and also
                     // any other rendezvous in the group.
+                    // System.out.println("-------- waiting for rendezvous to complete on " + this);
+                    // When the corresponding get() completes, it will reset this to true.
+                    _rendezvousComplete = false;
                     while (!_isRendezvousComplete()) {
                         _checkFlagsAndWait();
                     }
+                    // System.out.println("-------- rendezvous complete");
 
                     return;
                 } else {
                     // No get() is waiting on this receiver.
                     _putWaiting = true;
+                    // NOTE: Should not mark this blocked if
+                    // there is a pending conditional receive.
+                    // If we do, then between now and when the
+                    // conditional receive gets converted into
+                    // a get(), this branch is marked as blocked.
+                    // This can cause a spurious deadlock detection.
+                    if (!_isConditionalReceiveWaiting()) {
+                        _putBlocked(branch);
+                    }
+                    // There might be a conditional receive pending,
+                    // in which case, we wake it up. It will see that
+                    // _putWaiting is true, and call get(), which
+                    // will reset _putWaiting and notify the director
+                    // that we are no longer blocked.
                     lock.notifyAll();
-
-                    // If there is a conditional receive waiting on
-                    // this receiver, then the above notify will wake
-                    // it up and when it continues, it will
-                    // reset the _isConditionalReceiveWaiting flag and
-                    // do a get() which sets the putWaiting flag to
-                    // false and the rendezvous proceeds normally.
+                    // Give the above notify a chance to work.
                     while (_conditionalReceiveWaiting) {
                         _checkFlagsAndWait();
                     }
-
                     _checkFlags();
-                    // FIXME: Why isn't this before the while above?
-                    _putBlocked(branch);
 
+                    // If _putWaiting is still true, then there
+                    // was no conditional receiver, or it wasn't chosen.
                     // Wait for the corresponding get() to occur.
                     while (_putWaiting) {
                         _checkFlagsAndWait();
                     }
                     _checkFlags();
                     _rendezvousComplete = true;
+                    // Notify any receivers that might be waiting for
+                    // a multi-way rendezvous to complete.
                     lock.notifyAll();
                     
                     // If this receiver is in a group, some
@@ -696,7 +739,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   branch to arrive.
      */
     protected ConditionalBranchController _getOtherController() {
-        // FIXME: Handle groups. How? Return all controllers?
         return _otherController;
     }
 
@@ -705,7 +747,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @return The branch ID.
      */
     protected int _getOtherID() {
-        // FIXME: Handle groups. How? Return all IDs?
         return _otherID;
     }
 
@@ -743,29 +784,12 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     }
 
     /** Return whether a ConditionalReceive is trying
-     *  to rendezvous with this receiver. If this receiver is a member
-     *  of a group, then this returns true only if all receivers
-     *  in the group have either a conditional receive waiting or
-     *  a get waiting.
+     *  to rendezvous with this receiver.
      *  @return True if a ConditionalReceive branch is trying to
-     *   rendezvous with this receiver, or if this is a member of
-     *   a group and all members of the group have either a
-     *   conditional receive or a get waiting.
+     *   rendezvous with this receiver.
      */
     protected boolean _isConditionalReceiveWaiting() {
-        if (_group == null) {
-            return _conditionalReceiveWaiting;
-        } else {
-            for (int i = 0; i < _group.length; i++) {
-                // If any member of the group is not waiting,
-                // we can return false.
-                if (!((CSPReceiver)_group[i])._conditionalReceiveWaiting
-                        && !((CSPReceiver)_group[i])._getWaiting) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return _conditionalReceiveWaiting;
     }
 
     /** Return whether a ConditionalSend is trying
@@ -778,24 +802,11 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     }
 
     /** Return whether a get() is waiting to rendezvous
-     *  at this receiver. If this receiver is a member of a group, then
-     *  this returns true only if all receivers in the group have a get()
-     *  waiting.
+     *  at this receiver.
      *  @return True if a get() is waiting to rendezvous.
      */
     protected boolean _isGetWaiting() {
-        if (_group == null) {
-            return _getWaiting;
-        } else {
-            for (int i = 0; i < _group.length; i++) {
-                // If any member of the group is not waiting,
-                // we can return false.
-                if (!((CSPReceiver)_group[i])._getWaiting) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return _getWaiting;
     }
 
     /** Flag indicating whether or not a put() is waiting to rendezvous
@@ -808,11 +819,9 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Set a flag so that a ConditionalReceive branch knows whether or
      *  not a ConditionalSend is ready to rendezvous with it.
-     *  If this receiver is a member of a group, then set the
-     *  flag for all receivers in the group.
      *  @param ready Boolean indicating whether or not a conditional
      *   send is waiting to rendezvous.
-     *  @param controller The CSPActor which contains the ConditionalSend
+     *  @param controller The controller which contains the ConditionalSend
      *   branch that is trying to rendezvous. It is stored in the
      *   receiver so that if a ConditionalReceive arrives, it can easily
      *   check whether the ConditionalSend branch was the first
@@ -823,17 +832,9 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     protected void _setConditionalSend(boolean ready,
             ConditionalBranchController controller, int otherID) {
         synchronized(_getLock()) {
-            if (_group == null) {
-                _conditionalSendWaiting = ready;
-                _otherController = controller;
-                _otherID = otherID;
-            } else {
-                for (int i = 0; i < _group.length; i++) {
-                    ((CSPReceiver)_group[i])._conditionalSendWaiting = ready;
-                    ((CSPReceiver)_group[i])._otherController = controller;
-                    ((CSPReceiver)_group[i])._otherID = otherID;
-                }
-            }
+            _conditionalSendWaiting = ready;
+            _otherController = controller;
+            _otherID = otherID;
         }
     }
 
