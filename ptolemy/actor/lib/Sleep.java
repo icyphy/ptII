@@ -131,6 +131,7 @@ public class Sleep extends Transformer {
      *  @exception IllegalActionException Not thrown in this base class
      */
     public void fire() throws IllegalActionException {
+        sleepTime.update();
         int inputWidth = input.getWidth();
         Token[] inputs = new Token[inputWidth];
 
@@ -140,20 +141,16 @@ public class Sleep extends Transformer {
             }
         }
 
-        if (!_wasSleepCalledInFireYet) {
-            try {
-                long sleepTimeValue = ((LongToken) sleepTime.getToken())
-                        .longValue();
-
-                if (_debugging) {
-                    _debug(getName() + ": Wait for " + sleepTimeValue
-                            + " milliseconds.");
-                }
-
-                Thread.sleep(sleepTimeValue);
-            } catch (InterruptedException e) {
-                // Ignore...
+        try {
+            long sleepTimeValue = ((LongToken) sleepTime.getToken()).longValue();
+            
+            if (_debugging) {
+                _debug(getName() + ": Wait for " + sleepTimeValue
+                        + " milliseconds.");
             }
+            Thread.sleep(sleepTimeValue);
+        } catch (InterruptedException e) {
+            // Ignore...
         }
 
         int outputWidth = output.getWidth();
@@ -166,30 +163,4 @@ public class Sleep extends Transformer {
             }
         }
     }
-
-    /** Reset the flag that fire() checks so that fire() only sleeps once
-     *  per iteration.
-     *  @exception IllegalActionException If the parent class throws it.
-     *  @return Whatever the superclass returns (probably true).
-     */
-    public boolean postfire() throws IllegalActionException {
-        _wasSleepCalledInFireYet = false;
-        return super.postfire();
-    }
-
-    /** Reset the flag that fire() checks so that fire() only sleeps once
-     *  per iteration.
-     *  @exception IllegalActionException If the parent class throws it.
-     *  @return Whatever the superclass returns (probably true).
-     */
-    public boolean prefire() throws IllegalActionException {
-        _wasSleepCalledInFireYet = false;
-        return super.prefire();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // True if sleep was called in fire().  Sleep should only
-    // be called once in fire() per iteration.
-    private boolean _wasSleepCalledInFireYet = false;
 }
