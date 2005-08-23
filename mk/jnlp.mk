@@ -74,6 +74,12 @@ NATIVE_SIGNED_LIB_JARS = \
 	lib/matlabWindows.jar \
 	lib/matlabSunOS.jar
 
+# Not all hosts have matlab
+#MATLAB_JARS = \
+#	ptolemy/matlab/matlab.jar \
+#	ptolemy/matlab/demo/demo.jar \
+#	lib/matlab.jar
+
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
 			lib/jasminclasses.jar \
@@ -99,13 +105,10 @@ CORE_JNLP_JARS = \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/domains.jar \
-	lib/matlab.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar \
-	ptolemy/matlab/matlab.jar \
-	ptolemy/matlab/demo/demo.jar \
-	lib/matlab.jar \
+	$(MATLAB_JARS) \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar
 
@@ -171,8 +174,7 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	ptolemy/domains/fsm/doc/doc.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
-        ptolemy/matlab/demo/demo.jar \
-        lib/matlab.jar
+	$(MATLAB_JARS) 
 
 
 
