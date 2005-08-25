@@ -123,7 +123,7 @@ public class Gaussian extends CCodeGeneratorHelper {
      * Reads the <code>sharedBlock</code> from Gaussian.c,
      * replace macros with their values and append the processed code
      * block to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
