@@ -79,7 +79,9 @@ public class MessageHandler {
     public static void error(String info, Throwable throwable) {
         // Sometimes you find that errors are reported multiple times.
         // To find out who is calling this method, uncomment the following.
-        // System.out.println("------ reporting error:");
+        // System.out.println("------ reporting error:" + throwable);
+        // throwable.printStackTrace();
+        // System.out.println("------ called from:");
         // (new Exception()).printStackTrace();
         _handler._error(info, throwable);
     }
