@@ -61,8 +61,7 @@ import ptolemy.kernel.util.IllegalActionException;
  The static method groupReceivers(Receiver[]) can be used to create
  a group of receivers. Once this is done, then sending to the receivers
  should only be done via the putToAll() method, which should be passed
- the same receiver group.  FIXME: This policy should be enforced by
- throwing exceptions.
+ the same receiver group.
  <p>
  @author Neil Smyth, John S. Davis II, Edward A. Lee
  @version $Id$
@@ -738,7 +737,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @return The controller which controls the first conditional
      *   branch to arrive.
      */
-    protected ConditionalBranchController _getOtherController() {
+    protected AbstractBranchController _getOtherController() {
         return _otherController;
     }
 
@@ -851,7 +850,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   conditional receive.
      */
     protected void _setConditionalReceive(boolean ready,
-            ConditionalBranchController controller, int otherID) {
+            AbstractBranchController controller, int otherID) {
         synchronized(_getLock()) {
             _conditionalReceiveWaiting = ready;
             _otherController = controller;
@@ -1055,7 +1054,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     private Branch _otherBranch = null;
 
     /** obsolete when implement containment */
-    private ConditionalBranchController _otherController = null;
+    private AbstractBranchController _otherController = null;
 
     private int _otherID = -1;
 

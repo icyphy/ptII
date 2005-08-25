@@ -228,7 +228,7 @@ public class CSPActor extends TypedAtomicActor implements
 
     /** Return the conditional branch control of this actor.
      */
-    public ConditionalBranchController getConditionalBranchController() {
+    public AbstractBranchController getBranchController() {
         return _conditionalBranchController;
     }
 

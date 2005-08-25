@@ -49,6 +49,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Place CSPMultiSink at the end to work around a javadoc problem
 JSRCS = \
+	Barrier.java \
+	Buffer.java \
 	CSPBuffer.java \
 	CSPMultiSource.java \
 	CSPSieve.java \

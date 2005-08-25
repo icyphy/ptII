@@ -72,6 +72,7 @@ public class CSPBuffer extends CSPActor {
      *  @exception NameDuplicationException If the port name coincides
      *   with a port already in this actor, or if the parameter name
      *   coincides with a parameter already in this actor.
+     *  @deprecated Use ptolemy.domains.csp.lib.Buffer instead.
      */
     public CSPBuffer() throws IllegalActionException, NameDuplicationException {
         super();

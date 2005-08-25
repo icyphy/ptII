@@ -7,6 +7,10 @@
       <group>
 <doc>CSP actors</doc>
 
+<entity name="Barrier" class="ptolemy.domains.csp.lib.Barrier">
+</entity>
+<entity name="Buffer" class="ptolemy.domains.csp.lib.Buffer">
+</entity>
 <entity name="ResourcePool" class="ptolemy.domains.csp.lib.ResourcePool">
 </entity>
 

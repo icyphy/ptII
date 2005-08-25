@@ -226,7 +226,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         // Get the array of receivers to send to.
         Receiver[] receivers = getReceivers();
         CSPReceiver masterReceiver = ((CSPReceiver)receivers[0]);
-        ConditionalBranchController controller = getController();
+        AbstractBranchController controller = getController();
         String identifier = "";
         if (_debugging) {
             identifier = "ConditionalSend: send() on " + _port.getFullName() + " on channel " + _channel;
@@ -277,7 +277,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         if (_debugging) {
                             _debug("ConditionalSend: send() on channel " + _channel + ": get() is waiting on all receivers.");
                         }
-                        if (controller._isBranchFirst(getID())) {
+                        if (controller._isBranchReady(getID())) {
                             // I am the branch that succeeds, so convert the conditional send
                             // to a put on each receiver.
                             // The order doesn't matter here, since all recipients are waiting.
@@ -296,7 +296,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             _debug("ConditionalSend: send() on channel " + _channel
                                     + ": conditional receive or get is waiting on each destination.");
                         }
-                        if (controller._isBranchFirst(getID())) {
+                        if (controller._isBranchReady(getID())) {
                             if (_debugging) {
                                 _debug("ConditionalSend: send() on channel " + _channel
                                         + ": send branch is first.");
@@ -310,8 +310,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             for (int copy = 0; copy < receivers.length; copy++) {
                                 CSPReceiver receiver = (CSPReceiver)receivers[copy];
                                 if (receiver._isConditionalReceiveWaiting()) {
-                                    ConditionalBranchController side2 = receiver._getOtherController();
-                                    if ((side2 != null) && side2._isBranchFirst(receiver._getOtherID())) {
+                                    AbstractBranchController side2 = receiver._getOtherController();
+                                    if ((side2 != null) && side2._isBranchReady(receiver._getOtherID())) {
                                         if (_debugging) {
                                             _debug("ConditionalSend: send() on channel " + _channel
                                                     + ": the other side is also first: "
@@ -348,12 +348,12 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 // At least one conditional receive is not first.
                                 // Release those that have grabbed the "first" flag,
                                 // including of course this controller.
-                                controller._releaseFirst(getID());
+                                controller._branchNotReady(getID());
                                 Iterator iterator = markedFirst.iterator();
                                 while (iterator.hasNext()) {
                                     CSPReceiver receiver = (CSPReceiver)iterator.next();
-                                    ConditionalBranchController side2 = receiver._getOtherController();
-                                    side2._releaseFirst(receiver._getOtherID());
+                                    AbstractBranchController side2 = receiver._getOtherController();
+                                    side2._branchNotReady(receiver._getOtherID());
                                 }
                                 masterReceiver.notifyAll();
                             }
@@ -519,6 +519,21 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             // If any member of the group is not waiting,
             // we can return false.
             if (!((CSPReceiver)receivers[i])._isGetWaiting()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Return true if this conditional branch is ready to rendezvous.
+     *  @return True if the associated receivers all have either a pending
+     *   conditional receive or a get waiting.
+     */
+    protected boolean _isReady() {
+        Receiver[] receivers = getReceivers();
+        for (int i = 0; i < receivers.length; i++) {
+            if (!((CSPReceiver)receivers[i])._isGetWaiting()
+                    && !((CSPReceiver)receivers[i])._isConditionalReceiveWaiting()) {
                 return false;
             }
         }

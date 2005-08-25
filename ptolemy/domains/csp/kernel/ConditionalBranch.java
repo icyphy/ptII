@@ -158,7 +158,7 @@ public abstract class ConditionalBranch implements Debuggable {
                                 + "with a port contained by ConditionalBranchActor.");
             }
             _controller = ((ConditionalBranchActor) portContainer)
-                    .getConditionalBranchController();
+                    .getBranchController();
         }
     }
 
@@ -203,7 +203,7 @@ public abstract class ConditionalBranch implements Debuggable {
      *  @return The controller that manages conditional rendezvous for
      *  this branch.
      */
-    public ConditionalBranchController getController() {
+    public AbstractBranchController getController() {
         return _controller;
     }
 
@@ -306,7 +306,12 @@ public abstract class ConditionalBranch implements Debuggable {
             }
         }
     }
-
+    
+    /** Return true if this conditional branch is ready to rendezvous.
+     *  @return True if the conditional branch is ready to rendezvous.
+     */
+    protected abstract boolean _isReady();
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -334,7 +339,7 @@ public abstract class ConditionalBranch implements Debuggable {
     /** The controller of this thread is trying to perform a conditional
      *  rendezvous for.
      */
-    private ConditionalBranchController _controller;
+    private AbstractBranchController _controller;
 
     /** The list of DebugListeners registered with this object. */
     private LinkedList _debugListeners = null;

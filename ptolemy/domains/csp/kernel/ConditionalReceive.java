@@ -183,7 +183,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      */
     public void run() {
         CSPReceiver receiver = (CSPReceiver)getReceivers()[0];
-        ConditionalBranchController controller = getController();
+        AbstractBranchController controller = getController();
 
         try {
             // Note that the lock has to be in the first receiver
@@ -223,7 +223,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         if (_debugging) {
                             _debug(identifier + ": Put is waiting.");
                         }
-                        if (controller._isBranchFirst(getID())) {
+                        if (controller._isBranchReady(getID())) {
                             // I am the branch that succeeds, so convert the conditional receive
                             // to a get.
                             // Have to reset this flag _before_ the get().
@@ -238,12 +238,12 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         if (_debugging) {
                             _debug(identifier + ": Conditional send is waiting!");
                         }
-                        if (controller._isBranchFirst(getID())) {
+                        if (controller._isBranchReady(getID())) {
                             // receive side ok, need to check that send
                             // side also ok
-                            ConditionalBranchController side2 = receiver._getOtherController();
+                            AbstractBranchController side2 = receiver._getOtherController();
 
-                            if ((side2 != null) && side2._isBranchFirst(receiver._getOtherID())) {
+                            if ((side2 != null) && side2._isBranchReady(receiver._getOtherID())) {
                                 // Convert the conditional receive to a get().
                                 receiver._setConditionalReceive(false, null, -1);
                                 _setToken(receiver.get());
@@ -252,7 +252,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                                 controller._branchSucceeded(getID());
                                 return;
                             } else {
-                                controller._releaseFirst(getID());
+                                controller._branchNotReady(getID());
                                 masterReceiver.notifyAll();
                             }
                         }
@@ -274,13 +274,33 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     masterReceiver._checkFlagsAndWait();
                     controller._branchUnblocked(receiver);
                 } // while(true)
-            }
+            } // synchronized(masterReceiver)
         } catch (InterruptedException ex) {
             receiver._setConditionalReceive(false, null, -1);
             controller._branchFailed(getID());
         } catch (TerminateProcessException ex) {
             receiver._setConditionalReceive(false, null, -1);
             controller._branchFailed(getID());
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
+
+    /** Return true if this conditional branch is ready to rendezvous.
+     *  @return True if the associated receivers have either a pending
+     *   conditional send or a put waiting.
+     */
+    protected boolean _isReady() {
+        Receiver[] receivers = getReceivers();
+        synchronized(receivers[0]) {
+            for (int i = 0; i < receivers.length; i++) {
+                if (!((CSPReceiver)receivers[i])._isPutWaiting()
+                        && !((CSPReceiver)receivers[i])._isConditionalSendWaiting()) {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 

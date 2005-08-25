@@ -52,5 +52,5 @@ public interface ConditionalBranchActor extends Actor {
     /** Return the the conditional branch controller of this actor.
      *  @return The conditional branch controller.
      */
-    public ConditionalBranchController getConditionalBranchController();
+    public AbstractBranchController getBranchController();
 }
