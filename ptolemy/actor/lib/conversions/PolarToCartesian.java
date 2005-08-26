@@ -42,9 +42,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  This actor reads two double tokens (magnitude and angle) and outputs
  two new double tokens (x and y). The outputs are a Cartesian representation
- of the pair given at the inputs in polar form. The angle input is assumed
- to be in radians. If either input is NaN or infinity, then the outputs are
- NaN or infinity.
+ of the pair given at the inputs in polar form, where 
+ x = magnitude * cos(angle) and y = magnitude * sin(angle). 
+ Note that the angle input is assumed to be in radians. If either input 
+ is NaN or infinity, then the outputs are NaN or infinity.
 
  @author Michael Leung, Edward A. Lee, Paul Whitaker
  @version $Id$
