@@ -29,7 +29,7 @@ To check out the repository read only, do:
 
    cvs -d :pserver:anon@source.eecs.berkeley.edu:/home/cvs/cvsanon login
    # No password needed, hit enter
-   cvs -d :pserver:anon@gigasource.eecs.berkeley.edu:/home/cvs/cvsanon ptIIdoc
+   cvs -d :pserver:anon@source.eecs.berkeley.edu:/home/cvs/cvsanon co ptIIdoc
 
 To check it out read write, do
 
