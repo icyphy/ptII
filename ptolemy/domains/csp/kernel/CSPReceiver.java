@@ -753,7 +753,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  If a group has been previously specified, then
      *  this will cancel the group relationship for all
      *  the receivers in the group.
-     *  @see #groupReceivers(Receiver[])
+     *  @see #_groupReceivers(Receiver[])
      */
     protected void _groupCancel() {
         if (_group != null) {
@@ -772,7 +772,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @param group The group of receivers, which are required
      *   to be instances of CSPReceiver, or a ClassCastException
      *   will be thrown.
-     *  @see #groupCancel()
+     *  @see #_groupCancel()
      */
     protected static void _groupReceivers(Receiver[] group) {
         if (group != null && group.length > 1) {

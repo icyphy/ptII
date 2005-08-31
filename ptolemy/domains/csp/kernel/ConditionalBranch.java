@@ -273,7 +273,7 @@ public abstract class ConditionalBranch implements Debuggable {
      *  with only one receiver. For a conditional send, the argument
      *  may have more than one receiver, in which case a multi-way
      *  rendezvous is being specified.
-     *  @param receiver The instances of CSPReceiver that
+     *  @param receivers The instances of CSPReceiver that
      *   this branch is trying to rendezvous with.
      */
     protected void _setReceivers(Receiver[] receivers) {

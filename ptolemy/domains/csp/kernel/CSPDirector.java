@@ -265,7 +265,7 @@ public class CSPDirector extends CompositeProcessDirector implements
 
     /** Increase the count of blocked processes and check if the actors
      *  are deadlocked or stopped.
-     *  @param The receiver causing the actor to be blocked.
+     *  @param receiver The receiver causing the actor to be blocked.
      */
     protected synchronized void _actorBlocked(CSPReceiver receiver) {
         // NOTE: This is here to expose the method to the package.
