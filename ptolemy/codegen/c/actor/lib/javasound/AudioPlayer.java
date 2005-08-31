@@ -121,7 +121,6 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     * Read the <code>sharedBlock</code> from AudioPlayer.c,
     * replaces macros with their values and appends the processed code
     * block to the given code buffer.
-    * @param code the given buffer to append the code to.
     * @return The processed code block.
     * @exception IllegalActionException If the code stream encounters an
     *  error in processing the specified code block(s).
