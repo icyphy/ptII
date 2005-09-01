@@ -100,13 +100,13 @@ test MailboxBoundaryReceiver-2.2 {Unlimited get(Branch) and put(Token,Branch) wi
     set brch3 [java::cast ptolemy.actor.process.Branch [$branchList get 2]]
     
     # Get Receivers
-    set pRcvr1 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch1 getProdReceiver]]
-    set pRcvr2 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch2 getProdReceiver]]
-    set pRcvr3 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch3 getProdReceiver]]
+    set pRcvr1 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch1 getProducerReceiver]]
+    set pRcvr2 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch2 getProducerReceiver]]
+    set pRcvr3 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch3 getProducerReceiver]]
     
-    set cRcvr1 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch1 getConsReceiver]]
-    set cRcvr2 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch2 getConsReceiver]]
-    set cRcvr3 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch3 getConsReceiver]]
+    set cRcvr1 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch1 getConsumerReceiver]]
+    set cRcvr2 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch2 getConsumerReceiver]]
+    set cRcvr3 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch3 getConsumerReceiver]]
     
     $cntlr setActive true
     

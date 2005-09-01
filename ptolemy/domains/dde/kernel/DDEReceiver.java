@@ -29,10 +29,10 @@
 package ptolemy.domains.dde.kernel;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.process.BoundaryDetector;
-import ptolemy.actor.process.Branch;
 import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.actor.util.Time;
@@ -106,6 +106,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class DDEReceiver extends PrioritizedTimedQueue implements
         ProcessReceiver {
+    
     /** Construct an empty receiver with no container.
      */
     public DDEReceiver() {
@@ -139,31 +140,11 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get a token from the mailbox receiver and specify a null
-     *  Branch to control the execution of this method.
-     * @return The token contained by this receiver.
+    /** Get a token from the mailbox receiver.
+     *  @return The token contained by this receiver.
+     *  @exception NoTokenException If there is no token.
      */
     public Token get() {
-        return get(null);
-    }
-
-    /** Return a token from the queue. If no token is available,
-     *  then throw a NoTokenException. If at any point during
-     *  this method this receiver is scheduled for termination,
-     *  then throw a TerminateProcessException to cease execution
-     *  of the actor that contains this receiver.
-     *  <P>
-     *  IMPORTANT: This method is designed to be called after
-     *  hasToken() has been called. Verify that this method is
-     *  safe to call by calling hasToken() first. Note that
-     *  this method does not perform a blocking read but hasToken()
-     *  does.
-     * @return The oldest token on this queue.
-     * @exception NoTokenException If this method is called while
-     *  hasToken() returns false.
-     * @see #hasToken()
-     */
-    public Token get(Branch branch) throws NoTokenException {
         if (!_hasTokenCache) {
             throw new NoTokenException(getContainer(),
                     "Attempt to get token that does not have "
@@ -177,10 +158,14 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
 
             Token token = super.get();
 
-            if (_writeBlocked) {
-                wakeUpBlockedPartner();
-                _writeBlocked = false;
-                notifyAll();
+            // Need to mark any thread that is write blocked on
+            // this receiver unblocked now, before any notification,
+            // or we will detect deadlock and increase the buffer sizes.
+            // Note that there is no need to clear the _readPending
+            // reference because that will have been cleared by the write.
+            if (_writePending != null) {
+                _director.threadUnblocked(_writePending, this, DDEDirector.WRITE_BLOCKED);
+                _writePending = null;
             }
 
             Thread thread = Thread.currentThread();
@@ -209,11 +194,9 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  perform a blocking read if this receiver is empty and has a
      *  nonnegative receiver time. Once the receiver is no longer empty,
      *  this method will return true only if this receiver is sorted
-     *  first with respect to the other receivers contained by the actor
-     *  of this receiver. The sorting rules are found in
-     *  ptolemy.domains.dde.kernel.ReceiverComparator. Blocking reads
-     *  occurring during this methods execution will be registered
-     *  with the local director.
+     *  first with respect to the other receivers contained by this
+     *  receiver's actor. The sorting rules are found in
+     *  ptolemy.domains.dde.kernel.ReceiverComparator.
      *  <P>
      *  If at any point during this method this receiver is scheduled
      *  for termination, then throw a TerminateProcessException to
@@ -222,28 +205,6 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *   return a token without throwing a NoTokenException.
      */
     public boolean hasToken() {
-        return hasToken(null);
-    }
-
-    /** Return true if the get() method of this receiver will return a
-     *  token without throwing a NoTokenException. This method will
-     *  perform a blocking read if this receiver is empty and has a
-     *  nonnegative receiver time. Once the receiver is no longer empty,
-     *  this method will return true only if this receiver is sorted
-     *  first with respect to the other receivers contained by this
-     *  receiver's actor. The sorting rules are found in
-     *  ptolemy.domains.dde.kernel.ReceiverComparator. Blocking reads
-     *  occurring during this method's execution will be registered
-     *  with the branch object (parameter) if it is non-null; otherwise
-     *  blocking reads will be registered with the local director.
-     *  <P>
-     *  If at any point during this method this receiver is scheduled
-     *  for termination, then throw a TerminateProcessException to
-     *  cease execution of the actor that contains this receiver.
-     *  @return Return true if the get() method of this receiver will
-     *   return a token without throwing a NoTokenException.
-     */
-    public boolean hasToken(Branch branch) {
         Workspace workspace = getContainer().workspace();
         Thread thread = Thread.currentThread();
         TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
@@ -307,10 +268,9 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
             // Perform Blocking Read
             ////////////////////////
             if (!super.hasToken() && !_terminate && !sendNullTokens) {
-                _readBlocked = true;
-                prepareToBlock(branch);
-
-                while (_readBlocked && !_terminate) {
+                _readPending = thread;
+                _director.threadBlocked(thread, this, DDEDirector.READ_BLOCKED);
+                while ((_readPending != null) && !_terminate) {
                     try {
                         workspace.wait(this);
                     } catch (InterruptedException e) {
@@ -324,9 +284,9 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
             // Check Termination
             ////////////////////
             if (_terminate) {
-                if (_readBlocked) {
-                    _readBlocked = false;
-                    wakeUpBlockedPartner();
+                if (_readPending != null) {
+                    _director.threadUnblocked(_readPending, this, DDEDirector.READ_BLOCKED);
+                    _readPending = null;
                 }
 
                 throw new TerminateProcessException("");
@@ -348,7 +308,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
     public boolean hasToken(int tokens) {
         return true;
 
-        // FIXME hack - consults Neuendor's new mechanism.
+        // FIXME This is wrong!
     }
 
     /** Return true if this receiver is a consumer receiver. A
@@ -456,48 +416,38 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
         return _boundaryDetector.isOutsideBoundary();
     }
 
-    /** Return true if this receiver is read blocked; return false
-     *  otherwise.
-     *
-     *  @return True if this receiver is read blocked; return
-     *   false otherwise.
+    /** Return a true or false to indicate whether there is a read block
+     *  on this receiver or not, respectively.
+     *  @return a boolean indicating whether a read is blocked on this
+     *  receiver or not.
      */
     public boolean isReadBlocked() {
-        return _readBlocked;
+        // NOTE: This method used to be synchronized on this
+        // receiver, but since it is called by synchronized methods in
+        // the director, that can cause deadlock.
+        synchronized (_director) {
+            return _readPending != null;
+        }
     }
 
-    /** Return true if this receiver is write blocked; return false
-     *  otherwise.
-     *
-     *  @return True if this receiver is write blocked; return
-     *   false otherwise.
+    /** Return a true or false to indicate whether there is a write block
+     *  on this receiver or not.
+     *  @return A boolean indicating whether a write is blocked  on this
+     *  receiver or not.
      */
     public boolean isWriteBlocked() {
-        return _writeBlocked;
-    }
-
-    /** Prepare to register a block. If the branch object specified as
-     *  a parameter is non-null then register the block with the branch.
-     *  If the branch object specified as a parameter is null then
-     *  register the block with the local director.
-     *
-     *  @param branch The Branch managing execution of this method.
-     */
-    public synchronized void prepareToBlock(Branch branch) {
-        if (branch != null) {
-            branch.registerReceiverBlocked(this);
-            _otherBranch = branch;
-        } else {
-            DDEDirector director = ((DDEDirector) ((Actor) (getContainer()
-                    .getContainer())).getDirector());
-            director._actorBlocked(this);
-            _otherBranch = branch;
+        // NOTE: This method used to be synchronized on this
+        // receiver, but since it is called by synchronized methods in
+        // the director, that can cause deadlock.
+        synchronized (_director) {
+            return _writePending != null;
         }
     }
 
     /** Clear this receiver of any contained tokens.
      */
     public void clear() {
+        // FIXME
         //queue.clear();
     }
 
@@ -518,28 +468,6 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *   to cease.
      */
     public void put(Token token) {
-        put(token, (Branch) null);
-    }
-
-    /** Do a blocking write on the queue. Set the time stamp to be
-     *  the current time of the sending actor. If the current time
-     *  is greater than the completionTime of this receiver, then
-     *  set the time stamp to INACTIVE and the token to null. If the
-     *  queue is full then perform a blocking write until room becomes
-     *  available. If the specified branch object parameter is null
-     *  then register blocking writes with the local director. If
-     *  the specified branch object is non-null then register blocking
-     *  writes with the branch object.
-     *  <P>
-     *  If at any point during this method this receiver is scheduled
-     *  for termination, then throw a TerminateProcessException which
-     *  will cease activity for the actor that contains this receiver.
-     *  @param token The token to put in the queue.
-     *  @param branch The branch that monitors blocking write activity.
-     *  @exception TerminateProcessException If activity is scheduled
-     *   to cease.
-     */
-    public void put(Token token, Branch branch) {
         Thread thread = Thread.currentThread();
         Time time = _lastTime;
 
@@ -548,7 +476,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
             time = timeKeeper.getOutputTime();
         }
 
-        put(token, time, branch);
+        put(token, time);
     }
 
     /** Do a blocking write on the queue. Set the time stamp to be
@@ -568,24 +496,6 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *   to cease.
      */
     public void put(Token token, Time time) {
-        put(token, time, null);
-    }
-
-    /** Do a blocking write on the queue. If at any point during
-     *  this method this receiver is scheduled for termination,
-     *  then throw a TerminateProcessException which will cease
-     *  activity for the actor that contains this receiver. If
-     *  the specified time stamp of the token is greater than the
-     *  completionTime of this receiver, then set the time stamp
-     *  to INACTIVE. If the queue is full, then inform the director
-     *  that this receiver is blocking on a write and wait until
-     *  room becomes available. When room becomes available, put
-     *  the token and time stamp in the queue and inform the director
-     *  that the block no longer exists.
-     *  @param token The token to put on the queue.
-     *  @param time The time stamp associated with the token.
-     */
-    public void put(Token token, Time time, Branch branch) {
         Workspace workspace = getContainer().workspace();
 
         synchronized (this) {
@@ -593,8 +503,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
                     && (_getCompletionTime().getDoubleValue() != ETERNITY)
                     && !_terminate) {
                 try {
-                    time = new Time(((Actor) getContainer().getContainer()
-                            .getContainer()).getDirector(), INACTIVE);
+                    time = new Time(_director, INACTIVE);
                 } catch (IllegalActionException e) {
                     // If the time resolution of the director is invalid,
                     // it should have been caught before this.
@@ -605,20 +514,20 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
             if (super.hasRoom() && !_terminate) {
                 super.put(token, time);
 
-                if (_readBlocked) {
-                    wakeUpBlockedPartner();
-                    _readBlocked = false;
-                    notifyAll();
+                // If any thread is blocked on a get(), then it will become
+                // unblocked. Notify the director now so that there isn't a
+                // spurious deadlock detection.
+                if (_readPending != null) {
+                    _director.threadUnblocked(_readPending, this, DDEDirector.READ_BLOCKED);
+                    _readPending = null;
                 }
-
                 return;
             }
 
             if (!super.hasRoom() && !_terminate) {
-                _writeBlocked = true;
-                wakeUpBlockedPartner();
-
-                while (_writeBlocked && !_terminate) {
+                _writePending = Thread.currentThread();
+                _director.threadBlocked(_writePending, this, DDEDirector.WRITE_BLOCKED);
+                while ((_writePending != null) && !_terminate) {
                     try {
                         workspace.wait(this);
                     } catch (InterruptedException e) {
@@ -629,17 +538,17 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
             }
 
             if (_terminate) {
-                if (_writeBlocked) {
-                    _writeBlocked = false;
-                    prepareToBlock(branch);
+                if (_writePending != null) {
+                    _director.threadUnblocked(_writePending, this, DDEDirector.WRITE_BLOCKED);
+                    _writePending = null;
                 }
 
                 throw new TerminateProcessException(getContainer(),
-                        "This receiver has been terminated " + "during _put()");
+                        "This receiver has been terminated during _put()");
             }
         }
 
-        put(token, time, branch);
+        put(token, time);
     }
 
     /** Schedule this receiver to terminate. After this method is
@@ -658,31 +567,51 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      */
     public void reset() {
         super.reset();
+        if (_readPending != null) {
+            _director.threadUnblocked(_readPending, this, DDEDirector.READ_BLOCKED);
+        }
+        if (_writePending != null) {
+            _director.threadUnblocked(_writePending, this, DDEDirector.WRITE_BLOCKED);
+        }
         _terminate = false;
-        _readBlocked = false;
-        _writeBlocked = false;
         _hasTokenCache = false;
         _boundaryDetector.reset();
     }
 
-    /** Unblock this receiver and register this new state with
-     *  either the monitoring branch or the local director. If
-     *  there is no blocked branch waiting, then register the
-     *  new state with the local director; otherwise, register
-     *  the new state with the blocked branch.
+    /** Set the container. This overrides the base class to record
+     *  the director.
+     *  @param port The container.
+     *  @exception IllegalActionException If the container is not of
+     *   an appropriate subclass of IOPort, or if the container's director
+     *   is not an instance of DDEDirector.
      */
-    public synchronized void wakeUpBlockedPartner() {
-        if (_otherBranch != null) {
-            _otherBranch.registerReceiverUnBlocked(this);
+    public void setContainer(IOPort port) throws IllegalActionException {
+        super.setContainer(port);
+
+        Actor actor = (Actor) port.getContainer();
+        Director director;
+
+        // For a composite actor,
+        // the receiver type of an input port is decided by
+        // the executive director.
+        // While the receiver type of an output is decided by the director.
+        // NOTE: getExecutiveDirector() and getDirector() yield the same
+        // result for actors that do not contain directors.
+        if (port.isInput()) {
+            director = actor.getExecutiveDirector();
         } else {
-            DDEDirector director = ((DDEDirector) ((Actor) (getContainer()
-                    .getContainer())).getDirector());
-            director._actorUnBlocked(this);
+            director = actor.getDirector();
         }
 
-        notifyAll();
-    }
+        if (!(director instanceof DDEDirector)) {
+            throw new IllegalActionException(port,
+                    "Cannot use an instance of PNQueueReceiver "
+                            + "since the director is not a PNDirector.");
+        }
 
+        _director = (DDEDirector) director;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                     package friendly methods              ////
 
@@ -704,17 +633,26 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private boolean _terminate = false;
+    
+    /** The boundary detector. */
+    private BoundaryDetector _boundaryDetector;
+    
+    /** The director in charge of this receiver. */
+    private DDEDirector _director;
 
-    private boolean _readBlocked = false;
-
-    private boolean _writeBlocked = false;
-
-    private boolean _hideNullTokens = true;
-
+    /** Indicator of the result of the most recent call to hasToken(). */
     private boolean _hasTokenCache = false;
 
-    private BoundaryDetector _boundaryDetector;
+    /** Reference to a thread that is read blocked on this receiver. */
+    private Thread _readPending = null;
 
-    private Branch _otherBranch = null;
+    /** Flag indicating that termination has been requested. */
+    private boolean _terminate = false;
+
+    /** Reference to a thread that is write blocked on this receiver. */
+    private Thread _writePending = null;
+
+    // FIXME: Comments and ordering
+    private boolean _hideNullTokens = true;
+
 }

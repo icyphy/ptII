@@ -138,9 +138,13 @@ public abstract class AbstractBranchController implements Debuggable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Mark a branch blocked.
+    /** Notify the director that the current thread is blocked.
      */
-    protected abstract void _branchBlocked(CSPReceiver receiver);
+    protected void _branchBlocked(CSPReceiver receiver) {
+        synchronized(_internalLock) {
+            _getDirector().threadBlocked(Thread.currentThread(), receiver);
+        }
+    }
 
     /** Register the calling branch as failed. This reduces the count
      *  of active branches, and if all the active branches have
@@ -185,9 +189,13 @@ public abstract class AbstractBranchController implements Debuggable {
         }
     }
 
-    /** Mark the branch unblocked.
+    /** Notify the director that the current thread is unblocked.
      */
-    protected abstract void _branchUnblocked(CSPReceiver receiver);
+    protected void _branchUnblocked(CSPReceiver receiver) {
+        synchronized(_internalLock) {
+            _getDirector().threadUnblocked(Thread.currentThread(), receiver);
+        }
+    }
 
     /** Send a debug message to all debug listeners that have registered.
      *  By convention, messages should not include a newline at the end.

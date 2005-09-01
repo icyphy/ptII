@@ -31,6 +31,7 @@ package ptolemy.actor.process;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
@@ -127,7 +128,7 @@ public class Branch implements Runnable {
      *  @return The consumer receiver that this branch puts data into.
      *  @see ptolemy.actor.process.BoundaryDetector
      */
-    public ProcessReceiver getConsReceiver() {
+    public ProcessReceiver getConsumerReceiver() {
         return _consumerReceiver;
     }
 
@@ -136,7 +137,7 @@ public class Branch implements Runnable {
      * @return The producer receiver that this branch gets data from.
      * @see ptolemy.actor.process.BoundaryDetector
      */
-    public ProcessReceiver getProdReceiver() {
+    public ProcessReceiver getProducerReceiver() {
         return _producerReceiver;
     }
 
@@ -148,38 +149,9 @@ public class Branch implements Runnable {
         return _active;
     }
 
-    /** Register that the receiver controlled by this branch
-     *  is blocked. The blocked receiver, either the producer
-     *  or consumer receiver (but not both) are passed as an
-     *  argument according to which one is blocked.
-     *
-     *  @param receiver The receiver assigned to this branch that
-     *   is blocked.
-     */
-    public void registerReceiverBlocked(ProcessReceiver receiver) {
-        if (!_receiverBlocked) {
-            _receiverBlocked = true;
-            _controller._branchBlocked(receiver);
-        }
-    }
-
-    /** Register that the receiver controlled by this branch
-     *  is no longer blocked.
-     *
-     *  @param receiver The receiver assigned to this branch for
-     *   which a block is being removed.
-     */
-    public void registerReceiverUnBlocked(ProcessReceiver receiver) {
-        if (_receiverBlocked) {
-            _receiverBlocked = false;
-            _controller._branchUnBlocked(receiver);
-        }
-    }
-
     /** Repeatedly transfer a single token between the producer
      *  receiver and the consumer receiver as long as the branch
      *  is active or until a TerminateProcessException is thrown.
-     *  NOTE: This method could probably be more efficient.
      */
     public void run() {
         try {
@@ -188,8 +160,11 @@ public class Branch implements Runnable {
             while (isActive()) {
                 transferToken();
             }
-        } catch (TerminateProcessException e) {
-            return;
+        } catch (IllegalActionException exception) {
+            // FIXME: Is this the right thing to do?
+            throw new InternalErrorException(exception);
+        } finally {
+            _controller._getDirector().removeThread(Thread.currentThread());
         }
     }
 
@@ -206,22 +181,23 @@ public class Branch implements Runnable {
      *  consumer receiver. If either the producer receiver or
      *  consumer receiver is null then return without attempting
      *  token transfer.
+     *  @exception IllegalActionException If the token is not acceptable
+     *   to one of the ports (e.g., wrong type).
      */
-    public void transferToken() {
+    public void transferToken() throws IllegalActionException {
         if (_producerReceiver == null) {
             return;
         } else if (_consumerReceiver == null) {
             return;
         }
 
-        Token token = _producerReceiver.get(this);
-        _consumerReceiver.put(token, this);
+        Token token = _producerReceiver.get();
+        _consumerReceiver.put(token);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     private boolean _active = false;
 
     private BranchController _controller;
@@ -229,6 +205,4 @@ public class Branch implements Runnable {
     private ProcessReceiver _producerReceiver;
 
     private ProcessReceiver _consumerReceiver;
-
-    private boolean _receiverBlocked = false;
 }

@@ -264,7 +264,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     receiver._setConditionalReceive(true, controller, getID());
                     
                     // FIXME: Is this necessary?
-                    masterReceiver.notifyAll();
+                    // masterReceiver.notifyAll();
 
                     // Wait for something to happen.
                     if (_debugging) {
@@ -281,6 +281,8 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         } catch (TerminateProcessException ex) {
             receiver._setConditionalReceive(false, null, -1);
             controller._branchFailed(getID());
+        } finally {
+            receiver._getDirector().removeThread(Thread.currentThread());
         }
     }
 

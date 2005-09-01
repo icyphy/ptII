@@ -100,50 +100,22 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         reset();
     }
 
-    /** Get a token from the mailbox receiver and specify a null
-     *  Branch to control the execution of this method. This method
-     *  does not return until the rendezvous has been completed. If
-     *  this receiver is in a receiver group, then this method does
-     *  not return until all rendezvous in the group have completed.
-     *  <p>
+    /** Get a token from this receiver. This method
+     *  does not return until the rendezvous has been completed.
      *  This method is internally synchronized on either this
      *  receiver, or if this receiver is in a group, on the first
      *  receiver in the group.
      *  @return The token contained by this receiver.
      */
     public Token get() {
-        return get(null);
-    }
-
-    /** Retrieve a Token from the receiver by rendezvous. This method
-     *  does not return until the rendezvous has been completed. If
-     *  this receiver is in a receiver group, then this method does
-     *  not return until all rendezvous in the group have completed.
-     *  If a put has already been reached, it notifies the waiting put
-     *  and waits for the rendezvous to complete. When the rendezvous is
-     *  complete it returns with the token.
-     *  If a put has not yet been reached, the method delays until a
-     *  put is reached.
-     *  It is assumed that at most one process is trying to receive
-     *  from and send to the channel associated with this receiver.
-     *  <p>
-     *  This method is internally synchronized on either this
-     *  receiver, or if this receiver is in a group, on the first
-     *  receiver in the group.
-     *
-     *  @return The token transferred by the rendezvous.
-     *  @exception TerminateProcessException If execution termination
-     *   has been requested, or if the execution is abruptly terminated
-     *   from the outside (via an InterruptedException).
-     */
-    public Token get(Branch branch) {
         Object lock = _getLock();
         synchronized(lock) {
             Token result = null;
             try {
-                if (_putWaiting) {
+                if (_putWaiting != null) {
+                    Thread otherThread = _putWaiting;
                     // This will unblock the put() thread.
-                    _putWaiting = false;
+                    _putWaiting = null;
                     // Notify the director that the put() is no longer blocked.
                     // NOTE: This should be done here rather than
                     // in the put() method because since the put()
@@ -151,7 +123,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     // take arbitrarily long for it to resume and
                     // notify the director. This could result in
                     // spurious deadlock detection.
-                    _putUnblocked();
+                    _getDirector().threadUnblocked(otherThread, this);
 
                     result = _token;
                     // When the corresponding put() completes, it will reset this to true.
@@ -159,17 +131,15 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     // This will wake up the put() thread.
                     lock.notifyAll();
                     
-                    // Wait for the put() thread to wake up,
-                    // and also for all the rendezvous in the group
-                    // to complete.
-                    while (!_isRendezvousComplete()) {
+                    // Wait for the put() thread to wake up.
+                    while (!_rendezvousComplete) {
                         _checkFlagsAndWait();
                     }
                 } else {
                     // System.out.println("++++++++ get got here first");
 
                     // get() got there first, so have to wait for a put;
-                    _getWaiting = true;
+                    _getWaiting = Thread.currentThread();
                     // Notify the director that we are blocked.
                     // NOTE: Should not mark this blocked if
                     // there is a pending conditional send.
@@ -179,7 +149,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     // This can cause a spurious deadlock detection.
                     if (!_isConditionalSendWaiting()) {
                         // System.out.println("++++++++ no conditional send waiting. Mark blocked.");
-                        _getBlocked(branch);
+                        _getDirector().threadBlocked(Thread.currentThread(), this);
                     }
                     // Wake other receivers, possibly causing a conditional
                     // send to call put(), which will result in resetting
@@ -202,7 +172,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
                     // System.out.println("++++++++ waiting to clear _getWaiting.");
 
-                    while (_getWaiting) {
+                    while (_getWaiting != null) {
                         _checkFlagsAndWait();
                     }
                     _checkFlags();
@@ -216,28 +186,19 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     _rendezvousComplete = true;
 
                     // Notify any receivers that might be waiting for
-                    // a multi-way rendevous to complete.
+                    // the rendevous to complete.
                     lock.notifyAll();
-                    
-                    // System.out.println("++++++++ waiting for rendezvous to complete on " + this);
-
-                    // In case this is a multi-way rendezvous,
-                    // need to wait for all of them to complete.
-                    while (!_isRendezvousComplete()) {
-                        // System.out.println("+++++++++ _rendezvousComplete: " + _rendezvousComplete);
-                        _checkFlagsAndWait();
-                    }
-                    // System.out.println("++++++++ complete");
                 }
             } catch (InterruptedException ex) {
                 throw new TerminateProcessException(
                         "CSPReceiver.get() interrupted.");
             } finally {
-                if (_getWaiting) {
+                if (_getWaiting != null) {
                     // If the _getWaiting flag is still true, then this
                     // process was blocked, woken up and terminated.
                     // Notify the director that this is unblocked.
-                    _getUnblocked();
+                    _getDirector().threadUnblocked(_getWaiting, this);
+                    _getWaiting = null;
                 }
             }
             return result;
@@ -382,7 +343,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     public boolean isReadBlocked() {
         synchronized(_getLock()) {
-            return _getWaiting || _conditionalReceiveWaiting;
+            return (_getWaiting != null) || _conditionalReceiveWaiting;
         }
     }
 
@@ -393,66 +354,34 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     public boolean isWriteBlocked() {
         synchronized(_getLock()) {
-            return _putWaiting || _conditionalSendWaiting;
+            return (_putWaiting != null) || _conditionalSendWaiting;
         }
     }
 
-    /** Put a token into the mailbox receiver and specify a null
-     *  Branch to control the execution of this method.
-     *  <p>
-     *  If this receiver is a member of a receiver group, then
-     *  a put to this receiver is a put to all receivers in the
-     *  group, and this method returns only when the puts are all
-     *  complete.
-     *  <p>
+    /** Put a token into the mailbox receiver. This method does
+     *  not return until the rendezvous is complete.
      *  This method is internally synchronized on either this
      *  receiver, or if this receiver is in a group, on the first
      *  receiver in the group.
      *  @param token The token.
      */
     public void put(Token token) {
-        put(token, null);
-    }
-
-    /** Place a Token into the receiver via rendezvous. This method
-     *  does not return until the rendezvous has been completed.
-     *  If get has already been reached, it notifies the waiting get
-     *  and waits for the rendezvous to complete. When the rendezvous is
-     *  complete it returns.
-     *  If a get has not yet been reached, the method delays until a
-     *  get is reached.
-     *  It is assumed that at most one process is trying to receive
-     *  from and send to the channel associated with this receiver.
-     *  <p>
-     *  If this receiver is a member of a receiver group, then
-     *  this method returns only when puts are all complete on
-     *  the members of the group.
-     *  <p>
-     *  This method is internally synchronized on either this
-     *  receiver, or if this receiver is in a group, on the first
-     *  receiver in the group.
-     *  @param token The token being transferred in the rendezvous.
-     *  @param branch The branch, or null if this is not part of a
-     *   conditional branch.
-     *  @exception TerminateProcessException If execution termination
-     *   has been requested, or if the execution is abruptly terminated
-     *   from the outside (via an InterruptedException).
-     */
-    public void put(Token token, Branch branch) {
         Object lock = _getLock();
         synchronized(lock) {
             try {
                 // Perform the transfer.
                 _token = token;
 
-                if (_getWaiting) {
+                if (_getWaiting != null) {
                     
                     // System.out.println("-------- get waiting");
                     
-                    // A get() is waiting on this receiver.
                     // Reset the get waiting flag in this thread
                     // rather than the other one.
-                    _getWaiting = false;
+                    Thread otherThread = _getWaiting;
+                    _getWaiting = null;
+                    
+                    // A get() is waiting on this receiver.
                     // Notify the director that the get() is no longer blocked.
                     // NOTE: This should be done here rather than
                     // in the get() method because since the get()
@@ -460,7 +389,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     // take arbitrarily long for it to resume and
                     // notify the director. This could result in
                     // spurious deadlock detection.
-                    _getUnblocked();
+                    _getDirector().threadUnblocked(otherThread, this);
 
                     // Wake up the waiting get(s).
                     lock.notifyAll();
@@ -470,7 +399,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     // System.out.println("-------- waiting for rendezvous to complete on " + this);
                     // When the corresponding get() completes, it will reset this to true.
                     _rendezvousComplete = false;
-                    while (!_isRendezvousComplete()) {
+                    while (!_rendezvousComplete) {
                         _checkFlagsAndWait();
                     }
                     // System.out.println("-------- rendezvous complete");
@@ -478,15 +407,15 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     return;
                 } else {
                     // No get() is waiting on this receiver.
-                    _putWaiting = true;
+                    _putWaiting = Thread.currentThread();
                     // NOTE: Should not mark this blocked if
                     // there is a pending conditional receive.
                     // If we do, then between now and when the
                     // conditional receive gets converted into
-                    // a get(), this branch is marked as blocked.
+                    // a get(), this thread is marked as blocked.
                     // This can cause a spurious deadlock detection.
                     if (!_isConditionalReceiveWaiting()) {
-                        _putBlocked(branch);
+                        _getDirector().threadBlocked(_putWaiting, this);
                     }
                     // There might be a conditional receive pending,
                     // in which case, we wake it up. It will see that
@@ -503,31 +432,25 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     // If _putWaiting is still true, then there
                     // was no conditional receiver, or it wasn't chosen.
                     // Wait for the corresponding get() to occur.
-                    while (_putWaiting) {
+                    while (_putWaiting != null) {
                         _checkFlagsAndWait();
                     }
                     _checkFlags();
                     _rendezvousComplete = true;
                     // Notify any receivers that might be waiting for
-                    // a multi-way rendezvous to complete.
+                    // the rendezvous to complete.
                     lock.notifyAll();
-                    
-                    // If this receiver is in a group, some
-                    // of the rendezvous may not yet be complete.
-                    while (!_isRendezvousComplete()) {
-                        _checkFlagsAndWait();
-                    }
                     return;
                 }
             } catch (InterruptedException ex) {
                 throw new TerminateProcessException(
                         "CSPReceiver.put() interrupted.");
             } finally {
-                if (_putWaiting) {
+                if (_putWaiting != null) {
                     // If the put is still marked as waiting, then
                     // process was blocked, awakened and terminated.
                     // Notify the director that this actor is not blocked.
-                    _putUnblocked();
+                    _getDirector().threadUnblocked(_putWaiting, this);
                 }
             }            
         }
@@ -603,19 +526,22 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 Thread putThread = new Thread(name) {
                     public void run() {
                         // System.out.println("**** starting thread on: " + CSPDirector._receiverStatus(receiver));
-                        IOPort port = receiver.getContainer();
                         try {
+                            IOPort port = receiver.getContainer();
                             receiver.put(port.convert(token));
                         } catch (IllegalActionException e) {
                             _exception = e;
                         } catch (TerminateProcessException e) {
                             // Ignore this one, as this is the normal
                             // to stop this thread.
+                        } finally {
+                            _getDirector().removeThread(this);
                         }
                         // System.out.println("**** exiting thread on: " + CSPDirector._receiverStatus(receiver));
                     }
                 };
                 threads.add(putThread);
+                _getDirector().addThread(putThread);
                 putThread.start();
             }
         }
@@ -631,7 +557,9 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             // return until all are complete.  However, each of the put
             // calls blocks on the completion of the rendezvous, and they
             // have to return in some order. This ensures that this thread
-            // finishes last.
+            // finishes last.  First notify the director that this
+            // actor is blocked.
+            _getDirector().threadBlocked(Thread.currentThread(), this);
             Iterator threadsIterator = threads.iterator();
             while (threadsIterator.hasNext()) {
                 Thread thread = (Thread) threadsIterator.next();
@@ -641,6 +569,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     // Ignore and continue to the next thread.
                 }
             }
+            _getDirector().threadUnblocked(Thread.currentThread(), this);
         }
         // System.out.println("**** put() returned on: " + CSPDirector._receiverStatus(this));
         if (_exception != null) {
@@ -660,8 +589,14 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             // Need to reset the state of the receiver.
             _setConditionalReceive(false, null, -1);
             _setConditionalSend(false, null, -1);
-            _putWaiting = false;
-            _getWaiting = false;
+            if (_putWaiting != null) {
+                _getDirector().threadUnblocked(_putWaiting, this);
+            }
+            if (_getWaiting != null) {
+                _getDirector().threadUnblocked(_getWaiting, this);
+            }
+            _putWaiting = null;
+            _getWaiting = null;
             _rendezvousComplete = false;
             
             // Wake up any pending threads. EAL 12/04
@@ -674,14 +609,13 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     public void reset() {
         Object lock = _getLock();
         synchronized(lock) {
-            _getWaiting = false;
-            _putWaiting = false;
+            _getWaiting = null;
+            _putWaiting = null;
             _conditionalReceiveWaiting = false;
             _setConditionalSend(false, null, -1);
             _rendezvousComplete = false;
             _setModelFinished(false);
             _boundaryDetector.reset();
-            _groupBlocked = 0;
         }
     }
 
@@ -724,7 +658,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         }
     }
 
-    /** The controller of the conditional branch to reach the
+    /** Return the controller of the conditional branch to reach the
      *  rendezvous point first. For a rendezvous to occur when both
      *  communications at the receiver are from conditional branches,
      *  then the rendezvous can only proceed if <I>both</I> the branches
@@ -749,6 +683,30 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         return _otherID;
     }
 
+    /** Return the director that is controlling the execution of this model.
+     *  If this receiver is an inside receiver, then it is the director
+     *  of the container (actor) of the container (port). Otherwise, it
+     *  is the executive director of the container (actor) of the container
+     *  (port).
+     *  @return The CSPDirector controlling this model.
+     */
+    protected CSPDirector _getDirector() {
+        try {
+            Actor container = (Actor) getContainer().getContainer();
+            if (isInsideBoundary()) {
+                return (CSPDirector) container.getDirector();
+            } else {
+                return (CSPDirector) container.getExecutiveDirector();
+            }
+        } catch (NullPointerException ex) {
+            // If a thread has a reference to a receiver with no director it
+            // is an error so terminate the process.
+            throw new TerminateProcessException("CSPReceiver: trying to "
+                    + " rendezvous with a receiver with no "
+                    + "director => terminate.");
+        }
+    }
+    
     /** Cancel a relationship with a group of receivers.
      *  If a group has been previously specified, then
      *  this will cancel the group relationship for all
@@ -763,9 +721,10 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         }
     }
 
-    /** Specify a group of receivers. These receivers will
-     *  henceforth implement multi-way rendezvous. If
-     *  the argument is null or a length 0 or 1 array, this
+    /** Specify a group of receivers. Specificically, this
+     *  method should be called with all receivers that are
+     *  involved in a multi-way and/or conditional rendezvous.
+     *  If the argument is null or a length 0 or 1 array, this
      *  method does nothing. This method must be called
      *  while there are no pending put() or get() or
      *  conditional send or receive.
@@ -805,7 +764,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @return True if a get() is waiting to rendezvous.
      */
     protected boolean _isGetWaiting() {
-        return _getWaiting;
+        return _getWaiting != null;
     }
 
     /** Flag indicating whether or not a put() is waiting to rendezvous
@@ -813,7 +772,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @return True if a put() is waiting to rendezvous.
      */
     protected boolean _isPutWaiting() {
-        return _putWaiting;
+        return _putWaiting != null;
     }
 
     /** Set a flag so that a ConditionalReceive branch knows whether or
@@ -879,141 +838,11 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         }
     }
     
-    /** Return true if the rendezvous is complete. If this receiver
-     *  is a member of a group, then this returns true only if the
-     *  rendezvous is complete for all receivers in the group.
-     *  @return True if the rendezvous is complete.
-     */
-    private boolean _isRendezvousComplete() {
-        if (_group == null) {
-            return _rendezvousComplete;
-        } else {
-            for (int i = 0; i < _group.length; i++) {
-                // If any member of the group is not waiting,
-                // we can return false.
-                if (!((CSPReceiver)_group[i])._rendezvousComplete) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-
-    /** Return the director that is controlling the execution of this model.
-     *  If this receiver is an inside receiver, then it is the director
-     *  of the container (actor) of the container (port). Otherwise, it
-     *  is the executive director of the container (actor) of the container
-     *  (port).
-     *  @return The CSPDirector controlling this model.
-     */
-    private CSPDirector _getDirector() {
-        try {
-            Actor container = (Actor) getContainer().getContainer();
-            if (isInsideBoundary()) {
-                return (CSPDirector) container.getDirector();
-            } else {
-                return (CSPDirector) container.getExecutiveDirector();
-            }
-        } catch (NullPointerException ex) {
-            // If a thread has a reference to a receiver with no director it
-            // is an error so terminate the process.
-            throw new TerminateProcessException("CSPReceiver: trying to "
-                    + " rendezvous with a receiver with no "
-                    + "director => terminate.");
-        }
-    }
-    
-    /** If this receiver is involved in a branch, then mark the receiver blocked;
-     *  otherwise, mark the actor blocked.
-     *  @param branch The branch.
-     */
-    private void _getBlocked(Branch branch) {
-        synchronized(_getLock()) {
-            if (branch != null) {
-                branch.registerReceiverBlocked(this);
-            } else {
-                _getDirector()._actorBlocked(this);
-            }
-            _otherBranch = branch;
-        }
-    }
-
-    /** If this receiver is involved in a branch, then mark the receiver unblocked;
-     *  otherwise, mark the actor unblocked.
-     */
-    private void _getUnblocked() {
-        Object lock = _getLock();
-        synchronized(lock) {
-            if (_otherBranch != null) {
-                _otherBranch.registerReceiverUnBlocked(this);
-            } else {
-                _getDirector()._actorUnBlocked(this);
-            }
-            lock.notifyAll();
-        }
-    }
-
-    /** If this receiver is involved in a branch, then mark the receiver blocked;
-     *  otherwise, if this receiver is in a receiver group
-     *  and the actor is not already marked  blocked, then mark the actor blocked;
-     *  otherwise, mark the actor blocked.
-     *  @param branch The branch.
-     */
-    private void _putBlocked(Branch branch) {
-        synchronized(_getLock()) {
-            if (branch != null) {
-                branch.registerReceiverBlocked(this);
-            } else {
-                if (_group != null) {
-                    if (((CSPReceiver)_group[0])._groupBlocked == 0) {
-                        _getDirector()._actorBlocked(this);                        
-                    }
-                    ((CSPReceiver)_group[0])._groupBlocked++;
-                } else {
-                    _getDirector()._actorBlocked(this);
-                }
-            }
-            _otherBranch = branch;
-        }
-    }
-
-    /** If this receiver is involved in a branch, then mark the receiver unblocked;
-     *  otherwise if this receiver is in a receiver group, and the actor is not
-     *  already marked blocked, then marked the actor blocked;
-     *  otherwise, mark the actor unblocked.
-     */
-    private void _putUnblocked() {
-        Object lock = _getLock();
-        synchronized(lock) {
-            if (_otherBranch != null) {
-                _otherBranch.registerReceiverUnBlocked(this);
-            } else {
-                if (_group != null) {
-                    ((CSPReceiver)_group[0])._groupBlocked--;
-                    if (((CSPReceiver)_group[0])._groupBlocked == 0) {
-                        _getDirector()._actorUnBlocked(this);                        
-                    }
-                } else {
-                    _getDirector()._actorUnBlocked(this);
-                }
-            }
-            lock.notifyAll();
-        }
-    }
-
-    /** Indicate that the model has finished executing. If this
-     *  receiver is part of the group, then the indication is provided
-     *  to all members of the group.
+    /** Indicate that the model has finished executing.
      *  @param finished True to indicate that the model is finished.
      */
     private void _setModelFinished(boolean finished) {
-        if (_group == null) {
-            _modelFinished = finished;
-        } else {
-            for (int i = 0; i < _group.length; i++) {
-                ((CSPReceiver)_group[i])._modelFinished = finished;
-            }
-        }        
+        _modelFinished = finished;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -1030,8 +859,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     /** Exception that might be set in putToAll(). */
     private IllegalActionException _exception = null;
     
-    /** Flag indicating whether or not a get is waiting at this receiver. */
-    private boolean _getWaiting = false;
+    /** Thread blocked on a get(), if any. */
+    private Thread _getWaiting = null;
 
     /** Group of receivers for multi-way rendezvous.
      *  NOTE: This really should be a CSPReceiver[], but
@@ -1041,11 +870,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     private Receiver[] _group;
     
-    /** Count of the number of threads in a group send
-     *  (a multiway rendezvous) that are blocked.
-     */
-    private int _groupBlocked = 0;
-
     /** Flag indicating that any subsequent attempts to rendezvous
      * at this receiver should cause the attempting processes to terminate.
      */
@@ -1058,8 +882,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     private int _otherID = -1;
 
-    /** Flag indicating whether or not a get is waiting at this receiver. */
-    private boolean _putWaiting = false;
+    /** Thread waiting on a put(), if any. */
+    private Thread _putWaiting = null;
 
     /** Flag indicating whether state of rendezvous. */
     private boolean _rendezvousComplete = false;

@@ -69,14 +69,12 @@ test DDEReceiver-1.1 {Constructors} {
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
     set ddeActor [java::new ptolemy.domains.dde.kernel.DDEActor $toplevel "DDEActor"]
     set ioPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $ddeActor "IOPort"]
-    set r1 [java::new ptolemy.domains.dde.kernel.DDEReceiver]
     $ioPort setName IOPort1
     set r2 [java::new ptolemy.domains.dde.kernel.DDEReceiver $ioPort]
     set r3 [java::new ptolemy.domains.dde.kernel.DDEReceiver $ioPort 1]
-    list [describeBoundary $r1] \
-	[[$r2 getContainer] toString] [describeBoundary $r2] \
+    list [[$r2 getContainer] toString] [describeBoundary $r2] \
 	[[$r3 getContainer] toString] [describeBoundary $r3] \
-} {{0 0 0 0 0 0 1} {ptolemy.domains.dde.kernel.DDEIOPort {..DDEActor.IOPort1}} {0 0 0 0 0 0 1} {ptolemy.domains.dde.kernel.DDEIOPort {..DDEActor.IOPort1}} {0 0 0 0 0 0 1}}
+} {{ptolemy.domains.dde.kernel.DDEIOPort {..DDEActor.IOPort1}} {0 0 0 0 0 0 1} {ptolemy.domains.dde.kernel.DDEIOPort {..DDEActor.IOPort1}} {0 0 0 0 0 0 1}}
 
 test DDEReceiver-1.2 {Constructors: make sure that the priorities are used} {
     set wspc [java::new ptolemy.kernel.util.Workspace]

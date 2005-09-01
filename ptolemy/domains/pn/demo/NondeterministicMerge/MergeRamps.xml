@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MergeRamps" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
@@ -35,7 +35,7 @@
         </property>
     </property>
     <entity name="Merge" class="ptolemy.domains.pn.kernel.NondeterministicMerge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 160.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -58,7 +58,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 145.0]">
         </property>
     </entity>
     <entity name="Scale2" class="ptolemy.actor.lib.Scale">
@@ -68,7 +68,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 205.0]">
         </property>
     </entity>
     <entity name="Scale3" class="ptolemy.actor.lib.Scale">
@@ -78,7 +78,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 260.0}">
         </property>
     </entity>
     <entity name="Scale4" class="ptolemy.actor.lib.Scale">
@@ -88,7 +88,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 315.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">

@@ -86,14 +86,6 @@ public class ProcessThread extends PtolemyThread {
         _director = director;
         _manager = actor.getManager();
 
-        // This method is called here and not in the run() method as the
-        // count should be incremented before any thread is started
-        // or made active. This is because the second started thread might
-        // block on a read or write to this process and increment the block
-        // count even before this thread has incremented the active count.
-        // This results in false deadlocks.
-        _director._increaseActiveCount();
-
         if (_actor instanceof NamedObj) {
             _name = ((NamedObj) _actor).getFullName();
             addDebugListener((NamedObj) _actor);
@@ -103,6 +95,14 @@ public class ProcessThread extends PtolemyThread {
 
         // Set the name of the thread to the full name of the actor.
         setName(_name);
+
+        // This method is called here and not in the run() method as the
+        // count should be incremented before any thread is started
+        // or made active. This is because the second started thread might
+        // block on a read or write to this process and increment the block
+        // count even before this thread has incremented the active count.
+        // This results in false deadlocks.
+        _director.addThread(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,7 +144,7 @@ public class ProcessThread extends PtolemyThread {
                     synchronized (_director) {
                         // Tell the director we're stopped (necessary
                         // for deadlock detection).
-                        _director._actorHasStopped();
+                        _director.threadHasPaused(this);
 
                         while (_director.isStopFireRequested()) {
                             // If a stop has been requested, in addition
@@ -165,10 +165,13 @@ public class ProcessThread extends PtolemyThread {
                             }
                         }
 
-                        _director._actorHasRestarted();
+                        _director.threadHasResumed(this);
                     }
 
                     _debug("-- Thread resuming.");
+                }
+                if (_director.isStopRequested()) {
+                    break;
                 }
 
                 // container is checked for null to detect the
@@ -183,47 +186,60 @@ public class ProcessThread extends PtolemyThread {
         } catch (Throwable t) {
             thrownWhenIterate = t;
         } finally {
-            try {
-                wrapup();
-            } catch (IllegalActionException e) {
-                thrownWhenWrapup = e;
-            } finally {
-                // let the director know that this thread stopped
-                _director._decreaseActiveCount();
-                _debug("-- Thread stopped.");
-
-                boolean rethrow = false;
-
-                if (thrownWhenIterate instanceof TerminateProcessException) {
-                    // Process was terminated.
-                    _debug("-- Blocked Receiver call threw TerminateProcessException.");
-                } else if (thrownWhenIterate instanceof InterruptedException) {
-                    // Process was terminated by call to stop();
-                    _debug("-- Thread was interrupted: " + thrownWhenIterate);
-                } else if (thrownWhenIterate instanceof InterruptedIOException
-                        || ((thrownWhenIterate != null) && thrownWhenIterate
-                                .getCause() instanceof InterruptedIOException)) {
-                    // PSDF has problems here when run with JavaScope
-                    _debug("-- IO was interrupted: " + thrownWhenIterate);
-                } else if (thrownWhenIterate instanceof IllegalActionException) {
-                    _debug("-- Exception: " + thrownWhenIterate);
-                    _manager
-                            .notifyListenersOfException((IllegalActionException) thrownWhenIterate);
-                } else if (thrownWhenIterate != null) {
-                    rethrow = true;
-                }
-
-                if (thrownWhenWrapup instanceof IllegalActionException) {
-                    _debug("-- Exception: " + thrownWhenWrapup);
-                    _manager
-                            .notifyListenersOfException((IllegalActionException) thrownWhenWrapup);
-                } else if (thrownWhenWrapup != null) {
-                    // Must be a runtime exception.
-                    // Call notifyListenerOfThrowable() here so that
-                    // the stacktrace appears in the UI and not in stderr.
-                    _manager.notifyListenersOfThrowable(thrownWhenWrapup);
-                } else if (rethrow) {
-                    _manager.notifyListenersOfThrowable(thrownWhenIterate);
+            // Let the director know that this thread stopped.
+            // This is synchronized to prevent a race condition
+            // where the director might conclude before the
+            // call to wrapup() below.
+            synchronized(_director) {
+                _director.removeThread(this);
+                try {
+                    // NOTE: Deadlock risk here.
+                    // Holding a lock on the _director during wrapup()
+                    // might cause deadlock with hierarchical models where
+                    // wrapup() waits for internal actors to conclude,
+                    // doing a wait() on its own internal director.
+                    // Meanwhile, this thread will hold a lock on this
+                    // outside director.  As long as the inside model
+                    // doesn't try to access synchronized methods of
+                    // outside director, this may be OK.
+                    wrapup();
+                } catch (IllegalActionException e) {
+                    thrownWhenWrapup = e;
+                } finally {
+                    _debug("-- Thread stopped.");
+                    
+                    boolean rethrow = false;
+                    
+                    if (thrownWhenIterate instanceof TerminateProcessException) {
+                        // Process was terminated.
+                        _debug("-- Blocked Receiver call threw TerminateProcessException.");
+                    } else if (thrownWhenIterate instanceof InterruptedException) {
+                        // Process was terminated by call to stop();
+                        _debug("-- Thread was interrupted: " + thrownWhenIterate);
+                    } else if (thrownWhenIterate instanceof InterruptedIOException
+                            || ((thrownWhenIterate != null) && thrownWhenIterate
+                                    .getCause() instanceof InterruptedIOException)) {
+                        // PSDF has problems here when run with JavaScope
+                        _debug("-- IO was interrupted: " + thrownWhenIterate);
+                    } else if (thrownWhenIterate instanceof IllegalActionException) {
+                        _debug("-- Exception: " + thrownWhenIterate);
+                        _manager
+                        .notifyListenersOfException((IllegalActionException) thrownWhenIterate);
+                    } else if (thrownWhenIterate != null) {
+                        rethrow = true;
+                    }
+                    
+                    if (thrownWhenWrapup instanceof IllegalActionException) {
+                        _debug("-- Exception: " + thrownWhenWrapup);
+                        _manager.notifyListenersOfException((IllegalActionException) thrownWhenWrapup);
+                    } else if (thrownWhenWrapup != null) {
+                        // Must be a runtime exception.
+                        // Call notifyListenerOfThrowable() here so that
+                        // the stacktrace appears in the UI and not in stderr.
+                        _manager.notifyListenersOfThrowable(thrownWhenWrapup);
+                    } else if (rethrow) {
+                        _manager.notifyListenersOfThrowable(thrownWhenIterate);
+                    }
                 }
             }
         }

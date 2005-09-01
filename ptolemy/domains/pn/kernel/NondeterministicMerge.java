@@ -36,6 +36,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
@@ -53,8 +54,8 @@ import ptolemy.kernel.util.StringAttribute;
 /**
  This actor takes any number of input streams and merges them
  nondeterministically.  This actor is intended for use in the
- PN domain. Itis a composite actor that
- creates its own contents.  It contains a PNDirector and one
+ PN domain. It is a composite actor that
+ creates its own contents.  It contains an instance of PNDirector and one
  actor for each input channel (it creates these actors automatically
  when a connection is created to the input multiport).  The contained
  actors are special actors (implemented as an instance of an inner class)
@@ -285,80 +286,161 @@ public class NondeterministicMerge extends TypedCompositeActor {
             super(container, name);
         }
 
-        // Return false since this director has nothing to do
-        // in its iteration loop, unless pause has been requested,
-        // in which case we need to be able to iterate again to
-        // wake up paused actors.
+        /** Override the base class to delegate to the executive director.
+         *  This director does not keep track of threads.
+         *  @param thread The thread.
+         */
+        public synchronized void addThread(Thread thread) {
+            Director director = getExecutiveDirector();
+            if (director instanceof PNDirector) {
+                ((PNDirector) director).addThread(thread);
+            } else {
+                throw new InternalErrorException(
+                        "NondeterministicMerge actor can only execute" +
+                        " under the control of a PNDirector!");
+            }
+        }
+        
+        /** Do nothing.
+         */
+        public void fire() {
+        }
+
+        /** Return false since this director has nothing to do.
+         *  @return False.
+         */
         public boolean postfire() {
-            // FIXME: The problem with this is that threads do
-            // not get re-awakened after a pause because that
-            // is apparently in done in prefire() of the
-            // director, which will never again be invoked.
-            // Can we check here whether postfire() is
-            // being called because we are pausing?
-            if (_debugging) {
-                _debug("Called postfire().");
-            }
-
-            if (_stopFireRequested && !_stopRequested) {
-                if (_debugging) {
-                    _debug("postfire() returns true.");
-                }
-
-                return true;
-            }
-
-            // FIXME: This is going to return false immediately
-            // because fire() returns immediately.
-            if (_debugging) {
-                _debug("postfire() returns false.");
-            }
-
             return false;
         }
 
-        // Override this to notify the containing director only.
-        // This local director does not keep a count of active
-        // actors. It delegates this to the enclosing director.
-        protected void _actorHasRestarted() {
+        /** Override the base class to delegate to the executive director.
+         *  This director does not keep track of threads.
+         *  @param thread The thread.
+         */
+        public synchronized void removeThread(Thread thread) {
             Director director = getExecutiveDirector();
-
             if (director instanceof PNDirector) {
-                ((PNDirector) director)._actorHasRestarted();
+                ((PNDirector) director).removeThread(thread);
+            } else {
+                throw new InternalErrorException(
+                        "NondeterministicMerge actor can only execute" +
+                        " under the control of a PNDirector!");
             }
         }
 
-        // Override this to notify the containing director as well.
-        // This local director does not keep a count of active
-        // actors. It delegates this to the enclosing director.
-        protected void _actorHasStopped() {
+        /** Override the base class to delegate to the executive director.
+         *  This director does not keep track of threads.
+         *  @param thread The thread.
+         *  @param receiver The receiver handling the I/O operation,
+         *   or null if it is not a specific receiver.
+         *  @see #threadBlocked(Thread)
+         */
+        public synchronized void threadBlocked(
+                Thread thread, ProcessReceiver receiver) {
             Director director = getExecutiveDirector();
-
             if (director instanceof PNDirector) {
-                ((PNDirector) director)._actorHasStopped();
+                ((PNDirector) director).threadBlocked(thread, receiver);
+            } else {
+                throw new InternalErrorException(
+                        "NondeterministicMerge actor can only execute" +
+                        " under the control of a PNDirector!");
             }
         }
 
-        // Override this to notify the containing director as well.
-        // This local director does not keep a count of active
-        // actors. It delegates this to the enclosing director.
-        protected void _decreaseActiveCount() {
+        /** Override the base class to delegate to the executive director.
+         *  This director does not keep track of threads.
+         *  @param thread The thread.
+         *  @param receiver The receiver handling the I/O operation,
+         *   or null if it is not a specific receiver.
+         *  @param readOrWrite Either READ_BLOCKED or WRITE_BLOCKED
+         *   to indicate whether the thread is blocked on read or write.
+         *  @see #threadBlocked(Thread)
+         */
+        public synchronized void threadBlocked(
+                Thread thread, ProcessReceiver receiver, boolean readOrWrite) {
             Director director = getExecutiveDirector();
-
             if (director instanceof PNDirector) {
-                ((PNDirector) director)._decreaseActiveCount();
+                ((PNDirector) director).threadBlocked(thread, receiver, readOrWrite);
+            } else {
+                throw new InternalErrorException(
+                        "NondeterministicMerge actor can only execute" +
+                        " under the control of a PNDirector!");
             }
         }
 
-        // Override this to notify the containing director as well.
-        // This local director does not keep a count of active
-        // actors. It delegates this to the enclosing director.
-        protected void _increaseActiveCount() {
+        /** Override the base class to delegate to the executive director.
+         *  This director does not keep track of threads.
+         *  @param thread The thread.
+         */
+        public synchronized void threadHasPaused(Thread thread) {
             Director director = getExecutiveDirector();
-
             if (director instanceof PNDirector) {
-                ((PNDirector) director)._increaseActiveCount();
+                ((PNDirector) director).threadHasPaused(thread);
+            } else {
+                throw new InternalErrorException(
+                        "NondeterministicMerge actor can only execute" +
+                        " under the control of a PNDirector!");
             }
+        }
+
+        /** Override the base class to delegate to the executive director.
+         *  This director does not keep track of threads.
+         *  @param thread The thread.
+         */
+        public synchronized void threadHasResumed(Thread thread) {
+            Director director = getExecutiveDirector();
+            if (director instanceof PNDirector) {
+                ((PNDirector) director).threadHasResumed(thread);
+            } else {
+                throw new InternalErrorException(
+                        "NondeterministicMerge actor can only execute" +
+                        " under the control of a PNDirector!");
+            }
+        }
+
+        /** Override the base class to delegate to the executive director.
+         *  This director does not keep track of threads.
+         *  @param thread The thread.
+         *  @param receiver The receiver handling the I/O operation,
+         *   or null if it is not a specific receiver.
+         *  @see #threadBlocked(Thread)
+         */
+        public synchronized void threadUnblocked(
+                Thread thread, ProcessReceiver receiver) {
+            Director director = getExecutiveDirector();
+            if (director instanceof PNDirector) {
+                ((PNDirector) director).threadUnblocked(thread, receiver);
+            } else {
+                throw new InternalErrorException(
+                        "NondeterministicMerge actor can only execute" +
+                        " under the control of a PNDirector!");
+            }
+        }
+
+        /** Override the base class to delegate to the executive director.
+         *  This director does not keep track of threads.
+         *  @param thread The thread.
+         *  @param receiver The receiver handling the I/O operation,
+         *   or null if it is not a specific receiver.
+         *  @param readOrWrite Either READ_BLOCKED or WRITE_BLOCKED
+         *   to indicate whether the thread is blocked on read or write.
+         *  @see #threadBlocked(Thread)
+         */
+        public synchronized void threadUnblocked(
+                Thread thread, ProcessReceiver receiver, boolean readOrWrite) {
+            Director director = getExecutiveDirector();
+            if (director instanceof PNDirector) {
+                ((PNDirector) director).threadUnblocked(thread, receiver, readOrWrite);
+            } else {
+                throw new InternalErrorException(
+                        "NondeterministicMerge actor can only execute" +
+                        " under the control of a PNDirector!");
+            }
+        }
+
+        /** Do nothing.
+         */
+        public void wrapup() {
         }
 
         // Override since deadlock cannot ever occur internally.
@@ -367,7 +449,6 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 _debug("Deadlock is not real as "
                         + "NondeterministicMerge can't deadlock.");
             }
-
             return true;
         }
     }

@@ -263,15 +263,6 @@ public class CSPDirector extends CompositeProcessDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Increase the count of blocked processes and check if the actors
-     *  are deadlocked or stopped.
-     *  @param receiver The receiver causing the actor to be blocked.
-     */
-    protected synchronized void _actorBlocked(CSPReceiver receiver) {
-        // NOTE: This is here to expose the method to the package.
-        super._actorBlocked(receiver);
-    }
-
     /** Called by a CSPActor when it wants to delay. When the
      *  director has advanced time to "getCurrentTime() + delta", the process
      *  corresponding to the actor will continue. Note that actors
@@ -306,19 +297,11 @@ public class CSPDirector extends CompositeProcessDirector implements
         }
     }
 
-    /** An actor has unblocked, decrease the count of blocked actors.
-     *  @param receiver The receiver that has become unblocked.
-     */
-    protected synchronized void _actorUnBlocked(CSPReceiver receiver) {
-        // This is here to expose the method to the package.
-        super._actorUnBlocked(receiver);
-    }
-
     /** Returns true if all active processes are either blocked or
      *  delayed, false otherwise.
      */
     protected synchronized boolean _areActorsDeadlocked() {
-        if (_getActiveActorsCount() == (_getBlockedActorsCount() + _actorsDelayed)) {
+        if (_getActiveThreadsCount() == (_getBlockedActorsCount() + _actorsDelayed)) {
             return true;
         }
 
@@ -336,35 +319,6 @@ public class CSPDirector extends CompositeProcessDirector implements
         return (_getActiveActorCount() == (_getStoppedActorCount() + _getBlockedActorCount() + _actorsDelayed));
     }
     */
-
-    /** Decrease by one the count of active processes under the control of
-     *  this director.
-     *  This method should be called only when an active thread that was
-     *  registered using _increaseActiveCount() is terminated.
-     *  This count is used to detect deadlocks for termination and other
-     *  reasons.
-     */
-    protected synchronized void _decreaseActiveCount() {
-        // This trivial override is here only to make
-        // the method accessible within the package.
-        // This is needed to support forked sends.
-        super._decreaseActiveCount();
-    }
-    
-    /** Increase the count of active actors in the composite actor
-     *  corresponding to this director by 1. This method should be
-     *  called when a new thread corresponding to an actor is started
-     *  in the model under the control of this director. This method
-     *  is required for detection of deadlocks.
-     *  The corresponding method _decreaseActiveCount should be called
-     *  when the thread is terminated.
-     */
-    protected synchronized void _increaseActiveCount() {
-        // This trivial override is here only to make
-        // the method accessible within the package.
-        // This is needed to support forked sends.
-        super._increaseActiveCount();
-    }
 
     /** Return a string describing the status of each receiver.
      *  @return A string describing the status of each receiver.
@@ -487,7 +441,7 @@ public class CSPDirector extends CompositeProcessDirector implements
                     done = true;
                 }
             }
-        } else if (_getBlockedActorsCount() == _getActiveActorsCount()) {
+        } else if (_getBlockedActorsCount() == _getActiveThreadsCount()) {
             // Report deadlock.
             Parameter suppress = (Parameter)getContainer().getAttribute(
                     "SuppressDeadlockReporting", Parameter.class);

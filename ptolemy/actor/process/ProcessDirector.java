@@ -28,6 +28,7 @@
  */
 package ptolemy.actor.process;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -117,6 +118,26 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Notify this director that the specified thread is part of
+     *  the execution of this model. This is used
+     *  to keep track of whether the model is deadlocked, and also to
+     *  terminate threads if necessary. It is important that the thread
+     *  call _removeThread() upon exiting. Note further that this
+     *  should be called before the thread is started to avoid race
+     *  conditions where some threads have been started and others
+     *  have not been started and deadlock is falsely detected because
+     *  the not-yet-started threads are not counted.
+     *  @param thread The thread.
+     *  @see #removeThread(Thread)
+     */
+    public synchronized void addThread(Thread thread) {
+        _activeThreads.add(thread);
+        if (_debugging) {
+            _debug("Adding a thread: " + thread.getName());
+        }
+        notifyAll();
+    }
+
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (It must be added
      *  by the user if he wants it to be there).
@@ -130,9 +151,10 @@ public class ProcessDirector extends Director {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ProcessDirector newObject = (ProcessDirector) super.clone(workspace);
-        newObject._activeActorCount = 0;
-        newObject._actorThreadList = new LinkedList();
-        newObject._blockedActorCount = 0;
+        // Is it really necessary to do this?
+        newObject._blockedThreads = new HashSet();
+        newObject._pausedThreads = new HashSet();
+        newObject._activeThreads = new HashSet();
         newObject._notDone = true;
         return newObject;
     }
@@ -148,9 +170,17 @@ public class ProcessDirector extends Director {
         }
 
         Workspace workspace = workspace();
+        
+        // In case we have an eclosing process director,
+        // we identify it so that we can notify it when we are blocked.
+        CompositeActor container = (CompositeActor)getContainer();
+        Director outsideDirector = container.getExecutiveDirector();
+        if (!(outsideDirector instanceof ProcessDirector)) {
+            outsideDirector = null;
+        }
 
         synchronized (this) {
-            while (!_areActorsDeadlocked() && !_areAllActorsStopped()) {
+            while (!_areActorsDeadlocked() && !_areAllActorsStopped() && !_stopRequested) {
                 // Added to get thread to stop reliably on pushing stop button.
                 // EAL 8/05
                 if (_stopRequested) {
@@ -161,14 +191,22 @@ public class ProcessDirector extends Director {
                 }
 
                 try {
+                    if (outsideDirector != null) {
+                        ((ProcessDirector)outsideDirector).threadBlocked(
+                                Thread.currentThread(), null);
+                    }
                     workspace.wait(this);
                 } catch (InterruptedException e) {
                     // stop all threads
                     stop();
                     return;
+                } finally {
+                    if (outsideDirector != null) {
+                        ((ProcessDirector)outsideDirector).threadUnblocked(
+                                Thread.currentThread(), null);
+                    }
                 }
             }
-
             if (_debugging) {
                 _debug("Actors have stopped.");
             }
@@ -204,7 +242,6 @@ public class ProcessDirector extends Director {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _stoppedActorCount = 0;
     }
 
     /** Initialize the given actor.  This class overrides the base
@@ -237,9 +274,9 @@ public class ProcessDirector extends Director {
             }
         }
 
-        // Initialize threads
-        ProcessThread processThread = _getProcessThread(actor, this);
-        _actorThreadList.addFirst(processThread);
+        // Create threads.
+        ProcessThread processThread = new ProcessThread(actor, this);
+        _activeThreads.add(processThread);
         _newActorThreadList.addFirst(processThread);
     }
 
@@ -302,19 +339,16 @@ public class ProcessDirector extends Director {
     public boolean prefire() throws IllegalActionException {
         // Clear the stopFire flag and trigger all of the actor threads.
         _stopFireRequested = false;
-
         synchronized (this) {
             notifyAll();
         }
-
+        // Start threads for actors created since the last invocation
+        // of this prefire() method.
         Iterator threads = _newActorThreadList.iterator();
-        threads = _newActorThreadList.iterator();
-
         while (threads.hasNext()) {
             ProcessThread procThread = (ProcessThread) threads.next();
             procThread.start();
         }
-
         _newActorThreadList.clear();
 
         return true;
@@ -330,11 +364,29 @@ public class ProcessDirector extends Director {
      */
     public void preinitialize() throws IllegalActionException {
         _notDone = true;
-        _activeActorCount = 0;
-        _blockedActorCount = 0;
-        _actorThreadList = new LinkedList();
+        _activeThreads.clear();
+        _blockedThreads.clear();
+        _pausedThreads.clear();
         _newActorThreadList = new LinkedList();
         super.preinitialize();
+    }
+
+    /** Notify this director that the specified thread has finished
+     *  executing. This is used to keep track of whether the model
+     *  is deadlocked, and also to terminate threads if necessary.
+     *  @param thread The thread.
+     *  @see #addThread(Thread)
+     */
+    public synchronized void removeThread(Thread thread) {
+        if (_debugging) {
+            _debug("Thread "
+                    + thread.getName()
+                    + " is exiting.");
+        }
+        _activeThreads.remove(thread);
+        _pausedThreads.remove(thread);
+        _blockedThreads.remove(thread);
+        notifyAll();
     }
 
     /** Request that the director cease execution altogether.
@@ -348,43 +400,38 @@ public class ProcessDirector extends Director {
         // Set this before calling stopThread(), in case the thread
         // needs to distinguish between stopFire() and this method.
         if (_debugging) {
-            _debug("stop() has been called. Active thread count is: "
-                    + _activeActorCount);
+            _debug("Requesting stop of all threads.");
         }
 
         _stopRequested = true;
         _stopFireRequested = true;
 
-        if (_actorThreadList != null) {
-            Iterator threads = _actorThreadList.iterator();
-
-            while (threads.hasNext()) {
-                ProcessThread thread = (ProcessThread) threads.next();
-
-                try {
-                    thread.getActor().stop();
-
-                    // I'm not sure why we need the interrupt here...but it
-                    // seems to help.
-                    thread.interrupt();
-                } catch (Exception ex) {
-                    // Ignore..  probably InterruptedIOException
-                }
+        // Need to copy the active threads set because
+        // when stop() is called on each thread, the
+        // set itself is modified. We could get a
+        // ConcurrentModificationException.
+        LinkedList threadsCopy = new LinkedList(_activeThreads);
+        Iterator threads = threadsCopy.iterator();
+        while (threads.hasNext()) {
+            Thread thread = (Thread) threads.next();
+            if (thread instanceof ProcessThread) {
+                // NOTE: We used to catch and ignore all exceptions
+                // here, but that doesn't look right to me. EAL 8/05.
+                ((ProcessThread)thread).getActor().stop();                    
             }
+            // NOTE: Used to call thread.interrupt() here, with a comment
+            // about how it probably wasn't necessary.  But
+            // in applets, this gives a security violation.
+            // If threads fail to stop, the probably the call
+            // below to _requestFinishOnReceivers() isn't doing its
+            // job.
         }
-        
         // Added to get stop button to work consistently the first time.
         // EAL 8/05
         _requestFinishOnReceivers();
-        // Create a notification thread so that this returns immediately.
-        Thread notifyThread = new Thread() {
-            public void run() {
-                synchronized(ProcessDirector.this) {
-                    ProcessDirector.this.notifyAll();
-                }                
-            }
-        };
-        notifyThread.start();
+        // Create a notification thread so that this returns immediately
+        // (doesn't have to get a synchronized lock).
+        (new NotifyThread(this)).start();
     }
 
     /** Request that execution stop at the conclusion of the current
@@ -397,27 +444,22 @@ public class ProcessDirector extends Director {
         if (_debugging) {
             _debug("stopFire() has been called.");
         }
-
         _stopFireRequested = true;
-
-        if (_actorThreadList != null) {
-            Iterator threads = _actorThreadList.iterator();
-
-            while (threads.hasNext()) {
-                ProcessThread thread = (ProcessThread) threads.next();
-                thread.getActor().stopFire();
+        Iterator threads = _activeThreads.iterator();
+        while (threads.hasNext()) {
+            Thread thread = (Thread) threads.next();
+            if (thread instanceof ProcessThread) {
+                ((ProcessThread)thread).getActor().stopFire();
             }
         }
     }
 
-    /** Terminates all threads under control of this director immediately.
+    /** Terminate all threads under control of this director immediately.
      *  This abrupt termination will not allow normal cleanup actions
      *  to be performed, and the model should be recreated after calling
-     *  this method.
+     *  this method. This method uses Thread.stop(), a deprecated method
+     *  in Java.
      */
-
-    //  Note: for now call Thread.stop() but should change to use
-    //  Thread.destroy() when it is eventually implemented.
     public void terminate() {
         // First need to invoke terminate on all actors under the
         // control of this director.
@@ -425,13 +467,74 @@ public class ProcessDirector extends Director {
 
         // Now stop any threads created by this director.
         LinkedList list = new LinkedList();
-        list.addAll(_actorThreadList);
-        _actorThreadList.clear();
+        list.addAll(_activeThreads);
+        _activeThreads.clear();
 
         Iterator threads = list.iterator();
-
         while (threads.hasNext()) {
             ((Thread) threads.next()).stop();
+        }
+    }
+    
+    /** Notify the director that the specified thread is blocked
+     *  on an I/O operation.  If the thread has
+     *  not been registered with addThread(), then this call is
+     *  ignored.
+     *  @param thread The thread.
+     *  @param receiver The receiver handling the I/O operation,
+     *   or null if it is not a specific receiver.
+     *  @see #addThread(Thread)
+     */
+    public synchronized void threadBlocked(
+            Thread thread, ProcessReceiver receiver) {
+        if (_activeThreads.contains(thread) && !_blockedThreads.contains(thread)) {
+            _blockedThreads.add(thread);
+            notifyAll();
+        }
+    }
+
+    /** Notify the director that the specified thread has paused
+     *  in response to a call to stopFire().  If the thread has
+     *  not been registered with addThread(), then this call is
+     *  ignored. If the thread has been identified as blocked,
+     *  it is removed from the set of blocked threads (so it
+     *  doesn't get counted twice).
+     *  @param thread The thread.
+     *  @see #addThread(Thread)
+     */
+    public synchronized void threadHasPaused(Thread thread) {
+        if (_activeThreads.contains(thread) && !_pausedThreads.contains(thread)) {
+            _pausedThreads.add(thread);
+            _blockedThreads.remove(thread);
+            notifyAll();
+        }
+    }
+
+    /** Notify the director that the specified thread has resumed.
+     *  If the director has not previously been notified that it was
+     *  paused, then this call is ignored.
+     *  @param thread The thread.
+     *  @see #threadHasPaused(Thread)
+     */
+    public synchronized void threadHasResumed(Thread thread) {
+        if (_pausedThreads.remove(thread)) {
+            notifyAll();
+        }
+    }
+
+    /** Notify the director that the specified thread is unblocked
+     *  on an I/O operation.  If the thread has
+     *  not been registered with threadBlocked(), then this call is
+     *  ignored.
+     *  @param thread The thread.
+     *  @param receiver The receiver handling the I/O operation,
+     *   or null if it is not a specific receiver.
+     *  @see #threadBlocked(Thread)
+     */
+    public synchronized void threadUnblocked(
+            Thread thread, ProcessReceiver receiver) {
+        if (_blockedThreads.remove(thread)) {
+            notifyAll();
         }
     }
 
@@ -487,9 +590,9 @@ public class ProcessDirector extends Director {
             manager.notifyAll();
         }
 
-        // Wait until all process threads stop.
+        // Wait until all threads stop.
         synchronized (this) {
-            while (_activeActorCount > 0) {
+            while (_activeThreads.size() > 0) {
                 try {
                     workspace().wait(this);
                 } catch (InterruptedException ex) {
@@ -502,187 +605,43 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Increase the count of blocked actors by one and register the
-     *  receiver that instigated the newly blocked actor. This method
-     *  may be overridden in derived classes to added domain specific
-     *  functionality. Implementations of this method must be synchronized.
-     *
-     *  @param receiver The receiver whose data transfer is blocked.
-     */
-    protected synchronized void _actorBlocked(ProcessReceiver receiver) {
-        _blockedActorCount++;
-        notifyAll();
-    }
-
-    /** Increase the count of blocked actors by one and register the
-     *  receivers that instigated the newly blocked actor. This method
-     *  may be overridden in derived classes to added domain specific
-     *  functionality. Implementations of this method must be synchronized.
-     *
-     *  @param receivers The receivers whose data transfer is blocked.
-     */
-    protected synchronized void _actorBlocked(LinkedList receivers) {
-        _blockedActorCount++;
-        notifyAll();
-    }
-
-    /** Decrease the count of stopped actors by one.  This method is
-     *  called by instances of ProcessThread after detecting that the
-     *  stopFire() flag has been cleared. This method may be
-     *  overridden in derived classes to added domain specific
-     *  functionality. Implementations of this method must be
-     *  synchronized.
-     */
-    protected synchronized void _actorHasRestarted() {
-        _stoppedActorCount--;
-        notifyAll();
-    }
-
-    /** Increase the count of stopped actors by one.  This method is
-     *  called by instances of ProcessThread in response to a call to
-     *  their stopThread() method. This method may be overridden in
-     *  derived classes to added domain specific
-     *  functionality. Implementations of this method must be
-     *  synchronized.
-     */
-    protected synchronized void _actorHasStopped() {
-        _stoppedActorCount++;
-        notifyAll();
-    }
-
-    /** Decrease the count of blocked actors by one and unregister the
-     *  receiver that was previously blocked. This method may be
-     *  overridden in derived classes to added domain specific
-     *  functionality. Implementations of this method must be synchronized.
-     *
-     *  @param receiver The receiver whose data transfer was
-     *  previously blocked.
-     */
-    protected synchronized void _actorUnBlocked(ProcessReceiver receiver) {
-        _blockedActorCount--;
-        notifyAll();
-    }
-
-    /** Decrease the count of blocked actors by one and unregister the
-     *  receivers that were previously blocked. This method may be
-     *  overridden in derived classes to added domain specific
-     *  functionality. Implementations of this method must be synchronized.
-     *
-     *  @param receivers The receivers whose data transfer was
-     *  previously blocked.
-     */
-    protected synchronized void _actorUnBlocked(LinkedList receivers) {
-        _blockedActorCount--;
-        notifyAll();
-    }
-
-    /** Add a thread to the list of threads in the model.
-     *  This list is used in case of abrupt termination of the model.
-     *  @param thread The newly created thread.
-     */
-    protected synchronized void _addNewThread(ProcessThread thread) {
-        _actorThreadList.addFirst(thread);
-    }
-
     /** Return true if the count of active processes in the container is 0.
      *  Otherwise return false. Derived classes must override this method to
      *  return true to any other forms of deadlocks that they might introduce.
-     *
-     *  @return true if there are no active processes in the container.
+     *  @return True if there are no active processes in the container.
      */
     protected synchronized boolean _areActorsDeadlocked() {
-        return (_activeActorCount == 0);
+        return (_activeThreads.size() == 0);
     }
 
     /** Return true if the count of active processes equals the number
-     *  of stopped threads.  Otherwise return false.
-     *
-     *  @return true if there are no active processes in the container.
+     *  of paused and blocked threads.  Otherwise return false.
+     *  @return True if there are no active processes in the container.
      */
     protected synchronized boolean _areAllActorsStopped() {
-        return (_activeActorCount == (_stoppedActorCount + _blockedActorCount));
+        return (_getActiveThreadsCount() == (_getStoppedActorsCount() + _getBlockedActorsCount()));
     }
 
-    /** Decrease by one the count of active processes under the control of
-     *  this director.
-     *  This method should be called only when an active thread that was
-     *  registered using _increaseActiveCount() is terminated.
-     *  This count is used to detect deadlocks for termination and other
-     *  reasons.
-     */
-    protected synchronized void _decreaseActiveCount() {
-        if (_debugging) {
-            _debug("Thread "
-                    + Thread.currentThread().getName()
-                    + " is deactivating.");
-        }
-
-        _activeActorCount--;
-
-        if (_debugging) {
-            _debug("Decreasing active count to: " + _activeActorCount);
-        }
-
-        notifyAll();
-    }
-
-    /** Return the number of active processes under the control of this
+    /** Return the number of active threads under the control of this
      *  director.
-     *
-     *  @return The number of active actors.
+     *  @return The number of active threads.
      */
-    protected final synchronized long _getActiveActorsCount() {
-        return _activeActorCount;
+    protected final synchronized int _getActiveThreadsCount() {
+        return _activeThreads.size();
     }
 
-    /** Return the number of actors that are currently blocked.
-     *  @return Return the number of actors that are currently blocked.
+    /** Return the number of threads that are currently blocked.
+     *  @return Return the number of threads that are currently blocked.
      */
     protected final synchronized int _getBlockedActorsCount() {
-        return _blockedActorCount;
+        return _blockedThreads.size();
     }
 
-    /** Create a new ProcessThread for controlling the actor that
-     *  is passed as a parameter of this method. Subclasses are
-     *  encouraged to override this method as necessary for domain
-     *  specific functionality.
-     *  @param actor The actor that the created ProcessThread will
-     *   control.
-     *  @param director The director that manages the model that the
-     *   created thread is associated with.
-     *  @return Return a new ProcessThread that will control the
-     *   actor passed as a parameter for this method.
-     *  @exception IllegalActionException If creating an new ProcessThread
-     *  throws it.
-     */
-    protected ProcessThread _getProcessThread(Actor actor,
-            ProcessDirector director) throws IllegalActionException {
-        return new ProcessThread(actor, director);
-    }
-
-    /** Return the number of actors that are currently stopped.
-     *  @return Return the number of actors that are currently stopped.
+    /** Return the number of threads that are currently stopped.
+     *  @return Return the number of threads that are currently stopped.
      */
     protected final synchronized int _getStoppedActorsCount() {
-        return _stoppedActorCount;
-    }
-
-    /** Increase the count of active actors in the composite actor
-     *  corresponding to this director by 1. This method should be
-     *  called when a new thread corresponding to an actor is started
-     *  in the model under the control of this director. This method
-     *  is required for detection of deadlocks.
-     *  The corresponding method _decreaseActiveCount should be called
-     *  when the thread is terminated.
-     */
-    protected synchronized void _increaseActiveCount() {
-        _activeActorCount++;
-
-        if (_debugging) {
-            _debug("Increasing active count to: " + _activeActorCount);
-        }
-
-        notifyAll();
+        return _pausedThreads.size();
     }
 
     /** Call requestFinish() on all receviers.
@@ -741,19 +700,16 @@ public class ProcessDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Count of the number of processes that were started by this
-    // director but have not yet finished.
-    private long _activeActorCount;
 
-    // The count of blocked actors
-    private int _blockedActorCount = 0;
+    /** The set of threads that are blocked on an IO operation. */
+    private HashSet _blockedThreads = new HashSet();
 
-    // The count of stopped actors
-    private int _stoppedActorCount = 0;
+    /** The set of threads that have been paused in response to stopFire(). */
+    private HashSet _pausedThreads = new HashSet();
 
-    // The threads started by this director.
-    private LinkedList _actorThreadList;
+    /** The threads created by this director. */
+    private HashSet _activeThreads = new HashSet();
 
-    //A copy of threads started since the last invocation of prefire().
+    /** A list of threads created but not started. */
     private LinkedList _newActorThreadList;
 }

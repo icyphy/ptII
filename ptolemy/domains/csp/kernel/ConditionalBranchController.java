@@ -39,7 +39,6 @@ import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;
 
@@ -194,18 +193,19 @@ public class ConditionalBranchController extends AbstractBranchController implem
                     while (threads.hasNext()) {
                         Thread thread = (Thread) threads.next();
                         _branchesActive++;
+                        _getDirector().addThread(thread);
                         thread.start();
                     }
-
-                    _branchesStarted = _branchesActive;
 
                     if (_debugging) {
                         _debug("** Waiting for branch to succeed.");
                     }
+                    _getDirector().threadBlocked(Thread.currentThread(), null);
                     // wait for a branch to succeed
                     while ((_successfulBranch == -1) && (_branchesActive > 0)) {
                         _internalLock.wait();
                     }
+                    _getDirector().threadUnblocked(Thread.currentThread(), null);
                 }
                 // NOTE: Below used to be outside the synchronized block. Why?
                 // EAL 8/05
@@ -247,10 +247,6 @@ public class ConditionalBranchController extends AbstractBranchController implem
             }
             if (_successfulBranch == -1) {
                 // Conditional construct was ended prematurely
-                if (_blocked) {
-                    _getDirector()._actorUnBlocked(null);
-                }
-
                 throw new TerminateProcessException(((Nameable) getParent())
                         .getName()
                         + ": exiting conditional"
@@ -277,21 +273,6 @@ public class ConditionalBranchController extends AbstractBranchController implem
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Increase the count of branches that are blocked trying to rendezvous.
-     *  If all the enabled branches (for the CIF or CDO currently
-     *  being executed) are blocked, register this actor as being blocked.
-     */
-    protected void _branchBlocked(CSPReceiver receiver) {
-        synchronized (_internalLock) {
-            _branchesBlocked++;
-
-            if (_branchesBlocked == _branchesStarted) {
-                _getDirector()._actorBlocked(receiver);
-                _blocked = true;
-            }
-        }
-    }
 
     /** Register the calling branch as failed. This reduces the count
      *  of active branches, and if all the active branches have
@@ -358,33 +339,6 @@ public class ConditionalBranchController extends AbstractBranchController implem
         }
     }
 
-    /** Decrease the count of branches that are read blocked.
-     *  If the actor was previously registered as being blocked,
-     *  register this actor with the director as no longer being
-     *  blocked.
-     */
-    protected void _branchUnblocked(CSPReceiver receiver) {
-        synchronized (_internalLock) {
-            if (_blocked) {
-                if (_branchesBlocked != _branchesStarted) {
-                    throw new InternalErrorException(((Nameable) getParent())
-                            .getName()
-                            + ": blocked when not all enabled branches are "
-                            + "blocked.\nNumber of branches blocked: "
-                            + _branchesBlocked
-                            + "\nNumber of branches started: "
-                            + _branchesStarted);
-                }
-
-                // Note: acquiring a second lock, need to be careful.
-                _getDirector()._actorUnBlocked(receiver);
-                _blocked = false;
-            }
-
-            _branchesBlocked--;
-        }
-    }
-
     /** Called by ConditionalSend and ConditionalReceive to check whether
      *  the calling branch is the first branch to be ready to rendezvous.
      *  If it is, this method sets a private variable to its branch ID so that
@@ -419,11 +373,7 @@ public class ConditionalBranchController extends AbstractBranchController implem
      */
     private void _resetConditionalState() {
         synchronized (_internalLock) {
-            _blocked = false;
-            _blockedBranchReceivers.clear();
             _branchesActive = 0;
-            _branchesBlocked = 0;
-            _branchesStarted = 0;
             _branchTrying = -1;
             _successfulBranch = -1;
             _threadList = null;
@@ -433,20 +383,6 @@ public class ConditionalBranchController extends AbstractBranchController implem
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    /** Flag with value true when all branches that have been started
-     *  are blocked.
-     */
-    boolean _blocked = false;
-
-    /** A list of receivers associated with blocked branches. */
-    private LinkedList _blockedBranchReceivers = new LinkedList();
-    
-    /** The number of conditional branches that are blocked. */
-    private int _branchesBlocked = 0;
-
-    /** The number of branches that were started. */
-    private int _branchesStarted = 0;
-
     /** The ID of the branch currently trying to rendezvous. It
      *  is -1 if no branch is currently trying.
      */

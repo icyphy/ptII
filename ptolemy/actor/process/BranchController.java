@@ -82,7 +82,8 @@ public class BranchController implements Runnable {
      *  a branch controller first starts the branches it controls.
      *  Invocation of this method will cause the branches to
      *  begin transferring tokens between their assigned producer
-     *  and consumer receiver.
+     *  and consumer receiver. Each branch executes in its own
+     *  thread.
      */
     public void activateBranches() {
         // Copy the list of branches within a synchronized block,
@@ -104,7 +105,9 @@ public class BranchController implements Runnable {
 
         while (branches.hasNext()) {
             Branch branch = (Branch) branches.next();
-            branch.run();
+            Thread thread = new Thread(branch);
+            _getDirector().addThread(thread);
+            thread.start();
         }
     }
 
@@ -199,34 +202,22 @@ public class BranchController implements Runnable {
 
         Iterator branches = _branches.iterator();
         Branch branch = null;
-        ProcessReceiver bReceiver = null;
-
         while (branches.hasNext()) {
             branch = (Branch) branches.next();
             branch.setActive(false);
-            bReceiver = branch.getConsReceiver();
+            Receiver receiver = branch.getConsumerReceiver();
 
-            synchronized (bReceiver) {
-                bReceiver.notifyAll();
+            synchronized (receiver) {
+                receiver.notifyAll();
             }
 
-            bReceiver = branch.getProdReceiver();
+            receiver = branch.getProducerReceiver();
 
-            synchronized (bReceiver) {
-                bReceiver.notifyAll();
+            synchronized (receiver) {
+                receiver.notifyAll();
             }
         }
-
         notifyAll();
-    }
-
-    /** Returned a linked list of the blocked receivers associated
-     *  with this branch controller.
-     *  @return A linked list of the blocked receivers associated
-     *   with this branch controller.
-     */
-    public LinkedList getBlockedReceivers() {
-        return _blockedReceivers;
     }
 
     /** Return the list of branches controlled by this controller.
@@ -278,7 +269,6 @@ public class BranchController implements Runnable {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -289,9 +279,6 @@ public class BranchController implements Runnable {
      *  branch controller is notified.
      */
     public void run() {
-        // NOTE: This used to be synchronized, but this could
-        // cause deadlock because the lock would be held during
-        // the run.
         try {
             activateBranches();
 
@@ -328,50 +315,12 @@ public class BranchController implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Increase the count of branches that are blocked trying to do
-     *  a read or write and register the receiver instigating the
-     *  blocked branch. If all the assigned branches are blocked,
-     *  then this branch controller will be registered as blocked with
-     *  the controlling director.
-     *  @param receiver The process receiver that is being registered
-     *   as blocked.
-     */
-    protected void _branchBlocked(ProcessReceiver receiver) {
-        synchronized (this) {
-            _branchesBlocked++;
-            _blockedReceivers.addFirst(receiver);
-            notifyAll();
-        }
-    }
-
-    /** Decrease the count of branches that are read or write blocked
-     *  and note the receiver that is no longer blocked. If the branch
-     *  controller was previously registered as being blocked, register
-     *  this branch controller with the director as no longer being
-     *  blocked.
-     *  @param receiver  The receiver to be removed from the list of
-     *  blocked receivers.
-     */
-    protected void _branchUnBlocked(ProcessReceiver receiver) {
-        synchronized (this) {
-            if (_branchesBlocked > 0) {
-                _branchesBlocked--;
-            }
-
-            _blockedReceivers.remove(receiver);
-            notifyAll();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     /** Return the director that controls the execution of this
      *  branch controller's containing composite actor.
      *  @return The composite process director that is associated
      *   with this branch controller's container.
      */
-    private CompositeProcessDirector _getDirector() {
+    protected CompositeProcessDirector _getDirector() {
         try {
             return (CompositeProcessDirector) _parentActor.getDirector();
         } catch (NullPointerException ex) {
@@ -383,6 +332,9 @@ public class BranchController implements Runnable {
                     + "receiver that does not have a director");
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Return true if this branch controller has input ports associated
      *  with it; return false otherwise.
@@ -435,8 +387,6 @@ public class BranchController implements Runnable {
     private LinkedList _branches = new LinkedList();
 
     private LinkedList _ports = new LinkedList();
-
-    private LinkedList _blockedReceivers = new LinkedList();
 
     private boolean _isActive = false;
 

@@ -28,6 +28,7 @@
 package ptolemy.domains.pn.kernel;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -36,6 +37,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.process.CompositeProcessDirector;
+import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -196,9 +198,8 @@ public class PNDirector extends CompositeProcessDirector {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PNDirector newObject = (PNDirector) super.clone(workspace);
-        newObject._readBlockCount = 0;
-        newObject._writeBlockCount = 0;
-        newObject._writeBlockedQueues = new LinkedList();
+        newObject._readBlockedQueues = new HashMap();
+        newObject._writeBlockedQueues = new HashMap();
         return newObject;
     }
 
@@ -211,9 +212,8 @@ public class PNDirector extends CompositeProcessDirector {
      */
     public void initialize() throws IllegalActionException {
         // Initialize these counts BEFORE creating threads.
-        _readBlockCount = 0;
-        _writeBlockCount = 0;
-        _writeBlockedQueues = new LinkedList();
+        _readBlockedQueues.clear();
+        _writeBlockedQueues.clear();
 
         super.initialize();
     }
@@ -261,7 +261,7 @@ public class PNDirector extends CompositeProcessDirector {
         // in the container, then the execution might restart on receiving
         // additional data.
         if (!((((CompositeActor) getContainer()).inputPortList()).isEmpty())
-                && (_getActiveActorsCount() != 0)) {
+                && (_getActiveThreadsCount() != 0)) {
             // Avoid returning false on detected deadlock.
             return !_stopRequested;
         } else {
@@ -332,57 +332,57 @@ public class PNDirector extends CompositeProcessDirector {
                 "ptolemy.domains.fsm.kernel.FSMDirector" };
     }
 
+    /** Notify the director that the specified thread is blocked
+     *  on an I/O operation.
+     *  @param thread The thread.
+     *  @param receiver The receiver handling the I/O operation,
+     *   or null if it is not a specific receiver.
+     *  @param readOrWrite Either READ_BLOCKED or WRITE_BLOCKED
+     *   to indicate whether the thread is blocked on read or write.
+     *  @see #threadBlocked(Thread)
+     */
+    public synchronized void threadBlocked(
+            Thread thread, ProcessReceiver receiver, boolean readOrWrite) {
+        if (readOrWrite == READ_BLOCKED) {
+            _readBlockedQueues.put(receiver, thread);
+        } else {
+            _writeBlockedQueues.put(receiver, thread);
+        }
+        super.threadBlocked(thread, receiver);
+    }
+
+    /** Notify the director that the specified thread is unblocked
+     *  on an I/O operation.  If the thread has
+     *  not been registered with threadBlocked(), then this call is
+     *  ignored.
+     *  @param thread The thread.
+     *  @param receiver The receiver handling the I/O operation,
+     *   or null if it is not a specific receiver.
+     *  @param readOrWrite Either READ_BLOCKED or WRITE_BLOCKED
+     *   to indicate whether the thread is blocked on read or write.
+     *  @see #threadBlocked(Thread)
+     */
+    public synchronized void threadUnblocked(
+            Thread thread, ProcessReceiver receiver, boolean readOrWrite) {
+        if (readOrWrite == READ_BLOCKED) {
+            _readBlockedQueues.remove(receiver);
+        } else {
+            _writeBlockedQueues.remove(receiver);
+        }
+        super.threadUnblocked(thread, receiver);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** Indicator that a thread is read blocked. */
+    public static boolean READ_BLOCKED = true;
+    
+    /** Indicator that a thread is write blocked. */
+    public static boolean WRITE_BLOCKED = false;
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Increase the count of stopped actors by one.  This method is
-     *  called by instances of ProcessThread in response to a call to
-     *  their stopThread() method. This method may be overridden in
-     *  derived classes to added domain specific
-     *  functionality. Implementations of this method must be
-     *  synchronized.
-     */
-    protected synchronized void _actorHasStopped() {
-        // This method is here only to make it visible within the package.
-        super._actorHasStopped();
-    }
-
-    /** Decrease the count of stopped actors by one.  This method is
-     *  called by instances of ProcessThread after detecting that the
-     *  stopFire() flag has been cleared. This method may be
-     *  overridden in derived classes to added domain specific
-     *  functionality. Implementations of this method must be
-     *  synchronized.
-     */
-    protected synchronized void _actorHasRestarted() {
-        // This method is here only to make it visible within the package.
-        super._actorHasRestarted();
-    }
-
-    /** Decrease by one the count of active processes under the control of
-     *  this director.
-     *  This method should be called only when an active thread that was
-     *  registered using _increaseActiveCount() is terminated.
-     *  This count is used to detect deadlocks for termination and other
-     *  reasons.
-     */
-    protected synchronized void _decreaseActiveCount() {
-        // This method is here only to make it visible within the package.
-        super._decreaseActiveCount();
-    }
-
-    /** Increase the count of active actors in the composite actor
-     *  corresponding to this director by 1. This method should be
-     *  called when a new thread corresponding to an actor is started
-     *  in the model under the control of this director. This method
-     *  is required for detection of deadlocks.
-     *  The corresponding method _decreaseActiveCount should be called
-     *  when the thread is terminated.
-     */
-    protected synchronized void _increaseActiveCount() {
-        // This method is here only to make it visible within the package.
-        super._increaseActiveCount();
-    }
 
     /** Double the capacity of one of the queues with the smallest
      *  capacity belonging to a receiver on which a process is blocked
@@ -406,7 +406,7 @@ public class PNDirector extends CompositeProcessDirector {
         // because of the notifyAll() call at the end.
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
-        Iterator receivers = _writeBlockedQueues.iterator();
+        Iterator receivers = _writeBlockedQueues.keySet().iterator();
 
         if (!receivers.hasNext()) {
             return;
@@ -434,7 +434,9 @@ public class PNDirector extends CompositeProcessDirector {
                     .intValue();
 
             if ((maximumCapacity > 0) && ((capacity * 2) > maximumCapacity)) {
-                String msg = "Queue size exceeds the maximum capacity in port "
+                String msg = "Queue size "
+                        + (capacity * 2)
+                        + " exceeds the maximum capacity in port "
                         + smallestCapacityQueue.getContainer().getFullName()
                         + ". Perhaps you have an unbounded queue?";
                 if (_debugging) {
@@ -452,49 +454,16 @@ public class PNDirector extends CompositeProcessDirector {
                     + smallestCapacityQueue.getCapacity());
         }
 
-        smallestCapacityQueue.setWritePending();
-        notifyAll();
+        // Need to mark any thread that is blocked on
+        // this receiver unblocked now, before the notification,
+        // or we will detect deadlock all over again and
+        // again increase the buffer sizes.
+        threadUnblocked(
+                (Thread)_writeBlockedQueues.get(smallestCapacityQueue),
+                smallestCapacityQueue,
+                WRITE_BLOCKED);
 
         return;
-    }
-
-    /** Increment by 1 the count of processes blocked while reading from a
-     *  receiver and notify all process listeners of the blocking of the
-     *  process. Check for a deadlock or pausing of the execution as a result
-     *  of the process blocking on a read. If either of them is detected,
-     *  then notify the directing thread of the same.
-     *  @param receiver The receiver that is blocked.
-     *  @param readBlocked Whether this is read or write blocked.
-     */
-    protected synchronized void _actorBlocked(PNQueueReceiver receiver,
-            boolean readBlocked) {
-        if (readBlocked) {
-            _readBlockCount++;
-        } else {
-            _writeBlockCount++;
-            _writeBlockedQueues.add(receiver);
-        }
-
-        super._actorBlocked(receiver);
-        notifyAll();
-    }
-
-    /** Decrease by 1 the count of processes blocked on a read and inform all
-     *  the process listeners that the relevant process has resumed its
-     *  execution.
-     *  @param receiver The receiver that is unblocked.
-     *  @param readBlocked Whether this is read or write blocked.
-     */
-    protected synchronized void _actorUnBlocked(PNQueueReceiver receiver,
-            boolean readBlocked) {
-        if (readBlocked) {
-            _readBlockCount--;
-        } else {
-            _writeBlockCount--;
-            _writeBlockedQueues.remove(receiver);
-        }
-
-        super._actorUnBlocked(receiver);
     }
 
     /** Resolve an artificial deadlock and return true. If the
@@ -519,13 +488,13 @@ public class PNDirector extends CompositeProcessDirector {
      *  This might be thrown by derived classes.
      */
     protected boolean _resolveInternalDeadlock() throws IllegalActionException {
-        if ((_writeBlockCount == 0) && (_readBlockCount > 0)) {
+        if ((_writeBlockedQueues.size() == 0) && (_readBlockedQueues.size() > 0)) {
             // There is a real deadlock.
             if (_debugging) {
                 _debug("Deadlock detected: no processes blocked on write, but some are blocked on read.");
             }
             return false;
-        } else if (_getActiveActorsCount() == 0) {
+        } else if (_getActiveThreadsCount() == 0) {
             // There is a real deadlock as no processes are active.
             if (_debugging) {
                 _debug("No more active processes.");
@@ -533,9 +502,9 @@ public class PNDirector extends CompositeProcessDirector {
 
             return false;
         } else {
-            //This is an artificial deadlock. Hence find the input port with
-            //lowest capacity queue that is blocked on a write and increment
-            //its capacity;
+            // This is an artificial deadlock. Hence find the input port with
+            // lowest capacity queue that is blocked on a write and increment
+            // its capacity;
             if (_debugging) {
                 _debug("Artificial Deadlock - increasing queue capacity.");
             }
@@ -547,20 +516,16 @@ public class PNDirector extends CompositeProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    //The variables are initialized at declaration, despite having an
-    //initialize() method so that the tests can be run.
 
-    /** The count of processes blocked on a read from a receiver. */
-    protected int _readBlockCount = 0;
+    /** The set of processes blocked on a read from a receiver. */
+    protected HashMap _readBlockedQueues = new HashMap();
 
-    /** The count of processes blocked on a write to a receiver. */
-    protected int _writeBlockCount = 0;
-
-    /** The list of receivers blocked on a write to a receiver. */
-    protected LinkedList _writeBlockedQueues = new LinkedList();
-
+    /** The set of receivers blocked on a write to a receiver. */
+    protected HashMap _writeBlockedQueues = new HashMap();
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         initialQueueCapacity = new Parameter(this, "initialQueueCapacity",

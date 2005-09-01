@@ -417,18 +417,21 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         Thread putThread = new Thread(name) {
                             public void run() {
                                 // System.out.println("**** starting thread on: " + CSPDirector._receiverStatus(receiver));
-                                IOPort port = receiver.getContainer();
                                 try {
+                                    IOPort port = receiver.getContainer();
                                     receiver.put(port.convert(getToken()));
                                 } catch (IllegalActionException e) {
                                     _exception = e;
                                 } catch (TerminateProcessException e) {
                                     // Ignore this one, as this is the normal
                                     // to stop this thread.
+                                } finally {
+                                    receiver._getDirector().removeThread(this);
                                 }
                             }
                         };
                         threads.add(putThread);
+                        receiver._getDirector().addThread(putThread);
                         putThread.start();
                     }
                 }
@@ -486,6 +489,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             // Make sure that the current token doesn't get used
             // in the next rendezvous.
             _setToken(null);
+            
+            // Notify the director that this thread has exited.
+            masterReceiver._getDirector().removeThread(Thread.currentThread());
         }
     }
     

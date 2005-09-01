@@ -135,70 +135,37 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     }
 
     /** Get a token from this receiver. If the receiver is empty then
-     *  block until a token becomes available. Use the local director
-     *  to manage blocking reads that occur. If this receiver is
+     *  block until a token becomes available. If this receiver is
      *  terminated during the execution of this method, then throw a
      *  TerminateProcessException.
-     *
      *  @return The token contained by this receiver.
      */
     public Token get() {
-        return get(null);
-    }
-
-    /** Remove and return the oldest token from the FIFO queue contained
-     *  in the receiver. Terminate the calling process by throwing a
-     *  TerminateProcessException if requested.
-     *  Otherwise, if the FIFO queue is empty, then suspend the calling
-     *  process and inform the director of the same.
-     *  If a new token becomes available to the FIFO queue, then resume the
-     *  suspended process.
-     *  If the queue was not empty, or on availability of a new token (calling
-     *  process was suspended), take the oldest token from the FIFO queue.
-     *  Check if any process is blocked on a write to this
-     *  receiver. If a process is indeed blocked, then unblock the
-     *  process, and inform the director of the same.
-     *  Otherwise return.
-     *  @param branch The Branch managing the execution of this method.
-     *  @return The oldest Token read from the queue
-     */
-    public Token get(Branch branch) {
-
         Token result = null;
 
         // NOTE: This method used to be synchronized on this
         // receiver, but since it calls synchronized methods in
         // the director, that can cause deadlock.
         synchronized (_director) {
-            // OK, I'm blocked on read.
-            if (null == branch) {
-                _director._actorBlocked(this, true);
-                _readNumBlocked++;
-            } else {
-                branch.registerReceiverBlocked(this);
-            }
-
             while (!_terminate) {
                 // Try to read.
                 if (super.hasToken()) {
                     result = super.get();
-                    if (null == branch) {
-                        if (_readPending) {
-                            _readPending = false;
-                        } else {
-                            _readNumBlocked--;
-                            _director._actorUnBlocked(this, true);
-                        }
-                    } else {
-                        branch.registerReceiverUnBlocked(this);
+                    // Need to mark any thread that is write blocked on
+                    // this receiver unblocked now, before any notification,
+                    // or we will detect deadlock and increase the buffer sizes.
+                    // Note that there is no need to clear the _readPending
+                    // reference because that will have been cleared by the write.
+                    if (_writePending != null) {
+                        _director.threadUnblocked(_writePending, this, PNDirector.WRITE_BLOCKED);
+                        _writePending = null;
                     }
-                    _director.notifyAll();
-                    setWritePending();
                     break;
                 }
-
                 // Wait to try again.
                 try {
+                    _readPending = Thread.currentThread();
+                    _director.threadBlocked(Thread.currentThread(), this, PNDirector.READ_BLOCKED);
                     Workspace workspace = getContainer().workspace();
                     workspace.wait(_director);
                 } catch (InterruptedException e) {
@@ -350,7 +317,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         // receiver, but since it is called by synchronized methods in
         // the director, that can cause deadlock.
         synchronized (_director) {
-            return 0 < _readNumBlocked;
+            return _readPending != null;
         }
     }
 
@@ -364,12 +331,12 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         // receiver, but since it is called by synchronized methods in
         // the director, that can cause deadlock.
         synchronized (_director) {
-            return 0 < _writeNumBlocked;
+            return _writePending != null;
         }
     }
 
     /** Put a token on the queue contained in this receiver.
-     *  If the queue is full, then suspend the calling process (blocking
+     *  If the queue is full, then suspend the calling thread (blocking
      *  write) and inform the director of the same. Resume the process on
      *  detecting room in the queue.
      *  If a termination is requested, then initiate the termination of the
@@ -381,71 +348,36 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @param token The token to be put in the receiver.
      */
     public void put(Token token) {
-        put(token, null);
-    }
-
-    /** Put a token on the queue contained in this receiver.
-     *  If the queue is full, then suspend the calling process (blocking
-     *  write) and inform the director of the same. Resume the process on
-     *  detecting room in the queue.
-     *  If a termination is requested, then initiate the termination of the
-     *  calling process by throwing a TerminateProcessException.
-     *  On detecting room in the queue, put a token in the queue.
-     *  Check whether any process is blocked
-     *  on a read from this receiver. If a process is indeed blocked, then
-     *  unblock the process, and inform the director of the same.
-     *  @param branch The Branch managing execution of this method.
-     *  @param token The token to be put in the receiver.
-     */
-    public void put(Token token, Branch branch) {
-
         // NOTE: This used to synchronize on this, but since it calls
         // director methods that are synchronized on the director,
         // this can cause deadlock.
         synchronized (_director) {
-            // OK, I'm blocked on write.
-            if (null == branch) {
-                _director._actorBlocked(this, false);
-                _writeNumBlocked++;
-            } else {
-                branch.registerReceiverBlocked(this);
-            }
-
             while (!_terminate) {
                 // Try to write.
                 if (super.hasRoom()) {
                     super.put(token);
-                    if (null == branch) {
-                        if (_writePending) {
-                            _writePending = false;
-                        } else {
-                            _writeNumBlocked--;
-                            _director._actorUnBlocked(this, false);
-                        }
-                    } else {
-                        branch.registerReceiverUnBlocked(this);
+                    // If any thread is blocked on a get(), then it will become
+                    // unblocked. Notify the director now so that there isn't a
+                    // spurious deadlock detection.
+                    if (_readPending != null) {
+                        _director.threadUnblocked(_readPending, this, PNDirector.READ_BLOCKED);
+                        _readPending = null;
                     }
-                    _director.notifyAll();
-                    // If there is not already a read pending (a put() was
-                    // previously executed, that could unblock a get(), but
-                    // the get() has not yet executed), then set a flag
-                    // indicating that a read is pending.  Also, in this
-                    // case, immediately notify the director that the read
-                    // is unblocked, even though it isn't yet, actually.
-                    // This prevents falsely identifying a deadlock when
-                    // this returns, where the read will appear to be
-                    // blocked, but actually will unblock as soon as its
-                    // thread gets a chance to run.
-                    if (!_readPending && _readNumBlocked > 0) {
-                        _readPending = true;
-                        _readNumBlocked--;
-                        _director._actorUnBlocked(this, true);
+                    // Normally, the _writePending reference will have
+                    // been cleared by the read that unblocked this write.
+                    // However, it might be that the director increased the
+                    // buffer size, which would also have the affect of unblocking
+                    // this write. Hence, we clear it here if it is set.
+                    if (_writePending != null) {
+                        _director.threadUnblocked(_writePending, this, PNDirector.WRITE_BLOCKED);
+                        _writePending = null;
                     }
                     break;
                 }
-
                 // Wait to try again.
                 try {
+                    _writePending = Thread.currentThread();
+                    _director.threadBlocked(_writePending, this, PNDirector.WRITE_BLOCKED);
                     Workspace workspace = getContainer().workspace();
                     workspace.wait(_director);
                 } catch (InterruptedException e) {
@@ -454,7 +386,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             }
 
             if (_terminate) {
-                throw new TerminateProcessException("");
+                throw new TerminateProcessException("Process terminated.");
             }
         }
     }
@@ -462,37 +394,16 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Reset the state variables in the receiver.
      */
     public void reset() {
-        _readPending = false;
-        _writePending = false;
-        _readNumBlocked = 0;
-        _writeNumBlocked = 0;
+        if (_readPending != null) {
+            _director.threadUnblocked(_readPending, this, PNDirector.READ_BLOCKED);
+        }
+        if (_writePending != null) {
+            _director.threadUnblocked(_writePending, this, PNDirector.WRITE_BLOCKED);
+        }
+        _readPending = null;
+        _writePending = null;
         _terminate = false;
         _boundaryDetector.reset();
-    }
-
-    /** If there is not already a write pending (a get() was
-     *  previously executed, that could unblock a put(), but
-     *  the put() has not yet executed, or the capacity of the
-     *  queue has been increased, but the put() has not yet
-     *  executed), then set a flag indicating that a write
-     *  is pending.  Also, in this case, immediately notify
-     *  the director that the write is unblocked, even though
-     *  it isn't yet, actually. This prevents falsely
-     *  identifying a deadlock when this returns, where the
-     *  read will appear to be blocked, but actually will
-     *  unblock as soon as its thread gets a chance to run.
-     */
-    public void setWritePending() {
-        // NOTE: This method used to be synchronized on this
-        // receiver, but since it calls synchronized methods in
-        // the director, that can cause deadlock.
-        synchronized (_director) {
-            if (!_writePending && 0 < _writeNumBlocked) {
-                _writePending = true;
-                _writeNumBlocked--;
-                _director._actorUnBlocked(this, false);
-            }
-        }
     }
 
     /** Set a flag in the receiver to indicate the onset of termination.
@@ -515,14 +426,13 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** The director in charge of this receiver. */
     private PNDirector _director;
 
-    private boolean _readPending = false;
+    /** Reference to a thread that is read blocked on this receiver. */
+    private Thread _readPending = null;
 
-    private boolean _writePending = false;
+    /** Reference to a thread that is write blocked on this receiver. */
+    private Thread _writePending = null;
 
-    private int _readNumBlocked = 0;
-
-    private int _writeNumBlocked = 0;
-
+    /** Flag indicating whether finish has been requested. */
     private boolean _terminate = false;
 
     private Branch _otherBranch = null;

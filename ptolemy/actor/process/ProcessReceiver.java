@@ -29,7 +29,6 @@
 package ptolemy.actor.process;
 
 import ptolemy.actor.Receiver;
-import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessReceiver
@@ -95,21 +94,9 @@ import ptolemy.data.Token;
 
  */
 public interface ProcessReceiver extends Receiver {
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Get a token from this receiver and pass in a branch object as
-     *  an argument. This method can accommodate blocking reads at the
-     *  boundary of composite actors. If the branch argument is not
-     *  null it is assumed that the receiver is at or connected to
-     *  the boundary of a composite actor and any blocks are
-     *  registered with the branch. If the branch is null than the
-     *  receiver is not associated with a composite actor boundary
-     *  and blocks are registered with a director.
-     *  @param controllingBranch  The controlling branch.
-     *  @return The token from this receiver.
-     */
-    public Token get(Branch controllingBranch);
 
     /** Return true if this receiver is connected to the inside of a
      *  boundary port. A boundary port is an opaque port that is
@@ -213,19 +200,6 @@ public interface ProcessReceiver extends Receiver {
      *   false otherwise.
      */
     public boolean isWriteBlocked();
-
-    /** Put a token into this receiver and pass in a branch object as
-     *  an argument. This method can accommodate blocking writes at the
-     *  boundary of composite actors. If the branch argument is not
-     *  null it is assumed that the receiver is at or connected to
-     *  the boundary of a composite actor and any blocks are
-     *  registered with the branch. If the branch is null than the
-     *  receiver is not associated with a composite actor boundary
-     *  and blocks are registered with a director.
-     *  @param token The token that is put in to the receiver.
-     *  @param controllingBranch  The controlling branch.
-     */
-    public void put(Token token, Branch controllingBranch);
 
     /** Set a local flag requesting that the simulation be finished.
      */

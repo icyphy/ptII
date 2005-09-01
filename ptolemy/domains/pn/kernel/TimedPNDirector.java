@@ -244,7 +244,10 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  @return true if a deadlock is detected.
      */
     protected synchronized boolean _areActorsDeadlocked() {
-        if ((_readBlockCount + _writeBlockCount + _delayBlockCount) >= _getActiveActorsCount()) {
+        if ((_readBlockedQueues.size()
+                + _writeBlockedQueues.size()
+                + _delayBlockCount)
+                >= _getActiveThreadsCount()) {
             return true;
         } else {
             return false;
@@ -279,7 +282,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  This might be thrown by derived classes.
      */
     protected boolean _resolveDeadlock() throws IllegalActionException {
-        if (_writeBlockCount != 0) {
+        if (_writeBlockedQueues.size() != 0) {
             // Artificial deadlock based on write blocks.
             _incrementLowestWriteCapacityPort();
             return true;

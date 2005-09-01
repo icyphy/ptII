@@ -190,6 +190,7 @@ public class MultiwayBranchController extends AbstractBranchController implement
 
                     while (threads.hasNext()) {
                         Thread thread = (Thread) threads.next();
+                        _getDirector().addThread(thread);
                         _branchesActive++;
                         thread.start();
                     }
@@ -202,6 +203,8 @@ public class MultiwayBranchController extends AbstractBranchController implement
             if (_debugging) {
                 _debug("** Waiting for branches to succeed.");
             }
+            _getDirector().threadBlocked(Thread.currentThread(), null);
+
             Iterator threadsIterator = _threadList.iterator();
             while (threadsIterator.hasNext()) {
                 Thread thread = (Thread) threadsIterator.next();
@@ -214,6 +217,8 @@ public class MultiwayBranchController extends AbstractBranchController implement
                     // Ignore and continue to the next thread.
                 }
             }
+            _getDirector().threadUnblocked(Thread.currentThread(), null);
+
             // If we get to here, all the branches have succeeded
             // or been terminated.
             if (_failed) {
@@ -236,20 +241,6 @@ public class MultiwayBranchController extends AbstractBranchController implement
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Increase the count of branches that are blocked trying to rendezvous.
-     *  If this is the first branch to be blocked, then register this actor
-     *  as being blocked.
-     */
-    protected void _branchBlocked(CSPReceiver receiver) {
-        synchronized (_internalLock) {
-            _branchesBlocked++;
-
-            if (_branchesBlocked == 1) {
-                _getDirector()._actorBlocked(receiver);
-            }
-        }
-    }
-
     /** Register the calling branch as failed. This reduces the count
      *  of active branches, and if all the active branches have
      *  finished, it notifies the internal lock so any threads
@@ -270,20 +261,6 @@ public class MultiwayBranchController extends AbstractBranchController implement
     protected void _branchNotReady(int branchNumber) {
     }
 
-    /** Decrease the count of branches that are blocked.
-     *  If none of the branches are now blocked, then notify
-     *  the director that the actor is unblocked.
-     */
-    protected void _branchUnblocked(CSPReceiver receiver) {
-        synchronized (_internalLock) {
-            if (_branchesBlocked == 1) {
-                // Note: acquiring a second lock, need to be careful.
-                _getDirector()._actorUnBlocked(receiver);
-            }
-            _branchesBlocked--;
-        }
-    }
-    
     /** Return true if all branches under the control of this controller
      *  are ready.
      *  @param branchNumber The ID assigned to the calling branch
