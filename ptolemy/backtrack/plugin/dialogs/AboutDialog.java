@@ -85,7 +85,7 @@ public class AboutDialog extends Dialog {
         int width = image.getBounds().width;
         int height = image.getBounds().height;
         Display display = parent.getDisplay();
-        Rectangle displayBounds = display.getBounds();
+        Rectangle displayBounds = display.getPrimaryMonitor().getBounds();
         Rectangle bounds = new Rectangle(
                 (displayBounds.width - width) / 2,
                 (displayBounds.height - height) / 2 - 80,   // Place the dialog higher.
