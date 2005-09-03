@@ -35,6 +35,7 @@ import java.util.List;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -80,7 +81,9 @@ public class SectionPreferencePage extends FieldEditorPreferencePage
                 Section.DESCRIPTION |
                 Section.TWISTIE |
                 Section.CLIENT_INDENT);
-        section.setLayoutData(new TableWrapData());
+        TableWrapData data = new TableWrapData();
+        data.grabHorizontal = true;
+        section.setLayoutData(data);
         section.setBackground(null);
         section.setText(text);
         section.setDescription(description);
@@ -137,7 +140,9 @@ public class SectionPreferencePage extends FieldEditorPreferencePage
         composite.setBackground(null);
         GridLayout layout = new GridLayout(column, false);
         composite.setLayout(layout);
-        GridData data = new GridData(GridData.FILL_HORIZONTAL);
+        GridData data = new GridData();
+        data.horizontalAlignment = SWT.FILL;
+        data.grabExcessHorizontalSpace = true;
         composite.setLayoutData(data);
         return composite;
     }

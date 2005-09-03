@@ -116,7 +116,7 @@ public class BacktrackingPreferencePage extends SectionPreferencePage
     
     private void _createSection1() {
         Composite composite = _createSection(
-                "Refactoring Sources",
+                "Sources for Batch Refactoring",
                 "Set the sources of refactoring. A source list file stores " +
                 "the complete list of Java source files to be refactored. " +
                 "A single Java source file name is written on each line of " +
