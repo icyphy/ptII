@@ -66,8 +66,8 @@ public class MatrixPane extends JScrollPane {
         // No table header.
         table.setTableHeader(null);
 
-        // Do not adjust column widths automatically, use a scrollbar.
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        // Adjust column widths automatically.
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
         // Add the table to the scroll pane.
         setViewportView(table);
