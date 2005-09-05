@@ -705,6 +705,14 @@ public class Director extends Attribute implements Executable {
      */
     public void invalidateSchedule() {
     }
+    
+    /** Return true if stop has been requested.
+     *  @return True if stop() has been called.
+     *  @see #stop()
+     */
+    public boolean isStopRequested() {
+        return _stopRequested;
+    }
 
     /** Invoke a specified number of iterations of this director. An
      *  iteration is equivalent to invoking prefire(), fire(), and
